@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- TMF854 Version 1.0 - Copyright TeleManagement Forum 2005 -->
+<wsdl:definitions name="TMF854-FaultService-JMS"  targetNamespace="tmf854.v1.ws" xmlns:tmf854WS="tmf854.v1.ws"    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <!-- ===================== Import Generic Fault WSDL Definitions ====================== -->
+  <wsdl:import namespace="tmf854.v1.ws" location="../common/FaultService.wsdl"/>
+  <wsdl:binding name="AlarmRetrievalSoapBinding" type="tmf854WS:AlarmRetrieval">
+  <!-- ===================== AlarmRetrieval Binding Definition ===================== -->
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/jms"/>
+    <wsdl:documentation>
+    The JMS bindings in WSDL/SOAP are not official at this time. So, the purpose of this file is mainly to provide the framework and documentation of a MTOSI Fault WS solution over JMS.
+    </wsdl:documentation>
+    <wsdl:operation name="getActiveAlarmsCount">
+      <wsdl:input>
+        <soap:header message="tmf854WS:getActiveAlarmsCount" part="mtosiHeader" use="literal"/>
+        <soap:body parts="mtosiBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tmf854WS:getActiveAlarmsCountResponse" part="mtosiHeader" use="literal"/>
+        <soap:body parts="mtosiBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ProcessingFailureException">
+        <soap:header message="tmf854WS:ProcessingFailureException" part="mtosiHeader" use="literal"/>
+        <soap:fault name="ProcessingFailureException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getActiveAlarms">
+      <wsdl:input>
+        <soap:header message="tmf854WS:getActiveAlarms" part="mtosiHeader" use="literal"/>
+        <soap:body parts="mtosiBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tmf854WS:getActiveAlarmsResponse" part="mtosiHeader" use="literal"/>
+        <soap:body parts="mtosiBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ProcessingFailureException">
+        <soap:header message="tmf854WS:ProcessingFailureException" part="mtosiHeader" use="literal"/>
+        <soap:fault name="ProcessingFailureException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="FaultService">
+  <!-- ===================== Fault Service Definition ====================== -->
+    <wsdl:documentation>
+    Definition of all the interfaces of the MTOSI Fault Service.
+    Also, note that all soap:address are only to support examples in documentation.
+    Refer to the TMF854 XML Solution Set.
+    </wsdl:documentation>
+    <wsdl:port name="AlarmRetrieval" binding="tmf854WS:AlarmRetrievalSoapBinding">
+      <wsdl:documentation>
+        Update the soap address at deployment  
+      </wsdl:documentation>
+      <soap:address location="/mtosi/v1/AlarmRetrieval"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
