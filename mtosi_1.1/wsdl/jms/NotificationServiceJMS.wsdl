@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- TMF854 Version 1.0 - Copyright TeleManagement Forum 2005 -->
+<wsdl:definitions name="TMF854-NotificationService-JMS"  targetNamespace="tmf854.v1.ws" xmlns:tmf854WS="tmf854.v1.ws"    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <!-- ===================== Import Generic NotificationService WSDL Definitions ====================== -->
+  <wsdl:import namespace="tmf854.v1.ws" location="../common/NotificationService.wsdl"/>
+  <wsdl:binding name="NotificationBrokerSoapBinding" type="tmf854WS:NotificationBrokerInterface">
+  <!-- ===================== NotificationBroker Binding Definition ===================== -->
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/jms"/>
+    <wsdl:documentation>
+    The JMS bindings in WSDL/SOAP are not official at this time. So, the purpose of this file is mainly to provide the framework and documentation of a MTOSI Notification WS solution over JMS.
+    </wsdl:documentation>
+    <wsdl:operation name="subscribe">
+      <wsdl:input>
+        <soap:header message="tmf854WS:subscribe" part="mtosiHeader" use="literal"/>
+        <soap:body parts="mtosiBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tmf854WS:subscribeResponse" part="mtosiHeader" use="literal"/>
+        <soap:body parts="mtosiBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ProcessingFailureException">
+        <soap:header message="tmf854WS:ProcessingFailureException" part="mtosiHeader" use="literal"/>
+        <soap:fault name="ProcessingFailureException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="unsubscribe">
+      <wsdl:input>
+        <soap:header message="tmf854WS:unsubscribe" part="mtosiHeader" use="literal"/>
+        <soap:body parts="mtosiBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tmf854WS:unsubscribeResponse" part="mtosiHeader" use="literal"/>
+        <soap:body parts="mtosiBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ProcessingFailureException">
+        <soap:header message="tmf854WS:ProcessingFailureException" part="mtosiHeader" use="literal"/>
+        <soap:fault name="ProcessingFailureException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="notify">
+      <wsdl:input>
+        <soap:header message="tmf854WS:notify" part="mtosiHeader" use="literal"/>
+        <soap:body parts="mtosiBody" use="literal"/>
+      </wsdl:input>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="NotificationConsumerSoapBinding" type="tmf854WS:NotificationConsumerInterface">
+  <!-- ===================== NotificationConsumer Binding Definition ===================== -->
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/jms"/>
+    <wsdl:documentation>
+    The JMS bindings in WSDL/SOAP are not official at this time. So, the purpose of this file is mainly to provide the framework and documentation of a MTOSI Notification WS solution over JMS.
+    </wsdl:documentation>
+    <wsdl:operation name="notify">
+      <wsdl:input>
+        <soap:header message="tmf854WS:notify" part="mtosiHeader" use="literal"/>
+        <soap:body parts="mtosiBody" use="literal"/>
+      </wsdl:input>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="NotificationService">
+  <!-- ===================== Notification Service Definition ====================== -->
+    <wsdl:documentation>
+    Definition of all the interfaces of the MTOSI Notification Service.
+    Note that all soap:address are only to support examples in documentation.
+    Refer to the TMF854 XML Solution Set and the MTOSI Notification Service SD.
+    </wsdl:documentation>
+    <wsdl:port name="NotificationBrokerInterface" binding="tmf854WS:NotificationBrokerSoapBinding">
+      <soap:address location="/mtosi/v1/NotificationBroker"/>
+    </wsdl:port>
+    <wsdl:port name="NotificationConsumerInterface" binding="tmf854WS:NotificationConsumerSoapBinding">
+      <soap:address location="/mtosi/v1/NotificationConsumer"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
