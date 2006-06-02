@@ -14,9 +14,10 @@
 				<soap:header message="tmf854WS:subscribeResponse" part="mtosiHeader" use="literal" />
 				<soap:body parts="mtosiBody" use="literal" />
 			</wsdl:output>
-			<soap:fault name="ProcessingFailureException">
-				<soap:fault name="ProcessingFailureException" use="literal" />
-			</soap:fault>
+			<wsdl:fault name="ProcessingFailureException">
+				<soap:header message="tmf854WS:ProcessingFailureException" part="mtosiHeader" use="literal"/>
+		        <soap:fault name="ProcessingFailureException" use="literal"/>
+			</wsdl:fault>
 		</wsdl:operation>
 
 		<wsdl:operation name="unsubscribe">
@@ -28,19 +29,17 @@
 				<soap:header message="tmf854WS:unsubscribeResponse" part="mtosiHeader" use="literal" />
 				<soap:body parts="mtosiBody" use="literal" />
 			</wsdl:output>
-			<soap:fault name="ProcessingFailureException">
-				<soap:fault name="ProcessingFailureException" use="literal" />
-			</soap:fault>
+			<wsdl:fault name="ProcessingFailureException">
+				<soap:header message="tmf854WS:ProcessingFailureException" part="mtosiHeader" use="literal"/>
+		        <soap:fault name="ProcessingFailureException" use="literal"/>
+			</wsdl:fault>
 		</wsdl:operation>
 
 		<wsdl:operation name="notify">
 			<wsdl:input>
-				<soap:header message="tmf854WS:Notify" part="mtosiHeader" use="literal" />
+				<soap:header message="tmf854WS:notify" part="mtosiHeader" use="literal" />
 				<soap:body parts="mtosiBody" use="literal" />
 			</wsdl:input>
-			<soap:fault name="ProcessingFailureException">
-				<soap:fault name="ProcessingFailureException" use="literal" />
-			</soap:fault>
 		</wsdl:operation>
 
 	</wsdl:binding>
@@ -53,13 +52,64 @@
 				<soap:header message="tmf854WS:notify" part="mtosiHeader" use="literal" />
 				<soap:body parts="mtosiBody" use="literal" />
 			</wsdl:input>
-			<soap:fault name="ProcessingFailureException">
-				<soap:fault name="ProcessingFailureException" use="literal" />
-			</soap:fault>
+		</wsdl:operation>
+
+	</wsdl:binding>
+
+	<wsdl:binding name="NotificationBrokerInterfaceSoapHTTPBinding" type="tmf854WS:NotificationBrokerInterface">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <!-- ===================== This binding is deprecated in 1.1 ========= -->
+
+		<wsdl:operation name="Subscribe">
+			<wsdl:input>
+				<soap:header message="tmf854WS:subscribe" part="mtosiHeader" use="literal" />
+				<soap:body parts="mtosiBody" use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="tmf854WS:subscribeResponse" part="mtosiHeader" use="literal" />
+				<soap:body parts="mtosiBody" use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="ProcessingFailureException">
+				<soap:header message="tmf854WS:ProcessingFailureException" part="mtosiHeader" use="literal"/>
+		        <soap:fault name="ProcessingFailureException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+
+		<wsdl:operation name="Unsubscribe">
+			<wsdl:input>
+				<soap:header message="tmf854WS:unsubscribe" part="mtosiHeader" use="literal" />
+				<soap:body parts="mtosiBody" use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="tmf854WS:unsubscribeResponse" part="mtosiHeader" use="literal" />
+				<soap:body parts="mtosiBody" use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="ProcessingFailureException">
+				<soap:header message="tmf854WS:ProcessingFailureException" part="mtosiHeader" use="literal"/>
+		        <soap:fault name="ProcessingFailureException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+
+		<wsdl:operation name="Notify">
+			<wsdl:input>
+				<soap:header message="tmf854WS:notify" part="mtosiHeader" use="literal" />
+				<soap:body parts="mtosiBody" use="literal" />
+			</wsdl:input>
+		</wsdl:operation>
+
+	</wsdl:binding>
+
+	<wsdl:binding name="NotificationConsumerInterfaceSoapHTTPBinding" type="tmf854WS:NotificationConsumerInterface">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+    <!-- ===================== This binding is deprecated in 1.1 ========= -->
+    
+		<wsdl:operation name="Notify">
+			<wsdl:input>
+				<soap:header message="tmf854WS:notify" part="mtosiHeader" use="literal" />
+				<soap:body parts="mtosiBody" use="literal" />
+			</wsdl:input>
 		</wsdl:operation>
 
 	</wsdl:binding>
 
 </wsdl:definitions>
-
-
