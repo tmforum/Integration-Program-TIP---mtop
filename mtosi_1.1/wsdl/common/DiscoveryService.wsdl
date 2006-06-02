@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- TMF854 Version 1.0 - Copyright TeleManagement Forum 2005 -->
+<!-- TMF854 Version 1.0 - Copyright TeleManagement Forum 2005, 2006 -->
 <wsdl:definitions name="TMF854-DiscoveryService" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="tmf854.v1.ws" xmlns:tmf854XSD="tmf854.v1" xmlns:tmf854WS="tmf854.v1.ws" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <!-- ===================== Import Type Definitions ============= -->
   <wsdl:types>
@@ -25,7 +25,20 @@
     <wsdl:part name="mtosiBody" element="tmf854XSD:getAllCapabilitiesResponse"/>
   </wsdl:message>
   <!-- ===================== Port Type Definitions ====================== -->
-  <!-- ===================== Discovery Port Type  ===================== -->
+  <!-- ===================== DiscoveryService Port Type  ===================== -->
+  <wsdl:portType name="DiscoveryService">
+    <wsdl:documentation>
+    The MTOSI Discovery interface (porttype)
+    </wsdl:documentation>
+    <wsdl:operation name="getAllCapabilities">
+      <wsdl:input message="tmf854WS:getAllCapabilities"/>
+      <wsdl:output message="tmf854WS:getAllCapabilitiesResponse"/>
+      <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  
+   <!-- ===================== DiscoveryInterface Port Type  ===================== -->
+   <!-- ========== DiscoveryInterface Port Type deprecated in 1.1  ============== -->
   <wsdl:portType name="DiscoveryInterface">
     <wsdl:documentation>
     The MTOSI Discovery interface (porttype)
@@ -36,4 +49,5 @@
       <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
     </wsdl:operation>
   </wsdl:portType>
+    
 </wsdl:definitions>
