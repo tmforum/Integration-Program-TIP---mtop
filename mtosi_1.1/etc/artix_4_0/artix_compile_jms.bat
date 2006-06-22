@@ -1,10 +1,10 @@
-c:/iona/artix/4.0/bin/wsdltojava -d c:/mtosi_artix_test/jms -p org.tmforum.mtosi.jaxrpc.artix40 -server -client -impl ../../wsdl/transport/jms/DiscoveryServiceSOAP_JMS.wsdl
-c:/iona/artix/4.0/bin/wsdltojava -d c:/mtosi_artix_test/jms -p org.tmforum.mtosi.jaxrpc.artix40 -server -client -impl ../../wsdl/transport/jms/EquipmentInventoryMgrSOAP_JMS.wsdl
-c:/iona/artix/4.0/bin/wsdltojava -d c:/mtosi_artix_test/jms -p org.tmforum.mtosi.jaxrpc.artix40 -server -client -impl ../../wsdl/transport/jms/FaultServiceSOAP_JMS.wsdl
-c:/iona/artix/4.0/bin/wsdltojava -d c:/mtosi_artix_test/jms -p org.tmforum.mtosi.jaxrpc.artix40 -server -client -impl ../../wsdl/transport/jms/InventoryRetrievalSOAP_JMS.wsdl
-c:/iona/artix/4.0/bin/wsdltojava -d c:/mtosi_artix_test/jms -p org.tmforum.mtosi.jaxrpc.artix40 -server -client -impl ../../wsdl/transport/jms/ManagedElementMgrSOAP_JMS.wsdl
-c:/iona/artix/4.0/bin/wsdltojava -d c:/mtosi_artix_test/jms -p org.tmforum.mtosi.jaxrpc.artix40 -server -client -impl ../../wsdl/transport/jms/MultiLayerSubnetworkMgrSOAP_JMS.wsdl
-c:/iona/artix/4.0/bin/wsdltojava -d c:/mtosi_artix_test/jms -p org.tmforum.mtosi.jaxrpc.artix40 -server -client -impl ../../wsdl/transport/jms/NotificationServiceSOAP_JMS.wsdl
-c:/iona/artix/4.0/bin/wsdltojava -d c:/mtosi_artix_test/jms -p org.tmforum.mtosi.jaxrpc.artix40 -server -client -impl ../../wsdl/transport/jms/OperationsSystemMgrSOAP_JMS.wsdl
-c:/iona/artix/4.0/bin/wsdltojava -d c:/mtosi_artix_test/jms -p org.tmforum.mtosi.jaxrpc.artix40 -server -client -impl ../../wsdl/transport/jms/ProtectionMgrSOAP_JMS.wsdl
-c:/iona/artix/4.0/bin/wsdltojava -d c:/mtosi_artix_test/jms -p org.tmforum.mtosi.jaxrpc.artix40 -server -client -impl ../../wsdl/transport/jms/TransmissionDescriptorMgrSOAP_JMS.wsdl
+c:/iona/artix/4.0/bin/wsdltojava -d c:/mtosi_artix_test/jms -p org.tmforum.mtosi.jaxrpc.artix40 -server -client -impl -notypehandlers ../../wsdl/transport/jms/DiscoveryServiceSOAP_JMS.wsdl
+c:/iona/artix/4.0/bin/wsdltojava -d c:/mtosi_artix_test/jms -p org.tmforum.mtosi.jaxrpc.artix40 -server -client -impl -notypehandlers ../../wsdl/transport/jms/EquipmentInventoryMgrSOAP_JMS.wsdl
+c:/iona/artix/4.0/bin/wsdltojava -d c:/mtosi_artix_test/jms -p org.tmforum.mtosi.jaxrpc.artix40 -server -client -impl -notypehandlers ../../wsdl/transport/jms/FaultServiceSOAP_JMS.wsdl
+c:/iona/artix/4.0/bin/wsdltojava -d c:/mtosi_artix_test/jms -p org.tmforum.mtosi.jaxrpc.artix40 -server -client -impl -notypehandlers ../../wsdl/transport/jms/InventoryRetrievalSOAP_JMS.wsdl
+c:/iona/artix/4.0/bin/wsdltojava -d c:/mtosi_artix_test/jms -p org.tmforum.mtosi.jaxrpc.artix40 -server -client -impl -notypehandlers ../../wsdl/transport/jms/ManagedElementMgrSOAP_JMS.wsdl
+c:/iona/artix/4.0/bin/wsdltojava -d c:/mtosi_artix_test/jms -p org.tmforum.mtosi.jaxrpc.artix40 -server -client -impl -notypehandlers ../../wsdl/transport/jms/MultiLayerSubnetworkMgrSOAP_JMS.wsdl
+c:/iona/artix/4.0/bin/wsdltojava -d c:/mtosi_artix_test/jms -p org.tmforum.mtosi.jaxrpc.artix40 -server -client -impl -notypehandlers ../../wsdl/transport/jms/NotificationServiceSOAP_JMS.wsdl
+c:/iona/artix/4.0/bin/wsdltojava -d c:/mtosi_artix_test/jms -p org.tmforum.mtosi.jaxrpc.artix40 -server -client -impl -notypehandlers ../../wsdl/transport/jms/OperationsSystemMgrSOAP_JMS.wsdl
+c:/iona/artix/4.0/bin/wsdltojava -d c:/mtosi_artix_test/jms -p org.tmforum.mtosi.jaxrpc.artix40 -server -client -impl -notypehandlers ../../wsdl/transport/jms/ProtectionMgrSOAP_JMS.wsdl
+c:/iona/artix/4.0/bin/wsdltojava -d c:/mtosi_artix_test/jms -p org.tmforum.mtosi.jaxrpc.artix40 -server -client -impl -notypehandlers ../../wsdl/transport/jms/TransmissionDescriptorMgrSOAP_JMS.wsdl
