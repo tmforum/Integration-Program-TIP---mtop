@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- TMF854 Version 1.0 - Copyright TeleManagement Forum 2005 -->
+<!-- TMF854 Version 1.1 - Copyright TeleManagement Forum 2005 -->
 <wsdl:definitions name="TMF854-ProtectionMgrInterfaces" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="tmf854.v1.ws" xmlns:tmf854XSD="tmf854.v1" xmlns:tmf854WS="tmf854.v1.ws" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <!-- ======= Import Type Definitions ============= -->
   <wsdl:types>
     <xsd:schema targetNamespace="tmf854.v1.ws">
       <xsd:import namespace="tmf854.v1" schemaLocation="../../xsd/interfaces/ProtectionMgr.xsd"/>
+      <xsd:import namespace="tmf854.v1" schemaLocation="../../xsd/interfaces/IteratorRequestMessages.xsd"/>
     </xsd:schema>
   </wsdl:types>
   <!-- ======= Import Definitions ============= -->
@@ -17,6 +18,13 @@
     <wsdl:part name="mtosiHeader" element="tmf854XSD:header"/>
     <wsdl:part name="mtosiBody" element="tmf854XSD:getAllEProtectionGroups"/>
   </wsdl:message>
+  <wsdl:message name="getAllEProtectionGroupsIterator">
+    <wsdl:documentation>
+    The getAllEProtectionGroups iterator request message.
+    </wsdl:documentation>
+    <wsdl:part name="mtosiHeader" element="tmf854XSD:header"/>
+    <wsdl:part name="mtosiBody" element="tmf854XSD:getEpgpIterator"/>
+  </wsdl:message>
   <wsdl:message name="getAllEProtectionGroupsResponse">
     <wsdl:documentation>
     The getAllEProtectionGroups response message.
@@ -28,6 +36,13 @@
   <wsdl:message name="getAllNUTTPNames">
     <wsdl:documentation>
     The getAllNUTTPNames request message.
+    </wsdl:documentation>
+    <wsdl:part name="mtosiHeader" element="tmf854XSD:header"/>
+    <wsdl:part name="mtosiBody" element="tmf854XSD:getAllNUTTPNames"/>
+  </wsdl:message>
+  <wsdl:message name="getAllNUTTPNamesIterator">
+    <wsdl:documentation>
+    The getAllNUTTPNames iterator request message.
     </wsdl:documentation>
     <wsdl:part name="mtosiHeader" element="tmf854XSD:header"/>
     <wsdl:part name="mtosiBody" element="tmf854XSD:getAllNUTTPNames"/>
@@ -47,6 +62,13 @@
     <wsdl:part name="mtosiHeader" element="tmf854XSD:header"/>
     <wsdl:part name="mtosiBody" element="tmf854XSD:getAllPreemptibleTPNames"/>
   </wsdl:message>
+  <wsdl:message name="getAllPreemptibleTPNamesIterator">
+    <wsdl:documentation>
+    The getAllPreemptibleTPNames iterator request message.
+    </wsdl:documentation>
+    <wsdl:part name="mtosiHeader" element="tmf854XSD:header"/>
+    <wsdl:part name="mtosiBody" element="tmf854XSD:getAllPreemptibleTPNames"/>
+  </wsdl:message>
   <wsdl:message name="getAllPreemptibleTPNamesResponse">
     <wsdl:documentation>
     The getAllPreemptibleTPNames response message.
@@ -62,6 +84,13 @@
     <wsdl:part name="mtosiHeader" element="tmf854XSD:header"/>
     <wsdl:part name="mtosiBody" element="tmf854XSD:getAllProtectedTPNames"/>
   </wsdl:message>
+  <wsdl:message name="getAllProtectedTPNamesIterator">
+    <wsdl:documentation>
+    The getAllProtectedTPNames iterator request message.
+    </wsdl:documentation>
+    <wsdl:part name="mtosiHeader" element="tmf854XSD:header"/>
+    <wsdl:part name="mtosiBody" element="tmf854XSD:getAllProtectedTPNames"/>
+  </wsdl:message>
   <wsdl:message name="getAllProtectedTPNamesResponse">
     <wsdl:documentation>
     The getAllProtectedTPNames response message.
@@ -73,6 +102,13 @@
   <wsdl:message name="getAllProtectionGroups">
     <wsdl:documentation>
     The getAllProtectionGroups request message.
+    </wsdl:documentation>
+    <wsdl:part name="mtosiHeader" element="tmf854XSD:header"/>
+    <wsdl:part name="mtosiBody" element="tmf854XSD:getAllProtectionGroups"/>
+  </wsdl:message>
+  <wsdl:message name="getAllProtectionGroupsIterator">
+    <wsdl:documentation>
+    The getAllProtectionGroups iterator request message.
     </wsdl:documentation>
     <wsdl:part name="mtosiHeader" element="tmf854XSD:header"/>
     <wsdl:part name="mtosiBody" element="tmf854XSD:getAllProtectionGroups"/>
@@ -165,6 +201,7 @@
     <wsdl:documentation>
 The MTOSI ProtectionMgr porttype
     </wsdl:documentation>
+    
     <wsdl:operation name="getAllEProtectionGroups">
       <wsdl:documentation>
         This is the getAllEProtectionGroups request/response operation
@@ -173,6 +210,16 @@ The MTOSI ProtectionMgr porttype
       <wsdl:output message="tmf854WS:getAllEProtectionGroupsResponse"/>
       <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
     </wsdl:operation>
+    
+    <wsdl:operation name="getAllEProtectionGroupsIterator">
+      <wsdl:documentation>
+        This is the getAllEProtectionGroups Iterator request/response operation
+      </wsdl:documentation>
+      <wsdl:input message="tmf854WS:getAllEProtectionGroupsIterator"/>
+      <wsdl:output message="tmf854WS:getAllEProtectionGroupsResponse"/>
+      <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
+    </wsdl:operation>
+    
     <wsdl:operation name="getAllNUTTPNames">
       <wsdl:documentation>
         This is the getAllNUTTPNames request/response operation
@@ -181,6 +228,16 @@ The MTOSI ProtectionMgr porttype
       <wsdl:output message="tmf854WS:getAllNUTTPNamesResponse"/>
       <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
     </wsdl:operation>
+    
+    <wsdl:operation name="getAllNUTTPNamesIterator">
+      <wsdl:documentation>
+        This is the getAllNUTTPNames Iterator request/response operation
+      </wsdl:documentation>
+      <wsdl:input message="tmf854WS:getAllNUTTPNamesIterator"/>
+      <wsdl:output message="tmf854WS:getAllNUTTPNamesResponse"/>
+      <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
+    </wsdl:operation>
+    
     <wsdl:operation name="getAllPreemptibleTPNames">
       <wsdl:documentation>
         This is the getAllPreemptibleTPNames request/response operation
@@ -189,6 +246,16 @@ The MTOSI ProtectionMgr porttype
       <wsdl:output message="tmf854WS:getAllPreemptibleTPNamesResponse"/>
       <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
     </wsdl:operation>
+    
+    <wsdl:operation name="getAllPreemptibleTPNamesIterator">
+      <wsdl:documentation>
+        This is the getAllPreemptibleTPNames Iterator request/response operation
+      </wsdl:documentation>
+      <wsdl:input message="tmf854WS:getAllPreemptibleTPNames"/>
+      <wsdl:output message="tmf854WS:getAllPreemptibleTPNamesResponse"/>
+      <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
+    </wsdl:operation>
+    
     <wsdl:operation name="getAllProtectedTPNames">
       <wsdl:documentation>
         This is the getAllProtectedTPNames request/response operation
@@ -197,6 +264,16 @@ The MTOSI ProtectionMgr porttype
       <wsdl:output message="tmf854WS:getAllProtectedTPNamesResponse"/>
       <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
     </wsdl:operation>
+    
+        <wsdl:operation name="getAllProtectedTPNamesIterator">
+      <wsdl:documentation>
+        This is the getAllProtectedTPNames Iterator request/response operation
+      </wsdl:documentation>
+      <wsdl:input message="tmf854WS:getAllProtectedTPNamesIterator"/>
+      <wsdl:output message="tmf854WS:getAllProtectedTPNamesResponse"/>
+      <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
+    </wsdl:operation>
+
     <wsdl:operation name="getAllProtectionGroups">
       <wsdl:documentation>
         This is the getAllProtectionGroups request/response operation
@@ -205,6 +282,16 @@ The MTOSI ProtectionMgr porttype
       <wsdl:output message="tmf854WS:getAllProtectionGroupsResponse"/>
       <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
     </wsdl:operation>
+
+    <wsdl:operation name="getAllProtectionGroupsIterator">
+      <wsdl:documentation>
+        This is the getAllProtectionGroups Iterator request/response operation
+      </wsdl:documentation>
+      <wsdl:input message="tmf854WS:getAllProtectionGroupsIterator"/>
+      <wsdl:output message="tmf854WS:getAllProtectionGroupsResponse"/>
+      <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
+    </wsdl:operation>
+    
     <wsdl:operation name="getContainingPGNames">
       <wsdl:documentation>
         This is the getContainingPGNames request/response operation
@@ -213,6 +300,7 @@ The MTOSI ProtectionMgr porttype
       <wsdl:output message="tmf854WS:getContainingPGNamesResponse"/>
       <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
     </wsdl:operation>
+    
     <wsdl:operation name="getEProtectionGroup">
       <wsdl:documentation>
         This is the getEProtectionGroup request/response operation
@@ -221,6 +309,7 @@ The MTOSI ProtectionMgr porttype
       <wsdl:output message="tmf854WS:getEProtectionGroupResponse"/>
       <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
     </wsdl:operation>
+    
     <wsdl:operation name="getProtectionGroup">
       <wsdl:documentation>
         This is the getProtectionGroup request/response operation
@@ -229,6 +318,7 @@ The MTOSI ProtectionMgr porttype
       <wsdl:output message="tmf854WS:getProtectionGroupResponse"/>
       <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
     </wsdl:operation>
+    
     <wsdl:operation name="retrieveESwitchData">
       <wsdl:documentation>
         This is the retrieveESwitchData request/response operation
@@ -237,6 +327,7 @@ The MTOSI ProtectionMgr porttype
       <wsdl:output message="tmf854WS:retrieveESwitchDataResponse"/>
       <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
     </wsdl:operation>
+    
     <wsdl:operation name="retrieveSwitchData">
       <wsdl:documentation>
         This is the retrieveSwitchData request/response operation

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- TMF854 Version 1.0 - Copyright TeleManagement Forum 2005 -->
+<!-- TMF854 Version 1.1 - Copyright TeleManagement Forum 2005 -->
 <wsdl:definitions name="TMF854-FaultService" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="tmf854.v1.ws" xmlns:tmf854XSD="tmf854.v1" xmlns:tmf854WS="tmf854.v1.ws" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <!-- ===================== Import Type Definitions ============= -->
   <wsdl:types>
     <xsd:schema targetNamespace="tmf854.v1.ws">
       <xsd:import namespace="tmf854.v1" schemaLocation="../../xsd/interfaces/AlarmRetrieval.xsd"/>
+      <xsd:import namespace="tmf854.v1" schemaLocation="../../xsd/interfaces/IteratorRequestMessages.xsd"/>
     </xsd:schema>
   </wsdl:types>
   <!-- ===================== Import Exception Definitions ============= -->
@@ -32,6 +33,13 @@
     <wsdl:part name="mtosiHeader" element="tmf854XSD:header"/>
     <wsdl:part name="mtosiBody" element="tmf854XSD:getActiveAlarms"/>
   </wsdl:message>
+  <wsdl:message name="getActiveAlarmsIterator">
+    <wsdl:documentation>
+    The ActiveAlarms iterator request message.
+    </wsdl:documentation>
+    <wsdl:part name="mtosiHeader" element="tmf854XSD:header"/>
+    <wsdl:part name="mtosiBody" element="tmf854XSD:getActiveAlarmIterator"/>
+  </wsdl:message>
   <wsdl:message name="getActiveAlarmsResponse">
     <wsdl:documentation>
     The getActiveAlarms response message.
@@ -58,6 +66,14 @@
         This is the getActiveAlarms request/response operation
       </wsdl:documentation>
       <wsdl:input message="tmf854WS:getActiveAlarms"/>
+      <wsdl:output message="tmf854WS:getActiveAlarmsResponse"/>
+      <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
+    </wsdl:operation>
+    <wsdl:operation name="getActiveAlarmsIterator">
+      <wsdl:documentation>
+        This is the getActiveAlarms iterator request/response operation
+      </wsdl:documentation>
+      <wsdl:input message="tmf854WS:getActiveAlarmsIterator"/>
       <wsdl:output message="tmf854WS:getActiveAlarmsResponse"/>
       <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
     </wsdl:operation>

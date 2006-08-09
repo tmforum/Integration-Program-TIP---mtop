@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- TMF854 Version 1.0 - Copyright TeleManagement Forum 2005 -->
+<!-- TMF854 Version 1.1 - Copyright TeleManagement Forum 2005 -->
 <wsdl:definitions name="TMF854-EquipmentInventoryMgrInterfaces" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="tmf854.v1.ws" xmlns:tmf854XSD="tmf854.v1" xmlns:tmf854WS="tmf854.v1.ws" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <!-- =======Import Type Definitions ============= -->
   <wsdl:types>
     <xsd:schema targetNamespace="tmf854.v1.ws">
       <xsd:import namespace="tmf854.v1" schemaLocation="../../xsd/interfaces/EquipmentInventoryMgr.xsd"/>
+      <xsd:import namespace="tmf854.v1" schemaLocation="../../xsd/interfaces/IteratorRequestMessages.xsd"/>
     </xsd:schema>
   </wsdl:types>
   <!-- ======= Import Definitions ============= -->
@@ -16,6 +17,13 @@
     </wsdl:documentation>
     <wsdl:part name="mtosiHeader" element="tmf854XSD:header"/>
     <wsdl:part name="mtosiBody" element="tmf854XSD:getAllEquipmentNames"/>
+  </wsdl:message>
+  <wsdl:message name="getAllEquipmentNamesIterator">
+    <wsdl:documentation>
+    The getAllEquipmentNames iterator request message.
+    </wsdl:documentation>
+    <wsdl:part name="mtosiHeader" element="tmf854XSD:header"/>
+    <wsdl:part name="mtosiBody" element="tmf854XSD:getObjectNamesIterator"/>
   </wsdl:message>
   <wsdl:message name="getAllEquipmentNamesResponse">
     <wsdl:documentation>
@@ -32,6 +40,13 @@
     <wsdl:part name="mtosiHeader" element="tmf854XSD:header"/>
     <wsdl:part name="mtosiBody" element="tmf854XSD:getAllEquipment"/>
   </wsdl:message>
+  <wsdl:message name="getAllEquipmentIterator">
+    <wsdl:documentation>
+    The getAllEquipment iterator request message.
+    </wsdl:documentation>
+    <wsdl:part name="mtosiHeader" element="tmf854XSD:header"/>
+    <wsdl:part name="mtosiBody" element="tmf854XSD:getEquipmentOrHolderIterator"/>
+  </wsdl:message>
   <wsdl:message name="getAllEquipmentResponse">
     <wsdl:documentation>
     The getAllEquipment response message.
@@ -47,6 +62,13 @@
     <wsdl:part name="mtosiHeader" element="tmf854XSD:header"/>
     <wsdl:part name="mtosiBody" element="tmf854XSD:getAllSupportedPTPNames"/>
   </wsdl:message>
+  <wsdl:message name="getAllSupportedPTPNamesIterator">
+    <wsdl:documentation>
+    The getAllSupportedPTPNames iterator request message.
+    </wsdl:documentation>
+    <wsdl:part name="mtosiHeader" element="tmf854XSD:header"/>
+    <wsdl:part name="mtosiBody" element="tmf854XSD:getObjectNamesIterator"/>
+  </wsdl:message>
   <wsdl:message name="getAllSupportedPTPNamesResponse">
     <wsdl:documentation>
     The getAllSupportedPTPNames response message.
@@ -61,6 +83,13 @@
     </wsdl:documentation>
     <wsdl:part name="mtosiHeader" element="tmf854XSD:header"/>
     <wsdl:part name="mtosiBody" element="tmf854XSD:getAllSupportedPTPs"/>
+  </wsdl:message>
+  <wsdl:message name="getAllSupportedPTPsIterator">
+    <wsdl:documentation>
+    The getAllSupportedPTPs iterator request message.
+    </wsdl:documentation>
+    <wsdl:part name="mtosiHeader" element="tmf854XSD:header"/>
+    <wsdl:part name="mtosiBody" element="tmf854XSD:getPtpIterator"/>
   </wsdl:message>
   <wsdl:message name="getAllSupportedPTPsResponse">
     <wsdl:documentation>
@@ -195,6 +224,7 @@
     <wsdl:documentation>
     The MTOSI EquipmentInventoryMgr porttype
     </wsdl:documentation>
+    
     <wsdl:operation name="getAllEquipmentNames">
       <wsdl:documentation>
         This is the getAllEquipmentNames request/response operation
@@ -203,6 +233,16 @@
       <wsdl:output message="tmf854WS:getAllEquipmentNamesResponse"/>
       <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
     </wsdl:operation>
+    
+    <wsdl:operation name="getAllEquipmentNamesIterator">
+      <wsdl:documentation>
+        This is the getAllEquipmentNames iterator request/response operation
+      </wsdl:documentation>
+      <wsdl:input message="tmf854WS:getAllEquipmentNamesIterator"/>
+      <wsdl:output message="tmf854WS:getAllEquipmentNamesResponse"/>
+      <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
+    </wsdl:operation>
+    
     <wsdl:operation name="getAllEquipment">
       <wsdl:documentation>
         This is the getAllEquipment request/response operation
@@ -211,6 +251,16 @@
       <wsdl:output message="tmf854WS:getAllEquipmentResponse"/>
       <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
     </wsdl:operation>
+    
+    <wsdl:operation name="getAllEquipmentIterator">
+      <wsdl:documentation>
+        This is the getAllEquipment iterator request/response operation
+      </wsdl:documentation>
+      <wsdl:input message="tmf854WS:getAllEquipmentIterator"/>
+      <wsdl:output message="tmf854WS:getAllEquipmentResponse"/>
+      <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
+    </wsdl:operation>
+    
     <wsdl:operation name="getAllSupportedPTPNames">
       <wsdl:documentation>
         This is the getAllSupportedPTPNames request/response operation
@@ -219,6 +269,16 @@
       <wsdl:output message="tmf854WS:getAllSupportedPTPNamesResponse"/>
       <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
     </wsdl:operation>
+    
+    <wsdl:operation name="getAllSupportedPTPNamesIterator">
+      <wsdl:documentation>
+        This is the getAllSupportedPTPNames iterator request/response operation
+      </wsdl:documentation>
+      <wsdl:input message="tmf854WS:getAllSupportedPTPNamesIterator"/>
+      <wsdl:output message="tmf854WS:getAllSupportedPTPNamesResponse"/>
+      <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
+    </wsdl:operation>
+    
     <wsdl:operation name="getAllSupportedPTPs">
       <wsdl:documentation>
         This is the getAllSupportedPTPs request/response operation
@@ -227,6 +287,16 @@
       <wsdl:output message="tmf854WS:getAllSupportedPTPsResponse"/>
       <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
     </wsdl:operation>
+    
+    <wsdl:operation name="getAllSupportedPTPsIterator">
+      <wsdl:documentation>
+        This is the getAllSupportedPTPs iterator request/response operation
+      </wsdl:documentation>
+      <wsdl:input message="tmf854WS:getAllSupportedPTPsIterator"/>
+      <wsdl:output message="tmf854WS:getAllSupportedPTPsResponse"/>
+      <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
+    </wsdl:operation>
+    
     <wsdl:operation name="getAllSupportingEquipmentNames">
       <wsdl:documentation>
         This is the getAllSupportingEquipmentNames request/response operation
@@ -235,6 +305,7 @@
       <wsdl:output message="tmf854WS:getAllSupportingEquipmentNamesResponse"/>
       <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
     </wsdl:operation>
+    
     <wsdl:operation name="getAllSupportingEquipment">
       <wsdl:documentation>
         This is the getAllSupportingEquipment request/response operation
@@ -243,6 +314,7 @@
       <wsdl:output message="tmf854WS:getAllSupportingEquipmentResponse"/>
       <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
     </wsdl:operation>
+    
     <wsdl:operation name="getContainedEquipment">
       <wsdl:documentation>
         This is the getContainedEquipment request/response operation
@@ -251,6 +323,7 @@
       <wsdl:output message="tmf854WS:getContainedEquipmentResponse"/>
       <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
     </wsdl:operation>
+    
     <wsdl:operation name="getEquipment">
       <wsdl:documentation>
         This is the getEquipment request/response operation
@@ -259,6 +332,7 @@
       <wsdl:output message="tmf854WS:getEquipmentResponse"/>
       <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
     </wsdl:operation>
+    
     <wsdl:operation name="getSupportedEquipmentNames">
       <wsdl:documentation>
         This is the getSupportedEquipmentNames request/response operation
@@ -267,6 +341,7 @@
       <wsdl:output message="tmf854WS:getSupportedEquipmentNamesResponse"/>
       <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
     </wsdl:operation>
+    
     <wsdl:operation name="getSupportedEquipment">
       <wsdl:documentation>
         This is the getSupportedEquipment request/response operation
@@ -275,6 +350,7 @@
       <wsdl:output message="tmf854WS:getSupportedEquipmentResponse"/>
       <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
     </wsdl:operation>
+    
     <wsdl:operation name="getSupportingEquipmentNames">
       <wsdl:documentation>
         This is the getSupportingEquipmentNames request/response operation
@@ -283,6 +359,7 @@
       <wsdl:output message="tmf854WS:getSupportingEquipmentNamesResponse"/>
       <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
     </wsdl:operation>
+    
     <wsdl:operation name="getSupportingEquipment">
       <wsdl:documentation>
         This is the getSupportingEquipment request/response operation

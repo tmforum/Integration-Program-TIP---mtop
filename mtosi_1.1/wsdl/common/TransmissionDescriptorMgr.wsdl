@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- TMF854 Version 1.0 - Copyright TeleManagement Forum 2005 -->
+<!-- TMF854 Version 1.1 - Copyright TeleManagement Forum 2005 -->
 <wsdl:definitions name="TMF854-TransmissionDescriptorMgrInterfaces" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="tmf854.v1.ws" xmlns:tmf854XSD="tmf854.v1" xmlns:tmf854WS="tmf854.v1.ws" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <!-- ======= Import Type Definitions ============= -->
   <wsdl:types>
     <xsd:schema targetNamespace="tmf854.v1.ws">
       <xsd:import namespace="tmf854.v1" schemaLocation="../../xsd/interfaces/TransmissionDescriptorMgr.xsd"/>
+      <xsd:import namespace="tmf854.v1" schemaLocation="../../xsd/interfaces/IteratorRequestMessages.xsd"/>
     </xsd:schema>
   </wsdl:types>
   <!-- ======= Import Definitions ============= -->
@@ -16,6 +17,13 @@
     </wsdl:documentation>
     <wsdl:part name="mtosiHeader" element="tmf854XSD:header"/>
     <wsdl:part name="mtosiBody" element="tmf854XSD:getAllTransmissionDescriptorNames"/>
+  </wsdl:message>
+  <wsdl:message name="getAllTransmissionDescriptorNamesIterator">
+    <wsdl:documentation>
+    The getAllTransmissionDescriptorNames iterator request message.
+    </wsdl:documentation>
+    <wsdl:part name="mtosiHeader" element="tmf854XSD:header"/>
+    <wsdl:part name="mtosiBody" element="tmf854XSD:getObjectNamesIterator"/>
   </wsdl:message>
   <wsdl:message name="getAllTransmissionDescriptorNamesResponse">
     <wsdl:documentation>
@@ -32,6 +40,13 @@
     <wsdl:part name="mtosiHeader" element="tmf854XSD:header"/>
     <wsdl:part name="mtosiBody" element="tmf854XSD:getAllTransmissionDescriptors"/>
   </wsdl:message>
+  <wsdl:message name="getAllTransmissionDescriptorsIterator">
+    <wsdl:documentation>
+    The getAllTransmissionDescriptors iterator request message.
+    </wsdl:documentation>
+    <wsdl:part name="mtosiHeader" element="tmf854XSD:header"/>
+    <wsdl:part name="mtosiBody" element="tmf854XSD:getTmdIterator"/>
+  </wsdl:message>
   <wsdl:message name="getAllTransmissionDescriptorsResponse">
     <wsdl:documentation>
     The getAllTransmissionDescriptors response message.
@@ -46,6 +61,13 @@
     </wsdl:documentation>
     <wsdl:part name="mtosiHeader" element="tmf854XSD:header"/>
     <wsdl:part name="mtosiBody" element="tmf854XSD:getAssociatedTPs"/>
+  </wsdl:message>
+  <wsdl:message name="getAssociatedTPsIterator">
+    <wsdl:documentation>
+    The getAssociatedTPs iterstor request message.
+    </wsdl:documentation>
+    <wsdl:part name="mtosiHeader" element="tmf854XSD:header"/>
+    <wsdl:part name="mtosiBody" element="tmf854XSD:getTpIterator"/>
   </wsdl:message>
   <wsdl:message name="getAssociatedTPsResponse">
     <wsdl:documentation>
@@ -75,6 +97,7 @@
     <wsdl:documentation>
     The MTOSI TransmissionDescriptorMgr porttype
     </wsdl:documentation>
+    
     <wsdl:operation name="getAllTransmissionDescriptorNames">
       <wsdl:documentation>
         This is the getAllTransmissionDescriptorNames request/response operation.
@@ -83,6 +106,16 @@
       <wsdl:output message="tmf854WS:getAllTransmissionDescriptorNamesResponse"/>
       <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
     </wsdl:operation>
+    
+    <wsdl:operation name="getAllTransmissionDescriptorNamesIterator">
+      <wsdl:documentation>
+        This is the getAllTransmissionDescriptorNames Iterator request/response operation.
+      </wsdl:documentation>
+      <wsdl:input message="tmf854WS:getAllTransmissionDescriptorNamesIterator"/>
+      <wsdl:output message="tmf854WS:getAllTransmissionDescriptorNamesResponse"/>
+      <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
+    </wsdl:operation>
+    
     <wsdl:operation name="getAllTransmissionDescriptors">
       <wsdl:documentation>
         This is the getAllTransmissionDescriptors request/response operation.
@@ -91,6 +124,16 @@
       <wsdl:output message="tmf854WS:getAllTransmissionDescriptorsResponse"/>
       <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
     </wsdl:operation>
+    
+    <wsdl:operation name="getAllTransmissionDescriptorsIterator">
+      <wsdl:documentation>
+        This is the getAllTransmissionDescriptors Iterator request/response operation.
+      </wsdl:documentation>
+      <wsdl:input message="tmf854WS:getAllTransmissionDescriptorsIterator"/>
+      <wsdl:output message="tmf854WS:getAllTransmissionDescriptorsResponse"/>
+      <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
+    </wsdl:operation>
+    
     <wsdl:operation name="getAssociatedTPs">
       <wsdl:documentation>
         This is the getAssociatedTPs request/response operation.
@@ -99,6 +142,16 @@
       <wsdl:output message="tmf854WS:getAssociatedTPsResponse"/>
       <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
     </wsdl:operation>
+    
+    <wsdl:operation name="getAssociatedTPsIterator">
+      <wsdl:documentation>
+        This is the getAssociatedTPs Iterator request/response operation.
+      </wsdl:documentation>
+      <wsdl:input message="tmf854WS:getAssociatedTPsIterator"/>
+      <wsdl:output message="tmf854WS:getAssociatedTPsResponse"/>
+      <wsdl:fault name="ProcessingFailureException" message="tmf854WS:ProcessingFailureException"/>
+    </wsdl:operation>
+    
     <wsdl:operation name="getTransmissionDescriptor">
       <wsdl:documentation>
         This is the getTransmissionDescriptor request/response operation
