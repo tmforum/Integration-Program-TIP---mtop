@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2006 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="tmforum.mtop.om-mri.v1-0" xmlns:tns="tmforum.mtop.om-mri.v1-0" xmlns:mtop.fulfillment="tmforum.mtop.dm-fulfillment.v1-0" xmlns:mtop.basic="tmforum.mtop.dm-basic.v1-0" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <!-- ======= All includes - Other XSD files from the same DDP ======= -->
+  <!-- ======= All imports - XSD files from other DDPs ======= -->
+  <xsd:import schemaLocation="../../../../DM/Basic/v1-0/xsd/AllDefinitions.xsd" namespace="tmforum.mtop.dm-basic.v1-0"/>
+  <xsd:import schemaLocation="../../../../DM/Fulfillment/v1-0/xsd/AllDefinitions.xsd" namespace="tmforum.mtop.dm-fulfillment.v1-0"/>
+  <!-- ================ -->
+  <xsd:element name="getAllManagedElementNames">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAllManagedElementNames operation</p>
+        <p>This operation has exactly the same behaviour as getAllManagedElements(), but instead of returning the entire object structures, this operation returns their names.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:extension base="mtop.basic:CommonMessage_T">
+          <xsd:sequence>
+            <xsd:element name="mdName" type="mtop.basic:NamingAttributes_T">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>the name of the Management Domain whose contained MEs are being requested</p>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================== -->
+  <xsd:element name="getAllManagedElements">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAllManagedElements operation</p>
+        <p>This operation allows an NMS to request a list of all the known ManagedElements in the given MD.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:extension base="mtop.basic:CommonMessage_T">
+          <xsd:sequence>
+            <xsd:element name="mdName" type="mtop.basic:NamingAttributes_T">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>the name of the Management Domain whose contained MEs are being requested</p>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================== -->
+  <xsd:element name="getAllManagedElementsResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllManagedElements operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:extension base="mtop.basic:CommonMessage_T">
+          <xsd:sequence>
+            <xsd:element name="meList" type="mtop.fulfillment:ManagedElementList_T" minOccurs="0">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>The list of MEs</p>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================== -->
+  <xsd:element name="getAllManagedElementsException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllManagedElements operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:extension base="mtop.basic:ExceptionMessage_T">
+          <xsd:sequence>
+            <xsd:element name="exception">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>The possible exceptions of the getAllManagedElements operation</p>
+                </xsd:documentation>
+              </xsd:annotation>
+              <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                  <xsd:enumeration value="EXCPT_INTERNAL_ERROR">
+                    <xsd:annotation>
+                      <xsd:documentation>
+                        <p>Raised in case of non-specific OS internal failure</p>
+                      </xsd:documentation>
+                    </xsd:annotation>
+                  </xsd:enumeration>
+                </xsd:restriction>
+              </xsd:simpleType>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================= -->
+  <xsd:element name="getManagedElementIterator">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getManagedElementIterator operation</p>
+        <p>This is the iterator request to return the next batch of Managed Elements from the OS to which an ME retrieval request was initially sent.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:extension base="mtop.basic:CommonMessage_T">
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================== -->
+  <xsd:element name="getManagedElementIteratorException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getManagedElementIterator operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:extension base="mtop.basic:ExceptionMessage_T">
+          <xsd:sequence>
+            <xsd:element name="exception">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>The possible exceptions of the getManagedElementIterator operation</p>
+                </xsd:documentation>
+              </xsd:annotation>
+              <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                  <xsd:enumeration value="EXCPT_INTERNAL_ERROR">
+                    <xsd:annotation>
+                      <xsd:documentation>
+                        <p>Raised in case of non-specific OS internal failure</p>
+                      </xsd:documentation>
+                    </xsd:annotation>
+                  </xsd:enumeration>
+                  <xsd:enumeration value="EXCPT_INVALID_INPUT">
+                    <xsd:annotation>
+                      <xsd:documentation>
+                        <p>Raised when an invalid input parameter is provided</p>
+                      </xsd:documentation>
+                    </xsd:annotation>
+                  </xsd:enumeration>
+                  <xsd:enumeration value="EXCPT_COMM_FAILURE">
+                    <xsd:annotation>
+                      <xsd:documentation>
+                        <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
+                      </xsd:documentation>
+                    </xsd:annotation>
+                  </xsd:enumeration>
+                </xsd:restriction>
+              </xsd:simpleType>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================== -->
+</xsd:schema>
