@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - DM Fulfillment - Copyright TeleManagement Forum 2006 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="tmforum.mtop.dm-fulfillment.v1-0" xmlns:tns="tmforum.mtop.dm-fulfillment.v1-0" xmlns:mtop.basic="tmforum.mtop.dm-basic.v1-0" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="tmforum.mtop.dm-fulfillment.v1" xmlns:tns="tmforum.mtop.dm-fulfillment.v1" xmlns:mtop.basic="tmforum.mtop.dm-basic.v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <!-- ============== -->
-  <xsd:import schemaLocation="../../../Basic/v1-0/xsd/AllDefinitions.xsd" namespace="tmforum.mtop.dm-basic.v1-0"/>
+  <xsd:import schemaLocation="../../../Basic/v1-0/xsd/AllDefinitions.xsd" namespace="tmforum.mtop.dm-basic.v1"/>
   <!-- ================= -->
   <xsd:simpleType name="CommunicationState_T">
     <xsd:annotation>
@@ -77,7 +77,19 @@
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:any namespace="##any" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="mtopExtensions" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Allows for mtop extensions</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:any namespace="##targetNamespace" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>

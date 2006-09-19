@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - DM Basic - Copyright TeleManagement Forum 2006 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="tmforum.mtop.dm-basic.v1-0" xmlns:tns="tmforum.mtop.dm-basic.v1-0" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="tmforum.mtop.dm-basic.v1" xmlns:tns="tmforum.mtop.dm-basic.v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <!-- ============ Includes ========= -->
   <xsd:include schemaLocation="NamingDefinitions.xsd"/>
+  <xsd:include schemaLocation="ITU-TDefinitions.xsd"/>
   <!-- ================= -->
   <xsd:complexType name="CommonResourceInfo_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>This aggregate defines attributes common to all mTOP resource objects.</p>
+      <xsd:appinfo><type>Complex</type><mtopExt>true</mtopExt><vendorExt>true</vendorExt></xsd:appinfo>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:all>
@@ -55,6 +57,32 @@ The discovered name published on the CCV does not necessarily need to be the nam
       </xsd:element>
       <xsd:element name="resourceState" type="tns:ResourceState_T" nillable="true" minOccurs="0">
       </xsd:element>
+      <xsd:element name="X721.State" type="tns:X721.State_T" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="mtopExtensions" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Allows for mtop extensions</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:any namespace="##targetNamespace" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="vendorExtensions" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Allows for vendor extensions</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
     </xsd:all>
   </xsd:complexType>
   <!-- ===================== -->
@@ -63,6 +91,7 @@ The discovered name published on the CCV does not necessarily need to be the nam
       <xsd:documentation>
         <p>This is the definition of the object attribute that contains the list of aliases for the network entity. The attribute is a name-value list. The name refers to the type of alias (e.g., nativeEMSname) and the value component holds the alias itself</p>
       </xsd:documentation>
+      <xsd:appinfo><type>Complex</type><Extension>Fixed</Extension></xsd:appinfo>
     </xsd:annotation>
     <xsd:sequence>
       <xsd:element name="alias" minOccurs="0" maxOccurs="unbounded">
@@ -91,7 +120,8 @@ The discovered name published on the CCV does not necessarily need to be the nam
   <xsd:complexType name="ResourceState_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>This is the definition of the object attribute that indicates the state of the resource Note: this object attribute accepts Overlap or Qualifiable extensions.</p>
+        <p>This is the definition of the object attribute that indicates the state of the resource.</p>
+      <xsd:appinfo><type>Simple</type><mtopExt>false</mtopExt><vendorExt>Qualifier,Overlap</vendorExt></xsd:appinfo>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:simpleContent>
@@ -113,8 +143,9 @@ The discovered name published on the CCV does not necessarily need to be the nam
   <xsd:complexType name="Source_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>This is the definition of the object attribute that indicates whether the object was discovered from the network, or was entered into the OS's inventory. Note: This object attribute accepts a Qualifiable extension.</p>
+        <p>This is the definition of the object attribute that indicates whether the object was discovered from the network, or was entered into the OS's inventory.</p>
       </xsd:documentation>
+      <xsd:appinfo><type>Simple</type><mtopExt>false</mtopExt><vendorExt>Qualifier</vendorExt></xsd:appinfo>
     </xsd:annotation>
     <xsd:simpleContent>
       <xsd:extension base="tns:SourceEnum_T">
