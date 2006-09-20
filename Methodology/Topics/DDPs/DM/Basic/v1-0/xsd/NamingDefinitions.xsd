@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - DM Basic - Copyright TeleManagement Forum 2006 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="tmforum.mtop.dm-basic.v1" xmlns:tns="tmforum.mtop.dm-basic.v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <!-- ================ -->
+  <xsd:simpleType name="ObjectAcronym_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The network resoures acronym</p>
+        @TODO: Add all new supported objects (as in MTNM v3.5)
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MD"/>
+      <xsd:enumeration value="ME"/>
+      <xsd:enumeration value="EH"/>
+      <xsd:enumeration value="EQ"/>
+      <xsd:enumeration value="PTP"/>
+      <xsd:enumeration value="FTP"/>
+      <xsd:enumeration value="CTP"/>
+      <xsd:enumeration value="TPPool"/>
+      <xsd:enumeration value="EPGP"/>
+      <xsd:enumeration value="PGP"/>
+      <xsd:enumeration value="SNC"/>
+      <xsd:enumeration value="RT"/>
+      <xsd:enumeration value="CC"/>
+      <xsd:enumeration value="MLSN"/>
+      <xsd:enumeration value="TL"/>
+      <xsd:enumeration value="OS"/>
+      <xsd:enumeration value="TMD"/>
+      <xsd:enumeration value="VO"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="NameAndStringValue_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Specifies a generic name and value pair</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:all>
+      <xsd:element name="name" type="xsd:string"/>
+      <xsd:element name="value" type="xsd:string"/>
+    </xsd:all>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="NVSList_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A list of NameAndStringValue</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="nvs" type="tns:NameAndStringValue_T" maxOccurs="unbounded" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="NameValue_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The strings used for the value field of a hierarchical name will be at most 1024 characters (from ISO8859) long with white space character allowed in the value but with no leading or trailing spaces. Value strings are case sensitive.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="1"/>
+      <xsd:maxLength value="1024"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="NamingAttributes_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the definition of the name attribute, which represents a unique identifier for the MTOSI object on the CCV. Once set by the naming OS, the name is invariant for the life of the object and should be used when referring to the object over the CCV. Name attribute of an object instance shall always be assigned a value, unless the object instance is first discovered by an OS that is not the naming OS for the object instance. In such a case, the discovering OS shall provide a value for the Discovered Name attribute of the object. The naming OS shall provide a value for the Name attribute of the object once it becomes aware of the new object.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="osNm" type="tns:NameValue_T" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Os Name</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="mdNm" type="tns:NameValue_T" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Management Domain name</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="meNm" type="tns:NameValue_T" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Managed Element name</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="ehNm" type="tns:NameValue_T" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Equipment Holder name</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="eqNm" type="tns:NameValue_T" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Equipment name</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="ptpNm" type="tns:NameValue_T" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>PTP name</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="ftpNm" type="tns:NameValue_T" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>FTP name</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="ctpNm" type="tns:NameValue_T" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>CTP name</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="tppoolNm" type="tns:NameValue_T" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>TPool name</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="pgpNm" type="tns:NameValue_T" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Protection Group name</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="epgpNm" type="tns:NameValue_T" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Equipment Protection Group name</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="mlsnNm" type="tns:NameValue_T" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>MultiLayer Subnetwork name</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sncNm" type="tns:NameValue_T" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Subnetwork Connection name</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="tmdNm" type="tns:NameValue_T" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Tranmission Descriptor component of hierarchical name</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="tlNm" type="tns:NameValue_T" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Topological Link component of hierarchical name.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="aidNm" type="tns:NameValue_T" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>AID component of hierarchical name.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="propNm" type="tns:NameValue_T" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Proprietary vendor object component of hierarchical name.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="NamingAttributesList_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The is the definition for the list of MTOSI object names.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="name" type="tns:NamingAttributes_T" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>
