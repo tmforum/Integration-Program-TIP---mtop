@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - DM Fulfillment - Copyright TeleManagement Forum 2006 -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="tmforum.mtop.dm-fulfillment.v1" xmlns:tns="tmforum.mtop.dm-fulfillment.v1" xmlns:mtop.basic="tmforum.mtop.dm-basic.v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <!-- ================= -->
+  <xsd:simpleType name="AlarmReporting_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Provides an indication whether alarm reporting for this instance is active or not.</p>
+        @TODO: Should we make this basic definition?
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:boolean">
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="CommunicationState_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This state reflects a communication state between the EMS and its ManagedElement.</p>
+        @TODO: Should we make this basic definition?
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="CS_AVAILABLE"/>
+      <xsd:enumeration value="CS_UNAVAILABLE"/>
+    </xsd:restriction>
+  </xsd:simpleType>
   <!-- ================ -->
   <xsd:simpleType name="ConnectionDirection_T">
     <xsd:annotation>
@@ -139,6 +163,7 @@ For a detailed description of the use of this attribute see SNC Types supporting
     <xsd:annotation>
       <xsd:documentation>
         <p>Equipment holder type</p>
+        @TODO: Re-visit this definition
       </xsd:documentation>
     </xsd:annotation>
     <xsd:union>
@@ -199,6 +224,7 @@ For a detailed description of the use of this attribute see SNC Types supporting
     <xsd:annotation>
       <xsd:documentation>
         <p>Firmware version of the installed equipment. If not available (or there is no installed equipment), an empty string shall be used.</p>
+        @TODO: Should we make this basic definition and consolidate with SoftwareVersion_T, Version_T?
       </xsd:documentation>
     </xsd:annotation>
     <xsd:restriction base="xsd:string"/>
@@ -394,6 +420,7 @@ In case of an ATM SNC (VP or VC), ST_SIMPLE is used to specify a 'plain' (hard o
     <xsd:annotation>
       <xsd:documentation>
         <p>The OS product software version</p>
+        @TODO: Should we make this basic definition and consolidate with Version_T?
       </xsd:documentation>
     </xsd:annotation>
     <xsd:restriction base="xsd:string"/>
@@ -428,6 +455,9 @@ For a detailed description of the use of this attribute, see SNC Types.</p>
   <xsd:simpleType name="TerminationMode_T">
     <xsd:annotation>
       <xsd:documentation>
+        <p>Within the facade definition, the CTP/FTP can act as an aggregate of associated G.805 TCPs, G.805 Termination Functions and G.805 CPs at one or more LayerRates. The CTP is contained within a PTP or FTP.</p>
+        <p>The TerminationMode attribute indicates and controls the connection of the named CP at a specified LayerRate to the dedicated G.805 TCP and associated G.805 Termination Function at the same LayerRate within the CTP/FTP.</p>
+        <p>The TerminationMode is used, for example, to control the Termination and mapping to VT1.5 of an STS1 Trail within an OC3 port. This capability could potentially be used to terminate an STS1 backbone Trail within a lower order mux that has the capability to alternatively cross-connect the STS1 unterminated. The same capability is used in SDH and is potentially applicable to any LayerRate.</p>
         <p>TerminationMode has the following values</p>
       </xsd:documentation>
     </xsd:annotation>
@@ -574,5 +604,16 @@ For a detailed description of the use of this attribute, see SNC Types.</p>
       <xsd:enumeration value="TPPA_NA"/>
       <xsd:enumeration value="TPPA_PSR_RELATED"/>
     </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="Version_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The active software version of the ManagedElement</p>
+        @TODO: Should we make this basic definition and consolidate with SoftwareVersion_T, InstalledVersion_T?
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+	</xsd:restriction>
   </xsd:simpleType>
 </xsd:schema>
