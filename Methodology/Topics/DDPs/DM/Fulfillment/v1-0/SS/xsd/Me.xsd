@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - DM Fulfillment - Copyright TeleManagement Forum 2006 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="tmforum.mtop.dm-fulfillment.v1" xmlns:tns="tmforum.mtop.dm-fulfillment.v1" xmlns:mtop.basic="tmforum.mtop.dm-basic.v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <!-- ============== -->
+  <xsd:import schemaLocation="../../../Basic/v1-0/xsd/AllDefinitions.xsd" namespace="tmforum.mtop.dm-basic.v1"/>
+  <xsd:include schemaLocation="./DataTypes.xsd"/>
+  <!-- ================= -->
+  <xsd:complexType name="ManagedElement_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This aggregate defines the Managed Element mTOP network resource object.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:all>
+      <xsd:element name="comResInfo" type="mtop.basic:CommonResourceInfo_T" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This element entails the attributes common to all mTOP network resource objects.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="location" type="mtop.basic:Location_T" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="manufacturer" type="mtop.basic:Manufacturer_T" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="productName" type="mtop.basic:ProductName_T" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="version" type="tns:Version_T" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="InSyncState" type="xsd:boolean" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Indicates if the EMS/OS is able to keep the current EMS/OS data synchronized with the current NE data and generate all appropriate notifications. The EMS sets this attribute to false to indicate that it requires resynchronization with NE data and that it is not able to generate the appropriate notifications (such as OCs/ODs/AVCs) while doing so.</p>
+            <p>The EMS/OS sets this attribute back to true when the resynchronization is completed and when notifications can start being generated as appropriate.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="supportedRates" type="mtop.basic:LayerRateList_T" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+          This attribute is a list (possibly empty) of potential Cross Connection Rates at which it is possible to have cross-connections within the managed element.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="communicationState" type="tns:CommunicationState_T" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="networkAccessDomain" type="mtop.basic:NetworkAccessDomain_T" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="vendorExtensions" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Allows for vendor extensions</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="mtopExtensions" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Allows for mtop extensions</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:any namespace="##targetNamespace" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:all>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="ManagedElementList_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>List of ManagedElements</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="me" type="tns:ManagedElement_T" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - DM Fulfillment - Copyright TeleManagement Forum 2006 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="tmforum.mtop.dm-fulfillment.v1" xmlns:tns="tmforum.mtop.dm-fulfillment.v1" xmlns:mtop.basic="tmforum.mtop.dm-basic.v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <!-- ============== -->
+  <xsd:import schemaLocation="../../../Basic/v1-0/xsd/AllDefinitions.xsd" namespace="tmforum.mtop.dm-basic.v1"/>
+  <xsd:include schemaLocation="./DataTypes.xsd"/>
+  <!-- ================= -->
+  <xsd:complexType name="Equipment_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This aggregate defines the Equipment mTOP network resource object.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:all>
+      <xsd:element name="comResInfo" type="mtop.basic:CommonResourceInfo_T" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This element entails the attributes common to all mTOP network resource objects.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="alarmReportingIndicator" type="tns:AlarmReporting_T" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="expectedEquipmentObjectType" type="tns:EquipmentObjectType_T" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Defines the type of expected equipment. This is an empty string if there is no expected equipment.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="installedEquipmentObjectType" type="tns:EquipmentObjectType_T" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Defines the type of installed equipment. This is an empty string if there is no installed equipment.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="installedPartNumber" type="tns:InstalledPartNumber_T" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="installedSerialNumber" type="tns:InstalledSerialNumber_T" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="serviceState" type="mtop.basic:ServiceState_T" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="installedVersion" type="tns:InstalledVersion_T" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="manufacturer" type="mtop.basic:Manufacturer_T" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="protectionRole" type="tns:ProtectionRole_T" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="protectionSchemeState" type="tns:ProtectionSchemeState_T" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="manufacturerDate" type="xsd:string" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+          @TODO: Should we make it a basic data type?
+            <p>The manufacturerDate attribute identifies the production date of the Equipment in the format of YYYYMMDD where YYYY = the 4-digit year of manufacture, MM is the 2-digit month, and DD is the 2-digit date.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="vendorExtensions" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Allows for vendor extensions</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="mtopExtensions" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Allows for mtop extensions</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:any namespace="##targetNamespace" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:all>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="EquipmentHolder_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This aggregate defines the Equipment Holder mTOP network resource object.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:all>
+      <xsd:element name="comResInfo" type="mtop.basic:CommonResourceInfo_T" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This element entails the attributes common to all mTOP network resource objects.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="alarmReportingIndicator" type="tns:AlarmReporting_T" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="holderType" type="tns:EquipmentHolderType_T" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Indicates the type of equipment holder.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="acceptableEquipmentTypeList" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Represents the types of equipment objects that can be supported directly by the equipment holder. This is an empty list if the equipment holder can only contain other equipment holders.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="acceptableEquipmentType" type="tns:EquipmentObjectType_T" maxOccurs="unbounded">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>Type of equipment object in equipment holder.</p>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="expectedOrInstalledEquipment" type="mtop.basic:NamingAttributes_T" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The equipment object expected or installed in the equipment holder, if any. NULL if the equipment holder is empty or if it only contains other equipment holders.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="holderState" type="tns:HolderState_T" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="location" type="mtop.basic:Location_T" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="manufacturer" type="mtop.basic:Manufacturer_T" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="manufacturerDate" type="xsd:string" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+          @TODO: Should we make it a basic data type?
+            <p>The manufacturerDate attribute identifies the production date of the Equipment in the format of YYYYMMDD where YYYY = the 4-digit year of manufacture, MM is the 2-digit month, and DD is the 2-digit date.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="vendorExtensions" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Allows for vendor extensions</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="mtopExtensions" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Allows for mtop extensions</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:any namespace="##targetNamespace" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:all>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="EquipmentOrHolder_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Generic equipment definition based on EQ or EH network resource objects</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice>
+      <xsd:element name="eq" type="tns:Equipment_T"/>
+      <xsd:element name="eh" type="tns:EquipmentHolder_T"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="EquipmentOrHolderList_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>List of EquipmentOrHolder elements</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="eoh" type="tns:EquipmentOrHolder_T" minOccurs="0" maxOccurs="unbounded">
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>
