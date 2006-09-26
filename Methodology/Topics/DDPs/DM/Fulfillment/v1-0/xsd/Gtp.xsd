@@ -4,11 +4,11 @@
   <!-- ============== -->
   <xsd:import schemaLocation="../../../Basic/v1-0/xsd/AllDefinitions.xsd" namespace="tmforum.mtop.dm-basic.v1"/>
   <xsd:include schemaLocation="./DataTypes.xsd"/>
-  <!-- ============== -->
-  <xsd:complexType name="TopologicalLink_T">
+  <!-- ================= -->
+  <xsd:complexType name="GroupTerminationPoint_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>This aggregate defines the TopologicalLink mTOP network resource object.</p>
+        <p>This aggregate defines the Group TerminationPoint mTOP network resource object.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:all>
@@ -19,37 +19,11 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="direction" type="tns:ConnectionDirection_T" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Direction of the topological link. A topological link can be unidirectional even if both its ends are bidirectional TPs.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="rate" type="mtop.basic:LayerRate_T" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>The layer of the topological link.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="aEndTP" type="mtop.basic:NamingAttributes_T">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Name of A end TP (PTP/CTP/FTP). The termination point name must be explicit (a generic endpoint specification may not be used in this case).</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="zEndTP" type="mtop.basic:NamingAttributes_T">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Name of Z end TP (PTP/CTP/FTP). The termination point name must be explicit (a generic endpoint specification may not be used in this case).</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="networkAccessDomain" type="mtop.basic:NetworkAccessDomain_T" nillable="true" minOccurs="0">
-      </xsd:element>
       <xsd:element name="alarmReportingIndicator" type="tns:AlarmReporting_T" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="listOfTPs" type="mtop.basic:NamingAttributesList_T" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="gtpConnectionState" type="tns:TPConnectionState_T" nillable="true" minOccurs="0">
       </xsd:element>
       <xsd:element name="vendorExtensions" nillable="true" minOccurs="0">
         <xsd:annotation>
@@ -78,14 +52,14 @@
     </xsd:all>
   </xsd:complexType>
   <!-- ================= -->
-  <xsd:complexType name="TopologicalLinkList_T">
+  <xsd:complexType name="GroupTerminationPointList_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>A list of TopologicalLinks</p>
+        <p>A list of GTPs.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="tl" type="tns:TopologicalLink_T" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="gtp" type="tns:GroupTerminationPoint_T" minOccurs="0" maxOccurs="unbounded"/>
     </xsd:sequence>
   </xsd:complexType>
 </xsd:schema>
