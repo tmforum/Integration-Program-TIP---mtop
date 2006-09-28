@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - DM Basic - Copyright TeleManagement Forum 2006 -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="tmforum.mtop.dm-basic.v1" xmlns:tns="tmforum.mtop.dm-basic.v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
-  <!-- ======= All includes - Other XSD files from the same DDP ======= -->
+  <!-- ============== -->
   <xsd:include schemaLocation="GenericDefinitions.xsd"/>
   <xsd:include schemaLocation="NamingDefinitions.xsd"/>
-  <!-- ================ -->
+  <!-- ============== -->
   <xsd:complexType name="CommonMessage_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -22,10 +22,31 @@
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================ -->
-  <xsd:complexType name="ExceptionMessage_T">
+  <xsd:complexType name="GetAllObjectNamesResponse_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>The type definition of all exception messages.</p>
+        <p>Generic response message structure for all object names retrieval (get) requests.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:CommonMessage_T">
+        <xsd:sequence>
+          <xsd:element name="names" type="tns:NamingAttributesList_T" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The list of names</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ============== -->
+  <xsd:complexType name="CommonExceptionMessage_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The common (base) type definition of all exception messages. The extension element is missing. It shall be added by extending this common type definition.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
@@ -42,6 +63,117 @@
                 <p>A string indicating further details about the exception. It is a free format string filled by the OS.</p>
               </xsd:documentation>
             </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:complexType name="GetAllObjectNamesException_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Generic exception message structure for all object names retrieval.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:CommonExceptionMessage_T">
+        <xsd:sequence>
+          <xsd:element name="exception">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>All possible exceptions of all object name retrieval operations</p>
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="EXCPT_INTERNAL_ERROR">
+                  <xsd:annotation>
+                    <xsd:documentation>
+                      <p>Raised in case of non-specific OS internal failure</p>
+                    </xsd:documentation>
+                  </xsd:annotation>
+                </xsd:enumeration>
+                <xsd:enumeration value="EXCPT_INVALID_INPUT">
+                  <xsd:annotation>
+                    <xsd:documentation>
+                      <p>Raised when operation input is missing or not appropriate</p>
+                    </xsd:documentation>
+                  </xsd:annotation>
+                </xsd:enumeration>
+                <xsd:enumeration value="EXCPT_ENTITY_NOT_FOUND">
+                  <xsd:annotation>
+                    <xsd:documentation>
+                      <p>Raised when reference to an object does not exist</p>
+                    </xsd:documentation>
+                  </xsd:annotation>
+                </xsd:enumeration>
+                <xsd:enumeration value="EXCPT_COMM_FAILURE">
+                  <xsd:annotation>
+                    <xsd:documentation>
+                      <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
+                    </xsd:documentation>
+                  </xsd:annotation>
+                </xsd:enumeration>
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================== -->
+  <xsd:complexType name="GetAllDataIterator_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Generic request message structure for all data iterator operations</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:CommonMessage_T">
+        </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:complexType name="GetAllDataIteratorException_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Generic exception message structure for all data iterator retrieval.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:CommonExceptionMessage_T">
+        <xsd:sequence>
+          <xsd:element name="exception">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>All possible exceptions of all object name retrieval operations</p>
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:enumeration value="EXCPT_INTERNAL_ERROR">
+                  <xsd:annotation>
+                    <xsd:documentation>
+                      <p>Raised in case of non-specific OS internal failure</p>
+                    </xsd:documentation>
+                  </xsd:annotation>
+                </xsd:enumeration>
+                <xsd:enumeration value="EXCPT_INVALID_INPUT">
+                  <xsd:annotation>
+                    <xsd:documentation>
+                      <p>Raised when operation input is missing or not appropriate</p>
+                    </xsd:documentation>
+                  </xsd:annotation>
+                </xsd:enumeration>
+                <xsd:enumeration value="EXCPT_COMM_FAILURE">
+                  <xsd:annotation>
+                    <xsd:documentation>
+                      <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
+                    </xsd:documentation>
+                  </xsd:annotation>
+                </xsd:enumeration>
+              </xsd:restriction>
+            </xsd:simpleType>
           </xsd:element>
         </xsd:sequence>
       </xsd:extension>
@@ -311,13 +443,13 @@ This field corresponds to the message name in the WSDL.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-      <xsd:element name="iteratorReferenceURI" type="xsd:anyURI" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-          <p>Mandatory for all SIT (iterators) MEP to allow description of the data retrieval iterator.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
+        <xsd:element name="iteratorReferenceURI" type="xsd:anyURI" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Mandatory for all SIT (iterators) MEP to allow description of the data retrieval iterator.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
         <xsd:element name="fileLocationURI" type="xsd:anyURI" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
