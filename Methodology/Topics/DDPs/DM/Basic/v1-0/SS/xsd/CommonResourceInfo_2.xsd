@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - DM Basic - Copyright TeleManagement Forum 2006 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="tmforum.mtop.dm-basic.v1" xmlns:tns="tmforum.mtop.dm-basic.v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <!-- ============ Includes ========= -->
+  <xsd:include schemaLocation="NamingDefinitions.xsd"/>
+  <xsd:include schemaLocation="ITU-TDefinitions.xsd"/>
+  <!-- ================= -->
+  <xsd:complexType name="CommonResourceInfo_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This aggregate defines attributes common to all mTOP resource objects.</p>
+      <xsd:appinfo><type>Complex</type><mtopExt>true</mtopExt><vendorExt>true</vendorExt></xsd:appinfo>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="name" type="tns:NamingAttributes_T" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This attribute represents a unique identifier for the object on the CCV. Refer to the object type definition for more details.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="discoveredName" type="xsd:string" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This is the definition of the name of the object when its existence is first published on the CCV but only in the case where the OS that publishes the object on the CCV is not the naming OS. If the naming OS first publishes the object on the CCV, this attribute may be left empty.</p>
+            <p>The discovered name is assumed to be unique from the perspective of the publishing OS. 
+The discovered name published on the CCV does not necessarily need to be the name of the object as discovered by the OS from the subtending network.</p>
+            <p>There are no specific rules concerning the relationship between the “name” and “discovered name” of the object. They could be set to the same value or they could be different.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="namingOS" type="xsd:string" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This is the object attribute definition to identify the name of the OS that provided the unique MTOSI name for the object. It is assumed that each object (that is published on the CCV) has a unique naming OS. This attribute is optional in a point to point NMS-EMS paradigm.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="userLabel" type="xsd:string" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This is the definition of the object attribute that represents a provisionable, “user friendly” name for the object. The user label is filled by the naming OS.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="source" type="tns:Source_T" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="owner" type="xsd:string" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This is the definition of the object attribute that represents an identifier for the owner of the object.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="aliasNameList" type="tns:AliasNameList_T" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="resourceState" type="tns:ResourceState_T" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="X721.State" type="tns:X721.State_T" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="mtopExtensions" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Allows for mtop extensions</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:any namespace="##targetNamespace" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="vendorExtensions" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Allows for vendor extensions</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ===================== -->
+  <xsd:complexType name="AliasNameList_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the definition of the object attribute that contains the list of aliases for the network entity. The attribute is a name-value list. The name refers to the type of alias (e.g., nativeEMSname) and the value component holds the alias itself</p>
+      </xsd:documentation>
+      <xsd:appinfo><type>Complex</type><Extension>Fixed</Extension></xsd:appinfo>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="alias" minOccurs="0" maxOccurs="unbounded">
+        <xsd:complexType>
+          <xsd:all>
+            <xsd:element name="aliasName" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>An alias name.</p>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="aliasValue" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>An alias value.</p>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:all>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="ResourceState_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the definition of the object attribute that indicates the state of the resource.</p>
+      <xsd:appinfo><type>Simple</type><mtopExt>false</mtopExt><vendorExt>Qualifier,Overlap</vendorExt></xsd:appinfo>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:ResourceStateEnum_T">
+        <xsd:attribute name="overlap" type="xsd:string" use="optional"/>
+        <xsd:attribute name="qualifier" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="ResourceStateEnum_T">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="PLANNED"/>
+      <xsd:enumeration value="INSTALLED"/>
+      <xsd:enumeration value="RETIRED"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="Source_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the definition of the object attribute that indicates whether the object was discovered from the network, or was entered into the OS's inventory.</p>
+      </xsd:documentation>
+      <xsd:appinfo><type>Simple</type><mtopExt>false</mtopExt><vendorExt>Qualifier</vendorExt></xsd:appinfo>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:SourceEnum_T">
+        <xsd:attribute name="qualifier" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="SourceEnum_T">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="networkME">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>the object was discovered directly from the ME.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="OS">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>the object was entered into an OS on the CCV, e.g., OS GUI or file transfer to the OS from some other system.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="networkEMS">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>the object was discovered from an EMS.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>

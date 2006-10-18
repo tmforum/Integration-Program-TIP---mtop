@@ -4,12 +4,13 @@
   <wsdl:import namespace="tmforum.mtop.om-mri.v1.ws" location="../messages/MeRetrieval_Messages.wsdl"/>
   <wsdl:portType name="ManagedElementRetrieval_RPC">
     <wsdl:documentation>
-      <p>The ManagedElementRetrieval porttype (interface) for RPC (synchronous) based client/server communication patterns</p>
+      <p>The ManagedElementRetrieval porttype (interface) for RPC (synchronous) based client/server communication patterns. All SIT operations use the getMeIterator operation to handle multiple responses.</p>
+      @TODO: Should all name retrieval operations be SRR. Is use of an name iterator necessary?
     </wsdl:documentation>
     <!-- ================ -->
     <wsdl:operation name="getAllManagedElementNames">
       <wsdl:documentation>
-        <p>This is the getAllManagedElementNames SIT operation</p>
+      <p>This SIT operation has exactly the same behaviour as getAllManagedElements(), but instead of returning the entire object structures, this operation returns their names.</p>
       </wsdl:documentation>
       <wsdl:input message="tns:getAllManagedElementNames"/>
       <wsdl:output message="tns:getAllManagedElementNamesResponse"/>
@@ -18,7 +19,7 @@
     <!-- ================ -->
     <wsdl:operation name="getAllManagedElements">
       <wsdl:documentation>
-        <p>This is the getAllManagedElements SIT operation</p>
+        <p>This SIT operation allows an NMS to request a list of all the known ManagedElements in the given MD.</p>
       </wsdl:documentation>
       <wsdl:input message="tns:getAllManagedElements"/>
       <wsdl:output message="tns:getAllManagedElementsResponse"/>
@@ -27,7 +28,7 @@
     <!-- ================ -->
     <wsdl:operation name="getAllManagedElementNamesWrtMLSN">
       <wsdl:documentation>
-        <p>This is the getAllManagedElementNamesWrtMLSN SIT operation</p>
+        <p>This SIT operation has exactly the same behaviour as getAllManagedElementWrtMLSN(), but instead of returning the entire object structures, this operation returns their names.</p>
       </wsdl:documentation>
       <wsdl:input message="tns:getAllManagedElementNamesWrtMLSN"/>
       <wsdl:output message="tns:getAllManagedElementNamesWrtMLSNResponse"/>
@@ -36,7 +37,7 @@
     <!-- ================ -->
     <wsdl:operation name="getAllManagedElementsWrtMLSN">
       <wsdl:documentation>
-        <p>This is the getAllManagedElementsWrtMLSN SIT operation</p>
+        <p>This SIT operation allows an NMS to request a list of the ManagedElements that are associated with the specified Subnetwork</p>
       </wsdl:documentation>
       <wsdl:input message="tns:getAllManagedElementsWrtMLSN"/>
       <wsdl:output message="tns:getAllManagedElementsWrtMLSNResponse"/>
@@ -45,7 +46,7 @@
     <!-- ================ -->
     <wsdl:operation name="getAllMENamesPassingFilter">
       <wsdl:documentation>
-        <p>This is the getAllMENamesPassingFilter SIT operation</p>
+        <p>This SIT operation has exactly the same behaviour as getAllMENamesPassingFilter(), but instead of returning the entire object structures, this operation returns their names.</p>
       </wsdl:documentation>
       <wsdl:input message="tns:getAllMENamesPassingFilter"/>
       <wsdl:output message="tns:getAllMENamesPassingFilterResponse"/>
@@ -54,7 +55,8 @@
     <!-- ================ -->
     <wsdl:operation name="getAllMEsPassingFilter">
       <wsdl:documentation>
-        <p>This is the getAllMEsPassingFilter SIT operation</p>
+        <p>This SIT operation returns all ManagedElements (MEs) contained by a specific Management Domain that pass a given filter condition. The filter condition should test for equality based on any combination of location, manufacturer, productName and resourceState. The matching is based in "AND", i.e., all the supplied filter conditions must be met. If the filter is left empty, then all the MEs contained by the given MD are returned.</p>
+        <p>The operation can only be directed to a top-level OS and not to a subordinate OS.</p>
       </wsdl:documentation>
       <wsdl:input message="tns:getAllMEsPassingFilter"/>
       <wsdl:output message="tns:getAllMEsPassingFilterResponse"/>
@@ -63,7 +65,7 @@
     <!-- ================ -->
     <wsdl:operation name="getAllMENamesWrtOS">
       <wsdl:documentation>
-        <p>This is the getAllMENamesWrtOS SIT operation</p>
+        <p>This SIT operation has exactly the same behaviour as getAllMEsWrtOS(), but instead of returning the entire object structures, this operation returns their names.</p>
       </wsdl:documentation>
       <wsdl:input message="tns:getAllMENamesWrtOS"/>
       <wsdl:output message="tns:getAllMENamesWrtOSResponse"/>
@@ -72,7 +74,7 @@
     <!-- ================ -->
     <wsdl:operation name="getAllMEsWrtOS">
       <wsdl:documentation>
-        <p>This is the getAllMEsWrtOS SIT operation</p>
+        <p>This SIT operation returns the data structure for each ManagedElement (ME) managed by a given subordinate OS AND contained by a specific Management Domain. Note that Wrt in the name of the operation stands for "with respect to".</p>
       </wsdl:documentation>
       <wsdl:input message="tns:getAllMEsWrtOS"/>
       <wsdl:output message="tns:getAllMEsWrtOSResponse"/>
@@ -81,29 +83,29 @@
     <!-- ================ -->
     <wsdl:operation name="getManagedElement">
       <wsdl:documentation>
-        <p>This is the getManagedElement SRR operation</p>
+        <p>This SRR operation returns the Managed Element for the given managed element name.</p>
       </wsdl:documentation>
       <wsdl:input message="tns:getManagedElement"/>
       <wsdl:output message="tns:getManagedElementResponse"/>
       <wsdl:fault name="getManagedElementException" message="tns:getManagedElementException"/>
     </wsdl:operation>
     <!-- ================ -->
-    <wsdl:operation name="getManagedElementsIterator">
+    <wsdl:operation name="getMeIterator">
       <wsdl:documentation>
-        <p>This is the getManagedElements iterator SIT operation</p>
+        <p>This is the getMe iterator SIT operation</p>
       </wsdl:documentation>
-      <wsdl:input message="tns:getManagedElementsIterator"/>
-      <wsdl:output message="tns:getManagedElementsIteratorResponse"/>
-      <wsdl:fault name="getManagedElementsIteratorException" message="tns:getManagedElementsIteratorException"/>
+      <wsdl:input message="tns:getMeIterator"/>
+      <wsdl:output message="tns:getMeIteratorResponse"/>
+      <wsdl:fault name="getMeIteratorException" message="tns:getMeIteratorException"/>
     </wsdl:operation>
     <!-- ================ -->
-    <wsdl:operation name="getManagedElementNamesIterator">
+    <wsdl:operation name="getMeNamesIterator">
       <wsdl:documentation>
-        <p>This is the getManagedElementNames iterator SIT operation</p>
+        <p>This is the getMeNames iterator SIT operation</p>
       </wsdl:documentation>
-      <wsdl:input message="tns:getManagedElementNamesIterator"/>
-      <wsdl:output message="tns:getManagedElementNamesIteratorResponse"/>
-      <wsdl:fault name="getManagedElementNamesIteratorException" message="tns:getManagedElementNamesIteratorException"/>
+      <wsdl:input message="tns:getMeNamesIterator"/>
+      <wsdl:output message="tns:getMeNamesIteratorResponse"/>
+      <wsdl:fault name="getMeNamesIteratorException" message="tns:getMeNamesIteratorException"/>
     </wsdl:operation>
     <!-- ================ -->
   </wsdl:portType>
