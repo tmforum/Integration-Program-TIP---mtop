@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - DM Basic - Copyright TeleManagement Forum 2006 -->
+<!-- This XSD includes all the future minor extensions of the Basic v1 DM DDP  -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="tmforum.mtop.dm-basic.v1" xmlns:tns="tmforum.mtop.dm-basic.v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <!-- ================= -->
+  <xsd:include schemaLocation="AllDefinitions_2.xsd"/>
+  <!-- ================= -->
+  <xsd:simpleType name="Color_T">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="WHITE"/>
+      <xsd:enumeration value="RED"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:complexType name="LayeredColorList_T">
+    <xsd:sequence>
+      <xsd:element name="layerColor" maxOccurs="unbounded">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="layer" type="tns:LayerRate_T">
+            </xsd:element>
+            <xsd:element name="color" type="tns:Color_T">
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="layeredColors" type="tns:LayeredColorList_T"/>
+  <xsd:element name="size" type="xsd:string"/>
+  <xsd:element name="tested" type="xsd:boolean"/>
+</xsd:schema>
