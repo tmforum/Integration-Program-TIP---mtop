@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - DM Basic - Copyright TeleManagement Forum 2006 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrb/itu/v1" xmlns:tns="http://www.tmforum.org/mtop/nrb/itu/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <!-- ================= -->
+  <xsd:element name="ituParameters">
+    <xsd:complexType>
+      <xsd:annotation>
+        <xsd:documentation>Containment of all ITU-T state or status parameters supported in mTOP</xsd:documentation>
+      </xsd:annotation>
+      <xsd:all>
+        <xsd:element name="x721.OperationalState" type="tns:X721.OperationalState_T" minOccurs="0"/>
+        <xsd:element name="x721.AdministrativeState" type="tns:X721.AdministrativeState_T" minOccurs="0"/>
+        <xsd:element name="x721.UsageState" type="tns:X721.UsageState_T" minOccurs="0"/>
+        <xsd:element name="x721.AvailabilityStatus" type="tns:X721.AvailabilityStatus_T" minOccurs="0"/>
+        <xsd:element name="x721.ControlStatus" type="tns:X721.ControlStatus_T" minOccurs="0"/>
+        <xsd:element name="m3100.HolderStatus" type="tns:M3100.HolderStatus_T" minOccurs="0"/>
+        <xsd:element name="m3100.CircuitPackType" type="tns:M3100.CircuitPackType_T" minOccurs="0"/>
+        <xsd:element name="m3100.AlarmStatus" type="tns:M3100.AlarmStatus_T" minOccurs="0"/>
+        <xsd:element name="m3100.ArcState" type="tns:M3100.ArcState_T" minOccurs="0"/>
+        <xsd:element name="m3100.NALMTIInterval" type="tns:M3100.NALMTIInterval_T" minOccurs="0"/>
+        <xsd:element name="m3100.NALMQIInterval" type="tns:M3100.NALMQIInterval_T" minOccurs="0"/>
+        <xsd:element name="m3100.ArcQIStatus" type="tns:M3100.ArcQIStatus_T" minOccurs="0"/>
+        <xsd:element name="x721.Unkownstatus" type="tns:X721.Unkownstatus_T" minOccurs="0"/>
+        <xsd:element name="x721.State" type="tns:X721.State_T" minOccurs="0"/>
+        <xsd:element name="minorExtensions">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Containment for all minor version extensions</p>
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:any namespace="http://www.tmforum.org/mtop/nrb/itu/v1/ext" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:all>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================= -->
+  <xsd:simpleType name="X721.OperationalState_T">
+    <xsd:annotation>
+      <xsd:documentation>Oper[ational] State parameter from ITU-T state or status</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:boolean">
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ============== -->
+  <xsd:simpleType name="X721.AdministrativeState_T">
+    <xsd:annotation>
+      <xsd:documentation>Admin[istrative] State parameter from ITU-T state or status</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="LOCKED"/>
+      <xsd:enumeration value="UNLOCKED"/>
+      <xsd:enumeration value="SHUTTING_DOWN"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ============== -->
+  <xsd:simpleType name="X721.UsageState_T">
+    <xsd:annotation>
+      <xsd:documentation>Usage State parameter from ITU-T state or status</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="IDLE"/>
+      <xsd:enumeration value="ACTIVE"/>
+      <xsd:enumeration value="BUSY"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ============== -->
+  <xsd:simpleType name="X721.AvailabilityStatus_T">
+    <xsd:annotation>
+      <xsd:documentation>Avail[ability] Status based from ITU-T state or status</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value=""/>
+      <xsd:enumeration value="IN_TEST"/>
+      <xsd:enumeration value="FAILED"/>
+      <xsd:enumeration value="POWER_OFF"/>
+      <xsd:enumeration value="OFF_LINE"/>
+      <xsd:enumeration value="OFF_DUTY"/>
+      <xsd:enumeration value="DEPENDENCY"/>
+      <xsd:enumeration value="DEGRADED"/>
+      <xsd:enumeration value="NOT_INSTALLED"/>
+      <xsd:enumeration value="LOG_FULL"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ============== -->
+  <xsd:simpleType name="X721.ControlStatus_T">
+    <xsd:annotation>
+      <xsd:documentation>Control Status parameter from ITU-T state or status</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value=""/>
+      <xsd:enumeration value="SUBJECT_TO_TEST"/>
+      <xsd:enumeration value="PART_OF_SERVICES_LOCKED"/>
+      <xsd:enumeration value="RESERVED_FOR_TEST"/>
+      <xsd:enumeration value="SUSPENDED"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ============== -->
+  <xsd:simpleType name="M3100.HolderStatus_T">
+    <xsd:annotation>
+      <xsd:documentation>Holder Status parameter from ITU-T state or status</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="HOLDER_EMPTY"/>
+      <xsd:enumeration value="IN_THE_ACCEPTABLE_LIST"/>
+      <xsd:enumeration value="NOT_IN_THE_ACCEPTABLE_LIST"/>
+      <xsd:enumeration value="UNKNOWN_TYPE"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ============== -->
+  <xsd:simpleType name="M3100.CircuitPackType_T">
+    <xsd:annotation>
+      <xsd:documentation>Holder Status parameter from ITU-T state or status</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ============== -->
+  <xsd:simpleType name="M3100.AlarmStatus_T">
+    <xsd:annotation>
+      <xsd:documentation>Alarm Status parameter from ITU-T state or status</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="CLEARED"/>
+      <xsd:enumeration value="PENDING"/>
+      <xsd:enumeration value="WARNING"/>
+      <xsd:enumeration value="INDETERMINATE"/>
+      <xsd:enumeration value="MINOR"/>
+      <xsd:enumeration value="MAJOR"/>
+      <xsd:enumeration value="CRITICAL"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ============== -->
+  <xsd:simpleType name="M3100.ArcState_T">
+    <xsd:annotation>
+      <xsd:documentation>ARC State parameter from ITU-T state or status</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="ALM"/>
+      <xsd:enumeration value="NALM"/>
+      <xsd:enumeration value="NALM_TIMED_INHIBIT"/>
+      <xsd:enumeration value="NALM_QUALIFIED_INHIBIT"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ============== -->
+  <xsd:simpleType name="M3100.NALMTIInterval_T">
+    <xsd:annotation>
+      <xsd:documentation>ARC State parameter from ITU-T state or status</xsd:documentation>
+    </xsd:annotation>
+    <xsd:union>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="NO_ADJUSTMENT"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:positiveInteger">
+          <xsd:maxInclusive value="5940"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <!-- ============== -->
+  <xsd:simpleType name="M3100.NALMQIInterval_T">
+    <xsd:annotation>
+      <xsd:documentation>ARC State parameter from ITU-T state or status</xsd:documentation>
+    </xsd:annotation>
+    <xsd:union>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="NO_ADJUSTMENT"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:positiveInteger">
+          <xsd:maxInclusive value="5940"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <!-- ============== -->
+  <xsd:simpleType name="M3100.ArcQIStatus_T">
+    <xsd:annotation>
+      <xsd:documentation>ARC QI Status parameter from ITU-T state or status</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="NOT_APPLICABLE"/>
+      <xsd:enumeration value="NALM_NOT_READY"/>
+      <xsd:enumeration value="NALM_COUNT_DOWN"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ============== -->
+  <xsd:simpleType name="X721.Unkownstatus_T">
+    <xsd:annotation>
+      <xsd:documentation>Unknown Status parameter based from ITU-T state or status</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:boolean">
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ============== -->
+  <xsd:complexType name="X721.State_T">
+    <xsd:annotation>
+      <xsd:documentation>State parameter from ITU-T state or status</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="X721.OperationalState" type="tns:X721.OperationalState_T" minOccurs="0"/>
+      <xsd:element name="X721.AdministrativeState" type="tns:X721.AdministrativeState_T" minOccurs="0"/>
+      <xsd:element name="X721.UsageState" type="tns:X721.UsageState_T" minOccurs="0"/>
+      <xsd:element name="X721.AvailabilityStatus" type="tns:X721.AvailabilityStatus_T" minOccurs="0"/>
+      <xsd:element name="X721.ControlStatus" type="tns:X721.ControlStatus_T" minOccurs="0"/>
+      <xsd:element name="M3100.HolderStatus" type="tns:M3100.HolderStatus_T" minOccurs="0"/>
+      <xsd:element name="M3100.AlarmStatus" type="tns:M3100.AlarmStatus_T" minOccurs="0"/>
+      <xsd:element name="M3100.ArcState" type="tns:M3100.ArcState_T" minOccurs="0"/>
+      <xsd:element name="M3100.ArcQIStatus" type="tns:M3100.ArcQIStatus_T" minOccurs="0"/>
+      <xsd:element name="X721.Unkownstatus" type="tns:X721.Unkownstatus_T" minOccurs="0"/>
+      <xsd:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

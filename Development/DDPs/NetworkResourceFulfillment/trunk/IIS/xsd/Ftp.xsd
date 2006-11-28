@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - DM Fulfillment - Copyright TeleManagement Forum 2006 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/ftp/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/ftp/v1" xmlns:nrb.gen="http://www.tmforum.org/mtop/nrb/general/v1" xmlns:nrb.nam="http://www.tmforum.org/mtop/nrb/naming/v1" xmlns:lp="http://www.tmforum.org/mtop/nrf/lp/v1" xmlns:nrb.cri="http://www.tmforum.org/mtop/nrb/cri/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/common/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <!-- ============== -->
+  <xsd:import schemaLocation="../../../../NRB/trunk/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/nrb/general/v1"/>
+  <xsd:import schemaLocation="../../../../NRB/trunk/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/nrb/naming/v1"/>
+  <xsd:import schemaLocation="../../../../NRB/trunk/IIS/xsd/CommonResourceInfo.xsd" namespace="http://www.tmforum.org/mtop/nrb/cri/v1"/>
+  <xsd:import schemaLocation="LayeredParameters.xsd" namespace="http://www.tmforum.org/mtop/nrf/lp/v1"/>
+  <xsd:import schemaLocation="CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/common/v1"/>
+  <!-- ================= -->
+  <xsd:complexType name="FloatingTerminationPoint_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This aggregate defines the FloatingTerminationPoint mTOP network resource object.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="nrb.cri:CommonResourceInfo_T">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This element entails the attributes common to all mTOP network resource objects.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="direction" type="com:Directionality_T" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="tpProtectionAssociation" type="com:TPProtectionAssociation_T" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="edgePoint" type="xsd:boolean" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Indicates if the TP is an edge point of at least one subnetwork, i.e. if it is an end point of a potential inter-subnetwork topological link.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="networkAccessDomain" type="nrb.gen:NetworkAccessDomain_T" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="equipmentProtected" type="xsd:boolean" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The attribute indicates whether or not the TP is supported by a protected equipment. </p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="egressTMDState" type="com:TMDState_T" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Contains the state of consistency between a TP and its associated egress TransmissionDescriptor.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="ingressTMDState" type="com:TMDState_T" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Contains the state of consistency between a TP and its associated eingress TransmissionDescriptor.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="connectionState" type="com:TPConnectionState_T" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This attribute is only applicable to CTPs and FTPs. If the source is connected to one entity and the sink is connected to another entity then the value of this attribute is TPCS_BI_CONNECTED.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="tpMappingMode" type="com:TerminationMode_T" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="ingressTransmissionDescriptorName" type="nrb.nam:NamingAttributes_T" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>A connection Floating Termination Point may have an optional reference to an ingress (incoming) Transmission Descriptor. The Descriptor name will be empty if there is no associated Descriptor. It is expected that Transmission Descriptors are not mixed on a single TP. Therefore if the Ingress Descriptor name is that of a Transmission Descriptor then the Egress Descriptor name should either be that of a Transmission Descriptor or a null value.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="egressTransmissionDescriptorName" type="nrb.nam:NamingAttributes_T" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>A connection Floating Termination Point may have an optional reference to an egress (outgoing) Transmission Descriptor. The Transmission Descriptor name will be empty if there is no associated Descriptor. It is expected that Transmission Descriptors are not mixed on a single TP. Therefore if the Egress Descriptor name is that of a Transmission Descriptor then the Ingress Descriptor name should either be that of a Transmission Descriptor or a null value.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="transmissionParams" type="lp:LayeredParametersList_T" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>A list of transmission parameters which can be set and/or retrieved on the TP at a specified layer. This attribute must contain the complete set of layer rates represented by a FTP - even if they have no parameters associated with them. The layerRates are listed in the order of their client-server relationship (see layering for more details).</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="minorExtensions" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Containment for all minor version extensions</p>
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:any namespace="http://www.tmforum.org/mtop/nrf/ftp/v1/ext" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="vendorExtensions" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Containment for all vendor extensions</p>
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="FloatingTerminationPointList_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A list of FloatinglTerminationPoints.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="ftp" type="tns:FloatingTerminationPoint_T" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

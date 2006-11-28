@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2006 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/framework/msg/v1" xmlns:tns="http://www.tmforum.org/mtop/framework/msg/v1"  xmlns:nam="http://www.tmforum.org/mtop/framework/naming/v1" xmlns:hdr="http://www.tmforum.org/mtop/framework/header/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <!-- ============== -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/framework/naming/v1" schemaLocation="NamingDefinitions.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/framework/header/v1" schemaLocation="HeaderDefinitions.xsd"/>
+  <!-- ============== -->
+  <xsd:complexType name="BaseMessage_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The base type definition of all mTOP messages with their extension definitions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="vendorExtensions" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>All additonal message parameters added as vendor extensions to the base line specification definitions.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:complexType name="GetAllObjectNamesResponse_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Generic response message structure for all object names retrieval (get) requests.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:BaseMessage_T">
+        <xsd:sequence>
+          <xsd:element name="names" type="nam:NamingAttributesList_T" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The list of names</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ============== -->
+  <xsd:complexType name="BaseExceptionMessage_T" abstract="true">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The (abstract) base type definition of all exception messages.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:BaseMessage_T">
+        <xsd:sequence>
+          <xsd:element ref="hdr:header" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>The mTOP header as it cannot be part of the SOAP Header in a SOAP v1.1 Fault message</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="reason" type="xsd:string" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>A string indicating further details about the exception. It is a free format string filled by the OS.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:complexType name="GetAllObjectNamesException_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Generic exception message structure for all object names retrieval.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice>
+      <xsd:element name="exceptionInternalError" type="tns:BaseExceptionMessage_T"/>
+      <xsd:element name="exceptionInvalidInput" type="tns:BaseExceptionMessage_T"/>
+      <xsd:element name="exceptionTooManyOpenIterators" type="tns:BaseExceptionMessage_T"/>
+      <xsd:element name="exceptionEntityNotFound" type="tns:BaseExceptionMessage_T"/>
+      <xsd:element name="exceptionCommunicationFailure" type="tns:BaseExceptionMessage_T"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <!-- ================== -->
+  <xsd:complexType name="GetAllDataIterator_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Generic request message structure for all data iterator operations</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:BaseMessage_T">
+        </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:complexType name="GetAllDataIteratorException_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Generic exception message structure for all data iterator retrieval.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice>
+      <xsd:element name="exceptionInternalError" type="tns:BaseExceptionMessage_T"/>
+      <xsd:element name="exceptionInvalidInput" type="tns:BaseExceptionMessage_T"/>
+      <xsd:element name="exceptionCommunicationFailure" type="tns:BaseExceptionMessage_T"/>
+    </xsd:choice>
+  </xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - DM Fulfillment - Copyright TeleManagement Forum 2006 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/route/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/route/v1" xmlns:cc="http://www.tmforum.org/mtop/nrf/cc/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <!-- ============== -->
+  <xsd:import schemaLocation="Cc.xsd" namespace="http://www.tmforum.org/mtop/nrf/cc/v1"/>
+  <!-- ================= -->
+  <xsd:complexType name="Route_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A route for an SNC is defined as a partially ordered list of cross-connects.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="routeCClist" type="cc:CrossConnectList_T" minOccurs="0"/>
+      <xsd:element name="minorExtensions" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Containment for all minor version extensions</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:any namespace="http://www.tmforum.org/mtop/nrf/route/v1/ext" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="vendorExtensions" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Containment for all vendor extensions</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="RouteList_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A list of Routes</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="route" type="tns:Route_T" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

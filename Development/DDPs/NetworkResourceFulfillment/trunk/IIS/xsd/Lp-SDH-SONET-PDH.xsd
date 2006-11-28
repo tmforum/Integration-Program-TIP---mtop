@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nrf/lp-sdh-sonet-pdh/v1" targetNamespace="http://www.tmforum.org/mtop/nrf/lp-sdh-sonet-pdh/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+    mTOP layered parameters applicable to SDH, SONET, and PDH technologies
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:element name="sdh-sonet-pdh">
+    <xsd:annotation>
+      <xsd:documentation>
+      Containment of all mTOP SDH-SONET-PDH layered parameter definitions
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:all>
+        <xsd:element name="circuitIdentifier" type="tns:CircuitIdentifier_T" minOccurs="0"/>
+        <xsd:element name="minorExtensions">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Containment for all minor version extensions</p>
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:any namespace="http://www.tmforum.org/mtop/nrf/lp-sdh-sonet-pdh/v1/ext" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:all>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ============== -->
+  <xsd:simpleType name="CircuitIdentifier_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This variable contains the transmission vendor's circuit identifier, for the purpose of facilitating troubleshooting.</p>
+      </xsd:documentation>
+      <xsd:appinfo>
+        <layers>ALL SDH/SONET/PDH</layers>
+        <objects>PTP</objects>
+        <type>String</type>
+        <extensibility>Open</extensibility>
+        <notifications>NA</notifications>
+        <settableFrom>EMS,NMS</settableFrom>
+        <source>RFC-3895, 3896 (9/2004)</source>
+      </xsd:appinfo>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+</xsd:schema>

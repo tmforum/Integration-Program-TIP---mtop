@@ -1,0 +1,76 @@
+<!-- mTOP DDP - DM Fulfillment - Copyright TeleManagement Forum 2006 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/os/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/os/v1" xmlns:nrb.gen="http://www.tmforum.org/mtop/nrb/general/v1" xmlns:nrb.cri="http://www.tmforum.org/mtop/nrb/cri/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/common/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <!-- ============== -->
+  <xsd:import schemaLocation="../../../../NRB/trunk/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/nrb/general/v1"/>
+  <xsd:import schemaLocation="../../../../NRB/trunk/IIS/xsd/CommonResourceInfo.xsd" namespace="http://www.tmforum.org/mtop/nrb/cri/v1"/>
+  <xsd:import schemaLocation="CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/common/v1"/>
+  <!-- ================= -->
+  <xsd:complexType name="OperationsSystem_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This aggregate defines the Operations System mTOP network resource object.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="nrb.cri:CommonResourceInfo_T">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This element entails the attributes common to all mTOP network resource objects.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="softwareVersion" type="com:SoftwareVersion_T" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="productName" type="nrb.gen:ProductName_T" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="manufacturer" type="nrb.gen:Manufacturer_T" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="serviceState" type="nrb.gen:ServiceState_T" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="subordinateOS" type="xsd:boolean" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This attribute when true specifies that this OS is a subordinate OS such as an EMS (is not a top level OS).</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="minorExtensions" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Containment for all minor version extensions</p>
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:any namespace="http://www.tmforum.org/mtop/nrf/mlsn/v1/ext" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="vendorExtensions" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Containment for all vendor extensions</p>
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="OperationsSystemList_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>List of OperationsSystems</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="os" type="tns:OperationsSystem_T" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>
