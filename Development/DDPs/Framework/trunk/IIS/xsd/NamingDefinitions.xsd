@@ -1,35 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2006 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/framework/naming/v1" xmlns:tns="http://www.tmforum.org/mtop/framework/naming/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
-  <!-- ================ -->
-  <xsd:simpleType name="ObjectAcronym_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>The network resoures acronym</p>
-        @TODO: Add all new supported objects (as in MTNM v3.0)
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:restriction base="xsd:string">
-      <xsd:enumeration value="MD"/>
-      <xsd:enumeration value="ME"/>
-      <xsd:enumeration value="EH"/>
-      <xsd:enumeration value="EQ"/>
-      <xsd:enumeration value="PTP"/>
-      <xsd:enumeration value="FTP"/>
-      <xsd:enumeration value="CTP"/>
-      <xsd:enumeration value="TPPool"/>
-      <xsd:enumeration value="EPGP"/>
-      <xsd:enumeration value="PGP"/>
-      <xsd:enumeration value="SNC"/>
-      <xsd:enumeration value="RT"/>
-      <xsd:enumeration value="CC"/>
-      <xsd:enumeration value="MLSN"/>
-      <xsd:enumeration value="TL"/>
-      <xsd:enumeration value="OS"/>
-      <xsd:enumeration value="TMD"/>
-      <xsd:enumeration value="VO"/>
-    </xsd:restriction>
-  </xsd:simpleType>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/framework/naming/v1" xmlns:tns="http://www.tmforum.org/mtop/framework/naming/v1"  xmlns:gen="http://www.tmforum.org/mtop/framework/general/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Framework</p>
+      <p>Module: NamingDefinitions XSD Module</p>
+      <p>Description: This module contains the XML Schema type definitions of all the generic mTOP XML naming structures.</p>
+      <p>Change Policy: TBD.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================= -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/framework/general/v1" schemaLocation="GeneralDefinitions.xsd"/>
   <!-- ================= -->
   <xsd:complexType name="NameAndStringValue_T">
     <xsd:annotation>
@@ -54,18 +35,32 @@
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================= -->
-  <xsd:simpleType name="NameValue_T">
+  <xsd:complexType name="NamingAttributes_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>The strings used for the value field of a hierarchical name will be at most 1024 characters (from ISO8859) long with white space character allowed in the value but with no leading or trailing spaces. Value strings are case sensitive.</p>
+        <p>This is the definition of the name attribute, which represents a unique identifier for the MTOSI object on the CCV. Once set by the naming OS, the name is invariant for the life of the object and should be used when referring to the object over the CCV. Name attribute of an object instance shall always be assigned a value, unless the object instance is first discovered by an OS that is not the naming OS for the object instance. In such a case, the discovering OS shall provide a value for the Discovered Name attribute of the object. The naming OS shall provide a value for the Name attribute of the object once it becomes aware of the new object.</p>
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:restriction base="xsd:string">
-      <xsd:minLength value="1"/>
-      <xsd:maxLength value="1024"/>
-    </xsd:restriction>
-  </xsd:simpleType>
-  <!-- ================= -->
+    <xsd:sequence>
+      <xsd:element name="rdn" maxOccurs="10">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="type" type="gen:NameValue_T">
+            <xsd:annotation>
+              <xsd:documentation><p>the object type acronym.</p></xsd:documentation>
+            </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="name" type="gen:NameValue_T">
+            <xsd:annotation>
+              <xsd:documentation><p>the object instance name.</p></xsd:documentation>
+            </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= 
   <xsd:complexType name="NamingAttributes_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -194,6 +189,7 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
+  -->
   <!-- ================= -->
   <xsd:complexType name="NamingAttributesList_T">
     <xsd:annotation>
