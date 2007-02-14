@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2006 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/framework/cei/v1" xmlns:tns="http://www.tmforum.org/mtop/framework/cei/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Framework</p>
+      <p>Module: CommonEventInfo XSD Module</p>
+      <p>Description: This module contains the XML Schema definitions of the common event information.</p>
+      <p>Change Policy: TBD.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:element name="commonEventInfo" type="tns:CommonEventInfo_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:complexType name="CommonEventInfo_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="notificationId" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The uniqueness and the sequence of the notificationId are not guaranteed.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="osTime" type="xsd:dateTime">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The time at which the event was reported by the OS system.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+          <xsd:element name="minorExtensions" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Containment for all minor version extensions</p>
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:any namespace="http://www.tmforum.org/mtop/framework/cei/v1/ext" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+      <xsd:element name="vendorExtensions" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Containment for all vendor extensions</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================ -->
+</xsd:schema>
