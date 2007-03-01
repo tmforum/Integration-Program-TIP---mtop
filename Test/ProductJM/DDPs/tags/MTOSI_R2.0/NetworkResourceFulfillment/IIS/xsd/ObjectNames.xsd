@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2006 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/names/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/names/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource FulFillment</p>
+      <p>Module: NetworkResourceObjectNames XSD Module</p>
+      <p>Description: This module contains the XML Schema type definitions of all the mTOP XML Network Resource Object name structures.</p>
+      <p>Change Policy: TBD.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================= -->
+  <xsd:complexType name="MdName_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This aggregate defines the name of the Management Domain mTOP network resource object.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="mdNm" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Management Domain name</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="MeName_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This aggregate defines the name of the Managed Element mTOP network resource object.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:MdName_T">
+        <xsd:sequence>
+          <xsd:element name="meNm" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Managed Element name</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="MeNamesList_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the list of Managed Element mTOP network resource object names.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="meName" type="tns:MeName_T" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>
