@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2006 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/framework/notification/v1" xmlns:tns="http://www.tmforum.org/mtop/framework/notification/v1" xmlns:msg="http://www.tmforum.org/mtop/framework/msg/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/framework/not/v1" xmlns:tns="http://www.tmforum.org/mtop/framework/not/v1" xmlns:msg="http://www.tmforum.org/mtop/framework/msg/v1" xmlns:cei="http://www.tmforum.org/mtop/framework/cei/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Data Model Framework</p>
@@ -11,6 +11,7 @@
   </xsd:annotation>
   <!-- ================ -->
   <xsd:import schemaLocation="MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/framework/msg/v1"/>
+  <xsd:import schemaLocation="CommonEventInfo.xsd" namespace="http://www.tmforum.org/mtop/framework/cei/v1"/>
   <!--  ============== -->
   <xsd:element name="subscribe">
     <xsd:annotation>
@@ -173,15 +174,18 @@ EXCPT_NOTIFICATION_SERVICE_PROBLEM  Raised when there is a failure with the Brok
                 </xsd:documentation>
               </xsd:annotation>
             </xsd:element>
-            <xsd:element name="message" type="xsd:string">
+            <xsd:element name="message">
               <xsd:annotation>
                 <xsd:documentation>
-                  <p>the notification payload which can be one of the supported mTOP XML events. Need to allow for resource/service events</p>
-                  @TODO: Add xsd:any to allow entries from namespace;
-                  http://www.tmforum.org/mtop/rn (resource notifications)
-                  http://www.tmforum.org/mtop/sn (service notifications)
+                  <p>the notification payload which can be one of the supported mTOP XML events, which are all based on the commonEventInfo</p>
+                  TODO: Define if mutlitple events can be reported maxOccurs=unbounded
                 </xsd:documentation>
               </xsd:annotation>
+              <xsd:complexType>
+                <xsd:sequence>
+                  <xsd:element ref="cei:commonEventInfo" maxOccurs="1"/>
+                </xsd:sequence>
+              </xsd:complexType>
             </xsd:element>
           </xsd:sequence>
         </xsd:extension>
