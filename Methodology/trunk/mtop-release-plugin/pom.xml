@@ -10,6 +10,11 @@
   <description>Plugin to handle mTOP DDP Release packaging lifecyle</description>
   <dependencies>
     <dependency>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-scm-plugin</artifactId>
+      <version>1.0-beta-4</version>
+    </dependency>
+    <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-script-ant</artifactId>
       <version>2.0.2</version>
@@ -30,7 +35,7 @@
     <connection>scm:svn:svn+ssh://svn.gforge.tmforum.org/svn/mtop/Methodology/trunk/mtop-release-plugin</connection>
     <developerConnection>scm:svn:svn+ssh://svn.gforge.tmforum.org/svn/mtop/Methodology/trunk/mtop-release-plugin</developerConnection>
     <url>http://plugins/scmsvn/viewcvs.php/gforge.tmforum.org/svn/mtop/Methodology/trunk/mtop-release-plugin/?root=mtop</url>
-  <scm>
+  </scm>
   <build>
     <plugins>
       <plugin>
@@ -43,6 +48,16 @@
           </dependency>
         </dependencies>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-scm-plugin</artifactId>
+        <version>1.0-beta-4</version>
+        <configuration>
+          <goals>install</goals>
+          <username>${scm.username}</username>
+          <password>${scm.password}</password>          
+        </configuration>
+      </plugin>      
     </plugins>
   </build>
   <reporting>
