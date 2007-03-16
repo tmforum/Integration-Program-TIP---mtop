@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2006 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/tl/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/tl/v1" xmlns:nrb.gen="http://www.tmforum.org/mtop/nrb/general/v1" xmlns:nrb.nam="http://www.tmforum.org/mtop/nrb/naming/v1" xmlns:nrb.lay="http://www.tmforum.org/mtop/nrb/layers/v1" xmlns:nrb.cri="http://www.tmforum.org/mtop/nrb/cri/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/common/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <!-- ============== -->
+  <xsd:import schemaLocation="../../../../Framework/trunk/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/nrb/general/v1"/>
+  <xsd:import schemaLocation="../../../../NetworkResourceBasic/trunk/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/nrb/naming/v1"/>
+  <xsd:import schemaLocation="../../../../NetworkResourceBasic/trunk/IIS/xsd/LayerRates.xsd" namespace="http://www.tmforum.org/mtop/nrb/layers/v1"/>
+  <xsd:import schemaLocation="../../../../NetworkResourceBasic/trunk/IIS/xsd/CommonResourceInfo.xsd" namespace="http://www.tmforum.org/mtop/nrb/cri/v1"/>
+  <xsd:import schemaLocation="CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/common/v1"/>
+  <!-- ============== -->
+  <xsd:complexType name="TopologicalLink_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This aggregate defines the TopologicalLink mTOP network resource object.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="nrb.cri:CommonResourceInfo_T">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This element entails the attributes common to all mTOP network resource objects.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="direction" type="com:ConnectionDirection_T" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Direction of the topological link. A topological link can be unidirectional even if both its ends are bidirectional TPs.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="rate" type="nrb.lay:LayerRate_T" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The layer of the topological link.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="aEndTP" type="nrb.nam:NamingAttributes_T">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Name of A end TP (PTP/CTP/FTP). The termination point name must be explicit (a generic endpoint specification may not be used in this case).</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="zEndTP" type="nrb.nam:NamingAttributes_T">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Name of Z end TP (PTP/CTP/FTP). The termination point name must be explicit (a generic endpoint specification may not be used in this case).</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="networkAccessDomain" type="nrb.gen:NetworkAccessDomain_T" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="alarmReportingIndicator" type="com:AlarmReporting_T" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="minorExtensions" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Containment for all minor version extensions</p>
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:any namespace="http://www.tmforum.org/mtop/nrf/tl/v1/ext" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="vendorExtensions" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Containment for all vendor extensions</p>
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="TopologicalLinkList_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A list of TopologicalLinks</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="tl" type="tns:TopologicalLink_T" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

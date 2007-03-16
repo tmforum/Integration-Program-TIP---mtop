@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2006 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/eq-inv/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/eq-inv/v1" xmlns:eq="http://www.tmforum.org/mtop/nrf/eq/v1" xmlns:eh="http://www.tmforum.org/mtop/nrf/eh/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <!-- ============== -->
+  <xsd:import schemaLocation="Eq.xsd" namespace="http://www.tmforum.org/mtop/nrf/eq/v1"/>
+  <xsd:import schemaLocation="Eh.xsd" namespace="http://www.tmforum.org/mtop/nrf/eh/v1"/>
+  <!-- ================= -->
+  <xsd:complexType name="EquipmentOrHolder_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Generic equipment definition based on EQ or EH network resource objects</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice>
+      <xsd:element name="eq" type="eq:Equipment_T"/>
+      <xsd:element name="eh" type="eh:EquipmentHolder_T"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="EquipmentOrHolderList_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>List of EquipmentOrHolder elements</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="eoh" type="tns:EquipmentOrHolder_T" minOccurs="0" maxOccurs="unbounded">
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

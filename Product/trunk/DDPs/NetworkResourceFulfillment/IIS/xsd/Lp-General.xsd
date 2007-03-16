@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="..\xsl\lp.xsl"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2006 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nrf/lp-gen/v1" targetNamespace="http://www.tmforum.org/mtop/nrf/lp-gen/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+    mTOP General layered parameters (applicable to all technologies)
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:element name="general">
+    <xsd:annotation>
+      <xsd:documentation>
+      Containment of all mTOP General layered parameter definitions
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:all>
+        <xsd:element name="addedForConfigurationOnly" type="tns:AddedForConfigurationOnly_T" minOccurs="0"/>
+        <xsd:element name="minorExtensions">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Containment for all minor version extensions</p>
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:any namespace="http://www.tmforum.org/mtop/nrf/lp-gen/v1/ext" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:all>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ============== -->
+  <xsd:simpleType name="AddedForConfigurationOnly_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This parameter indicates whether this layer (the layer of the containing ConnectionlessParameters) is a regular layer or a layer existing only for configuration purposes.</p>
+        <p>Example: A CPTP can have Ethernet layer parameters although the Ethernet layer is not encapsulated in the CPTP
+</p>
+      </xsd:documentation>
+      <xsd:appinfo>
+        <layeredParameter>
+          <layers>ALL</layers>
+          <objects>CPTP</objects>
+          <type>True/False</type>
+          <extensibility>Closed</extensibility>
+          <notifications>AVC,SC</notifications>
+          <settableFrom>EMS</settableFrom>
+          <source/>
+        </layeredParameter>
+      </xsd:appinfo>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:boolean">
+		</xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>
