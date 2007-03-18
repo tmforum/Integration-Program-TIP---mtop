@@ -42,10 +42,28 @@
     <downloadUrl>https://lab.tmforum.org/mtop/maven/repository</downloadUrl>
     <repository>
       <id>org.tmforum.lab.mtop</id>
-      <name>TMForum LabMachine mTOP repository</name>
-      <url>file:///home/mtop/httpsdocs/maven/repository</url>
+      <name>Local TMForum LabMachine mTOP repository</name>
+      <url>file:${basedir}/target/repository</url>
     </repository>
   </distributionManagement>
+  <profiles>
+    <profile>
+      <id>deployOnLabMachine</id>
+      <activation>
+        <file>
+          <exists>/etc/lab.tmforum.org</exists>
+        </file>
+      </activation>
+      <distributionManagement>
+        <downloadUrl>https://lab.tmforum.org/mtop/maven/repository</downloadUrl>
+        <repository>
+          <id>org.tmforum.lab.mtop</id>
+          <name>TMForum LabMachine mTOP repository</name>
+          <url>file:///home/mtop/httpsdocs/maven/repository</url>
+        </repository>
+      </distributionManagement>
+    </profile>
+  </profiles>
   <developers>
     <developer>
       <id>sgaito</id>
