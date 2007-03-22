@@ -1,4 +1,4 @@
-package org.tmforum.lab.mtop.maven.plugin.release;
+package org.tmforum.lab.mtop.maven.plugin.release.packagephase;
 
 /*
  * BASED UPON 
