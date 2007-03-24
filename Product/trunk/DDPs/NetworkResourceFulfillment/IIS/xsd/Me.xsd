@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2006 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/me/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/me/v1" xmlns:frm.gen="http://www.tmforum.org/mtop/framework/general/v1" xmlns:nam="http://www.tmforum.org/mtop/nrf/names/v1" xmlns:nrb.lay="http://www.tmforum.org/mtop/nrb/layers/v1" xmlns:nrb.cri="http://www.tmforum.org/mtop/nrb/cri/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/common/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/me/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/me/v1" xmlns:fmw.gen="http://www.tmforum.org/mtop/framework/general/v1" xmlns:nam="http://www.tmforum.org/mtop/nrf/names/v1" xmlns:nrb.lay="http://www.tmforum.org/mtop/nrb/layers/v1" xmlns:nrb.cri="http://www.tmforum.org/mtop/nrb/cri/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Data Model Network Resource FulFillment</p>
@@ -14,7 +14,8 @@
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd" namespace="http://www.tmforum.org/mtop/nrb/layers/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd" namespace="http://www.tmforum.org/mtop/nrb/cri/v1"/>
   <xsd:import schemaLocation="ObjectNames.xsd" namespace="http://www.tmforum.org/mtop/nrf/names/v1"/>
-  <xsd:import schemaLocation="CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/common/v1"/>
+  <!-- ================= -->
+  <xsd:element name="me" type="tns:ManagedElement_T"/>
   <!-- ================= -->
   <xsd:complexType name="MeAttributes_T">
     <xsd:annotation>
@@ -30,13 +31,13 @@
           </xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
-          <xsd:element name="location" type="frm.gen:Location_T" nillable="true" minOccurs="0">
+          <xsd:element name="location" type="fmw.gen:Location_T" nillable="true" minOccurs="0">
           </xsd:element>
-          <xsd:element name="manufacturer" type="frm.gen:Manufacturer_T" nillable="true" minOccurs="0">
+          <xsd:element name="manufacturer" type="fmw.gen:Manufacturer_T" nillable="true" minOccurs="0">
           </xsd:element>
-          <xsd:element name="productName" type="frm.gen:ProductName_T" nillable="true" minOccurs="0">
+          <xsd:element name="productName" type="fmw.gen:ProductName_T" nillable="true" minOccurs="0">
           </xsd:element>
-          <xsd:element name="version" type="com:Version_T" nillable="true" minOccurs="0">
+          <xsd:element name="version" type="tns:Version_T" nillable="true" minOccurs="0">
           </xsd:element>
           <xsd:element name="InSyncState" type="xsd:boolean" nillable="true" minOccurs="0">
             <xsd:annotation>
@@ -53,9 +54,9 @@
           </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="communicationState" type="com:CommunicationState_T" nillable="true" minOccurs="0">
+          <xsd:element name="communicationState" type="tns:CommunicationState_T" nillable="true" minOccurs="0">
           </xsd:element>
-          <xsd:element name="networkAccessDomain" type="frm.gen:NetworkAccessDomain_T" nillable="true" minOccurs="0">
+          <xsd:element name="networkAccessDomain" type="fmw.gen:NetworkAccessDomain_T" nillable="true" minOccurs="0">
           </xsd:element>
           <xsd:element name="minorExtensions" nillable="true" minOccurs="0">
             <xsd:annotation>
@@ -123,4 +124,27 @@
       <xsd:element name="me" type="tns:ManagedElement_T" minOccurs="0" maxOccurs="unbounded"/>
     </xsd:sequence>
   </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="CommunicationState_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This state reflects a communication state between the EMS and its ManagedElement.</p>
+        @TODO: Should we make this basic definition?
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="CS_AVAILABLE"/>
+      <xsd:enumeration value="CS_UNAVAILABLE"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="Version_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The active software version of the ManagedElement</p>
+        @TODO: Should we make this basic definition and consolidate with SoftwareVersion_T, InstalledVersion_T?
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
 </xsd:schema>

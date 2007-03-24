@@ -1,29 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2007 -->
-<wsdl:definitions name="mTOP-NotificationConsumerV1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.tmforum.org/mtop/framework/ws/notc/v1" targetNamespace="http://www.tmforum.org/mtop/framework/ws/notc/v1">
+<wsdl:definitions name="mTOP-NotificationBrokerV1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.tmforum.org/mtop/framework/ws/notb/v1" targetNamespace="http://www.tmforum.org/mtop/framework/ws/notb/v1">
   <wsdl:documentation>
     <p>DDP: Framework</p>
-    <p>Module: NotificationConsumer Service Interface WSDL Module</p>
-    <p>Description: This module contains all the mTOP NotificationConsumer Service Interface WSDL SOAP/JMS binding definitions based on an MSG style port type (interface).</p>
+    <p>Module: NotificationBroker Service Interface WSDL JMS Module</p>
+    <p>Description: This module contains all the mTOP NotificationBroker Service Interface WSDL SOAP/JMS binding definitions based on an MSG style port type (interface).</p>
     <p>Version: 1.0</p>
     <p>Change Policy: TBD.</p>
   </wsdl:documentation>
   <!-- ================ -->
-  <wsdl:import namespace="http://www.tmforum.org/mtop/framework/ws/notc/v1" location="NotificationConsumer_Messages.wsdl"/>
+  <wsdl:import namespace="http://www.tmforum.org/mtop/framework/ws/notb/v1" location="NotificationBroker_Messages.wsdl"/>
   <!-- ================ -->
-  <wsdl:service name="NotificationConsumerJms">
-    <wsdl:port name="NotificationConsumerSoapJms" binding="tns:NotificationConsumerSoapJmsBinding">
+  <wsdl:service name="NotificationBrokerJms">
+    <wsdl:port name="NotificationBrokerSoapJms" binding="tns:NotificationBrokerSoapJmsBinding">
       <wsdl:documentation>
-        <p>Example of the NotificationConsumer WSDL Service definition as a deployment example of this mTOP Service Interface. It is expected to be modified to match the specific deployment configuration in a service provider's CCV.</p>
+        <p>Example of the NotificationBroker WSDL Service definition as a deployment example of this mTOP Service Interface. It is expected to be modified to match the specific deployment configuration in a service provider's CCV.</p>
       </wsdl:documentation>
-      <soap:address location="jms://aserver/mtosi/NotificationConsumerV1"/>
+      <soap:address location="jms://aserver/mtosi/NotificationBroker"/>
     </wsdl:port>
   </wsdl:service>
   <!-- ================ -->
-  <wsdl:binding name="NotificationConsumerSoapJmsBinding" type="tns:NotificationConsumer_MSG">
+  <wsdl:portType name="NotificationBroker_MSG">
+    <wsdl:documentation>
+      <p>The NotificationBroker porttype (interface) for MSG (asynchronous) based client/server communication patterns</p>
+    </wsdl:documentation>
+    <!-- ================ -->
+    <wsdl:operation name="notify">
+      <wsdl:documentation>
+        <p>This is the notify operation used to receive notifications from producer.</p>
+      </wsdl:documentation>
+      <wsdl:input message="tns:notify"/>
+    </wsdl:operation>
+    <!-- ================ -->
+    <wsdl:operation name="subscribe">
+      <wsdl:documentation>
+        <p>This is the subscribe operation used to receive subscriptions from consumers.</p>
+      </wsdl:documentation>
+      <wsdl:input message="tns:subscribe"/>
+      <wsdl:output message="tns:subscribeResponse"/>
+      <wsdl:fault name="subscribeException" message="tns:subscribeException"/>
+    </wsdl:operation>
+    <!-- ================ -->
+    <wsdl:operation name="unsubscribe">
+      <wsdl:documentation>
+        <p>This is the unsubscribe operation used to receive subscription cancellations from consumers.</p>
+      </wsdl:documentation>
+      <wsdl:input message="tns:unsubscribe"/>
+      <wsdl:output message="tns:unsubscribeResponse"/>
+      <wsdl:fault name="unsubscribeException" message="tns:unsubscribeException"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <!-- ================ -->
+  <wsdl:binding name="NotificationBrokerSoapJmsBinding" type="tns:NotificationBroker_MSG">
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/jms"/>
     <wsdl:documentation>
-      <p>SOAP JMS binding definitions of the operations of the NotificationConsumer_MSG portType (interface)</p>
+      <p>SOAP JMS binding definitions of the operations of the NotificationBroker_MSG portType (interface)</p>
     </wsdl:documentation>
     <!-- ================ -->
     <wsdl:operation name="notify">
@@ -33,18 +64,35 @@
         <soap:body parts="mtopBody" use="literal"/>
       </wsdl:input>
     </wsdl:operation>
-  </wsdl:binding>
-  <!-- ================ -->
-  <wsdl:portType name="NotificationConsumer_MSG">
-    <wsdl:documentation>
-      <p>The NotificationConsumer porttype (interface) for MSG (asynchronous) based client/server communication patterns</p>
-    </wsdl:documentation>
     <!-- ================ -->
-    <wsdl:operation name="notify">
-      <wsdl:documentation>
-        <p>This is the notify operation used to receive notifications from producer or broker.</p>
-      </wsdl:documentation>
-      <wsdl:input message="tns:notify"/>
+    <wsdl:operation name="subscribe">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:subscribe" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:subscribeResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="subscribeException">
+        <soap:fault name="subscribeException" use="literal"/>
+      </wsdl:fault>
     </wsdl:operation>
-  </wsdl:portType>
+    <!-- ================ -->
+    <wsdl:operation name="unsubscribe">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:unsubscribe" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:unsubscribeResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="unsubscribeException">
+        <soap:fault name="unsubscribeException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
 </wsdl:definitions>

@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2007 -->
-<wsdl:definitions name="mTOP-NotificationProducerV1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.tmforum.org/mtop/framework/ws/notc/v1" targetNamespace="http://www.tmforum.org/mtop/framework/ws/notc/v1">
+<wsdl:definitions name="mTOP-NotificationProducerV1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.tmforum.org/mtop/framework/ws/notp/v1" targetNamespace="http://www.tmforum.org/mtop/framework/ws/notp/v1">
   <wsdl:documentation>
     <p>DDP: Framework</p>
-    <p>Module: NotificationProducer Service Interface WSDL Module</p>
+    <p>Module: NotificationProducer Service Interface WSDL HTTP Module</p>
     <p>Description: This module contains all the mTOP NotificationProducer Service Interface WSDL SOAP/HTTP binding definitions based on an RPC style port type (interface).</p>
     <p>Version: 1.0</p>
     <p>Change Policy: TBD.</p>
   </wsdl:documentation>
   <!-- ================ -->
-  <wsdl:import namespace="http://www.tmforum.org/mtop/framework/ws/notc/v1" location="NotificationProducer_Messages.wsdl"/>
+  <wsdl:import namespace="http://www.tmforum.org/mtop/framework/ws/notp/v1" location="NotificationProducer_Messages.wsdl"/>
   <!-- ================ -->
-  <wsdl:service name="NotificationProducerHttpV1">
+  <wsdl:service name="NotificationProducerHttp">
     <wsdl:port name="NotificationProducerSoapHttp" binding="tns:NotificationProducerSoapHttpBinding">
       <wsdl:documentation>
         <p>Example of the NotificationProducer WSDL Service definition as a deployment example of this mTOP Service Interface. It is expected to be modified to match the specific deployment configuration in a service provider's CCV.</p>
       </wsdl:documentation>
-      <soap:address location="http://aserver/mtosi/NotificationProducerV1"/>
+      <soap:address location="http://aserver/mtosi/NotificationProducer"/>
     </wsdl:port>
   </wsdl:service>
   <!-- ================ -->
@@ -26,12 +26,34 @@
       <p>SOAP HTTP binding definitions of the operations of the NotificationProducer_RPC portType (interface)</p>
     </wsdl:documentation>
     <!-- ================ -->
-    <wsdl:operation name="notify">
-      <soap:operation soapAction="notify" style="document"/>
+    <wsdl:operation name="subscribe">
+      <soap:operation soapAction="subscribe" style="document"/>
       <wsdl:input>
-        <soap:header message="tns:notify" part="mtopHeader" use="literal"/>
+        <soap:header message="tns:subscribe" part="mtopHeader" use="literal"/>
         <soap:body parts="mtopBody" use="literal"/>
       </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:subscribeResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="subscribeException">
+        <soap:fault name="subscribeException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <!-- ================ -->
+    <wsdl:operation name="unsubscribe">
+      <soap:operation soapAction="unsubscribe" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:unsubscribe" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:unsubscribeResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="unsubscribeException">
+        <soap:fault name="unsubscribeException" use="literal"/>
+      </wsdl:fault>
     </wsdl:operation>
   </wsdl:binding>
   <!-- ================ -->
@@ -40,11 +62,23 @@
       <p>The NotificationProducer porttype (interface) for RPC (synchronous) based client/server communication patterns</p>
     </wsdl:documentation>
     <!-- ================ -->
-    <wsdl:operation name="notify">
+    <wsdl:operation name="subscribe">
       <wsdl:documentation>
-        <p>This is the notify operation used to receive notifications from producer or broker.</p>
+        <p>This is the subscribe operation used to receive subscriptions from consumers.</p>
       </wsdl:documentation>
-      <wsdl:input message="tns:notify"/>
+      <wsdl:input message="tns:subscribe"/>
+      <wsdl:output message="tns:subscribeResponse"/>
+      <wsdl:fault name="subscribeException" message="tns:subscribeException"/>
     </wsdl:operation>
+    <!-- ================ -->
+    <wsdl:operation name="unsubscribe">
+      <wsdl:documentation>
+        <p>This is the unsubscribe operation used to receive subscription cancellations from consumers.</p>
+      </wsdl:documentation>
+      <wsdl:input message="tns:unsubscribe"/>
+      <wsdl:output message="tns:unsubscribeResponse"/>
+      <wsdl:fault name="unsubscribeException" message="tns:unsubscribeException"/>
+    </wsdl:operation>
+    <!-- ================ -->
   </wsdl:portType>
 </wsdl:definitions>

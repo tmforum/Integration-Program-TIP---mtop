@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- mTOP DDP - DM Network Resources Basic - Copyright TeleManagement Forum 2006 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrb/cri/v1" xmlns:tns="http://www.tmforum.org/mtop/nrb/cri/v1" xmlns:fmw.coi="http://www.tmforum.org/mtop/framework/coi/v1" xmlns:nam="http://www.tmforum.org/mtop/framework/naming/v1" xmlns:itu="http://www.tmforum.org/mtop/nrb/itu/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<!-- mTOP DDP - DM Service Basic - Copyright TeleManagement Forum 2006 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/sb/csi/v1" xmlns:tns="http://www.tmforum.org/mtop/nrb/csi/v1" xmlns:fmw.coi="http://www.tmforum.org/mtop/framework/coi/v1" xmlns:nam="http://www.tmforum.org/mtop/framework/naming/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
-      <p>DDP: Data Model Network Resource Basic</p>
-      <p>Module: CommonResourceInfo XSD Module</p>
-      <p>Description: This module contains the XML Schema type definition of the mTOP XML CommonResourceInfo structure.</p>
+      <p>DDP: Data Model service Basic</p>
+      <p>Module: CommonServiceInfo XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP XML CommonServiceInfo structure.</p>
       <p>Change Policy: TBD.</p>
     </xsd:documentation>
   </xsd:annotation>
@@ -14,10 +14,10 @@
   <xsd:import schemaLocation="../../../../Framework/trunk/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/framework/naming/v1"/>-->
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/CommonObjectInfo.xsd" namespace="http://www.tmforum.org/mtop/framework/coi/v1"/>
   <!-- ================= -->
-  <xsd:complexType name="CommonResourceInfo_T">
+  <xsd:complexType name="CommonServiceInfo_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>This aggregate defines attributes common to all mTOP resource objects.</p>
+        <p>This aggregate defines attributes common to all mTOP service objects.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
@@ -31,15 +31,10 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>-->
-          <xsd:element name="resourceState" type="tns:ResourceState_T" nillable="true" minOccurs="0">
-      </xsd:element>
-          <xsd:any namespace="http://www.tmforum.org/mtop/nrb/itu/v1" processContents="lax" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>Containment for all the ITU-T status and state parameters</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:any>
+          <xsd:element name="id" type="xsd:string" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="description" type="xsd:string" nillable="true" minOccurs="0">
+          </xsd:element>
           <xsd:element name="minorExtensions" nillable="true" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
@@ -48,7 +43,7 @@
             </xsd:annotation>
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:any namespace="http://www.tmforum.org/mtop/nrb/cri/v1/ext" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+                <xsd:any namespace="http://www.tmforum.org/mtop/nrb/csi/v1/ext" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
               </xsd:sequence>
             </xsd:complexType>
           </xsd:element>
@@ -68,26 +63,4 @@
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
-  <!-- ================= -->
-  <xsd:complexType name="ResourceState_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>This is the definition of the object attribute that indicates the state of the resource.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:simpleContent>
-      <xsd:extension base="tns:ResourceStateEnum_T">
-        <xsd:attribute name="overlap" type="xsd:string" use="optional"/>
-        <xsd:attribute name="qualifier" type="xsd:string" use="optional"/>
-      </xsd:extension>
-    </xsd:simpleContent>
-  </xsd:complexType>
-  <!-- ================= -->
-  <xsd:simpleType name="ResourceStateEnum_T">
-    <xsd:restriction base="xsd:string">
-      <xsd:enumeration value="PLANNED"/>
-      <xsd:enumeration value="INSTALLED"/>
-      <xsd:enumeration value="RETIRED"/>
-    </xsd:restriction>
-  </xsd:simpleType>
 </xsd:schema>
