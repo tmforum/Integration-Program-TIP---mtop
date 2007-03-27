@@ -18,6 +18,25 @@ Usage
 
  The following sections will walk through example usage for a typical project.
 
+* Local Maven Repository
+
+ Maven needs to find all of its dependency's in one of its many repositories
+ (and ultimately in its local repository).  Since the Bluetetra software needs
+ to be purchased, the wsdldoc.jar won't be found in any of the Maven public 
+ repositories.
+
+ The best way to provide the purchased Bluetetra WSDLdoc is to install the
+ wsdldoc.jar into the user's local repository and install the rest of 
+ the WSDLdoc into a directory where Maven can access it.
+
+ The following command:
+
++------+
+ mvn install:install-file -DgroupId=com.bluetetra -DartifactId=wsdldoc \
+     -Dversion=1.0 -Dpackaging=jar -Dfile=</path/to/wsdldoc.jar>
++------+
+ 
+ will install the wsdldoc.jar into the user's local repository.
 
 
 * Local Settings
@@ -41,6 +60,11 @@ Usage
       <activeProfile>wsdldoc-profile</activeProfile>
   </activeProfiles>
 +------+
+
+ Where "/usr/java/wsdldoc1.0" needs to be replaced with the path to the
+ directory in which WSDLdoc has been installed (this directory must include
+ config/wsdldoc.properties, wsdldoc.license, and templates/default files 
+ and directories.
 
  If you use a profiles section in the settings file, you MUST remember to
  activate that profile, either in the settings file (as above) or on the 
