@@ -107,7 +107,7 @@
             <executions>
               <execution>
                 <id>build-wsdl-docs</id>
-                <phase>compile</phase>
+                <phase>generate-sources</phase>
                 <goals>
                   <goal>build-wsdl-docs</goal>
                 </goals>
@@ -117,7 +117,25 @@
                   <inputDir>${basedir}/IIS</inputDir>
                   <includesRegexp>wsdl</includesRegexp>
                   <excludesRegexp>_Messages.wsdl</excludesRegexp>
-                  <outputDir>${basedir}/target/wsdl-docs</outputDir>
+                  <outputDir>${basedir}/target/classes/IIS/wsdl-docs</outputDir>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.tmforum.lab.mtop</groupId>
+            <artifactId>mtop-release-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>fix-wsdldoc</id>
+                <phase>process-sources</phase>
+                <goals>
+                  <goal>find-replace-text</goal>
+                </goals>
+                <configuration>
+                  <includesRegexp>html</includesRegexp>
+                  <findPatternRegexp>file:${basedir}/IIS/</findPatternRegexp>
+                  <textDir>${basedir}/target/classes/IIS/wsdl-docs</textDir>
                 </configuration>
               </execution>
             </executions>

@@ -46,7 +46,7 @@ import com.bluetetra.lib.xsd.XSDException;
  * @author <a href="sgaito@tmforum.org">Stephen Gaito</a>
  * @version $Id $
  * @goal build-wsdl-docs
- * @phase compile
+ * @phase generate-sources
  * requiresProject
  */
 public class WSDLdocMojo
@@ -105,7 +105,7 @@ public class WSDLdocMojo
     /**
      * Regular expression used to filter included wsdl files
      *
-     * @parameter expression="${wsdldoc.include-regexp}"
+     * @parameter expression="${wsdldoc.include-regexp}" default-value="include-everything"
      * @required
      */
     private String includesRegexp;
@@ -114,7 +114,7 @@ public class WSDLdocMojo
     /**
      * Regular expression used to filter excluded wsdl files
      *
-     * @parameter expression="${wsdldoc.exclude-regexp}"
+     * @parameter expression="${wsdldoc.exclude-regexp}" default-value="exclude-nothing"
      * @required
      */
     private String excludesRegexp;
@@ -145,11 +145,13 @@ public class WSDLdocMojo
 	    //add all the xsd and wsdl url here
 	    String fileURI = dir.toURI().toString();
 	    getLog().debug("Looking at: ["+fileURI+"]");
-	    getLog().debug("Using positive: ["+includesPattern.pattern()+"]");
-	    if (includesPattern.matcher(fileURI).find()) {
+	    //	    getLog().debug("Using positive: ["+includesPattern.pattern()+"]");
+	    if (includesPattern == null
+		|| includesPattern.matcher(fileURI).find()) {
 		getLog().debug("Found at: ["+fileURI+"]");
-		getLog().debug("Using negative: ["+excludesPattern.pattern()+"]");
-		if (!excludesPattern.matcher(fileURI).find()) {
+		//		getLog().debug("Using negative: ["+excludesPattern.pattern()+"]");
+		if (excludesPattern == null
+		    || !excludesPattern.matcher(fileURI).find()) {
 		    getLog().debug("Adding WSDL file: ["+fileURI+"]");
 		    wsdlUrlList.add(fileURI);
 		}
@@ -173,8 +175,17 @@ public class WSDLdocMojo
 	getLog().info("WSDLdoc    excludes regExp: ["+excludesRegexp+"]");
 	getLog().info("WSDLdoc   output directory: ["+outputDir.toString()+"]\n");
 
-	includesPattern = Pattern.compile(includesRegexp);
-	excludesPattern = Pattern.compile(excludesRegexp);
+	if (includesRegexp.equalsIgnoreCase("include-everything")) {
+	    includesPattern = null;
+	} else {
+	    includesPattern = Pattern.compile(includesRegexp);
+	}
+       
+	if (excludesRegexp.equalsIgnoreCase("exclude-nothing")) {
+	    excludesPattern = null;
+	} else {
+	    excludesPattern = Pattern.compile(excludesRegexp);
+	}
 
 	wsdlUrlList = new ArrayList();
 
