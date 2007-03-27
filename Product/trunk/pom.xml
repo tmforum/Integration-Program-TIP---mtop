@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.tmforum.lab.mtop</groupId>
@@ -19,20 +20,29 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  <build>   
+  <build>
     <plugins>
       <plugin>
         <groupId>org.tmforum.lab.mtop</groupId>
         <artifactId>mtop-release-plugin</artifactId>
         <extensions>true</extensions>
-        <configuration>
-          <propFile>/usr/java/wsdldoc1.0/config/wsdldoc.properties</propFile>
-          <templateDir>/usr/java/wsdldoc1.0/template/default</templateDir>
-          <inputDir>${basedir}/IIS</inputDir>
-          <includesRegexp>wsdl</includesRegexp>
-          <excludesRegexp>_Messages.wsdl</excludesRegexp>
-          <outputDir>${basedir}/target/wsdl-docs</outputDir>
-        </configuration>
+        <configuration> </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>compile</phase>
+            <configuration>
+              <tasks>
+                <echo>project.repository: ${user.home}/</echo>
+              </tasks>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
@@ -81,6 +91,39 @@
           <url>file:///home/mtop/httpsdocs/maven/mtop-products</url>
         </site>
       </distributionManagement>
+    </profile>
+    <profile>
+      <id>use-bluetetra-wsdldoc</id>
+      <activation>
+        <property>
+          <name>use-bluetetra-wsdldoc</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.bluetetra</groupId>
+            <artifactId>bluetetra-wsdldoc-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>build-wsdl-docs</id>
+                <phase>compile</phase>
+                <goals>
+                  <goal>build-wsdl-docs</goal>
+                </goals>
+                <configuration>
+                  <propFile>${wsdldoc-directory}/config/wsdldoc.properties</propFile>
+                  <templateDir>${wsdldoc-directory}/template/default</templateDir>
+                  <inputDir>${basedir}/IIS</inputDir>
+                  <includesRegexp>wsdl</includesRegexp>
+                  <excludesRegexp>_Messages.wsdl</excludesRegexp>
+                  <outputDir>${basedir}/target/wsdl-docs</outputDir>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
   <developers>

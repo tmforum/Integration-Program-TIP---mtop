@@ -1,0 +1,123 @@
+	---
+	Usage
+	---
+	---
+	March 2007
+	---
+
+Usage
+
+ The Bluetetra WSDLdoc is licensed software and hence not all members of
+ a given project will all have purchased the jar files required by the
+ bluetetra-wsdldoc-plugin.  To enable a clean decoupling of the Bluetetra
+ software from the rest of a project's dependencies, the use of the 
+ bluetetra-wsdldoc-plugin is declared in the project's pom via a conditional
+ profile.  We also make use of properties specified in the user's local 
+ settings file to specify the location of their copy of the Bluetetra 
+ software.
+
+ The following sections will walk through example usage for a typical project.
+
+
+
+* Local Settings
+
+ To allow for the possiblity that different users will have installed the 
+ Bluetetra software in different locations, the user's local settings file
+ (~/.m2/settings.xml) should contain a section such as:
+
++------+
+  <profiles>
+	[...]
+      <profile>
+          <id>wsdldoc-profile</id>
+          <properties>
+              <wsdldoc-directory>/usr/java/wsdldoc1.0</wsdldoc-directory>
+          </properties>          
+      </profile>
+  </profiles>
+  <activeProfiles>
+	[...]
+      <activeProfile>wsdldoc-profile</activeProfile>
+  </activeProfiles>
++------+
+
+ If you use a profiles section in the settings file, you MUST remember to
+ activate that profile, either in the settings file (as above) or on the 
+ command line when you invoke maven.
+
+* Conditional Project POM Profile
+
+ An example conditional profile which sets up the use of the 
+ bluetetra-wsdldoc-plugin is:
+
++------+
+  <profiles>
+    [...]
+    <profile>
+      <id>use-bluetetra-wsdldoc</id>
+      <activation>
+        <property>
+          <name>use-bluetetra-wsdldoc</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.bluetetra</groupId>
+            <artifactId>bluetetra-wsdldoc-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>build-wsdl-docs</id>
+                <phase>compile</phase>
+                <goals>
+                  <goal>build-wsdl-docs</goal>
+                </goals>
+                <configuration>
+                  <propFile>${wsdldoc-directory}/config/wsdldoc.properties</propFile>
+                  <templateDir>${wsdldoc-directory}/template/default</templateDir>
+                  <inputDir>${basedir}/IIS</inputDir>
+                  <includesRegexp>wsdl</includesRegexp>
+                  <excludesRegexp>_Messages.wsdl</excludesRegexp>
+                  <outputDir>${basedir}/target/wsdl-docs</outputDir>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
++------+
+
+ In this example note that the goal and phase are completely configurable
+ through the use of the execution section of the profile.
+
+ It is also important to note that the actual location of the installed 
+ Bluetetra software is taken from the "wsdldoc-directory" property defined
+ in the user's settings file.
+
+* Command line
+
+ Finally, to actually use the Bluetetra WSDLdoc maven plugin, with the above
+ settings and POM configuration, you would invoke maven with the following
+ command line:
+
++------+
+ mvn -Duse-bluetetra-wsdldoc=true compile
++------+
+
+ The important thing in this example command line is the use of:
+
++------+
+ -Duse-bluetetra-wsdldoc=true
++------+
+
+ This command line switch must match the value of the POM profile 
+ activation/property/name entity.
+
+ While it would be nice to set a property in the user's settings file,
+ it seems that Maven v2.0.4 does not read the user's settings file until
+ after it has already expanded the project's POM file (and hence after
+ the decision has been made to activate profiles contained in the 
+ project's POM file).
