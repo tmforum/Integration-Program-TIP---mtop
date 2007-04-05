@@ -26,23 +26,26 @@
         <groupId>org.tmforum.lab.mtop</groupId>
         <artifactId>mtop-release-plugin</artifactId>
         <extensions>true</extensions>
-        <configuration> </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
+        <!-- executions>
           <execution>
+            <id>upload-odt-documents</id>
             <phase>compile</phase>
-            <configuration>
-              <tasks>
-                <echo>project.repository: ${user.home}/</echo>
-              </tasks>
-            </configuration>
             <goals>
-              <goal>run</goal>
+              <goal>upload-odt-documents</goal>
             </goals>
           </execution>
-        </executions>
+        </executions -->
+        <configuration>
+          <wordInputDir>${basedir}</wordInputDir>
+          <wordIncludesRegexp>doc$</wordIncludesRegexp>
+          <wordOutputDir>${basedir}/target/classes</wordOutputDir>
+          <odtOutputDir>${distributionManagement.repository.url}</odtOutputDir>
+          <existUri>xmldb:exist://labbook:8888/xmlrpc</existUri>
+          <existCollection>/db/mTOP</existCollection>
+          <odtDir>${distributionManagement.repository.url}</odtDir>
+          <existUserName>${exist.username}</existUserName>
+          <existPassword>${exist.password}</existPassword>
+        </configuration>
       </plugin>
     </plugins>
   </build>
