@@ -1,0 +1,2838 @@
+#ifndef multiLayerSubnetwork_idl
+#define multiLayerSubnetwork_idl
+
+// ********************************
+// *                              *
+// * multiLayerSubnetwork.idl     *
+// *                              *
+// ********************************
+
+//Include list
+#include "globaldefs.idl"
+#include "transmissionParameters.idl"
+#include "common.idl"
+#include "subnetworkConnection.idl"
+#include "managedElement.idl"
+#include "topologicalLink.idl"
+#include "terminationPoint.idl"
+
+#pragma prefix "mtnm.tmforum.org"
+
+  /** 
+   * <a href=supportingDocumentation/overview_NML-EML_Interface.pdf>Overview of 
+   * NML-EML interface</a>
+   *
+   * <p>This module contains the definition of the multiLayerSubnetwork 
+   * structure of the NML-EML interface.
+   * It also contains the definition of the multi-layer subnetwork manager.</p>
+   *
+   * <h5> Version 3.0. </h5>
+   **/
+
+ 
+module multiLayerSubnetwork
+{
+  /**
+   * <p> Topology_T is used to describe the subnetwork configuration. The EMS 
+   * shall be capable of providing a SubNetwork Connection through any physical 
+   * termination point of any managed element that belongs to the 
+   * Subnetwork.</p>
+   *
+   * The following values are supported:<br>
+   * <br>
+   * TOPO_SINGLETON, which is used for a single NE (of any type) that is managed 
+   *   independently of its Topological Link connectivity to other NEs. It may 
+   *   for example be a member of a ring that is managed by a number of EMSes. 
+   *   It is acceptable for an EMS to represent all NEs as being in Singleton 
+   *   subnetworks regardless of the actual network configuration.
+   *   A singleton subnetwork does not contain internal topological links.<br>
+   * TOPO_CHAIN, which is used to cover the case where two or more NEs
+   *   are managed by the same EMS and are connected by Topological Links in
+   *   a chain.<br>
+   * TOPO_PSR, which is used to cover the case where two or more NEs
+   *   are managed by the same EMS and are connected by Topological Links in
+   *   a ring that is capable of supporting subnetwork connection 
+   *   protection.<br>
+   * TOPO_OPEN_PSR, which is used to cover the case where two or more NEs
+   *   of a PS ring (but not the entire ring) are managed by the same EMS.<br>
+   * TOPO_SPRING, which is used to cover the case where two or more NEs
+   *   are managed by the same EMS and are connected by Topological Links in
+   *   a complete ring that supports Shared Line Protection.<br>
+   * TOPO_OPEN_SPRING, which is used to cover cases where two or more NEs of an 
+   *   SP ring (but not the entire ring) are managed by one EMS.<br>
+   * TOPO_MESH, which is used to cover an arbitrary set of two or more NEs
+   *   not covered by any other type.<br>
+   * <br>
+   * <p>Composite subnetworks (i.e. containing other Subnetworks) are not
+   * supported in this release of the interface.<p>
+   **/
+
+   enum Topology_T
+   {
+    TOPO_SINGLETON,
+    TOPO_CHAIN,
+    TOPO_PSR,
+    TOPO_OPEN_PSR,
+    TOPO_SPRING,
+    TOPO_OPEN_SPRING,
+    TOPO_MESH
+   };
+
+
+  /**
+   * <p>Describes the NMS-specified EMS level of freedom when performing SNC 
+   * operations.</p>
+   * <p>EMSFL_CC_AT_SNC_LAYER: The EMS is allowed to create or delete cross-
+   * connections,at the layer of the SNC <i>only</i>, that are or will be 
+   * directly used by it.</p>
+   * <p>EMSFL_TERMINATE_AND_MAP: In addition to EMSFL_CC_AT_SNC_LAYER, the EMS 
+   * is allowed to terminate and map or unmap and unterminate CTPs
+   * to generate or eliminate CTPs that are or will be used by the SNC.</p>
+   * <p>EMSFL_HIGHER_ORDER_SNCS: In addition to EMSFL_TERMINATE_AND_MAP, the EMS 
+   * is allowed to create or delete higher order SNCs that are or will be used 
+   * to carry the SNC.</p> 
+   * <p>EMSFL_RECONFIGURATION: The EMS is allowed to perform <i>any</i> 
+   * operation that it considers relevant, which includes reorganizing any SNC 
+   * or TP to allow the creation or activation of the SNC or to make the 
+   * subnetwork more efficient.</p> 
+   **/
+   enum EMSFreedomLevel_T
+   {
+    EMSFL_CC_AT_SNC_LAYER,
+    EMSFL_TERMINATE_AND_MAP,
+    EMSFL_HIGHER_ORDER_SNCS,
+    EMSFL_RECONFIGURATION
+   };
+
+  /** 
+   * <p>The MultiLayerSubnetwork structure is the abstraction 
+   * offered by the EMS
+   * to the NMS to represent a Subnetwork that is managed by the EMS system. 
+   * In this document specification, Subnetwork and MultiLayerSubnetwork
+   * are used interchangeably.</p>
+   * <p>It represents a logical grouping or partitioning of
+   * the managed elements in a way that is entirely determined by the
+   * EMS.  A managed element may belong to more than one subnetwork, at
+   * different layer rates (e.g. SDH & ATM). 
+   * However, subnetworks cannot overlap at the same layer rate.</p>
+   *
+   * <p>The NMS does not create or delete Subnetworks, they are
+   * managed by the EMS. The NMS has a handle to the Subnetworks
+   * managed by the EMSes and can request the establishment or the
+   * removal of connections within subnetworks.</p>
+   *
+   * <p>In this interface specification, the way the NMS requests services
+   * on the Subnetworks, including establishment and removal of subnetwork 
+   * connections,is through the MultiLayerSubnetworkMgr_I.</p>
+   * 
+   * <p>For examples on how MultiLayerSubnetworks should be modelled see
+   * <a href=supportingDocumentation/layers.pdf>layering</a>.</p>
+   *
+   * globaldefs::NamingAttributes_T <b>name</b>:
+   * <br>The name represents the name of the MultiLayerSubNetwork
+   * which is assigned by the EMS upon creation.
+   * The EMS is responsible for guaranteeing the uniqueness of the name
+   * within the context of the MultiLayerSubnetworkMgr_I.
+   * It is a readonly attribute.<br>
+   *
+   * string <b>userLabel</b>:
+   * <br>The user label is seldom used on a singleton. However for rings
+   * and meshes, the operator may choose to assign some logical name for the
+   * subnetwork and the EMS may choose to display it on the GUI, so that the
+   * operator has a consistent view of the managed network. This attribute can 
+   * be set by NMS through the Common_I interface service
+   * common::Common_I::setUserLabel(). It is a read/write attribute.<br>
+   *
+   * string <b>nativeEMSName</b>:
+   * <br>This name of the subnetwork on the EMS GUI.
+   * The nativeEMSName is defaulted to a NULL string. However, this could
+   * be used by the EMS for its implementation dependent purpose.<br>
+   *
+   * string <b>owner</b>:
+   * <br>The owner is provisionable by the NMS. This attribute can be set
+   * by NMS through the Common_I interface service
+   * common::Common_I::setOwner(). It is a read/write attribute.<br>
+   *
+   * Topology_T <b>subnetworkType</b>:
+   * <br>The subnetworkType gives a coarse view of the topology of the 
+   * subnetwork.
+   * It is a readonly attribute.<br>
+   *
+   * transmissionParameters::LayerRateList_T <b>supportedRates</b>:
+   * <br>This attribute is a list (possibly empty) of potential Cross 
+   * Connection Rates at which it is possible to make SNCs within the
+   * subnetwork.
+   * It is a readonly attribute.<br>
+   *
+   * globaldefs::NVSList_T <b>additionalInfo</b>:
+   * <br>This attribute allows the communication from the EMS to the NMS of 
+   * additional information which is not explicitly modelled.
+   * This may be an empty list.
+   * It is a readonly attribute.<br>
+   * <br>
+   **/
+   struct MultiLayerSubnetwork_T
+   {
+    globaldefs::NamingAttributes_T name;
+    string userLabel;
+    string nativeEMSName;
+    string owner;
+    Topology_T subnetworkType;
+    transmissionParameters::LayerRateList_T supportedRates;
+    globaldefs::NVSList_T additionalInfo;
+   };
+
+
+  /**
+   * <p>Sequence of MultiLayerSubnetwork_T objects.</p>
+   **/
+   typedef sequence<MultiLayerSubnetwork_T> SubnetworkList_T;
+
+
+  /**
+   * <p>The attributes required for the creation of a termation point pool
+   * on the EMS are packaged together in a TPPoolCreateData structure
+   * which the NMS will pass to the EMS at TPPool creation time.
+   * These are the read-create attributes of the TPPool.</p>
+   *
+   * string <b>userLabel</b>:
+   * <br>userLabel may be specified by the NMS.  May be empty.<br>
+   *
+   * boolean <b>forceUniqueness</b>:
+   * <br>Specifies whether uniqueness of userLabel is required amongst
+   * TPPools of the prescribed MLSN.  The operation will fail
+   * if userLabel is already in use.<br>
+   *
+   * string <b>owner</b>
+   * <br>owner may be specified by the NMS.  May be empty.<br>
+   *
+   * MultiLayerSubnetwork_T <b>containingMLSN</b>:
+   * The subnetwork that shall contain the TPPool to be created.
+   *
+   * globaldefs::NamingAttributesList_T <b>containedMembers</b>: The list
+   * of TPs or GTPs that shall comprise the TPPool.
+   *
+   * transmissionParameters::LayeredParameterList_T <b>transmissionParams</b>:
+   * <br>The common layers and transmission parameters the above-specified
+   * Contained TPs, or TPs contained in Contained GTPs, are required to have
+   * (e.g., ATM VP layer with prescribed traffic characteristics).<br>
+   *
+   * string <b>descriptionOfUse</b>
+   * <br>A description of the specific use of the TP pool, in particular
+   * how its members are collected and administered.<br>
+   * It could include, for example, the name of a TP with the meaning that
+   * all TP pool members have to be collected from the set of potential
+   * client CTPs of this TP.<br>
+   *
+   * globaldefs::NVSList_T <b>additionalCreationInfo</b>:
+   * <br>Some additional creation information may be specified by the NMS.
+   * This information may or may not become a part of the TPPool's
+   * additionalInfo attribute.  The list may be empty.<br>
+   *
+   **/
+   struct TPPoolCreateData_T 
+   {
+    string userLabel;
+    boolean forceUniqueness;
+    string owner;
+    multiLayerSubnetwork::MultiLayerSubnetwork_T containingMLSN;
+    globaldefs::NamingAttributesList_T containedMembers;
+    transmissionParameters::LayeredParameterList_T transmissionParams;
+    string descriptionOfUse;
+    globaldefs::NVSList_T additionalCreationInfo;
+   };
+
+  /**
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * iterators are used.</p>
+   * <p>See <a href=supportingDocumentation/iterators.pdf>iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   **/
+
+   interface SubnetworkIterator_I 
+   {
+      boolean next_n(in  unsigned long    how_many,
+                     out SubnetworkList_T subnetworkList)
+        raises (globaldefs::ProcessingFailureException);
+
+      unsigned long getLength()
+        raises (globaldefs::ProcessingFailureException);
+
+      void destroy()
+        raises (globaldefs::ProcessingFailureException);
+   };
+
+
+  /**
+   * <p>The multiLayerSubnetworkMgr_I is used to gain access to subnetworks and
+   * their operations.</p>
+   *
+   * <p>A handle to an instance of this interface is gained via the
+   * emsSession::EmsSession_I::getManager() operation in Manager.</p>
+   **/
+
+  interface MultiLayerSubnetworkMgr_I  : common::Common_I
+  {
+  /**
+   * <p>This allows an NMS to request a list of the ManagedElements that
+   * are associated with the specified Subnetwork.</p>
+   * 
+   * <p>For examples on how ManegedElements are associated with 
+   * MultiLayerSubnetworks see
+   * <a href=supportingDocumentation/layers.pdf>layering</a>.</p>
+   *
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * this operation uses an iterator. See
+   * <a href=supportingDocumentation/iterators.pdf>iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   *
+   * <br>globaldefs::NamingAttributes_T subnetName: Name of the subnetwork.
+   * <br>unsigned long how_many: Maximum number of managed elements to return 
+   * in the first batch.
+   * <br>managedElement::ManagedElementList_T meList: First batch of managed 
+   * elements.
+   * <br>managedElement::ManagedElementIterator_I meIt: Iterator to retrieve 
+   * the remaining managed elements.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when subnetName does not reference a 
+   *  multiLayerSubnetwork object<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when subnetName references an object that 
+   *  does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
+   *  lost<br>
+   * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
+   *  that the EMS can support has been reached<br>
+   * <br>
+   **/
+   void getAllManagedElements(
+         in globaldefs::NamingAttributes_T subnetName,
+         in unsigned long how_many,
+         out managedElement::ManagedElementList_T meList,
+         out managedElement::ManagedElementIterator_I meIt) 
+	  raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This operation has exactly the same behaviour as 
+   * getAllManagedElements(), but
+   * instead of returning the entire object structures, this operation returns 
+   * their names.</p>
+   *
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * this operation uses an iterator. See
+   * <a href=supportingDocumentation/iterators.pdf>iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   *
+   * <br>globaldefs::NamingAttributes subnetName: Name of the subnetwork.
+   * <br>unsigned long how_many: Maximum number of managed element names to 
+   * return in the first batch.
+   * <br>globaldefs::NamingAttributesList_T nameList: First batch of managed 
+   * element names.
+   * <br>globaldefs::NamingAttributesIterator_I nameIt: Iterator to retrieve 
+   * the remaining managed element names.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * As for getAllManagedElements().
+   **/
+   void getAllManagedElementNames(
+         in globaldefs::NamingAttributes_T subnetName,
+         in unsigned long how_many,
+         out globaldefs::NamingAttributesList_T nameList,
+         out globaldefs::NamingAttributesIterator_I nameIt)
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This service returns a Subnetwork given a subnetwork name.</p>
+   * 
+   * <br>globaldefs::NamingAttributes subnetName: Name of the subnetwork to 
+   * retrieve.
+   * <br>MultiLayerSubnetwork_T subnetwork: Subnetwork structure returned.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when subnetName does not reference a 
+   *  multiLayerSubnetwork object<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when subnetName references a 
+   *  multiLayerSubnetwork object that does not exist<br>
+   * <br>
+   **/
+   void getMultiLayerSubnetwork(
+         in globaldefs::NamingAttributes_T subnetName,
+         out MultiLayerSubnetwork_T subnetwork)
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This service returns a list of TopologicalLinks which exist inside the
+   * Subnetwork whose name is passed as a parameter.  For singletons, no
+   * topologicalLinks will be returned.  The EMS should report topological links
+   * at the "lowest" layer (i.e. closest to physical) about which it has 
+   * accurate knowledge.</p>
+   *
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * this operation uses an iterator. See
+   * <a href=supportingDocumentation/iterators.pdf>iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   * 
+   * <p>For details on how topologicalLinks should be modelled see
+   * <a href=supportingDocumentation/layers.pdf>layering</a>.</p>
+   * 
+   * <br>globaldefs::NamingAttributes_T subnetName: The name of the 
+   * Subnetwork.
+   * <br>unsigned long how_many: Maximum number of topological links to 
+   * return in the first batch.
+   * <br>topologicalLink::TopologicalLinkList_T topoList: First batch of 
+   * topological links.
+   * <br>topologicalLink::TopologicalLinkIterator_I topoIt: Iterator to 
+   * retrieve the remaining
+   * topological links.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when subnetName does not reference a 
+   *  multiLayerSubnetwork object<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when subnetName references an object that 
+   *  does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
+   *  lost<br>
+   * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
+   *  that the EMS can support has been reached<br>
+   * <br>
+   **/
+   void getAllTopologicalLinks(
+         in globaldefs::NamingAttributes_T subnetName,
+         in unsigned long how_many,
+         out topologicalLink::TopologicalLinkList_T topoList,
+         out topologicalLink::TopologicalLinkIterator_I topoIt) 
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This operation has exactly the same behaviour as 
+   * getAllTopologicalLinks, but
+   * instead of returning the entire object structures, this operation returns 
+   * their names.</p>
+   *
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * this operation uses an iterator. See
+   * <a href=supportingDocumentation/iterators.pdf>iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   * 
+   * <br>globaldefs::NamingAttributes_T subnetName: The name of the 
+   * Subnetwork.
+   * <br>unsigned long how_many: Maximum number of topological link names
+   * to return in the first batch.
+   * <br>globaldefs::NamingAttributesList_T nameList: First batch of 
+   * topological link names.
+   * <br>globaldefs::NamingAttributesListIterator_I nameIt: Iterator to 
+   * retrieve the remaining topological link names.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   *  As for getAllTopologicalLinks().
+   **/
+   void getAllTopologicalLinkNames(
+         in globaldefs::NamingAttributes_T subnetName,
+         in  unsigned long how_many,
+         out globaldefs::NamingAttributesList_T nameList,
+         out globaldefs::NamingAttributesIterator_I nameIt)
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This service returns a subnetwork topological link given its name.</p>
+   * 
+   * <br>globaldefs::NamingAttributes topoLinkName: Name of the subnetwork 
+   *  topological link to retrieve.
+   * <br>TopologicalLink_T topoLink: Subnetwork topological link returned.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when topoLinkName does not reference a 
+   *  subnetwork topologicallink object<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when topoLinkName references a subnetwork 
+   *  topological link object that does not exist<br>
+   * <br>
+   **/
+   void getTopologicalLink(
+         in globaldefs::NamingAttributes_T topoLinkName,
+         out topologicalLink::TopologicalLink_T topoLink)
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This allows an NMS to request a list of the edge termination points 
+   * (PTPs/FTPs) for the specified subnetwork, at one or more of the NMS-
+   * specified layers, and that are capable of containing CTPs that can be 
+   * connected at one or more of the NMS-specified
+   * connection layer rates.  This operation considers the 
+   * capability/flexibility of the TPs, not their current states.</p>
+   *
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * this operation uses an iterator. See
+   * <a href=supportingDocumentation/iterators.pdf>iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   *
+   * <br>globaldefs::NamingAttributes subnetName: Name of the subnetwork.
+   * <br>transmissionParameters::LayerRateList_T tpLayerRateList: List of TP 
+   * layer rates for which the edge points are to be fetched. An edge point 
+   * must contain at least one of the layer rates specified to be reported.  If 
+   * the list is empty then edge points of all rates are returned.
+   * <br>transmissionParameters::LayerRateList_T connectionLayerRateList: List 
+   * of connection layer rates for which the edge points are to be fetched. An 
+   * edge point must support connections for at least one of the
+   * layer rates specified to be reported.  If the list is empty then edge 
+   * points for all connection rates are returned.
+   * <br>unsigned long how_many: Maximum number of edge points to return in 
+   * the first batch.
+   * <br>terminationPoint::TerminationPointList tpList: First batch of edge 
+   * points.
+   * <br>terminationPoint::TerminationPointIterator_I tpIt: Iterator to 
+   * retrieve the remaining edge points.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when subnetName does not reference a 
+   *  multiLayerSubnetwork object,or tpLayerRateList or connectionLayerRateList 
+   *  contain undefined values<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when subnetName references an object that 
+   *  does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
+   *  lost<br>
+   * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
+   *  that the EMS can support has been reached<br>
+   * <br>
+   **/
+   void getAllEdgePoints(
+         in globaldefs::NamingAttributes_T subnetName,
+         in transmissionParameters::LayerRateList_T tpLayerRateList,
+         in transmissionParameters::LayerRateList_T connectionLayerRateList,
+         in unsigned long how_many,
+         out terminationPoint::TerminationPointList_T tpList,
+         out terminationPoint::TerminationPointIterator_I tpIt) 
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This operation has exactly the same behaviour as 
+   * getAllEdgePoints(), but
+   * instead of returning the entire object structures, this operation returns 
+   * their names.</p>
+   *
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * this operation uses an iterator. See
+   * <a href=supportingDocumentation/iterators.pdf>iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   *
+   * <br>globaldefs::NamingAttributes subnetName: Name of the subnetwork.
+   * <br>transmissionParameters::LayerRateList_T tpLayerRateList: List of TP 
+   * layer rates for which the edge points are to be fetched. An edge point must 
+   * contain at least one of the layer rates specified to be reported.  If the 
+   * list is empty then edge points of all rates are returned.
+   * <br>transmissionParameters::LayerRateList_T connectionLayerRateList: List 
+   * of connection layer rates for which the edge points are to be fetched. An 
+   * edge point must support connections for at least one of the
+   * layer rates specified to be reported.  If the list is empty then edge 
+   * points for all connection rates are returned.
+   * <br>unsigned long how_many: Maximum number of edge points to return in 
+   * the first batch.
+   * <br>globaldefs::NamingAttributesList_T nameList: First batch of edge 
+   * point names.
+   * <br>globaldefs::NamingAttributesIterator_I tpIt: Iterator to retrieve the 
+   * remaining edge point names.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * As for getAllEdgePoints().
+   *
+   **/
+   void getAllEdgePointNames(
+         in globaldefs::NamingAttributes_T subnetName,
+         in transmissionParameters::LayerRateList_T layerRateList,
+         in transmissionParameters::LayerRateList_T connectionLayerRateList,
+         in unsigned long how_many,
+         out globaldefs::NamingAttributesList_T nameList,
+         out globaldefs::NamingAttributesIterator_I nameIt)
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /** 
+   * <p>This service returns a list of PSR (UPSR or SNCP) associated termination 
+   * points for the TP whose name is passed as a parameter.</p> 
+   *
+   * <p>To create an SNC between CTPs in a TOPO_OPEN_PSR for instance, the NMS 
+   * needs to have two zEnd CTPs which are in the same SONET or SDH timeslot. 
+   * The service allows the NMS to query the associated CTP of a given CTP, 
+   * associated PTP given a PTP or associated FTP of a given FTP. 
+   * The timeslot of the TPs will be the same in the
+   * case of a TOPO_OPEN_PSR subnetwork, but the names of the
+   * two TPs will be different.
+   * This operation is symmetric on the associated TPs.
+   * Given a working TP, the associated TP will be the protecting TP.</p>
+   * <p>Note: The termination point name must be explicit (a generic endpoint 
+   * specification may not be used in this case). See 
+   * <a href=supportingDocumentation/objectNaming.pdf>
+   * Object Naming</a> for further detail on FTP naming.</p>
+   *
+   * <p>When this service is invoked with a TP that is not an edge point, the 
+   * returned TPs will be on the same Managed Element.</p>
+   *    
+   * <p>See terminationPoint::TPProtectionAssociation_T .</p>
+   *
+   * <br>globaldefs::NamingAttributes tpName: The name of the TP for which to 
+   * retrieve associated TPs.
+   * <br>terminationPoint::TerminationPointList_T tpList: The PSR associated 
+   * TPs.  If there are no PSR associated TPs, then an empty list is returned.  
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when tpName does not reference a CTP, FTP or 
+   *  PTP.<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when tpName references a CTP, FTP or PTP 
+   *  object that does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
+   *  lost<br>
+   * <br>
+   **/
+   void getAssociatedTP(
+         in globaldefs::NamingAttributes_T tpName,
+         out terminationPoint::TerminationPointList_T tpList)
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /** 
+   * <p>This method allows the NMS to query the TP pPool <--> TP/GTP 
+   * associations.</p>
+   *
+   * <p>If a TPPool name is supplied, the method will return the names of all 
+   * the TPs/GTPs that have been grouped to the supplied TPPool.</p>
+   *
+   * <p>If a TP/GTP name is supplied, the method will return the names of any 
+   * associated TPPools. An empty list is
+   * returned if no associated TP pools exist for the input TP/GTP, or if no 
+   * TPs/GTPs have been grouped to the input TP pool.</p>
+   * 
+   * <p><b>Note 1.</b> Any termination point name must be explicit (a generic 
+   * endpoint specification must not be used in this case). See 
+   * <a href=supportingDocumentation/objectNaming.pdf>
+   * Object Naming</a> for further detail on FTP naming and for details on 
+   * general TP/GTP and TP pool naming.</p>
+   *
+   * <p><b>Note 2.</b>  A TP/GTP can be a member of at most one TPPool.
+   * A TP/GTP is associated to a TPPool (TP/GTP --> TPPool) by admission
+   * as a member (TP/GTP is a member of TPPool).</p>
+   *
+   * <br>globaldefs::NamingAttributes tpName: The name of the TP pool or
+   * TP or GTP for which to retrieve the association.
+   * <br>unsigned long how_many: Maximum number of "contained" TP names,
+   * GTP names or "associated" TP pool names to return in the first batch.
+   * <br>globaldefs::NamingAttributesList_T nameList: First batch of 
+   * "contained" TP names, GTP names or "associated" TP pool names.
+   * <br>globaldefs::NamingAttributesIterator_I nameIt: 
+   * Iterator to retrieve the remaining "contained" TP names, GTP names 
+   * or "associated" TP pool names.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when tpName does not reference a TP, GTP or 
+   *  TPPool object<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when tpName references a TP/GTP to TP pool 
+   *  object that does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
+   *  lost<br>
+   * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
+   *  that the EMS can support has been reached<br>
+   * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
+   *  that the EMS can support has been reached<br>
+   * <br>
+   **/
+   void getTPGroupingRelationships(
+         in globaldefs::NamingAttributes_T tpName,
+         in unsigned long how_many,
+         out globaldefs::NamingAttributesList_T nameList,
+         out globaldefs::NamingAttributesIterator_I nameIt)
+        raises(globaldefs::ProcessingFailureException);
+  
+
+
+  /**
+   * <p>This allows an NMS to request a list of the SNCs for the
+   * specified Subnetwork at the specified connectionRates.
+   * This operation also returns bundled SNCs, if any (see 
+   * <a href=supportingDocumentation/BundledSNC.pdf>Bundled SNC overview</a>
+   * for further details).</p>
+   *
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * this operation uses an iterator. See
+   * <a href=supportingDocumentation/iterators.pdf>iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   *
+   * <br>globaldefs::NamingAttributes_T subnetName: Name of the subnetwork.
+   * <br>transmissionParameters::LayerRateList_T connectionRateList:
+   * List of rates of the SNCs to be reported.
+   * If an empty list is specified, then all SNCs of all rates are to be 
+   * reported.
+   * <br>unsigned long how_many: Maximum number of SNCs to be reported in the 
+   * first batch.
+   * <br>subnetworkConnection::SubnetworkConnectionList_T sncList: First batch 
+   * of SNCs.
+   * <br>subnetworkConnection::SNCIterator_I sncIt: Iterator to retrieve the
+   * remaining SNCs.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when subnetName does not reference an 
+   *  multiLayerSubnetwork object or connectionRateList contains undefined 
+   *  values<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when subnetName references object which 
+   *  does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
+   *  lost<br>
+   * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
+   *  that the EMS can support has been reached<br>
+   * <br>
+   **/
+   void getAllSubnetworkConnections(
+         in globaldefs::NamingAttributes_T subnetName,
+         in transmissionParameters::LayerRateList_T connectionRateList,
+         in unsigned long how_many,
+         out subnetworkConnection::SubnetworkConnectionList_T sncList,
+         out subnetworkConnection::SNCIterator_I sncIt) 
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This operation has exactly the same behaviour as 
+   * getAllSubnetworkConnections(), but
+   * instead of returning the entire object structures, this operation returns 
+   * their names.</p>
+   *
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * this operation uses an iterator. See
+   * <a href=supportingDocumentation/iterators.pdf>iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   *
+   * <br>globaldefs::NamingAttributes_T subnetName: Name of the subnetwork.
+   * <br>transmissionParameters::LayerRateList_T connectionRateList:
+   * List of rates of the SNC names to be reported.
+   * If an empty list is specified, then all SNC names of all rates are to be 
+   * reported.
+   * <br>unsigned long how_many: Maximum number of SNC names to be reported in 
+   * the first batch.
+   * <br>globaldefs::NamingAttributesList_T nameList: First batch of SNC 
+   * names.
+   * <br>globaldefs::NamingAttributesIterator_I nameIt: Iterator to retrieve 
+   * the remaining SNC names.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * As for getAllSubnetworkConnections().</a>.
+   **/
+   void getAllSubnetworkConnectionNames(
+         in globaldefs::NamingAttributes_T subnetName,
+         in transmissionParameters::LayerRateList_T connectionRateList,
+         in unsigned long how_many,
+         out globaldefs::NamingAttributesList_T nameList,
+         out globaldefs::NamingAttributesIterator_I nameIt)
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This allows an NMS to request a list of the SNCs using the
+   * specified termination point at the specified connection rates. A SNC is 
+   * using the specified TP if any of its routes, intended and/or backup, in any 
+   * state, use this TP. A TP may be a PTP in which case a full list of SNCs 
+   * using any of its contained CTPs is required. A TP may be:<ul>
+   * <li> a CTP, in which case SNCs using that CTP or any of its contained 
+   * CTPs are required. This includes SNCs in which any of the referenced 
+   * CTPs participate that match the specified connection rate filter and 
+   * bundled SNCs that are associated with any GTPs in which any of the 
+   * referenced CTPs are grouped.</li> 
+   * <li> an FTP, in which case a full list of SNCs using the 
+   * FTP or any of its contained CTPs is required. This includes SNCs in which 
+   * the FTP or any of the referenced CTPs participate that match the specified 
+   * connection rate filter and bundled SNCs that are associated with any GTPs 
+   * in which any of the referenced CTPs are grouped.</li>
+   * <li> a GTP, in which case the bundled SNCs in which that GTP has a role are 
+   * required. The layerRate is set to LR_Not_Applicable</li></ul></p>
+   * <p>Both end CTPs/FTPs/GTPs and intermediate CTPs/FTPs/GTPs are considered. 
+   * (see also <a href=supportingDocumentation/BundledSNC.pdf>Bundled SNC 
+   * overview</a> for further details).</p>
+   *
+   * <p>All legs of a broadcast system can be retrieved using this operation 
+   * where the source TP of the broadcast system is used as input to the 
+   * operation.The output will be the list of individual SNCs that make up the 
+   * broadcast system.</p>
+   *
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * this operation uses an iterator. See
+   * <a href=supportingDocumentation/iterators.pdf>iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   *
+   * <br>globaldefs::NamingAttributes_T tpName: Termination point for which
+   * to report SNCs. The termination point name must be explicit (a generic 
+   * endpoint specification may not be used in this case). See 
+   * <a href=supportingDocumentation/objectNaming.pdf>
+   * Object Naming</a> for further detail on FTP naming.
+   *
+   * <br>transmissionParameters::LayerRateList_T connectionRateList:
+   * The list of rates of the SNCs to be reported.
+   * If an empty list is specified, then all SNCs of all rates are to be 
+   * reported.
+   * <br>unsigned long how_many: Maximum number of SNCs to report in the first 
+   * batch.
+   * <br>subnetworkConnection::SubnetworkConnectionList_T sncList:  First 
+   * batch of SNCs.An SNC is only reported if it respects both the tpName and 
+   * connectionRateList filters.
+   * <br>subnetworkConnection::SNCIterator_I sncIt: Iterator to retrieve the 
+   * remaining SNCs.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised if tpName does not reference a 
+   *  terminationPoint object or connectionRateList contains undefined 
+   *  values<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when tpName references an object that does 
+   *  not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is #
+   *  lost<br>
+   * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
+   *  that the EMS can support has been reached<br>
+   * <br>
+   **/
+   void getAllSubnetworkConnectionsWithTP (
+         in globaldefs::NamingAttributes_T tpName,
+         in transmissionParameters::LayerRateList_T connectionRateList,
+         in unsigned long how_many,
+         out subnetworkConnection::SubnetworkConnectionList_T sncList,
+         out subnetworkConnection::SNCIterator_I sncIt)
+        raises(globaldefs::ProcessingFailureException);
+
+  /**
+   * <p>This operation has exactly the same behaviour as 
+   * getAllSubnetworkConnectionsWithTP(), but
+   * instead of returning the entire object structures, this operation returns 
+   * their names.</p>
+   *
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * this operation uses an iterator. See
+   * <a href=supportingDocumentation/iterators.pdf>iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   *
+   * <br>globaldefs::NamingAttributes_T tpName: Termination point for which
+   * to report SNCs. The termination point name must be explicit (a generic 
+   * endpoint specification may not be used in this case). See 
+   * <a href=supportingDocumentation/objectNaming.pdf>
+   * Object Naming</a> for further detail on FTP naming.
+   *
+   * <br>transmissionParameters::LayerRateList_T connectionRateList:
+   * The list of rates of the SNCs to be reported.
+   * If an empty list is specified, then all SNCs of all rates are to be 
+   * reported.
+   * <br>unsigned long how_many: Maximum number of SNCs to report in the first 
+   * batch.
+   * <br>globaldefs::NamingAttributesList_T nameList: First batch of SNC 
+   * names.
+   * <br>globaldefs::NamingAttributesIterator_I nameIt: Iterator to retrieve 
+   * the remaining SNC names.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * As for getAllSubnetworkConnectionsWitTP().
+   **/
+   void getAllSubnetworkConnectionNamesWithTP (
+         in globaldefs::NamingAttributes_T tpName,
+         in transmissionParameters::LayerRateList_T connectionRateList,
+         in unsigned long how_many,
+         out globaldefs::NamingAttributesList_T nameList,
+         out globaldefs::NamingAttributesIterator_I nameIt)
+        raises(globaldefs::ProcessingFailureException);
+
+  /**
+   * <p>This service returns the route for the SNC whose name is specified 
+   * as a parameter. This operation also works for bundled SNCs. In the case of 
+   * a bundled SNC, the EMS returns the route betweens GTPs (see 
+   * <a href=supportingDocumentation/BundledSNC.pdf>Bundled SNC overview</a>
+   * for further details).</p>
+   *
+   * <p>The route information, in the form of crossconnects, should identify the 
+   * resources allocated to the SNC at the time of the request and the way in 
+   * which these resources are used. For example, for a resilient SNC that is 
+   * implemented in the subnetwork using subnetwork connection protection, all 
+   * details of the route including normal and alternative paths should be 
+   * provided. If the SNC is using some form of dynamic
+   * rerouting then it is clearly acceptable that the route include only the 
+   * single thread of crossconnections that is supporting the traffic (as there 
+   * may be many alternative potential paths that could be selected).</p>
+   *
+   * <p>The NMS specifies if it wants to retrieve only resources in the layer of 
+   * the SNC (the CCs that belong to the SNC), or higher order CCs also (the CCs 
+   * of other SNCs that are used to carry the traffic of the queried SNC).  The 
+   * ability to retrieve higher order CCs is optional.</p>
+   *
+   * <p>All cross-connections allocated to the SNC must be returned, even if 
+   * they are not active in the managed elements.  This allows the NMS to query 
+   * the route that will be used before activating an SNC.</p>
+   *
+   * <p>If the SNC has more alternative routes, then it retrieves the intended 
+   * route if the SNC is pending or partial, otherwise it retrieves the active 
+   * route. This because there can be more partial routes and no active route, 
+   * in such case the intended route is replied, as it is not known which of the 
+   * partial routes is the candidate for becoming the active route.</p>
+   *
+   * <p>In the additionalInfo field of first CrossConnect_T (first XC is the one 
+   * involving <b>A1</b> end point of the SNC) record of the replied sequence 
+   * the following parameters may be present:<ul>
+   * <li>name="RouteId"; value="id"</li>
+   * <li>name="RouteIntended "; value="y" | "n" </li>
+   * <li>name="RouteActualState"; value="inactive" | "partial" | "active" </li>
+   * <li>name="RouteAdminState"; value="locked" | "unlocked"</li>
+   * <li>name="RouteInUse";		value="y" | "n"</li>
+   * <li>name="RouteExclusive";	value="y" | "n"</li></ul>
+   * See <a href=supportingDocumentation/additionalInfoUsage.pdf>
+   * Additional Information Usage</a> for detail on additional information
+   * for SNCs, cross connections and TPs.</p>
+   *
+   * <br>globaldefs::NamingAttributes sncName: The name of the SNC.
+   * <br>boolean includeHigherOrderCCs: Specifies whether the higher order CCs 
+   * of other SNCs used to carry the queried SNC have to be included in addition 
+   * to the CCs of the queried SNC.
+   * <br>subnetworkConnection::Route_T route: The route of the SNC.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when sncName does not reference a 
+   *  subnetworkConnection object<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when sncName references an SNC object that 
+   *  does not exist<br>
+   * EXCPT_UNABLE_TO_COMPLY - Raised when the provided value for 
+   *  includeHigherOrderCCs is "True" and EMS is not able to provide higher 
+   *  order CCs in the reply<br>
+   * <br>
+   **/
+   void getRoute(
+         in globaldefs::NamingAttributes_T sncName,
+         in boolean includeHigherOrderCCs,
+         out subnetworkConnection::Route_T route) 
+        raises (globaldefs::ProcessingFailureException);
+
+ /** 
+   * <p>Like getRoute(), 
+   * this service returns the route, in terms of crossconnects, for the SNC 
+   * whose name is specified as a parameter. This service also returns the list 
+   * of topological links for that SNC that are used in the route.</p> 
+   *
+   * <p>All topological links that the traffic of the SNC travel across are 
+   * returned including the links that connect to the terminating PTP and/or TP 
+   * containing the termination TP.</p> 
+   * 
+   * <p>The route information, in the form of crossconnects, should identify the 
+   * resources allocated to the SNC at the time of the request and the way in 
+   * which these resources are used. For example, for a resilient SNC that is 
+   * implemented in the subnetwork using subnetwork connection protection, all 
+   * details of the route including normal and alternative paths should be 
+   * provided. If the SNC is using some form of dynamic rerouting then it is 
+   * clearly acceptable that the route include only the single thread of 
+   * crossconnections that is supporting the traffic (as there may be many 
+   * alternative potential paths that could be selected).</p> 
+   * <p>The list of Topological links can be used in conjunction with the 
+   * crossconnects to lay out the entire route through the subnetwork.</p> 
+   * 
+   * <p>Unlike getRoute(), 
+   * this service always retrieves resources in all layers that support the 
+   * route. This includes all crossconnects of the SNC (i.e. the crossconnects 
+   * SNC) and all higher order crossconnects (i.e. the crossconnects of server 
+   * SNCs that are used to carry the traffic of the queried SNC).  It also 
+   * includes all topological links (at any layer) that any traffic of the SNC 
+   * passes across. </p> 
+   * 
+   * <p>All crossconnects allocated to the SNC must be returned, even if 
+   * they are not active in the managed elements.  This allows the NMS to query 
+   * the route that will be used before activating the SNC.</p> 
+   * <p>If the SNC has more alternative routes, then it retrieves the intended 
+   * route if the SNC is pending or partial, otherwise it retrieves the active 
+   * route. This because there can be more partial routes and no active route, 
+   * in such case the intended route is replied, as it is not known which of the 
+   * partial routes is the candidate for becoming the active route.</p>
+   *
+   * <p>In the additionalInfo field of first CrossConnect_T (first XC is the one 
+   * involving <b>A1</b> end point of the SNC) record of the replied sequence 
+   * the following parameters may be present:<ul>
+   * <li>name="RouteId"; value="id"</li>
+   * <li>name="RouteIntended "; value="y" | "n" </li>
+   * <li>name="RouteActualState"; value="inactive" | "partial" | "active" </li>
+   * <li>name="RouteAdminState"; value="locked" | "unlocked"</li>
+   * <li>name="RouteInUse";		value="y" | "n"</li>
+   * <li>name="RouteExclusive";	value="y" | "n"</li></ul>
+   * See <a href=supportingDocumentation/additionalInfoUsage.pdf>
+   * Additional Information Usage</a> for detail on additional information
+   * for SNCs, cross connections and TPs.</p>
+   * 
+   * <br>globaldefs::NamingAttributes sncName: The name of the SNC. 
+   * <br>subnetworkConnection::Route_T route: The route of the SNC. 
+   * <br>topologicalLink::TopologicalLinkList_T topologicalLinkList: The list 
+   * of the topological links.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when sncName does not reference a 
+   *  subnetworkConnection object<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when sncName references a 
+   *  subnetworkConnection object that does not exist<br>
+   * <br>
+   **/
+   void getRouteAndTopologicalLinks(
+         in globaldefs::NamingAttributes_T sncName,
+         out subnetworkConnection::Route_T route,
+         out topologicalLink::TopologicalLinkList_T topologicalLinkList)
+        raises(globaldefs::ProcessingFailureException);
+
+  /**
+   * <p> This operation will return the SubnetworkConnection structure 
+   * for the SNC whose name is supplied as a parameter. This operations
+   * will provide a bundled SNC structure if the name provided is that 
+   * of a bundled SNC (see 
+   * <a href=supportingDocumentation/BundledSNC.pdf>Bundled SNC overview</a>
+   * for further details).</p>
+   *
+   * <br>globaldefs::NamingAttributes sncName: The name of the SNC to 
+   * retrieve.
+   * <br>subnetworkConnection::SubnetworkConnection_T snc: The SNC structure 
+   * retrieved.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * failure<br>
+   * EXCPT_INVALID_INPUT - Raised when sncName does not reference a 
+   *  subnetworkConnection object<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when sncName references an SNC object that 
+   *  does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
+   *  lost<br>
+   * <br>
+   **/
+   void getSNC(
+         in globaldefs::NamingAttributes_T sncName,
+         out subnetworkConnection::SubnetworkConnection_T snc)
+        raises (globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p> This operation will return the SubnetworkConnection structures 
+   * for the SNCs whose userLabel is supplied as a parameter. This operations
+   * will provide a bundled SNC structure if the name provided is that 
+   * of a bundled SNC (see 
+   * <a href=supportingDocumentation/BundledSNC.pdf>Bundled SNC overview</a>
+   * for further details).</p>
+   *
+   *
+   * <p>This operation does not use an iterator, since the number of SNCs
+   * returned is expected to be usually 1.</p>
+   *
+   * <br>string userLabel: The userLabel of the SNCs to retrieve.
+   * <br>subnetworkConnection::SubnetworkConnection_T sncList: The SNCs 
+   * retrieved.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
+   *  lost<br>
+   * <br>
+   **/
+   void getSNCsByUserLabel(
+         in string userLabel,
+         out subnetworkConnection::SubnetworkConnectionList_T sncList)
+        raises (globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>The NMS invokes the createSNC service to request the EMS to create an 
+   * SNC given the parameters passed in the method.
+   * This operation also applies to bundled SNCs (see 
+   * <a href=supportingDocumentation/BundledSNC.pdf>Bundled SNC overview</a>
+   * for further details).</p>
+   *
+   * <p>Failure : This will throw an exception if it fails.  No SNC object 
+   * will be created on the EMS.</p> 
+   *
+   * <p>Success : SNC is created in the EMS and the SNCState is set to the 
+   * appropriate state in the parameter theSNC.  The parameter theSNC will 
+   * contain the attributes of the created SNC.</p>
+   *
+   * <p>For more details on how this service affects the state of an SNC see
+   * <a href=supportingDocumentation/modesOfOperation.pdf>SNC Management Modes 
+   * of Operation</a> and
+   * <a href=supportingDocumentation/SNCStateDiagram.pdf>SNC state 
+   * diagram</a>.</p>
+   *
+   * <p>An SNC may be created between any TPs. At a "CM" end point (a G.805 CP) 
+   * the span of the SNC starts with a fixed or flexible connection through the 
+   * ME at the SNC layer, i.e. the connectable layer of the end point. At an 
+   * "LC"end point the span of the SNC starts with a G.805 TCP with mapping mode 
+   * set to TM_TERMINATED_AND_AVAILABLE_FOR_MAPPING.</p>
+   *
+   * <p>This operation may be used to create subnetwork connections. There is 
+   * some variety to the form that SNCs may take. Examples of these SNCs are 
+   * provided in <a href=supportingDocumentation/layers.pdf>layering</a>. The 
+   * following list shows the essence of variety of SNCs. An SNC may be one:<ul>
+   * <li>in which CTPs are all cross-connected and their tpMappingMode is set
+   * to TM_NEITHER_TERMINATED_NOR_AVAILABLE_FOR_MAPPING. In this case G.805
+   * trails could be created by the NMS by using setTPData to terminate and map 
+   * CTPs that are adjacent to the CTPat the end of subnetwork connections 
+   * created by means of createSNC.</li>
+   * <li>in which one or more end FTP/CTPs expose G.805 TCPs e.g. CTP type F
+   * referenced in <a href=supportingDocumentation/layers.pdf>layering</a>. 
+   * If all ends of the SNC terminate on this type of TP then the SNC provides
+   * the full route of a G.805 Trail.</li> 
+   * <li>in which one or more end CTP offer the capability to terminate and 
+   * map and the SNC reaches the end CTP via the PTP/FTP containing the CTP. 
+   * In this case the SNC creation also sets the tpMappingMode to
+   * TM_TERMINATED_AND_AVAILABLE_FOR_MAPPING as well as creating the 
+   * crossconnects. If all ends of the SNC terminate on this type of TP or 
+   * any combination of this type of TP and TPs that expose G.805 TCPs (see 
+   * above) then the SNC provides the full route of a G.805 Trail.</li>
+   * <li>in which an end TP is a PTP (which is effectively permanently
+   * "terminated and available for mapping". If all ends of the SNC terminate on 
+   * this type of TP or any combination of this type of TP, CTPs offering the
+   * capability to terminate and map and TPs that expose G.805 TCPs (see 
+   * above) then the SNC provides the full route of a G.805 Trail.</li></ul></p>
+   *
+   * <p>CreateSNC allows for the creation of either point-to-point
+   * connections or legs of point-to-multipoint connections.</p>
+   *
+   * <p>To add a leg to a broadcast system, the aEnd TP in SNCCreateData_T shall
+   * be populated with the common source TP of the broadcast system.
+   * Each leg of a broadcast system is a separate SNC and is managed 
+   * individually, even though they may share cross-connects.
+   * </p>
+   *
+   * <p>To create a broadcast system from a Point to Point SNC, the aEnd of the
+   * Point to Point SNC is used as the aEnd TP in TPDataList_T.</p>
+   *
+   * <p>If an existing SNC respects all the conditions described in createData, 
+   * then the EMS is allowed to return that existing SNC.  It is also allowed 
+   * for the EMS to attempt to create a different SNC as explained below.  The 
+   * rest of the description below applies to the cases where the EMS decides to 
+   * create a new SNC.</p>
+   *
+   * <p>If the NMS specifies a routing constraint in the request, then the EMS 
+   * must respect the specified constraint even if there are pending, partial, 
+   * or active SNCs using the required parts of the route.</p>
+   * 
+   * <p>The SNC is created with its intended route, in locked state. By means of 
+   * other operations it is possible to add (then remove) additional routes for 
+   * restoration purposes. By means of additional info, it is possible to 
+   * specify if the intended route is EXCLUSIVE or not; if EXCLUSIVE, then the 
+   * EMS must find a route that does not conflict or share CCs or TPs with any 
+   * other existing SNC route, in any administrative state. Once an EXCLUSIVE 
+   * (intended) route has been created by EMS, any further creation operation 
+   * which conflicts with the exclusive route shall be refused.</p>
+   *
+   * <p>The EMS tries to find a route for the request and if found
+   * returns the SubnetworkConnection_T structure back to the NMS with the 
+   * members set to the appropriate values.  The EMS should attempt to find a 
+   * route that does not conflict or share CCs with any other existing SNC, 
+   * before it resorts to creating a conflicting SNC or an SNC that shares 
+   * CCs.</p>
+   *
+   * <p>If the TPs at the Aend and the Zend are already
+   * in use by another SNC, the EMS may still create the SNC
+   * or EXCPT_OBJECT_IN_USE or EXCPT_TIMESLOT_IN_USE may be thrown,
+   * depending on its mode of operation.</p>
+   *
+   * <p>If there already exists
+   * between the same termination points and with the same directionality and 
+   * type, another SNC that is in the partial state, the EMS will still attempt 
+   * to create the new SNC. If no constraint is specified, the EMS should   
+   * attempt to find a different path. If constraints are specified, then the 
+   * EMS attempts to create the SNC with an appropriate route.</p>
+   *
+   * <p>If a route cannot be found, the SNC is <b>not</b> created in the EMS 
+   * and the EXCPT_UNABLE_TO_COMPLY exception 
+   * is thrown (unless a more precise exception applies), indicating the 
+   * reason.</p>
+   *
+   * <p>Depending on the SNC management mode of operation, it is acceptable for 
+   * an EMS to not implement this service in which case 
+   * the EXCPT_NOT_IMPLEMENTED exception is thrown.</p>
+   * 
+   * <p>VC SNCs are normally created over a VP network. Therefore, the VPI 
+   * numbers of the VC SNCs specified with createData should match existing 
+   * terminated and mapped VP CTPs. If a VPI number does not match an existing 
+   * VP CTP, then the EMS may create the VP CTP as 'TERMINATED and MAPPED' if 
+   * emsFreedomLevel allows it. 
+   * Such a VP CTP is created with no traffic parameters. Note that such
+   * automatic creation of resourceless terminated VP CTPs depends on the 
+   * capability of the EMS and/or the ATM NE to support VC connections directly 
+   * on ATM links (i.e., with no VP overlay network).</p>
+   * 
+   * <p>An NMS can request the EMS to create an ATM network routed SNC (VP or VC 
+   * layer rates); the EMS will then manage the subnetwork connection as a soft 
+   * PVC. The soft PVC may be completely or partially defined with regards to 
+   * its source and destination TPs. The aEnd will, by definition, be the 
+   * source of the Soft PVC (i.e., the originator of the call)
+   * and the zEnd will be the destination (i.e., being called). In order
+   * to allow the NMS to manage Soft PVCs that may have only their source 
+   * TPs in the subnetwork, the ctpName parameter from TPDataList zEnd 
+   * will be used to either specify the VPI and/or VCI value of the destination 
+   * CTP (including EMS, managedElement, PTP/FTP and ATM_NI a.k.a., the full 
+   * location in the physical ATM NE)or the address of the ATM interface on 
+   * which the call will terminate and optionally the VPI/VCI values if they are 
+   * specified/known by the NMS (but not the complete physical location of the 
+   * VP or VC TP).<p>
+   *
+   * <p>Note that all SNC state transitions (including to/from PENDING and 
+   * PARTIAL) are applicable to ATM VPCs and VCCs. However, the PARTIAL state 
+   * should only apply to plain PVCs (intermediate CTPs of a Soft PVC are 
+   * automatically created and deleted by the network elements and they do not 
+   * usually notify the EMS).</p>
+   *
+   * <br>SNCCreateData_T createData: structure describing the subnetwork 
+   * connection to be created.
+   * <br>GradesOfImpact_T tolerableImpact: the maximum tolerable impact 
+   * allowed.
+   * <br>EMSFreedomLevel_T emsFreedomLevel: the maximum level of freedom 
+   * allowed to the EMS to perform the creation.
+   * <br>SubnetworkConnection_T theSNC:
+   * The newly created SNC.  It will have sncState and name set.  The EMS 
+   * selects the SNC names so that they are not reused (within a reasonable time 
+   * frame) for different SNCs.
+   * <br>string errorReason: Specifies the creation error(s) if any.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if an EMS does not implement this 
+   *  service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when any input parameter is syntactically 
+   *  incorrect (e.g. field of createData is invalid). If an 
+   *  NMS requests a bundled SNC service such that the GTP endpoints of the SNC 
+   *  do not match, i.e., the GTPs do not have the same number of CTPs and in a 
+   *  particular order with respect to their layerRates or are not of the same 
+   *  layer rate, then the EMS shall raise EXCPT_INVALID_INPUT.<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when fields of createData refer to an 
+   *  object that does not exist<br>
+   * EXCPT_PROTECTION_EFFORT_NOT_MET - Raised if the NMS requests an SNC
+   *  with a static protection level and protection effort that cannot be met by 
+   *  the EMS<br>
+   * EXCPT_UNABLE_TO_COMPLY - Raised if the EMS is unable to find an appropriate
+   *  route for the SNC<br>
+   * EXCPT_UNSUPPORTED_ROUTING_CONSTRAINTS - Raised if the EMS does not support 
+   *  the routing constraints specified<br>
+   * EXCPT_USERLABEL_IN_USE - Raised when the userLabel uniqueness constraint is 
+   *  not met<br>
+   * EXCPT_OBJECT_IN_USE - Raised if the intended route is in conflict with an 
+   *  "exclusive"  route of another SNC.
+   * <br>
+   **/
+   void createSNC (
+         in subnetworkConnection::SNCCreateData_T createData,
+         in subnetworkConnection::GradesOfImpact_T tolerableImpact,
+         in EMSFreedomLevel_T emsFreedomLevel,
+         out subnetworkConnection::SubnetworkConnection_T theSNC, 
+         out string errorReason)
+        raises (globaldefs::ProcessingFailureException);
+
+  /**
+   * <p>This service is used to put an SNC into the ACTIVE state.
+   * This operation also applies to bundled SNCs (see 
+   * <a href=supportingDocumentation/BundledSNC.pdf>Bundled SNC overview</a>
+   * for further details).</p>
+   * 
+   * <p><i>Success:</i> SNCState in the parameter theSNC is set to SNCS_ACTIVE.  
+   * All cross-connects required for the SNC were activated successfully.
+   * The errorReason parameter is set to an empty string.</p>
+   *
+   * <p><i>Failure:</i> No exception thrown, except in the cases listed below.
+   * If the SNC or any of its network resources have changed as a result of this 
+   * operation, then no exception can be
+   * thrown so that theSNC can be passed back to the NMS.
+   * The SNCState in resulting theSNC will be either SNCS_PARTIAL or 
+   * SNCS_PENDING. The state will be SNCS_PARTIAL if not all
+   * cross-connects on MEs have been successfully set up.  The state will be 
+   * SNCS_PENDING if the EMS mode of operation prevents the activation of the 
+   * SNC. The errorReason parameter is set accordingly.</p>
+   *
+   * <p>For more details on how this service affects the state of an SNC see
+   * <a href=supportingDocumentation/modesOfOperation.pdf>SNC Management Modes 
+   * of Operation</a> and
+   * <a href=supportingDocumentation/SNCStateDiagram.pdf>SNC state 
+   * diagram</a>.</p>
+   *
+   * <p> During activation of an SNC, the TPs of the SNC are configured, and the 
+   * necessary cross-connects are established for the SNC and appropriate 
+   * changes are made to tpMappingMode such that TPs that are not TP_NA have 
+   * their tpMappingMode set appropriately for the SNC configuration. See also 
+   * createSNC() for an explanation of tpMappingMode behaviour. An SNC can be 
+   * activated while in any state. When activated that additional information
+   * provided during the creation is also applied to the SNC in the network.</p>
+   *
+   * <p>In case of an ATM SNC (VP or VC), multiple termination points (VP 
+   * CTP or VC CTP) can be created as a result of an activateSNC 
+   * operation. These CTPs are all created/adjusted
+   * in compliance with the egress and ingress traffic parameters provided in 
+   * the tpsToModify structure. For example, a non terminated VP SNC created 
+   * over 3 managed elements will result, upon activation, in the usage of 6 VP 
+   * CTPs and 3 VP cross-connections.</p>
+   *
+   * <p>Note that the activateSNC operation can be called repeatedly and 
+   * eventually should succeed (except in conflict
+   * cases where the SNC remains in SNCS_PENDING or SNCS_PARTIAL).
+   * Should the missing cross-connects be activated in the MEs via 
+   * a craft interface, for example, prior to communications to those MEs
+   * being re-established, the activateSNC command ultimately should 
+   * succeed when communication to the MEs is re-established 
+   * (even though all cross-connects already exist).</p>
+   * 
+   * <p>The EMS will apply the transmissionParams specified 
+   * in the tpsToModify parameter (same behaviour as
+   * managedElementManager::ManagedElementMgr_I::setTPData().
+   * They may be applied before or after the creation of the CCs, as 
+   * appropriate. Existing TP transmission parameters for which no changes
+   * were requested in tpsToModify will be left unchanged.
+   * However, the alarm reporting on the TPs and the containing TPs
+   * may be turned on by the EMS as part of this request,
+   * unless otherwise specified via the transmission parameter
+   * "AlarmReporting".  A similar behaviour is also allowed for the serviceState 
+   * parameter, which may be set to IN_SERVICE for the TPs and the 
+   * containing TPs. See <a href=supportingDocumentation/LayeredParameters.pdf>
+   * transmissionParameters</a>.
+   * </p>
+   * 
+   * <p>If a given entry in the list of transmission parameters specified in
+   * the TPData_T can not be successfully applied to the TP, for any reason, 
+   * then the errorReason field is appended with an appropriate reason text.
+   * Applying transmission parameters is best-effort (where not stated 
+   * otherwise) and the resulting values of the transmission parameters are 
+   * provided in the updated tpsToModify parameter. If the parameter is "not 
+   * best effort" then the whole operation will be rejected and the appropriate 
+   * exception thrown (see exceptions below).</p>
+   *
+   * <p>An already active SNC
+   * can be activated again; the EMS is allowed to not send the 
+   * commands to the ME a second time for the cross connect establishment 
+   * however the commands may be sent for the transmission parameters.
+   * While in SNCS_PARTIAL state, it is possible to activate an SNC again, this 
+   * corresponds to a retry. </p>
+   *
+   * <p>This service is used to put an SNC into the ACTIVE state. More 
+   * precisely, all the SNC routes, intended and backup, if any, are unlocked. 
+   * The restoration process will take control of the unlocked routes and 
+   * activate the proper one. The behavior of sncState is the same in case there 
+   * is only one route or more routes of the SNC.</p>
+   *
+   * <br>NamingAttributes_T sncName: the name of the subnetwork connection to 
+   * be deactivated.
+   * <br>GradesOfImpact_T tolerableImpact: the maximum tolerable impact 
+   * allowed.
+   * <br>EMSFreedomLevel_T emsFreedomLevel: The maximum level of freedom 
+   * allowed to the EMS to perform the activation.<br>
+   * <br>TPDataList_T tpsToModify: a list of TPs and parameters to apply, 
+   * updated to provide the resulting parameters.
+   * <br>SubnetworkConnection theSNC: The subnetwork connection after the 
+   * operation.
+   * <br>string errorReason: Specifies the activation error(s) if any.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if an EMS does not implement this service; 
+   *  this is only allowed if the EMS does not support the PENDING state and if 
+   *  the PARTIAL state is unreachable<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when any input parameter is syntactical 
+   *  incorrect (e.g. sncName does not refer to an SNC object or any field in 
+   *  tpsToModify is invalid)<br>
+   * EXCPT_OBJECT_IN_USE - Raised if the SNC can not be activated because of CC, 
+   *  or TP conflicts or conflicts between the active route (with equal or 
+   *  higher priority) of this and other SNCs or when CC creation would involve 
+   *  a TP that has an existing fixed CC that does not match that required for 
+   *  the SNC.<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised if sncName or tpsToModify reference an 
+   *  SNC/TP object that does not exist.<br>
+   * EXCPT_TIMESLOT_IN_USE - (Obsolete - EXCPT_OBJECT_IN_USE should be used) 
+   *  Raised if the SNC can not be activated because of timeslot conflicts with 
+   *  other SNCs. <br>
+   * EXCPT_UNABLE_TO_COMPLY - Raised if the SNC is in PENDING state and is in 
+   *  conflict with another ACTIVE or PARTIAL SNC. Raised when the EMS is unable 
+   *  to execute the request because at least one of the parameters although 
+   *  valid can not be set and that parameter is identified as "not best effort" 
+   *  in the <a href=supportingDocumentation/LayeredParameters.pdf>
+   *  Layered Transmission Parameters</a> document or in the
+   *  <a href=supportingDocumentation/additionalInfoUsage.pdf>
+   *  Additional Information Usage</a> document. Raised if the SNC cannot be 
+   *  activated because the EMS cannot comply for a reason different from the 
+   *  ones above. If the EMS cannot determine the reason it could not comply, it 
+   *  is also allowed to throw EXCPT_UNABLE_TO_COMPLY<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is lost 
+   *  and this prevents any change to the SNC<br>
+   * EXCPT_NOT_IN_VALID_STATE - Raised where the SNC would involve a CTP that is
+   *  not connectable due to the state of the server TP or in the case of 
+   *  inverse multiplexing where the SNC would involve a CTP that is not 
+   *  connectable due to the state of the client TP.
+   *  (Obsolete usage - EXCPT_OBJECT_IN_USE should be used instead for the case 
+   *  where an exception is raised if the SNC is in conflict
+   *  with another active or partial SNC and can not be created.)<br>
+   * <br>
+   **/
+   void activateSNC(
+         in    globaldefs::NamingAttributes_T sncName,
+         in    subnetworkConnection::GradesOfImpact_T tolerableImpact,
+         in    EMSFreedomLevel_T emsFreedomLevel,
+         inout subnetworkConnection::TPDataList_T tpsToModify,
+         out   subnetworkConnection::SubnetworkConnection_T theSNC,
+         out   string errorReason)
+        raises (globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This operation provides a way to create and activate a
+   * subnetwork connection in one command. As with the createSNC()
+   * operation and the activateSNC()
+   * operation, this operation also applies to bundled SNCs (see 
+   * <a href=supportingDocumentation/BundledSNC.pdf>Bundled SNC overview</a>
+   * for further details).</p>
+   *
+   * <p>It conceptually behaves like a call to createSNC followed by a call to 
+   * activateSNC. Therefore, if the pending state is supported, it is possible 
+   * for the SNC to be created but activation to be rejected, and the resulting 
+   * SNC will be in pending state. If the pending state is not supported, then 
+   * this is not possible and the SNC will not be created if activation is 
+   * rejected. All success/failure conditions
+   * that apply to the two base operations also apply to the combined
+   * operation.</p>
+   *   
+   * <p>If the SNC or any of its network resources have changed as a result of 
+   * this operation, then no exception can be thrown so that theSNC can be 
+   * passed back to the NMS. Therefore, the exceptions that apply to activateSNC 
+   * may not apply to the combined operation: if the creation was successful but 
+   * the activation is rejected (only possible if the pending state is 
+   * supported),no exception shall be thrown and the resulting SNC shall be 
+   * provided in the out parameter theSNC.</p>
+   *
+   * <p>For more details on how this service affects the state of an SNC see
+   * <a href=supportingDocumentation/modesOfOperation.pdf>SNC Management Modes 
+   * of Operation</a>
+   * and
+   * <a href=supportingDocumentation/SNCStateDiagram.pdf>SNC state 
+   * diagram</a>.</p>
+   *
+   * <br>SNCCreateData createData: structure describing the SNC to be created 
+   * and activated.
+   * <br>GradesOfImpact_T tolerableImpact: the maximum tolerable impact 
+   * allowed.
+   * <br>EMSFreedomLevel_T emsFreedomLevel: the maximum level of freedom 
+   * allowed to the EMS to perform the creation and activation.
+   * <br>TPDataList_T tpsToModify: a list of TPs and parameters to 
+   * apply, updated to provide the resulting parameters. 
+   * <br>SubnetworkConnection theSNC: the resulting SNC.  
+   * It will have sncState and name set. The EMS selects the SNC names so that 
+   * they are not reused (within a reasonable time frame) for different SNCs.
+   * <br>string errorReason: Specifies the creation and/or activation error(s) 
+   * if any.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when any input parameter is syntactical 
+   *  incorrect (e.g. a field of createData is invalid or any field in 
+   *  tpsToModify is invalid). If an NMS requests a bundled SNC 
+   *  service such that the GTP endpoints of the SNC do not match, i.e., the 
+   *  GTPs do not have the same number of CTPs and in a particular order with 
+   *  respect to their layerRates or are not of the same layer rate, then the 
+   *  EMS shall raise EXCPT_INVALID_INPUT.<br>
+   * EXCPT_OBJECT_IN_USE - Raised if the SNC can not be created and activated 
+   *  because of CC or TP conflicts or conflicts between the active route (with 
+   *  equal or higher priority) of this and other SNCs or when CC creation would 
+   *  involve a TP that has an existing fixed CC that does not match that 
+   *  required for the SNC.<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when fields of createData or tpsToModify 
+   *  reference objects that do not exist.<br>
+   * EXCPT_TIMESLOT_IN_USE - (Obsolete - EXCPT_OBJECT_IN_USE should be used)
+   *  Raised if the SNC can not be created and activated 
+   *  because of timeslot conflicts with other SNCs<br>
+   * EXCPT_PROTECTION_EFFORT_NOT_MET - Raised if the NMS requests an SNC with a 
+   *  static protection level and protection effort that cannot be met by the 
+   *  EMS<br>
+   * EXCPT_UNABLE_TO_COMPLY - Raised if the EMS is unable to find a route for 
+   *  the SNC. Raised if the EMS can not meet the GradesOfImpact requested by
+   *  the NMS. Raised when the EMS is unable to execute the request because at 
+   *  least one of the parameters although valid can not be set and that 
+   *  parameter is identified as "not best effort" in the <a 
+   *  href=supportingDocumentation/LayeredParameters.pdf>
+   *  Layered Transmission Parameters</a> document or in the
+   *  <a href=supportingDocumentation/additionalInfoUsage.pdf>
+   *  Additional Information Usage</a> document. Raised if the SNC cannot be 
+   *  activated because the EMS cannot comply for a reason different from the 
+   *  ones above. If the EMS cannot determine the reason it could not comply, it 
+   *  is also allowed to throw EXCPT_UNABLE_TO_COMPLY<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is lost 
+   *  and this prevents creation of the SNC<br>
+   * EXCPT_UNSUPPORTED_ROUTING_CONSTRAINTS - Raised if the EMS does not support 
+   *  the routing constraints specified<br>
+   * EXCPT_USERLABEL_IN_USE - Raised when the userLabel uniqueness constraint is 
+   *  not met<br>
+   * EXCPT_NOT_IN_VALID_STATE - Raised where the SNC would involve a CTP that is
+   *  not connectable due to the state of the server TP or in the case of 
+   *  inverse multiplexing where the SNC would involve a CTP that is not 
+   *  connectable due to the state of the client TP.
+   *  (Obsolete usage - EXCPT_OBJECT_IN_USE should be used instead for the case 
+   *  where an exception is raised if the SNC is in conflict
+   *  with another active or partial SNC and can not be created.)<br>
+   * <br>
+   **/
+   void createAndActivateSNC(
+         in    subnetworkConnection::SNCCreateData_T        createData,
+         in    subnetworkConnection::GradesOfImpact_T       tolerableImpact,
+         in    EMSFreedomLevel_T                            emsFreedomLevel,
+         inout subnetworkConnection::TPDataList_T           tpsToModify,
+         out   subnetworkConnection::SubnetworkConnection_T theSNC,
+         out   string                                       errorReason)
+        raises (globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>Deactivating an SNC implies deletion in the ME of all the non-shared 
+   * cross-connects that belong to this SNC and makes appropriate changes to 
+   * tpMappingMode such that TPs that are not TP_NA have their tpMappingMode
+   * set to TM_NEITHER_TERMINATED_NOR_AVAILABLE_FOR_MAPPING as a result of this 
+   * operation. See also createSNC(),
+   * for an explanation of tpMappingMode behaviour.
+   * The ports are left in the same state and are not put out of 
+   * service.</p>
+   *
+   * <p>This operation applies to SNCs and bundled SNCs (see 
+   * <a href=supportingDocumentation/BundledSNC.pdf>Bundled SNC overview</a>
+   * for further details).</p>
+   *
+   * <p>Failure - No exception thrown (except for cases described below).
+   * If the SNC or any of its network resources have changed as a result of this 
+   * operation, then no exception can be
+   * thrown so that theSNC can be passed back to the NMS.
+   * The SNCState will be either SNCS_PARTIAL 
+   * if the command partially completed or SNCS_ACTIVE if no cross-connects were 
+   * deleted.  The errorReason will be detailed accordingly.</p>
+   *
+   * <p>Success - SNC is deactivated in the EMS and the SNCState is 
+   * set to SNCS_PENDING in the out parameter theSNC. The parameter theSNC will 
+   * contain the attributes of the deactivated SNC. 
+   * The errorReason parameter may be set to an empty string.</p>
+   *
+   * <p>For more details on how this service affects the state of an SNC see
+   * <a href=supportingDocumentation/modesOfOperation.pdf>SNC Management Modes 
+   * of Operation</a> and
+   * <a href=supportingDocumentation/SNCStateDiagram.pdf>SNC state 
+   * diagram</a>.</p>
+   *
+   * <p>The EMS will apply the transmissionParams specified 
+   * in the tpsToModify parameter (same behaviour as
+   * setTPData()).
+   * They may be applied before or after the creation of the CCs, as 
+   * appropriate. See <a href=supportingDocumentation/LayeredParameters.pdf>
+   * transmissionParameters</a>.</p>
+   * 
+   * <p>If a given entry in the list of transmission parameters specified in
+   * tpsToModify can not be successfully applied to the TP, for any reason, 
+   * then the errorReason field is appended with an appropriate reason text.
+   * Applying transmission parameters is best-effort (where not stated 
+   * otherwise) and the resulting values of the transmission parameters
+   * are provided in the updated tpsToModify parameter. If the parameter is "not 
+   * best effort" then the whole operation will be rejected and the appropriate 
+   * exception thrown (see exceptions below).</p>
+   *
+   * <p> Existing TP transmission parameters for which no changes
+   * were requested in transmissionParams will be left unchanged. 
+   * However, the alarm reporting on the TPs and the containing TPs
+   * may be turned off by the EMS
+   * as part of this request, unless otherwise specified via the transmission 
+   * parameter "AlarmReporting".</p>
+   * 
+   * <p>An already deactivated SNC
+   * can be deactivated again with success (the EMS is allowed to not send the
+   * commands to the ME a second time however).
+   * While in SNCS_PARTIAL state, it is possible to deactivate an 
+   * SNC again, this corresponds to a retry.</p>
+   *
+   * <p>If the SNC has more alternative routes, then the operation locks all the 
+   * SNC routes, intended and backup.</p>
+   *
+   * <p>In case of a VP or VC SNC, this operation implies deletion in the ME of
+   * all the non-shared VP or VC CTPs and VP or VC cross-connections 
+   * involved in the SNC.
+   * Note that in the case of a VC SNC deactivation, only the VC CTP and VC
+   * cross-connections are normally deleted. VP CTPs must be explicitly
+   * deleted using deactivateSNC on the VP SNC, except when emsFreedomLevel 
+   * allows it. In that case, the VP CTP can be 
+   * deleted along with the VC SNC if the VP CTP no longer contains any VC 
+   * CTPs.</p>
+   *
+   * <br>NamingAttributes_T sncName: the name of the subnetwork connection to 
+   * be deactivated.
+   * <br>GradesOfImpact_T tolerableImpact: the maximum tolerable impact 
+   * allowed. Indicates the amount of traffic disruption that the NMS user is 
+   * willing to tolerate as a result of the deactivation request.
+   * <br>EMSFreedomLevel_T emsFreedomLevel: the maximum level of freedom 
+   * allowed to the EMS to perform the deactivation.
+   * <br>TPDataList_T tpsToModify: a list of TPs and parameters to apply, 
+   * updated to provide the resulting parameters.
+   * <br>SubnetworkConnection_T theSNC: the deactivated subnetwork connection.
+   * <br>string errorReason: Specifies the deactivation error(s) if any.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if an EMS does not implement this 
+   *  service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - - Raised when any input parameter is syntactical 
+   *  incorrectbr>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when sncName or tpsToModify reference an 
+   *  object that does not exist.<br>
+   * EXCPT_UNABLE_TO_COMPLY - Raised if the SNC is fixed and can not be 
+   *  deactivated. Raised when the EMS is unable to execute the request because 
+   *  at least one of the parameters although valid can not be set and that 
+   *  parameter is identified as "not best effort" in the <a 
+   *  href=supportingDocumentation/LayeredParameters.pdf>
+   *  Layered Transmission Parameters</a> document (such that the TPs will be 
+   *  left in an invalid state after the deactivate operation)<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is lost 
+   *  and this prevents the deactivation of the SNC<br>
+   * <br>
+   **/
+   void deactivateSNC(
+         in    globaldefs::NamingAttributes_T               sncName,
+         in    subnetworkConnection::GradesOfImpact_T       tolerableImpact,
+         in    EMSFreedomLevel_T                            emsFreedomLevel,
+         inout subnetworkConnection::TPDataList_T           tpsToModify,
+         out   subnetworkConnection::SubnetworkConnection_T theSNC,
+         out   string                                       errorReason)
+        raises (globaldefs::ProcessingFailureException );
+
+ 
+  /**
+   *<p>This service allows an NMS to request the deletion of a 
+   * SubnetworkConnection on a specified subnetwork.
+   * This operation also applies to bundled SNCs (see 
+   * <a href=supportingDocumentation/BundledSNC.pdf>Bundled SNC overview</a>
+   * for further details).</p>
+   *
+   * <p>To delete a leg from a broadcast system, the subnetworkConnection 
+   * that represents the leg is used as input to the deleteSNC operation.</p>
+   *
+   * <p>The SNC must not be in the active or partial state.</p>
+   *
+   * <p> If the SNC has more alternative routes, then the operation deletes the 
+   * SNC, its intended and all bkp route(s).</p>
+   *
+   * <p>Failure - An exception will be thrown if the operation fails.  The SNC 
+   * object will not be deleted on the EMS.  The errorReason field of the 
+   * exception will contain the reason for the failure.</p>
+   *
+   * <p>Success - The SNC object is deleted on the EMS.</p>
+   *
+   * <p>For more details on how this service affects the state of an SNC see
+   * <a href=supportingDocumentation/modesOfOperation.pdf>SNC Management Modes 
+   * of Operation</a> and
+   * <a href=supportingDocumentation/SNCStateDiagram.pdf>SNC state 
+   * diagram</a>.</p>
+   *
+   * <br>NamingAttributes_T sncName: the name of the subnetwork connection to 
+   * be deleted.
+   * <br>EMSFreedomLevel_T emsFreedomLevel: the maximum level of freedom 
+   * allowed to the EMS to perform the deletion.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if an EMS does not implement this 
+   *  service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when any input parameter is syntactical 
+   *  incorrect (e.g. sncName does not refer to an SNC object)<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when sncName references an object that does 
+   *  not exist<br>
+   * EXCPT_NOT_IN_VALID_STATE - Raised if the SNC is in the partial or active 
+   *  state<br>
+   * <br>
+   **/
+   void deleteSNC(
+         in  globaldefs::NamingAttributes_T sncName,
+         in  EMSFreedomLevel_T emsFreedomLevel)
+        raises (globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This operation provides a way to deactivate and then delete a 
+   * subnetwork connection in one operation. As with the deactivateSNC(),
+   * operation and the deleteSNC()
+   * operation, this operation also applies to bundled SNCs (see 
+   * <a href=supportingDocumentation/BundledSNC.pdf>Bundled SNC overview</a>
+   * for further details).</p>
+   *
+   * <p>It conceptually behaves like a call to deactivateSNC followed by a call 
+   * to deleteSNC. All success/failure conditions that apply to the two base 
+   * operations also apply to the combined operation.  
+   * If the SNC or any of its network resources have changed as a result of this 
+   * operation, then no exception can be thrown so that theSNC can be passed 
+   * back to the NMS. Therefore, the exceptions that apply to deleteSNC may not 
+   * apply to the combined operation: if the deactivation changed the SNC but 
+   * the deletion is rejected,no exception should be thrown and the resulting 
+   * SNC should be provided in the out parameter theSNC.</p>
+   *
+   * <p>The parameter theSNC
+   * will identify the SNC after the combined operation.
+   * If the operation is entirely successful,
+   * sncState will be SNCS_NONEXISTENT.
+   * In that case, this object does not exist on the EMS and the NMS should only 
+   * look at sncState.  This work around is so that the NMS can have a 
+   * combined operation. </p>
+   *
+   * <p>For more details on how this service affects the state of an SNC see
+   * <a href=supportingDocumentation/modesOfOperation.pdf>SNC Management Modes 
+   * of Operation</a> and
+   * <a href=supportingDocumentation/SNCStateDiagram.pdf>SNC state 
+   * diagram</a>.</p>
+   *
+   * <br>NamingAttributes_T sncName: the name of the subnetwork connection to 
+   * be deactivated and deleted.
+   * <br>GradesOfImpact_T tolerableImpact:
+   * indicates the amount of traffic disruption that the NMS user is willing
+   * to tolerate as a result of the deactivation and deletion request.
+   * <br>EMSFreedomLevel_T emsFreedomLevel: the maximum level of freedom 
+   * allowed to the EMS to perform the deactivation and deletion.
+   * <br>TPDataList_T tpsToModify: a list of TPs and parameters to apply, 
+   * updated to provide the resulting parameters.
+   * <br>SubnetworkConnection theSNC: the deactivated and deleted subnetwork 
+   * connection.
+   * <br>string errorReason: Specifies the deactivation and/or deletion 
+   * error(s) if any.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when any input parameter is syntactical 
+   *  incorrect (e.g. sncName does not refer to an SNC object or any field in 
+   *  tpsToModify is invalid)<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when sncName or tpsToModify reference an 
+   *  object that does not exist.<br>
+   * EXCPT_UNABLE_TO_COMPLY - Raised if the SNC is fixed and can not be 
+   *  deactivated. Raised when the EMS is unable to execute the request because 
+   *  at least one of the parameters although valid can not be set and that 
+   *  parameter is identified as "not best effort" in the <a 
+   *  href=supportingDocumentation/LayeredParameters.pdf>
+   *  Layered Transmission Parameters</a> document (such that the TPs will be 
+   *  left in an invalid state after the deactivate operation)<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is lost 
+   *  and this prevents the deactivation of the SNC<br>
+   * <br>
+   **/
+   void deactivateAndDeleteSNC(
+         in    globaldefs::NamingAttributes_T               sncName,
+         in    subnetworkConnection::GradesOfImpact_T       tolerableImpact,
+         in    EMSFreedomLevel_T                            emsFreedomLevel,
+         inout subnetworkConnection::TPDataList_T           tpsToModify,
+         out   subnetworkConnection::SubnetworkConnection_T theSNC,
+         out   string                                       errorReason)
+        raises (globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>The NMS uses this operation to check if it is possible to
+   * create and maybe activate an SNC as specified in the input parameters.
+   * This operation also applies to bundled SNCs (see 
+   * <a href=supportingDocumentation/BundledSNC.pdf>Bundled SNC overview</a>
+   * for further details).</p>
+   *
+   * <p>The test should check for the existence of hardware that will support
+   * the requested SNC.  If the considerResources parameter is false, the check
+   * must be independent of the current specific resource usage in the 
+   * subnetwork (as in createSNC).  If the
+   * considerResources parameter is true, the check must consider the
+   * current specific resource usage in the subnetwork (as in activateSNC);
+   * in that case, the rules of the EMS' mode of operation apply to the check 
+   * (see <a href=supportingDocumentation/modesOfOperation.pdf>SNC Management 
+   * Modes of Operation</a>).</p>
+   *
+   * <br>SNCCreateData_T createData: data about the potential SNC.
+   * <br>TPDataList_T tpsToModify: a list of TPs and parameters 
+   * that would be applied to the potential SNC.
+   * <br>boolean considerResources: indicates whether or not resource 
+   * allocation must be considered.
+   * <br>boolean valid: indicates if this is a valid SNC.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service; 
+   *  the EMS may not support this operation at all or may not support the
+   *  specified value for considerResources<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_OBJECT_IN_USE - Raised if CC creation for the SNC would involve 
+   *  a TP that has an existing fixed CC that does not match that required for 
+   *  the SNC<br>
+   * EXCPT_INVALID_INPUT - Raised when any input parameter is syntactical 
+   *  incorrect (e.g. a field of createData is invalid or any field in 
+   *  tpsToModify is invalid ).If an NMS requests a bundled SNC 
+   *  service such that the GTP endpoints of the SNC do not match, i.e., the 
+   *  GTPs do not have the same number of CTPs and in a particular order with 
+   *  respect to their layerRates or are not of the same layer rate, then the 
+   *  EMS shall raise EXCPT_INVALID_INPUT.<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is lost 
+   *  and this prevents checking the validity of the SNC<br>
+   * EXCPT_UNSUPPORTED_ROUTING_CONSTRAINTS - Raised if the EMS does not support 
+   *  the routing constraints specified<br>
+   * EXCPT_USERLABEL_IN_USE - Raised when the userLabel uniqueness constraint is
+   *  not met<br>
+   * EXCPT_UNABLE_TO_COMPLY - Raised if the EMS is unable to find a route for 
+   *  the SNC. Raised when the EMS is unable to execute the request because at 
+   *  least one of the parameters although valid could not be set and that 
+   *  parameter is identified as "not best effort" in the <a 
+   *  href=supportingDocumentation/LayeredParameters.pdf>
+   *  Layered Transmission Parameters</a> document or in the
+   *  <a href=supportingDocumentation/additionalInfoUsage.pdf>
+   *  Additional Information Usage</a> document. Raised if the SNC could not be 
+   *  activated because the EMS cannot comply for a reason different from the 
+   *  ones above. If the EMS cannot determine the reason it could not comply, it 
+   *  is also allowed to throw EXCPT_UNABLE_TO_COMPLY<br>
+   * EXCPT_OBJECT_IN_USE - Raised if CC creation for the SNC would involve a TP 
+   *  that has an existing fixed CC that does not match that required for the 
+   *  SNC<br>
+   * <br>
+   **/
+   void checkValidSNC(
+         in subnetworkConnection::SNCCreateData_T createData,
+         in subnetworkConnection::TPDataList_T tpsToModify,
+         in boolean considerResources,
+         out boolean valid)
+        raises (globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This service returns all TP Pools within a Subnetwork contained in an 
+   * EMS. The TP Pool is a TP used to logically group TPs. The TP Pool does not 
+   * affect TP containment. TP containment remains from the Network Element 
+   * view. Given a TP Pool, the NMS could then determine all the TPs that are 
+   * associated with the TP Pool, for the purpose of logical partitioning or 
+   * grouping.
+   * See getTPGroupingRelationships().
+   * 
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * this operation uses an iterator. See
+   * <a href=supportingDocumentation/iterators.pdf>iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   * 
+   * <br>globaldefs::NamingAttributes_T subnetworkName: Name of the subnetwork 
+   * for which to retrieve TP pools.
+   * <br>unsigned long how_many: Maximum number of TP pools to return in the 
+   * first batch.
+   * <br>terminationPoint::TerminationPointList tpList: First batch of TP 
+   * pools.
+   * <br>terminationPoint::TerminationPointIterator_I tpIt: Iterator to 
+   * retrieve the remaining TP pools.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when subnetworkName does not reference a 
+   *  multiLayerSubnetwork object<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when subnetworkName references an object 
+   *  that does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
+   *  lost<br>
+   * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
+   *  that the EMS can support has been reached<br>
+   * <br>
+   **/
+   void getAllTPPools(
+         in globaldefs::NamingAttributes_T subnetworkName,
+         in unsigned long how_many,
+         out terminationPoint::TerminationPointList_T tpList,
+         out terminationPoint::TerminationPointIterator_I tpIt) 
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This operation has exactly the same behaviour as 
+   * getAllTPPools(), but
+   * instead of returning the entire object structures, this operation returns 
+   * their names.</p>
+   *
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * this operation uses an iterator. See
+   * <a href=supportingDocumentation/iterators.pdf>iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   *
+   * <br>globaldefs::NamingAttributes_T subnetworkName: Name of the 
+   * subnetwork.
+   * <br>unsigned long how_many: Maximum number of TP pool names to return in 
+   * the first batch.
+   * <br>globaldefs::NamingAttributesList_T nameList: First batch of TP pools.
+   * <br>globaldefs::NamingAttributesIterator_I nameIt: Iterator to retrieve 
+   * the remaining TP pools.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * As for getAllTPPools()</a>.
+   **/
+   void getAllTPPoolNames(
+         in globaldefs::NamingAttributes_T subnetworkName,
+         in unsigned long how_many,
+         out globaldefs::NamingAttributesList_T nameList,
+         out globaldefs::NamingAttributesIterator_I nameIt)
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This operation has exactly the same behaviour as 
+   * getAllSubnetworkConnections(),
+   * but instead returns only fixed SNCs object structures. See
+   * <a href=supportingDocumentation/SNCTypes.pdf>
+   * Subnetwork Connection Types</a> for an explanation of fixed SNCs.</p>
+   *
+   * <p>An SNC is identified as fixed using additional information. See
+   * <a href=supportingDocumentation/additionalInfoUsage.pdf>
+   * Additional Information Usage</a> for detail on additional information
+   * for SNCs, cross connections and TPs.</p>
+   *
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * this operation uses an iterator. See
+   * <a href=supportingDocumentation/iterators.pdf>iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   *
+   * <br>globaldefs::NamingAttributes_T subnetName: Name of the subnetwork.
+   * <br>transmissionParameters::LayerRateList_T connectionRateList:
+   * List of rates of the SNCs to be reported.
+   * If an empty list is specified, then all SNCs of all rates are to be 
+   * reported.
+   * <br>unsigned long how_many: Maximum number of SNCs to be reported in the 
+   * first batch.
+   * <br>subnetworkConnection::SubnetworkConnectionList_T sncList: First batch 
+   * of SNCs.
+   * <br>subnetworkConnection::SNCIterator_I sncIt: Iterator to retrieve the
+   * remaining SNCs.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when subnetName does not reference an 
+   *  multiLayerSubnetwork object or connectionRateList contains undefined 
+   *  values<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when subnetName references object which 
+   *  does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
+   *  lost<br>
+   * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
+   *  that the EMS can support has been reached <br>
+   * <br>
+   **/
+   void getAllFixedSubnetworkConnections(
+         in globaldefs::NamingAttributes_T subnetName,
+         in transmissionParameters::LayerRateList_T connectionRateList,
+         in unsigned long how_many,
+         out subnetworkConnection::SubnetworkConnectionList_T sncList,
+         out subnetworkConnection::SNCIterator_I sncIt) 
+        raises(globaldefs::ProcessingFailureException);
+
+  /**
+   * <p>This operation has exactly the same behaviour as 
+   * getAllFixedSubnetworkConnections(), but
+   * instead of returning the entire object structures, this operation returns 
+   * their names.</p>
+   *
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * this operation uses an iterator. See
+   * <a href=supportingDocumentation/iterators.pdf>iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   *
+   * <br>globaldefs::NamingAttributes_T subnetName: Name of the subnetwork.
+   * <br>transmissionParameters::LayerRateList_T connectionRateList:
+   * List of rates of the SNC names to be reported.
+   * If an empty list is specified, then all SNC names of all rates are to be 
+   * reported.
+   * <br>unsigned long how_many: Maximum number of SNC names to be reported in 
+   * the first batch.
+   * <br>globaldefs::NamingAttributesList_T nameList: First batch of SNC 
+   * names.
+   * <br>globaldefs::NamingAttributesIterator_I nameIt: Iterator to retrieve 
+   * the remaining SNC names.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * As for getAllSubnetworkConnections().
+   **/
+   void getAllFixedSubnetworkConnectionNames(
+         in globaldefs::NamingAttributes_T subnetName,
+         in transmissionParameters::LayerRateList_T connectionRateList,
+         in unsigned long how_many,
+         out globaldefs::NamingAttributesList_T nameList,
+         out globaldefs::NamingAttributesIterator_I nameIt)
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This operation has exactly the same behaviour as 
+   * getAllSubnetworkConnectionsWithTP(),
+   * but instead returns only fixed SNCs object structures. See
+   * <a href=supportingDocumentation/SNCTypes.pdf>
+   * Subnetwork Connection Types</a> for an explanation of fixed SNCs.</p>
+   *
+   * <p>An SNC is identified as fixed using additional information. See
+   * <a href=supportingDocumentation/additionalInfoUsage.pdf>
+   * Additional Information Usage</a> for detail on additional information
+   * for SNCs, cross connections and TPs.</p>
+   *
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * this operation uses an iterator. See
+   * <a href=supportingDocumentation/iterators.pdf>iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   *
+   * <br>globaldefs::NamingAttributes_T tpName: Termination point for which
+   * to report SNCs. The termination point name must be explicit (a generic 
+   * endpoint specification may not be used in this case). See 
+   * <a href=supportingDocumentation/objectNaming.pdf>
+   * Object Naming</a> for further detail on FTP naming.
+   *
+   * <br>transmissionParameters::LayerRateList_T connectionRateList:
+   * The list of rates of the SNCs to be reported.
+   * If an empty list is specified, then all SNCs of all rates are to be 
+   * reported.
+   * <br>unsigned long how_many: Maximum number of SNCs to report in the first 
+   * batch.
+   * <br>subnetworkConnection::SubnetworkConnectionList_T sncList:  First 
+   * batch of SNCs.An SNC is only reported if it respects both the tpName and 
+   * connectionRateList filters.
+   * <br>subnetworkConnection::SNCIterator_I sncIt: Iterator to retrieve the 
+   * remaining SNCs.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised if tpName does not reference a 
+   *  terminationPoint object or connectionRateList contains undefined 
+   *  values<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when tpName references an object that does 
+   *  not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
+   *  lost<br>
+   * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
+   *  that the EMS can support has been reached<br>
+   * <br>
+   **/
+   void getAllFixedSubnetworkConnectionsWithTP (
+         in globaldefs::NamingAttributes_T tpName,
+         in transmissionParameters::LayerRateList_T connectionRateList,
+         in unsigned long how_many,
+         out subnetworkConnection::SubnetworkConnectionList_T sncList,
+         out subnetworkConnection::SNCIterator_I sncIt)
+        raises(globaldefs::ProcessingFailureException);
+
+  /**
+   * <p>This operation has exactly the same behaviour as 
+   * getAllFixedSubnetworkConnectionsWithTP(), but
+   * instead of returning the entire object structures, this operation returns 
+   * their names.</p>
+   *
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * this operation uses an iterator. See
+   * <a href=supportingDocumentation/iterators.pdf>iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   *
+   * <br>globaldefs::NamingAttributes_T tpName: Termination point for which
+   * to report SNCs. The termination point name must be explicit (a generic 
+   * endpoint specification may not be used in this case). See 
+   * <a href=supportingDocumentation/objectNaming.pdf>
+   * Object Naming</a> for further detail on FTP naming.
+   *
+   * <br>transmissionParameters::LayerRateList_T connectionRateList:
+   * The list of rates of the SNCs to be reported.
+   * If an empty list is specified, then all SNCs of all rates are to be 
+   * reported.
+   * <br>unsigned long how_many: Maximum number of SNCs to report in the first 
+   * batch.
+   * <br>globaldefs::NamingAttributesList_T nameList: First batch of SNC 
+   * names.
+   * <br>globaldefs::NamingAttributesIterator_I nameIt: Iterator to retrieve 
+   * the remaining SNC names.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * As for getAllSubnetworkConnectionsWithTP().
+   **/
+   void getAllFixedSubnetworkConnectionNamesWithTP (
+         in globaldefs::NamingAttributes_T tpName,
+         in transmissionParameters::LayerRateList_T connectionRateList,
+         in unsigned long how_many,
+         out globaldefs::NamingAttributesList_T nameList,
+         out globaldefs::NamingAttributesIterator_I nameIt)
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p> The NMS invokes the createModifiedSNC to request the EMS to modify the 
+   * addressed SNC route. If the EMS does not preserve the SNC name, then the 
+   * method will create a new pending SNC from an existing pending or active 
+   * SNC. It is similar to createSNC() (which provides details of creation 
+   * behaviour) but the created SNC is made from data provided by an existing 
+   * SNC and may replace the existing SNC.</p> 
+   *
+   * <p>This operation does not apply to bundled SNCs (see 
+   * <a href=supportingDocumentation/BundledSNC.pdf>Bundled SNC overview</a>
+   * for further details).</p>
+   *
+   * <br>globaldefs::NamingAttributes_T sncName: the name of the subnetwork 
+   * connection to be modified.
+   * <br>string routeId: The id of the route to be modifed. Empty string, 
+   * indicates that the "intended" route is to be modified.
+   * <br>subnetworkConnection::SNCModifyData_T SNCModifyData: structure 
+   * describing the new/modified subnetwork connection. When the modify type is 
+   * set to "rerouting", the EMS should use the routing constraints (if any) to 
+   * reroute the SNC from end to end. When the modify type is set to 
+   * "add_protection" (leg) or "remove_protection" (leg), the EMS should only 
+   * try to modify the SNC by applying or removing the legs provided in the 
+   * input parameters. When adding or removing a protection leg, the EMS should 
+   * compute the differencing of cross connect on NE.
+   * <br>subnetworkConnection::GradesOfImpact_T tolerableImpact: the maximum 
+   * tolerable impact allowed.
+   * <br>subnetworkConnection::ProtectionEffort_T tolerableImpactEffort:
+   * qualifies the conditions under which an SNC modification may be performed 
+   * is a qualification of the requirement that the tolerableImpact as 
+   * specified, is met.
+   * <br>EMSFreedomLevel_T emsFreedomLevel: the maximum level of freedom 
+   * allowed to the EMS to perform the creation.
+   * <br>subnetworkConnection::TPDataList_T tpsToModify: a list of TPs and 
+   * parameters to apply, updated to provide the resulting parameters.
+   * <br>subnetworkConnection::SubnetworkConnection_T theSNC:
+   * The modified SNC.  It will have sncState and name set.  The EMS 
+   * selects the SNC names so that they are not reused (within a reasonable time 
+   * frame) for different SNCs.
+   * <br>string errorReason: Specifies the modification error(s) if any.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if an EMS does not implement this 
+   *  service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when a field of an input parameter is 
+   *  invalid.<br>
+   * EXCPT_OBJECT_IN_USE - Raised if the SNC can not be created because of CC or 
+   *  TP conflicts with other SNCs (e.g. because of timeslot conflicts)<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when fields of input parameters (e.g. 
+   *  SNCModifyData) refer to an object that does not exist<br>
+   * EXCPT_PROTECTION_EFFORT_NOT_MET - Raised if the NMS requests an SNC
+   *  with a static protection level and protection effort that cannot be met by 
+   *  the EMS<br>
+   * EXCPT_UNABLE_TO_COMPLY - Raised if the SNC cannot be created because it 
+   *  cannot comply with any of the input parameter constraints for a reason 
+   *  different than the ones above. If the EMS cannot determine the reason it 
+   *  could not comply, it is also allowed to throw EXCPT_UNABLE_TO_COMPLY<br>
+   * EXCPT_UNSUPPORTED_ROUTING_CONSTRAINTS - Raised if the EMS does not support 
+   *  the routing constraints specified<br>
+   * EXCPT_USERLABEL_IN_USE - Raised when the userLabel uniqueness constraint is 
+   *  not met<br>
+   * <br>
+   **/
+   void createModifiedSNC(
+         in globaldefs::NamingAttributes_T sncName,
+         in string routeId,
+         in subnetworkConnection::SNCModifyData_T SNCModifyData,
+         in subnetworkConnection::GradesOfImpact_T tolerableImpact,
+         in subnetworkConnection::ProtectionEffort_T tolerableImpactEffort,
+         in EMSFreedomLevel_T emsFreedomLevel,
+         inout subnetworkConnection::TPDataList_T tpsToModify,
+         out subnetworkConnection::SubnetworkConnection_T newSNC,
+         out string errorReason)
+        raises (globaldefs::ProcessingFailureException);
+
+
+
+  /**
+   * <p> The swapSNC method will deactivate an identified active SNC (state 
+   * changes to pending) and activate an identified pending SNC. The pending SNC 
+   * may have been created by using a createSNC() or a 
+   * createModifiedSNC().</p>
+   * 
+   * <br>globaldefs::NamingAttributes_T nameOfSNCtoBeDeactivated: the name of 
+   * the subnetwork connection to be deactivated.
+   * <br>globaldefs::NamingAttributes_T nameOfSNCtoBeActivated: the name of the 
+   * subnetwork connection to be activated.
+   * <br>GradesOfImpact_T tolerableImpact: the maximum tolerable impact 
+   * allowed.
+   * <br>EMSFreedomLevel_T emsFreedomLevel: the maximum level of freedom 
+   * allowed to the EMS to perform the activation.
+   * <br>subnetworkConnection::TPDataList_T tpsToModify: a list of TPs and 
+   * parameters to apply, updated to provide the resulting parameters.
+   * <br>parameters to apply, subnetworkConnection::SNCState_T 
+   * stateOfActivatedSNC: The state of the activated subnetwork connection after 
+   * the operation.
+   * <br>string errorReason: Specifies the modification error(s) if any.
+   * 
+   * <p>Note that no exception thrown, except in the cases listed below. If the 
+   * SNC or any of its network resources have changed as a result of this 
+   * operation,then no exception can be thrown so that the SNC can be passed 
+   * back to the NMS.</p> 
+   *
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if an EMS does not implement this 
+   *  service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when any input parameter is syntactical 
+   *  incorrect (e.g. sncName does not refer to an SNC object, or any field in 
+   *  tpsToModify is invalid)<br>
+   * EXCPT_OBJECT_IN_USE - Raised if the SNC can not be activated because of CC 
+   *  or TP conflicts (e.g. because of timeslot conflicts) or conflicts between 
+   *  the active route (with equal or higher priority) of this and other SNCs or 
+   *  when CC creation would involve a TP that has an existing fixed CC that 
+   *  does not match that required for the SNC<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised if sncName or tpsToModify reference an 
+   *  SNC/TP object that does not exist<br>
+   * EXCPT_UNABLE_TO_COMPLY - Raised if the EMS is unable to find a route for 
+   *  the SNC. Raised if the EMS can not meet the GradesOfImpact requested by
+   *  the NMS. Raised when the EMS is unable to execute the request because at 
+   *  least one of the parameters although valid can not be set and that 
+   *  parameter is identified as "not best effort" in the <a 
+   *  href=supportingDocumentation/LayeredParameters.pdf>
+   *  Layered Transmission Parameters</a> document or in the
+   *  <a href=supportingDocumentation/additionalInfoUsage.pdf>
+   *  Additional Information Usage</a> document. Raised if the SNC cannot be 
+   *  activated because the EMS cannot comply for a reason different from the 
+   *  ones above. If the EMS cannot determine the reason it could not comply, it 
+   *  is also allowed to throw EXCPT_UNABLE_TO_COMPLY<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is lost 
+   *  and this prevents any change to the SNC<br>
+   * EXCPT_NOT_IN_VALID_STATE - Raised where the SNC would involve a CTP that is
+   *  not connectable due to the state of the server TP or in the case of 
+   *  inverse multiplexing where the SNC would involve a CTP that is not 
+   *  connectable due to the state of the client TP<br>
+   * <br>
+   **/
+   void swapSNC(
+         in globaldefs::NamingAttributes_T nameOfSNCtoBeDeactivated,
+         in globaldefs::NamingAttributes_T nameOfSNCtoBeActivated,
+         in EMSFreedomLevel_T emsFreedomLevel,
+         in subnetworkConnection::GradesOfImpact_T tolerableImpact,
+         inout subnetworkConnection::TPDataList_T tpsToModify,
+         out subnetworkConnection::SNCState_T stateOfActivatedSNC,
+         out string errorReason)
+        raises (globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p> The NMS invokes the modifySNC to perform the combined function of 
+   * createModifiedSNC() and swapSNC() in sequence. The signature of the 
+   * operation is the same as that of createModifiedSNC().</p>
+   * 
+   * <p>This method will modify and activate the SNC on the network. If the EMS 
+   * does not preserve the SNC name, then output SNC will have a different name 
+   * than formerly addressed SNC, which is deactivated and deleted.</p>
+   *
+   * <br>globaldefs::NamingAttributes_T sncName: the name of the subnetwork 
+   * connection to be modified.
+   * <br>string routeId: The id of the route to be modifed. Empty string, 
+   * indicates that the "intended" route is to be modified.
+   * <br>subnetworkConnection::SNCModifyData_T SNCModifyData: structure 
+   * describing the new/modified subnetwork connection.
+   * <br>GradesOfImpact_T tolerableImpact: the maximum tolerable impact 
+   * allowed.
+   * <br>subnetworkConnection::ProtectionEffort_T tolerableImpactEffort:
+   * qualifies the conditions under which an SNC modification may be performed 
+   * is a qualification of the requirement that the tolerableImpact as 
+   * specified, is met.
+   * <br>EMSFreedomLevel_T emsFreedomLevel: the maximum level of freedom 
+   * allowed to the EMS to perform the creation.
+   * <br>TPDataList_T tpsToModify: a list of TPs and parameters to apply, 
+   * updated to provide the resulting parameters.
+   * <br>SubnetworkConnection_T theSNC:
+   * The modified SNC.  It will have sncState and name set.  The EMS 
+   * selects the SNC names so that they are not reused (within a reasonable time 
+   * frame) for different SNCs.
+   * <br>string errorReason: Specifies the modification error(s) if any.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if an EMS does not implement this 
+   *  service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when a field of an input parameter is 
+   *  invalid (e.g. sncName does not refer to an SNC object, or any field in 
+   *  tpsToModify is invalid) <br>
+   * EXCPT_OBJECT_IN_USE - Raised if the SNC can not be created or activated 
+   *  because of CC or TP conflicts (e.g. because of timeslot conflicts) or 
+   *  conflicts between the active route (with equal or higher priority) of this 
+   *  and other SNCs or when CC creation would involve a TP that has an existing 
+   *  fixed CC that does not match that required for the SNC<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when fields of input parameters (e.g. 
+   *  SNCModifyData or tpsToModify) refer to an object that does not exist<br>
+   * EXCPT_PROTECTION_EFFORT_NOT_MET - Raised if the NMS requests an SNC
+   *  with a static protection level and protection effort that cannot be met by 
+   *  the EMS<br>
+   * EXCPT_UNABLE_TO_COMPLY - Raised if the EMS is unable to find a route for 
+   *  the SNC. Raised if the EMS can not meet the GradesOfImpact requested by
+   *  the NMS. Raised when the EMS is unable to execute the request because at 
+   *  least one of the parameters although valid can not be set and that 
+   *  parameter is identified as "not best effort" in the <a 
+   *  href=supportingDocumentation/LayeredParameters.pdf>
+   *  Layered Transmission Parameters</a> document or in the
+   *  <a href=supportingDocumentation/additionalInfoUsage.pdf>
+   *  Additional Information Usage</a> document. Raised if the SNC cannot be 
+   *  activated because the EMS cannot comply for a reason different from the 
+   *  ones above. If the EMS cannot determine the reason it could not comply, it 
+   *  is also allowed to throw EXCPT_UNABLE_TO_COMPLY<br>
+   * EXCPT_UNSUPPORTED_ROUTING_CONSTRAINTS - Raised if the EMS does not support 
+   *  the routing constraints specified<br>
+   * EXCPT_USERLABEL_IN_USE - Raised when the userLabel uniqueness constraint is 
+   *  not met<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is lost 
+   *  and this prevents any change to the SNC<br>
+   * EXCPT_NOT_IN_VALID_STATE - Raised where the SNC would involve a CTP that is
+   *  not connectable due to the state of the server TP or in the case of 
+   *  inverse multiplexing where the SNC would involve a CTP that is not 
+   *  connectable due to the state of the client TP<br>
+   * <br>
+   **/
+   void modifySNC(
+         in globaldefs::NamingAttributes_T sncName,
+         in string routeId,
+         in subnetworkConnection::SNCModifyData_T SNCModifyData,
+         in subnetworkConnection::GradesOfImpact_T tolerableImpact,
+         in subnetworkConnection::ProtectionEffort_T tolerableImpactEffort,
+         in EMSFreedomLevel_T emsFreedomLevel,
+         inout subnetworkConnection::TPDataList_T tpsToModify,
+         out subnetworkConnection::SubnetworkConnection_T newSNC,
+         out string errorReason)
+        raises (globaldefs::ProcessingFailureException);
+
+
+ 
+  /** 
+   * <p>This service returns the requested route for the SNC whose name is 
+   * specified as a parameter. If the input route is not specified (empty 
+   * string), the operation replies all the routes of the SNC, intended and 
+   * backup ones. The rest of the behavior is same as getRoute().</p>
+   *
+   * <br>NamingAttributes_T sncName: the name of the subnetwork connection. 
+   * <br>string routeId: The id of the route.
+   * <br>boolean includeHigherOrderCCs: Specifies whether the higher order CCs 
+   * of other SNCs used to carry the queried SNC route have to be included in 
+   * addition to the CCs of the queried SNC route.
+   * <br>globaldefs::NVSList_T additionalInfo: to allow the communication of 
+   * additional information which is not explicitly modelled
+   * <br>subnetworkConnection::RouteList_T routeList: The route(s) of the 
+   * SNC.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when a field of an input parameter is invalid 
+   *  (e.g. sncName does not reference a subnetworkConnection object)<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when sncName and/or the routeId reference 
+   *  an object that does not exist<br>
+   * EXCPT_UNABLE_TO_COMPLY - Raised when the provided value for 
+   *  includeHigherOrderCCs is "True" and EMS is not able to provide higher 
+   *  order CCs in the reply<br>
+   * <br>
+   **/
+   void getBackupRoutes(
+         in globaldefs::NamingAttributes_T sncName,
+         in string routeId,
+         in boolean includeHigherOrderCCs,
+         inout globaldefs::NVSList_T additionalInfo,
+         out subnetworkConnection::RouteList_T routeList)
+        raises(globaldefs::ProcessingFailureException);
+
+ 
+  /**
+   * <p>This service is used to activate the input route and deactivate the 
+   * current (or partial) route(s), if different from input route. The operation 
+   * is rejected if performed on a pending SNC. The operation does not affect 
+   * the administrativeState of any route. The restoration process may re-route 
+   * again, e.g. in case of failures.</p>
+   *
+   * <p><b>Success</b>: output parameter sncState is set to SNCS_ACTIVE. All 
+   * cross-connects required for the given route were activated successfully, 
+   * and if needed, all the cross-connects of former current (or partial) 
+   * route(s) were deactivated successfully. The errorReason parameter is set to 
+   * an empty string.</p>
+   *
+   * <p><b>Failure</b>: No exception thrown, except in the cases listed below. 
+   * If the SNC or any of its network resources have changed as a result of this 
+   * operation, then no exception can be thrown so that the sncState can be 
+   * passed back to the NMS. The resulting SNCState will be either SNCS_PARTIAL 
+   * or SNCS_ACTIVE.</p>
+   *
+   * <p>The sncState will be SNCS_PARTIAL if not all cross-connects (of given 
+   * input route) on MEs have been successfully set up, and there is not an 
+   * active route. Moreover one or more of the cross-connects to be removed may 
+   * be still active, this leads to two (or more) routes in partial state.</p>
+   *
+   * <p>The sncState will be SNCS_ACTIVE if all cross-connects (of given input 
+   * route) on MEs have been successfully set up, but one or more of the cross-
+   * connects (of any of the other partial routes) to be removed are still 
+   * active, this leads to one route in active state and another (or more) route 
+   * in partial state. The errorReason parameter is set accordingly.</p>
+   *
+   * <p>Recovery scenarios: this operation can be performed again addressing<ul> 
+   * <li>an already active route, in order to retry the deactivation of other 
+   * route(s) in partial state</li>
+   * <li> a partial route, in order to retry its activation (and retry, if 
+   * needed, the deactivation of other partial routes as well).</li></ul></p>
+   *
+   * <p>The EMS will apply the transmissionParams specified in the tpsToModify 
+   * parameter (same behaviour as setTPData). They may be applied before or 
+   * after the creation of the CCs, as appropriate. Existing TP transmission 
+   * parameters for which no changes were requested in tpsToModify will be left 
+   * unchanged. However, the alarm reporting on the connected TPs and the 
+   * containing TPs may be turned on by the EMS as part of this request, unless 
+   * otherwise specified via the transmission parameter "AlarmReporting". A 
+   * similar behaviour is also allowed for the serviceState parameter, which may 
+   * be set to IN_SERVICE for the TPs. See 
+   * <a href=supportingDocumentation/LayeredParameters.pdf>
+   * transmissionParameters</a>.
+   * </p>
+   * 
+   * <p>If a given entry in the list of transmission parameters specified in the 
+   * TPData_T can not be successfully applied to the TP, for any reason, then 
+   * the errorReason field is appended with an appropriate reason text. Applying 
+   * transmission parameters is best-effort (where not stated 
+   * otherwise) and the resulting values of the 
+   * transmission parameters are provided in the updated tpsToModify 
+   * parameter.</p>
+   *
+   * <p>An already active SNC route can be activated again; the EMS is allowed 
+   * to not send the commands to the ME a second time for the cross connect 
+   * establishment however the commands may be sent for the transmission 
+   * parameters.</p>
+   *
+   * <br>NamingAttributes_T sncName: the name of the subnetwork connection.
+   * <br>string routeId: The id of the route.
+   * <br>subnetworkConnection::GradesOfImpact_T tolerableImpact: the maximum 
+   * tolerable impact allowed. 
+   * <br>EMSFreedomLevel_T emsFreedomLevel: The maximum level of freedom 
+   * allowed to the EMS to perform the operation.
+   * <br>subnetworkConnection::TPDataList_T tpsToModify: a list of TPs and 
+   * parameters to apply, updated to provide the resulting parameters. 
+   * <br>globaldefs::NVSList_T additionalInfo: to allow the communication of 
+   * additional information which is not explicitly modelled.
+   * <br>subnetworkConnection::SNCState_T sncState: The subnetwork connection 
+   * state after the operation. 
+   * <br>string errorReason: Specifies the activation error(s) if any. 
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not implement this 
+   *  service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when any input parameter is syntactical 
+   *  incorrect (e.g. sncName does not refer to an SNC object, 
+   *  or any field in tpsToModify is invalid<br>
+   * EXCPT_OBJECT_IN_USE - Raised if the route can not be activated because of 
+   *  CC or TP conflicts with an active route of another SNC (with equal or 
+   *  higher priority)<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised if sncName, routeId or tpsToModify 
+   *  reference an SNC/route/TP object that does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is lost 
+   *  and this prevents any change to the SNC<br>
+   * EXCPT_NOT_IN_VALID_STATE - Raised where the SNC would involve a CTP that is
+   *  not connectable due to the state of the server TP or in the case of 
+   *  inverse multiplexing where the SNC would involve a CTP that is not 
+   *  connectable due to the state of the client TP<br>
+   * EXCPT_UNABLE_TO_COMPLY - Raised if the EMS can not meet the GradesOfImpact 
+   *  requested by the NMS. Raised when the EMS is unable to execute the request 
+   *  because at least one of the parameters although valid can not be set and 
+   *  that parameter is identified as "not best effort" in the <a 
+   *  href=supportingDocumentation/LayeredParameters.pdf>
+   *  Layered Transmission Parameters</a> document or in the <a 
+   *  href=supportingDocumentation/additionalInfoUsage.pdf>
+   *  Additional Information Usage</a> document. Raised if the route cannot be 
+   *  activated because the EMS cannot comply for a reason different from the 
+   *  ones above. If the EMS cannot determine the reason it could not comply, it 
+   *  is also allowed to throw EXCPT_UNABLE_TO_COMPLY<br>
+   * <br>
+   **/
+   void switchRoute(
+         in globaldefs::NamingAttributes_T sncName,
+         in string routeId,
+         in subnetworkConnection::GradesOfImpact_T tolerableImpact,
+         in EMSFreedomLevel_T emsFreedomLevel,
+         inout subnetworkConnection::TPDataList_T tpsToModify,
+         inout globaldefs::NVSList_T additionalInfo,
+         out subnetworkConnection::SNCState_T sncState,
+         out string errorReason)
+        raises(globaldefs::ProcessingFailureException);
+
+  /**
+   * <p>This operation creates a new route (e.g. for restoration purposes) and 
+   * associates it to the given SNC. The route is created in locked state.</p>
+   *
+   * <p>A route belongs to only one SNC. However XCs/TPs can be shared by 
+   * routes of different SNCs.</p>
+   * 
+   * <p>A route applies to XCs at the same layer of the SNC. The route id must 
+   * be an unique identifier within the SNC name, with format up to EMS.</p>
+   *
+   * <p>It is possible to specify if the creating route is the INTENDED route or 
+   * not; if intended, then the former intended route is updated to backup 
+   * route. Only one intended route can be associated to a given SNC at a 
+   * time.</p>
+   *
+   * <p>It is possible to specify if the creating route is EXCLUSIVE or not; if 
+   * EXCLUSIVE, then the EMS must find a route that does not conflict or share 
+   * CCs with any other existing SNC route, in any administrative state . Once 
+   * an EXCLUSIVE route has been created by EMS, any further creation operation 
+   * which conflicts with the exclusive route shall be refused.</p>
+   * 
+   * <p>A route implicitly inherits from its SNC the following attributes:<ul>
+   * <li>the endpoints</li>
+   * <li>owner</li>
+   * <li>direction</li>
+   * <li>rerouteAllowed</li>
+   * <li>networkRouted</li>
+   * <li>rate</li>
+   * <li>the sncType</li>
+   * <li>the staticProtectionLevel - so protectionEffort is considered 
+   * EFFORT_SAME, i.e. if EMS can not create a route with same static protection 
+   * level as the SNC, the operation is refused.</li></ul></p>
+   * 
+   * <br>globaldefs::NamingAttributes sncName: The name of the subnetwork 
+   * connection.
+   * <br>RouteCreateData_T createRoute: structure describing the route to be 
+   * created. 
+   * <br>GradesOfImpact_T tolerableImpact: the maximum tolerable impact 
+   * allowed. 
+   * <br>EMSFreedomLevel_T emsFreedomLevel: the maximum level of freedom 
+   * allowed to the EMS to perform the creation. 
+   * <br>RouteDescriptor_T theRoute: the created route.
+   * <br>string errorReason: Specifies the creation error(s) if any. 
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if an EMS does not implement this 
+   *  service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when any input parameter is syntactical 
+   *  incorrect (e.g. sncName does not refer to an SNC object, 
+   *  or any field in createRoute is invalid<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when sncName or fields of createRoute refer 
+   *  to an object that does not exist<br>
+   * EXCPT_PROTECTION_EFFORT_NOT_MET - Raised if the NMS requests a route with a 
+   *  static protection level (inherited from SNC) that cannot be met by the 
+   *  EMS<br>
+   * EXCPT_OBJECT_IN_USE - Raised if the route is in conflict with an 
+   *  "exclusive" (even locked) route of another SNC<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is lost 
+   *  and this prevents creation of the route<br>
+   * EXCPT_UNSUPPORTED_ROUTING_CONSTRAINTS - Raised if the EMS does not support 
+   *  the routing constraints specified<br>
+   * EXCPT_UNABLE_TO_COMPLY - Raised if the EMS can not meet the GradesOfImpact 
+   *  requested by the NMS. Raised when the EMS is unable to execute the request 
+   *  because at least one of the parameters although valid can not be set and 
+   *  that parameter is identified as "not best effort" in the <a 
+   *  href=supportingDocumentation/additionalInfoUsage.pdf>
+   *  Additional Information Usage</a> document. If the EMS cannot determine the 
+   *  reason it could not comply, it is also allowed to throw 
+   *  EXCPT_UNABLE_TO_COMPLY<br>
+   * <br>
+   **/
+   void addRoute(
+         in globaldefs::NamingAttributes_T sncName,
+         in subnetworkConnection::RouteCreateData_T createRoute,
+         in subnetworkConnection::GradesOfImpact_T tolerableImpact,
+         in EMSFreedomLevel_T emsFreedomLevel,
+         out subnetworkConnection::RouteDescriptor_T theRoute ,
+         out string errorReason)
+        raises(globaldefs::ProcessingFailureException);
+
+  /**
+   * <p>This service allows an NMS to request the deletion of a route of given 
+   * SubnetworkConnection on a specified subnetwork.</p>
+   *
+   * <p>The addressed route must not be in the unlocked  state, and must not be 
+   * the intended route.</p>
+   * 
+   * <p>Of course it is possible to delete a locked backup route which is "in 
+   * use" by other SNC route, because this operation has no side effect on 
+   * routes of any other SNCs, even if sharing XCs/TPs.</p>
+   * 
+   * <p>Failure - An exception will be thrown if the operation fails. The route 
+   * will not be deleted on the EMS. The errorReason field of the exception will 
+   * contain the reason for the failure.</p>
+   * 
+   * <p>Success - The route is deleted on the EMS.</p>
+   *
+   * <br>NamingAttributes_T sncName: the name of the subnetwork connection.
+   * <br>string routeId: The id of the route.
+   * <br>EMSFreedomLevel_T emsFreedomLevel: the maximum level of freedom 
+   * allowed to the EMS to perform the deletion. 
+   * <br>globaldefs::NVSList_T additionalInfo: to allow the communication of 
+   * additional information which is not explicitly modelled.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if an EMS does not implement this 
+   *  service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when sncName does not refer to an SNC 
+   *  object<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when sncName or routeId reference an object 
+   *  that does not exist<br>
+   * EXCPT_NOT_IN_VALID_STATE - Raised if the route is in the unlocked state, or 
+   *  if the route is the intended one<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is lost 
+   *  and this prevents the deletion of the route<br>
+   * EXCPT_UNABLE_TO_COMPLY - Raised when the EMS is unable to execute the 
+   *  request because at least one of the parameters although valid can not be 
+   *  set and that parameter is identified as "not best effort" in the <a 
+   *  href=supportingDocumentation/additionalInfoUsage.pdf>
+   *  Additional Information Usage</a> document. If the EMS cannot determine the 
+   *  reason it could not comply, it is also allowed to throw 
+   *  EXCPT_UNABLE_TO_COMPLY<br>
+   * <br>
+   **/
+   void removeRoute(
+         in globaldefs::NamingAttributes_T sncName,
+         in string routeId,
+         in EMSFreedomLevel_T emsFreedomLevel,
+         inout globaldefs::NVSList_T additionalInfo)
+        raises(globaldefs::ProcessingFailureException);
+
+  /**
+   * <p>This service allows an NMS to request to set the addressed route as 
+   * intended route. The formerly intended route (if different from addressed) 
+   * is no longer the intended one, in order to respect the rule that an SNC 
+   * must have one intended route, and only one. The addressed route can be in 
+   * any administrative / actual state.</p>
+   *
+   * <p>Failure - An exception will be thrown if the operation fails. The 
+   * errorReason field of the exception will contain the reason for the 
+   * failure.</p>
+   * 
+   * <p>Success - The addressed route is the intended one, and the formerly 
+   * intended route is a backup one.</p>
+   * <br>NamingAttributes_T sncName: the name of the subnetwork connection.
+   * <br>string routeId: The id of the route.
+   * <br>globaldefs::NVSList_T additionalInfo: to allow the communication of 
+   * additional information which is not explicitly modelled.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if an EMS does not implement this 
+   *  service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when any input parameter is syntactical 
+   *  incorrect (e.g. sncName does not refer to an SNC 
+   *  object<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when sncName or routeId reference an object 
+   *  that does not exist<br>
+   * EXCPT_UNABLE_TO_COMPLY - Raised when the EMS is unable to execute the 
+   *  request because at least one of the parameters although valid can not be 
+   *  set and that parameter is identified as "not best effort" in the <a 
+   *  href=supportingDocumentation/additionalInfoUsage.pdf>
+   *  Additional Information Usage</a> document. If the EMS cannot determine the 
+   *  reason it could not comply, it is also allowed to throw 
+   *  EXCPT_UNABLE_TO_COMPLY<br>
+   * <br>
+   **/
+   void setIntendedRoute(
+         in globaldefs::NamingAttributes_T sncName,
+         in string routeId,
+         inout globaldefs::NVSList_T additionalInfo)
+       raises(globaldefs::ProcessingFailureException);
+  /**
+   * <p> This allows an NMS to specify a list of routes jointly with their 
+   * provisioned administrative state. If all routes of a given SNC are 
+   * successfully locked, then the SNC state transits to pending. If the SNC 
+   * state was partial or pending, and at least one route is successfully 
+   * unlocked, then the SNC state may transits to active. 
+   *  
+   * <br>NamingAttributes_T::sncName: the name of the subnetwork connection.
+   * <br>subnetworkConnection::RouteNameAndAdminStateList_T 
+   * routeNameAndAdminStateList: the list of route IDs plus their administrative 
+   * state.
+   * <br>subnetworkConnection::SNCState_T sncState: The subnetwork connection 
+   * state after the operation. 
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when any input parameter is syntactical 
+   *  incorrect (e.g. sncName does not refer to an SNC 
+   *  object<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when sncName or at least one route Id 
+   *  reference an object that does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managed element is 
+   *  lost<br>
+   * <br>
+   **/
+   void setRoutesAdminState (
+         in globaldefs::NamingAttributes_T sncName,
+         inout subnetworkConnection::RouteNameAndAdminStateList_T 
+               routeNameAndAdminStateList,
+         out subnetworkConnection::SNCState_T sncState)
+        raises(globaldefs::ProcessingFailureException);
+
+  /** 
+   * <p>This service returns the intended route for the SNC whose name is 
+   * specified as a parameter. The behavior is essentially the same as 
+   * getRoute().</p>
+   *
+   * <br>NamingAttributes_T::sncName: the name of the subnetwork connection. 
+   * <br>boolean includeHigherOrderCCs: Specifies whether the higher order CCs 
+   * of other SNCs used to carry the queried SNC route have to be included in 
+   * addition to the CCs of the queried SNC route.
+   * <br>globaldefs::NVSList_T additionalInfo: to allow the communication of 
+   * additional information which is not explicitly modelled
+   * <br>subnetworkConnection::Route_T route: The route of the SNC.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if an EMS does not implement the specified 
+   *  includeHigherOrderCCs value<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when sncName does not reference a 
+   *  subnetworkConnection object<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when sncName and/or the routeId reference 
+   *  an object that does not exist<br>
+   * EXCPT_UNABLE_TO_COMPLY - Raised when the EMS is unable to execute the 
+   *  request because at least one of the parameters although valid can not be 
+   *  set and that parameter is identified as "not best effort" in the <a 
+   *  href=supportingDocumentation/additionalInfoUsage.pdf>
+   *  Additional Information Usage</a> document. If the EMS cannot determine the 
+   *  reason it could not comply, it is also allowed to throw 
+   *  EXCPT_UNABLE_TO_COMPLY<br>
+   * <br>
+   **/
+   void getIntendedRoute(
+         in globaldefs::NamingAttributes_T sncName,
+         in boolean includeHigherOrderCCs,
+         inout globaldefs::NVSList_T additionalInfo,
+         out subnetworkConnection::Route_T route)
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>The NMS uses this operation to request the creation of a new TP pool.  
+   * To this end the NMS prescribes the Subnetwork the new TP pool shall be 
+   * contained in and specifies the list of TPs or GTPs that shall comprise the 
+   * TP pool (the list is placed in the containedMembers parameter).  All the 
+   * specified TPs/GTPs shall be contained in MEs of the specified 
+   * Subnetwork.</p>
+   *
+   * <br>TPPoolCreateData_T newTPPoolCreateData: The read-create data
+   * for the TPPool to be created.
+   * <br>terminationPoint::TerminationPoint_T newTPPool: This output parameter
+   * contains the newly created TPPool.
+   *
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support TP pools 
+   * at all or does not support creation of TP pools by the NMS<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_USERLABEL_IN_USE - Raised when the userLabel uniqueness constraint 
+   *  can not be met<br>
+   * EXCPT_INVALID_INPUT - Raised if the TPPool creation data is not well 
+   *  formed<br>
+   * EXCPT_OBJECT_IN_USE - Raised if a TP or GTP (to be included in the TPPool) 
+   *  is being used, or is already contained in a GTP or another TPPool.<br>
+   * EXCPT_CAPACITY_EXCEEDED - Raised when the service would result in resources 
+   *  being created or activated beyond the capacity supported by the NE/EMS<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to some managed element is 
+   *  lost and this prevents creating the TPPool<br>
+   * <br>
+   **/
+   void createTPPool(
+         in TPPoolCreateData_T newTPPoolCreateData,
+         out terminationPoint::TerminationPoint_T newTPPool)
+        raises (globaldefs::ProcessingFailureException);
+
+  /**
+   * <p>The delete TPPool operation is used to delete a TPPool.
+   * This operation is idempotent.  If the service is called with the name 
+   * of a non-existent TPPool, it will succeed.</p>
+   *
+   * <br>globaldefs::NamingAttributes_T tpPoolName: The name of TPPool 
+   * to be deleted
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if EMS does not support deletion of TPPools 
+   *  via this interface<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when the input parameter is syntactical 
+   *  incorrect<br>
+   * EXCPT_OBJECT_IN_USE - Raised if one or more of the TPs or GTPs to be 
+   *  removed are not idle<br>
+   * <br>
+   **/
+   void deleteTPPool(
+         in globaldefs::NamingAttributes_T tpPoolName)
+        raises (globaldefs::ProcessingFailureException);
+
+  /**
+   * <p>The modify TPPool operation is used to add TPs/GTPs to or delete
+   * TPs/GTPs from a TPPool.  For a given request, the NMS can only add
+   * TPs/GTPs or delete TPs/GTPs, not both.  When TPs/GTPs are to be added,
+   * all the specified TPs/GTPs shall be contained in MEs of the TPPool's
+   * Subnetwork.  It is not possible to add a TP/GTP that is part of 
+   * another TPPool or GTP.  The operation is best-effort, i.e., the EMS
+   * will add or delete as many of the identified TPs as possible.  
+   * If the service is called with the name of a non-existent TPPool
+   * or TP or GTP, it will fail.</p>
+   *
+   * <br>globaldefs::NamingAttributes_T tpPoolName: The name of the TPPool
+   * to be modified
+   * <br>globaldefs::NamingAttributesList_T containedMembers: The names of
+   * the TPs or GTPs to be added or deleted
+   * <br>string actionType: An indication of whether the listed TPs or GTPs
+   * are to be added or deleted.  Two values are possible:  "add" or "delete".
+   * <br>terminationPoint::TerminationPoint_T modifiedTPPool: The structure
+   * for the modified TPPool
+   *
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if EMS does not support modification of
+   *  TPPools via this interface<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - Raised in case one or more TPs or GTPs do not
+   *  exist or do not belong to theTPPool's Subnetwork, and so the addressed
+   *  TPPool object can not be modified<br>
+   * EXCPT_INVALID_INPUT - Raised if TPPool modification data is not well 
+   *  formed, i.e. the input parameters are syntactically incorrect<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when tPPoolName references a TPPool object
+   *  that does not exist<br>
+   * EXCPT_OBJECT_IN_USE - Raised if one or more TPs or GTPs to be removed
+   *  are not idle, or one or more TPs or GTPs to be added are contained
+   *  in a GTP or another TP pool<br>
+   * EXCPT_CAPACITY_EXCEEDED - Raised when the service would result in resources 
+   *  being created or activated beyond the capacity supported by the NE/EMS<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to some managed element
+   *  is lost and this prevents modifying the TPPool<br>
+   * <br>
+   **/
+   void modifyTPPool(
+         in globaldefs::NamingAttributes_T tPPoolName,
+         in globaldefs::NamingAttributesList_T containedMembers,
+         in string actionType,
+         out terminationPoint::TerminationPoint_T modifiedTPPool)
+        raises (globaldefs::ProcessingFailureException);
+
+  /** 
+   * <p>This service returns the TPPool structure for the given TPPool name,
+   * and the additional attributes numberOfMembers, numberOfIdleMembers, and
+   * descriptionOfUse.  The attribute containedMembers, i.e. the list of names
+   * of contained TPs and GTPs, can be retrieved by means of the operation
+   * getTPGroupingRelationships() with input tpPoolName.</p>
+   *
+   * <br>globaldefs::NamingAttributes_T tPPoolName: The name of the TPPool 
+   * to retrieve.
+   * <br>terminationPoint::TerminationPoint_T tPPool: 
+   * The retrieved TPPool. The attributes ingressTrafficDescriptorName,
+   * egressTrafficDescriptorName, connectionState, tpMappingMode, direction,
+   * tpProtectionAssociation, and edgePoint will contain NULL values.
+   * <br>unsigned long numberOfMembers: The total number of TPs or GTPs
+   * currently contained in the TPPool.
+   * <br>unsigned long numberOfIdleMembers: The number of contained TPs or
+   * GTPs that are currently idle, i.e. can be used for the intended purpose.
+   * <br>string descriptionOfUse: A description of the specific use of the
+   * TP pool, in particular how its members are collected and administered.
+   *
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised when EMS does not support TP pools at all 
+   *  or does not support retrieval of TP pools by the NMS.<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when tPPoolName does not reference a 
+   *  TPPool<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when tPPoolName references a TPPool object 
+   *  that does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when the communication to some ME is lost and 
+   *  this prevents retrieving the TPPool<br>
+   * <br>
+   **/
+   void getTPPool(
+         in globaldefs::NamingAttributes_T tPPoolName,
+         out terminationPoint::TerminationPoint_T tPPool,
+         out unsigned long numberOfMembers,
+         out unsigned long numberOfIdleMembers,
+         out string descriptionOfUse)
+        raises (globaldefs::ProcessingFailureException);
+
+
+   };
+
+};
+  
+#endif
+

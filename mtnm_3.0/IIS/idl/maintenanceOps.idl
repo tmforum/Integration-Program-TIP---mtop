@@ -1,0 +1,208 @@
+#ifndef maintenanceOps_idl
+#define maintenanceOps_idl
+
+// *************************************
+// *                                   *
+// * maintenanceOps.idl                *
+// *                                   *
+// *************************************
+
+//Include list
+#include "common.idl"
+#include "transmissionParameters.idl"
+
+#pragma prefix "mtnm.tmforum.org"
+
+  /** 
+   * <a href=supportingDocumentation/overview_NML-EML_Interface.pdf>
+   * Overview of NML-EML interface</a>
+   *
+   * <p>This module contains the definition of the Maintenance Manager
+   * and CurrentMaintenanceOperationIterator_I interfaces
+   * of the NML-EML interface, with related type definitions.</p>
+   *
+   * <p>For details on the maintenance operation signal flow for the
+   * individual maintenance operations refer to the supporting document
+   * <a href=supportingDocumentation/maintenanceCommands.pdf>
+   * Maintenance Commands</a>.</p>
+   *
+   * <h5> Version 3.0. </h5>
+   **/
+
+module maintenanceOps
+{
+  /** 
+   * <p>Supported maintenance operations</p>
+   *
+   * Valid values are:<br>
+   * "FACILITY_LOOPBACK"<br>
+   * "TERMINAL_LOOPBACK"<br>
+   * "FACILITY_FORCED_AIS"<br>
+   * "TERMINAL_FORCED_AIS"<br>
+   * "FORCE_RDI"<br>
+   * "SET_AS_SEGMENT_END_POINT" (ATM)<br>
+   * "END_TO_END_LOOPBACK_OAM_CELL" (ATM)<br>
+   * "SEGMENT_LOOPBACK_OAM_CELL" (ATM)<br>
+   * "LOCAL_LOOP_QUALIFICATION" (DSL)<br>
+   * "DSL_LINE_SUPERVISION" (DSL)<br>
+   **/
+   typedef string MaintenanceOperation_T;
+
+  /**
+   * <p>Describes the mode of the operation, i.e. operate the maintenance
+   * operation or release the maintenance operation.</p>
+   **/
+   enum MaintenanceOperationMode_T {
+     MOM_OPERATE,
+     MOM_RELEASE
+   };
+
+  /**
+   * <p>This struct is used to represent a current persistent 
+   * maintenance operation that has been invoked for the given TP,
+   * and layerRate if applicable.</p>
+   *
+   * globaldefs::NamingAttributes_T <b>tpName</b>:<br>
+   * The name of the TP to which the maintenance operation applies<br>
+   * The termination point name must be explicit (a generic endpoint
+   * specification may not be used in this case). See 
+   * <a href=supportingDocumentation/objectNaming.pdf>
+   * Object Naming</a> for further details on TP naming.<br>
+   *
+   * <br>MaintenanceOperation_T <b>maintenanceOperation</b>:
+   * <br>Current maintenance operation that is invoked,
+   * released, or retrieved<br>
+   *
+   * transmissionParameters::LayerRate_T <b>layerRate</b>:
+   * <br>The layer to which the maintenance operation applies<br>
+   * Use LR_Optional if not required or not applicable.<br>
+   *
+   * globaldefs::NVSList_T <b>additionalInfo</b>:
+   * <br>Additional information on the maintenance operation, 
+   * subject to bilateral agreement<br>
+   * <br>
+   **/ 
+   struct CurrentMaintenanceOperation_T {
+     globaldefs::NamingAttributes_T tpName;
+     MaintenanceOperation_T maintenanceOperation;
+     transmissionParameters::LayerRate_T layerRate;
+     globaldefs::NVSList_T additionalInfo;
+   };
+
+  /**
+   * <p>Sequence of CurrentMaintenanceOperation_T</p>
+   **/ 
+   typedef sequence<CurrentMaintenanceOperation_T> CurrentMaintenanceOperationList_T;
+
+  /**
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * iterators are used.</p>
+   * <p>See <a href=supportingDocumentation/iterators.pdf>
+   * iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   **/
+
+   interface CurrentMaintenanceOperationIterator_I
+   {
+      boolean next_n(
+               in unsigned long how_many, 
+               out CurrentMaintenanceOperationList_T cMOList)
+              raises (globaldefs::ProcessingFailureException);
+
+      unsigned long getLength()
+                    raises (globaldefs::ProcessingFailureException);
+
+      void destroy()
+           raises (globaldefs::ProcessingFailureException);
+   };
+
+
+  /**
+   * <p>The MaintenanceMgr_I is used as a handle to gain access to the
+   * maintenance operation functionalities of the NML-EML interface.</p>
+   *
+   * <p>A handle to an instance of this interface is gained via the
+   * emsSession::EmsSession_I::getManager() operation in the managerInterface 
+   * parameter when the managerName "Maintenance" is used.</p>
+   **/
+
+   interface MaintenanceMgr_I : common::Common_I
+   {
+  /** 
+   * <p>This operation allows the NMS to operate and release
+   * the maintenance commands that are supported by a TP.</p>
+   *  
+   * <br>CurrentMaintenanceOperation_T maintenanceOperation:
+   * Information on the maintenance operation to perform
+   * <br>MaintenanceOperationMode_T maintenanceOperationMode:
+   * Indicates whether the maintenance operation should be
+   * operated or released.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when any input parameter is syntactical 
+   *  incorrect (e.g. tpName does not reference a TP or maintenance operation is 
+   *  invalid)<br>
+   * EXCPT_INVALID_INPUT - Raised when tpName does not reference an TP
+   * EXCPT_ENTITY_NOT_FOUND - Raised when tpName references TP object which does
+   *  not exist<br>
+   * EXCPT_UNABLE_TO_COMPLY - Raised when the operation is denied by the managed 
+   *  element (e.g. because of the current state of the object)<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
+   *  lost<br>
+   * EXCPT_NOT_IN_VALID_STATE - Raised when the operation cannot be performed 
+   *  due to state of TP object<br>
+   * <br>
+   **/
+   void performMaintenanceOperation(
+         in CurrentMaintenanceOperation_T maintenanceOperation,
+         in MaintenanceOperationMode_T maintenanceOperationMode)
+	        raises (globaldefs::ProcessingFailureException);
+
+  /** 
+   * <p>This operation allows the NMS to query the EMS to determine if 
+   * any persistent maintenance commands have been invoked. 
+   * This query is supported for the PTP, FTP, CTP, and ME objects.</p>
+   *
+   * <br>globaldefs::NamingAttributes_T tpOrMeName:
+   * The name of the PTP, FTP, CTP, or ME object<br>
+   * The termination point name must be explicit (a generic endpoint
+   * specification may not be used in this case). See 
+   * <a href=supportingDocumentation/objectNaming.pdf>
+   * Object Naming</a> for further details on TP naming.
+   * <br>unsigned long how_many: Maximum number of maintenance operations to
+   * return in the first batch.
+   * <br>MaintenanceOperationList_T currentMaintenanceOperationList:
+   * First batch of maintenance operations.
+   * <br>CurrentMaintenanceOperationIterator_I cmoIt: Iterator to access the
+   * remaining maintenance operations.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when tpOrMeName does not reference a valid 
+   *  object<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when tpOrMeName references an object that 
+   *  does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to the managed element is 
+   *  lost<br>
+   * EXCPT_NOT_IN_VALID_STATE - Raised when the operation cannot be performed 
+   *  due to state of TP/ME object<br>
+   * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when the maximum number of iterators 
+   *  that the EMS can support has been reached<br>.
+   * <br>
+   **/
+   void getActiveMaintenanceOperations(
+         in globaldefs::NamingAttributes_T tpOrMeName,
+         in unsigned long how_many,
+         out CurrentMaintenanceOperationList_T currentMaintenanceOpeationList,
+         out CurrentMaintenanceOperationIterator_I cmoIt)
+        raises (globaldefs::ProcessingFailureException);
+
+   }; // End of MaintenanceMgr_I interface
+
+}; // end of module
+
+#endif
+

@@ -1,0 +1,122 @@
+#ifndef nmsSession_idl
+#define nmsSession_idl
+
+// ********************************
+// *                              *
+// * nmsSession.idl               *
+// *                              *
+// ********************************
+
+
+//Include list
+#include "session.idl"
+#include "globaldefs.idl"
+
+#pragma prefix "mtnm.tmforum.org"
+
+  /** 
+   * <a href=supportingDocumentation/overview_NML-EML_Interface.pdf>Overview of 
+   * NML-EML interface</a>
+   *
+   * <p>This module contains the definition of the nmsSession interface
+   * of the NML-EML interface.</p>
+   *
+   * <p>The nmsSession module provides a means for the server to inform the NMS
+   * of problems with the notifications.</p>
+   *
+   * <h5> Version 3.0. </h5>
+   **/
+
+
+module nmsSession
+{
+  /** 
+   * <p>This interface is instantiated at the NMS. The NMS passes
+   * a handle to an instance of this interface in the client 
+   * parameter of the emsSessionFactory::EmsSessionFactory_I::getEmsSession()
+   * operation in EmsSessionFactory_I.</p>
+   */
+  interface NmsSession_I : session::Session_I
+  {
+     
+  /**
+   * <p>When an EMS fails to push an event, it can notify all connected NMSs by 
+   * invoking this method on every active NmsSession_I.  This method should also 
+   * be invoked on any new NmsSession_I set up during the event loss period.</p>
+   * 
+   * <p>Once the EMS invokes this method on the NmsSession_Is, it sets an 
+   * internal flag to indicate that it has already informed NMSes of event loss. 
+   * As long as this flag is set, the EMS will not invoke this method again.</p>
+   *
+   * <p>When this method is invoked on an NmsSession_I, the NMS comes to know 
+   * that the EMS has failed to push one or more events that may be of interest 
+   * to it. The NMS should consider itself to be potentially out-of-sync with 
+   * the EMS. It should wait until the EMS calls eventLossCleared before 
+   * resynchronizing with the EMS.</p>
+   *
+   * <br>globaldefs::Time_T startTime: The time of the first notification lost.
+   * <br>string notificationId: The notificationId of the first notification 
+   * lost.
+   **/
+   void eventLossOccurred(
+         in globaldefs::Time_T startTime,
+         in string notificationId);
+
+
+  /**
+   * <p>The EMS invokes this method to indicate that the event or alarm loss 
+   * period is over, and that it is now capable of providing relevant
+   * notifications.</p>
+   * 
+   * <p>After invoking this method on the NmsSession_Is, the EMS clears the 
+   * internal flag set by alarmLossOccured or/and eventLossOccurred.  If 
+   * event or alarm loss occurs again, alarmLossOccurred or eventLossOccurred 
+   * will be called.</p>
+   *
+   * <p>How and when the EMS decides to invoke eventLossCleared is an EMS 
+   * implementation detail. The actual algorithm that the EMS uses may be as 
+   * simple as a timer-based mechanism or a complicated one which monitors the 
+   * current rate at which the EMS pushes events and the available resources in 
+   * NOSE.</p>
+   *
+   * <br>globaldefs::Time_T endTime: The time of the end of the event loss 
+   * period, as determined by the EMS.
+   **/
+   void eventLossCleared(
+         in globaldefs::Time_T endTime);
+
+  /**
+   * <p>When an EMS fails to discsrd an alarm, a TCA, a file transfer status or 
+   * a protection switch notification, it can notify all connected NMSs 
+   * by invoking this method on every active NmsSession_I.  This method 
+   * should also be invoked on any new NmsSession_I set up during the event 
+   * loss period.</p>
+   * 
+   * <p>Once the EMS invokes this method on the NmsSession_Is, it sets an 
+   * internal flag to indicate that it has already informed NMSs of alarm
+   * loss. As long as this flag is set, the EMS will not invoke this method
+   * again. It however may invoke eventLossOccurred if it fails to push a 
+   * different type of event. </p>
+   *
+   * <p>When this method is invoked on an NmsSession_I, the NMS comes to know 
+   * that the EMS has failed to push one or more alarms, TCA, file transfer 
+   * or protection switch notifications that may be of interest to it. The 
+   * NMS should consider itself to be potentially out-of-sync with the EMS 
+   * with respect to these types of notifications. It should wait until the
+   * EMS calls eventLossCleared before resynchronizing on alarms, TCA, 
+   * file transfer and protection switch data with the EMS.</p>
+   *
+   * <br>globaldefs::Time_T startTime: The time of the first notification lost.
+   * <br>string notificationId: The notificationId of the first notification 
+   * lost.
+   **/
+   void alarmLossOccurred(
+         in globaldefs::Time_T startTime,
+         in string notificationId);
+
+
+    };
+
+};
+
+#endif
