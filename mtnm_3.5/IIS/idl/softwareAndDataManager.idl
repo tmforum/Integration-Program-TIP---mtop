@@ -1,0 +1,275 @@
+#ifndef softwareAndDataManager_idl
+#define softwareAndDataManager_idl
+
+// ********************************
+// *                              *
+// * softwareAndDataManager.idl    *
+// *                              *
+// ********************************
+
+//Include list
+#include "globaldefs.idl"
+#include "common.idl"
+
+#pragma prefix "mtnm.tmforum.org"
+
+  /** 
+   * <a href=../../../supportingDocumentation/SD1-27_Overview_NML-EML_Interface.pdf >SD1-27 Overview of 
+   * NML-EML interface</a>
+   *
+   * <p>This module contains the definition of the software and data manager
+   * of the NML-EML interface.</p>
+   *
+   * <h5> Version 3.5. </h5>
+   **/
+
+module softwareAndDataManager
+{
+  /**
+   * <p>This data structure provides an identifier for a backup on an EMS. The 
+   * ME name and the time when the backup was taken uniquely identifies the 
+   * backup. The EMS may decide to ignore the seconds/sub-seconds field in the 
+   * Time_T parameter. The EMS is expected to administer time adjustments and ME 
+   * name changes in such a way as to ensure that no two backups have the same 
+   * identifier.</p>
+   *
+   * globaldefs::NamingAttributes_T <b>meName</b>:
+   * <br>The name of the Managed Element from which the backup was taken.
+   * For further information on naming see
+   * <a href=../../../supportingDocumentation/SD1-25_objectNaming.pdf >SD1-25 Object Naming</a>.<br>
+   *
+   * globaldefs::Time_T <b>backupTime</b>:
+   * <br>The time at which the backup was taken.<br>
+   **/
+   struct BackupId_T {
+    globaldefs::NamingAttributes_T meName ;
+    globaldefs::Time_T backupTime;
+   };
+
+
+  /**
+   * <p>This is a list of Database backups.</p>
+   **/ 
+   typedef sequence <BackupId_T> BackupIdList_T;
+
+  
+  /**
+   * <p>This enum identifies the status of a managed element with respect to 
+   * current database backup operation.</p>
+   * <p>Initially when the EMS is started the Operational status will be set to 
+   * COS_Idle.</p>
+   *
+   * <p>The current operation status values are defined as follows:<p>
+   * <ol>
+   * <li>COS_Idle: no database backup operation has been performed since EMS 
+   * last (re)started (boot).</li>
+   * <li>COS_Pending: a backup operation has been requested but has not yet 
+   * started.</li>
+   * <li>COS_InProgress: a backup operation is being performed.</li>
+   * <il>COS_Completed: last backup operation was successful.</li>
+   * <il>COS_Aborted: last backup operation failed.</li>
+   * </ol><br>
+   **/
+   enum Current_OperationStatus_T {
+    COS_Idle,
+    COS_Pending,
+    COS_InProgress,
+    COS_Completed,
+    COS_Aborted
+   };
+
+  /**
+   * <p>This data structure identifies the status of backup operation for a  
+   * managed element. The failure reason should be present if the operation 
+   * status indicates a failure i.e. in Abort state.</p>
+   * 
+   * Current_OperationStatus_T <b>opStatus</b>:
+   * <br>Indicates the current operational status of the backup.<br>
+   *
+   * string <b>failureReason</b>:
+   * <br>A free form text string provided if the opStatus value is COS_Aborted 
+   * to explain the reason for the abort (e.g. "Comms loss with NE"<br>
+   **/
+   struct BackupStatus_T {
+    Current_OperationStatus_T opStatus;
+    string failureReason;  
+   };
+
+  /**
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * iterators are used.</p>
+   *
+   * <p>See <a href=../../../supportingDocumentation/SD1-15_iterators.pdf >SD1-15 iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   *
+   * <p> This iterator is used to retrieve all ME configuration data backup 
+   * Ids.</p>
+   **/
+   interface BackupIdIterator_I
+   {
+      boolean next_n(
+            in unsigned long how_many,
+	      out BackupIdList_T backupList)
+	     raises (globaldefs::ProcessingFailureException);
+
+      unsigned long getLength()
+	     raises (globaldefs::ProcessingFailureException);
+
+      void destroy()
+	     raises (globaldefs::ProcessingFailureException);
+   };
+
+
+  /**
+   * <p>Managed Elements store configuration data and maintain this on a real 
+   * time basis (the ME configuration data). This configuration data include 
+   * service data, related to ports, facilities, cross connects etc. The format 
+   * and structure of this data is proprietary in nature.</p>
+   *
+   * <p>Most service providers consider it important to take backup of this data 
+   * periodically. This backup data can be archived outside of the ME and if 
+   * necessary can be restored back onto the ME.</p>
+   *
+   * <p> The MTNM interface supports database backup on demand from the NMS. The 
+   * storage of these backups is a local matter of the EMS and backup is not 
+   * transferred across this interface to the NMS. The EMS may store more than 
+   * one backup for each ME. How many backups are stored for each ME is a local 
+   * matter of EMS (potentially configurable within the EMS). A new backup may 
+   * override the oldest backup existing in the EMS.</p> 
+   *
+   * <p>To give an example, if an EMS is configured to store only 2 backups for 
+   * each ME, the third backup will over-write the first backup (oldest).</p> 
+   *
+   * <p>Each backup is identified by the Managed Element Name and the Date and 
+   * Time when the backup was taken by the EMS.</p>
+   *
+   * <p>The softwareAndDataManager is used to gain access to operations related 
+   * to backing up ME configuration data.</p>
+   *
+   * <p>A handle to an instance of this interface is gained via the
+   * emsSession::EmsSession_I::getManager() operation in Manager.</p>
+   **/
+   interface SoftwareAndDataMgr_I : common::Common_I
+   {
+
+
+  /**
+   * <p>This method will initiate a backup request on the specified ME. This is 
+   * an asynchronous operation. The EMS will send the results of the backup 
+   * operation for the Managed Element via the Notification Service. The NMS 
+   * can get the status of any backup operation on-demand (see 
+   * getMEBackupStatus() ).</p>
+   * 
+   * <br>  globaldefs::NamingAttributes_T managedElementName: The name of the 
+   * ME for which a backup of configuration data is required.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when input parameter are syntactical 
+   *  incorrect<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when the ME does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communication to the ME is lost<br>
+   * <br>
+   **/
+   void backupME(
+         in globaldefs::NamingAttributes_T managedElementName) 
+        raises(globaldefs::ProcessingFailureException);
+
+ 
+ /**
+   * <p>This method can be used by the NMS to get the current backup status of 
+   * an individual ME.</p>
+   * 
+   * <br> globaldefs::NamingAttributes_T managedElementName: The name of the 
+   * ME for which a status of the backup of configuration data is required.
+   * <br> BackupStatus_T  backupStatus: The status of the backup of 
+   * configuration data.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INVALID_INPUT - Raised when input parameter are syntactical 
+   *  incorrect<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when the ME does not exist<br>
+   * <br>
+   **/
+   void getMEBackupStatus ( 
+          in globaldefs::NamingAttributes_T managedElementName,
+          out BackupStatus_T  backupStatus) 
+         raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p> This method will abort a backup of ME configuration data that is 
+   * pending or in progress. If there is backup of configuration data of the ME 
+   * pending or in progress an exception will be thrown.</p>
+   * 
+   * <br>  globaldefs::NamingAttributes_T managedElementName: The name of the 
+   * ME for which a backup of configuration data is required.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INVALID_INPUT - Raised when input parameter are syntactical 
+   *  incorrect<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when the ME does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communication to the ME is lost<br>
+   * EXCPT_NOT_IN_VALID_STATE - Raised when there is no pending/in progress 
+   *  backup of configuration data on the named ME.<BR>
+   * <br>
+   **/
+   void abortMEBackup (
+         in globaldefs::NamingAttributes_T managedElementName)
+         raises(globaldefs::ProcessingFailureException); 
+
+
+  /**
+   * <p>The NMS will invoke this method to determine what configuration data 
+   * backups exist in the EMS for a specified list of MEs.</p>
+   *
+   * <p>This method will return the list of the ids of all configuration data 
+   * backups for specified MEs. If the list of MEs in the request is empty, the 
+   * ids of all configuration data backups will be returned for all MEs.</p>
+   * 
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * this operation uses an iterator. See
+   * <a href=../../../supportingDocumentation/SD1-15_iterators.pdf >SD1-15 iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   * 
+   * <br>  globaldefs::NamingAttributesList_T managedElementNameList: The list 
+   * of names of the MEs for which the ids of the conconfiguration data should 
+   * be returned. If one or more of the MEs do not exist the operation will be 
+   * aborted.
+   * <br>  unsigned long how_many: Maximum number of configuration data backup 
+   * ids to report in the first batch.
+   * <br>  BackupIdList_T backupList: First batch of configuration data backup 
+   * ids.
+   * <br>  BackupIdIterator_I backupIt: Iterator to retrieve the remaining 
+   * configuration data backup ids.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when input parameter are syntactical 
+   *  incorrect<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when one or more MEs in the list do not 
+   *  exist<br>
+   * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
+   *  that the EMS can support has been reached.<br>
+   * <br>
+   **/
+   void getBackupList(
+         in globaldefs::NamingAttributesList_T managedElementNameList,
+         in unsigned long how_many,
+         out BackupIdList_T backupList,
+         out BackupIdIterator_I backupIt) 
+        raises(globaldefs::ProcessingFailureException);
+
+    };
+
+};
+
+#endif
+
+

@@ -1,0 +1,1682 @@
+#ifndef performance_idl
+#define performance_idl
+
+// *************************************
+// *                                   *
+// * performance.idl                   *
+// *                                   *
+// *************************************
+
+//Include list
+#include "transmissionParameters.idl"
+#include "common.idl"
+
+#pragma prefix "mtnm.tmforum.org"
+
+  /** 
+   * <a href=../../../supportingDocumentation/SD1-27_Overview_NML-EML_Interface.pdf >SD1-27 Overview 
+   * of NML-EML interface</a>
+   *
+   * <p>This module contains the definition of the performance 
+   * management types and structures of the NML-EML interface.
+   * It also contains the definition of the Performance Management
+   * Manager which is used to gain access to operations dealing with
+   * Performance Monitoring and Measurement (PM).</p>
+   *
+   *
+   * <p>The NMS can enable and disable the collection of PM data.
+   * A <b>PM data record</b> consists of TP name, layer rate,
+   * interval granularity (e.g., 15min), retrieval time, and a list
+   * of PM measurements. A <b>PM measurement</b> comprises PM location
+   * (e.g., receive traffic at the far end), PM parameter name,
+   * PM parameter value, PM parameter unit, and interval status.
+   * TP/ME name, layer rate and PM location determine the target of the
+   * PM activity while PM parameter name, value and unit determine the
+   * subject and result of the PM activity. To enable/disable PM data
+   * collection the NMS may specify a list of measurement points,
+   * i.e. TPs or MEs, and for each measurement point applicable
+   * lists of layer rates, PM locations, and granularities for which
+   * measurement of PM parameters may be turned on/off. With the
+   * same input the NMS may also clear the PM registers.</p>
+   *
+   * <p>The NMS may query the EMS for the supported PM parameters
+   * of an ME at a specified layer rate (PM capabilities of an ME).
+   * The NMS may query the EMS for current PM data records according
+   * to a specified target and subject list, and for history PM data
+   * according to specified targets, subjects and a time window.</p>
+   *
+   * <p>The NMS may kick off the delivery of history PM data by FTP to
+   * a specified location. To this end the NMS may specify a list of
+   * measurement points with layer rates, locations and granularities,
+   * a set of PM parameters, a time window, and a destination with
+   * authentication data for FTP (user name and password). The NMS may
+   * query the EMS for the time period within which PM data records may
+   * be retrieved once the corresponding collection bin is closed.</p>
+   *
+   * <p> Threshold crossing alert (TCA) parameters define the thresholds
+   * to be sticked to by PM parameters (for certain layer rates and
+   * granularities). If a PM parameter for a measurement point crosses
+   * a TCA parameter value, the measurement point emits a TCA, hence
+   * the term "TCA parameter" for a threshold condition. A set of TCA
+   * parameters (including default values) for a specified layer rate is
+   * called a TCA parameter profile (TCAPP). A <b>TCA parameter</b>
+   * consists of interval granularity and PM threshold value.
+   * A <b>PM threshold value</b> comprises PM location, PM parameter
+   * name, PM threshold type (i.e., watermark level), trigger or clear
+   * indication, PM threshold value, and PM threshold unit.</p>
+   *
+   * <p>The NMS may enable/disable the notification of TCAs by 
+   * constructing the appropriate filter via the notification service.
+   * The NMS may set the threshold for the TCA for each of the
+   * supported TCA types per TP/layerRate/granularity measurement
+   * point. The NMS may retrieve the current values of TCA thresholds
+   * for a TP/layerRate/granularity measurement point. The NMS may
+   * enable/disable TCA generation with the same input flexibility
+   * as in case of PM data collection enabling/disabling.</p>
+   *
+   * <p>The NMS may create, delete, and reconfigure TCA parameter profiles.
+   * The NMS may retrieve all TCAPP names and retrieve an individidual
+   * TCAPP by name. The NMS may add/remove a TCAPP to/from a TP. The
+   * NMS may retrieve for a given TCAPP all TPs it is added to.</p>
+   *
+   * <p>Optionally the EMS may implement PM points that are contained
+   * in TPs and represent the PM capabilities of the containing TP(s)
+   * regarding PM data collection and TCA supervision. The NMS may
+   * retrieve the PMPs contained in a TP or ME. The NMS may activate/
+   * deactivate Performance Monitoring respectively Performance
+   * Threshold Supervision by unlocking/locking the monitoring state
+   * respectively supervision state of PMPs contained in TPs.</p>
+   *
+   * <h5> Version 3.5. </h5>
+   * 
+   **/
+
+
+
+module performance
+{
+
+  /**
+   * <p>Destination specification for FTP transfer of history PM data</p>
+   *
+   * <p>In the request for retrieval of history PM Data requests with PM data 
+   * transfer using FTP, the NMS may specify the target destination for the PM 
+   * Data file (operation getHistoryPMData()). Within 
+   * the destination field, the hostname of the destination machine and the full 
+   * path name of the target file (including the directory name and the file 
+   * name) within the destination machine are specified.
+   * Hostname and full path name are separated by a colon ( : ). 
+   * The '/' or '\' in path name are dependent on the destination and managed by 
+   * the client.</p>
+   **/
+   typedef string  Destination_T;
+
+
+  /** 
+   * <p>Count period (interval) for which PM data may be collected 
+   * (and subsequently retrieved).</p>
+   *
+   * <p>The format is one of:
+   * <ul><li>"<i>n</i>min" (representing <i>n</i> minute granularity)
+   * for values of <i>n</i> that are not multiples of 60</li>
+   * <li>"<i>n</i>h" (representing <i>n</i> hour granularity)</li>
+   * <li>"NA" (representing instantaneous measurements)</li>
+   * </ul></p>
+   * 
+   * <p>Standard values are:<br>
+   * "15min"<br>
+   * "24h"<br>
+   * "NA" (for current instantaneous measurements)<br></p>
+   **/
+   typedef string Granularity_T;
+
+
+  /**
+   * <p>Sequence of Granularity_T.</p>
+   **/ 
+   typedef sequence<Granularity_T> GranularityList_T;
+
+
+  /** 
+   * <p>Specification of PM location (see also   
+   * <a href=../../../supportingDocumentation/SD1-19_LocationIdentification.pdf >
+   * Location Identification</a> for further details).</p>
+   *
+   * <p>PM parameters may relate to measurements taken on receive or transmit 
+   * traffic either at the named TP (PML_NEAR_END_Rx/Tx) or at the TP at the 
+   * far end of the trail (circuit/path) connected to the named TP 
+   * (PML_FAR_END_Rx/Tx). Alternatively, the PM parameters may be bidirectional 
+   * (PML_BIDIRECTIONAL) e.g. resulting from a second by second summation and 
+   * evaluation of both far and near TPs .</p>
+   * Valid values are:<br>
+   * "PML_NEAR_END_Rx"<br>
+   * "PML_FAR_END_Rx"<br>
+   * "PML_NEAR_END_Tx"<br>
+   * "PML_FAR_END_Tx"<br>
+   * "PML_BIDIRECTIONAL"<br>
+   * "PML_CONTRA_NEAR_END_Rx"<br>
+   * "PML_CONTRA_FAR_END_Rx"<br>
+   * <br>
+   **/
+   typedef string PMLocation_T;
+
+
+  /**
+   * <p> A set of PMLocation_T</p>.
+   * <p>In PM related operations, PM parameters may be specified per  
+   * nearEnd and/or farEnd category, or bidirectional category.</p>
+   **/ 
+   typedef sequence<PMLocation_T> PMLocationList_T;
+
+
+  /**
+   * <p>Holds the name of Performance Measurements.
+   * It has been defined as a string to accommodate backward compatibility
+   * and proprietary extension.</p>
+   * <p>For currently standardized values see 
+   * <a http="supportingDocumentaion/PeformanceParameters.pdf">Performance
+   * Parameters</a>.</p>
+   * 
+   **/ 
+   typedef string PMParameterName_T;  
+
+
+
+  /**
+   * <p>List of PMParameterName_T.</p>
+   **/
+   typedef sequence<PMParameterName_T> PMParameterNameList_T;
+
+
+  /**
+   * <p>Used to represent the PM parameter name of the PM
+   * measure qualified by its location.</p>
+   *
+   * PMParameterName_T <b>pmParameterName</b>:
+   * <br>Represents the name of the PM Measure.<br>
+   *
+   * PMLocation_T <b>pmLocation</b>:
+   * <br>Represents the location of the PM Measure.<br>
+   * <br>
+   **/ 
+   struct PMParameter_T {
+    PMParameterName_T  pmParameterName;
+    PMLocation_T pmLocation;
+   };
+
+ 
+  /**
+   * <p>List of PMParameter_T.</p>
+   **/
+   typedef sequence <PMParameter_T> PMParameterList_T ;
+
+
+  /**
+   * <p>Describes threshold types (watermark levels) for TCA parameters.</p> 
+   * 
+   * <p>The TWM_HIGH and TWM_HIGHEST types are used for TCAs that are raised 
+   * when the measured value goes above the threshold. The TWM_LOW 
+   * and TWM_LOWEST types are used for TCAs that are raised when the 
+   * measured value goes below the threshold (only apply to gauges).</p>
+   *
+   * <p>When there is only one level of TCA trigger, only TWM_HIGH and/or 
+   * TWM_LOW are used. When there are two levels of TCA triggers, 
+   * TWM_HIGHEST and/or TWM_LOWEST are used in addition.
+   * </p>
+   *
+   * <p>See <a href=../../../supportingDocumentation/SD1-37_TCAs.pdf >SD1-37 PM Threshold Types</a>
+   * for information on how water mark levels are used.</p>
+   **/
+   enum PMThresholdType_T 
+   {
+    TWM_HIGHEST,
+    TWM_HIGH,
+    TWM_LOW,
+    TWM_LOWEST
+   };
+
+  /**
+   * <p>Holds a PM threshold value.</p>
+   *
+   * <p>See <a href=../../../supportingDocumentation/SD1-37_TCAs.pdf >SD1-37 PM Threshold Types</a>  
+   * for information on how threshold values are used.</p>
+   *
+   * PMParameterName_T <b>pmParameterName</b>:
+   * <br>Holds the name of the PM Measure. It has been defined as
+   * a string to accomodate backward compatibility and proprietary
+   * extensions. Refer to 
+   * <a href=../../../supportingDocumentation/SD1-28_PerformanceParameters.pdf >SD1-28 Performance 
+   * Parameters</a> for an overview of the standardized PM parameters
+   * currently supported by the MTNM interface.<br>
+   *
+   * PMLocation_T <b>pmLocation</b>:
+   * <br>Represents the location of the PM Measure.<br>
+   *
+   * PMThresholdType_T <b>thresholdType</b>:
+   * <br>Represents the type of threshold value.<br>
+   *
+   * boolean <b>triggerFlag</b>:
+   * <br>Indicates if the threshold is for the trigger (true) or the clear 
+   * (false).<br>
+   *
+   * float <b>value</b>:
+   * <br>Threshold value for the PM parameter (float used to incorporate 
+   * gauge PM parameters).<br>
+   *
+   * string <b>unit</b>:
+   * <br>Free format string describing the units for the threshold value.<br>
+   * <br>
+   **/
+   struct PMThresholdValue_T 
+   {
+      PMParameterName_T  pmParameterName;
+      PMLocation_T       pmLocation;
+      PMThresholdType_T  thresholdType;
+      boolean            triggerFlag;
+      float              value;
+      string             unit;
+   };
+
+
+  /**
+   * <p>Sequence of PMThresholdValue_T.</p>
+   **/ 
+   typedef sequence<PMThresholdValue_T> PMThresholdValueList_T ;
+
+
+  /**
+   * <p>The TCAParameter_T struct contains the TCA parameters assigned to a 
+   * TCA ParameterProfile. They can be retrieved and modified by the NMS 
+   * through the operations getTCAParameterProfile and 
+   * setTCAParameterProfile provided by the PerformanceManagementMgr_I 
+   * interface.</p>
+   *
+   * performance::PMParameterName_T <b>pmParameterName</b>:
+   * <br>Holds the name of the
+   * <a href=../../../supportingDocumentation/SD1-28_PerformanceParameters.pdf >SD1-28 Performance
+   * Parameters</a>.
+   * It has been defined as a string to accomodate proprietary extension.<br>
+   *
+   * performance::Granularity_T <b>granularity</b>:
+   * <br>This attribute defines the granularity of the TCA Parameter.
+   * For counters two values "15min" or "24h" are supported. For current
+   * instantaneous measurements the granularity does not apply which is 
+   * indicated by the value "N/A".<br>
+   *
+   * performance::PMLocation_T <b>pmLocation</b>:
+   * <br>Represents the location of the PM measure.<br>
+   *
+   * performance::PMThresholdType_T <b>pmThresholdType</b>:
+   * <br>Represents the type of threshold value.<br>
+   *
+   * boolean <b>triggerFlag</b>:
+   * <br>Indicates if the threshold is for the trigger (true) or the clear 
+   * (false).<br>
+   *
+   * float <b>value</b>:
+   * <br>Threshold for parameter (float used to incorporate gauge PM 
+   * parameters).<br>
+   *
+   * string <b>unit</b>:
+   * <br>Free format string describing the units for the threshold value.<br>
+   **/
+   struct TCAParameter_T  {
+     performance::PMParameterName_T pmParameterName;
+     performance::Granularity_T granularity;
+     performance::PMLocation_T pmLocation; 
+     performance::PMThresholdType_T thresholdType;
+     boolean triggerFlag;
+     float value;
+     string unit;
+   };
+
+
+  /**
+   * <p>Sequence of TCAParameter_T.</p>
+   **/
+  typedef sequence<TCAParameter_T> TCAParameterList_T;
+
+
+  /**
+   * <p>This struct is used to represent the TCA (threshold crossing
+   * alert)Parameter Profile (TCAPP) object class containing per 
+   * layer rate a set of PM parameter/threshold value pairs per  
+   * granularity (e.g. VC12: ES / 50;15min). A profile may be 
+   * created and deleted by EMS or NMS. Instances of this class may be 
+   * associated to TPs. A list of references to all associated TPs 
+   * will be maintained in the profile.</p>
+   *
+   * globaldefs::NamingAttributes_T <b>name</b>:
+   * <br>The name represents the name of the TCA Parameter Profile which is
+   * assigned by the EMS upon creation.
+   * The EMS is responsible for guaranteeing the uniqueness of the name
+   * within the context of the ManagedElement.
+   * It is a readonly attribute.<br>
+   *
+   * string <b>userLabel</b>:
+   * <br>The user label of the TCA Parameter Profile can be set by 
+   * EMS or NMS upon creation. After creation the user label can be 
+   * changed by the NMS through the Common_I interface service 
+   * common::Common_I::setUserLabel(). It is a read-write attribute.<br>
+   *
+   * string <b>nativeEMSName</b>:
+   * <br>The name represents how the TCA Parameter Profile is referred to on
+   * EMS displays. Its aim is to provide a "nomenclature bridge" to aid 
+   * relating information presented on NMS displays to EMS displays (via GUI  
+   * cut through).After a TCA Parameter Profile has been created, the  
+   * nativeEMSName may be changed by the NMS, if the EMS supports this 
+   * functionality, using the common::Common_I::setNativeEMSName() operation 
+   * of the Common_I interface service. It is a read/write attribute and 
+   * never set to NULL string.<br>
+   *
+   * string <b>owner</b>:
+   * <br>The owner attribute of the TCA Parameter Profile indicates the 
+   * ownership. The owner is provisionable by the NMS. This attribute can be set 
+   * by the NMS through the Common_I interface service 
+   * common::Common_I::setOwner(). It is a read/write attribute.<br>
+   *
+   * globaldefs::NVSList_T <b>additionalInfo</b>:
+   * <br>This attribute allows the communication from the EMS to the NMS (and
+   * vice versa from NMS to EMS) of additional information which isn't 
+   * explicitly modelled. This may be an empty list.
+   * It is a read/write attribute.<br>
+   *
+   * transmissionParameters::LayerRate_T <b>layerRate</b>:
+   * <br>Defines the <a href=../../../supportingDocumentation/SD1-17_LayerRates.pdf >SD1-17 layer 
+   * rate</a> of the Profile to which the thresholds apply.
+   * It is a read only attribute.<br>
+   *
+   * TCAParameterList_T <b>tcaParameterList</b>:
+   * <br>Provides the list of
+   * <a href=../../../supportingDocumentation/SD1-28_PerformanceParameters.pdf >SD1-28 Performance
+   * Parameters</a>
+   * /threshold value pairs including location and granularity.
+   * It is a read/write attribute.<br>
+   **/
+   struct TCAParameterProfile_T  {
+    globaldefs::NamingAttributes_T name;
+    string userLabel;
+    string nativeEMSName;
+    string owner;
+    globaldefs::NVSList_T additionalInfo;
+    transmissionParameters::LayerRate_T layerRate;
+    TCAParameterList_T tcaParameterList;
+   };
+
+
+  /**
+   * <p>Sequence of TCAParameterProfile_T.</p>
+   **/
+   typedef sequence< TCAParameterProfile_T> TCAParameterProfileList_T;
+
+
+
+  /**
+   * <p>Holds a PM measurement and description of validity.</p>
+   *
+   * PMParameterName_T <b>pmParameterName</b>:
+   * <br>Represents the name of the PM Measure.<br>
+   *
+   * PMLocation_T <b>pmLocation</b>:
+   * <br>Represents the location of the PM Measure.<br>
+   *
+   * float <b>value</b>:
+   * <br>Value of PM parameter (float used to incorporate gauge PM 
+   * parameters).<br>
+   *
+   * string <b>unit</b>:
+   * <br>Free format string describing the units for the PM measurement 
+   * value.<br>
+   * string <b>intervalStatus</b>:
+
+   * <br>The following string values, to indicate the relationship of 
+   * measurement value and measurement interval, are allowed:<br>
+   * "Valid" - valid data,<br>
+   * "Incomplete" - data not available for the complete interval,<br>
+   * "Invalid" - data available but marked as invalid for the interval 
+   * (when the EMS can not distinguish incomplete measurements
+   * from invalid measurements, 
+   * "Invalid" will be used)<br>
+   * "Unavailable" - no data available at all for this interval,<br>
+   * "Zero-suppressed" - zero-suppressed intervals.<br>
+   * <br><br>
+   * <br>
+   **/
+   struct PMMeasurement_T 
+   {
+    PMParameterName_T pmParameterName;
+    PMLocation_T pmLocation;
+    float value;
+    string unit;
+    string intervalStatus;
+   };
+
+
+  /**
+   * <p>Sequence of PMMeasurement_T.</p>
+   **/ 
+   typedef sequence<PMMeasurement_T> PMMeasurementList_T ;
+
+
+  /**
+   * <p>This struct is used to pass current PM data for one 
+   * collection bin from the EMS to the NMS. It is also used
+   * to pass historic PM data across the NML-EML interface when
+   * the file transfer capability via FTP is not preferred.</p>
+   *
+   * globaldefs::NamingAttributes_T <b>tpName</b>:
+   * <br>The name of the termination point. The termination  
+   * point name must be explicit (a generic endpoint specification 
+   * may not be used in this case). 
+   * See <a href=../../../supportingDocumentation/SD1-25_objectNaming.pdf >SD1-25 
+   * Object Naming</a> for further details on TP naming.<br>
+   *
+   * transmissionParameters::LayerRate_T <b>layerRate</b>:
+   * <br>Layer of the collected PM data.<br>
+   *
+   * Granularity_T <b>granularity</b>:
+   * <br>Identifies the granularity of the data.<br>
+   *
+   * globaldefs::Time_T <b>retrievalTime</b>:
+   * <br>Point in time at which PM measurement was obtained from the ME.<br>
+   *
+   * PMMeasurementList_T <b>pmMeasurementList</b>:
+   * <br>PM measurement values.<br>
+   * <br>
+   **/ 
+   struct PMData_T {
+    globaldefs::NamingAttributes_T tpName;
+    transmissionParameters::LayerRate_T layerRate;
+    Granularity_T granularity;
+    globaldefs::Time_T retrievalTime;
+    PMMeasurementList_T pmMeasurementList;
+   };
+
+ 
+  /**
+   * <p>Sequence of PMData.</p>
+   **/
+   typedef sequence<PMData_T> PMDataList_T;
+
+
+  
+
+  /** 
+   * <p>Used to specify the scope/target for a PM operation.</p>
+   *
+   * globaldefs::NamingAttributes_T <b>name</b>:
+   * <br>The name of the object to which this selection applies. 
+   * (i.e. the target of the PM operation). This may be:
+   * <br>ManagedElement: The selection applies to all termination points
+   * contained within the ManagedElement.<br>
+   * <br>TerminationPoint: The selection applies only to the named termination 
+   * point which will be a PTP, an FTP or a CTP. Unlike the case for 
+   * ManagedElement, the operation will not apply to any "contained" TPs when a 
+   * PTP, an FTP or CTP is specified.<br>
+   * <br>Note: As stated in the requirements (TMF513), the possible scopes  
+   * do not currently include "SNC" and do not include "TL".<br>
+   * <br>
+   *
+   * transmissionParameters::LayerRateList_T <b>layerRate</b>:
+   * <br>Identifies the set of layers to which the selection applies. 
+   * An empty list means all layers supported by the equipment.<br>
+   *
+   * PMLocationList_T <b>pMLocationList</b>:
+   * <br>Identifies the set of locations to which the selection applies.
+   * An empty list means all locations supported by the equipment.<br>
+   *
+   * GranularityList_T <b>granularityList</b>:
+   * <br>Identifies set of granularities to which the selection applies. 
+   * An empty list means all granularities supported by the equipment.<br>
+   * <br>
+   **/
+   struct PMTPSelect_T {
+    globaldefs::NamingAttributes_T name;
+    transmissionParameters::LayerRateList_T layerRateList;
+    PMLocationList_T pMLocationList;
+    GranularityList_T granularityList;
+   };
+ 
+ 
+  /**
+   * <p>Sequence of PMTPSelect.</p>
+   * <p> Used by several methods to identify sets
+   * of PM parameters to which to apply the operation.</p> 
+   **/
+   typedef sequence<PMTPSelect_T> PMTPSelectList_T;
+ 
+  /**
+   * <p>By means of this struct, the EMS informs the NMS about the minimum  
+   * time it holds 24h PM data records and 15min PM data records.
+   * This minimum time refers to the time after the particular collection 
+   * bins are closed.</p>
+   *
+   * short <b>storeTime24hr</b>:
+   * <br>Minimum store time in hours for 24h data<br>
+   *
+   * short <b>storeTime15min</b>:
+   * <br>Minimum store time in hours for 15min data<br>
+   * <br>
+   **/
+   struct HoldingTime_T {
+    short storeTime24hr; 
+    short storeTime15min;
+   }; 
+
+
+  /**
+   * <p>The TCAParameters structure is used to get or set one or more PM 
+   * Threshold values for a given TP/layer/granularity measurement point.</p>
+   *
+   * transmissionParameters::LayerRate_T <b>layerRate</b>:
+   * <br>Identifies the layer to which tcaTypeValues applies.<br>
+   *
+   * Granularity_T <b>granularity</b>:
+   * <br>Identifies the granularity of the data. For gauges, this should be 
+   * "NA".<br>
+   *
+   * PMThresholdValueList_T <b>tcaTypeValues</b>:
+   * <br>Identifies threshold values. for PM parameters, PM locations
+   * and threshold types, and indicates Trigger/Clear properties.<br>
+   **/
+   struct TCAParameters_T  {
+    transmissionParameters::LayerRate_T layerRate;
+    Granularity_T granularity;
+    PMThresholdValueList_T tcaTypeValues;
+   }; 
+
+  /**
+   * <p>AdministrativeState_T indicates whether a specified function is enabled 
+   * (unlocked) or disabled (locked). </p>
+   **/
+   enum AdministrativeState_T {
+    AS_Locked,
+    AS_Unlocked
+   };
+
+
+  /**
+   * <p>This structure represents a Performance Monitoring Threshold.</p> 
+   * 
+   * PMThresholdType_T <b>thresholdType</b>:
+   * <br>Represents the type of threshold value.<br>
+   * 
+   * boolean <b>triggerFlag</b>:
+   * <br>Indicates if the threshold is for the trigger (TRUE) or the clear 
+   * (FALSE).<br>
+   *
+   * float <b>value</b>:
+   * <br>Threshold value (float used to incorporate gauge PM parameters).<br>
+   *
+   * string <b>unit</b>:
+   * <br>Free format string describing the units for the threshold value.<br>
+   * <br>
+   **/
+   struct PMThreshold_T {
+    PMThresholdType_T thresholdType;
+    boolean triggerFlag; 
+    float value; 
+    string unit; 
+   };
+
+  /**
+   * <p>Sequence of Performance Monitoring Thresholds.</p> 
+   **/
+   typedef sequence <PMThreshold_T> PMThresholdList_T;
+
+
+  /**
+   * <p> The PMParameterWithThresholds_T structure describes the list of 
+   * thresholds associated with a particular PM Parameter.</p>
+   *
+   * PMParameterName_T <b>pmParameterName</b>:
+   * <br>Represents the name of the PM Measure.<br>
+   *
+   * PMThresholdList_T <b> pmThresholdList </b>: 
+   * <br>Holds the list of PM thresholds associated with the named 
+   * PM parameter.<br>
+   **/
+   struct PMParameterWithThresholds_T {
+    PMParameterName_T pmParameterName;
+    PMThresholdList_T pmThresholdList;
+   };
+
+
+  /**
+   * <p>Sequence of Performance Monitoring parameters with their respective 
+   * thresholds.</p> 
+   **/
+   typedef sequence <PMParameterWithThresholds_T> 
+           PMParameterWithThresholdsList_T;
+
+
+  /**
+   * <p>This structure represents one performance monitoring point (PMP). It is 
+   * determined by the containing PTP or CTP and by the layer rate, the PM 
+   * location and the granularity the monitoring is done for. PMP objects are 
+   * created by the EMSs only. They are contained in TPs and represent the 
+   * PM capabilities of their containing TP(s).</p>
+   *
+   * <p>Activation and deactivation of Performance Monitoring respectively
+   * Performance Threshold Supervision is achieved by changing the Monitoring
+   * State or Supervision State of the related PMP.</p>
+   *
+   * <p>The monitoring state of a PMP is set to:<ul>
+   * <li>unlocked using the operation enablePMData(), (activate 
+   * Performance Monitoring)</li>
+   * <li>locked using the operation disablePMData(),
+   * (deactivate Performance Monitoring)</li></ul></p>
+   * 
+   * 
+   * <p>The supervision state of a PMP is set to:<ul>
+   * <li><b>unlocked</b> by using the operation enableTCA(), 
+   * (activate Performance Threshold Supervision),</li>
+   * <li><b>locked</b> by using the operation disableTCA(),
+   * (deactivate Performance Threshold Supervision).</li></ul></p>
+   * 
+   * globaldefs::NamingAttributes_T <b>name</b>: 
+   * <br>The name represents the name of the PMP which is assigned by the EMS 
+   * upon creation. It is a read only attribute.<br>
+   * The EMS is responsible for guaranteeing the uniqueness of 
+   * the name within the context of the PerformanceManagementMgr_I. This is 
+   * achieved by the MTNM naming hierarchy (see 
+   * <a href=../../../supportingDocumentation/SD1-25_objectNaming.pdf >SD1-25 Object Naming</a>)
+   * and by the following <b>naming convention for the PMP 
+   * name value</b>:<br>
+   *
+   * The value of the PMP name is "<i>layer rate</i>-<i>location</i>-
+   * <i>granularity</i>" where<br>
+   * <i>layer rate</i> are the digits as defined in 
+   * transmissionParameters::Laye'rRate_T()respectively in the supporting  
+   * document (<a href=../../../supportingDocumentation/SD1-17_LayerRates.pdf >SD1-17 Layer Rates</a> 
+   * e.g., 15 for LR_STS3c_and_AU4_VC4),<br>
+   * <i>location</i> is the string defined in PMLocation_T()</a>
+   * (e.g., PML_NEAR_END_Rx),<br>
+   * <i>granularity</i> is the string defined in Granularity_T()</a>
+   * (e.g., 15min).<br>
+   * The complete example thus looks like "15-PML_NEAR_END_Rx-15min".<br>
+   * </dir>
+   * 
+   * string <b>userLabel</b>:
+   * <br>The userLabel is a friendly name that the operator wants to give to 
+   * the PMP. Typical expectations of the operator is that the same name is seen 
+   * on all operation systems. This is set by the NMS and could be displayed on 
+   * the EMS based on each systems' capabilities. THIS IS NOT A MANDATORY 
+   * EXPECTATION, but is left to the implementation of the EMS. This attribute 
+   * can be set by NMS through the Common_I interface service
+   * common::Common_I::setUserLabel(). It is a read/write attribute.<br>
+   *
+   * string <b>nativeEMSName</b>:
+   * <br>Represents how the PMP refers to itself on PMP displays. Its
+   * aim is to provide a "nomenclature bridge" to aid relating information
+   * presented on NMS displays to EMS displays (via GUI cut through).
+   * May be a null string.<br>
+   *
+   * string <b>owner</b>:
+   * <br>The owner is provisionable by the NMS. This attribute can be set
+   * by NMS through the Common_I interface service
+   * common::Common_I::setOwner(). It is a read/write attribute.<br>
+   *
+   * PMParameterWithThresholdsList_T <b>pmParameterWithThresholdsList</b>: 
+   * <br>List of PM parameters supported by the PMP, e.g. PMP_ES, PMP_SES, 
+   * etc. together with all their thresholds.<br>
+   *
+   * AdministrativeState_T <b>monitoringState</b>: 
+   * <br>The monitoring state indicates whether performance monitoring is 
+   * enabled or disabled for the PMP .<br>
+   * 
+   * AdministrativeState_T <b>supervisionState</b>: 
+   * <br>The supervision state indicates whether performance threshold 
+   * supervision is enabled or disabled for the PMP .<br>
+   * 
+   * globaldefs::NVSList_T <b>additionalInfo</b>:
+   * <br>This attribute allows the communication from the EMS to the NMS of 
+   * additional information which is not explicitly modeled.
+   * It is a read-only attribute.<br>
+   **/
+   struct PMP_T {
+    globaldefs::NamingAttributes_T name;
+    string userLabel; 
+    string nativeEMSName; 
+    string owner; 
+    PMParameterWithThresholdsList_T pmParameterWithThresholdsList; 
+    AdministrativeState_T monitoringState; 
+    AdministrativeState_T supervisionState; 
+    globaldefs::NVSList_T additionalInfo;
+   };
+
+
+  /**
+   * <p>Sequence of PMP_T. Used to convey a batch of collected Performance 
+   * Monitoring Points data.</p> 
+   **/
+   typedef sequence<PMP_T> PMPList_T;
+
+
+  /**
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * iterators are used.</p>
+   * <p>See <a href=../../../supportingDocumentation/SD1-15_iterators.pdf >SD1-15 iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   **/
+   interface PMDataIterator_I 
+   {
+	boolean  next_n(in  unsigned long    how_many,
+			out PMDataList_T       pmDataList)
+		 raises (globaldefs::ProcessingFailureException);
+
+	unsigned long getLength()
+		 raises (globaldefs::ProcessingFailureException);
+
+	void     destroy()
+		 raises (globaldefs::ProcessingFailureException);
+   };
+
+  /**
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * iterators are used.</p>
+   * <p>See <a href=../../../supportingDocumentation/SD1-15_iterators.pdf >SD1-15 iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   **/
+   interface PMPIterator_I
+    {
+ 	boolean next_n(in unsigned long how_many,
+        out PMPList_T pmpList)
+	 raises (globaldefs::ProcessingFailureException);
+
+      unsigned long getLength()
+	 raises (globaldefs::ProcessingFailureException);
+
+   	void destroy()
+	 raises (globaldefs::ProcessingFailureException);
+    };
+
+
+  /**
+   * <p>In order to allow the NMS to deal with a large number of 
+   * objects, iterators are used.</p>
+   * <p>See <a href=../../../supportingDocumentation/SD1-15_iterators.pdf >SD1-15 iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   **/
+   interface TCAParameterProfileIterator_I 
+    {
+	boolean  next_n(in unsigned long how_many,
+        out TCAParameterProfileList_T tcaParameterProfileList)
+       raises (globaldefs::ProcessingFailureException);
+
+      unsigned long getLength()
+       raises (globaldefs::ProcessingFailureException);
+
+   	void	 destroy()
+       raises (globaldefs::ProcessingFailureException);
+    };
+
+
+
+  /**
+   * <p>The PerformanceManagementMgr_I is used to gain access to operations
+   * which deal with performance Monitoring</p>
+   *
+   * <p>A handle to an instance of this interface is gained via the
+   * emsSession::EmsSession_I::getManager() operation in 
+   * managerInterface when the managerName "PerformanceManagement" is used.</p>
+   **/
+
+   interface PerformanceManagementMgr_I: common::Common_I
+   {
+
+
+  /**
+   * <p>This operation allows the NMS to request, from the EMS, the set
+   * of PM parameters supported by a particular ME at a specific layer.<p>
+   *
+   * <br>globaldefs::NamingAttributes_T meName: Gives the name of the managed 
+   * element
+   * <br>transmissionParameters::LayerRate layerRate: Gives the layerRate 
+   * considered.
+   * <br>PMParameterList pmParameterList This out parameter contains the set 
+   * of PM parameters that are supported by the ME referred to.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when meName does not reference an 
+   *  managedElement object or layerRate contains undefined rates<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when meName references object which does 
+   *  not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
+   * lost<br>
+   * <br>
+   **/
+   void getMEPMcapabilities(
+         in globaldefs::NamingAttributes_T meName,
+         in transmissionParameters::LayerRate_T layerRate,
+         out PMParameterList_T pmParameterList)
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This operation instructs the EMS to turn off PM data collection for a 
+   * list of measurement points. Within the request for each measurement point, 
+   * one may specify the granularity (15min, 24h, NA, etc.) and location 
+   * (nearEnd and/or farEnd and/or bidirectional) for the PM parameters that are 
+   * to be deactivated.<p>
+   * <p>Disabling is done on a best-effort basis. If PM could not be disabled
+   * for a subset of cases in
+   * the PMTPSelectList a  list identifying this subset is returned.</p>
+   * <p>PM collection stops immediately, i.e., before the completion of the 
+   * current 15 minute or 24 hour monitoring period. This may lead to incomplete 
+   * collection periods. If PM collection was never started for this TP, the 
+   * operation is considered successful.</p>
+   *
+   * <br>PMTPSelectList_T pmTPSelectList: This struct contains the relevant 
+   * data for the disablePMData request. It must not be empty.
+   * <br>PMTPSelectList_T failedTPSelectList: List of points which were not 
+   * completely disabled. An empty list indicates that the total request was 
+   * successful.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised if pmTPSelectList is empty or contains invalid 
+   *  data<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
+   *  lost<br>
+   * <br>
+   **/ 
+   void disablePMData(
+         in PMTPSelectList_T pmTPSelectList,
+         out PMTPSelectList_T failedTPSelectList)
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This operation instructs the EMS to enable (turn on) PM data collection
+   * for a list of measurement points. Within the request for each measurement 
+   * point, one may specify the granularity (15min, 24h, NA, etc.) and location 
+   * (nearEnd and/or farEnd and/or bidirectional) for the PM parameters that  
+   * are to be activated.</p>
+   *
+   * <p>Enabling is done on best-effort basis. If PM could not be enabled
+   * for a subset of cases in the pmTPSelectList, a list identifying this  
+   * subset is returned.</p>
+   *
+   * <p>PM data collection starts immediately, i.e., before the completion of 
+   * the current 15 minute or 24 hour monitoring period. This may lead to  
+   * incomplete collection periods. If PM collection was already on for a TP,
+   * the operation is considered successful.</p>
+   *
+   * <br>PMTPSelectList_T pmTPSelectList: This struct contains the relevant 
+   * data for the enablePMData request. This must not be empty.
+   * <br>PMTPSelectList_T failedTPSelectList: List of points which were not 
+   * completely enabled. An empty list indicates that the total request was 
+   * successful.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised if pmTPSelectList is empty or contains invalid 
+   *  data<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
+   *  lost<br>
+   * EXCPT_CAPACITY_EXCEEDED - Raised when the maximum number of simultaneously 
+   *  enabled monitoring points is exceeded<br>
+   * <br>
+   **/ 
+   void enablePMData(
+         in PMTPSelectList_T pmTPSelectList,
+         out PMTPSelectList_T failedTPSelectList)
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This operation instructs the EMS to clear (reset) the PM registers
+   * for a list of measurement points. Within the request for each measurement 
+   * point, one may specify the granularity (15min, 24h, NA, etc.) and location 
+   * (nearEnd and/or farEnd and/or bidirectional) for the PM registers that are 
+   * to be reset.</p>
+   *
+   * <p>Clearing PM gauge minimum, maximum, and average registers means to reset 
+   * them to the current measurement; for the actual gauge measurement, it has 
+   * no effect. This is not considered a failure case.</p>
+   *
+   * <p>Clearing PM registers is done on best-effort basis. If registers could 
+   * not be completely cleared for a subset of cases in the pmTPSelectList, 
+   * a list identifying this subset is returned.</p>
+   *
+   * <br>PMTPSelectList_T pmTPSelectList: This struct contains the relevant 
+   * data for the clearPMData request. It must not be empty.
+   * <br>PMTPSelectList_T failedTPSelectList: List of points for which PM 
+   * registers were not completely cleared. An empty list indicates that the 
+   * total request was successful.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if EMS is unable to support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised if pmTPSelectList is empty or contains invalid 
+   *  data<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is lost
+   * <br>
+   **/ 
+   void clearPMData(
+         in PMTPSelectList_T pmTPSelectList,
+         out PMTPSelectList_T failedTPSelectList)
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>The EMS is requested to inform the NMS about how many hours PM data 
+   * records (24h/15min) are held in the EMS. This is the minimum time. If EMS 
+   * does not store PM data it is the time supported in the NE (minimum time of 
+   * all managed NEs).</p>
+   *
+   * <br>HoldingTime holdingTime: This out parameter contains the time period 
+   * in hours within which 24h PM data records and 15min PM data records may be 
+   * retrieved.
+   *
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if EMS is unable to support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_NE_COMM_LOSS - Raised if communication is down to an NE and holding 
+   *  time cannot be retrieved
+   * <br>
+   **/ 
+   void getHoldingTime(out HoldingTime_T holdingTime)
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /** 
+   * <p>The purpose of this operation is to retrieve the values of PM thresholds 
+   * on a TP/layerRate measurement point. The operation is best-effort. Results 
+   * are returned in the out parameter of this operation. The operation can be 
+   * applied to a PTP, an FTP or CTP. The NMS requests the TCA parameters for 
+   * the particular TP and granularity specified.</p>
+   *
+   * <br>globaldefs::NamingAttributes_T tpName: Identification of the TP for 
+   * which the values of the TCA parameters are to be retrieved. The termination 
+   * point name must be explicit (a generic endpoint specification may not be 
+   * used in this case).See <a href=../../../supportingDocumentation/SD1-25_objectNaming.pdf >SD1-25 
+   * Object Naming</a> for further details on TP naming.
+   * <br>transmissionParameters::LayerRate_T layerRate: LayerRate for which 
+   * the values of the TCA parameters are to be retrieved.
+   * <br><b>in</b>  Granularity_T granularity: Granularity for which the TCA 
+   * parameters are to be retrieved
+   * <br><b>out</b> TCAParameters_T tcaParameter: Result of the operation
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when tpName does not reference a 
+   *  terminationPoint object or layerRate contains an undefined rate or 
+   *  Granularity contains an undefined value<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when tpName references an object which 
+   *  does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
+   *  lost<br>
+   * <br>
+   **/
+   void getTCATPParameter (
+         in globaldefs::NamingAttributes_T tpName,
+         in transmissionParameters::LayerRate_T layerRate, 
+         in Granularity_T granularity,
+         out TCAParameters_T tcaParameter)   
+        raises (globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This operation instructs the EMS to store history PM data into a file,
+   * and to send that file by FTP (File Transfer Protocol)
+   * to the destination as specified in the request. Within the 
+   * request a list of TP/layerRate measurement points and a time frame are 
+   * specified. For each measurement point, the granularity (15min, 24h, NA, 
+   * etc) and location (nearEnd and/or farEnd and/or bidirectional) may be 
+   * specified. A filtered set (scoped by the input parameter pmParameters) of 
+   * PM parameters collected for a particular TP/layerRate measurement point for 
+   * the granularity, location and time window specified is made available.</p>
+   *
+   * <p>Measurement intervals and the given time frame are considered as half 
+   * open intervals to the right, i.e. startTime <= t < endTime.</p>
+   *
+   * <p>A particular historic measurement interval (of duration
+   * 15 min resp. 24 h) is defined to be covered by the specified time
+   * frame if there is a non empty intersection between the measurement
+   * interval and the given time frame, i.e.
+   * <br>endTime[PM record] > startTime[request parameter] AND<br>
+   * <br>startTime[PM record] &lt; endTime[request parameter]<br>
+   * PM data are returned for all covered measurement intervals.</p>
+   *
+   * <p>For records partly included in the time frame specified, PM data will be 
+   * returned. In case a history bin has incomplete PM measurement data (for 
+   * instance because PM data collection was disabled for some time period(s) 
+   * within the bin's time span), the particular measurement period will be 
+   * marked as incomplete.</p>
+   *
+   * <p>If the forceUpload parameter is true,
+   * the EMS is to upload the data for all the specified collection periods 
+   * (provided they do exist in the MEs) and provide the entire PM data 
+   * requested. If the forceUpload parameter is false,
+   * measurement intervals within the specified time frame for which
+   * PM data has been collected in the ME but not yet uploaded to the
+   * EMS will be included in the PM file with status "Unavailable",
+   * however without valid PM data.  </p>
+   *
+   * <p>Performance Monitoring Data transfer normally involves huge amounts of 
+   * data. The capability to send PM data to a controlled destination other than 
+   * the NMS allows for flexibility 
+   * in the choice of the PM data file format, the particular file transfer 
+   * protocol (including the possibility to apply data compression techniques) 
+   * and the destination machine so as to make optimal use of the available data 
+   * network capacity. The file transfer protocol to transfer PM data is the FTP 
+   * protocol.</p>
+   *
+   * <p>This operation is asynchrounous and is not required to wait until the PM 
+   * data is extracted or until the FTP transfer is over before it returns.
+   * Notifications can be generated to inform the NMS of the progress of the 
+   * transfer.  See
+   * <a href=../../../supportingDocumentation/SD1-26_OMGServicesUsage.pdf >SD1-26 Notification 
+   * Service and Telecoms Log Service Usage</a> for details.</p>
+   *
+   * <p>Performance monitoring data on multiple TPs of multiple MEs is 
+   * transferred in one data file. This PM data file has the following format:
+   * <a href=../../../supportingDocumentation/SD1-30_PMFileFormat.pdf > SD1-30 PM File Format 
+   * Definition</a>.</p>
+   *
+   * <br>Destination_T destination: The destination to which the
+   * Performance Monitoring Data file is to be send.
+   * <br>String userName: necessary for file transfer with FTP
+   * <br>String password: necessary for file transfer with FTP
+   * <br>PMTPSelectList_T pmTPSelectList. This parameter specifies which 
+   * history PM data to return. If pmTPSelectList is empty, PM data for all 
+   * monitored TPs of all MEs managed by the EMS (all layer rates, all 
+   * granularities) are stored in the file.
+   * <br>PMParameterNameList_T pmParameters. This parameter specifies which PM 
+   * parameters within the scope of the pmTPSelectList shall be contained in the 
+   * file. An empty list means to store all supported parameters.
+   * The returned parameters are best effort, i.e. among the parameters 
+   * specified only the subset of supported parameters will be stored.
+   * <br>globaldefs::Time_T startTime: Specifies the start of the time window 
+   * for collection (included).
+   * <br>globaldefs::Time_T endTime: Specifies the end of the time window for 
+   * collection (excluded).
+   * <br>boolean forceUpload: Specifies if the EMS must upload all available 
+   * PM data requested from the MEs.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when any input parameter is not well 
+   *  formed<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to the NE is down<br>
+   * <br>
+   **/
+   void getHistoryPMData (
+         in Destination_T destination, 
+         in string userName, 
+         in string password,
+         in PMTPSelectList_T pmTPSelectList,
+         in PMParameterNameList_T pmParameters,
+         in globaldefs::Time_T startTime,
+         in globaldefs::Time_T endTime,
+         in boolean forceUpload)
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This allows an NMS to request a filtered set (scoped by the input 
+   * parameter pmParameters) of the current PM data
+   * for a list of TP measurement points. Within the request for each 
+   * measurement point, granularity (15min, 24h, NA, etc.) and location (nearEnd 
+   * and/or farEnd and/or bidirectional) may be specified. The operation mode is 
+   * best effort.</p>
+   *
+   * <p>Current data will generally be marked as incomplete, as the 
+   * current bin is not completed.
+   * If no PM data are available as specified, an empty list is returned.</p>
+   * 
+   * <p>In order to allow the NMS to deal with a large number of objects
+   * this operation uses an iterator. See
+   * <a href=../../../supportingDocumentation/SD1-15_iterators.pdf >SD1-15 iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   * 
+   * <br>PMTPSelectList_T pmTPSelectList: list of measurement points for which
+   * to get the PM data.
+   * <br>PMParameterNameList_T pmParameters: specifies which PM parameters 
+   * within the scope of the pmTPSelectList shall be returned.
+   * An empty list means to return all supported parameters.
+   * The returned parameters are best effort, i.e. among the parameters 
+   * specified only the subset of supported parameters will be returned.
+   * <br>unsigned long how_many: maximum number of PMData to return in the 
+   * first batch.
+   * <br>PMDataList_T pmDataList: first batch of PMData returned.
+   * <br>PMDataIterator_I pmIt: iterator returned to access the remaining 
+   * PMData.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when pmTPSelectList is empty or contains 
+   *  invalid data<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to the Managed Element 
+   *  is lost<br>
+   * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
+   *  that the EMS can support has been reached<br>
+   * <br>
+   **/
+   void getAllCurrentPMData(
+         in PMTPSelectList_T pmTPSelectList,
+         in PMParameterNameList_T pmParameters,
+         in unsigned long how_many, 
+         out PMDataList_T pmDataList,
+         out PMDataIterator_I pmIt)
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>The purpose of this operation is to modify the values of TCA thresholds 
+   * on a TP-layerRate measurement point. It can be applied to a PTP, an FTP or 
+   * CTP. For a threshold, a low and high mark may be specified. The NMS 
+   * specifies the TP and layerRate, the granularity, and the value(s) of one or 
+   * more TCA threshold(s) to be modified.The operation mode is best-effort.
+   * If no TCA value is set, a default value will be active.</p>
+   * 
+   * <br><b>in</b> globaldefs::NamingAttributes_T tpName:
+   * Identification of the TP for which the values of one or more TCA parameters 
+   * are set. The termination point name must be explicit (a generic endpoint 
+   * specification may not be used in this case).
+   * See <a href=../../../supportingDocumentation/SD1-25_objectNaming.pdf >SD1-25 
+   * Object Naming</a> for further detail on FTP naming.
+   * <br><b>inout</b> TCAParameters tcaParameter: The list of TCA
+   * ids and corresponding values to be applied to a specific 
+   * layer rate are specified by this parameter.
+   * The settings that are actually applied are returned in this parameter.<br>
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS is unable to support this 
+   *  service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised if tpName does not reference a 
+   *  terminationPoint object or at least one field of tcaParameters is not 
+   *  valid.<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when tpName references object which does 
+   *  not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
+   *  lost<br>
+   * <br>
+   **/
+   void setTCATPParameter (
+         in globaldefs::NamingAttributes_T tpName,
+         inout TCAParameters_T tcaParameters)
+        raises (globaldefs::ProcessingFailureException);
+ 
+
+  /**
+   * <p>This operation will enable TCA generation on a list of TPs and/or MEs
+   * at the ME level.</p> 
+   *
+   * <br>PMTPSelectList_T pmTPSelectList: This struct contains the relevant 
+   * data for the enableTCA request. This must not be empty.
+   * <br>PMTPSelectList_T failedTPSelectList: List of points which were not 
+   * completely enabled.An empty list indicates that the total request was 
+   * successful.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if this operation is not supported<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised if pmTPSelectList is empty or contains invalid 
+   *  data<br>
+   * EXCPT_UNABLE_TO_COMPLY - Raised if the EMS is unable to enable TCA for the
+   *  specified TPs (pmTPSelectList), i.e. no TPs were enabled.<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
+   *  lost<br>
+   * <br>
+   */
+   void enableTCA(
+         in PMTPSelectList_T pmTPSelectList,
+         out PMTPSelectList_T failedTPSelectList)
+        raises (globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This operation will disable TCA generation on a list of TPs and/or MEs
+   * at the ME level.</p>
+   *
+   * <br>PMTPSelectList_T pmTPSelectList: This struct contains the relevant 
+   * data for the enableTCA request. This must not be empty.
+   * <br>PMTPSelectList_T failedTPSelectList: List of points which were not 
+   * completely disabled. An empty list indicates that the total request was 
+   * successful.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if this operation is not supported<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised if pmTPSelectList is empty or contains invalid 
+   *  data<br>
+   * EXCPT_UNABLE_TO_COMPLY - Raised if the EMS is unable to disable TCA for the
+   *  specified TPs (pmTPSelectList), i.e. no TPs were disabled<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
+   *  lost<br>
+   * <br>
+   */
+   void disableTCA(
+         in PMTPSelectList_T pmTPSelectList,
+         out PMTPSelectList_T failedTPSelectList)
+        raises(globaldefs::ProcessingFailureException);
+
+  /**
+   * <p>This operation gets the set of TPs that are associated with a TCA
+   * Parameter Profile.<p>
+   *
+   * <br><b>in</b> globaldefs::NamingAttributes_T profileName: gives the name 
+   * of the profile.
+   * <br><b>in</b> unsigned long how_many: maximum number of tpNames to return 
+   * in the first batch.
+   * <br><b>out</b> globaldefs::NamingAttributesList_T tpNames: provides set 
+   * of TPs associated with the profile provided.
+   * <br><b>out</b> globaldefs::NamingAttributesIterator_I nameIt: Iterator to
+   * retrieve the remaining TP names.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised when EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when input parameter are syntactical 
+   *  incorrect<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when profileName references an object which
+   *  does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managed element is 
+   *  lost<br>
+   * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
+   *  that the EMS can support has been reached<br>
+   * <br>
+   **/
+   void getProfileAssociatedTPs(
+         in globaldefs::NamingAttributes_T profileName,
+         in unsigned long how_many,
+         out globaldefs::NamingAttributesList_T tpNames,
+         out globaldefs::NamingAttributesIterator_I nameIt)
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This operation creates a new TCA Parameter Profile.<p>
+   *
+   * <br><b>in</b> globaldefs::NamingAttributes_T managedElementName: ME under
+   *  which the profile is to be created.
+   * <br><b>in</b> transmissionParameters::LayerRate_T layerRate: defines the
+   * <a href=../../../supportingDocumentation/SD1-17_LayerRates.pdf >SD1-17 layer rate</a> of the 
+   * profile to be created.
+   * <br><b>in</b> string userLabel: contains the NMS defined name of the 
+   * profile to be created.
+   * <br><b>in</b> boolean forceUniqueness: if set to TRUE the EMS has to 
+   * check if the provided user label is unique in the network element domain.
+   * <br><b>in</b> string owner: A label of the owner of the Profile. This is 
+   * an optional parameter.
+   * <br><b>in</b> globaldefs::NVSList_T additionalInfo: Some additional
+   * information may be specified by the NMS.
+   * <br><b>in</b> TCAParameterList_T listOfTCAParameter: contains sets of
+   * threshold values.
+   * <br><b>out</b> TCAParameterProfile_T tcaParameterProfile: EMS returns the
+   * new profile to the NMS.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised when EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when input parameter are syntactical 
+   *  incorrect<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when specified managedElement does not 
+   *  exist<br>
+   * EXCPT_USERLABEL_IN_USE - Raised when the userLabel uniqueness constraint is
+   *  not met<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managed element is 
+   *  lost<br>
+   * <br>
+   **/
+   void createTCAParameterProfile(
+         in globaldefs::NamingAttributes_T managedElementName,
+         in transmissionParameters::LayerRate_T layerRate,
+         in string userLabel,
+         in boolean forceUniqueness,
+         in string owner,
+         in globaldefs::NVSList_T additionalInfo,
+         in TCAParameterList_T listOfTCAParameter,
+         out TCAParameterProfile_T tcaParameterProfile)
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This operation deletes a TCA Parameter Profile.<p>
+   *
+   * <br><b>in</b> globaldefs::NamingAttributes_T tcaParameterProfileName: 
+   * name of the profile to be deleted.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised when EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when input parameter are syntactical 
+   *  incorrect<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when specified Profile does not exist<br>
+   * EXCPT_OBJECT_IN_USE - Raised when Profile is still assigned to at least
+   *  one TP<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managed element is 
+   *  lost<br>
+   * <br>
+   **/
+   void deleteTCAParameterProfile(
+         in globaldefs::NamingAttributes_T tcaParameterProfileName)
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This operation gets all threshold values of a TCA Parameter Profile.<p>
+   *
+   * <br><b>in</b> globaldefs::NamingAttributes_T tcaParameterProfileName: 
+   * name of the profile to be retrieved.
+   * <br><b>out</b> TCAParameterProfile_T tcaParameterProfile: contains the 
+   * sets of threshold values.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised when EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when input parameter are syntactical #
+   *  incorrect<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when specified Profile does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managed element is 
+   *  lost<br>
+   * <br>
+   **/
+   void getTCAParameterProfile(
+         in globaldefs::NamingAttributes_T tcaParameterProfileName,
+         out TCAParameterProfile_T tcaParameterProfile)
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This operation configures all threshold values of a TCA Parameter 
+   * Profile and overwrites all the existing threshold values of the profile 
+   * with the new provided threshold values.
+   * All threshold values of all TPs associated to this Profile will be changed
+   * according to the new values.
+   * Note: This includes also deletion of thresholds if the threshold is no 
+   * longer contained in the provided list of TCA Parameters.
+   * The EMS has to return all TPs that could not be changed to the new 
+   * threshold values due to some error reasons.<p>
+   *
+   * <br><b>in</b> globaldefs::NamingAttributes_T tcaParameterProfileName: 
+   * name of the profile to be configured.
+   * <br><b>in</b> TCAParameterList_T listOfTCAParameter: contains sets of
+   * threshold values to change the Profile completely.
+   * <br><b>in</b> unsigned long how_many: maximum number of failedTPs to 
+   * return in the first batch.
+   * <br><b>out</b> TCAParameterProfile_T tcaParameterProfile: returns the
+   * changed TCA Parameter Profile.
+   * <br><b>out</b> globaldefs::NamingAttributesList_T failedTPList: set of
+   * TPs that could not be changed to the new threshold values.
+   * <br><b>out</b> globaldefs::NamingAttributesIterator_I nameIt: Iterator to
+   * retrieve the remaining failedTP names.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised when EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when input parameter are syntactical 
+   *  incorrect<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when TCA Parameter Profile to be changed 
+   *  does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managed element is 
+   *  lost<br>
+   * <br>
+   **/
+   void setTCAParameterProfile(
+         in globaldefs::NamingAttributes_T tcaParameterProfileName,
+         in TCAParameterList_T listOfTCAParameter,
+         in unsigned long how_many,
+         out TCAParameterProfile_T tcaParameterProfile,
+         out globaldefs::NamingAttributesList_T failedTPList,
+         out globaldefs::NamingAttributesIterator_I nameIt)
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This operation gets all TCA Parameter Profile names regardless of 
+   * whether the profile is assigned to a TP or not.<p>
+   *
+   * <br><b>in</b> globaldefs::NamingAttributes_T meName: name of the Network
+   * Element containing the Profiles.
+   * <br><b>in</b> unsigned long how_many: maximum number of 
+   * tcaParameterProfile names to return in the first batch.
+   * <br><b>out</b> globaldefs::NamingAttributesList_T 
+   * tcaParameterProfileNames: contains the names of the existing TCA Parameter 
+   * Profiles.
+   * <br><b>out</b> globaldefs::NamingAttributesIterator_I nameIt: Iterator to
+   * retrieve the remaining tcaParameterProfile names.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised when EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when input parameter are syntactical 
+   *  incorrect<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when specified managed element does not 
+   *  exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managed element is 
+   *  lost<br>
+   * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
+   *  that the EMS can support has been reached<br>
+   * <br>
+   **/
+   void getAllTCAParameterProfileNames(
+         in globaldefs::NamingAttributes_T meName,
+         in unsigned long how_many,
+         out globaldefs::NamingAttributesList_T tcaParameterProfileNames,
+         out globaldefs::NamingAttributesIterator_I nameIt)
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This operation returns the PM history data on a specified list of 
+   * TPs.<p>
+   *
+   * <br>PMTPSelectList_T pmTPSelectList: This struct contains the relevant 
+   * data to identify the TPs from which to collect. This must not be empty.
+   * <br>PMParameterNameList_T pmParameters. This parameter specifies which PM 
+   * parameters within the scope of the pmTPSelectList shall be contained in the 
+   * returned data. An empty list means all supported parameters should be 
+   * returned. The returned parameters are best effort, i.e. among the 
+   * parameters specified only the subset of supported parameters will be 
+   * returned.
+   * <br>globaldefs::Time_T startTime: Specifies the start of the time window 
+   * for collection (included).
+   * <br>globaldefs::Time_T endTime: Specifies the end of the time window for 
+   * collection (excluded).
+   * <br>unsigned long how_many: maximum number of PMData to return in the 
+   * first batch.
+   * <br>PMDataList_T pmDataList: first batch of PMData returned.
+   * <br>PMDataIterator_I pmIt: iterator returned to access the remaining 
+   * PMData.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_UNABLE_TO_COMPLY - Raised when EMS does not support history PM for 
+   *  the time specified by NMS<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when any input parameter is not well 
+   *  formed<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when one of the TP does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to the NE is down<br>
+   * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
+   *  that the EMS can support has been reached<br>
+   **/
+   void getTPHistoryPMData(
+         in PMTPSelectList_T pmTPSelectList,
+         in PMParameterNameList_T pmParameters,
+         in globaldefs::Time_T startTime,
+         in globaldefs::Time_T endTime,
+         in unsigned long how_many,
+         out PMDataList_T pmDataList,
+         out PMDataIterator_I pmIt)
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This operation allows an NMS to retrieve all PMPs contained in a TP or 
+   * ME specified.</p> 
+   *
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * this operation uses an iterator. See
+   * <a href=../../../supportingDocumentation/SD1-15_iterators.pdf >SD1-15 iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   *
+   * <br>globaldefs::NamingAttributes_T name: The name of the object to which 
+   * this selection applies. This may be: 
+   * <ul>
+   * <li>ManagedElement: The selection applies to all termination points  
+   * contained within the ManagedElement.</li>
+   * <li>TerminationPoint: The selection applies only to the named termination 
+   * point which will be a PTP, FTP or a CTP. Unlike the case for 
+   * managedElement, the operation will not apply to any contained TPs when a 
+   * PTP, FTP or CTP is specified.</li>
+   * </ul>
+   * <br>performance::PMPList_T pmpList nameList: First batch of PMPs. 
+   * <br>performance::PMPIterator_I pmpIt: Iterator to retrieve remaining 
+   * PMPs.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if an EMS does not implement this 
+   *  operation<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when references an object of type 
+   *  other than ME or TP<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when tpOrMeName references an object 
+   *  that does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
+   *  lost<br>
+   * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
+   *  that the EMS can support has been reached<br>
+   * <br>
+   **/
+   void getAllPMPs(
+         in globaldefs::NamingAttributes_T tpOrMeName,
+         in unsigned long how_many,
+         out PMPList_T pmpList,
+         out PMPIterator_I pmpIt )
+        raises(globaldefs::ProcessingFailureException); 
+
+
+  /**
+   * <p>This operation has exactly the same behaviour as 
+   * getAllPMPs(), but instead of returning the 
+   * entire object structures, this operation returns their names.</p>
+   *
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * this operation uses an iterator. See
+   * <a href=../../../supportingDocumentation/SD1-15_iterators.pdf >SD1-15 iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   *
+   * <br>globaldefs::NamingAttributes_T name: The name of the object to which 
+   * this selection applies. This may be: 
+   * <ul>
+   * <li>ManagedElement: The selection applies to all termination points  
+   * contained within the ManagedElement.</li>
+   * <li>TerminationPoint: The selection applies only to the named termination 
+   * point which will be a PTP, FTP or a CTP. Unlike the case for 
+   * managedElement, the operation will not apply to any contained TPs when a 
+   * PTP, FTP or CTP is specified.</li>
+   * </ul>
+   * <br>unsigned long how_many: Maximum number of PMP names to return
+   * in the first batch.
+   * <br>globaldefs::NamingAttributesList_T nameList: First batch of PMP 
+   * names.
+   * <br>globaldefs::NamingAttributesIterator_I nameIt: Iterator to retrieve 
+   * the remaining PMP names.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException
+   * As for getAllPMPs().
+   **/
+   void getAllPMPNames(
+         in globaldefs::NamingAttributes_T tpOrMeName,
+         in unsigned long how_many,
+         out globaldefs::NamingAttributesList_T nameList,
+         out globaldefs::NamingAttributesIterator_I nameIt )
+        raises(globaldefs::ProcessingFailureException); 
+
+  /**
+   * <p>This operation adds/removes TCA Parameter Profiles to/from the TP.
+   * The new threshold values contained in the added profiles will be copied to 
+   * the corresponding PMPs of the TP. The addition of an already associated 
+   * profile to a TP overwrites the corresponding thresholds in the PMPs of the 
+   * TP. The threshold values that have been configured via a profile to be 
+   * removed will be kept in the PMPs.</p>
+   * 
+   * <p>Notes:<ul>
+   * <li>No further automatic updating based on changes in the profile will be 
+   * done.</li>
+   * <li>This operation can also be used to align the TCA Thresholds of all PMPs 
+   * contained in the TP with the threshold values contained in the associated 
+   * TCA Parameter Profile and is therefore idempotent.</li></ul><p>
+   *
+   * <br>globaldefs::NamingAttributes_T tpName: The name of the TP to which to 
+   * assign the pointer to the TCA parameter profile.
+   * <br><b>in</b> globaldefs::NamingAttributes_T addTCAParameterProfile: the 
+   * name of the TCAParameterProfile to be added to this TP.
+   * <br><b>in</b> globaldefs::NamingAttributes_T removeTCAParameterProfile: 
+   * the name of the TCAParameterProfile to be removed from this TP.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised when EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when input parameter are syntactical 
+   *  incorrect<br>
+   * EXCPT_ENTITY_NOT_FOUND - - Raised when tpName references an object that 
+   *  does not exist or when TCAParameterProfile to be assigned 
+   *  does not exist<br>
+   * EXCPT_OBJECT_IN_USE - Raised when TCAParameterProfile of same Layer is 
+   *  already assigned to the TP<br>
+   * EXCPT_UNABLE_TO_COMPLY - Raised when threshold values in the TP could not 
+   *  be configured<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managed element is 
+   *  lost<br>
+   * <br>
+   **/
+   void setTCAParameterProfilePointer(
+         in globaldefs::NamingAttributes_T tpName,
+         in globaldefs::NamingAttributes_T addTCAParameterProfile,
+         in globaldefs::NamingAttributes_T removeTCAParameterProfile)
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This operation allows an NMS to request all the TCA parameter 
+   * profiles associated with the specified managed element.</p>
+   *
+   * <p>In order to allow the NMS to deal with a large number of 
+   * objects, this operation uses an iterator. See
+   * <a href=../../../supportingDocumentation/SD1-15_iterators.pdf >SD1-15 iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   *
+   * <br>globaldefs::NamingAttributes_T metName: Name of the 
+   * managed element containing the TCA parameter profiles.
+   * <br>unsigned long how_many: Maximum number of TCA parameter 
+   * profiles to return in the first batch.
+   * <br>TCAParameterProfileList_T tcaParameterProfileList: The first batch of 
+   * TCA parameter profiles.
+   * <br>managedElement::TCAParameterProfileIterator_I tcaParameterProfileIt: 
+   * Iterator to retrieve the remaining TCA parameter profiles.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised when the EMS does not support this 
+   *  service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when meName does not reference a 
+   *  managed element object<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when meName references an object 
+   * that does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement 
+   * is lost<br>
+   * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of
+   * iterators that the EMS can support has been reached<br>
+   * <br>
+   **/
+   void getAllTCAParameterProfiles(
+         in globaldefs::NamingAttributes_T meName,
+         in unsigned long how_many,
+         out TCAParameterProfileList_T tcaParameterProfileList,
+         out TCAParameterProfileIterator_I tcaParameterProfileIt) 
+	  raises(globaldefs::ProcessingFailureException);
+
+   };
+};
+#endif
+

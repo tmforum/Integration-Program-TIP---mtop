@@ -1,0 +1,385 @@
+#ifndef mLSNPP_idl
+#define mLSNPP_idl
+// ********************************
+// *                             *
+// * MLSNPP.idl                  *
+// *                             *
+// ********************************
+
+//Include list
+#include "common.idl"
+#include "transmissionParameters.idl"
+#include "terminationPoint.idl"
+
+
+
+#pragma prefix "mtnm.tmforum.org"
+
+  /** 
+   * <a href=../../../supportingDocumentation/SD1-27_Overview_NML-EML_Interface.pdf > 
+   * SD1-27 Overview of NML-EML interface</a>
+   *
+   * <p>This module contains definitions of the MLSNPP structure
+   * of the NML-EML interface.
+   * </p>
+   * <p>See
+   * <a href=../../../supportingDocumentation/SD1-21_MappingIASS.pdf > 
+   * SD1-21 Mapping IA - SS</a>, 
+   * <a href=../../../supportingDocumentation/SD1-45_ASONControlPlaneManagement-Primer.pdf > 
+   * SD1-45_ASONControlPlaneManagement-Primer</a> and 
+   * <a href=../../../supportingDocumentation/SD1-46_ASONControlPlaneManagement-Scenarios.pdf > 
+   * SD1-46_ASONControlPlaneManagement-Scenarios</a> for further details.</p>
+   * 
+   * <h5> Version 3.5. </h5>
+   **/
+
+
+module mLSNPP
+{
+
+  /**
+   * <p>This represents the TNA Name. It is an opaque logical name that does not
+   * reflect the network structure that may be published externally to the network.
+   * The value maybe substructured, it may include a sequence of TNA Name, TNA
+   * Logical Port Identifier and Index, however there is no constraints placed
+   * on the structure by the interface definition. 
+   * </p>
+   * 
+   **/ 
+   typedef string TNAName_T;
+
+
+  /**
+   **/
+   typedef sequence<TNAName_T> TNAList_T;
+
+
+
+  /**
+   * <p> An SNP is an abstraction that represents an actual or potential
+   * underlying TP (CTP/PTP/FTP representing a CP or TCP). Several SNPs (in different 
+   * sub-network partitions or Routing Areas) may represent the same TP. 
+   * See <a href=../../../supportingDocumentation/SD1-18_layers.pdf >SD1-18 Functional Modelling Concepts</a> 
+   * for further detail on TP modelling and 
+   * <a href=../../../supportingDocumentation/SD1-45_ASONControlPlaneManagement-Primer.pdf > 
+   * SD1-45_ASONControlPlaneManagement-Primer</a> for further details on SNP to TP relationships.
+   * </p>
+   * <p>A SNP is modeled as a data structure which is used to encapsulate 
+   * details of the SNP and TP to reduce the number of objects across the 
+   * EMS/NMS interface.</p>
+   * <p>The SNP structure provides the names that identifies the SNP. The names
+   * may contain information on attributes, e.g. directionality is implicit 
+   * in the TP name.</p>
+   *        
+   * string <b>sNPId</b>:
+   * <br>Thecontrol plane identifier of the SNP.
+   * It is a readonly attribute.<br>
+   *
+   * globaldefs::NamingAttributes_T <b>tPname</b>:
+   * <br>The tPName represents the name of the TP associated with SNP. <br>
+   *
+   * TNAName_T <b>tNAName</b>:
+   * The TNA name assigned to the SNP. This string may include the TNA Name,
+   * TNA Logical Port Identifier and TNA Index.<br>
+   *
+   **/
+   struct SNP_T
+   {
+    string sNPId;
+    globaldefs::NamingAttributes_T tPName;
+    TNAName_T tNAName;
+   };
+
+
+  /**
+
+   **/
+   typedef sequence<SNP_T> SNPList_T;
+
+
+  /** 
+   * This structure provides a SNPP control plane identifier and the list of the SNPs contained.
+   * <p>The Subnetwork Point Pool (SNPP) is a set of subnetwork points (SNPs)
+   * with common attributes which are grouped together for the purposes of routing.</p>
+   *
+   * <br> string <b>sNPPId</b>: It represents the control plane identifier of the SNPP. 
+   * Each SNPP at each routing level may be identified by the control plane following a
+   * hierachical partition.  In addition, an SNPP at a higher
+   * level may represent more than one SNPP at a lower hierarchical level.
+   * 
+   * <br>SNPList_T <b>sNPLIst</b>: It provides the list of SNPs contained in the
+   * SNPP, if the detailed knowledge of Control Plane resources is available (and requested).
+   *
+   * <br>TNAName_T <b>tNAName</b>: The TNA name assigned to the SNPP
+   * TNAName_T <b>groupTNAName</b>: The TNA group name associated to the SNPP
+   *
+   * <br>string <b>rAId</b>: It identifies the Routing Area with which the SNPP is
+   * associated.
+   * <br>
+   **/
+   struct SNPP_T 
+   { 
+    string sNPPId;
+    SNPList_T sNPList;
+    TNAName_T tNAName;
+    TNAName_T groupTNAName;
+    string rAId;
+   }; 
+
+  /**
+   * The List of SNPP_T. It is a list of the SNPPs across the levels of routing hierarchy. This shall always include the details for the SNPPs in the relevant layer directly represented by the MLSNPP and may also include details for the subordinate SNPPs if the information is available to the EMS. The routing level is identified via the Routing Area IDs.
+   **/
+   typedef sequence<SNPP_T> SNPPList_T;
+
+
+  /**
+   * This structure provides a layerRate and the list of SNPPs at the
+   * particular layer rate.
+
+   **/
+   struct LayeredSNPP_T
+   {
+    transmissionParameters::LayerRate_T layerRate;
+    SNPPList_T SNPPList;
+   };
+
+
+  /** 
+   * The List of LayeredSNPP_T. It is a list of the SNPPs at all layers. 
+   * A given layerRate value can appear only once in this list.
+   * 
+   **/
+   typedef sequence<LayeredSNPP_T> LayeredSNPPList_T;
+
+
+  
+
+
+  /**
+   * <p>The MultiLayer Subnetwork point pool (MultiLayerSNPP) is used to
+   * represent a list of Layered SNPP. There is one Layered SNPP per supported
+   * layer rate.</p>
+   * See <a href=../../../supportingDocumentation/SD1-18_layers.pdf > SD1-18 Functional Modelling Concepts</a> 
+   * for further detail.</p>
+
+   *
+   * globaldefs::NamingAttributes_T <b>name</b>: <br>Name of the MLSNPP.<br>
+   * 
+   * string <b>userLabel</b>: <br>The userLabel of the MLSNPP.<br>
+   * 
+   * string <b>nativeEMS Name</b>:<br>The local control plane name for the MLSNPP.
+   * <br>
+   *
+   * string <b>owner</b>: <br>The owner of the MultiLayerSNPP.<br>
+   * 
+
+   * terminationPoint::Directionality_T <b>direction</b>:
+   * <br>This attribute represents the directionality of its SNP components. 
+   * All SNPs within a MLSNPP shall have the same direction. 
+   * The direction of the SNP is inherited from the TP (CTP/PTP/FTP) 
+   * that the SNP represents.<br> 
+   * 
+
+   * LayeredSNPPList_T <b>layeredSNPPList</b>:<br>The list of LayeredSNPP that
+   * comprise the MLSNPP. One Layered SNPP per supported layer rate<br>
+   *
+   * globaldefs::NVSList_T <b>additionalInfo</b>:
+   * <br>This attribute allows the communication from the EMS to the NMS of  
+   * additional information which is not explicitly modelled. 
+   * See <a href=../../../supportingDocumentation/SD1-1_additionalInfoUsage.pdf > 
+   * SD1-1 Additional Info Usage</a> for further information on usage. 
+   * This may be an empty list.<br>
+   * <br>
+   **/
+   struct MultiLayerSNPP_T
+   {
+    globaldefs::NamingAttributes_T name;
+    string userLabel;
+    string nativeEMSName;
+    string owner;
+
+    terminationPoint::Directionality_T direction;
+    LayeredSNPPList_T layeredSNPPList;
+    globaldefs::NVSList_T additionalInfo;
+   };
+
+
+  /**
+
+   **/
+   typedef sequence<MultiLayerSNPP_T> MLSNPPList_T;
+
+
+  /**
+   * This structure allows the assignment of a TNA name to an SNP.
+   *
+   * <br> string <b>sNPId</b>: The identifier of the SNP. 
+
+   *
+   * <br> TNAName_T <b>tNAName</b>: The TNA name to be assigned to the SNP.
+
+   *<br>
+   **/
+   struct SNPTNAPair_T
+   {
+    string SNPId;
+    TNAName_T tNAName;
+   };
+
+  /**
+   **/
+   typedef sequence<SNPTNAPair_T> SNPTNAPairList_T;
+
+  /**
+   * This structure allows the assignment of TNA names to one or more SNPs.
+   * 
+   * <br> string <b>sNPPId</b>: The identifier of the SNPP. 
+   * 
+   * <br>transmissionParameters::LayerRate_T <b>layerRate</b>: The layer rate of the
+   * SNPP. This attribute is necessary where the SNPP identifier 
+   * is not gauranteed to be unique across layers.
+   * 
+   * <br>string <b>rAId</b>: The identifier of the Routing Area of the SNPP. 
+   * This attribute is necessary where the 
+   * SNPP identifier is not gauranteed to be unique across hierarchical levels of routing.
+   * 
+   * <br>SNPTNAPairList_T <b>sNPTNAPairList</b>: Provides the details of the SNP(s) 
+   * to which the TNAName are to be applied.
+   * <br>
+   **/
+   struct SNPTNAData_T
+   {
+    string sNPPId;
+    transmissionParameters::LayerRate_T layerRate; 
+    string rAId;
+    SNPTNAPairList_T sNPTNAPairList;
+   };
+
+
+  /**
+   **/
+   typedef sequence<SNPTNAData_T> SNPTNADataList_T;
+
+  
+  
+  /**
+   * This structure allows the assignment of TNA names to an SNPP.
+  * string <b>sNPPId</b>: The identifier of the SNPP. 
+   * transmissionParameters::LayerRate_T <b>layerRate</b>: The layer rate of the
+   * SNPP. This attribute is necessary where the SNPP identifier is not gauranteed to be unique across layers.
+   * string <b>rAId</b>: The identifier of the Routing Area of the SNPP. This attribute is necessary where the 
+   * SNPP identifier is not gauranteed to be unique across hierarchical levels of routing.
+   * TNAName_T <b>tNAName</b>: The TNA name to be assigned to the SNPP.
+   * TNAName_T <b>groupTNAName</b>: The TNA group name to be assigned to the SNPP.
+   **/
+   struct SNPPTNAPair_T
+   {
+    string sNPPId;
+    transmissionParameters::LayerRate_T layerRate;
+    string rAId;
+    TNAName_T tNAName;
+    TNAName_T groupTNAName;
+   };
+ 
+  /**
+   **/
+   typedef sequence<SNPPTNAPair_T> SNPPTNAPairList_T;
+
+
+  /**
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * iterators are used.</p>
+   * <p>See <a href=../../../supportingDocumentation/SD1-15_iterators.pdf >SD1-15 iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   **/
+   interface MLSNPPIterator_I
+    {
+       boolean next_n(in unsigned long how_many,
+                    out MLSNPPList_T mLSNPPList)
+               raises (globaldefs::ProcessingFailureException);
+
+       unsigned long getLength()
+               raises (globaldefs::ProcessingFailureException);
+
+       void destroy()
+               raises (globaldefs::ProcessingFailureException);
+    };
+
+ 
+  /**
+   * <p>The mLSNPPMgr_I is used to gain access to MLSNPP and
+   * their operations.</p>
+   *
+   * <p>A handle to an instance of this interface is gained via the
+   * emsSession::EmsSession_I::getManager() operation in Manager.</p>
+   **/
+
+  interface MLSNPPMgr_I: common::Common_I
+  {
+
+  /** <p>This service returns an MLSNPP given its name.</p>
+   *
+   * <br>globaldefs::NamingAttributes_T mLSNPPName: The name of the MLSNPP
+   * to retrieve.
+   * <br>MLSNPP_T theMLSNPP: The MLSNPP returned.
+   *
+  * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when any input parameter is
+   *  syntactically incorrect<br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when any of the input parameters references
+   *  an object that does not exist<br>
+   * EXCPT_NE_COMM_LOSS - The EMS is unable to communicate with the Control
+   *  Plane and communication is required to complete the request<br>
+   **/
+   void getMLSNPP(
+         in globaldefs::NamingAttributes_T mLSNPPName,
+         out MultiLayerSNPP_T theMLSNPP)
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /** 
+   * <p>This operation allows the NMS requests the EMS to assign a TNA Name(s) 
+   * to one or more components of a specified MLSNPP. 
+   * This operation also allows the unsetting of TNANames by providing an empty
+   * value in the TNA Names. The TNA Names assigned by this operation will
+   * overwrite existing TNA Names.</p>
+   * <br>globaldefs::NamingAttributes_T <b>mLSNPPName</b>: The name of the MLSNPP.
+   * <br>mLSNPP::SNPTNAList_T sNPTNAList: The List of SNP Ids and the
+   * corresponding TNA Names to be set. 
+   *
+   * <br>mLSNPP::SNPPTNAPairList_T <b>sNPPTNAPairList</b>: The List of SNPP Ids and the corresponding
+   * TNA Names. 
+   * <br>string <b>tNAName</b>: The TNAName to be assigned to the MLSNPP.
+   * <br>string <b>tNAGroupName</b>: The TNAGroupName to be assigned to the MLSNPP.
+   * <br> MLSNPP_T <b>mLSNPP</b>: The MLSNPP with TNAs set.
+   *
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when any input parameter is syntactical 
+   *  incorrect (e.g. mLSNPPName does not refer to an MLSNPP object,
+   *  or TNA is not valid).<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when mLSNPPName references an object
+   *  that does not exist<br>
+   * EXCPT_NE_COMM_LOSS - The EMS is unable to communicate with the Control
+   *  Plane and communication is required to complete the request<br>
+   **/
+   void setTNANameForMLSNPP(
+         in globaldefs::NamingAttributes_T mLSNPPName,
+         in SNPTNADataList_T sNPTNADataList,
+         in SNPPTNAPairList_T sNPPTNAPairList,
+         in string tNAName,
+         in string tNAGroupName,
+         out MultiLayerSNPP_T mLSNPP)
+         raises(globaldefs::ProcessingFailureException);
+
+   }; 
+
+
+};
+#endif
+ 

@@ -1,0 +1,385 @@
+#ifndef         trafficConditioningProfile_idl
+#define         trafficConditioningProfile_idl
+
+// *************************************
+// *                                   *
+// * trafficConditioningProfile.idl    *
+// *                                   *
+// *************************************
+//
+//Include list
+#include "terminationPoint.idl"
+#include "globaldefs.idl"
+#include "common.idl"
+#include "transmissionParameters.idl"
+#include "transmissionDescriptor.idl"
+
+#pragma prefix "mtnm.tmforum.org"
+
+  /** 
+   * <a href=../../../supportingDocumentation/SD1-27_Overview_NML-EML_Interface.pdf >SD1-27 Overview of 
+   * NML-EML interface</a>
+   *
+   * <p>This module contains the definition of the Traffic Conditioning Profiles 
+   * structure of the NML-EML interface.
+   * It also contains the definition of the Traffic Conditioning Profiles 
+   * manager.</p>
+   *
+   * <h5> Version 3.5. </h5>
+   **/
+
+
+module trafficConditioningProfile
+{
+
+
+  /**
+   * <p>A Traffic Conditioning Profile (TC Profile) represents a collection of 
+   * attributes, which are used to define the traffic conditioning parameters 
+   * (e.g., bandwidth characteristics) on a Termination Point (TP).</p>
+   *
+   * globaldefs::NamingAttributes_T <b>name</b>:
+   * <br>The name represents the name of the Traffic Conditioning Profile
+   * which is assigned by the EMS upon creation.  The EMS is responsible
+   * for guaranteeing the uniqueness of the name within the EMS context.
+   * It is a read-only attribute.<br>
+   *
+   * string <b>userLabel</b>:
+   * <br>The userLabel is provisionable by the NMS.  This attribute
+   * can be set by the NMS through the Common_I interface service
+   * common::Common_I::setUserLabel(). It is a read-write attribute.<br>
+   *
+   * string <b>nativeEMSName</b>:
+   * <br>The nativeEMSName represents how the Traffic Conditioning Profile is
+   * referred to on EMS displays.  Its aim is to provide a "nomenclature
+   * bridge" to aid relating information presented on NMS displays to EMS
+   * displays (via GUI cut through). If supported by the EMS, this 
+   * attribute can be set by the NMS through the Common_I interface service
+   * common::Common_I::setNativeEMSName() . It is a read-write attribute.<br>
+   *
+   * string <b>owner</b>:
+   * <br>The owner is provisionable by the NMS.  This attribute
+   * can be set by the NMS through the Common_I interface service
+   * common::Common_I::setOwner() . It is a read-write attribute.<br>
+   * 
+   * boolean <b> defaultProfile </b>:
+   * <br> This Boolean attribute shall define the TC Profile as a non-deleteable profile 
+   * (modification may be possible or rejected). An EMS may contain more than one 
+   * default profile which condition different TPs. <br>
+   *
+   * transmissionParameters::LayeredParameterList_T <b>transmissionParams</b>:
+   * <br>A list of traffic conditioning parameters which can be set and/or retrieved 
+   * at a specified connectionless layer on a Termination Point (TP) having this 
+   * TC Profile assigned as a TC Profile. Refer to chapter "Traffic conditioning parameters" 
+   * of the supporting document 
+   * <a href=../../../supportingDocumentation/SD1-16_LayeredParameters.pdf >SD1-16 Layered
+   * Parameters</a> for details of the currently 
+   * defined traffic conditioning parameters.<br>
+   *
+   * globaldefs::NVSList_T <b>additionalInfo</b>:
+   * <br>This allows the communication from the EMS to the NMS, and vice versa,
+   * of additional information that isn't explicitly modelled, except that some
+   * parameter names and values may be pre-defined.  This attribute can be set
+   * by the NMS through the Common_I interface service
+   * common::Common_I::setAdditionalInfo() . It is a read-write attribute but 
+   * some parameters may be read-only.<br>
+   *
+   **/
+   struct TCProfile_T {
+     globaldefs::NamingAttributes_T name;
+     string userLabel;
+     string nativeEMSName;
+     string owner;
+     boolean defaultProfile;
+     transmissionParameters::LayeredParameterList_T transmissionParams;
+     globaldefs::NVSList_T additionalInfo;
+   };
+
+
+  /**
+   * <p>The attributes required for the creation of a Traffic Conditioning Profile
+   * on the EMS are packaged together in a TCProfileCreateData structure which the NMS
+   * will pass to the EMS at TC Profile creation time. These are the read-create
+   * attributes of the TC Profile.</p>
+   *
+   * string <b>userLabel</b>:
+   * <br>The userLabel is provisionable by the NMS. This attribute can be set
+   * by NMS through the Common_I interface service
+   * common::Common_I::setUserLabel() . It is a read/write attribute and may be 
+   * empty.<br>
+   *
+   * boolean <b>forceUniqueness</b>:
+   * <br>Specifies whether uniqueness of the userLabel is required amongst TC Profiles 
+   * of the EMS.  The operation will fail if userLabel is already in use.<br>
+   *
+   * string <b>owner</b>
+   * <br>The owner is provisionable by the NMS. This attribute can be set
+   * by NMS through the Common_I interface service
+   * common::Common_I::setOwner() . It is a read/write attribute and may be 
+   * empty.<br>
+   *
+   * transmissionParameters::LayeredParameterList_T <b>transmissionParams</b>:
+   * <br>A list of traffic conditioning parameters which can be set and/or 
+   * retrieved at a specified connectionless layer on a Termination Point (TP) 
+   * having this TC Profile associated. Refer to chapter "Traffic Conditioning 
+   * Parameters" of the supporting document 
+   * <a href=../../../supportingDocumentation/SD1-16_LayeredParameters.pdf >SD1-16 Layered
+   * Parameters</a> for details of the currently 
+   * defined connectionless parameters.<br>
+   *
+   * globaldefs::NVSList_T <b>additionalCreationInfo</b>:
+   * <br>Some additional creation information may be specified by the NMS.
+   * This information may or may not become a part of the TC Profile's additionalInfo
+   * attribute.  The list may be empty.<br>
+   **/
+   struct TCProfileCreateData_T {
+    string userLabel;
+    boolean forceUniqueness;
+    string owner;
+    transmissionParameters::LayeredParameterList_T transmissionParams;
+    globaldefs::NVSList_T additionalCreationInfo;
+   };
+
+
+  /**
+   * <p>A list of Traffic Conditioning Profiles.</p>
+   **/
+   typedef sequence<TCProfile_T> TCProfileList_T;
+
+
+  /**
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * iterators are used.</p>
+   * <p>See <a href=../../../supportingDocumentation/SD1-15_iterators.pdf >SD1-15 iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   **/
+
+  interface TCProfileIterator_I 
+    {
+        boolean next_n(
+               in unsigned long how_many,
+               out TCProfileList_T tcProfileList)
+              raises (globaldefs::ProcessingFailureException);
+
+        unsigned long getLength() 
+              raises (globaldefs::ProcessingFailureException);
+
+        void destroy() 
+              raises (globaldefs::ProcessingFailureException);
+    };
+
+
+  /**
+   * <p>The TC Profile Manager is used to gain access to operations
+   * that deal with Traffic Conditioning Profile.</p>
+   *
+   * <p>A handle to an instance of this interface is gained via the
+   * emsSession::EmsSession_I::getManager()  operation in Manager.</p>
+   **/
+
+  interface TCProfileMgr_I : common::Common_I
+    {
+
+  /**
+   * <p>This allows an NMS to request all of the TC Profiles that
+   * are under the control of the TCProfileMgr_I.</p>
+   * 
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * this operation uses an iterator. See
+   * <a href=../../../supportingDocumentation/SD1-15_iterators.pdf >SD1-15 iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   * 
+   * <br>unsigned long how_many: number of iterators to return in 
+   * tcProfileList.
+   * <br>trafficConditioningProfile::TCProfileList 
+   * tcProfileList: the first batch of iterators.
+   * <br>trafficConditioningProfile::TCProfileIterator_I 
+   * tcProfileIt: the iterator used to access the remaining TC 
+   * Profiles.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators
+   *  that the EMS can support has been reached<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
+   *  lost
+   * <br>
+   **/
+   void getAllTCProfiles(
+         in unsigned long how_many,
+         out TCProfileList_T tcProfileList,
+         out TCProfileIterator_I tcProfileIt)
+        raises (globaldefs::ProcessingFailureException);
+
+  /** 
+   * <p>This service returns the Traffic Conditioning Profile struct for the given 
+   * tcProfileName. The Traffic Conditioning Profile structure contains an NVSList of 
+   * traffic parameters.  The traffic parameters returned will be the parameters
+   * in place on the actual Traffic Conditioning Profile.  If there are no
+   * traffic parameters, then the NVSList will be empty.</p>
+   * <br>globaldefs::NamingAttributes_T tcProfileName: name of the TC 
+   * Profile.
+   * <br>TCProfile_T tcProfile : the returned Traffic Conditioning Profile.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when tcProfileName does not reference 
+   *  a TC Profile object<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when tcProfileName references object which does 
+   *  not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
+   *  lost<br>
+   * <br>
+   **/
+   void getTCProfile(
+         in globaldefs::NamingAttributes_T tcProfileName,
+         out TCProfile_T tcProfile) 
+        raises (globaldefs::ProcessingFailureException);
+
+  /**
+   * <p>This allows an NMS to request all of the TPs associated with the  
+   * specified TC Profile. If there are no TPs which are 
+   * associated with the specified TC Profile, then an empty list 
+   * is returned. </p>
+   * 
+   * <p>In order to allow the NMS to deal with a large number of objects
+   * this operation uses an iterator. See
+   * <a href=../../../supportingDocumentation/SD1-15_iterators.pdf >SD1-15 iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   * 
+   * <br>globaldefs::NamingAttributes_T tcProfileName: the name of 
+   * the TC Profile.
+   * <br>unsigned long how_many: maximum number of TPs to return in the 
+   * first batch.
+   * <br>terminationPoint::TerminationPointList_T tpList: first batch of 
+   * TPs.
+   * <br>terminationPoint::TerminationPointIterator_I tpIt: iterator to 
+   * access the remaining TPs.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when tcProfileName does not 
+   *  reference a Transmission Descriptor object<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when tcProfileName references
+   *  an object that does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
+   *  lost<br>
+   * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators
+   *  that the EMS can support has been reached<br>
+   * <br>
+   **/
+   void getTCProfileAssociatedTPs(
+         in globaldefs::NamingAttributes_T tcProfileName,
+         in unsigned long how_many,
+         out terminationPoint::TerminationPointList_T tpList,
+         out terminationPoint::TerminationPointIterator_I tpIt) 
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>The createTCProfile operation is used to create
+   * a new Traffic Conditioning Profile on the server. A Traffic Conditioning Profile 
+   * create data representing the new Traffic Conditioning Profile is 
+   * passed as input. The resulting Traffic Conditioning Profile is 
+   * returned as a result.</p>
+   *
+   * <br>TCProfileCreateData_T newTCProfileCreateData: information about the TC 
+   * Profile to be created.
+   * <br>TCProfile_T newTCProfile: result of the 
+   * creation.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if EMS does not support creation of TC Profiles via 
+   *  this interface<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised if newTCProfileCreateData contains invalid data<br>
+   * EXCPT_USERLABEL_IN_USE - Raised when the userLabel uniqueness constraint is 
+   *  not met<br>
+   * EXCPT_CAPACITY_EXCEEDED - Raised when maximum number of TC 
+   *  Profiles has been reached<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communication is lost to a managed element 
+   * involved in this operation <br>
+   * <br>
+   **/
+   void createTCProfile(
+         in  TCProfileCreateData_T      newTCProfileCreateData,
+         out TCProfile_T newTCProfile)
+        raises (globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>The delete Traffic Conditioning Profile operation is used to 
+   * delete a Traffic Conditioning Profile on the server. This operation is
+   * idempotent. If the service is called with the
+   * name of a non-existent Traffic Conditioning Profile, it will succeed.</p>
+   *
+   * <br>globaldefs::NamingAttributes_T tcProfileName: 
+   *  The name of the Traffic Conditioning profile to be deleted.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if EMS does not support deletion of TC Profiles via 
+   *  this interface<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_OBJECT_IN_USE - Raised if there are TPs that are using
+   *  the Traffic Conditioning Profile<br>
+   * EXCPT_INVALID_INPUT - Raised when input parameter is syntactical incorrect.
+   * EXCPT_NE_COMM_LOSS - Raised when communication is lost to a managed element 
+   * involved in this operation   * <br>
+  **/
+   void deleteTCProfile(
+         in globaldefs::NamingAttributes_T tcProfileName)
+         raises (globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>The NMS invokes the modifyTCProfile service to request from the EMS to modify an 
+   * existing Traffic Conditioning Profile as specified by the parameters passed in the method.</p>
+   * A Traffic Conditioning Profile 
+   * modify data representing the data to be changed is 
+   * passed as input. The resulting Traffic Conditioning Profile is 
+   * returned as a result.</p>
+   *
+   * <br>globaldefs::NamingAttributes_T tcProfileName: 
+   *  The name of the Traffic Conditioning profile to be modified.
+   *
+   * <br>TCProfileCreateData_T tcProfileModifyData: TC 
+   * Profile data to be changed.
+   *
+   * <br>TPDataList_T tpsToModify: The TPs to be modified. 
+   * The modified TPs are returned.
+   *
+   * <br>TCProfile_T modifiedTCProfile: the modified TC Profile. <br>
+   *   
+   * <br>string errorReason: In case a "best effort" parameter could not be set   
+   * an indication of the fault reason is provided by the EMS
+   *   
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if EMS does not support modification of TC Profiles via 
+   *  this interface<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised if tcProfileName or tcProfileModifyData contains invalid data<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when the Traffic Conditioning Profile to be modified does not exist.<br>
+   * EXCPT_USERLABEL_IN_USE - Raised when the userLabel uniqueness constraint is 
+   *  not met<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communication is lost to a managed element involved in this operation.
+   * <br>
+   **/
+   void modifyTCProfile(
+         in globaldefs::NamingAttributes_T tcProfileName,
+         in  TCProfileCreateData_T      tcProfileModifyData,
+         inout subnetworkConnection::TPDataList_T tpsToModify,
+         out TCProfile_T modifiedTCProfile,
+         out string errorReason)
+        raises (globaldefs::ProcessingFailureException);
+
+};
+
+}; // END OF MODULE
+
+#endif
+
+
