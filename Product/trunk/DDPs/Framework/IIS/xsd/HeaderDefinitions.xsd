@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2006 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/framework/header/v1" xmlns:tns="http://www.tmforum.org/mtop/framework/header/v1" xmlns:gen="http://www.tmforum.org/mtop/framework/general/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/hdr/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/hdr/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
-      <p>DDP: Data Model Framework</p>
-      <p>Module: HeaderDefinitions XSD Module</p>
-      <p>Description: This module contains the XML Schema type definitions of the mTOP XML header.</p>
-      <p>Change Policy: TBD.</p>
+      <p>DDP: Framework</p>
+      <p>Module: XSD Aggregate Module</p>
+      <p>Description: This module contains the XML Schema definitions of the mTOP XML header.</p>
     </xsd:documentation>
   </xsd:annotation>
   <!-- ============== -->
-  <xsd:import namespace="http://www.tmforum.org/mtop/framework/general/v1" schemaLocation="GeneralDefinitions.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="GeneralDefinitions.xsd"/>
   <!-- ============== -->
   <xsd:simpleType name="ActivityStatusEnum_T">
     <xsd:annotation>
@@ -139,7 +138,7 @@ NO_PACKING, ZIP, TAR (two proposed formats are the most commonly found as they a
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
-      <xsd:all>
+      <xsd:sequence>
         <xsd:element name="activityName" type="xsd:string">
           <xsd:annotation>
             <xsd:documentation>
@@ -226,7 +225,6 @@ This field corresponds to the message name in the WSDL.</p>
           </xsd:annotation>
           <xsd:simpleType>
             <xsd:restriction base="xsd:string">
-              <xsd:pattern value="\d{1}"/>
             </xsd:restriction>
           </xsd:simpleType>
         </xsd:element>
@@ -293,7 +291,7 @@ This field corresponds to the message name in the WSDL.</p>
         </xsd:element>
         <xsd:element name="packingType" type="tns:PackingType_T" minOccurs="0">
         </xsd:element>
-        <xsd:element name="timestamp" type="gen:ITU-Time_T" minOccurs="0">
+        <xsd:element name="timestamp" type="xsd:dateTime" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Message originating timestamp</p>
@@ -312,7 +310,7 @@ This field corresponds to the message name in the WSDL.</p>
             </xsd:sequence>
           </xsd:complexType>
         </xsd:element>
-      </xsd:all>
+      </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
   <!-- ============== -->

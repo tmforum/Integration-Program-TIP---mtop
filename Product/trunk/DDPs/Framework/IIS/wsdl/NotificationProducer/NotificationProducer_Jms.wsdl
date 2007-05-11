@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2007 -->
-<wsdl:definitions name="mTOP-NotificationProducerV1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.tmforum.org/mtop/framework/ws/notp/v1" targetNamespace="http://www.tmforum.org/mtop/framework/ws/notp/v1">
+<wsdl:definitions name="mTOP-NotificationProducerV1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.tmforum.org/mtop/fmw/wsdl/notp/v1" targetNamespace="http://www.tmforum.org/mtop/fmw/wsdl/notp/v1">
   <wsdl:documentation>
     <p>DDP: Framework</p>
     <p>Module: NotificationProducer Service Interface WSDL JMS Module</p>
-    <p>Description: This module contains all the mTOP NotificationProducer Service Interface WSDL SOAP/JMS binding definitions based on an MSG style port type (interface).</p>
+    <p>Description: This module contains all the mTOP NotificationProducer Service Interface WSDL SOAP/JMS binding definitions.</p>
     <p>Version: 1.0</p>
-    <p>Change Policy: TBD.</p>
   </wsdl:documentation>
   <!-- ================ -->
-  <wsdl:import namespace="http://www.tmforum.org/mtop/framework/ws/notp/v1" location="NotificationProducer_Messages.wsdl"/>
+  <wsdl:import location="NotificationProducer_PortType.wsdl"/>
   <!-- ================ -->
   <wsdl:service name="NotificationProducerJms">
     <wsdl:port name="NotificationProducerSoapJms" binding="tns:NotificationProducerSoapJmsBinding">
@@ -20,10 +19,10 @@
     </wsdl:port>
   </wsdl:service>
   <!-- ================ -->
-  <wsdl:binding name="NotificationProducerSoapJmsBinding" type="tns:NotificationProducer_MSG">
+  <wsdl:binding name="NotificationProducerSoapJmsBinding" type="tns:NotificationProducer">
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/jms"/>
     <wsdl:documentation>
-      <p>SOAP JMS binding definitions of the operations of the NotificationProducer_MSG portType (interface)</p>
+      <p>SOAP JMS binding definitions of the operations of the NotificationProducer portType (interface)</p>
     </wsdl:documentation>
     <!-- ================ -->
     <wsdl:operation name="subscribe">
@@ -56,28 +55,4 @@
       </wsdl:fault>
     </wsdl:operation>
   </wsdl:binding>
-  <!-- ================ -->
-  <wsdl:portType name="NotificationProducer_MSG">
-    <wsdl:documentation>
-      <p>The NotificationProducer porttype (interface) for MSG (asynchronous) based client/server communication patterns</p>
-    </wsdl:documentation>
-    <!-- ================ -->
-    <wsdl:operation name="subscribe">
-      <wsdl:documentation>
-        <p>This is the subscribe operation used to receive subscriptions from consumers.</p>
-      </wsdl:documentation>
-      <wsdl:input message="tns:subscribe"/>
-      <wsdl:output message="tns:subscribeResponse"/>
-      <wsdl:fault name="subscribeException" message="tns:subscribeException"/>
-    </wsdl:operation>
-    <!-- ================ -->
-    <wsdl:operation name="unsubscribe">
-      <wsdl:documentation>
-        <p>This is the unsubscribe operation used to receive subscription cancellations from consumers.</p>
-      </wsdl:documentation>
-      <wsdl:input message="tns:unsubscribe"/>
-      <wsdl:output message="tns:unsubscribeResponse"/>
-      <wsdl:fault name="unsubscribeException" message="tns:unsubscribeException"/>
-    </wsdl:operation>
-  </wsdl:portType>
 </wsdl:definitions>
