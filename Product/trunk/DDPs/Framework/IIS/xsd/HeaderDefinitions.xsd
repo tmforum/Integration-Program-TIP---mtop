@@ -77,58 +77,59 @@
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="CompressionType_T">
+  <xsd:complexType name="CompressionType_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Specify if compression is to be performed. It is the perfect case for an enum type that one would want to extend. We could provide an initial enumeraion including; NO_COMPRESSION, ZLIB (zip), GZIP (two proposaed formats are the most commonly found as they are free to use and os neutral. Both supported in java.util.zip package of the Std Edition).</p>
+        <p>Specify if compression is to be performed.</p>
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:union>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:pattern value="MINOR_([a-z]|[A-Z]|[0-9]|(_|-))*"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:pattern value="PROP_([a-z]|[A-Z]|[0-9]|(_|-))*"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:enumeration value="NO_COMPRESSION"/>
-          <xsd:enumeration value="GZIP"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-    </xsd:union>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:CompressionEnum_T">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="CompressionEnum_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Enumeration of supported compressions. All extensions allowed.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="NO_COMPRESSION"/>
+      <xsd:enumeration value="GZIP"/>
+      <xsd:enumeration value="VENDOR_EXT"/>
+      <xsd:enumeration value="MINOR_EXT"/>
+    </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="PackingType_T">
+  <xsd:complexType name="PackingType_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Specify if the output file(s) are to be packed. Here again, we can use an enum type with the following enumerated values:
-NO_PACKING, ZIP, TAR (two proposed formats are the most commonly found as they are free to use and os neutral. Only ZIP is supported in java.util.zip package).</p>
+        <p>Specify if the output file(s) are to be packed.</p>
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:union>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:pattern value="MINOR_([a-z]|[A-Z]|[0-9]|(_|-))*"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:pattern value="PROP_([a-z]|[A-Z]|[0-9]|(_|-))*"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:enumeration value="NO_PACKING"/>
-          <xsd:enumeration value="ZIP"/>
-          <xsd:enumeration value="TAR"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-    </xsd:union>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:PackingEnum_T">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="PackingEnum_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Enumeration of supported packing/packaging. All extensions allowed.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="NO_PACKING"/>
+      <xsd:enumeration value="ZIP"/>
+      <xsd:enumeration value="TAR"/>
+      <xsd:enumeration value="VENDOR_EXT"/>
+      <xsd:enumeration value="MINOR_EXT"/>
+    </xsd:restriction>
   </xsd:simpleType>
   <!-- ============== -->
   <xsd:element name="header">
@@ -139,7 +140,7 @@ NO_PACKING, ZIP, TAR (two proposed formats are the most commonly found as they a
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="activityName" type="xsd:string">
+        <xsd:element name="activityName" type="xsd:string" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Identifies the name of the business transaction activity for the message being exchanged.
@@ -148,7 +149,7 @@ NO_PACKING, ZIP, TAR (two proposed formats are the most commonly found as they a
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="msgName" type="xsd:string">
+        <xsd:element name="msgName" type="xsd:string" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Identifies the name of the message (or contract) that is being exchanged as part of an activity.
@@ -157,16 +158,16 @@ This field corresponds to the message name in the WSDL.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="msgType" type="tns:MsgType_T">
+        <xsd:element name="msgType" type="tns:MsgType_T" minOccurs="0">
         </xsd:element>
-        <xsd:element name="senderURI" type="xsd:anyURI">
+        <xsd:element name="senderURI" type="xsd:anyURI" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Identifies the application sending this message.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="destinationURI" type="xsd:anyURI">
+        <xsd:element name="destinationURI" type="xsd:anyURI" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Identifies the final destination of the message (the OS that will process the content of the message). This field may point to a logical end point or abstract topic name to be resolved by the communication transport middleware in order to deliver the message.</p>
@@ -236,7 +237,7 @@ This field corresponds to the message name in the WSDL.</p>
           </xsd:annotation>
           <xsd:complexType>
             <xsd:sequence>
-              <xsd:element name="property" maxOccurs="unbounded">
+              <xsd:element name="property" minOccurs="0" maxOccurs="unbounded">
                 <xsd:complexType>
                   <xsd:sequence>
                     <xsd:element name="propName" type="xsd:string"/>
@@ -247,9 +248,9 @@ This field corresponds to the message name in the WSDL.</p>
             </xsd:sequence>
           </xsd:complexType>
         </xsd:element>
-        <xsd:element name="communicationPattern" type="tns:CommunicationPattern_T">
+        <xsd:element name="communicationPattern" type="tns:CommunicationPattern_T" minOccurs="0">
         </xsd:element>
-        <xsd:element name="communicationStyle" type="tns:CommunicationStyle_T">
+        <xsd:element name="communicationStyle" type="tns:CommunicationStyle_T" minOccurs="0">
         </xsd:element>
         <xsd:element name="requestedBatchSize" type="xsd:unsignedInt" minOccurs="0">
           <xsd:annotation>

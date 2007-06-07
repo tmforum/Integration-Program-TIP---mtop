@@ -1,32 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2007 -->
-<wsdl:definitions name="mTOP-NotificationProducerV1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.tmforum.org/mtop/fmw/wsdl/notp/v1" targetNamespace="http://www.tmforum.org/mtop/fmw/wsdl/notp/v1">
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.tmforum.org/mtop/fmw/wsdl/notp/v1-0" name="mTOP-NotificationProducerV1-0" targetNamespace="http://www.tmforum.org/mtop/fmw/wsdl/notp/v1-0">
   <wsdl:documentation>
     <p>DDP: Framework</p>
     <p>Module: NotificationProducer Service Interface WSDL JMS Module</p>
     <p>Description: This module contains all the mTOP NotificationProducer Service Interface WSDL SOAP/JMS binding definitions.</p>
     <p>Version: 1.0</p>
   </wsdl:documentation>
-  <!-- ================ -->
   <wsdl:import location="NotificationProducer_PortType.wsdl"/>
-  <!-- ================ -->
-  <wsdl:service name="NotificationProducerJms">
-    <wsdl:port name="NotificationProducerSoapJms" binding="tns:NotificationProducerSoapJmsBinding">
-      <wsdl:documentation>
-        <p>Example of the NotificationProducer WSDL Service definition as a deployment example of this mTOP Service Interface. It is expected to be modified to match the specific deployment configuration in a service provider's CCV.</p>
-      </wsdl:documentation>
-      <soap:address location="jms://aserver/mtosi/NotificationProducer"/>
-    </wsdl:port>
-  </wsdl:service>
-  <!-- ================ -->
   <wsdl:binding name="NotificationProducerSoapJmsBinding" type="tns:NotificationProducer">
-    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/jms"/>
     <wsdl:documentation>
       <p>SOAP JMS binding definitions of the operations of the NotificationProducer portType (interface)</p>
     </wsdl:documentation>
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/jms"/>
     <!-- ================ -->
     <wsdl:operation name="subscribe">
-      <soap:operation style="document"/>
+      <soap:operation soapAction="" style="document"/>
       <wsdl:input>
         <soap:header message="tns:subscribe" part="mtopHeader" use="literal"/>
         <soap:body parts="mtopBody" use="literal"/>
@@ -41,7 +30,7 @@
     </wsdl:operation>
     <!-- ================ -->
     <wsdl:operation name="unsubscribe">
-      <soap:operation style="document"/>
+      <soap:operation soapAction="" style="document"/>
       <wsdl:input>
         <soap:header message="tns:unsubscribe" part="mtopHeader" use="literal"/>
         <soap:body parts="mtopBody" use="literal"/>
@@ -55,4 +44,13 @@
       </wsdl:fault>
     </wsdl:operation>
   </wsdl:binding>
+  <wsdl:service name="NotificationProducerJms">
+    <wsdl:port name="NotificationProducerSoapJms" binding="tns:NotificationProducerSoapJmsBinding">
+      <wsdl:documentation>
+        <p>Example of the NotificationProducer WSDL Service definition as a deployment example of this mTOP Service Interface. It is expected to be modified to match the specific deployment configuration in a service provider's CCV.</p>
+      </wsdl:documentation>
+      <soap:address location="jms://aserver/mtosi/NotificationProducerV1-0"/>
+    </wsdl:port>
+  </wsdl:service>
+  <!-- ================ -->
 </wsdl:definitions>
