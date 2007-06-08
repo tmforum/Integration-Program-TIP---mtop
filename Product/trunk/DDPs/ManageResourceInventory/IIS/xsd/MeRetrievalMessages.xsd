@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2006 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/me/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/me/v1" xmlns:frm.msg="http://www.tmforum.org/mtop/framework/msg/v1" xmlns:nrf.nam="http://www.tmforum.org/mtop/nrf/names/v1" xmlns:nrf.me="http://www.tmforum.org/mtop/nrf/me/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/mer/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/mer/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:me="http://www.tmforum.org/mtop/nrf/xsd/me/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
-      <p>DDP: Operation Model Manage Resource Inventory</p>
-      <p>Module: ManagedElementRetrieval Service Interface XSD Module</p>
+      <p>DDP: Manage Resource Inventory</p>
+      <p>Module:  Message XSD Module</p>
       <p>Description: This module contains the XML Schema type definitions of all the mTOP ManagedElementRetrieval SI XML message structures.</p>
-      <p>Change Policy: TBD.</p>
+        @TODO: To be completed 
     </xsd:documentation>
   </xsd:annotation>
   <!-- ================ -->
-  <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/framework/msg/v1"/>
-  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Me.xsd" namespace="http://www.tmforum.org/mtop/nrf/me/v1"/>
-  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/ObjectNames.xsd" namespace="http://www.tmforum.org/mtop/nrf/names/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Me.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/me/v1"/>
   <!-- ================ -->
   <xsd:element name="getAllManagedElementNames">
     <xsd:annotation>
@@ -22,19 +22,15 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
-      <xsd:complexContent>
-        <xsd:extension base="frm.msg:BaseMessage_T">
-          <xsd:sequence>
-            <xsd:element name="mdName" type="nrf.nam:MdName_T">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>the name of the Management Domain whose contained MEs are being requested</p>
-                </xsd:documentation>
-              </xsd:annotation>
-            </xsd:element>
-          </xsd:sequence>
-        </xsd:extension>
-      </xsd:complexContent>
+      <xsd:sequence>
+        <xsd:element name="mdName" type="nam:NamingAttributes_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the name of the Management Domain whose contained MEs are being requested</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
@@ -62,19 +58,15 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
-      <xsd:complexContent>
-        <xsd:extension base="frm.msg:BaseMessage_T">
-          <xsd:sequence>
-            <xsd:element name="mdName" type="nrf.nam:MdName_T">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>the name of the Management Domain whose contained MEs are being requested</p>
-                </xsd:documentation>
-              </xsd:annotation>
-            </xsd:element>
-          </xsd:sequence>
-        </xsd:extension>
-      </xsd:complexContent>
+      <xsd:sequence>
+        <xsd:element name="mdName" type="nam:NamingAttributes_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the name of the Management Domain whose contained MEs are being requested</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
   <!-- ================== -->
@@ -94,8 +86,8 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice>
-        <xsd:element name="exceptionInternalError" type="frm.msg:BaseExceptionMessage_T"/>
-        <xsd:element name="exceptionTooManyOpenIterator" type="frm.msg:BaseExceptionMessage_T"/>
+        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T"/>
+        <xsd:element name="exceptionTooManyOpenIterator" type="msg:BaseExceptionMessage_T"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -329,7 +321,7 @@ EXCPT_COMM_FAILURE - Raised when communication to an entity (needed to help fulf
   <!-- ================= -->
   <!-- Definitions of Iterator messages for Object and Object Name retrievals  -->
   <!-- ================= -->
-  <xsd:element name="getMeIterator" type="frm.msg:GetAllDataIterator_T">
+  <xsd:element name="getMeIterator" type="msg:GetAllDataIterator_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getMeIterator operation</p>
@@ -346,7 +338,7 @@ EXCPT_COMM_FAILURE - Raised when communication to an entity (needed to help fulf
     </xsd:annotation>
   </xsd:element>
   <!-- ================== -->
-  <xsd:element name="getMeIteratorException" type="frm.msg:GetAllDataIteratorException_T">
+  <xsd:element name="getMeIteratorException" type="msg:GetAllDataIteratorException_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getMeIterator operation</p>
@@ -354,7 +346,7 @@ EXCPT_COMM_FAILURE - Raised when communication to an entity (needed to help fulf
     </xsd:annotation>
   </xsd:element>
   <!-- ================= -->
-  <xsd:element name="getMeNamesIterator" type="frm.msg:GetAllDataIterator_T">
+  <xsd:element name="getMeNamesIterator" type="msg:GetAllDataIterator_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getMeNamesIterator operation</p>
@@ -371,7 +363,7 @@ EXCPT_COMM_FAILURE - Raised when communication to an entity (needed to help fulf
     </xsd:annotation>
   </xsd:element>
   <!-- ================== -->
-  <xsd:element name="getMeNamesIteratorException" type="frm.msg:GetAllDataIteratorException_T">
+  <xsd:element name="getMeNamesIteratorException" type="msg:GetAllDataIteratorException_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getMeNamesIterator operation</p>
@@ -388,11 +380,11 @@ EXCPT_COMM_FAILURE - Raised when communication to an entity (needed to help fulf
       </xsd:documentation>
     </xsd:annotation>
     <xsd:choice>
-      <xsd:element name="exceptionInternalError" type="frm.msg:BaseExceptionMessage_T"/>
-      <xsd:element name="exceptionInvalidInput" type="frm.msg:BaseExceptionMessage_T"/>
-      <xsd:element name="exceptionTooManyOpenIterators" type="frm.msg:BaseExceptionMessage_T"/>
-      <xsd:element name="exceptionEntityNotFound" type="frm.msg:BaseExceptionMessage_T"/>
-      <xsd:element name="exceptionCommunicationFailure" type="frm.msg:BaseExceptionMessage_T"/>
+      <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T"/>
+      <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T"/>
+      <xsd:element name="exceptionTooManyOpenIterators" type="msg:BaseExceptionMessage_T"/>
+      <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessage_T"/>
+      <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessage_T"/>
     </xsd:choice>
   </xsd:complexType>
   <!-- ================== -->
@@ -402,19 +394,15 @@ EXCPT_COMM_FAILURE - Raised when communication to an entity (needed to help fulf
         <p>Response message structure for a single ManagedElement object</p>
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:complexContent>
-      <xsd:extension base="frm.msg:BaseMessage_T">
-        <xsd:sequence>
-          <xsd:element name="me" type="nrf.me:ManagedElement_T" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>The retrieved ME</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
-        </xsd:sequence>
-      </xsd:extension>
-    </xsd:complexContent>
+    <xsd:sequence>
+      <xsd:element name="me" type="me:ManagedElement_T" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The retrieved ME</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
   </xsd:complexType>
   <!-- ================== -->
   <xsd:complexType name="MultipleMeObjectsResponse_T">
@@ -423,19 +411,15 @@ EXCPT_COMM_FAILURE - Raised when communication to an entity (needed to help fulf
         <p>Response message structure for a set of ManagedElement objects</p>
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:complexContent>
-      <xsd:extension base="frm.msg:BaseMessage_T">
-        <xsd:sequence>
-          <xsd:element name="meList" type="nrf.me:ManagedElementList_T" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>The list of MEs</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
-        </xsd:sequence>
-      </xsd:extension>
-    </xsd:complexContent>
+    <xsd:sequence>
+      <xsd:element name="meList" type="me:ManagedElementList_T" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The list of MEs</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
   </xsd:complexType>
   <!-- ================== -->
   <xsd:complexType name="MultipleMeObjectNamesResponse_T">
@@ -444,18 +428,14 @@ EXCPT_COMM_FAILURE - Raised when communication to an entity (needed to help fulf
         <p>Response message structure for a set of ManagedElement object names</p>
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:complexContent>
-      <xsd:extension base="frm.msg:BaseMessage_T">
-        <xsd:sequence>
-          <xsd:element name="nameList" type="nrf.nam:MeNamesList_T" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>The list of ME names</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
-        </xsd:sequence>
-      </xsd:extension>
-    </xsd:complexContent>
+    <xsd:sequence>
+      <xsd:element name="nameList" type="nam:NamingAttributesList_T" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The list of ME names</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
   </xsd:complexType>
 </xsd:schema>

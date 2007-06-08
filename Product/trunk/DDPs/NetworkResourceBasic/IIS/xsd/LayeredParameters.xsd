@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - DM Network Resource Fulfillment - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" targetNamespace="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" xmlns:lr="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <!-- ============== -->
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource Basic</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP XML LayeredParameters structure.</p>
+        @TODO: to be completed
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================= -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" schemaLocation="LayerRates.xsd"/>
+  <!-- ============== -->
+  <xsd:complexType name="LayeredParametersList_T">
+    <xsd:annotation>
+      <xsd:documentation>
+      This is used in the TP definition and as a consequence is available for use in a connection specification where a TP is specified.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="layeredParameters" type="tns:LayeredParameters_T" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ============== -->
+  <xsd:complexType name="LayeredParameters_T">
+    <xsd:annotation>
+      <xsd:documentation>
+      This is a structure that includes the layer rate with the applicable list of transmissions parameters
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="layer" type="lr:LayerRate_T">
+        <xsd:annotation>
+          <xsd:documentation>
+          Represents the layer to which the parameters apply.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="transmissionParams">
+      </xsd:element>
+      <xsd:element name="vendorExtensions" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+          The specific containment for vendor extensions of the list of tranmission parameters.
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>
