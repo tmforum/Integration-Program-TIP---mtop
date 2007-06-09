@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2007 -->
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.tmforum.org/mtop/fmw/wsdl/notb/v1-0" name="mTOP-NotificationBrokerV1-0" targetNamespace="http://www.tmforum.org/mtop/fmw/wsdl/notb/v1-0">
+  <wsdl:documentation>
+    <p>DDP: Framework</p>
+    <p>Module: NotificationBroker Service Interface WSDL JMS Module</p>
+    <p>Description: This module contains all the mTOP NotificationBroker Service Interface WSDL SOAP/JMS binding definitions.</p>
+    <p>Version: 1.0</p>
+  </wsdl:documentation>
+  <wsdl:import location="NotificationBroker_PortType.wsdl"/>
+  <wsdl:binding name="NotificationBrokerSoapJmsBinding" type="tns:NotificationBroker">
+    <wsdl:documentation>
+      <p>SOAP JMS binding definitions of the operations of the NotificationBroker portType (interface)</p>
+    </wsdl:documentation>
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/jms"/>
+    <!-- ================ -->
+    <wsdl:operation name="notify">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:notify" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+    </wsdl:operation>
+    <!-- ================ -->
+    <wsdl:operation name="subscribe">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:subscribe" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:subscribeResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="subscribeException">
+        <soap:fault name="subscribeException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <!-- ================ -->
+    <wsdl:operation name="unsubscribe">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:unsubscribe" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:unsubscribeResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="unsubscribeException">
+        <soap:fault name="unsubscribeException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="NotificationBrokerJms">
+    <wsdl:port name="NotificationBrokerSoapJms" binding="tns:NotificationBrokerSoapJmsBinding">
+      <wsdl:documentation>
+        <p>Example of the NotificationBroker WSDL Service definition as a deployment example of this mTOP Service Interface. It is expected to be modified to match the specific deployment configuration in a service provider's CCV.</p>
+      </wsdl:documentation>
+      <soap:address location="jms://aserver/mtosi/NotificationBrokerV1-0"/>
+    </wsdl:port>
+  </wsdl:service>
+  <!-- ================ -->
+</wsdl:definitions>

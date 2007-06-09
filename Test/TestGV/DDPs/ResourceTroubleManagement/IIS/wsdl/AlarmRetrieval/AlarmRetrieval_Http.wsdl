@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ResourceTroubleManagement - Copyright TeleManagement Forum 2006 -->
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.tmforum.org/mtop/mri/ws/me/v1" name="mTOP-MeRetrieval-HTTP" targetNamespace="http://www.tmforum.org/mtop/mri/ws/me/v1">
+  <wsdl:documentation>
+    <p>DDP: Operation Model Manage Resource Inventory</p>
+    <p>Module: AlarmRetrieval Service Interface WSDL Module</p>
+    <p>Description: This module contains the mTOP AlarmRetrieval Service Interface WSDL definitions for the SOAP/HTTP binding based on an RPC style port type (interface).</p>
+    <p>Change Policy: TBD.</p>
+  </wsdl:documentation>
+  <!-- ================ -->
+  <wsdl:import namespace="http://www.tmforum.org/mtop/rtm/ws/ar/v1" location="AlarmRetrieval_Messages.wsdl"/>
+  <!-- ================ -->
+  <wsdl:service name="AlarmRetrievalHttp">
+  <wsdl:documentation>
+<p>Example of the AlarmRetrieval WSDL Service definition as a deployment example of this mTOP Service Interface. It is expected to be modified to match the specific deployment configuration in a service provider's CCV.</p>
+  </wsdl:documentation>
+    <wsdl:port name="AlarmRetrievalSoapHttp" binding="tns:AlarmRetrievalSoapHttpBinding">
+      <soap:address location="http://aserver/mtosi/AlarmRetrieval"/>
+    </wsdl:port>
+  </wsdl:service>
+  <!-- ================ -->
+  <wsdl:binding name="AlarmRetrievalSoapHttpBinding" type="tns:AlarmRetrieval_RPC">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:documentation>
+      <p>SOAP HTTP binding definitions of the operations of the AlarmRetrieval RPC portType (interface)</p>
+    </wsdl:documentation>
+    <!-- ================ -->
+    <wsdl:operation name="getActiveAlarms">
+      <soap:operation soapAction="getActiveAlarms" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getActiveAlarms" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getActiveAlarmsResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getActiveAlarmsException">
+        <soap:fault name="getActiveAlarmsException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <!-- ================ -->
+    <wsdl:operation name="getActiveAlarmsCount">
+      <soap:operation soapAction="getActiveAlarmsCount" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getActiveAlarmsCount" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getActiveAlarmsCountResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getActiveAlarmsCountException">
+        <soap:fault name="getActiveAlarmsCountException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  <!-- ================ -->
+  </wsdl:binding>
+  <!-- ================ -->
+  <wsdl:portType name="AlarmRetrieval_RPC">
+    <wsdl:documentation>
+      <p>The AlarmRetrieval porttype (interface) for RPC (synchronous) based client/server communication patterns. All SIT operations use the getAlarmIterator operation to handle multiple responses.</p>
+    </wsdl:documentation>
+    <!-- ================ -->
+    <wsdl:operation name="getActiveAlarms">
+      <wsdl:documentation>
+        <p>This operation allows the client system to request a list of all the active alarms in the server system. [Def TBC - GV 2007-06-04]</p>
+      </wsdl:documentation>
+      <wsdl:input message="tns:getActiveAlarms"/>
+      <wsdl:output message="tns:getActiveAlarmsResponse"/>
+      <wsdl:fault name="getActiveAlarmsException" message="tns:getActiveAlarmsException"/>
+    </wsdl:operation>
+    <!-- ================ -->
+    <wsdl:operation name="getActiveAlarmsCount">
+      <wsdl:documentation>
+        <p>This operation allows the client system to request the number of active alarms in the server system. [Def TBC - GV 2007-06-04]</p>
+      </wsdl:documentation>
+      <wsdl:input message="tns:getActiveAlarmsCount"/>
+      <wsdl:output message="tns:getActiveAlarmsCountResponse"/>
+      <wsdl:fault name="getActiveAlarmsCountException" message="tns:getActiveAlarmsCountException"/>
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

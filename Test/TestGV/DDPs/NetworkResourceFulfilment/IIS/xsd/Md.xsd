@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2006 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/md/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/md/v1" xmlns:frm.gen="http://www.tmforum.org/mtop/framework/general/v1" xmlns:nrb.cri="http://www.tmforum.org/mtop/nrb/cri/v1" xmlns:nam="http://www.tmforum.org/mtop/nrf/names/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource FulFillment</p>
+      <p>Module: ManagementDomain XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP MD XML structures.</p>
+      <p>Change Policy: TBD.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/framework/general/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd" namespace="http://www.tmforum.org/mtop/nrb/cri/v1"/>
+  <xsd:import schemaLocation="ObjectNames.xsd" namespace="http://www.tmforum.org/mtop/nrf/names/v1"/>
+  <!-- ================= -->
+  <xsd:complexType name="MdAttributes_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This aggregate defines the Management Domain mTOP network resource object attributes.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="nrb.cri:CommonResourceInfo_T">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This element entails the attributes common to all mTOP network resource objects.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="networkAccessDomain" type="frm.gen:NetworkAccessDomain_T" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="minorExtensions" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Containment for all minor version extensions</p>
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:any namespace="http://www.tmforum.org/mtop/nrf/md/v1/ext" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="vendorExtensions" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Containment for all vendor extensions</p>
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="ManagementDomain_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This aggregate defines the Management Domain mTOP network resource object.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:MdAttributes_T">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This element entails all the MD attributes.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="name" type="nam:MdName_T" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This attribute represents a unique identifier for the object on the CCV.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="ManagementDomainList_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>List of ManagementDomains</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="md" type="tns:ManagementDomain_T" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

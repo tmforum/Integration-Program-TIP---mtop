@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2006 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/tppool/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/tppool/v1" xmlns:nrb.cri="http://www.tmforum.org/mtop/nrb/cri/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/common/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <!-- ============== -->
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd" namespace="http://www.tmforum.org/mtop/nrb/cri/v1"/>
+  <xsd:import schemaLocation="CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/common/v1"/>
+  <!-- ================= -->
+  <xsd:complexType name="TPPool_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This aggregate defines the TP Pool mTOP network resource object.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="nrb.cri:CommonResourceInfo_T">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This element entails the attributes common to all mTOP network resource objects.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="numberOfMembers" type="com:NumberOfMembers_T" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="numberOfIdleMembers" type="com:NumberOfIdleMembers_T" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="descriptionOfUse" type="com:DescriptionOfUse_T" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="minorExtensions" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Containment for all minor version extensions</p>
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:any namespace="http://www.tmforum.org/mtop/nrf/tppool/v1/ext" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="vendorExtensions" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Containment for all vendor extensions</p>
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="TPPoolList_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A list of TPPools</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="tpPool" type="tns:TPPool_T" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>
