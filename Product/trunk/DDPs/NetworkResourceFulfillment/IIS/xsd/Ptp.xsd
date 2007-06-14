@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2006 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/ptp/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/ptp/v1" xmlns:nrb.gen="http://www.tmforum.org/mtop/nrb/general/v1" xmlns:nrb.nam="http://www.tmforum.org/mtop/nrb/naming/v1" xmlns:lp="http://www.tmforum.org/mtop/nrf/lp/v1" xmlns:nrb.cri="http://www.tmforum.org/mtop/nrb/cri/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/common/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/ptp/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/ptp/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lp="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource FulFillment</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP PTP XML structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
   <!-- ============== -->
-  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/nrb/general/v1"/>
-  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/nrb/naming/v1"/>
-  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd" namespace="http://www.tmforum.org/mtop/nrb/cri/v1"/>
-  <xsd:import schemaLocation="LayeredParameters.xsd" namespace="http://www.tmforum.org/mtop/nrf/lp/v1"/>
-  <xsd:import schemaLocation="CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/common/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayeredParameters.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lp/v1"/>
+  <xsd:import schemaLocation="CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1"/>
+  <!-- ================= -->
+  <xsd:element name="ptp" type="tns:PhysicalTerminationPoint_T"/>
   <!-- ================= -->
   <xsd:complexType name="PhysicalTerminationPoint_T">
     <xsd:annotation>
@@ -15,7 +24,7 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
-      <xsd:extension base="nrb.cri:CommonResourceInfo_T">
+      <xsd:extension base="cri:CommonResourceInfo_T">
         <xsd:annotation>
           <xsd:documentation>
             <p>This element entails the attributes common to all mTOP network resource objects.</p>
@@ -33,7 +42,7 @@
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="networkAccessDomain" type="nrb.gen:NetworkAccessDomain_T" nillable="true" minOccurs="0">
+          <xsd:element name="networkAccessDomain" type="gen:NetworkAccessDomain_T" nillable="true" minOccurs="0">
           </xsd:element>
           <xsd:element name="equipmentProtected" type="xsd:boolean" nillable="true" minOccurs="0">
             <xsd:annotation>
@@ -56,14 +65,14 @@
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="ingressTransmissionDescriptorName" type="nrb.nam:NamingAttributes_T" nillable="true" minOccurs="0">
+          <xsd:element name="ingressTransmissionDescriptorName" type="nam:NamingAttributes_T" nillable="true" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>A connection Physical Termination Point may have an optional reference to an ingress (incoming) Transmission Descriptor. The Descriptor name will be empty if there is no associated Descriptor. It is expected that Transmission Descriptors are not mixed on a single TP. Therefore if the Ingress Descriptor name is that of a Transmission Descriptor then the Egress Descriptor name should either be that of a Transmission Descriptor or a null value.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="egressTransmissionDescriptorName" type="nrb.nam:NamingAttributes_T" nillable="true" minOccurs="0">
+          <xsd:element name="egressTransmissionDescriptorName" type="nam:NamingAttributes_T" nillable="true" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>A connection Physical Termination Point may have an optional reference to an egress (outgoing) Transmission Descriptor. The Transmission Descriptor name will be empty if there is no associated Descriptor. It is expected that Transmission Descriptors are not mixed on a single TP. Therefore if the Egress Descriptor name is that of a Transmission Descriptor then the Ingress Descriptor name should either be that of a Transmission Descriptor or a null value.</p>
@@ -77,30 +86,6 @@
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="minorExtensions" nillable="true" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>Containment for all minor version extensions</p>
-              </xsd:documentation>
-            </xsd:annotation>
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:any namespace="http://www.tmforum.org/mtop/nrf/ptp/v1/ext" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
-              </xsd:sequence>
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="vendorExtensions" nillable="true" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>Containment for all vendor extensions</p>
-              </xsd:documentation>
-            </xsd:annotation>
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
-              </xsd:sequence>
-            </xsd:complexType>
-          </xsd:element>
         </xsd:sequence>
       </xsd:extension>
     </xsd:complexContent>
@@ -113,7 +98,7 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="ptp" type="tns:PhysicalTerminationPoint_T" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element ref="tns:ptp" minOccurs="0" maxOccurs="unbounded"/>
     </xsd:sequence>
   </xsd:complexType>
 </xsd:schema>

@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2006 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/route/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/route/v1" xmlns:cc="http://www.tmforum.org/mtop/nrf/cc/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/route/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/route/v1" xmlns:cc="http://www.tmforum.org/mtop/nrf/xsd/cc/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource FulFillment</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP Route XML structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
   <!-- ============== -->
-  <xsd:import schemaLocation="Cc.xsd" namespace="http://www.tmforum.org/mtop/nrf/cc/v1"/>
+  <xsd:import schemaLocation="Cc.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/cc/v1"/>
   <!-- ================= -->
   <xsd:complexType name="Route_T">
     <xsd:annotation>
@@ -11,31 +18,7 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="routeCClist" type="cc:CrossConnectList_T" minOccurs="0"/>
-      <xsd:element name="minorExtensions" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Containment for all minor version extensions</p>
-          </xsd:documentation>
-        </xsd:annotation>
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:any namespace="http://www.tmforum.org/mtop/nrf/route/v1/ext" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:element name="vendorExtensions" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Containment for all vendor extensions</p>
-          </xsd:documentation>
-        </xsd:annotation>
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
+      <xsd:element name="ccList" type="cc:CrossConnectList_T" minOccurs="0"/>
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================= -->
