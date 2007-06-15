@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/coi/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/coi/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/coi/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/coi/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Framework</p>
@@ -10,6 +10,7 @@
   </xsd:annotation>
   <!-- ================ -->
   <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="NamingDefinitions.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="GeneralDefinitions.xsd"/>
   <!-- ============== -->
   <xsd:element name="commonObjectInfo" type="tns:CommonObjectInfo_T">
     <xsd:annotation>
@@ -22,63 +23,28 @@
   <xsd:complexType name="CommonObjectInfo_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>.</p>
+        <p>The aggregate of all common object attributes.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
       <xsd:element name="name" type="nam:NamingAttributes_T" nillable="true" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>This attribute represents a unique name/identifier for the object on the CCV. Consult the SD about object naming SD for additional normative references.</p>
+            <p>This attribute represents a unique name/identifier for the object on the CCV. Consult the SD about object naming for additional normative references.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="userLabel" type="xsd:string" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>.</p>
-          </xsd:documentation>
-        </xsd:annotation>
+      <xsd:element name="userLabel" type="gen:UserLabel_T" nillable="true" minOccurs="0">
       </xsd:element>
-      <xsd:element name="discoveredName" type="xsd:string" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Represents a unique identifier for the object when its existence is first published on the CCV.</p>
-          </xsd:documentation>
-        </xsd:annotation>
+      <xsd:element name="discoveredName" type="gen:DiscoveredName_T" minOccurs="0">
       </xsd:element>
-      <xsd:element name="namingOS" type="xsd:string" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Contains the name of the OS that provided the unique MTOSI name for the object. Refer to the type definition for more details.</p>
-          </xsd:documentation>
-        </xsd:annotation>
+      <xsd:element name="namingOS" type="gen:NamingOs_T" nillable="true" minOccurs="0">
       </xsd:element>
-      <xsd:element name="owner" type="xsd:string" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Identifies the owner of the object.</p>
-          </xsd:documentation>
-        </xsd:annotation>
+      <xsd:element name="owner" type="gen:Owner_T" nillable="true" minOccurs="0">
       </xsd:element>
-      <xsd:element name="aliasNameList" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element name="alias" minOccurs="0" maxOccurs="unbounded">
-              <xsd:complexType>
-                <xsd:sequence>
-                  <xsd:element name="aliasName" type="xsd:string"/>
-                  <xsd:element name="aliasValue" type="xsd:string"/>
-                </xsd:sequence>
-              </xsd:complexType>
-            </xsd:element>
-          </xsd:sequence>
-        </xsd:complexType>
+      <xsd:element name="aliasNameList" type="gen:AliasNameList_T" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="networkAccessDomain" type="gen:NetworkAccessDomain_T" nillable="true" minOccurs="0">
       </xsd:element>
       <xsd:element name="vendorExtensions" nillable="true" minOccurs="0">
         <xsd:annotation>

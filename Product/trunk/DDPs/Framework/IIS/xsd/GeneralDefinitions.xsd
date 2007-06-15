@@ -8,6 +8,36 @@
       <p>Description: This module contains the XML Schema definitions of generic mTOP simple data types.</p>
     </xsd:documentation>
   </xsd:annotation>
+  <!-- ================= -->
+  <xsd:complexType name="AliasNameList_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the definition of the object attribute that contains the list of aliases for the network entity. The attribute is a name-value list. The name refers to the type of alias (e.g., nativeEMSname) and the value component holds the alias itself</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="alias" minOccurs="0" maxOccurs="unbounded">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="aliasName" type="xsd:string"/>
+            <xsd:element name="aliasValue" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:simpleType name="DiscoveredName_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the definition of the name of the object when its existence is first published on the CCV but only in the case where the OS that publishes the object on the CCV is not the naming OS. If the naming OS first publishes the object on the CCV, this attribute may be left empty.</p>
+        <p>The discovered name is assumed to be unique from the perspective of the publishing OS.</p>
+        <p>The discovered name published on the CCV does not necessarily need to be the name of the object as discovered by the OS from the subtending network.</p>
+        <p>There are no specific rules concerning the relationship between the "name" and "discovered name" of the object. They could be set to the same value or they could be different.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
   <!-- ================ -->
   <xsd:simpleType name="Location_T">
     <xsd:annotation>
@@ -36,10 +66,28 @@
     <xsd:restriction base="xsd:string"/>
   </xsd:simpleType>
   <!-- ================= -->
+  <xsd:simpleType name="NamingOs_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the object attribute definition to identify the name of the OS that provided the unique MTOSI name for the object. It is assumed that each object (that is published on the CCV) has a unique naming OS. This attribute is optional in a point to point NMS-EMS paradigm.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
   <xsd:simpleType name="NetworkAccessDomain_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>A free-format string used to associate a resource to a Network Access Domain.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="Owner_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the definition of the object attribute that represents an identifier for the owner of the object.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:restriction base="xsd:string"/>
@@ -100,5 +148,14 @@
       </xsd:extension>
     </xsd:simpleContent>
   </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="UserLabel_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the definition of the object attribute that represents a provisionable, "user friendly" name for the object. The user label is filled by the naming OS.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
   <!-- ================= -->
 </xsd:schema>
