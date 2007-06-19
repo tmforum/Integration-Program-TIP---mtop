@@ -12,43 +12,58 @@
   <xsd:element name="commonEventInfo" type="tns:CommonEventInfo_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>.</p>
+        <p>The element definition of the common set of attributes used for all events.</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <!-- ================ -->
-  <xsd:complexType name="CommonEventInfo_T">
+  <xsd:simpleType name="NotificationID_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>.</p>
+        <p>The type definition of the notification ID.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="AnyList_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A generic list of any type of elements. Used in OC, AVC, SC and Alarm notifications.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="notificationId" type="xsd:string">
+      <xsd:any namespace="##other" minOccurs="0" processContents="lax" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:complexType name="CommonEventInfo_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The type definition of the common set of attributes used for all events.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="notificationId" type="tns:NotificationID_T" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The uniqueness and the sequence of the notificationId are not guaranteed.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="osTime" type="xsd:dateTime">
+      <xsd:element name="osTime" type="xsd:dateTime" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The time at which the event was reported by the OS system.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="vendorExtensions" minOccurs="0">
+      <xsd:element name="vendorExtensions" type="tns:AnyList_T" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>Containment for all vendor extensions</p>
           </xsd:documentation>
         </xsd:annotation>
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
-          </xsd:sequence>
-        </xsd:complexType>
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>

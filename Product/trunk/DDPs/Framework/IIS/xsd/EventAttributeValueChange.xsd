@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/avc/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/avc/v1" xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/avc/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/avc/v1" xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Framework</p>
       <p>Module: Aggregate XSD Module</p>
       <p>Description: This module contains the XML Schema definitions of the AttributeValueChange event.</p>
-        @TODO: To be completed 
     </xsd:documentation>
   </xsd:annotation>
   <!-- ================ -->
   <xsd:import schemaLocation="CommonEventInfo.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/cei/v1"/>
+  <xsd:import schemaLocation="NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
   <!-- ================ -->
   <xsd:element name="attributeValueChange" type="tns:AttributeValueChange_T" substitutionGroup="cei:commonEventInfo">
     <xsd:annotation>
       <xsd:documentation>
-        <p>.</p>
+        <p>The element definition of the AttributeValueChange event.</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
@@ -23,12 +24,47 @@
   <xsd:complexType name="AttributeValueChange_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>.</p>
+        <p>The type definition of the AttributeValueChange event.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
       <xsd:extension base="cei:CommonEventInfo_T">
         <xsd:sequence>
+          <xsd:element name="objectType" type="gen:ObjectType_T" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Identifies the type of the object associated with the event.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="objectName" type="nam:NamingAttributes_T" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Identifies the name of the object associated with the event.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="neTime" type="xsd:dateTime" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The time provided by the NE. In a case where the NE does not report time, this field is optional or an empty string can be reported.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="edgePointRelated" type="xsd:boolean" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>TRUE if this event relates to a PTP that is an edge point or to a PGP that contains a PTP that is an edge point. FALSE otherwise; this field is optional in this case.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="attributeList" type="cei:AnyList_T" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This container only encapsulates the new values of the attributes that have changed for the specified object. Each top-level children of this container shall match  an attribute schema of the designated object. In the case of complex type attributes such as "transmissionParams" and "vendorExtensions", only the attributes that have changed are to be included within the appropriate context (with layerRate for transmissionParams). The usage convention to indicate the deletion of an attribute from a complex type object attribute is the "-" value.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
         </xsd:sequence>
       </xsd:extension>
     </xsd:complexContent>

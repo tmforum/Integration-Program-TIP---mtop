@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/elo/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/elo/v1" xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/elo/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/elo/v1" xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Framework</p>
       <p>Module: Aggregate XSD Module</p>
       <p>Description: This module contains the XML Schema definitions of the EventLossOccured event.</p>
-        @TODO: To be completed 
     </xsd:documentation>
   </xsd:annotation>
   <!-- ================ -->
   <xsd:import schemaLocation="CommonEventInfo.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/cei/v1"/>
+  <xsd:import schemaLocation="NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
   <!-- ================ -->
   <xsd:element name="eventLossOccured" type="tns:EventLossOccured_T" substitutionGroup="cei:commonEventInfo">
     <xsd:annotation>
       <xsd:documentation>
-        <p>.</p>
+        <p>The element definition of the EventLossOccured event.</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
@@ -23,12 +24,40 @@
   <xsd:complexType name="EventLossOccured_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>.</p>
+        <p>The type definition of the EventLossOccured event.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
       <xsd:extension base="cei:CommonEventInfo_T">
         <xsd:sequence>
+          <xsd:element name="objectType" type="gen:ObjectType_T" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Identifies the type of the object associated with the event.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="objectName" type="nam:NamingAttributes_T" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Identifies the name of the object associated with the event.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="startTime" type="xsd:dateTime" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The time of the first notification lost.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="firstEvenlLostNotificationId" type="cei:NotificationID_T" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The notificationId of the first notification lost</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
         </xsd:sequence>
       </xsd:extension>
     </xsd:complexContent>
