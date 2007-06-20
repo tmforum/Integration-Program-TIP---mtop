@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - DM Network Resources Basic - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrb/xsd/vro/v1" xmlns:tns="http://www.tmforum.org/mtop/nrb/xsd/vro/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource Basic</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP XML VendorResourceObject structure.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================= -->
+  <xsd:import schemaLocation="CommonResourceInfo.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1"/>
+  <!-- ================= -->
+  <xsd:element name="vendorResourceObject" type="tns:VendorResourceObject_T"/>
+  <!-- ================= -->
+  <xsd:complexType name="VendorResourceObject_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This aggregate defines attributes of the mTOP vendor resource object.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="cri:CommonResourceInfo_T">
+        <xsd:sequence>
+          <xsd:element name="vendorObjectType" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The vendor proprietary definition of an object type.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="VendorResourceObjectList_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>List of VendorResourceObjects</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element ref="tns:vendorResourceObject" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+</xsd:schema>

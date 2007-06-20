@@ -166,6 +166,27 @@ For a detailed description of the use of this attribute see SNC Types supporting
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
+  <xsd:simpleType name="EProtectionGroupType_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The equipment protection group type is a string that identifies the type of equipment protection. The string can take on the following value: "M_FOR_N." M:N equipment protection means that M pieces of equipment protect N pieces of equipment</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:union>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="MINOR_([a-z]|[A-Z]|[0-9]|(_|-))*"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="M_FOR_N"/>
+          <xsd:enumeration value="M:N"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <!-- ================= -->
   <xsd:simpleType name="EquipmentHolderType_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -341,6 +362,30 @@ Individual locks can be reported through transmission parameters on the appropri
     </xsd:union>
   </xsd:simpleType>
   <!-- ================= -->
+  <xsd:simpleType name="ProtectionGroupType_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The protection group type identifies the type of the protection Group. </p>
+        <p>It should be noted that although the term MSP was chosen as the original specific protection scheme to which the related behaviour applied was Multiplex Section Protection, the label is now more generally applied to any 1+1 or 1:N Trail protection scheme</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:union>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="MINOR_([a-z]|[A-Z]|[0-9]|(_|-))*"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="PGT_MSP_1_PLUS_1"/>
+          <xsd:enumeration value="PGT_MSP_1_FOR_N"/>
+          <xsd:enumeration value="PGT_2_FIBER_BLSR"/>
+          <xsd:enumeration value="PGT_4_FIBER_BLSR"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <!-- ================= -->
   <xsd:simpleType name="ProtectionType_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -380,6 +425,19 @@ T<p>he RR_NO value means that the EMS/MEs are not allowed to reroute the SNC. Th
       <xsd:enumeration value="RR_NA"/>
       <xsd:enumeration value="RR_NO"/>
       <xsd:enumeration value="RR_YES"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="ReversionMode_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Reversion mode is used to indicate whether, after repair of a failed resource, an additional switch should be made to revert to the preferred resource. Revertive modes may require a wait to restore (WTR) time setting.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="RM_UNKNOWN"/>
+      <xsd:enumeration value="RM_NON_REVERTIVE"/>
+      <xsd:enumeration value="RM_REVERTIVE"/>
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
@@ -622,5 +680,31 @@ For a detailed description of the use of this attribute, see SNC Types.</p>
     </xsd:annotation>
     <xsd:restriction base="xsd:string">
 	</xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="G_774_3_APSfunction_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Indicates if the switching function is based on APS standardized protocol or on a proprietary protocol.  "G.783" is set in case of K1/K2 based APS, and "Legacy" is set in case of proprietary protocol, as for radio equipment for example.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:union>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="MINOR_([a-z]|[A-Z]|[0-9]|(_|-))*"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:string">
+          <xsd:pattern value="PROP_([a-z]|[A-Z]|[0-9]|(_|-))*"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="G.783"/>
+          <xsd:enumeration value="Legacy"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
   </xsd:simpleType>
 </xsd:schema>
