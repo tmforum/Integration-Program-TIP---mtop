@@ -1,33 +1,134 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/conr/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/conr/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:snc="http://www.tmforum.org/mtop/nrf/xsd/snc/v1" xmlns:cc="http://www.tmforum.org/mtop/nrf/xsd/cc/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/eir/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/eir/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:eq="http://www.tmforum.org/mtop/nrf/xsd/eq/v1" xmlns:eh="http://www.tmforum.org/mtop/nrf/xsd/eh/v1" xmlns:ei="http://www.tmforum.org/mtop/nrf/xsd/eq-inv/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Manage Resource Inventory</p>
       <p>Module:  Message XSD Module</p>
-      <p>Description: This module contains the XML Schema type definitions of all the mTOP ConnectionRetrieval SI XML message structures.</p>
-        @TODO: To be completed 
+      <p>Description: This module contains the XML Schema type definitions of all the mTOP EquipmentInventoryRetrieval SI XML message structures.</p>
     </xsd:documentation>
   </xsd:annotation>
   <!-- ================ -->
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
-  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Snc.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/snc/v1"/>
-  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Cc.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/cc/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Eq.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/eq/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Eh.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/eh/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/EquipmentInventory.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/eq-inv/v1"/>
   <!-- ================ -->
-  <xsd:element name="getNames">
+  <xsd:element name="getAllEquipmentRequest" type="tns:GetAllEquipmentRequest_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the  operation</p>
-        <p>This operation has exactly the same behaviour as , but instead of returning the entire object structures, this operation returns their names.</p>
+        <p>Request message structure of the getAllEquipment operation</p>
+        <p>This operation allows an NMS to request all of the equipments and equipment holders that are contained in a managed element or equipment holder.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getAllEquipmentResponse" type="ei:EquipmentOrHolderList_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllEquipment operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================== -->
+  <xsd:element name="getAllEquipmentException" type="tns:ExceptionProfile1_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllEquipment operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getAllEquipmentNamesRequest" type="tns:GetAllEquipmentRequest_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAllEquipmentNames operation</p>
+        <p>This operation has exactly the same behaviour as getAllEquipment(), but returns the object names instead of returning the entire objects.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getAllEquipmentNamesResponse" type="tns:MultipleObjectNamesResponse_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllEquipmentNames operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================== -->
+  <xsd:element name="getAllEquipmentNamesException" type="tns:ExceptionProfile1_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllEquipmentNames operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getAllSupportingEquipmentRequest" type="tns:GetAllEquipmentWithPtpRequest_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAllSupportingEquipment operation</p>
+        <p>This operation allows an NMS to request all of the equipment which implement a PTP/FTP. For a PTP, the equipments that are returned are those which support the physical layer of the PTP (i.e. have the port on them or are connected by a fibre, wire, etc.). For an FTP, the equipments returned are those which support the physical circuitry implementing the FTP and will include the equipment from which the FTP is named (the FTPs will depend upon the presence of that equipment for their most basic operation). For a particular PTP/FTP the Tx port/function and Rx port/function may be on different cards and in this case both should be returned. Equipment that are used by the PTPs/FTPs, but that do not support them directly (such as a shared DEMUX card) are not reported. When there is equipment protection, this operation reports the primary equipment only. The protecting equipment will not be returned by this operation
+.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getAllSupportingEquipmentResponse" type="ei:EquipmentOrHolderList_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllSupportingEquipment operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================== -->
+  <xsd:element name="getAllSupportingEquipmentException" type="tns:ExceptionProfile1_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllSupportingEquipment operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getAllSupportingEquipmentNamesRequest" type="tns:GetAllEquipmentWithPtpRequest_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAllSupportingEquipmentNames operation</p>
+        <p>This operation has exactly the same behaviour as getAllSupportingEquipment(), but returns the object names instead of returning the entire objects.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getAllSupportingEquipmentNamesResponse" type="tns:MultipleObjectNamesResponse_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllSupportingEquipmentNames operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================== -->
+  <xsd:element name="getAllSupportingEquipmentNamesException" type="tns:ExceptionProfile1_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllSupportingEquipmentNames operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getContainedEquipmentRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getContainedEquipment operation</p>
+        <p>This operation returns the equipments and equipment holders directly contained by a specific equipment holder. This method differs from getAllEquipment in that it only looks at the next level of the containment hierarchy</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="" type="nam:NamingAttributes_T">
+        <xsd:element name="equipmentHolderName" type="nam:NamingAttributes_T">
           <xsd:annotation>
             <xsd:documentation>
-              <p></p>
+              <p>the name of the equipment holder for which to retrieve the directly contained equipment and equipment holders.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -35,139 +136,109 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getNamesResponse" type="tns:MultipleSncObjectNamesResponse_T">
+  <xsd:element name="getContainedEquipmentResponse" type="ei:EquipmentOrHolderList_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the  operation</p>
+        <p>Response message structure of the getContainedEquipment operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================== -->
+  <xsd:element name="getContainedEquipmentException" type="tns:ExceptionProfile1_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getContainedEquipment operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getNamesException" type="tns:GetSncNamesException_T">
+  <xsd:complexType name="GetAllEquipmentRequest_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the  operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <!-- ================= -->
-  <!-- Definitions of Iterator messages for Object and Object Name retrievals  -->
-  <!-- ================= -->
-  <xsd:element name="getMeIterator" type="msg:GetAllDataIterator_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the getMeIterator operation</p>
-        <p>This is the iterator request to return the next batch of Managed Elements from the OS to which an ME retrieval request was initially sent.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <!-- ================== -->
-  <xsd:element name="getMeIteratorResponse" type="tns:MultipleMeObjectsResponse_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Response message structure of the getMeIterator operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <!-- ================== -->
-  <xsd:element name="getMeIteratorException" type="msg:GetAllDataIteratorException_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Exception message structure of the getMeIterator operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <!-- ================= -->
-  <xsd:element name="getMeNamesIterator" type="msg:GetAllDataIterator_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the getMeNamesIterator operation</p>
-        <p>This is the iterator request to return the next batch of Managed Element names from the OS to which an ME retrieval request was initially sent.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <!-- ================== -->
-  <xsd:element name="getMeNamesIteratorResponse" type="tns:MultipleMeObjectNamesResponse_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Response message structure of the getMeNamesIterator operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <!-- ================== -->
-  <xsd:element name="getMeNamesIteratorException" type="msg:GetAllDataIteratorException_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Exception message structure of the getMeNamesIterator operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <!-- ================= -->
-  <!-- Type Definitions of various Object responses  -->
-  <!-- ================= -->
-  <xsd:complexType name="GetMeNamesException_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Exception message structure of the various MeNames retrieval operations</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:choice>
-      <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T"/>
-      <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T"/>
-      <xsd:element name="exceptionTooManyOpenIterators" type="msg:BaseExceptionMessage_T"/>
-      <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessage_T"/>
-      <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessage_T"/>
-    </xsd:choice>
-  </xsd:complexType>
-  <!-- ================== -->
-  <xsd:complexType name="SingleMeObjectResponse_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Response message structure for a single ManagedElement object</p>
+        <p>Request message structure of the getAllEquipment(Names) operations</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="me" type="me:ManagedElement_T" minOccurs="0">
+      <xsd:element name="meOrHolderName" type="nam:NamingAttributes_T">
         <xsd:annotation>
           <xsd:documentation>
-            <p>The retrieved ME</p>
+            <p>the name of the ME or equipment holder for which to retrieve contained equipments and equipment holders.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:complexType name="GetAllEquipmentWithPtpRequest_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAllEquipment(Names) operations wrt PTP</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="ptpName" type="nam:NamingAttributes_T">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>the name of the PTP/FTP for which to retrieve the equipments. The termination point name must be explicit (a generic endpoint specification may not be used in this case). See Object Naming for further detail on FTP naming.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================== -->
-  <xsd:complexType name="MultipleMeObjectsResponse_T">
+  <xsd:complexType name="MultipleObjectNamesResponse_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure for a set of ManagedElement objects</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element name="meList" type="me:ManagedElementList_T" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>The list of MEs</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-    </xsd:sequence>
-  </xsd:complexType>
-  <!-- ================== -->
-  <xsd:complexType name="MultipleMeObjectNamesResponse_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Response message structure for a set of ManagedElement object names</p>
+        <p>Response message structure for a set of object names</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
       <xsd:element name="nameList" type="nam:NamingAttributesList_T" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>The list of ME names</p>
+            <p>The list of object names</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
+  <!-- ================== -->
+  <xsd:complexType name="ExceptionProfile1_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllEquipment operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice>
+      <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Raised in case of non-specific OS internal failure</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Raised in case one of the request parameters is not a valid object reference</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessage_T">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Raised in case one of the request parameters does not a refer to an existing object</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="exceptionCommFailure" type="msg:BaseExceptionMessage_T">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:choice>
+  </xsd:complexType>
+  <!-- ================== -->
 </xsd:schema>
