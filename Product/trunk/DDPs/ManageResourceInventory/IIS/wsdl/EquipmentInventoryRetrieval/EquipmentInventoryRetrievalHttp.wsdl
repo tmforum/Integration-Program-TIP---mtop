@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2007 -->
+<wsdl:definitions name="mTOP-EquipmentInventoryRetrievalHttpV1-0" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.tmforum.org/mtop/mri/wsdl/eir/v1-0" targetNamespace="http://www.tmforum.org/mtop/mri/wsdl/eir/v1-0">
+  <wsdl:documentation>
+    <p>DDP: Manage Resource Inventory</p>
+    <p>Module: EquipmentInventoryRetrieval Service Interface WSDL HTTP Module</p>
+    <p>Description: This module contains the mTOP EquipmentInventoryRetrieval Service Interface WSDL definitions for the Web Service deployment profile with SOAP/HTTP binding.</p>
+    <p>Version: 1.0</p>
+  </wsdl:documentation>
+  <wsdl:import namespace="http://www.tmforum.org/mtop/mri/ws/eir/v1-0" location="EquipmentInventoryRetrievalMessages.wsdl"/>
+  <wsdl:portType name="EquipmentInventoryRetrieval_RPC">
+    <wsdl:documentation>
+      <p>The EquipmentInventoryRetrieval porttype (interface) for RPC (synchronous) based client/server communication patterns. All SIT operations use the specific get"ObjectType"Iterator operation to handle multiple responses.</p>
+    </wsdl:documentation>
+    <wsdl:operation name="getAllEquipment">
+      <wsdl:documentation>
+        <p>This SIT operation allows an NMS to request all of the equipments and equipment holders that are contained in a managed element or equipment holder.</p>
+      </wsdl:documentation>
+      <wsdl:input message="tns:getAllEquipmentRequest"/>
+      <wsdl:output message="tns:getAllEquipmentResponse"/>
+      <wsdl:fault name="getAllEquipmentException" message="tns:getAllEquipmentException"/>
+    </wsdl:operation>
+    <wsdl:operation name="getAllEquipmentNames">
+      <wsdl:documentation>
+        <p>This SRR operation has exactly the same behaviour as getAllEquipment(), but returns the object names instead of returning the entire objects.</p>
+      </wsdl:documentation>
+      <wsdl:input message="tns:getAllEquipmentNamesRequest"/>
+      <wsdl:output message="tns:getAllEquipmentNamesResponse"/>
+      <wsdl:fault name="getAllEquipmentNamesException" message="tns:getAllEquipmentNamesException"/>
+    </wsdl:operation>
+    <wsdl:operation name="getAllSupportingEquipment">
+      <wsdl:documentation>
+        <p>This SIT operation allows an NMS to request all of the equipment which implement a PTP/FTP.</p>
+      </wsdl:documentation>
+      <wsdl:input message="tns:getAllSupportingEquipmentRequest"/>
+      <wsdl:output message="tns:getAllSupportingEquipmentResponse"/>
+      <wsdl:fault name="getAllSupportingEquipmentException" message="tns:getAllSupportingEquipmentException"/>
+    </wsdl:operation>
+    <wsdl:operation name="getAllSupportingEquipmentNames">
+      <wsdl:documentation>
+        <p>This SRR operation has exactly the same behaviour as getAllSupportingEquipment(), but returns the object names instead of returning the entire objects.</p>
+      </wsdl:documentation>
+      <wsdl:input message="tns:getAllSupportingEquipmentNamesRequest"/>
+      <wsdl:output message="tns:getAllSupportingEquipmentNamesResponse"/>
+      <wsdl:fault name="getAllSupportingEquipmentNamesException" message="tns:getAllSupportingEquipmentNamesException"/>
+    </wsdl:operation>
+    <wsdl:operation name="getContainedEquipment">
+      <wsdl:documentation>
+        <p>This SRR operation returns the equipments and equipment holders directly contained by a specific equipment holder. This method differs from getAllEquipment in that it only looks at the next level of the containment hierarchy.</p>
+      </wsdl:documentation>
+      <wsdl:input message="tns:getContainedEquipmentRequest"/>
+      <wsdl:output message="tns:getContainedEquipmentResponse"/>
+      <wsdl:fault name="getContainedEquipmentException" message="tns:getContainedEquipmentException"/>
+    </wsdl:operation>
+    <wsdl:operation name="getEquipment">
+      <wsdl:documentation>
+        <p>This SRR operation returns the equipments and equipment holders directly contained by a specific equipment holder. This method differs from getAllEquipment in that it only looks at the next level of the containment hierarchy.</p>
+      </wsdl:documentation>
+      <wsdl:input message="tns:getEquipmentRequest"/>
+      <wsdl:output message="tns:getEquipmentResponse"/>
+      <wsdl:fault name="getEquipmentException" message="tns:getEquipmentException"/>
+    </wsdl:operation>
+    <wsdl:operation name="getSupportedEquipment">
+      <wsdl:documentation>
+        <p>This SRR operation allows an NMS to request all of the pieces of equipment supported by a given piece of equipment, e.g., a power pack might support many circuit packs.</p>
+      </wsdl:documentation>
+      <wsdl:input message="tns:getSupportedEquipmentRequest"/>
+      <wsdl:output message="tns:getSupportedEquipmentResponse"/>
+      <wsdl:fault name="getSupportedEquipmentException" message="tns:getSupportedEquipmentException"/>
+    </wsdl:operation>
+    <wsdl:operation name="getSupportedEquipmentNames">
+      <wsdl:documentation>
+        <p>This SRR operation has exactly the same behaviour as getSupportedEquipment(), but returns the object names instead of returning the entire objects.</p>
+      </wsdl:documentation>
+      <wsdl:input message="tns:getSupportedEquipmentNamesRequest"/>
+      <wsdl:output message="tns:getSupportedEquipmentNamesResponse"/>
+      <wsdl:fault name="getSupportedEquipmentNamesException" message="tns:getSupportedEquipmentNamesException"/>
+    </wsdl:operation>
+    <wsdl:operation name="getSupportingEquipment">
+      <wsdl:documentation>
+        <p>This SRR operation allows an NMS to request all of the pieces of equipment supported by a given piece of equipment, e.g., a power pack might support many circuit packs.</p>
+      </wsdl:documentation>
+      <wsdl:input message="tns:getSupportingEquipmentRequest"/>
+      <wsdl:output message="tns:getSupportingEquipmentResponse"/>
+      <wsdl:fault name="getSupportingEquipmentException" message="tns:getSupportingEquipmentException"/>
+    </wsdl:operation>
+    <wsdl:operation name="getSupportingEquipmentNames">
+      <wsdl:documentation>
+        <p>This SRR operation has exactly the same behaviour as getSupportingEquipment(), but returns the object names instead of returning the entire objects.</p>
+      </wsdl:documentation>
+      <wsdl:input message="tns:getSupportingEquipmentNamesRequest"/>
+      <wsdl:output message="tns:getSupportingEquipmentNamesResponse"/>
+      <wsdl:fault name="getSupportingEquipmentNamesException" message="tns:getSupportingEquipmentNamesException"/>
+    </wsdl:operation>
+    <!--<wsdl:operation name="">
+      <wsdl:documentation>
+        <p>This SIT operation .</p>
+      </wsdl:documentation>
+      <wsdl:input message="tns:Request"/>
+      <wsdl:output message="tns:Response"/>
+      <wsdl:fault name="Exception" message="tns:Exception"/>
+    </wsdl:operation>-->
+    <!--<wsdl:operation name="">
+      <wsdl:documentation>
+        <p>This SIT operation .</p>
+      </wsdl:documentation>
+      <wsdl:input message="tns:Request"/>
+      <wsdl:output message="tns:Response"/>
+      <wsdl:fault name="Exception" message="tns:Exception"/>
+    </wsdl:operation>-->
+    <!--<wsdl:operation name="">
+      <wsdl:documentation>
+        <p>This SIT operation .</p>
+      </wsdl:documentation>
+      <wsdl:input message="tns:Request"/>
+      <wsdl:output message="tns:Response"/>
+      <wsdl:fault name="Exception" message="tns:Exception"/>
+    </wsdl:operation>-->
+  </wsdl:portType>
+  <wsdl:binding name="EquipmentInventoryRetrievalSoapHttpBinding" type="tns:EquipmentInventoryRetrieval_RPC">
+    <wsdl:documentation>
+      <p>SOAP HTTP binding definitions of the operations of the EquipmentInventoryRetrieval RPC portType (interface)</p>
+    </wsdl:documentation>
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getAllEquipment">
+      <soap:operation soapAction="getAllEquipment" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getAllEquipmentRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getAllEquipmentResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getAllEquipmentException">
+        <soap:fault name="getAllEquipmentException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getAllEquipmentNames">
+      <soap:operation soapAction="getAllEquipmentNames" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getAllEquipmentNamesRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getAllEquipmentNamesResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getAllEquipmentNamesException">
+        <soap:fault name="getAllEquipmentNamesException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getAllSupportingEquipment">
+      <soap:operation soapAction="getAllSupportingEquipment" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getAllSupportingEquipmentRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getAllSupportingEquipmentResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getAllSupportingEquipmentException">
+        <soap:fault name="getAllSupportingEquipmentException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getAllSupportingEquipmentNames">
+      <soap:operation soapAction="getAllSupportingEquipmentNames" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getAllSupportingEquipmentNamesRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getAllSupportingEquipmentNamesResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getAllSupportingEquipmentNamesException">
+        <soap:fault name="getAllSupportingEquipmentNamesException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getContainedEquipment">
+      <soap:operation soapAction="getContainedEquipment" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getContainedEquipmentRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getContainedEquipmentResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getContainedEquipmentException">
+        <soap:fault name="getContainedEquipmentException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getEquipment">
+      <soap:operation soapAction="getEquipment" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getEquipmentRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getEquipmentResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getEquipmentException">
+        <soap:fault name="getEquipmentException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getSupportedEquipment">
+      <soap:operation soapAction="getSupportedEquipment" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getSupportedEquipmentRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getSupportedEquipmentResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getSupportedEquipmentException">
+        <soap:fault name="getSupportedEquipmentException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getSupportedEquipmentNames">
+      <soap:operation soapAction="getSupportedEquipmentNames" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getSupportedEquipmentNamesRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getSupportedEquipmentNamesResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getSupportedEquipmentNamesException">
+        <soap:fault name="getSupportedEquipmentNamesException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getSupportingEquipment">
+      <soap:operation soapAction="getSupportingEquipment" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getSupportingEquipmentRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getSupportingEquipmentResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getSupportingEquipmentException">
+        <soap:fault name="getSupportingEquipmentException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getSupportingEquipmentNames">
+      <soap:operation soapAction="getSupportingEquipmentNames" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getSupportingEquipmentNamesRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getSupportingEquipmentNamesResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getSupportingEquipmentNamesException">
+        <soap:fault name="getSupportingEquipmentNamesException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <!--<wsdl:operation name="">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:Request" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:Response" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>-->
+    <!--<wsdl:operation name="">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:Request" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:Response" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>-->
+    <!--<wsdl:operation name="">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:Request" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:Response" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>-->
+  </wsdl:binding>
+  <wsdl:service name="EquipmentInventoryRetrievalHttp">
+    <wsdl:documentation>
+      <p>Example of the EquipmentInventoryRetrieval WSDL Service definition as a deployment example of this mTOP Service Interface. It is expected to be modified to match the specific deployment configuration in a service provider's CCV.</p>
+    </wsdl:documentation>
+    <wsdl:port name="EquipmentInventoryRetrievalSoapHttp" binding="tns:EquipmentInventoryRetrievalSoapHttpBinding">
+      <soap:address location="http://aserver/mtosi/EquipmentInventoryRetrieval"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
