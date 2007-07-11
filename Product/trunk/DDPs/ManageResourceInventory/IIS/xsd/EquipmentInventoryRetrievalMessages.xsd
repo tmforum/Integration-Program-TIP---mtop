@@ -32,12 +32,27 @@
     </xsd:annotation>
   </xsd:element>
   <!-- ================== -->
-  <xsd:element name="getAllEquipmentException" type="tns:ExceptionProfile1_T">
+  <xsd:element name="getAllEquipmentException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getAllEquipment operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:extension base="tns:ExceptionProfile1_T">
+          <xsd:choice>
+            <xsd:element name="exceptionTooManyOpenIterators" type="msg:BaseExceptionMessage_T">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>Raised when maximum number of iterators that the OS can support has been reached</p>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:choice>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getAllEquipmentNamesRequest" type="tns:GetAllEquipmentRequest_T">
@@ -179,15 +194,15 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
-    <xsd:sequence>
-      <xsd:element name="equip" type="ei:EquipmentOrHolder_T" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>the returned equipment or equipment holder</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-    </xsd:sequence>
+      <xsd:sequence>
+        <xsd:element name="equip" type="ei:EquipmentOrHolder_T" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the returned equipment or equipment holder</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
   <!-- ================== -->
@@ -397,7 +412,7 @@
   <xsd:complexType name="ExceptionProfile1_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the getAllEquipment operation</p>
+        <p>Exception message structure operation profile#1</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:choice>
@@ -435,20 +450,20 @@
   <xsd:complexType name="ExceptionProfile2_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure operation profile#2</p>
+        <p>Exception message structure operation profile#2 (OPTIONAL)</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
       <xsd:extension base="tns:ExceptionProfile1_T">
-      <xsd:choice>
-      <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage_T">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised when this optional operation is not implemented</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      </xsd:choice>
+        <xsd:choice>
+          <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage_T">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Raised when this optional operation is not implemented</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:choice>
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>

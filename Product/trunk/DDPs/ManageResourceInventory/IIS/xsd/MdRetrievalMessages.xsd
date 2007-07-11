@@ -13,119 +13,95 @@
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Md.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/md/v1"/>
   <!-- ================ -->
-  <xsd:element name="Request">
+  <xsd:element name="getAllMdNamesRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the  operation</p>
-        <p>This operation .</p>
+        <p>Request message structure of the getAllMdNames operation</p>
+        <p>This operation returns the name of each Management Domain (MD) associated with a top-level OS.
+        This operation can only be directed to a top-level OS and not to a subordinate OS.</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="Response">
+  <xsd:element name="getAllMdNamesResponse" type="tns:MultipleObjectNamesResponse_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the getAllEquipment operation</p>
+        <p>Response message structure of the getAllMdNames operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="Exception" type="tns:ExceptionProfile1_T">
+  <xsd:element name="getAllMdNamesException" type="tns:ExceptionProfile1_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the  operation</p>
+        <p>Exception message structure of the getAllMdNames operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <!--<xsd:element name="Request">
+  <xsd:element name="getAllMdsRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the  operation</p>
-        <p>This operation .</p>
+        <p>Request message structure of the getAllMds operation</p>
+        <p>This operation returns the data structure for each Management Domain (MD) associated with a top-level OS.
+        This operation can only be directed to a top-level OS and not to a subordinate OS.</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="Response">
+  <xsd:element name="getAllMdsResponse" type="tns:MultipleObjectsResponse_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the getAllEquipment operation</p>
+        <p>Response message structure of the getAllMds operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="Exception" type="tns:ExceptionProfile1_T">
+  <xsd:element name="getAllMdsException" type="tns:ExceptionProfile1_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the  operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>-->
-  <!--<xsd:element name="Request">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the  operation</p>
-        <p>This operation .</p>
+        <p>Exception message structure of the getAllMds operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="Response">
+  <xsd:element name="getMdRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the getAllEquipment operation</p>
+        <p>Request message structure of the getMd operation</p>
+        <p>This operation returns the data structure associated with a given Management Domain (MD) identified by the provided mdName.
+        This operation can only be directed to a top-level OS and not to a subordinate OS.</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="Exception" type="tns:ExceptionProfile1_T">
+  <xsd:element name="getMdResponse" type="tns:SingeObjectResponse_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the  operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>-->
-  <!--<xsd:element name="Request">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the  operation</p>
-        <p>This operation .</p>
+        <p>Response message structure of the getMd operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="Response">
+  <xsd:element name="getMdException" type="tns:ExceptionProfile2_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the getAllEquipment operation</p>
+        <p>Exception message structure of the getMd operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="Exception" type="tns:ExceptionProfile1_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Exception message structure of the  operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>-->
-  <!--<xsd:element name="Request">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the  operation</p>
-        <p>This operation .</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <xsd:element name="Response">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Response message structure of the getAllEquipment operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <xsd:element name="Exception" type="tns:ExceptionProfile1_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Exception message structure of the  operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>-->
   <!-- ================ -->
   <!-- == Local Data Types == -->
   <!-- ================ -->
+  <xsd:complexType name="SingeObjectResponse_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure for one object</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="md" type="md:ManagementDomain_T" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The MD object</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================== -->
   <xsd:complexType name="MultipleObjectsResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -174,20 +150,6 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised in case one of the request parameters is not a valid object reference</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessage_T">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised in case one of the request parameters does not a refer to an existing object</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
       <xsd:element name="exceptionCommFailure" type="msg:BaseExceptionMessage_T">
         <xsd:annotation>
           <xsd:documentation>
@@ -206,15 +168,22 @@
     </xsd:annotation>
     <xsd:complexContent>
       <xsd:extension base="tns:ExceptionProfile1_T">
-      <xsd:choice>
-      <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage_T">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised when this optional operation is not implemented</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      </xsd:choice>
+        <xsd:choice>
+          <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Raised in case one of the request parameters is not a valid object reference</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessage_T">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Raised in case one of the request parameters does not a refer to an existing object</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:choice>
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>

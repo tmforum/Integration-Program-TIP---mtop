@@ -12,56 +12,78 @@
     <wsdl:documentation>
       <p>The MdRetrieval porttype (interface) for MSG (asynchronous) based client/server communication patterns.</p>
     </wsdl:documentation>
-    <wsdl:operation name="">
+    <wsdl:operation name="getAllMdNames">
       <wsdl:documentation>
-        <p>This ABR operation .</p>
+        <p>This ARR operation returns the name of each Management Domain (MD) associated with a top-level OS.</p>
       </wsdl:documentation>
-      <wsdl:input message="tns:Request"/>
-      <wsdl:output message="tns:Response"/>
-      <wsdl:fault name="Exception" message="tns:Exception"/>
+      <wsdl:input message="tns:getAllMdNamesRequest"/>
+      <wsdl:output message="tns:getAllMdNamesResponse"/>
+      <wsdl:fault name="getAllMdNamesException" message="tns:getAllMdNamesException"/>
     </wsdl:operation>
-    <!--<wsdl:operation name="">
+    <wsdl:operation name="getAllMds">
       <wsdl:documentation>
-        <p>This ABR operation .</p>
+        <p>This ARR operation returns the data structure for each Management Domain (MD) associated with a top-level OS.</p>
       </wsdl:documentation>
-      <wsdl:input message="tns:Request"/>
-      <wsdl:output message="tns:Response"/>
-      <wsdl:fault name="Exception" message="tns:Exception"/>
-    </wsdl:operation>-->
+      <wsdl:input message="tns:getAllMdsRequest"/>
+      <wsdl:output message="tns:getAllMdsResponse"/>
+      <wsdl:fault name="getAllMdsException" message="tns:getAllMdsException"/>
+    </wsdl:operation>
+    <wsdl:operation name="getMd">
+      <wsdl:documentation>
+        <p>This ARR operation returns the data structure associated with a given Management Domain (MD) identified by the provided mdName.</p>
+      </wsdl:documentation>
+      <wsdl:input message="tns:getMdRequest"/>
+      <wsdl:output message="tns:getMdResponse"/>
+      <wsdl:fault name="getMdException" message="tns:getMdException"/>
+    </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="MdRetrievalSoapJmsBinding" type="tns:MdRetrieval_MSG">
     <wsdl:documentation>
       <p>SOAP JMS binding definitions of the operations of the MdRetrieval MSG portType (interface)</p>
     </wsdl:documentation>
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/jms"/>
-    <wsdl:operation name="">
+    <wsdl:operation name="getAllMdNames">
       <soap:operation style="document"/>
       <wsdl:input>
-        <soap:header message="tns:Request" part="mtopHeader" use="literal"/>
+        <soap:header message="tns:getAllMdNamesRequest" part="mtopHeader" use="literal"/>
         <soap:body parts="mtopBody" use="literal"/>
       </wsdl:input>
       <wsdl:output>
-        <soap:header message="tns:Response" part="mtopHeader" use="literal"/>
+        <soap:header message="tns:getAllMdNamesResponse" part="mtopHeader" use="literal"/>
         <soap:body parts="mtopBody" use="literal"/>
       </wsdl:output>
-      <wsdl:fault name="Exception">
-        <soap:fault name="Exception" use="literal"/>
+      <wsdl:fault name="getAllMdNamesException">
+        <soap:fault name="getAllMdNamesException" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
-    <!--<wsdl:operation name="">
+    <wsdl:operation name="getAllMds">
       <soap:operation style="document"/>
       <wsdl:input>
-        <soap:header message="tns:Request" part="mtopHeader" use="literal"/>
+        <soap:header message="tns:getAllMdsRequest" part="mtopHeader" use="literal"/>
         <soap:body parts="mtopBody" use="literal"/>
       </wsdl:input>
       <wsdl:output>
-        <soap:header message="tns:Response" part="mtopHeader" use="literal"/>
+        <soap:header message="tns:getAllMdsResponse" part="mtopHeader" use="literal"/>
         <soap:body parts="mtopBody" use="literal"/>
       </wsdl:output>
-      <wsdl:fault name="Exception">
-        <soap:fault name="Exception" use="literal"/>
+      <wsdl:fault name="getAllMdsException">
+        <soap:fault name="getAllMdsException" use="literal"/>
       </wsdl:fault>
-    </wsdl:operation>-->
+    </wsdl:operation>
+    <wsdl:operation name="getMd">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getMdRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getMdResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getMdException">
+        <soap:fault name="getMdException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="MdRetrievalJms">
     <wsdl:documentation>
