@@ -60,47 +60,43 @@
   <xsd:simpleType name="ManufacturerDate_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p> The manufacturerDate attribute identifies the production date of the resource.</p>
+        <p>The manufacturerDate attribute identifies the production date of the resource.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:restriction base="xsd:date"/>
   </xsd:simpleType>
   <!-- ================= -->
   <xsd:complexType name="MeiAttributes_T">
-      <xsd:annotation>
-          <xsd:documentation>This attribute is used when a object instance is embedded in the inventory
+    <xsd:annotation>
+      <xsd:documentation>This attribute is used when a object instance is embedded in the inventory
 			layout payload of a Multi-Event Inventory (MEI) notification.</xsd:documentation>
-      </xsd:annotation>
-      <xsd:sequence>
-          <xsd:element name="neTime" minOccurs="0" nillable="true">
-              <xsd:annotation>
-                  <xsd:documentation>This is the time at which the NE detected the inventory change (if available)</xsd:documentation>
-              </xsd:annotation>
-              <xsd:simpleType>
-                  <xsd:restriction base="xsd:date"/>
-              </xsd:simpleType>
-          </xsd:element>
-          <xsd:element name="eventIndication">
-              <xsd:annotation>
-                  <xsd:documentation>
-				  	<p>This is an indication of the type of inventory update.</p>
-				  	<p>Possible values are Object Creation (OC), Object Discovery (ODsc), Object Deletion (OD), 
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="neTime" type="xsd:date" minOccurs="0" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This is the time at which the NE detected the inventory change (if available)</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="eventIndication" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This is an indication of the type of inventory update.</p>
+            <p>Possible values are Object Creation (OC), Object Discovery (ODsc), Object Deletion (OD), 
 				  Attribute Value Change (AVC), State Change (SC) and AVC_SC_and_Childern. Only the acronym (e.g., OC) 
 				  is used in the actual attribute value. The following conventions apply:</p>
-					<p>If an object creation or object discovery indicator is applied to a parent object, 
+            <p>If an object creation or object discovery indicator is applied to a parent object, 
 					it implicitly applies to all the children, i.e., the OS sending the notification only needs 
 					to set the indicator attribute in the parent object.</p>
-					<p>If an object deletion is applied to a parent object, it is assumed that all the children 
-					are also deleted. The childern should not be listed.</p> 
-					<p>The AVC_SC_and_Childern indication may be applied to a parent object to imply that there 
-					may be AVC or SC changes to the parent and some or all of the children.</p> 
-				  </xsd:documentation>
-              </xsd:annotation>
-              <xsd:simpleType>
-                  <xsd:restriction base="xsd:string"/>
-              </xsd:simpleType>
-          </xsd:element>
-      </xsd:sequence>
+            <p>If an object deletion is applied to a parent object, it is assumed that all the children 
+					are also deleted. The childern should not be listed.</p>
+            <p>The AVC_SC_and_Childern indication may be applied to a parent object to imply that there 
+					may be AVC or SC changes to the parent and some or all of the children.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
   </xsd:complexType>
   <!-- ================= -->
   <xsd:simpleType name="NameValue_T">
