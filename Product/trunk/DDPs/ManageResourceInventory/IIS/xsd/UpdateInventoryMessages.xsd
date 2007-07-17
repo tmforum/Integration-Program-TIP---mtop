@@ -20,8 +20,19 @@
 				This is a key point concerning this capability. The update may entail object creations, 
 				attribute modifications and/or object deletions. The requesting OS provides an inventoryData 
 				structure that describes the desired updates to be made by the Target OS. The operation can 
-				only be directed to a top-level OS and not to a subordinate OS.</p> 
-				<p>In the case of effortMode="bestEffort", this operations uses Multi-Object Exceptions. 
+				only be directed to a top-level OS and not to a subordinate OS.</p>
+				<p> Rather than having an indicator for each object in the inventory layout (in the inventory 
+				update request) concerning the type of update desired, e.g., create, modify, delete or noChange. 
+				It was decided that the target OS shall determine the desired update by simply comparing the 
+				inventory layout to its current inventory, with the following rules:</p>
+				<p>If an object is included in the inventory layout that was not known to the target OS before, 
+				this is to be treated as a creation request.</p> 
+				<p>Deletions are indicated by setting the resourceState to “Retiring/unavailable”.</p> 
+				<p>Modifications are determined by comparing each existing object in the inventory layout 
+				(provided in the update request) to the object as currently known to the target OS. 
+				This is the same convention that was used for the MTOSI getInventory operation. 
+				In this case, the information is being “pushed” rather than “pulled”.</p>
+ 				<p>In the case of effortMode="bestEffort", this operations uses Multi-Object Exceptions. 
 				In the case of effortMode="atomic", ProcessingFailureException is used.</p> 
       		</xsd:documentation>
 		</xsd:annotation>
