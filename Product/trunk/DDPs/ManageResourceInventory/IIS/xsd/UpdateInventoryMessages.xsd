@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/invu/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/invu/v1" xmlns:invr="http://www.tmforum.org/mtop/mri/xsd/invr/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Manage Resource Inventory</p>
+      <p>Module:  Message XSD Module</p>
+      <p>Description: This module contains the XML Schema type definitions of all the mTOP InventoryUpdate SI XML message structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="ResourceInventoryRetrievalMessages.xsd" namespace="http://www.tmforum.org/mtop/mri/xsd/invr/v1"/>
+  <!-- ===================== updateInventoryRequest Message ========= -->
+	<xsd:complexType name="updateInventoryRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p> This operation allows an OS to request that another OS (i.e., the Target OS) 
+				update its inventory. The expectation is that the target OS update its inventory 
+				as requested, but no other side-effects are expected (e.g., creating an SNC in the network). 
+				This is a key point concerning this capability. The update may entail object creations, 
+				attribute modifications and/or object deletions. The requesting OS provides an inventoryData 
+				structure that describes the desired updates to be made by the Target OS. The operation can 
+				only be directed to a top-level OS and not to a subordinate OS.</p> 
+				<p>In the case of effortMode="bestEffort", this operations uses Multi-Object Exceptions. 
+				In the case of effortMode="atomic", ProcessingFailureException is used.</p> 
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="inventoryUpdate" type="invr:InventoryData_T" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						This attribute defines the requested inventory update. Note that the same data structure is used as in the response to the getInventory operation. 
+          			</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="effortMode" type="tns:EffortMode_T" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						This attribute is used to indicate the effort level for the updateInventory operations. The two possible values are "bestEffort" and "atomic". Either effort mode can be applied to any of the integration modes.
+          			</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="integrationMode" type="tns:IntegrationMode_T" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						This attribute describes how the requested inventory update should be integrated into the existing inventory of the receiving OS. 
+          			</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+  <!-- ===================== updateInventorResponse Message ========= -->
+	<xsd:complexType name="updateInventoryResponse_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				This is the response of the updateInventory operation. See also updateInventory_T.
+      		</xsd:documentation>
+		</xsd:annotation>
+	</xsd:complexType>
+  <!-- =========== Local Definitions ========= -->
+	<xsd:simpleType name="EffortMode_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				This attribute is used to indicate the effort level for the updateInventory operations. 
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="BestEffort">
+				<xsd:annotation>
+					<xsd:documentation>
+						The value "bestEffort" means that the target OS shall make as many of the requested updates as possible and report on the ones that failed. 
+          			</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="Atomic">
+				<xsd:annotation>
+					<xsd:documentation>
+						The value "atomic" means that the target OS must make all the requested updates or completely roll back the operation. 
+          			</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!-- ================= -->
+	<xsd:simpleType name="IntegrationMode_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				This attribute describes how the requested inventory update should be integrated into the existing inventory of the receiving OS. 
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Replace">
+				<xsd:annotation>
+					<xsd:documentation>
+						For each proposed subtree update, everything from the root and below in the target OS's inventory is replaced by the proposed subtree update.
+          			</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MergeWithoutOverwrite">
+				<xsd:annotation>
+					<xsd:documentation>
+						Each proposed subtree update is merged with the associated subtree in the target OS's inventory. For each proposed subtree update, additional branches and leaves are added to the associated subtree in the target OS's inventory to achieve alignment with the proposed update. In the case of overlapping objects (in the proposed update and in the target OS's inventory), the objects in the target OS remains unchanged. 
+          			</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MergeWithOverwrite">
+				<xsd:annotation>
+					<xsd:documentation>
+						This is the same as Merge without Overwrite except for the treatment of overlapping objects. In this case, the proposed object replaces its associated object instance in the target OS's inventory.
+          			</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>
