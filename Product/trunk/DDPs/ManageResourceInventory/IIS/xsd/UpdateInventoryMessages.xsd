@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/invu/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/invu/v1" xmlns:invr="http://www.tmforum.org/mtop/mri/xsd/invr/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/invu/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/invu/v1" xmlns:invr="http://www.tmforum.org/mtop/mri/xsd/invr/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Manage Resource Inventory</p>
@@ -9,6 +9,7 @@
     </xsd:documentation>
   </xsd:annotation>
   <!-- ================ -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
   <xsd:import schemaLocation="ResourceInventoryRetrievalMessages.xsd" namespace="http://www.tmforum.org/mtop/mri/xsd/invr/v1"/>
   <!-- ===================== updateInventoryRequest Message ========= -->
 	<xsd:complexType name="updateInventoryRequest">
@@ -64,15 +65,37 @@
 	<xsd:complexType name="updateInventoryResponse_T">
 		<xsd:annotation>
 			<xsd:documentation>
-				This is the response of the updateInventory operation. See also updateInventory_T.
+				<p>This is the response of the updateInventory operation.</p> 
+				<p>It is used when the update request is completely successful; otherwise, the target OS 
+				will provide a detailed list of exceptions. Note that there are no parameters - it is just
+				an indication of success.</p> 
       		</xsd:documentation>
 		</xsd:annotation>
 	</xsd:complexType>
+  <!-- ===================== updateInventory Exceptions ========= -->
+	<xsd:element name="getInventoryException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getInventory operation</p>
+		<p>The updateInventory operation allows for multiple exceptions for a single request. This is explained
+		further in TMF518_MRI.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage_T"/>
+        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T"/>
+        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T"/>
+		<xsd:element name="exceptionObjectInUse" type="msg:BaseExceptionMessage_T"/>
+		<xsd:element name="exceptionPolicyViolation" type="msg:BaseExceptionMessage_T"/>
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
   <!-- =========== Local Definitions ========= -->
 	<xsd:simpleType name="EffortMode_T">
 		<xsd:annotation>
 			<xsd:documentation>
-				This attribute is used to indicate the effort level for the updateInventory operations. 
+				This parameter is used to indicate the effort level for the updateInventory operations. 
       		</xsd:documentation>
 		</xsd:annotation>
 		<xsd:restriction base="xsd:string">
@@ -96,7 +119,10 @@
 	<xsd:simpleType name="IntegrationMode_T">
 		<xsd:annotation>
 			<xsd:documentation>
-				This attribute describes how the requested inventory update should be integrated into the existing inventory of the receiving OS. 
+				<p>This parameter describes how the requested inventory update should be integrated into 
+				the existing inventory of the receiving OS.</p>
+				<p>The behavior associated with this parameter is further described in TMF518_MRI. 
+				TMF518_MRI also provides an example concerning the desired behavior associated with this parameter.</p>
       		</xsd:documentation>
 		</xsd:annotation>
 		<xsd:restriction base="xsd:string">
