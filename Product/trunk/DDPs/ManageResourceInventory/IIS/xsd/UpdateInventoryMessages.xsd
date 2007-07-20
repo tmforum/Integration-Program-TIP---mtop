@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/invu/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/invu/v1" xmlns:invr="http://www.tmforum.org/mtop/mri/xsd/invr/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/invu/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/invu/v1" xmlns:invr="http://www.tmforum.org/mtop/mri/xsd/invr/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Manage Resource Inventory</p>
@@ -10,6 +10,7 @@
   </xsd:annotation>
   <!-- ================ -->
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
   <xsd:import schemaLocation="ResourceInventoryRetrievalMessages.xsd" namespace="http://www.tmforum.org/mtop/mri/xsd/invr/v1"/>
   <!-- ===================== updateInventoryRequest Message ========= -->
 	<xsd:complexType name="updateInventoryRequest">
@@ -85,13 +86,93 @@
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
         <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage_T"/>
         <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T"/>
-        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T"/>
-		<xsd:element name="exceptionObjectInUse" type="msg:BaseExceptionMessage_T"/>
-		<xsd:element name="exceptionPolicyViolation" type="msg:BaseExceptionMessage_T"/>
+		<!-- ===================== Object does not exist ========= -->
+		<xsd:sequence> 
+        	<xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T"/>
+      		<xsd:element name="nonexistentContainingObject" type="nam:NamingAttributes_T" minOccurs="0" maxOccurs="unbounded">
+        		<xsd:annotation>
+          			<xsd:documentation>
+            			<p>If while attempting to create an object whose containing object (possibly several 
+						layers up) does not exist, the target OS should raise an exception and supply the name 
+						of the containing object that it claims does not exist. The "reason" parameter of the 
+						exception should state "containing object does not exist".</p>
+          			</xsd:documentation>
+        		</xsd:annotation>
+      		</xsd:element>
+		</xsd:sequence>
+		<!-- ===================== Unsupported object types ========= -->
+		<xsd:sequence> 
+        	<xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T"/>
+      		<xsd:element name="unsupportedObjectTypes" type="ListOfStrings_T">
+        		<xsd:annotation>
+          			<xsd:documentation>
+            			<p>If the requesting OS is trying to create instance of one or more object types that
+						are unsupported by the target OS, the target OS should raise an exception and list the 
+						unsupported object types.</p>
+          			</xsd:documentation>
+        		</xsd:annotation>
+      		</xsd:element>
+		</xsd:sequence>
+				<!-- ===================== Unsupported attributes or attribute values ========= -->
+		<xsd:sequence> 
+        	<xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T"/>
+      		<xsd:element name="unsupportedObjectTypes" type="ListOfStrings_T">
+        		<xsd:annotation>
+          			<xsd:documentation>
+            			<p>If the requesting OS is trying to modify an unsupported attribute type or set an attribute
+						to a not allowed value (either because the value is not supported or because the current situation
+						does not allow the value to be set as requested, e.g., trying to reuse the name of an existing
+						object), the target OS should raise an exception and list the problem attributes types.</p> 
+						<p>Depending on the situation, the reason parameter should state either
+						"unsupported attribute type" or "attempted to set attribute to not allowed value."</p>
+          			</xsd:documentation>
+        		</xsd:annotation>
+      		</xsd:element>
+		</xsd:sequence>
+		<!-- ===================== Objects in use ========= -->
+		<xsd:sequence>
+			<xsd:element name="exceptionObjectInUse" type="msg:BaseExceptionMessage_T"/>
+			<xsd:element name="objectInUse" type="nam:NamingAttributes_T" minOccurs="0" maxOccurs="unbounded">
+        		<xsd:annotation>
+          			<xsd:documentation>
+            			<p>If requesting OS is trying to modify an object that is in use (this may depend on the 
+						policies of the target OS), the target OS should raise an exception and provide 
+						the type and name of the object instances in question that are already in use.</p>
+						<p>If the requesting OS is attempting to delete an object when an associated object 
+						(possibly several layers up) is currently in use (e.g., attempting to delete a CTP when 
+						an associated SNC is still in use may violate a policy of the target OS) then the 
+						target OS should raise an exception and supply the name of the containing object that is 
+						in use. The "reason" parameter of the exception should say "Containing object is in use".</p>
+          			</xsd:documentation>
+        		</xsd:annotation>
+      		</xsd:element>
+		</xsd:sequence>
+		<!-- ===================== Policy violation ========= -->
+		<xsd:sequence>
+			<xsd:element name="exceptionPolicyViolation" type="msg:BaseExceptionMessage_T"/>
+			<xsd:element name="baseInstance" type="nam:NamingAttributes_T" minOccurs="0" maxOccurs="unbounded">
+        		<xsd:annotation>
+          			<xsd:documentation>
+            			<p>If creation of a given object violates a policy of the target OS, the target OS should 
+						raise an exception, identify the object (can leave the relative name empty if not provided
+						by the requesting OS)and indicate the specific policy that has been violated in the 
+						"reason" parameter of the exception.</p>
+						<p>If modification or deletion of a given object violates a policy of the target OS, the target 
+						OS should raise an exception, identify the object and indicate the specific policy that has been 
+						violated in the "reason" parameter of the exception.</p>
+          			</xsd:documentation>
+        		</xsd:annotation>
+      		</xsd:element>
+		</xsd:sequence>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
   <!-- =========== Local Definitions ========= -->
+ 	<xsd:complexType name="ListOfStrings_T">
+    <xsd:sequence>
+            <xsd:element name="list" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
 	<xsd:simpleType name="EffortMode_T">
 		<xsd:annotation>
 			<xsd:documentation>
