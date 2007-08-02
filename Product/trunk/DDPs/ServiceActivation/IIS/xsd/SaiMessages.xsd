@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM Service Activation Interface (SAI) - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/srvact/xsd/sai/v1" xmlns:tns="http://www.tmforum.org/mtop/srvact/xsd/sai/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Service Activation</p>
+      <p>Module: Message XSD Module</p>
+      <p>Description: This module contains the XML Schema type definitions of all the mTOP Service Activation Interface (SAI) XML message structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <!-- ===================== Data Types ========= -->
+  <!-- === Product Info === -->
+  <xsd:complexType name="ProductInfo_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				This data type defines the product information that in included in many of the
+                SAI requests.
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+		   <xsd:element name="productName" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>
+						This parameter identifies an instance of a product.
+          			</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+            <xsd:element name="productSpecificationName" type="xsd:string" nillable="true">
+				<xsd:annotation>
+					<xsd:documentation>
+						This parameter identifies a product specification associated with the product instance.
+          			</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+            <xsd:element name="productBundleName" type="xsd:string" nillable="true">
+				<xsd:annotation>
+					<xsd:documentation>
+						This parameter is used in cases where the request refers to a bundle of products.
+                        It should be emphasized that the requesting OS needs to send a separate request for
+                        each product instance in a product bundle. The productBundleName is only included
+                        to provide additional context and there is no expectation that the target OS will
+                        decompose the identified product bundle into its component products.
+          			</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+			   <xsd:element name="productSpecCharacteristicID" type="xsd:string" nillable="true">
+			      <xsd:annotation>
+			         <xsd:documentation>
+			            This is a unique identifier for a product specification characteristic.
+                        A product specification characteristic is a quality or distinctive
+                        feature of a ProductSpecification.
+                     </xsd:documentation>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="productCharacteristicValue" type="xsd:anyType" nillable="true">
+			      <xsd:annotation>
+			         <xsd:documentation>
+			            This is value corresponding to the productSpecCharacteristicID.
+                     </xsd:documentation>
+                  </xsd:annotation>
+               </xsd:element>
+			</xsd:sequence>
+        </xsd:sequence>
+  </xsd:complexType>	
+  <!-- ===================== feasibilityCheckRequest Message ========= -->
+	<xsd:complexType name="feasibilityCheck">
+		<xsd:annotation>
+			<xsd:documentation>
+				This operation verifies the feasibility of provisioning and activating the CFSs in
+                support of a product instance. If the operation is successful, CFS objects are created
+                and placed in the FeasibilityChecked state and the requesting OS is informed that
+                its request is feasible, but nothing is reserved.
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="productInfo" type="tns:ProductInfo_T">
+				<xsd:annotation>
+					<xsd:documentation>
+						This parameter identifies the product information associated with the
+						feasibilityCheck request. The target OS will translate the product information
+						to service level information and then perform the requested action.
+          			</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="subscriberList" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>
+						This parameter provides a list of the subscribers associated with the request.
+                        The subscriberList applies to the given product instance as opposed to being
+                        applied to a subset of the CFSs associated with the product instance.
+          			</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="userList" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>
+						This parameter provides a list of the users associated with the request.
+                        It is assumed that all on the userList apply to the given product instance as
+                        opposed to being applied to a subset of the CFSs associated with the product instance.
+          			</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="sapList" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>
+						This parameter provides a list of the SAPs associated with the request.
+          			</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+  <!-- ===================== feasibilityCheckResponse Message ========= -->
+	<xsd:complexType name="feasibilityCheckResponse_T">
+		<xsd:annotation>
+			<xsd:documentation>
+		       This type covers the various responses to the feasibilityCheck request.
+      		</xsd:documentation>
+		</xsd:annotation>
+	</xsd:complexType>
+  <!-- ===================== feasibilityCheck Exceptions ========= -->
+</xsd:schema>
