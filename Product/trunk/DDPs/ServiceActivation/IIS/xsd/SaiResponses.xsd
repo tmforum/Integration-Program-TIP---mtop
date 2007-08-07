@@ -172,7 +172,7 @@
            <xsd:element name="last" type="xsd:boolean" minOccurs="0" maxOccurs="1">
               <xsd:annotation>
                  <xsd:documentation>
-                    <p>this Boolean indicates whether or not the target OS has sent the last event in response
+                    <p>This Boolean indicates whether or not the target OS has sent the last event in response
                     to the request. In some cases, not all the CFSs will be in the desired end state when the
                     target OS decides to stop work on the request. In such cases, the target OS will typically
                     send an exception to the requesting OS.</p>
@@ -211,7 +211,41 @@
            <xsd:element name="last" type="xsd:boolean" minOccurs="0" maxOccurs="1">
               <xsd:annotation>
                  <xsd:documentation>
-                    <p>this Boolean indicates whether or not the target OS has sent the last event in response
+                    <p>This Boolean indicates whether or not the target OS has sent the last event in response
+                    to the request. In some cases, not all the CFSs will be in the desired end state when the
+                    target OS decides to stop work on the request. In such cases, the target OS will typically
+                    send an exception to the requesting OS.</p>
+                 </xsd:documentation>
+              </xsd:annotation>
+           </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- === CFS Deletion Event === -->
+  <xsd:complexType name="CfsDeletionEvent_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This event is an indication that the target OS has deleted one or more CFSs.</p>
+		<p>In the service order aware version of the interface, a Service Order will be assembled. For each CFS, 
+		a service order item will be created and associated with the service order. It is assumed all the CFSs 
+		are driven by the same Service Order instance.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:RootResponse_T">
+      <xsd:sequence>
+           <xsd:element name="cfsNameList" type="nam:NamingAttributesList_T">
+		      <xsd:annotation>
+                 <xsd:documentation>
+                    <p>This is a list (just the names) of the CFSs that have been deleted.</p>
+                 </xsd:documentation>
+              </xsd:annotation>
+           </xsd:element>
+           <xsd:element name="last" type="xsd:boolean" minOccurs="0" maxOccurs="1">
+              <xsd:annotation>
+                 <xsd:documentation>
+                    <p>This Boolean indicates whether or not the target OS has sent the last event in response
                     to the request. In some cases, not all the CFSs will be in the desired end state when the
                     target OS decides to stop work on the request. In such cases, the target OS will typically
                     send an exception to the requesting OS.</p>
