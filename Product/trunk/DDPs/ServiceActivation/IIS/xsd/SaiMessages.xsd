@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM Service Activation Interface (SAI) - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/srvact/xsd/sai/v1" xmlns:tns="http://www.tmforum.org/mtop/srvact/xsd/sai/v1" xmlns:sairsp="http://www.tmforum.org/mtop/srvact/xsd/sairsp/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/srvact/xsd/saimsg/v1" xmlns:tns="http://www.tmforum.org/mtop/srvact/xsd/saimsg/v1" xmlns:sairsp="http://www.tmforum.org/mtop/srvact/xsd/sairsp/v1" xmlns:saiexcpt="http://www.tmforum.org/mtop/srvact/xsd/saiexcpt/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Service Activation</p>
@@ -10,6 +10,7 @@
   </xsd:annotation>
   <!-- ================ -->
   <xsd:import schemaLocation="SaiResponses.xsd" namespace="http://www.tmforum.org/mtop/srvact/xsd/sairsp/v1"/>
+  <xsd:import schemaLocation="SaiExceptions.xsd" namespace="http://www.tmforum.org/mtop/srvact/xsd/saiexcpt/v1"/>
   <!-- ===================== Data Types ========= -->
   <!-- === Product Info === -->
   <xsd:complexType name="ProductInfo_T">
@@ -64,24 +65,16 @@
                </xsd:element>
 			</xsd:sequence>
         </xsd:sequence>
-  </xsd:complexType>	
-  <!-- ===================== feasibilityCheckRequest Message ========= -->
-	<xsd:complexType name="feasibilityCheck">
-		<xsd:annotation>
-			<xsd:documentation>
-				<p>This operation verifies the feasibility of provisioning and activating the CFSs in
-                support of a product instance. If the operation is successful, CFS objects are created
-                and placed in the FeasibilityChecked state and the requesting OS is informed that
-                its request is feasible, but nothing is reserved.</p>
-      		</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
+  </xsd:complexType>
+  <!-- === Request Info Basic === -->
+  <xsd:complexType name="RequestInfoBasic_T">
+	<xsd:sequence>
 			<xsd:element name="productInfo" type="tns:ProductInfo_T">
 				<xsd:annotation>
 					<xsd:documentation>
 						<p>This parameter identifies the product information associated with the
-						feasibilityCheck request. The target OS will translate the product information
-						to service level information and then perform the requested action.</p>
+						request. The target OS will translate the product information to service
+						level information and then perform the requested action.</p>
           			</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
@@ -111,8 +104,59 @@
 				</xsd:annotation>
 			</xsd:element>
 		</xsd:sequence>
+  </xsd:complexType>
+  <!-- === Request Info - Service Order Aware === -->
+  <xsd:complexType name="RequestInfoSOAware_T">
+  	<xsd:complexContent>
+      <xsd:extension base="tns:RequestInfoBasic_T">
+        <xsd:sequence>
+		   <xsd:annotation>
+					<xsd:documentation>
+						<p>requestedCompletionDate – the date and time at which the requesting OS has requested 
+						that execution of the service order be complete. The target OS will take this as input 
+						to its scheduling process. The target OS will provide the requesting OS with an expectedCompletionDate 
+						which indicates when the target OS thinks it can complete the execution of the service order. The 
+						target OS is allowed to complete execution of the service order before the requestedCompletionDate. 
+						This parameter is only used in the order aware version of the interface.</p>
+						<p>priority – this attribute allows the request to specify a priority for execution of the service 
+						request. This attribute is a positive integer.</p> 
+						<p>purchaseOrder – identifies the associated customer order.</p>
+						<p>validFor – the date and time for which this request is valid. If the request is not fulfilled 
+						by the provided date and time, the service order process will automatically be aborted by the target OS.</p> 
+          			</xsd:documentation>
+		   </xsd:annotation>
+		   <xsd:element name="requestedCompletionDate" type="xsd:dateTime"/>
+		   <xsd:element name="priority" type="xsd:integer"/>
+		   <xsd:element name="purchaseOrder" type="xsd:string"/>
+		   <xsd:element name="validFor" type="xsd:dateTime"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- === Feasibility Check === -->	
+  <!-- ===================== feasibilityCheckRequest Message ========= -->
+	<xsd:complexType name="feasibilityCheck_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This operation verifies the feasibility of provisioning and activating the CFSs in
+                support of a product instance. If the operation is successful, CFS objects are created
+                and placed in the FeasibilityChecked state and the requesting OS is informed that
+                its request is feasible, but nothing is reserved.</p>
+				<p>Pre-condition(s): The CFSs supporting the product instance do not yet exist.</p>
+				<p>Post-condition(s):</p>
+				<p>In case of success:</p>
+                <p>The CFS(s) associated with the product instance are all in the FeasibilityChecked state.</p>
+                <p>In case of failure:</p>
+                <p>In the case of an atomic request, all traces of the CFSs have been deleted. </p>
+                <p>Support for "best effort" is not recommended for this operation since this
+                operation is fundamentally an atomic request.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="feasibilityCheckRequestInput" type="tns:RequestInfoBasic_T"/>
+		</xsd:sequence>
 	</xsd:complexType>
-  <!-- ===================== feasibilityCheckResponse Message ========= -->
+  <!-- ===================== feasibilityCheckResponse Messages ========= -->
 	<xsd:complexType name="feasibilityCheckResponse_T">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -123,7 +167,72 @@
            <xsd:element name="initialResponse" type="sairsp:InitialResponse_T"/>
            <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEvent_T"/>
            <xsd:element name="cfsCreation" type="sairsp:CfsCreationEvent_T"/>
-      </xsd:choice>
+        </xsd:choice>
 	</xsd:complexType>
   <!-- ===================== feasibilityCheck Exceptions ========= -->
+  <xsd:complexType name="feasibilityCheckException_T">
+		<xsd:annotation>
+			<xsd:documentation>
+		       <p>This type defines the allowable exceptions to the feasibility check operation.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice maxOccurs="unbounded">
+           <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEvent_T"/>
+           <xsd:element name="serviceCreationFailureEvent" type="saiexcpt:ServiceCreationFailureEvent_T"/>
+        </xsd:choice>
+	</xsd:complexType>
+  <!-- === Design === -->	
+  <!-- ===================== designRequest Message ========= -->
+  	<xsd:complexType name="design_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This operation designs the CFSs in support of a product instance. If feasibility has 
+				not already been checked, it will be checked as part of this operation. The target OS will 
+				create, but not start, a service order for the overall request. The target OS will also 
+				create, but not start, RFSs orders for the CFSs associated with the product. It should be 
+				emphasized that only the "overall" service order (but not the RFS orders) can be retrieved
+				over the SAI.</p>
+				<p>Pre-condition(s): The CFSs supporting the product instance either do not yet exist or
+                are in the FeasibilityChecked or Designed state. </p>
+				<p>Post-condition(s):</p>
+				<p>In case of success:</p>
+                <p>The CFS(s) associated with the product instance are all in the Designed state.</p>
+                <p>In case of failure:</p>
+                <p>In the case of an atomic request, all CFS(s) have all been returned to their original state
+                before the service request.</p>
+                <p>In the case of best effort, the CFSs associated with the product instance remain in their
+                current state. No rollback is attempted in this case.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="designRequestInput" type="tns:RequestInfoSOAware_T"/>
+		</xsd:sequence>
+	</xsd:complexType>
+  <!-- ===================== designResponse Messages ========= -->
+  <xsd:complexType name="designResponse_T">
+		<xsd:annotation>
+			<xsd:documentation>
+		       <p>This type covers the various responses to the design request.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice maxOccurs="unbounded">
+           <xsd:element name="initialResponse" type="sairsp:InitialResponse_T"/>
+           <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEvent_T"/>
+           <xsd:element name="cfsCreation" type="sairsp:CfsCreationEvent_T"/>
+           <xsd:element name="cfsStateChange" type="sairsp:CfsStateChangeEvent_T"/>
+        </xsd:choice>
+	</xsd:complexType>
+  <!-- ===================== design Exceptions ========= -->
+  <xsd:complexType name="designException_T">
+		<xsd:annotation>
+			<xsd:documentation>
+		       <p>This type defines the allowable exceptions to the design operation.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice maxOccurs="unbounded">
+           <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEvent_T"/>
+           <xsd:element name="serviceCreationFailureEvent" type="saiexcpt:ServiceCreationFailureEvent_T"/>
+           <xsd:element name="serviceStateTransitionFailureEvent" type="saiexcpt:ServiceStateTransitionFailureEvent_T"/>
+        </xsd:choice>
+	</xsd:complexType>
 </xsd:schema>

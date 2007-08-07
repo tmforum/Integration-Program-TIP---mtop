@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM Service Activation Interface (SAI) - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/srvact/xsd/saiexcpt/v1" xmlns:tns="http://www.tmforum.org/mtop/srvact/xsd/saiexcpt/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Service Activation</p>
+      <p>Module: Message XSD Module</p>
+      <p>Description: This module contains XML Schema type definitions in support of the Service Activation Interface (SAI) exceptions.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <!-- ===================== Basic Failure Exception ========= -->
+  <xsd:complexType name="BasicFailureEvent_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This exception is an indication that the target OS was not able to accomplish the requested task. </p>
+		<p>NOT_IMPLEMENTED – raised when the target OS does not support this operation.</p>
+		<p>INVALID_INPUT – raised if any input parameter is syntactically incorrect. </p>
+		<p>UNABLE_TO_COMPLY – raised when the target OS cannot fulfill the request. 
+		This can be used in either the initial or final response. </p>
+		<p>COMM_FAILURE – raised when the target OS is not able to communicate with one or 
+		more entities and as a consequence could not complete the rollback.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice>
+      <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage_T"/>
+      <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T"/>
+	  <xsd:element name="exceptionUnableToComply" type="msg:BaseExceptionMessage_T"/>
+      <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessage_T"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <!-- ===================== Service State Transition Failure Event  ========= -->
+  <xsd:complexType name="ServiceStateTransitionFailureEvent_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This event is an indication that the target OS is reporting a CFS state transition failure 
+		from the current state to the next one in the CFS activation lifecycle.</p>
+		<p>The following parameters are supported:</p>
+		<p>serviceRequestID – identifies the initial request</p>
+		<p>productName – identifies the associated product instance</p>
+		<p>cfsName – identifies the CFS to which the exception applies</p>
+		<p>currentState – identifies the current state of the CFS</p>
+		<p>failedState – identifies the state into which the target OS
+		attempted (and failed) to transition the CFS.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+	<xsd:sequence>
+		<xsd:element name="serviceRequestID" type="xsd:string"/>
+		<xsd:element name="productName" type="xsd:string"/>
+		<xsd:element name="cfsName" type="nam:NamingAttributes_T"/>
+        <xsd:element name="currentState" type="xsd:string"/>
+		<xsd:element name="failedState" type="xsd:string"/>
+	</xsd:sequence>
+  </xsd:complexType>
+  <!-- ===================== Service Creation  Failure Event  ========= -->
+  <xsd:complexType name="ServiceCreationFailureEvent_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This event is an indication that the target OS could not create a CFS (in support
+		of a given product instance).</p>
+		<p>The following parameters are supported:</p>
+		<p>serviceRequestID – identifies the initial request</p>
+		<p>productName – identifies the associated product instance</p>
+		<p>cfsName – identifies the CFS to which the exception applies</p>
+      </xsd:documentation>
+    </xsd:annotation>
+	<xsd:sequence>
+		<xsd:element name="cfsName" type="nam:NamingAttributes_T"/>
+        <xsd:element name="currentState" type="xsd:string"/>
+		<xsd:element name="failedState" type="xsd:string"/>
+	</xsd:sequence>
+  </xsd:complexType>
+  <!-- ===================== Service State Transition Failure Event  ========= -->
+  <xsd:complexType name="ServiceDeletionFailureEvent_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This event is an indication that the target OS could not delete a CFS (in support
+		of a given product instance).</p>
+		<p>The following parameters are supported:</p>
+		<p>serviceRequestID – identifies the initial request</p>
+		<p>productName – identifies the associated product instance</p>
+		<p>cfsName – identifies the CFS to which the exception applies</p>
+		<p>currentState – identifies the current state of the CFS</p>
+      </xsd:documentation>
+    </xsd:annotation>
+	<xsd:sequence>
+		<xsd:element name="serviceRequestID" type="xsd:string"/>
+		<xsd:element name="productName" type="xsd:string"/>
+		<xsd:element name="cfsName" type="nam:NamingAttributes_T"/>
+        <xsd:element name="currentState" type="xsd:string"/>
+	</xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>
