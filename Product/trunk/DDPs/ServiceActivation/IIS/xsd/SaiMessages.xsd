@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM Service Activation Interface (SAI) - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/srvact/xsd/saimsg/v1" xmlns:tns="http://www.tmforum.org/mtop/srvact/xsd/saimsg/v1" xmlns:sairsp="http://www.tmforum.org/mtop/srvact/xsd/sairsp/v1" xmlns:saiexcpt="http://www.tmforum.org/mtop/srvact/xsd/saiexcpt/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/srvact/xsd/saimsg/v1" xmlns:tns="http://www.tmforum.org/mtop/srvact/xsd/saimsg/v1" xmlns:sairsp="http://www.tmforum.org/mtop/srvact/xsd/sairsp/v1" xmlns:saiexcpt="http://www.tmforum.org/mtop/srvact/xsd/saiexcpt/v1" xmlns:csi="http://www.tmforum.org/mtop/sb/xsd/csi/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Service Activation</p>
@@ -11,6 +11,8 @@
   <!-- ================ -->
   <xsd:import schemaLocation="SaiResponses.xsd" namespace="http://www.tmforum.org/mtop/srvact/xsd/sairsp/v1"/>
   <xsd:import schemaLocation="SaiExceptions.xsd" namespace="http://www.tmforum.org/mtop/srvact/xsd/saiexcpt/v1"/>
+  <xsd:import schemaLocation="../../../ServiceBasic/IIS/xsd/CommonServiceInfo.xsd" namespace="http://www.tmforum.org/mtop/sb/xsd/csi/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
   <!-- ===================== Data Types ========= -->
   <!-- === Product Info === -->
   <xsd:complexType name="ProductInfo_T">
@@ -21,50 +23,84 @@
       		</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
-		   <xsd:element name="productName" type="xsd:string">
-				<xsd:annotation>
-					<xsd:documentation>
-						<p>This parameter identifies an instance of a product.</p>
-          			</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-            <xsd:element name="productSpecificationName" type="xsd:string" nillable="true">
-				<xsd:annotation>
-					<xsd:documentation>
-						<p>This parameter identifies a product specification associated with the product instance.</p>
-          			</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-            <xsd:element name="productBundleName" type="xsd:string" nillable="true">
-				<xsd:annotation>
-					<xsd:documentation>
-						<p>This parameter is used in cases where the request refers to a bundle of products.
-                        It should be emphasized that the requesting OS needs to send a separate request for
-                        each product instance in a product bundle. The productBundleName is only included
-                        to provide additional context and there is no expectation that the target OS will
-                        decompose the identified product bundle into its component products.</p>
-          			</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:sequence minOccurs="0" maxOccurs="unbounded">
-			   <xsd:element name="productSpecCharacteristicID" type="xsd:string" nillable="true">
-			      <xsd:annotation>
-			         <xsd:documentation>
-			            <p>This is a unique identifier for a product specification characteristic.
-                        A product specification characteristic is a quality or distinctive
-                        feature of a ProductSpecification.</p>
-                     </xsd:documentation>
-                  </xsd:annotation>
-               </xsd:element>
-               <xsd:element name="productCharacteristicValue" type="xsd:anyType" nillable="true">
-			      <xsd:annotation>
-			         <xsd:documentation>
-			            <p>This is value corresponding to the productSpecCharacteristicID.</p>
-                     </xsd:documentation>
-                  </xsd:annotation>
-               </xsd:element>
-			</xsd:sequence>
-        </xsd:sequence>
+		   <xsd:element name="productName" type="csi:ProductName_T"/>
+           <xsd:element name="productSpecificationName" type="csi:ProductSpecificationName_T" nillable="true"/>
+           <xsd:element name="productBundleName" type="csi:ProductBundleName_T" nillable="true"/>
+		   <!-- === List of (ProductSpecCharacteristicID, ProductCharacteristicValue) === -->
+		   <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+			   <xsd:element name="productSpecCharacteristicID" type="csi:ProductSpecCharacteristicID_T" nillable="true"/>
+               <xsd:element name="productCharacteristicValue" type="csi:ProductCharacteristicValue_T" nillable="true"/>
+           </xsd:sequence>
+		</xsd:sequence>
+  </xsd:complexType>
+  <!-- === Schedules === -->
+  <xsd:complexType name="PeriodicSchedule_T">
+  	<xsd:annotation>
+		<xsd:documentation>
+			<p>This data type defines a periodic schedule. There is an start and optionally an end date and
+			time. The availability duration indicates how long the service is available in each recurrence 
+			interval. The illustration of an example periodic schedule in TMF518_SA_2 should help in the 
+			understanding of this concept.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:sequence>
+		<xsd:element name="start" type="xsd:dateTime"/>
+		<xsd:element name="availabilityDuration" type="xsd:duration"/>
+		<xsd:element name="recurrenceInterval" type="xsd:duration"/>
+		<xsd:element name="end" type="xsd:dateTime" nillable="true"/>
+		<xsd:element name="extensionTime" type="xsd:duration" nillable="true" maxOccurs="unbounded">
+			<xsd:annotation>
+				<xsd:documentation>
+					<p>Overruns shall be supported where an overrun entails one or more extensions to an 
+					availability period (typically involving a higher fee). The allowable overrun is represented 
+					as a sequence of extension times. The specific logic associated with the time extensions is 
+					defined as part of the product characteristics and likely to vary depending on the product.</p>
+					<p>The first element in the list is the first extension and so on. The number of extensions is
+					is not restricted but in practice it appears that only 2 or 3 extensions would be needed.</p>
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:element>
+	</xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="RandomSchedule_T">
+  	<xsd:annotation>
+		<xsd:documentation>
+			<p>This data type defines a random schedule. It is basically a list of start times and associated
+			availability times. For each start time, the services associated with a product instance are available
+			for a given amount of time (this can vary per start time). The illustration of an example periodic 
+			schedule in TMF518_SA_2 should help in the understanding of this concept.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:sequence>
+	<xsd:sequence minOccurs="1" maxOccurs="unbounded">
+		<xsd:element name="start" type="xsd:dateTime"/>
+		<xsd:element name="availabilityDuration" type="xsd:duration"/>
+	</xsd:sequence>
+	<xsd:element name="extensionTime" type="xsd:duration" nillable="true" maxOccurs="unbounded">
+			<xsd:annotation>
+				<xsd:documentation>
+					<p>Overruns shall be supported where an overrun entails one or more extensions to an 
+					availability period (typically involving a higher fee). The allowable overrun is represented 
+					as a sequence of extension times. The specific logic associated with the time extensions is 
+					defined as part of the product characteristics and likely to vary depending on the product.</p>
+					<p>The first element in the list is the first extension and so on. The number of extensions is
+					is not restricted but in practice it appears that only 2 or 3 extensions would be needed.</p>
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:element>
+	</xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="AvailabilitySchedule_T">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>The availability schedule indicates when the services associated with a product shall be 
+			available. There are two kinds of schedules, i.e., periodic and random.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:choice>
+		<xsd:element name="periodicSchedule" type="tns:PeriodicSchedule_T"/>
+		<xsd:element name="randomSchedule" type="tns:RandomSchedule_T"/>
+	</xsd:choice>
   </xsd:complexType>
   <!-- === Request Info Basic === -->
   <xsd:complexType name="RequestInfoBasic_T">
@@ -78,7 +114,7 @@
           			</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="subscriberList" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="subscriberList" type="nam:NamingAttributes_T" minOccurs="0" maxOccurs="unbounded">
 				<xsd:annotation>
 					<xsd:documentation>
 						<p>This parameter provides a list of the subscribers associated with the request.
@@ -87,7 +123,7 @@
           			</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="userList" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="userList" type="nam:NamingAttributes_T" minOccurs="0" maxOccurs="unbounded">
 				<xsd:annotation>
 					<xsd:documentation>
 						<p>This parameter provides a list of the users associated with the request.
@@ -96,7 +132,7 @@
           			</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="sapList" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="sapList" type="nam:NamingAttributes_T" minOccurs="0" maxOccurs="unbounded">
 				<xsd:annotation>
 					<xsd:documentation>
 						<p>This parameter provides a list of the SAPs associated with the request.</p>
@@ -107,34 +143,31 @@
   </xsd:complexType>
   <!-- === Request Info - Service Order Aware === -->
   <xsd:complexType name="RequestInfoSOAware_T">
-  	<xsd:complexContent>
-      <xsd:extension base="tns:RequestInfoBasic_T">
-        <xsd:sequence>
+     <xsd:sequence>
 		   <xsd:annotation>
-					<xsd:documentation>
-						<p>requestedCompletionDate – the date and time at which the requesting OS has requested 
-						that execution of the service order be complete. The target OS will take this as input 
-						to its scheduling process. The target OS will provide the requesting OS with an expectedCompletionDate 
-						which indicates when the target OS thinks it can complete the execution of the service order. The 
-						target OS is allowed to complete execution of the service order before the requestedCompletionDate. 
-						This parameter is only used in the order aware version of the interface.</p>
-						<p>priority – this attribute allows the request to specify a priority for execution of the service 
-						request. This attribute is a positive integer.</p> 
-						<p>purchaseOrder – identifies the associated customer order.</p>
-						<p>validFor – the date and time for which this request is valid. If the request is not fulfilled 
-						by the provided date and time, the service order process will automatically be aborted by the target OS.</p> 
-          			</xsd:documentation>
+				<xsd:documentation>
+					<p>The following parameters are used in service order aware requests:</p>
+					<p>requestedCompletionDate – the date and time at which the requesting OS has requested 
+					that execution of the service order be complete. The target OS will take this as input 
+					to its scheduling process. The target OS will provide the requesting OS with an expectedCompletionDate 
+					which indicates when the target OS thinks it can complete the execution of the service order. The 
+					target OS is allowed to complete execution of the service order before the requestedCompletionDate. 
+					This parameter is only used in the order aware version of the interface.</p>
+					<p>priority – this attribute allows the request to specify a priority for execution of the service 
+					request. This attribute is a positive integer.</p> 
+					<p>purchaseOrder – identifies the associated customer order.</p>
+					<p>validFor – the date and time for which this request is valid. If the request is not fulfilled 
+					by the provided date and time, the service order process will automatically be aborted by the target OS.</p> 
+          		</xsd:documentation>
 		   </xsd:annotation>
 		   <xsd:element name="requestedCompletionDate" type="xsd:dateTime"/>
 		   <xsd:element name="priority" type="xsd:integer"/>
 		   <xsd:element name="purchaseOrder" type="xsd:string"/>
 		   <xsd:element name="validFor" type="xsd:dateTime"/>
         </xsd:sequence>
-      </xsd:extension>
-    </xsd:complexContent>
   </xsd:complexType>
   <!-- === Feasibility Check === -->	
-  <!-- ===================== feasibilityCheckRequest Message ========= -->
+  <!-- ===================== Feasibility Check Request Message ========= -->
 	<xsd:complexType name="feasibilityCheck_T">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -156,7 +189,7 @@
 			<xsd:element name="feasibilityCheckRequestInput" type="tns:RequestInfoBasic_T"/>
 		</xsd:sequence>
 	</xsd:complexType>
-  <!-- ===================== feasibilityCheckResponse Messages ========= -->
+  <!-- ===================== Feasibility Check Response Messages ========= -->
 	<xsd:complexType name="feasibilityCheckResponse_T">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -169,7 +202,7 @@
            <xsd:element name="cfsCreation" type="sairsp:CfsCreationEvent_T"/>
         </xsd:choice>
 	</xsd:complexType>
-  <!-- ===================== feasibilityCheck Exceptions ========= -->
+  <!-- ===================== Feasibility Check Exceptions ========= -->
   <xsd:complexType name="feasibilityCheckException_T">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -182,7 +215,7 @@
         </xsd:choice>
 	</xsd:complexType>
   <!-- === Design === -->	
-  <!-- ===================== designRequest Message ========= -->
+  <!-- ===================== Design Request Message ========= -->
   	<xsd:complexType name="design_T">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -205,10 +238,11 @@
       		</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
-			<xsd:element name="designRequestInput" type="tns:RequestInfoSOAware_T"/>
+			<xsd:element name="basicInput" type="tns:RequestInfoBasic_T"/>
+			<xsd:element name="soaInput" type="tns:RequestInfoSOAware_T"/>
 		</xsd:sequence>
 	</xsd:complexType>
-  <!-- ===================== designResponse Messages ========= -->
+  <!-- ===================== Design Response Messages ========= -->
   <xsd:complexType name="designResponse_T">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -221,9 +255,9 @@
            <xsd:element name="cfsCreation" type="sairsp:CfsCreationEvent_T"/>
            <xsd:element name="cfsStateChange" type="sairsp:CfsStateChangeEvent_T"/>
         </xsd:choice>
-	</xsd:complexType>
-  <!-- ===================== design Exceptions ========= -->
-  <xsd:complexType name="designException_T">
+  </xsd:complexType>
+  <!-- ===================== Design Exceptions ========= -->
+    <xsd:complexType name="designException_T">
 		<xsd:annotation>
 			<xsd:documentation>
 		       <p>This type defines the allowable exceptions to the design operation.</p>
@@ -235,4 +269,276 @@
            <xsd:element name="serviceStateTransitionFailureEvent" type="saiexcpt:ServiceStateTransitionFailureEvent_T"/>
         </xsd:choice>
 	</xsd:complexType>
+  <!-- === Reserve === -->
+  <!-- ===================== Reserve Request Message ========= -->
+	<xsd:complexType name="reserve_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This operation reserves the CFSs in support of a product instance.</p> 
+				<p>If feasibility check and design have not yet been done for the CFSs supporting the 
+				given product instance, both will be done as part of this operation.</p> 
+				<p>The target OS will not go forward with the reservation unless and until the requesting 
+				OS commits. If the commit is not indicated in the initial request, the requesting OS will 
+				need to commit via the amend operation before the expiring time.</p> 
+				<p>When this operation is complete, the requesting OS confirmation of their requested 
+				activation time and/or termination time. Alternately, if the target OS cannot meet the 
+				requested time(s), it will reject the request. The possibility of negotiation concerning 
+				activation/termination times is for further study.</p>
+				<p>Pre-condition(s): The CFSs supporting the product instance either do not yet exist 
+				or are in the FeasibilityChecked, Designed or Reserved state.  </p>
+				<p>Post-condition(s):</p>
+				<p>In case of success:</p>
+                <p>The CFS(s) associated with the product instance are all in the Reserved state.</p>
+                <p>In case of failure:</p>
+                <p>In the case of an atomic request, all CFS(s) have all been returned to their original state
+                before the service request.</p>
+                <p>In the case of best effort, the CFSs associated with the product instance remain in their
+                current state. No rollback is attempted in this case.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="basicInput" type="tns:RequestInfoBasic_T"/>
+			<xsd:element name="soaInput" type="tns:RequestInfoSOAware_T"/>
+			<xsd:element name="expiringTime" type="xsd:dateTime"> 
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This is the date and time by which an uncommitted reservation will be canceled. 
+						A committed reservation request always contains an empty expiringTime value.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element> 
+			<xsd:element name="productAvailabilitySchedule" type="tns:AvailabilitySchedule_T"> 
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This is the schedule for when the product shall be made available. 
+						The target OS process needs to map this schedule into a transition schedule for 
+						one or more of the associated CFSs.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="commit" type="xsd:boolean">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This parameter indicates whether or not the requesting OS has committed to 
+						the reservation. If the requesting OS does not commit in the initial request, 
+						it must commit to the reservation using the amend operation before the expiringTime;
+						otherwise, the target OS will cancel the request.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="desiredState" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This parameter indicates the desired initial transition when the reservation 
+						period is over. There are two choices, i.e., Provisioned_Inactive or Provisioned_Active.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+  <!-- ===================== Reserve Response Messages ========= -->
+    <xsd:complexType name="reserveResponse_T">
+		<xsd:annotation>
+			<xsd:documentation>
+		       <p>This type covers the various responses to the reserve request.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice maxOccurs="unbounded">
+           <xsd:element name="initialResponse" type="sairsp:InitialResponse_T"/>
+           <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEvent_T"/>
+           <xsd:element name="cfsCreation" type="sairsp:CfsCreationEvent_T"/>
+           <xsd:element name="cfsStateChange" type="sairsp:CfsStateChangeEvent_T"/>
+        </xsd:choice>
+    </xsd:complexType>
+  <!-- ===================== Reserve Exceptions ========= -->
+    <xsd:complexType name="reserveException_T">
+		<xsd:annotation>
+			<xsd:documentation>
+		       <p>This type defines the allowable exceptions to the reserve operation.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice maxOccurs="unbounded">
+           <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEvent_T"/>
+           <xsd:element name="serviceCreationFailureEvent" type="saiexcpt:ServiceCreationFailureEvent_T"/>
+           <xsd:element name="serviceStateTransitionFailureEvent" type="saiexcpt:ServiceStateTransitionFailureEvent_T"/>
+        </xsd:choice>
+    </xsd:complexType>
+  <!-- === Provision === -->
+  <!-- ===================== Provision Request Message ========= -->
+    <xsd:complexType name="provision_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This operation provisions the CFSs in support of a product instance.</p> 
+				<p>If feasibility check and design have not yet been done for the CFSs supporting 
+				the given product instance, both will be done as part of this operation.</p> 
+				<p>When this request is complete, each CFS (associated with the product instance) 
+				shall be in the Provisioned_Inactive state with all associated RFSs (and subtending 
+				resources) configured and allocated to the appropriate CFS. At this point, the CFSs 
+				have not yet been activated for use by the customer.</p>
+				<p>Pre-condition(s): The CFSs supporting the product instance do not yet exist or 
+				are in the FeasibilityChecked, Designed, Reserved (either Reserved-Committed or 
+				Reserved-Uncommitted) or Provisioned_Inactive state.</p>
+				<p>Post-condition(s):</p>
+				<p>In case of success:</p>
+                <p>The CFS(s) associated with the product instance are all in the Provisioned_Inactive state.</p>
+                <p>In case of failure:</p>
+                <p>In the case of an atomic request, all CFS(s) have all been returned to their original state
+                before the service request.</p>
+                <p>In the case of best effort, the CFSs associated with the product instance remain in their
+                current state. No rollback is attempted in this case.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="basicInput" type="tns:RequestInfoBasic_T"/>
+			<xsd:element name="soaInput" type="tns:RequestInfoSOAware_T"/>
+		</xsd:sequence>
+    </xsd:complexType>
+  <!-- ===================== Provision Response Messages ========= -->
+    <xsd:complexType name="provisionResponse_T">
+		<xsd:annotation>
+			<xsd:documentation>
+		       <p>This type covers the various responses to the provision request.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice maxOccurs="unbounded">
+           <xsd:element name="initialResponse" type="sairsp:InitialResponse_T"/>
+           <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEvent_T"/>
+           <xsd:element name="cfsCreation" type="sairsp:CfsCreationEvent_T"/>
+           <xsd:element name="cfsStateChange" type="sairsp:CfsStateChangeEvent_T"/>
+        </xsd:choice>
+    </xsd:complexType>
+  <!-- ===================== Provision Exceptions ========= -->
+    <xsd:complexType name="provisionException_T">
+		<xsd:annotation>
+			<xsd:documentation>
+		       <p>This type defines the allowable exceptions to the provision operation.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice maxOccurs="unbounded">
+           <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEvent_T"/>
+           <xsd:element name="serviceCreationFailureEvent" type="saiexcpt:ServiceCreationFailureEvent_T"/>
+           <xsd:element name="serviceStateTransitionFailureEvent" type="saiexcpt:ServiceStateTransitionFailureEvent_T"/>
+        </xsd:choice>
+    </xsd:complexType>
+  <!-- === Activate === -->
+  <!-- ===================== Activate Request Message ========= -->
+    <xsd:complexType name="activate_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This operation activates the CFSs in support of a product instance.</p> 
+				<p>If feasibility check, design and provisioning have not yet been done for the CFSs 
+				supporting the given product instance, all will be done as part of this operation.</p> 
+				<p>When this request is complete, each CFS (associated with the product instance) shall 
+				be in the Provisioned_Active state with all associated RFSs (and subtending resources) 
+				configured and allocated to the appropriate CFS. At this point, the CFSs have been 
+				activated for use by the customer.</p>
+				<p>Pre-condition(s): The CFSs supporting the product instance either do not yet exist 
+				or are in the FeasibilityChecked, Designed, Reserved (either Reserved-Committed or 
+				Reserved-Uncommitted), Provisioned_Inactive, Provisioned_Active state or Terminated.</p>
+				<p>Post-condition(s):</p>
+				<p>In case of success:</p>
+                <p>The CFS(s) associated with the product instance are all in the Provisioned_Active state.</p>
+                <p>In case of failure:</p>
+                <p>In the case of an atomic request, all CFS(s) have all been returned to their original state
+                before the service request.</p>
+                <p>In the case of best effort, the CFSs associated with the product instance remain in their
+                current state. No rollback is attempted in this case.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="basicInput" type="tns:RequestInfoBasic_T"/>
+			<xsd:element name="soaInput" type="tns:RequestInfoSOAware_T"/>
+			<xsd:element name="cfsCurrentState" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The target OS should check that each CFS is in the CFS state indicated in this 
+						parameter before performing the request. If not, an exception should be raised. 
+						This parameter can be used (for example) when the requesting OS only wants a transition 
+						to Provisioned_Active where the state must be Provisioned_Inactive (basically a 
+						suspend operation).</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element> 
+		</xsd:sequence>
+    </xsd:complexType>
+  <!-- ===================== Activate Response Messages ========= -->
+    <xsd:complexType name="activateResponse_T">
+		<xsd:annotation>
+			<xsd:documentation>
+		       <p>This type covers the various responses to the activate request.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice maxOccurs="unbounded">
+           <xsd:element name="initialResponse" type="sairsp:InitialResponse_T"/>
+           <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEvent_T"/>
+           <xsd:element name="cfsCreation" type="sairsp:CfsCreationEvent_T"/>
+           <xsd:element name="cfsStateChange" type="sairsp:CfsStateChangeEvent_T"/>
+        </xsd:choice>
+    </xsd:complexType>
+  <!-- ===================== Activate Exceptions ========= -->
+    <xsd:complexType name="activateException_T">
+		<xsd:annotation>
+			<xsd:documentation>
+		       <p>This type defines the allowable exceptions to the activate operation.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice maxOccurs="unbounded">
+           <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEvent_T"/>
+           <xsd:element name="serviceCreationFailureEvent" type="saiexcpt:ServiceCreationFailureEvent_T"/>
+           <xsd:element name="serviceStateTransitionFailureEvent" type="saiexcpt:ServiceStateTransitionFailureEvent_T"/>
+        </xsd:choice>
+    </xsd:complexType>
+  <!-- === Dectivate === -->
+  <!-- ===================== Dectivate Request Message ========= -->
+    <xsd:complexType name="deactivate_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This operation deactivates the CFSs in support of a product instance. 
+				It is does the opposite of the activate operation.</p> 
+				<p>When this request is complete, each CFS (associated with the product instance) shall 
+				be in the Provisioned_Inactive state with all associated RFSs (and subtending resources) 
+				configured and allocated to the appropriate CFS. At this point, the CFSs are not activated 
+				for use by the customer.</p>
+				<p>Pre-condition(s): The CFSs supporting the product instance should be in the 
+				Provisioned_Active state.</p>
+				<p>Post-condition(s):</p>
+				<p>In case of success:</p>
+                <p>The CFS(s) associated with the product instance are all in the Provisioned_Inactive state.</p>
+                <p>In case of failure:</p>
+                <p>In the case of an atomic request, all CFS(s) have all been returned to their original state
+                before the service request.</p>
+                <p>In the case of best effort, the CFSs associated with the product instance remain in their
+                current state. No rollback is attempted in this case.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="productName" type="csi:ProductName_T"/>
+			<xsd:element name="soaInput" type="tns:RequestInfoSOAware_T"/>
+		</xsd:sequence>
+    </xsd:complexType>
+  <!-- ===================== Dectivate Response Messages ========= -->
+    <xsd:complexType name="deactivateResponse_T">
+		<xsd:annotation>
+			<xsd:documentation>
+		       <p>This type covers the various responses to the deactivate request.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice maxOccurs="unbounded">
+           <xsd:element name="initialResponse" type="sairsp:InitialResponse_T"/>
+           <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEvent_T"/>
+           <xsd:element name="cfsStateChange" type="sairsp:CfsStateChangeEvent_T"/>
+        </xsd:choice>
+    </xsd:complexType>
+  <!-- ===================== Deactivate Exceptions ========= -->
+    <xsd:complexType name="deactivateException_T">
+		<xsd:annotation>
+			<xsd:documentation>
+		       <p>This type defines the allowable exceptions to the activate operation.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice maxOccurs="unbounded">
+           <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEvent_T"/>
+           <xsd:element name="serviceStateTransitionFailureEvent" type="saiexcpt:ServiceStateTransitionFailureEvent_T"/>
+        </xsd:choice>
+    </xsd:complexType>
 </xsd:schema>

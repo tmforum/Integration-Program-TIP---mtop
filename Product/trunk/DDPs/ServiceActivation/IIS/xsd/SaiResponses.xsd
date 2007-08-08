@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM Service Activation Interface (SAI) - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/srvact/xsd/sairsp/v1" xmlns:tns="http://www.tmforum.org/mtop/srvact/xsd/sairsp/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/srvact/xsd/sairsp/v1" xmlns:tns="http://www.tmforum.org/mtop/srvact/xsd/sairsp/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:csi="http://www.tmforum.org/mtop/sb/xsd/csi/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Service Activation</p>
@@ -10,9 +10,10 @@
   </xsd:annotation>
   <!-- ================ -->
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../ServiceBasic/IIS/xsd/CommonServiceInfo.xsd" namespace="http://www.tmforum.org/mtop/sb/xsd/csi/v1"/>
   <!-- ===================== Data Types ========= -->
   <!-- === Service Order Aware Parameters for Response === -->
-  <xsd:complexType name="SOAwareParamsRsp_T">
+  <xsd:complexType name="SOAwareParamsRes_T">
   	<xsd:annotation>
 		<xsd:documentation>
 			This data type defines the parameters to be used in a response to a service request in cases
@@ -20,39 +21,22 @@
      	</xsd:documentation>
   	</xsd:annotation>
 	<xsd:sequence>
-		<xsd:element name="requestedCompletionDate" type="xsd:dateTime">
+		<xsd:element name="serviceOrderID" type="xsd:string">
 			<xsd:annotation>
 				<xsd:documentation>
-					This is the date and time at which the requesting OS has requested that execution of 
-					the service order be complete. The target OS will take this as input to its scheduling 
-					process. The target OS will provide the requesting OS with an expectedCompletionDate 
-					which indicates when the target OS thinks it can complete the execution of the service 
-					order. The target OS is allowed to complete execution of the service order before the 
-					requestedCompletionDate. This parameter is only used in the order aware version of the 
-					interface.
+					This is the name that the target OS assigns to the service order associated with the 
+					request. This parameter is only used when the target OS supports the “order aware” 
+					version of the SAI.
           		</xsd:documentation>
 			</xsd:annotation>
 		</xsd:element>
-		<xsd:element name="priority" type="xsd:integer">
+		<xsd:element name="expectedCompletionDate" type="xsd:dateTime">
 			<xsd:annotation>
 				<xsd:documentation>
-					This parameter allows the request to specify a priority for execution of the service request. 
-          		</xsd:documentation>
-			</xsd:annotation>
-		</xsd:element>
-		<xsd:element name="purchaseOrder" type="xsd:string">
-			<xsd:annotation>
-				<xsd:documentation>
-					This parameter identifies the associated customer order.
-          		</xsd:documentation>
-			</xsd:annotation>
-		</xsd:element>
-		<xsd:element name="validFor" type="xsd:dateTime">
-			<xsd:annotation>
-				<xsd:documentation>
-					This parameter provides the date and time for which this request is valid. If the request is not
-                    fulfilled by the provided date and time, the service order process will automatically be aborted
-                    by the target OS.
+					 The date and time at which the target OS expects to complete execution of the service 
+					 order. The target OS will update this parameter as the situation changes (such changes 
+					 will be communicated to the requesting OS via AVC notifications on the given service 
+					 order).
           		</xsd:documentation>
 			</xsd:annotation>
 		</xsd:element>
@@ -117,7 +101,7 @@
     <xsd:complexContent>
       <xsd:extension base="tns:RootResponse_T">
         <xsd:sequence>
-           <xsd:element name="soAwareParamsRsp" type="tns:SOAwareParamsRsp_T" minOccurs="0" maxOccurs="1">
+           <xsd:element name="soAwareParamsRes" type="tns:SOAwareParamsRes_T" minOccurs="0" maxOccurs="1">
               <xsd:annotation>
                  <xsd:documentation>
                     <p>This paramter is used in the service order aware version of the SAI.</p>

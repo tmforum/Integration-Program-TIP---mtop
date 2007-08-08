@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - DM Service Basic - Copyright TeleManagement Forum 2006 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/sb/csi/v1" xmlns:tns="http://www.tmforum.org/mtop/nrb/csi/v1" xmlns:fmw.coi="http://www.tmforum.org/mtop/framework/coi/v1" xmlns:nam="http://www.tmforum.org/mtop/framework/naming/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<!-- ================= -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/sb/xsd/csi/v1" xmlns:tns="http://www.tmforum.org/mtop/sb/xsd/csi/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:fmw.coi="http://www.tmforum.org/mtop/fmw/xsd/coi/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Data Model service Basic</p>
@@ -9,11 +10,66 @@
       <p>Change Policy: TBD.</p>
     </xsd:documentation>
   </xsd:annotation>
-  <!-- ================= -->
   <!-- TODO: Need to be confirmed other using generic name parameter in cri 
-  <xsd:import schemaLocation="../../../../Framework/trunk/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/framework/naming/v1"/>-->
-  <xsd:import schemaLocation="../../../Framework/IIS/xsd/CommonObjectInfo.xsd" namespace="http://www.tmforum.org/mtop/framework/coi/v1"/>
+  <xsd:import schemaLocation="../../../../Framework/trunk/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/framework/naming/v1"/> -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/CommonObjectInfo.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/coi/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
   <!-- ================= -->
+  <!-- ======== Common Data Types for Services ========= -->
+  <!-- === Product Name === -->
+  <xsd:simpleType name="ProductName_T">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>This parameter identifies an instance of a product.</p>
+         </xsd:documentation>
+	</xsd:annotation>
+	<xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- === Product Specification Name === -->
+  <xsd:simpleType name="ProductSpecificationName_T">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>This parameter identifies a product specification associated with the product instance.</p>
+         </xsd:documentation>
+	</xsd:annotation>
+	<xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- === Product Bundle Name === -->
+  	<xsd:simpleType name="ProductBundleName_T">
+	  <xsd:annotation>
+		<xsd:documentation>
+			<p>This parameter is used in cases where the request refers to a bundle of products.
+            It should be emphasized that the requesting OS needs to send a separate request for
+            each product instance in a product bundle. The productBundleName is only included
+            to provide additional context and there is no expectation that the target OS will
+            decompose the identified product bundle into its component products.</p>
+          </xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+  <!-- === Product Specification Characteristic ID === -->
+	<xsd:simpleType name="ProductSpecCharacteristicID_T">
+	  <xsd:annotation>
+		<xsd:documentation>
+			<p>This is a unique identifier for a product specification characteristic.
+      		A product specification characteristic is a quality or distinctive
+            feature of a ProductSpecification.</p>
+        </xsd:documentation>
+   	  </xsd:annotation>
+	  <xsd:restriction base="xsd:string"/>
+    </xsd:simpleType>
+  <!-- === Product Characteristic Value === -->
+  	<xsd:complexType name="ProductCharacteristicValue_T">
+	  <xsd:annotation>
+		<xsd:documentation>
+			<p>This is value corresponding to the productSpecCharacteristicID.</p>
+        </xsd:documentation>
+      </xsd:annotation>
+	  <xsd:sequence>
+	 	<xsd:element name="value" type="xsd:anyType"/>
+	  </xsd:sequence>
+    </xsd:complexType>
+  <!-- === Common Service Info === -->
   <xsd:complexType name="CommonServiceInfo_T">
     <xsd:annotation>
       <xsd:documentation>
