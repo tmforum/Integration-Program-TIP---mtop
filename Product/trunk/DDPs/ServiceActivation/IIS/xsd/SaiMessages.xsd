@@ -533,12 +533,163 @@
     <xsd:complexType name="deactivateException_T">
 		<xsd:annotation>
 			<xsd:documentation>
-		       <p>This type defines the allowable exceptions to the activate operation.</p>
+		       <p>This type defines the allowable exceptions to the deactivate operation.</p>
       		</xsd:documentation>
 		</xsd:annotation>
 		<xsd:choice maxOccurs="unbounded">
            <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEvent_T"/>
            <xsd:element name="serviceStateTransitionFailureEvent" type="saiexcpt:ServiceStateTransitionFailureEvent_T"/>
+        </xsd:choice>
+    </xsd:complexType>
+  <!-- === Terminate === -->
+  <!-- ===================== Terminate Request Message ========= -->
+    <xsd:complexType name="terminate_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This operation terminates the CFSs in support of a product instance.</p> 
+				<p>When this request is complete, each CFS (associated with the product instance) shall 
+				be in the Terminated state. The RFSs (that once supported the CFSs) are disassociated 
+				from the CFSs and made available for use in other situations.</p>
+				<p>Pre-condition(s): The CFSs supporting the product instance should be in the Provisioned_Inactive state.</p>
+				<p>Post-condition(s):</p>
+				<p>In case of success:</p>
+                <p>The CFS(s) associated with the product instance are all in the Terminated state.</p>
+                <p>In case of failure:</p>
+                <p>In the case of an atomic request, all CFS(s) have all been returned to their original state
+                before the service request.</p>
+                <p>In the case of best effort, the CFSs associated with the product instance remain in their
+                current state. No rollback is attempted in this case.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="productName" type="csi:ProductName_T"/>
+			<xsd:element name="soaInput" type="tns:RequestInfoSOAware_T"/>
+		</xsd:sequence>
+    </xsd:complexType>
+  <!-- ===================== Terminate Response Messages ========= -->
+    <xsd:complexType name="terminateResponse_T">
+		<xsd:annotation>
+			<xsd:documentation>
+		       <p>This type covers the various responses to the terminate request.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice maxOccurs="unbounded">
+           <xsd:element name="initialResponse" type="sairsp:InitialResponse_T"/>
+           <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEvent_T"/>
+           <xsd:element name="cfsStateChange" type="sairsp:CfsStateChangeEvent_T"/>
+        </xsd:choice>
+    </xsd:complexType>
+  <!-- ===================== Terminate Exceptions ========= -->
+    <xsd:complexType name="terminateException_T">
+		<xsd:annotation>
+			<xsd:documentation>
+		       <p>This type defines the allowable exceptions to the terminate operation.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice maxOccurs="unbounded">
+           <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEvent_T"/>
+           <xsd:element name="serviceStateTransitionFailureEvent" type="saiexcpt:ServiceStateTransitionFailureEvent_T"/>
+        </xsd:choice>
+    </xsd:complexType>
+  <!-- === Retire === -->
+  <!-- ===================== Retire Request Message ========= -->
+    <xsd:complexType name="retire_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This operation deletes the CFS objects related to a product instance.</p> 
+				<p>When this request is complete, all the CFS objects that where once associated with 
+				the product instance are deleted from the target OS.</p>
+				<p>Pre-condition(s): The CFSs supporting the product instance should be in the Terminated state.</p>
+				<p>Post-condition(s):</p>
+				<p>In case of success:</p>
+                <p>The CFS(s) associated with the product instance are all deleted.</p>
+                <p>In case of failure:</p>
+                <p>In the case of an atomic request, all CFS(s) have all been returned to their original state
+                before the service request.</p>
+                <p>In the case of best effort, the CFSs associated with the product instance remain in their
+                current state. No rollback is attempted in this case.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="productName" type="csi:ProductName_T"/>
+			<xsd:element name="soaInput" type="tns:RequestInfoSOAware_T"/>
+		</xsd:sequence>
+    </xsd:complexType>
+  <!-- ===================== Retire Response Messages ========= -->
+    <xsd:complexType name="retireResponse_T">
+		<xsd:annotation>
+			<xsd:documentation>
+		       <p>This type covers the various responses to the retire request.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice maxOccurs="unbounded">
+           <xsd:element name="initialResponse" type="sairsp:InitialResponse_T"/>
+           <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEvent_T"/>
+           <xsd:element name="cfsDeleteEvent" type="sairsp:CfsDeletionEvent_T"/>
+        </xsd:choice>
+    </xsd:complexType>
+  <!-- ===================== Retire Exceptions ========= -->
+    <xsd:complexType name="retireException_T">
+		<xsd:annotation>
+			<xsd:documentation>
+		       <p>This type defines the allowable exceptions to the retire operation.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice maxOccurs="unbounded">
+           <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEvent_T"/>
+           <xsd:element name="serviceDeletionFailureEvent" type="saiexcpt:ServiceDeletionFailureEvent_T"/>
+        </xsd:choice>
+    </xsd:complexType>
+  <!-- === Cancel === -->
+  <!-- ===================== Cancel Request Message ========= -->
+    <xsd:complexType name="cancel_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This operation cancels the CFS objects related to a product instance.</p> 
+				<p>When this request is complete, all the CFS objects that where once associated with the 
+				product instance are deleted from the target OS.</p>
+				<p>This operation is very similar to retire, except cancel is used when no RFSs have been 
+				allocated to the CFSs in support of a product instance.</p>
+				<p>Pre-condition(s): The CFSs supporting the product instance should be in the 
+				Feasibility Checked, Designed or Reserved state. </p>
+				<p>Post-condition(s):</p>
+				<p>In case of success:</p>
+                <p>The CFS(s) associated with the product instance are all deleted.</p>
+                <p>In case of failure:</p>
+                <p>In the case of an atomic request, all CFS(s) have all been returned to their original state
+                before the service request.</p>
+                <p>In the case of best effort, the CFSs associated with the product instance remain in their
+                current state. No rollback is attempted in this case.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="productName" type="csi:ProductName_T"/>
+			<xsd:element name="soaInput" type="tns:RequestInfoSOAware_T"/>
+		</xsd:sequence>
+    </xsd:complexType>
+  <!-- ===================== Cancel Response Messages ========= -->
+    <xsd:complexType name="cancelResponse_T">
+		<xsd:annotation>
+			<xsd:documentation>
+		       <p>This type covers the various responses to the retire request.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice maxOccurs="unbounded">
+           <xsd:element name="initialResponse" type="sairsp:InitialResponse_T"/>
+           <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEvent_T"/>
+           <xsd:element name="cfsDeleteEvent" type="sairsp:CfsDeletionEvent_T"/>
+        </xsd:choice>
+    </xsd:complexType>
+  <!-- ===================== Cancel Exceptions ========= -->
+    <xsd:complexType name="cancelException_T">
+		<xsd:annotation>
+			<xsd:documentation>
+		       <p>This type defines the allowable exceptions to the cancel operation.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice maxOccurs="unbounded">
+           <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEvent_T"/>
+           <xsd:element name="serviceDeletionFailureEvent" type="saiexcpt:ServiceDeletionFailureEvent_T"/>
         </xsd:choice>
     </xsd:complexType>
 </xsd:schema>
