@@ -692,6 +692,74 @@
            <xsd:element name="serviceDeletionFailureEvent" type="saiexcpt:ServiceDeletionFailureEvent_T"/>
         </xsd:choice>
     </xsd:complexType>
+  <!-- === Modify === -->
+  <!-- ===================== Modify Request Message ========= -->
+    <xsd:complexType name="Modify_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This operation takes the CFSs, subscriber, users and SAPs in support of a given (existing) 
+				product instance and makes modifications to support the new productInfo, subscribers, users 
+				and SAPs listed in the modify request.</p> 
+				<p>If feasibility check or design have not yet been done for a CFSs supporting the given 
+				product instance, this will be done as part of this operation.</p> 
+				<p>When this request is complete, each CFS (associated with the product instance) shall 
+				be in the targetState (either Provisioned_Inactive or Provisioned_Active) with all 
+				associated RFSs (and subtending resources) configured and allocated to the appropriate CFS.</p>
+				<p>Pre-condition(s): The CFSs supporting the product instance either do not yet exist 
+				or are in the FeasibilityChecked, Designed, Reserved (either Reserved-Committed or 
+				Reserved-Uncommitted), Provisioned_Inactive, Provisioned_Active state or Terminated.</p>
+				<p>Post-condition(s):</p>
+				<p>In case of success:</p>
+                <p>The CFS(s) associated with the product instance are all in the targetState (either 
+				Provisioned_Inactive or Provisioned_Active). Subscribers, users and SAPs will be added or 
+				deleted as indicated in the modify request.</p>
+                <p>In case of failure:</p>
+                <p>In the case of an atomic request, all CFS(s) have all been returned to their original 
+				state before the service request. Also, no subscriber, users or SAPs will be added or deleted.</p>
+                <p>In the case of best effort, the CFSs associated with the product instance remain in their
+                current state. No rollback is attempted in this case.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="basicInput" type="tns:RequestInfoBasic_T"/>
+			<xsd:element name="soaInput" type="tns:RequestInfoSOAware_T"/>
+			<xsd:element name="targetState" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This is the state to which the target OS wants the CFSs transitioned when the 
+						request is complete (the value is either Provisioned_Inactive or Provisioned_Active).</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element> 
+		</xsd:sequence>
+    </xsd:complexType>
+  <!-- ===================== Modify Response Messages ========= -->
+    <xsd:complexType name="ModifyResponse_T">
+		<xsd:annotation>
+			<xsd:documentation>
+		       <p>This type covers the various responses to the modify request.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice maxOccurs="unbounded">
+           <xsd:element name="initialResponse" type="sairsp:InitialResponse_T"/>
+           <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEvent_T"/>
+           <xsd:element name="cfsCreation" type="sairsp:CfsCreationEvent_T"/>
+           <xsd:element name="cfsStateChange" type="sairsp:CfsStateChangeEvent_T"/>
+        </xsd:choice>
+    </xsd:complexType>
+  <!-- ===================== Modify Exceptions ========= -->
+    <xsd:complexType name="ModifyException_T">
+		<xsd:annotation>
+			<xsd:documentation>
+		       <p>This type defines the allowable exceptions to the modify operation.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice maxOccurs="unbounded">
+           <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEvent_T"/>
+           <xsd:element name="serviceCreationFailureEvent" type="saiexcpt:ServiceCreationFailureEvent_T"/>
+           <xsd:element name="serviceStateTransitionFailureEvent" type="saiexcpt:ServiceStateTransitionFailureEvent_T"/>
+        </xsd:choice>
+    </xsd:complexType>
   <!-- === Retrieve Service States === -->
   <!-- ===================== Retrieve Service States Request Message ========= -->
     <xsd:complexType name="RetrieveServiceStates_T">
