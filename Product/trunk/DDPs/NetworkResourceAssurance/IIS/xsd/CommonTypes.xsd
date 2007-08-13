@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - DM Network Resource Fulfillment - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/com/v1" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/com/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource Assurance</p>
+      <p>Module: Dataset XSD Module</p>
+      <p>Description: This module contains the XML Schema common type definitions used in some the mTOP XML Network Resource Assurance objects.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ===================== -->
+  <xsd:complexType name="AssignedSeverity_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The assigned severity is allocated to a probable cause using the alarm severity assignment profile. </p>
+        <p>The identified probable cause should be raised with the assigned severity. </p>
+        <p>The assignment of severities is extended beyond PerceivedSeverity to cover the case where: </p>
+        <p>- no alarm should be raised: "NOT_ALARMED"</p>
+        <p>- the EMS/NE is free to make a choice based upon its local criteria: "FREE_CHOICE"</p>
+        <p>All extensions are permitted (VENDOR_EXT and MINOR_EXT).</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:AssignedSeverityEnum_T">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ===================== -->
+  <xsd:simpleType name="AssignedSeverityEnum_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The enum values of a probable cause</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="INDETERMINATE"/>
+      <xsd:enumeration value="CRITICAL"/>
+      <xsd:enumeration value="MAJOR"/>
+      <xsd:enumeration value="MINOR"/>
+      <xsd:enumeration value="WARNING"/>
+      <xsd:enumeration value="NOT_ALARMED"/>
+      <xsd:enumeration value="FREE_CHOICE"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>

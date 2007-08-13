@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/tcapp/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/tcapp/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:pmp="http://www.tmforum.org/mtop/nra/xsd/pmp/v1"  elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: Data Model Network Resource Assurance</p>
+			<p>Module: Aggregate XSD Module</p>
+			<p>Description: This module contains the XML Schema type definition of the mTOP Pmp XML structure.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ============== -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/pmp/v1" schemaLocation="./Pmp.xsd"/>
+	<xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+	<!-- ================= -->
+	<xsd:element name="tcapp" type="tns:TCAParameterProfile_T"/>
+	<!-- ================= -->
+	<xsd:complexType name="TCAParameterProfile_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This object represents one performance monitoring point (PMP). It is determined by the containing TerminationPoint (TP) and by the layer rate, the PM</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="cri:CommonResourceInfo_T">
+				<xsd:sequence>
+					<xsd:element name="layerRate" type="lay:LayerRate_T" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Represents the layer rate of the PMP. The layer specified must be supported by the containing TP.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="associatedTPList" type="nam:NamingAttributesList_T" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Represents list of the Termination Point (TP) that are associated with the TCA Parameter Profile.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="tcaParameterList" type="tns:TCAParameterList_T" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Represents a list of Threshold Crossing Alert (TCA) Parameters.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ================ -->
+	<xsd:complexType name="TCAParameterList_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A list of TCAParameter_T</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="tcaParameterList" type="tns:TCAParameter_T" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="TCAParameter_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This structure represents the list of thresholds associated with a particular PM Parameter. </p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="pmParameterName" type="pmp:PMParameterName_T" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Holds the name of the SD1-28 Performance Parameters. It has been defined as a string to accomodate proprietary extension</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="granularity" type="pmp:PMGranularity_T" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This attribute defines the granularity of the TCA Parameter. For counters two values "15min" or "24h" are supported. For current instantaneous measurements the granularity does not apply which is indicated by the value "N/A".</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="pmLocation" type="gen:Location_T" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Represents the location of the PM measure.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="thresholdFlag" type="pmp:PMThresholdType_T" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Represents the type of threshold value.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="triggerFlag" type="xsd:boolean" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Represents the type of threshold value.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="value" type="xsd:float" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Threshold for parameter (float used to incorporate gauge PM parameters).</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="unit" type="xsd:string" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Free format string describing the units for the threshold value.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================ -->
+</xsd:schema>

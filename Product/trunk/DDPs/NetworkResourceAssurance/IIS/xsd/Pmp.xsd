@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/pmp/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:prc="http://www.tmforum.org/mtop/nra/prc/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/pmp/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:itu="http://www.tmforum.org/mtop/nrb/xsd/itu/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: Data Model Network Resource Assurance</p>
+			<p>Module: Aggregate XSD Module</p>
+			<p>Description: This module contains the XML Schema type definition of the mTOP Pmp XML structure.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ============== -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/itu/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/ITU-T-Definitions.xsd"/>
+	<!-- ================= -->
+	<xsd:complexType name="PerformanceMonitoringPoint_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This object represents one performance monitoring point (PMP). It is determined by the containing TerminationPoint (TP) and by the layer rate, the PM 
+				location and the granularity the monitoring is done for. PMP objects are contained in TPs and represent the PM capabilities of their containing TP(s).</p>
+				<p>Activation and deactivation of Performance Monitoring respectively Performance Threshold Supervision is achieved by changing the Monitoring 
+				State or Supervision State of the related PMP.</p>
+				<p>The monitoring state of a PMP is set to:
+					<ul>
+						<li>unlocked using the operation enablePMData, (activate Performance Monitoring)</li>
+						<li>locked using the operation disablePMData, (deactivate Performance Monitoring)</li>
+					</ul>
+				</p>
+				<p>The supervision state of a PMP is set to:
+					<ul>
+						<li><b>unlocked</b> by using the operation enableTCA, (activate Performance Threshold Supervision),</li>
+						<li><b>locked</b> by using the operation disableTCA, (deactivate Performance Threshold Supervision).</li>
+					</ul>
+				</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="cri:CommonResourceInfo_T">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This element entails the attributes common to all mTOP network resource objects.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="layerRate" type="lay:LayerRate_T" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Represents the layer rate of the PMP. The layer specified must be supported by the containing TP.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="location" type="gen:Location_T" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Represents the location of the performance monitoring measurement.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="granularity" type="tns:PMGranularity_T" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Represents the time granularity of the PMP, either 15 minutes or 24 hours. This attribute is not applicable for instantaneous measurements (i.e. gauge type measurements).</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="supervisionState" type="itu:X721.AdministrativeState_T" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Represents whether threshold supervision is enabled or disabled.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="monitoringState" type="itu:X721.AdministrativeState_T" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Represents performance monitoring is enabled or disabled.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="pmParameterList" type="tns:PMParameterNameList_T" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Represents a list of the names of the PM parameter associated with the PMP. Refer to supporting document PerformanceParameters.pdf for the list of currently defined performance parameters.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="pmParameterWithThresholdsList" type="tns:PMThresholdList_T" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Represents a list of the names of the thresholds associated with each PM parameter.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ================ -->
+	<xsd:complexType name="PMParameterWithThresholdsList_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A list of PMParameterWithThresholds</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="pmParameterWithThresholdsList" type="tns:PMParameterWithThresholds_T" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="PMParameterWithThresholds_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This structure represents the list of thresholds associated with a particular PM Parameter. </p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="pmParameterName" type="tns:PMParameterName_T" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Represents the name of the PM Measure.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="pmThresholdList" type="tns:PMThresholdList_T" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Holds the list of PM thresholds associated with the named PM parameter.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================ -->
+	<xsd:complexType name="PMParameterNameList_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A list of PMParameterName</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="pmParameterNameList" type="tns:PMParameterName_T" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:simpleType name="PMParameterName_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Holds the name of Performance Measurements. It has been defined as a string to accommodate backward compatibility and proprietary extension. </p>
+				<p>For currently standardized values see Performance Parameters. </p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<!-- ================ -->
+	<xsd:complexType name="PMThresholdList_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A list of PMThresholds</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="pmThreshold" type="tns:PMThreshold_T" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="PMThreshold_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This structure represents a Performance Monitoring Threshold. </p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="thresholdType" type="tns:PMThresholdType_T" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Represents the type of threshold value.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="trigger" type="xsd:boolean" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Indicates if the threshold is for the trigger (TRUE) or the clear (FALSE).</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="value" type="xsd:float" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Threshold value (float used to incorporate gauge PM parameters).</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="measurementUnits" type="xsd:string" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Free format string describing the units for the threshold value.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================ -->
+	<xsd:simpleType name="PMThresholdType_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Count period (interval) for which PM data may be collected (and subsequently retrieved).</p>
+				<p><br>The value is one of: </br>
+				<br>"15min" (15 minute interval collection)</br>
+				<br>"24h" (24 hour interval collection)</br>
+				<br>"NA" (for current instantaneous measurements)</br></p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="15min "/>
+			<xsd:enumeration value="24h "/>
+			<xsd:enumeration value="NA "/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!-- ================ -->
+	<xsd:simpleType name="PMGranularity_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Describes threshold types (watermark levels) for TCA parameters. The TWM_HIGH and TWM_HIGHEST types are used for TCAs </p>
+				<p>that are raised when the measured value goes above the threshold. The TWM_LOW and TWM_LOWEST types are used for TCAs that </p>
+				<p>are raised when the measured value goes below the threshold (only apply to gauges). </p>
+				<p/>
+				<p>When there is only one level of TCA trigger, only TWM_HIGH and/or TWM_LOW are used. When there are two levels of TCA triggers, </p>
+				<p>TWM_HIGHEST and/or TWM_LOWEST are used in addition. </p>
+				<p>See SD1-37 PM Threshold Types for information on how water mark levels are used. </p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="TWM_HIGHEST "/>
+			<xsd:enumeration value="TWM_HIGH "/>
+			<xsd:enumeration value="TWM_LOW "/>
+			<xsd:enumeration value="TWM_LOWEST  "/>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>
