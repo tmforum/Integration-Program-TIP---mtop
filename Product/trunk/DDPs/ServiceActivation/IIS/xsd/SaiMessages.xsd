@@ -692,6 +692,55 @@
            <xsd:element name="serviceDeletionFailureEvent" type="saiexcpt:ServiceDeletionFailureEvent_T"/>
         </xsd:choice>
     </xsd:complexType>
+  <!-- === Test === -->
+  <!-- ===================== Test Request Message ========= -->
+    <xsd:complexType name="Test_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>For an existing product instance, the target OS determines whether the CFSs and SAPs 
+				are currently able to support service.</p> 
+				<p>For this version of the operation, the response will be very simple (just success or 
+				failure). In future releases, the operation may be defined to provide more detailed 
+				responses that indicate what CFSs and/or SAPs have failed and the reason for failure.</p>
+				<p>Pre-condition(s): The CFSs supporting the product instance should be in the 
+				Feasibility Checked, Designed or Reserved state. </p>
+				<p>Post-condition(s):The CFSs supporting the product instance are either in the 
+				Provisioned_Inactive or Provisioned_Active state. </p>
+				<p>In case of success:</p>
+                <p>The requesting OS has received an indicated as to whether the test was successful 
+				or not. It is important to note that “success” means the test was performed whether or not 
+				the CFSs and SAPs are found to be capable of supporting service.</p>
+                <p>In case of failure:</p>
+                <p>The target OS was not able to perform and test, and an exception is returned to the 
+				requesting OS. “Failure” means that the target OS could not perform the test.   </p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="productName" type="csi:ProductName_T"/>
+		</xsd:sequence>
+    </xsd:complexType>
+  <!-- ===================== Cancel Response Messages ========= -->
+    <xsd:complexType name="TestResponse_T">
+		<xsd:annotation>
+			<xsd:documentation>
+		       <p>This type covers the various responses to the retire request.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice maxOccurs="unbounded">
+           <xsd:element name="initialResponse" type="sairsp:InitialResponse_T"/>
+        </xsd:choice>
+    </xsd:complexType>
+  <!-- ===================== Cancel Exceptions ========= -->
+    <xsd:complexType name="TestException_T">
+		<xsd:annotation>
+			<xsd:documentation>
+		       <p>This type defines the allowable exceptions to the cancel operation.</p>
+      		</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice maxOccurs="unbounded">
+           <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEvent_T"/>
+        </xsd:choice>
+    </xsd:complexType>
   <!-- === Modify === -->
   <!-- ===================== Modify Request Message ========= -->
     <xsd:complexType name="Modify_T">
