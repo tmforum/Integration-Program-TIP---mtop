@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM Service Activation Interface (SAI) - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/srvact/xsd/sairsp/v1" xmlns:tns="http://www.tmforum.org/mtop/srvact/xsd/sairsp/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:csi="http://www.tmforum.org/mtop/sb/xsd/csi/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/srvact/xsd/sairsp/v1" xmlns:tns="http://www.tmforum.org/mtop/srvact/xsd/sairsp/v1" 
+xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" 
+xmlns:csi="http://www.tmforum.org/mtop/sb/xsd/csi/v1" 
+xmlns:soc="http://www.tmforum.org/mtop/fmw/xsd/soc/v1"
+xmlns:sodel="http://www.tmforum.org/mtop/fmw/xsd/sodel/v1" 
+xmlns:ssc="http://www.tmforum.org/mtop/fmw/xsd/ssc/v1" 
+xmlns:savc="http://www.tmforum.org/mtop/fmw/xsd/savc/v1"
+attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Service Activation</p>
@@ -10,6 +17,10 @@
   </xsd:annotation>
   <!-- ================ -->
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/ServiceEventObjectCreation.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/soc/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/ServiceEventObjectDeletion.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/sodel/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/ServiceEventStateChange.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/ssc/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/ServiceEventAvc.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/savc/v1"/>
   <xsd:import schemaLocation="../../../ServiceBasic/IIS/xsd/CommonServiceInfo.xsd" namespace="http://www.tmforum.org/mtop/sb/xsd/csi/v1"/>
   <!-- ===================== Data Types ========= -->
   <!-- === Service Order Aware Parameters for Response === -->
@@ -126,10 +137,10 @@
       <xsd:extension base="tns:RootResponse_T">
         <xsd:sequence>
 		   <xsd:sequence minOccurs="1" maxOccurs="unbounded">
-           <xsd:element name="cfsName" type="nam:NamingAttributes_T">
+           <xsd:element name="cfsCreationEvent" type="xsd:string">
               <xsd:annotation>
                  <xsd:documentation>
-                    <p>This is the name of the CFS that has been created as a result of the request.</p>
+                    <p>This is a creation event for a given CFS.</p>
                  </xsd:documentation>
               </xsd:annotation>
            </xsd:element>
@@ -148,7 +159,8 @@
                     <p>This is the estimated maximum time elapsed from the service ordering time until the 
 					time when the target OS activates the given CFS (assuming the requesting OS decides 
 					to go forward with the activation). For a given product instance, there could be a different
-					offeredActivationTime for each associated CFS.</p>
+					offeredActivationTime for each associated CFS. This parameter is only used in conjunction 
+					with the feasibilityCheck operation.</p>
                  </xsd:documentation>
               </xsd:annotation>
            </xsd:element>
@@ -171,38 +183,63 @@
   <xsd:complexType name="CfsStateChangeEvent_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>This event is an indication that the target OS has progressed one or more CFSs from one state (referred
-        to as cfsOldState) to another state (cfsNewState). In the service order aware version of the interface,
-        a Service Order will be assembled. For each CFS, a service order item will be created and associated with
-        the service order. It is assumed all the CFSs are driven by the same Service Order instance.</p>
+        <p>This event is an indication that the target OS has progressed one or more CFSs from one state to another state.</p> 
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
       <xsd:extension base="tns:RootResponse_T">
       <xsd:sequence>
-        <xsd:sequence minOccurs="1" maxOccurs="unbounded">
-              <xsd:annotation>
-                 <xsd:documentation>
-                    <p>cfsName - the name of the CFS to which the progress report applies.</p>
-                    <p>cfsOldState - the state from which the CFS has transitioned.</p>
-                    <p>cfsNewState - the current state of the CFS to which the progress report applies.</p>
-                 </xsd:documentation>
-              </xsd:annotation>
-           <xsd:element name="cfsName" type="nam:NamingAttributes_T"/>
-           <xsd:element name="cfsOldState" type="xsd:string"/>
-           <xsd:element name="cfsNewState" type="xsd:string"/>
-        </xsd:sequence>
-           <xsd:element name="last" type="xsd:boolean" minOccurs="0" maxOccurs="1">
-              <xsd:annotation>
-                 <xsd:documentation>
+      	<xsd:element name="serviceStateChangeList"	type="ssc:ServiceStateChange_T" minOccurs="1" maxOccurs="unbounded">
+			<xsd:annotation>
+				<xsd:documentation>
+					<p> This is a list of the Service State Change events. Each event has the name of the object,
+					the fromState and the toState in addition to other parameters defined in ServiceStateChange_T.</p>
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:element>
+      	<xsd:element name="last" type="xsd:boolean" minOccurs="0" maxOccurs="1">
+        	<xsd:annotation>
+            	<xsd:documentation>
                     <p>This Boolean indicates whether or not the target OS has sent the last event in response
                     to the request. In some cases, not all the CFSs will be in the desired end state when the
                     target OS decides to stop work on the request. In such cases, the target OS will typically
                     send an exception to the requesting OS.</p>
-                 </xsd:documentation>
-              </xsd:annotation>
-           </xsd:element>
-        </xsd:sequence>
+            	</xsd:documentation>
+          	</xsd:annotation>
+       	</xsd:element>
+      </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- === CFS Attribute Value Change Event === -->
+  <xsd:complexType name="CfsAvcEvent_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This event is an indication that the target OS has changed the attributes of one or more CFSs. It is
+		also possible to add and delete attributes.</p> 
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:RootResponse_T">
+      <xsd:sequence>
+      	<xsd:element name="serviceAttributeValueChangeList"	type="savc:ServiceAttributeValueChange_T" minOccurs="1" maxOccurs="unbounded">
+			<xsd:annotation>
+				<xsd:documentation>
+					<p> This is a list of the Service AVC events.</p>
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:element>
+      	<xsd:element name="last" type="xsd:boolean" minOccurs="0" maxOccurs="1">
+        	<xsd:annotation>
+            	<xsd:documentation>
+                    <p>This Boolean indicates whether or not the target OS has sent the last event in response
+                    to the request. In some cases, not all the CFSs will be in the desired end state when the
+                    target OS decides to stop work on the request. In such cases, the target OS will typically
+                    send an exception to the requesting OS.</p>
+            	</xsd:documentation>
+          	</xsd:annotation>
+       	</xsd:element>
+      </xsd:sequence>
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
@@ -219,10 +256,10 @@
     <xsd:complexContent>
       <xsd:extension base="tns:RootResponse_T">
       <xsd:sequence>
-           <xsd:element name="cfsNameList" type="nam:NamingAttributesList_T">
+           <xsd:element name="cfsDeletionEvents" type="sodel:ServiceObjectDeletion_T" minOccurs="1" maxOccurs="unbounded">
 		      <xsd:annotation>
                  <xsd:documentation>
-                    <p>This is a list (just the names) of the CFSs that have been deleted.</p>
+                    <p>This is a list of events concerning the CFSs that have been deleted.</p>
                  </xsd:documentation>
               </xsd:annotation>
            </xsd:element>
