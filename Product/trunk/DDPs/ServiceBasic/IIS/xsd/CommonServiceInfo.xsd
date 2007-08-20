@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - DM Service Basic - Copyright TeleManagement Forum 2006 -->
 <!-- ================= -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/sb/xsd/csi/v1" xmlns:tns="http://www.tmforum.org/mtop/sb/xsd/csi/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:fmw.coi="http://www.tmforum.org/mtop/fmw/xsd/coi/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
-  <xsd:annotation>
-    <xsd:documentation>
-      <p>DDP: Data Model service Basic</p>
-      <p>Module: CommonServiceInfo XSD Module</p>
-      <p>Description: This module contains the XML Schema type definition of the mTOP XML CommonServiceInfo structure.</p>
-      <p>Change Policy: TBD.</p>
-    </xsd:documentation>
-  </xsd:annotation>
-  <!-- TODO: Need to be confirmed other using generic name parameter in cri 
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/sb/xsd/csi/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:fmw.coi="http://www.tmforum.org/mtop/fmw/xsd/coi/v1" targetNamespace="http://www.tmforum.org/mtop/sb/xsd/csi/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: Data Model service Basic</p>
+			<p>Module: CommonServiceInfo XSD Module</p>
+			<p>Description: This module contains the XML Schema type definition of the mTOP XML CommonServiceInfo structure.</p>
+			<p>Change Policy: TBD.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- TODO: Need to be confirmed other using generic name parameter in cri 
   <xsd:import schemaLocation="../../../../Framework/trunk/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/framework/naming/v1"/> -->
-  <xsd:import schemaLocation="../../../Framework/IIS/xsd/CommonObjectInfo.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/coi/v1"/>
-  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
-  <!-- ================= -->
-  <!-- ======== Common Data Types for Services ========= -->
-  <!-- === Common Service Info === -->
-  <xsd:complexType name="CommonServiceInfo_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>This aggregate defines attributes common to all mTOP service objects.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexContent>
-      <xsd:extension base="fmw.coi:CommonObjectInfo_T">
-        <xsd:sequence>
-          <!-- TODO: Need to be confirmed other using generic name parameter in cri 
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/coi/v1" schemaLocation="../../../Framework/IIS/xsd/CommonObjectInfo.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+	<!-- ================= -->
+	<!-- ======== Common Data Types for Services ========= -->
+	<!-- === Common Service Info === -->
+	<xsd:complexType name="CommonServiceInfo_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This aggregate defines attributes common to all mTOP service objects.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="fmw.coi:CommonObjectInfo_T">
+				<xsd:sequence>
+					<!-- TODO: Need to be confirmed other using generic name parameter in cri 
       <xsd:element name="name" type="nam:NamingAttributes_T" nillable="true" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
@@ -34,36 +34,212 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>-->
-          <xsd:element name="id" type="xsd:string" nillable="true" minOccurs="0">
-          </xsd:element>
-          <xsd:element name="description" type="xsd:string" nillable="true" minOccurs="0">
-          </xsd:element>
-          <xsd:element name="minorExtensions" nillable="true" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>Containment for all minor version extensions of this CommonResourceInfo</p>
-              </xsd:documentation>
-            </xsd:annotation>
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:any namespace="http://www.tmforum.org/mtop/nrb/csi/v1/ext" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
-              </xsd:sequence>
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="vendorExtensions" nillable="true" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>Containment for all vendor extensions of this CommonResourceInfo</p>
-              </xsd:documentation>
-            </xsd:annotation>
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
-              </xsd:sequence>
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:sequence>
-      </xsd:extension>
-    </xsd:complexContent>
-  </xsd:complexType>
+					<xsd:element name="id" type="xsd:string" nillable="true" minOccurs="0"/>
+					<xsd:element name="description" type="xsd:string" nillable="true" minOccurs="0"/>
+					<xsd:element name="minorExtensions" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Containment for all minor version extensions of this CommonResourceInfo</p>
+							</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:any namespace="http://www.tmforum.org/mtop/nrb/csi/v1/ext" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="vendorExtensions" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Containment for all vendor extensions of this CommonResourceInfo</p>
+							</xsd:documentation>
+						</xsd:annotation>
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- === Common Service Spec Info === -->
+	<xsd:complexType name="ServiceSpecVersion_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>The service specification version </p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="svcSpecRevisionName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="svcSpecRevisionFormat" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="svcSpecRevisionNumber" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="svcSpecRevisionReason" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="svcSpecRevisionSemantics" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="svcSpecRevisionTimestamp" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="svcSpecRevisionValidityPeriod" type="tns:TimePeriod_T" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="ServiceSpecChar_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>The ServiceSpecCharacteristic takes on Service(Spec)CharacteristicValues  </p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:CommonServiceInfo_T">
+				<xsd:sequence>
+					<xsd:element name="valueType" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="minCardinality" type="xsd:int" minOccurs="0"/>
+					<xsd:element name="maxCardinality" type="xsd:int" minOccurs="0"/>
+					<xsd:element name="derivationFormula" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="validFor" type="tns:TimePeriod_T" minOccurs="0"/>
+					<xsd:element name="serviceSpecCharacteristicValue" type="tns:ServiceSpecCharValue_T" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="ServiceCharValue_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A service is described by Service Characteristic Values </p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="value" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="validFor" type="tns:TimePeriod_T" minOccurs="0"/>
+			<xsd:element name="serviceSpecCharacteristic" type="tns:ServiceSpecChar_T" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="ServiceSpecCharValue_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A service spec is characterized by Service Spec Characteristic Values </p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="valueType" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="default" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="value" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="unitOfMeasure" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="valueFrom" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="valueTo" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="validFor" type="tns:TimePeriod_T" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="ServiceAccessPoint_T">
+		<xsd:sequence>
+			<xsd:element name="type" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="name" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="description" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="serviceState" type="tns:ServiceState_T" minOccurs="0"/>
+			<xsd:element name="operationalState" type="tns:OperState_T" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="PartyRole_T">
+		<xsd:sequence>
+			<xsd:element name="partyRoleId" type="xsd:anyType" minOccurs="0"/>
+			<xsd:element name="status" type="xsd:anyType" minOccurs="0"/>
+			<xsd:element name="validFor" type="tns:TimePeriod_T" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="Subscriber_T">
+		<xsd:complexContent>
+			<xsd:extension base="tns:PartyRole_T">
+				<xsd:sequence/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="User_T">
+		<xsd:complexContent>
+			<xsd:extension base="tns:PartyRole_T">
+				<xsd:sequence/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="TimePeriod_T">
+		<xsd:sequence>
+			<xsd:element name="startDateTime" type="xsd:anyType" minOccurs="0"/>
+			<xsd:element name="endDateTime" type="xsd:anyType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:simpleType name="OperState_T">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="DISABLED">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The entity is disabled and not available for services</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ENABLED">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The entity is enabled and available for services</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!-- ================= -->
+	<xsd:simpleType name="ServiceState_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This "service state" is used by the Service Management interfaces.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="PLANNING_FEASIBILITY_CHECK">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The initial phase of the service planning process.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PLANNING_DESIGNED">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The phase where a service order is designed and assembled for the CFS instance</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="RESERVED">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>A CFS/RFS has been reserved for activation at a later time</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PROVISIONED_INACTIVE">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The CFS/RFS has been provisioned yet has not been activated</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PROVISIONED_ACTIVE">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The CFS/RFS has been activated</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TERMINATED">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The CFS instance is deactivated and the supporting RFSs are deallocated from the CFS</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
 </xsd:schema>
