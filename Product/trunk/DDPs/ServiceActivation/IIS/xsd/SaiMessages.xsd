@@ -102,9 +102,33 @@
 		<xsd:element name="randomSchedule" type="tns:RandomSchedule_T"/>
 	</xsd:choice>
   </xsd:complexType>
+  <!-- === Root Request === -->
+  <xsd:complexType name="RootRequest_T">
+  	<xsd:annotation>
+		<xsd:documentation>
+			<p>This is the root request. It is extended by other request types.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:sequence>
+		<xsd:element name="vendorExtensions" nillable="true" minOccurs="0">
+        	<xsd:annotation>
+          		<xsd:documentation>
+            		<p>Containment for all vendor extensions in</p>
+          		</xsd:documentation>
+        	</xsd:annotation>
+        	<xsd:complexType>
+          		<xsd:sequence>
+            		<xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+          		</xsd:sequence>
+        	</xsd:complexType>
+      	</xsd:element>
+	</xsd:sequence>
+  </xsd:complexType>
   <!-- === Request Info Basic === -->
   <xsd:complexType name="RequestInfoBasic_T">
-	<xsd:sequence>
+	<xsd:complexContent>
+    <xsd:extension base="tns:RootRequest_T">
+		<xsd:sequence>
 			<xsd:element name="productInfo" type="tns:ProductInfo_T">
 				<xsd:annotation>
 					<xsd:documentation>
@@ -140,6 +164,8 @@
 				</xsd:annotation>
 			</xsd:element>
 		</xsd:sequence>
+	</xsd:extension>
+	</xsd:complexContent>
   </xsd:complexType>
   <!-- === Request Info - Service Order Aware === -->
   <xsd:complexType name="RequestInfoSOAware_T">
@@ -512,6 +538,7 @@
       		</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
+			<xsd:element name="rootRequest" type="tns:RootRequest_T"/>
 			<xsd:element name="productName" type="nam:NamingAttributes_T"/>
 			<xsd:element name="soaInput" type="tns:RequestInfoSOAware_T"/>
 		</xsd:sequence>
@@ -562,6 +589,7 @@
       		</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
+			<xsd:element name="rootRequest" type="tns:RootRequest_T"/>
 			<xsd:element name="productName" type="nam:NamingAttributes_T"/>
 			<xsd:element name="soaInput" type="tns:RequestInfoSOAware_T"/>
 		</xsd:sequence>
@@ -611,6 +639,7 @@
       		</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
+			<xsd:element name="rootRequest" type="tns:RootRequest_T"/>
 			<xsd:element name="productName" type="nam:NamingAttributes_T"/>
 			<xsd:element name="soaInput" type="tns:RequestInfoSOAware_T"/>
 		</xsd:sequence>
@@ -663,6 +692,7 @@
       		</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
+			<xsd:element name="rootRequest" type="tns:RootRequest_T"/>
 			<xsd:element name="productName" type="nam:NamingAttributes_T"/>
 			<xsd:element name="soaInput" type="tns:RequestInfoSOAware_T"/>
 		</xsd:sequence>
@@ -716,10 +746,11 @@
       		</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
+			<xsd:element name="rootRequest" type="tns:RootRequest_T"/>
 			<xsd:element name="productName" type="nam:NamingAttributes_T"/>
 		</xsd:sequence>
     </xsd:complexType>
-  <!-- ===================== Cancel Response Messages ========= -->
+  <!-- ===================== Test Response Messages ========= -->
     <xsd:complexType name="TestResponse_T">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -730,7 +761,7 @@
            <xsd:element name="initialResponse" type="sairsp:InitialResponse_T"/>
         </xsd:choice>
     </xsd:complexType>
-  <!-- ===================== Cancel Exceptions ========= -->
+  <!-- ===================== Test Exceptions ========= -->
     <xsd:complexType name="TestException_T">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -831,6 +862,7 @@
       		</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
+			<xsd:element name="rootRequest" type="tns:RootRequest_T"/>
 			<xsd:element name="productName" type="nam:NamingAttributes_T"/>
 		</xsd:sequence>
     </xsd:complexType>
