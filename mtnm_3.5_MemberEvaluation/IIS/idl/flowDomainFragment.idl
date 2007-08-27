@@ -1,0 +1,422 @@
+#ifndef flowDomainFragment_idl
+#define flowDomainFragment_idl
+
+// *********************************
+// *                               *
+// * flowDomainFragment.idl        *
+// *                               *
+// *********************************
+
+//Include list
+#include "subnetworkConnection.idl"
+#include "performance.idl"
+
+#pragma prefix "mtnm.tmforum.org"
+
+  /** 
+   * <a href=../../../supportingDocumentation/SD1-27_Overview_NML-EML_Interface.pdf >SD1-27 Overview of 
+   * NML-EML interface</a>
+   *
+   * <p> This module defines types for provisioning connectionless
+   * connectivity accross the NMS-EMS interface. It defines the
+   * flow domain fragment (FDFr).</p>
+   * </p>
+   *
+   * <h5> Version 3.5. </h5>
+   **/
+
+module flowDomainFragment
+{
+
+  /**
+   * <p> The FDFr types of a flow domain fragment
+   * or matrix flow domain fragment: <br>
+   * "FDFRT_POINT_TO_POINT": the FDFr is between exactly two points <br>
+   * "FDFRT_POINT_TO_MULTIPOINT": (E-tree) <br>
+   * "FDFRT_MULTIPOINT": the FDFr is between at least two points <br>
+   * </p>
+   **/
+   typedef string FDFrType_T;
+
+  /**
+   * <p> A Matrix Flow Domain Fragment (MFDFr) object represents 
+   * the portion of a Flow Domain Fragment within a Matrix Flow Domain (MFD) 
+   * inside a Network Element (NE).
+   * <br>
+   * An MFDFr is atomic and is similar to a Flow Domain Fragment (FDFr) 
+   * in a singleton Flow Domain.
+   * <br>
+   * An MFDFr is primarily used in the specification of an FDFr Route, 
+   * in cases where the route must be specified by the NMS.
+   * </p>
+   *
+   * globaldefs::ConnectionDirection_T <b>direction</b> :
+   * This attribute shall represent the directionality of the FDFr
+   * (bidirectional or unidirectional).
+   * Note: In the case of Ethernet, the directionality is always bidirectional.
+   * 
+   * transmissionParameters::LayeredParameters_T <b>transmissionParams</b>:
+   * <br>The layer rate on which connectivity is established and a related set
+   * of connectionless parameters. Refer to chapter "Connectionless Technology
+   * Parameters" of the supporting document <a href=../../../supportingDocumentation/SD1-16_LayeredParameters.pdf > SD1-16_LayeredParameters.pdf</a> for details of
+   * the currently defined connectionless parameters.<br>
+   *
+   * globaldefs::NamingAttributesList_T <b>aEnd</b>:
+   * <br>The flow points between which connectivity is established by this
+   * matrix flow domain fragment. The flow points must be connectable on the same layer 
+   * as the flow domain fragment's layer rate. Only between client flow points of 
+   * flow domain edge CPTPs of the same flow domain connectivity can be established.
+   * <br> 
+   *
+   * globaldefs::NamingAttributesList_T <b>zEnd</b>:
+   * <br>The flow points between which connectivity is established by this
+   * matrix flow domain fragment. The flow points must be connectable on the same layer 
+   * as the flow domain fragment's layer rate. Only between client flow points of 
+   * flow domain edge CPTPs of the same flow domain connectivity can be established.
+   * <br> 
+   *
+   * boolean <b>flexible</b>:
+   * <br>Indicates whether the flow domain fragment is fixed (i.e., cannot be modified 
+   * or deleted by the NMS, in particular flow points cannot be added or/ removed) or is 
+   * flexible.<br> 
+   *
+   * boolean <b>active</b>:
+   * <br>Indicates if the MFDFr has been successfully activated in 
+   * the Network Element (NE).True if the MFDFr is active in the ME; false 
+   * otherwise. An "active" MFDFr means that no further intervention on the 
+   * MFDFr itself is required from the NMS to activate it. The fact that an 
+   * MFDFr is "active" does not necessarily imply that there is traffic flow on 
+   * the network.<br> 
+   *
+   * FDFrType_T  <b>mfdfrType</b>:
+   * <br> Represents the type of the FDFr. Possible values are:
+   * <br> point-to-point
+   * <br> point-to-multipoint (E-tree)
+   * <br> multipoint
+   *
+   * globaldefs::NVSList_T <b>additionalInfo</b>:
+   * <br>This attribute allows the communication from the EMS to the NMS of  
+   * additional information which is not explicitly modelled. This concerns
+   * in particular vendor specific parameters. <br>
+   * <br>
+   **/
+   struct MatrixFlowDomainFragment_T
+   {
+     globaldefs::ConnectionDirection_T 	direction;
+     transmissionParameters::LayeredParameters_T transmissionParams;
+     globaldefs::NamingAttributesList_T aEnd;
+     globaldefs::NamingAttributesList_T zEnd;
+     boolean flexible;
+     boolean active;
+     FDFrType_T mfdfrType;
+     globaldefs::NVSList_T additionalInfo;
+   };
+
+  /**
+   * <p>A list of MFDFrs.</p>
+   **/
+   typedef sequence<MatrixFlowDomainFragment_T> MatrixFlowDomainFragmentList_T;
+
+  /**
+   * <p>A route for an FDFr is defined as a list of
+   * matrix flow domain fragments.</p>
+   * 
+   **/
+   typedef sequence<MatrixFlowDomainFragment_T> FDFrRoute_T;
+
+
+  /**
+   * <p> A flow domain fragment represents connectivity between flow points. <br>
+   * The read/write attributes can be set by the NMS by either the common methods 
+   * of the common::Common_I interface or by the methods for provisioning of flow 
+   * domain fragments of the FlowDomainMgr_I interface.
+   * </p>
+   *
+   * globaldefs::NamingAttributes_T <b>name</b>:
+   * <br>The name of the flow domain fragment
+   * which is assigned by the EMS upon creation. The EMS is responsible
+   * for guaranteeing the uniqueness of the name within the context
+   * of the FlowDomainMgr_I.<br>
+   *
+   * string <b>userLabel</b>:
+   * <br>The user label of the flow domain fragment is NMS data
+   * (e.g. end-to-end service data). The EMS may choose to display the
+   * value of the attribute to the EMS user, but this is not a requirement.
+   * <br>
+   *
+   * globaldefs::ConnectionDirection_T <b>direction</b>
+   * This attribute shall represent the directionality of the FDFr
+   * (bidirectional or unidirectional).
+   * Note: In the case of Ethernet, the directionality is always bidirectional.
+   * 
+   * string <b>nativeEMSName</b>:
+   * <br>The name represents how the flow domain fragment is referred to on 
+   * EMS displays. Its
+   * aim is to provide a "nomenclature bridge" to aid relating information
+   * presented on NMS displays to EMS displays (via GUI cut through).
+   * The native name is defaulted to a NULL string. However, this could
+   * be used by the EMS for its implementation dependent purpose.<br>
+   *
+   * string <b>owner</b>:
+   * <br>The owner is provisionable by the NMS.<br>
+   *
+   * transmissionParameters::LayeredParameters_T <b>transmissionParams</b>:
+   * <br>The layer rate on which connectivity is established and a related set
+   * of connectionless parameters. Refer to chapter "Connectionless Technology
+   * Parameters" of the supporting document <a href=../../../supportingDocumentation/SD1-16_LayeredParameters.pdf > SD1-16_LayeredParameters.pdf</a> for details of
+   * the currently defined connectionless parameters.<br>
+   *
+   * globaldefs::NamingAttributesList_T <b>aEnd</b>:
+   * <br>The flow points between which connectivity is established by this
+   * flow domain fragment. The flow points must be connectable on the same layer 
+   * as the flow domain fragment's layer rate. Only between client flow points of 
+   * flow domain edge CPTPs of the same flow domain connectivity can be established.
+   * <br> 
+   *
+   * globaldefs::NamingAttributesList_T <b>zEnd</b>:
+   * <br>The flow points between which connectivity is established by this
+   * flow domain fragment. The flow points must be connectable on the same layer 
+   * as the flow domain fragment's layer rate. Only between client flow points of 
+   * flow domain edge CPTPs of the same flow domain connectivity can be established.
+   * <br> 
+   *
+   * string <b>networkAccessDomain</b>:
+   * <br> The Network Access Domain to which the flow domain is assigned to.<br>
+   *
+   * boolean <b>flexible</b>:
+   * <br>Indicates whether the flow domain fragment is fixed (i.e., cannot be modified 
+   * or deleted by the NMS, in particular flow points cannot be added or/ removed) or is 
+   * flexible.<br> 
+   *
+   * performance::AdministrativeState_T <b>administrativeState</b>:
+   * <br>Indicates whether the FDFr is locked (i.e., traffic units cannot flow 
+   * through the FDFr) or unlocked (i.e., traffic units are allowed to flow through 
+   * the FDFr).<br>    *
+   * subnetworkConnection::SNCState_T <b>fdfrState</b>:
+   * <br> Indicates  one of the following values:
+   * <br> Active if  all MFDFrs and all (edge and internal) FPs for the FDFr 
+   * are active in the network.
+   * <br> Partial if not all parts (MFDFrs or FPs) of the FDFr were created during 
+   * the creation operation, or not all parts of the FDFr were deleted 
+   * during the deletion operation.<br>
+   *
+   * FDFrType_T  <b>fdfrType</b>:
+   * <br> Represents the type of the FDFr. Possible values are:
+   * <br> point-to-point
+   * <br> point-to-multipoint (E-tree)
+   * <br> multipoint
+   *
+   * globaldefs::NVSList_T <b>additionalInfo</b>:
+   * <br>This attribute allows the communication from the EMS to the NMS of  
+   * additional information which is not explicitly modelled. This concerns
+   * in particular vendor specific parameters. <br>
+   * <br>
+   **/
+   struct FlowDomainFragment_T
+   {
+     globaldefs::NamingAttributes_T name;
+     string userLabel;
+     string nativeEMSName;
+     string owner;
+     globaldefs::ConnectionDirection_T 	direction;
+     transmissionParameters::LayeredParameters_T transmissionParams;
+     globaldefs::NamingAttributesList_T aEnd;
+     globaldefs::NamingAttributesList_T zEnd;
+     string networkAccessDomain;
+     boolean flexible;
+     performance::AdministrativeState_T administrativeState;
+     subnetworkConnection::SNCState_T fdfrState;
+     FDFrType_T fdfrType;
+     globaldefs::NVSList_T additionalInfo;
+   };
+
+  /**
+   * <p>Sequence of FlowDomainFragment_T objects.</p>
+   **/
+   typedef sequence<FlowDomainFragment_T> FDFrList_T;
+
+  /**
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * iterators are used.</p>
+   **/
+   interface MFDFrIterator_I
+   {
+      boolean next_n(in  unsigned long    how_many,
+                     out MatrixFlowDomainFragmentList_T mfdfrList)
+        raises (globaldefs::ProcessingFailureException);
+
+      unsigned long getLength()
+        raises (globaldefs::ProcessingFailureException);
+
+      void destroy()
+        raises (globaldefs::ProcessingFailureException);
+   };
+   interface FDFrIterator_I
+   {
+      boolean next_n(in  unsigned long    how_many,
+                     out FDFrList_T fdfrList)
+        raises (globaldefs::ProcessingFailureException);
+
+      unsigned long getLength()
+        raises (globaldefs::ProcessingFailureException);
+
+      void destroy()
+        raises (globaldefs::ProcessingFailureException);
+   };
+
+  /**
+   * <p>The read/write attributes required for the creation of a
+   * flow domain fragment on the EMS are packed together in an FDFrCreateData
+   * structure which the NMS will pass to the EMS at flow domain fragment
+   * creation time.</p>
+   *
+   * globaldefs::NamingAttributes_T <b>name</b>:
+   * <br>The identifier of the flow domain fragment which will be used over the
+   * interface. The EMS has to make sure that the name of the flow domain fragment
+   * is unique within the Flow Domain. If no name is provided by the NMS, the 
+   * EMS has to define a unique name.<br>
+   *
+   * string <b>userLabel</b>:
+   * <br>An userLabel may be specified by the NMS. May be empty.<br>
+   *
+   * boolean <b>forceUniqueness</b>:
+   * <br>Specifies whether uniqueness of the userLabel is required amongst the flow
+   * domain fragments of the EMS. In case of uniqueness, the operation will fail 
+   * if the userLabel is already in use.<br>
+   *
+   * string <b>owner</b>:
+   * <br>An owner may be specified by the NMS. May be empty.<br>
+   *
+   * string <b>networkAccessDomain</b>:
+   * <br> The Network Access Domain to which the flow domain fragment shall be assigned
+   * to.<br>
+   *
+   * globaldefs::ConnectionDirection_T <b>direction</b>:
+   * This attribute shall represent the directionality of the FDFr
+   * (bidirectional or unidirectional).
+   * Note: In the case of Ethernet, the directionality is always bidirectional.
+   *
+   * performance::AdministrativeState_T <b>administrativeState</b>:
+   * <br>Indicates whether the FDFr is locked (i.e., traffic units cannot flow 
+   * through the FDFr) or unlocked (i.e., traffic units are allowed to flow through 
+   * the FDFr).<br>
+   *
+   * transmissionParameters::LayeredParameters_T <b>transmissionParams</b>:
+   * <br>The layer rate on which connectivity is established and a related set
+   * of connectionless parameters. Refer to chapter "Connectionless Technology
+   * Parameters" of the supporting document
+   * <a href=../../../supportingDocumentation/SD1-16_LayeredParameters.pdf >
+   * SD1-16_LayeredParameters.pdf</a> for details of
+   * the currently defined connectionless parameters.<br>
+   *
+   * boolean <b>fullRoute</b>: 
+   * <br> This parameter identifies if the internalTPs and mfdfrs parameters
+   * of the createAndActivateFDFr operation describe the full route 
+   * of the Flow Domain Fragment (as opposed to only a partial constraint). 
+   * When no routing constraints are specified, 
+   *  false must be used.<br>
+   *
+   * FDFrType_T  <b>fdfrType</b>:
+   * <br> Represents the type of the FDFr. Possible values are:
+   * <br> point-to-point
+   * <br> point-to-multipoint (E-tree)
+   * <br> multipoint
+   *
+   * globaldefs::NVSList_T <b>additionalCreationInfo</b>:
+   * <br>Additional creation information may be specified by the NMS.<br>
+   *<br>
+   **/
+   struct FDFrCreateData_T
+   {
+     globaldefs::NamingAttributes_T name;
+     string userLabel;
+     boolean forceUniqueness;
+     string owner;
+     string networkAccessDomain;
+     globaldefs::ConnectionDirection_T 	direction;
+     performance::AdministrativeState_T administrativeState;
+     transmissionParameters::LayeredParameters_T transmissionParams;
+     boolean fullRoute;
+     FDFrType_T fdfrType;
+     globaldefs::NVSList_T additionalCreationInfo;
+   };
+
+  /**
+   * <p>The read/write attributes required for the modification of a
+   * flow domain fragment on the EMS are packed together in an FDFrModifyData
+   * structure which the NMS will pass to the EMS in a request to modify an 
+   * existing flow domain fragment.</p>
+   *
+   * string <b>userLabel</b>:
+   * <br>An userLabel may be specified by the NMS. May be empty.<br>
+   *
+   * boolean <b>forceUniqueness</b>:
+   * <br>Specifies whether uniqueness of the userLabel is required amongst the
+   * flow domain fragments of the EMS. In case of uniqueness, the operation will 
+   * fail if the userLabel is already in use.<br>
+   *
+   * string <b>owner</b>:
+   * <br>An owner may be specified by the NMS. May be empty.<br>
+   *
+   * string <b>networkAccessDomain</b>:
+   * <br> The Network Access Domain to which the flow domain fragment shall be assigned
+   * to.<br>
+   *
+   * performance::AdministrativeState_T <b>administrativeState</b>:
+   * <br>Indicates whether the FDFr is locked (i.e., traffic units cannot flow 
+   * through the FDFr) or unlocked (i.e., traffic units are allowed to flow through 
+   * the FDFr).<br>
+   *
+   * transmissionParameters::LayeredParameters_T <b>transmissionParams</b>:
+   * <br>The layer rate on which connectivity is established and a related set
+   * of connectionless parameters. As an input only the list of parameters to be
+   * changed, removed, or added shall be provided. If an entry is to be removed,
+   * "-" shall be specified as a value. Refer to chapter "Connectionless Technology
+   * Parameters" of the supporting document <a href=../../../supportingDocumentation/SD1-16_LayeredParameters.pdf > SD1-16_LayeredParameters.pdf</a> for details of
+   * the currently defined connectionless parameters.<br>
+   *
+   * globaldefs::NamingAttributesList_T <b>tpNamesToRemove</b>:
+   * <br> A list of Connection Port Termination Point (CPTP) names 
+   * that must be removed from the Flow Domain Fragment (FDFr). 
+   * As a result of modifying the FDFr, the client Flow Points are deleted.<br>
+   *
+   * globaldefs::NamingAttributesList_T <b>aEndTPNames</b>:
+   * <br> A list of additional Connection Port Termination Point (CPTP) names 
+   * that delimit the Flow Domain Fragment (FDFr) and characterize its edges 
+   * (entrance and/or exit points). As a result of modifying the FDFr, 
+   * Flow Points are created as clients of the FD Edge CPTPs.<br>
+   *
+   * globaldefs::NamingAttributesList_T <b>zEndTPNames</b>:
+   * <br> A list of additional Connection Port Termination Point (CPTP) names 
+   * that delimit the Flow Domain Fragment (FDFr) and characterize its edges 
+   * (exit points). As a result of modifying the FDFr, 
+   * Flow Points are created as clients of the FD Edge CPTPs.<br>
+   *
+   * globaldefs::NamingAttributesList_T <b>internalTPNames</b>:
+   * <br> A list of additional internal Connection Port Termination Point (CPTP) names 
+   * that must be added to the route of the Flow Domain Fragment (FDFr). 
+   * As a result of modifying the FDFr, Flow Points are created 
+   * as clients of the internal CPTPs.<br>
+   *
+   * globaldefs::NVSList_T <b>additionalModificationInfo</b>:
+   * <br>Additional modification information may be specified by the NMS.<br>
+   *<br>
+   **/
+   struct FDFrModifyData_T
+   {
+     string userLabel;
+     boolean forceUniqueness;
+     string owner;
+     string networkAccessDomain; 
+     performance::AdministrativeState_T administrativeState;
+     transmissionParameters::LayeredParameters_T transmissionParams;
+     globaldefs::NamingAttributesList_T tpNamesToRemove;
+     globaldefs::NamingAttributesList_T aEndTPNames;
+     globaldefs::NamingAttributesList_T zEndTPNames;
+     globaldefs::NamingAttributesList_T internalTPNames;
+     globaldefs::NVSList_T additionalModificationInfo;
+   };
+
+};
+
+#endif // flowDomainFragment_idl

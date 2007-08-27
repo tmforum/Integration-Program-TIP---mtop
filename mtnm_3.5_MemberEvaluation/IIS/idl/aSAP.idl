@@ -1,0 +1,303 @@
+#ifndef aSAP_idl
+#define aSAP_idl
+
+// ********************************
+// *                              *
+// * aSAP.idl                     *
+// *                              *
+// ********************************
+
+//Include list
+#include "globaldefs.idl"
+
+#pragma prefix "mtnm.tmforum.org"
+
+  /** 
+   * <a href=../../../supportingDocumentation/SD1-27_Overview_NML-EML_Interface.pdf >SD1-27 Overview of 
+   * NML-EML interface</a>
+   *
+   * <p>This module contains the definition of the alarm severity assignment
+   * profiles of the NML-EML interface. See also 
+   * <a href=../../../supportingDocumentation/SD1-26_OMGServicesUsage.pdf >SD1-26 
+   * Guidelines for Using the OMG Notification and Telecom Log Service</a>
+   *
+   * <h5> Version 3.5. </h5>
+   **/
+
+
+module aSAP
+{
+  /**
+   * <p>Alarm notifications include a severity. The severity is defined in
+   * notifications::PerceivedSeverity_T .</p>
+   *
+   * <p>The assigned severity is allocated to a probable cause using the
+   * alarm severity assignment profile (ASAP). The identified probable cause  
+   * should be raised with the assigned severity. The assignment of severities 
+   * is extended beyond notifications::PerceivedSeverity_T to cover the case 
+   * where:<ul>
+   * <li>no alarm should be raised: "AS_NONALARMED"</li>
+   * <li>the EMS/ME is free to make a choice based upon its local criteria: 
+   * "AS_FREE_CHOICE"</li></ul></p>
+   **/
+   enum AssignedSeverity_T 
+   {
+    AS_INDETERMINATE,
+    AS_CRITICAL, 
+    AS_MAJOR, 
+    AS_MINOR, 
+    AS_WARNING, 
+    AS_NONALARMED,
+    AS_FREE_CHOICE
+   };
+
+
+  /**
+   * <p>The AlarmSeverityAssignment_T structure provides three values for 
+   * severity to cover the three cases of service affecting conditions, non-
+   * service affecting conditions and conditions where the service impact is 
+   * unknown. The structure identifies the specific case of alarm that it 
+   * applies to using three probable cause identifiers in combination.</p>
+   *
+   * <p>See also <a href=../../../supportingDocumentation/SD1-26_OMGServicesUsage.pdf >SD1-26 
+   * Guidelines for Using the OMG Notification and Telecom Log Service</a> for 
+   * further details on the values of the
+   * strings probableCause, probableCauseQualifier and nativeProbableCause.</p>
+   *
+   * string <b>probableCause</b>:
+   * <br>The probable cause of the alarm to which the severities should be 
+   * applied. This is a defined string<br>
+   *
+   * string <b>probableCauseQualifier</b>:
+   * <br>A qualifier of the probable cause that is used to achieve uniqueness 
+   * in some cases where the probable cause is not sufficient. This is a free 
+   * form string<br>
+   *
+   * string <b>nativeProbableCause</b>:
+   * <br>The probable cause used on the ME/EMS. This may also be used to 
+   * qualify the probable cause to achieve uniqueness in some cases where the 
+   * probable cause is not sufficient. This is a free form string<br>
+   *
+   * AssignedSeverity_T <b>serviceAffecting</b>:
+   * <br>Severity assigned to the probable cause when service affecting<br>
+   *
+   * AssignedSeverity_T <b>serviceNonAffecting</b>:
+   * <br>Severity assigned to the probable cause when not service 
+   * affecting<br>
+   *
+   * AssignedSeverity_T <b>serviceIndependentOrUnknown</b>:
+   * <br>Severity assigned to the probable cause when the service impact is not 
+   * known or is known to be service independent <br>
+   **/
+   struct AlarmSeverityAssignment_T 
+   {
+    string probableCause;
+    string probableCauseQualifier;
+    string nativeProbableCause;
+    AssignedSeverity_T serviceAffecting;
+    AssignedSeverity_T serviceNonAffecting;
+    AssignedSeverity_T serviceIndependentOrUnknown;
+   };
+
+  /**
+   * <p>An alarm severity assignment list provides a listing of all abnormal 
+   * conditions that may exist in instances of an object class. 
+   * Each element of this sequence specifies the probable cause (plus 
+   * optionally the probableCauseQualifier and / or the nativeProbableCause) and 
+   * the three severities to be assigned.</p>
+   **/
+   typedef sequence<AlarmSeverityAssignment_T> AlarmSeverityAssignmentList_T;
+
+
+  /**
+   * <p>An ASAP (Alarm Severity Assignment Profile) models the (flexible) 
+   * severity assignment to specified probable causes. So the ASAP object 
+   * includes a table, with each row specifying the probable cause (plus 
+   * optionally the probableCauseQualifier and/or the nativeProbableCause) and 
+   * the assigned severity for "service affecting", "non service affecting" and 
+   * "service independent or unknown" alarms.</p>
+   *
+   * <p>Probable cause, probableCauseQualifier and nativeProbableCause are the 
+   * coordinates of the ASAP entries, so there must not be two ASAP entries with 
+   * the same coordinates. It is the responsibility of the EMS to enforce 
+   * this.</p>
+   *
+   * <p>Alarms against entities that are not modeled by the interface are 
+   * reported using the "AID" objectType. For these "AID" alarms the ASAP 
+   * mechanism is not applicable. Of course this does not apply for 2nd class 
+   * objects (which potentially emit alarms) whose type has been specified using 
+   * the "ENUM extension" methodology (i.e. also using AID as explained 
+   * for notifications::ObjectType_T )).</p>
+   *
+   * <p>Typically the ASAP function is implemented in the OSS or NE depending 
+   * upon where the alarm is originated. E.g. a LOS severity will usually be 
+   * assigned directly by the ME, so it is up to the EMS to download the defined 
+   * ASAP to the ME. Other alarms, e.g. on subnetwork connections, may be 
+   * generated by the EMS.
+   *  
+   * <li> when for PTP, CTP, FTP: the layer-specific transmission parameter 
+   * AlarmReporting changes from "off" to "on"</li>
+   * <li> when for SNC, TopologicalLink: the additional info parameter 
+   * AlarmReporting changes from "off" to "on"</li>
+   * <li> when for Equipment, EquipmentHolder: 
+   * the attribute alarmReportingIndicator changes from FALSE to TRUE</li></ul>
+   *
+   * Alarms are always reportable for all other object types as these do 
+   * not have any alarm reporting attribute.</p>
+   *
+   * <p>When an alarm becomes reportable the ASAPs are applied (accessed via  
+   * the aSAPpointer). The severity of the alarm is adopted from the ASAP entry
+   * that matches for all of the following:<ul> 
+   * <li>same probableCause</li>
+   * <li>same probableCauseQualifier (an empty string is a match)</li>
+   * <li>same nativeProbableCause (an empty string is a match)</li></ul></p>
+   *
+   * <p>For example, if the reportable alarm has LOS probableCause and an ASAP 
+   * entry is found with LOS probableCause and both probableCauseQualifier and 
+   * nativeProbableCause are empty strings, then the search is successful</p>
+   *
+   * <p>If there is:<ul>
+   * <li>a matching ASAP, then the severities are adopted on the following 
+   * basis:<ul>
+   * <li>the alarm is service affecting: it is assigned the severity specified 
+   * in the serviceAffecting field</li>
+   * <li>the alarm is service non affecting: it is assigned the severity 
+   * specified in the serviceNonAffecting field</li>
+   * <li>the alarm is service independent or ME/EMS is not equipped to determine
+   * if the alarm affects service or not: it is assigned the severity specified 
+   * in the serviceIndependentOrUnknown field</li></ul>
+   *
+   * <p>If the assigned severity specified in the ASAP is:<ul>
+   * <li> "AS_FREE_CHOICE" then the ME/EMS are free to determine the severity. 
+   * If there is no local mechanism on the ME/EMS to determine severity then the 
+   * severity "AS_INDETERMINATE" should be assigned.</li>
+   * <li> "AS_NONALARMED" then the EMS should not emit an alarm over the EML-NML 
+   * interface</li></ul></p></li>
+   *
+   * <li>If there is no ASAP that matches then the ME/EMS are free to 
+   * determine the severity. If there is no local mechanism on the ME/EMS to 
+   * determine severity then the severity "AS_INDETERMINATE" should be 
+   * assigned.</li></ul></p>
+   *
+   * <p>Once a severity has been assigned (other than for "AS_NONALARMED" and 
+   * replacing "AS_FREE_CHOICE" by a proper severity), the alarm notification is 
+   * emitted with the assigned severity.</p>
+   *
+   * <p><b>Note:</B> Any operation of alarm retrieval will <b>not</b> include 
+   * "AS_NOTALARMED" alarms.</p>
+   *
+   * globaldefs::NamingAttributes_T <b>name</b>: 
+   * <br>The name represents the name of the ASAP which is assigned by the EMS 
+   * upon creation. The EMS is responsible for guaranteeing the uniqueness of 
+   * the name within the context of EMS. It is a read-only attribute.<br>
+   *
+   * string <b>userLabel</b>: 
+   * <br>The userLabel is provisionable by the NMS. This attribute can be set 
+   * by NMS through the Common_I interface service setUserLabel. It is a 
+   * read/write attribute.<br>
+   *
+   * string <b>nativeEMSName</b>: 
+   * <br>The name represents how the ASAP is referred to on EMS displays. Its 
+   * aim is to provide a "nomenclature bridge" to aid relating information 
+   * presented on NMS displays to EMS displays (via GUI cut through).<br>
+   *
+   * string <b>owner</b>: 
+   * <br>The owner is provisionable by the NMS. This attribute can be set by 
+   * NMS through the Common_I interface service setOwner. It is a read/write 
+   * attribute.<br>
+   *
+   * boolean <b>notModifiable</b>:<ul>
+   * <br><li>If TRUE, then this ASAP instance is fixed, i.e. is an ASAPs which 
+   * is defined at ME or EMS level and can be neither modified nor deleted 
+   * through MTNM interface, but only assigned/de-assigned.</li>
+   * <li>If FALSE, otherwise. It is a read-only attribute.</li></ul><br>
+   *
+   * AlarmSeverityAssignmentList_T <b>alarmSeverityAssignmentList</b>: 
+   * <br>Each element of this sequence specifies the probable cause (plus 
+   * optionally the probableCauseQualifier and / or the nativeProbableCause) and 
+   * the three severities to be assigned.<br>
+   *
+   * globaldefs::NVSList_T <b>additionalInfo</b>: 
+   * <br>This attribute allows the communication of additional information that 
+   * is not explicitly modelled.<br>
+   **/
+   struct ASAP_T 
+   {
+    globaldefs::NamingAttributes_T name; 
+    string userLabel; 
+    string nativeEMSName; 
+    string owner; 
+    boolean notModifiable; 
+    AlarmSeverityAssignmentList_T alarmSeverityAssignmentList;
+    globaldefs::NVSList_T  additionalInfo; 
+   }; 
+
+
+  /**
+   * <p>Sequence of ASAP_T.</p>
+   **/
+   typedef sequence<ASAP_T> ASAPList_T;
+
+
+  /**
+   * <p>ASAPCreateModifyData_T is used when ASAP object is either created or 
+   * modified by the NMS.</p>
+   *
+   * string <b>userLabel</b>: 
+   * <br>The userLabel is provisionable by the NMS. This attribute can be set 
+   * by NMS through the Common_I interface service setUserLabel. It is a 
+   * read/write attribute.<br>
+   *
+   * boolean <b>forceUniqueness</b>: 
+   * <br>Specifies whether uniqueness of the userLabel is required amongst 
+   * ASAPs of the EMS. The operation will fail if userLabel is already in 
+   * use.<br>
+   *
+   * string <b>owner</b>: 
+   * <br>The owner is provisionable by the NMS. This attribute can be set by 
+   * NMS through the Common_I interface service setOwner. It is a read/write 
+   * attribute.<br>
+   *
+   * AlarmSeverityAssignmentList_T <b>alarmSeverityAssignmentList</b>: 
+   * <br>Each element of this sequence specifies the probable cause (plus 
+   * optionally the probableCauseQualifier and / or the nativeProbableCause) the 
+   * three severities to be assigned.<br>
+   *
+   * globaldefs::NVSList_T <b>additionalInfo</b>: 
+   * <br>This attribute allows the communication of additional information 
+   * which is not explicitly modelled.<br>
+   **/
+   struct ASAPCreateModifyData_T  
+   {
+    string userLabel; 
+    boolean forceUniqueness; 
+    string owner; 
+    AlarmSeverityAssignmentList_T  alarmSeverityAssignmentList;
+    globaldefs::NVSList_T additionalInfo; 
+   }; 
+
+
+  /**
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * iterators are used.</p>
+   * <p>See <a href=../../../supportingDocumentation/SD1-15_iterators.pdf >SD1-15 iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   **/
+ interface ASAPIterator_I
+ {
+   boolean next_n(
+         in unsigned long how_many,
+         out ASAPList_T aSAPList)
+        raises(globaldefs::ProcessingFailureException);
+
+   unsigned long getLength()
+        raises(globaldefs::ProcessingFailureException);
+
+   void destroy()
+        raises(globaldefs::ProcessingFailureException);
+ };
+
+}; 
+#endif
+
+
