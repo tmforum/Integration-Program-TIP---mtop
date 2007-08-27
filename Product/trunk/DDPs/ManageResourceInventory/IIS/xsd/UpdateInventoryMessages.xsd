@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/invu/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/invu/v1" xmlns:invr="http://www.tmforum.org/mtop/mri/xsd/invr/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/invu/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/invu/v1" 
+xmlns:invr="http://www.tmforum.org/mtop/mri/xsd/invr/v1" 
+xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" 
+xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" 
+xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" 
+attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Manage Resource Inventory</p>
@@ -11,6 +16,7 @@
   <!-- ================ -->
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
   <xsd:import schemaLocation="ResourceInventoryRetrievalMessages.xsd" namespace="http://www.tmforum.org/mtop/mri/xsd/invr/v1"/>
   <!-- ===================== updateInventoryRequest Message ========= -->
 	<xsd:complexType name="updateInventoryRequest">
@@ -88,7 +94,7 @@
         <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T"/>
 		<!-- ===================== Object does not exist ========= -->
 		<xsd:sequence> 
-        	<xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T"/>
+        	<xsd:element name="exceptionInvalidInput_ObjectDoesNotExist" type="msg:BaseExceptionMessage_T"/>
       		<xsd:element name="nonexistentContainingObject" type="nam:NamingAttributes_T" minOccurs="0" maxOccurs="unbounded">
         		<xsd:annotation>
           			<xsd:documentation>
@@ -102,8 +108,8 @@
 		</xsd:sequence>
 		<!-- ===================== Unsupported object types ========= -->
 		<xsd:sequence> 
-        	<xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T"/>
-      		<xsd:element name="unsupportedObjectTypes" type="ListOfStrings_T">
+        	<xsd:element name="exceptionInvalidInput_UnsupportedObjectTypes" type="msg:BaseExceptionMessage_T"/>
+      		<xsd:element name="unsupportedObjectTypes" type="gen:ObjectType_T" minOccurs="0" maxOccurs="unbounded">
         		<xsd:annotation>
           			<xsd:documentation>
             			<p>If the requesting OS is trying to create instance of one or more object types that
@@ -115,8 +121,8 @@
 		</xsd:sequence>
 				<!-- ===================== Unsupported attributes or attribute values ========= -->
 		<xsd:sequence> 
-        	<xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T"/>
-      		<xsd:element name="unsupportedObjectTypes" type="ListOfStrings_T">
+        	<xsd:element name="exceptionInvalidInput_UnsupportAttributesOrValues" type="msg:BaseExceptionMessage_T"/>
+      		<xsd:element name="unsupportedObjectTypes" type="gen:ObjectType_T" minOccurs="0" maxOccurs="unbounded">
         		<xsd:annotation>
           			<xsd:documentation>
             			<p>If the requesting OS is trying to modify an unsupported attribute type or set an attribute
@@ -168,12 +174,7 @@
     </xsd:complexType>
   </xsd:element>
   <!-- =========== Local Definitions ========= -->
- 	<xsd:complexType name="ListOfStrings_T">
-    <xsd:sequence>
-            <xsd:element name="list" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
-    </xsd:sequence>
-  </xsd:complexType>
-	<xsd:simpleType name="EffortMode_T">
+  <xsd:simpleType name="EffortMode_T">
 		<xsd:annotation>
 			<xsd:documentation>
 				This parameter is used to indicate the effort level for the updateInventory operations. 
