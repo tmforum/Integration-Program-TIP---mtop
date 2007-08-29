@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - DM Network Resources Basic - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:tns="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:coi="http://www.tmforum.org/mtop/fmw/xsd/coi/v1" xmlns:itu="http://www.tmforum.org/mtop/nrb/xsd/itu/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:tns="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" 
+xmlns:coi="http://www.tmforum.org/mtop/fmw/xsd/coi/v1" 
+xmlns:itu="http://www.tmforum.org/mtop/nrb/xsd/itu/v1" 
+xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" 
+attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Data Model Network Resource Basic</p>
@@ -10,7 +14,15 @@
   </xsd:annotation>
   <!-- ================= -->
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/CommonObjectInfo.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/coi/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
   <!-- ================= -->
+  <xsd:element name="commonResourceInfo" type="tns:CommonResourceInfo_T" substitutionGroup="coi:commonObjectInfo">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The element definition for common resource info</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
   <xsd:complexType name="CommonResourceInfo_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -27,8 +39,20 @@
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
+		  <xsd:element name="networkAccessDomain" type="gen:NetworkAccessDomain_T" nillable="true" minOccurs="0">
+      		</xsd:element>
+		  <xsd:element name="meiAttributes" type="gen:MeiAttributes_T" nillable="true" minOccurs="0">
+	  		<xsd:annotation>
+          		<xsd:documentation>
+            		<p>This attribute is used when a object instance is embedded in the inventory
+					layout payload of a Multi-Event Inventory (MEI) notification. It provides the 
+					time at which the NE detected the inventory change (if available) and an indication
+					of the type of inventory update, e.g., Object Creation.</p>
+          		</xsd:documentation>
+        		</xsd:annotation>
+      	  </xsd:element>
           <xsd:element name="resourceState" type="tns:ResourceState_T" nillable="true" minOccurs="0">
-      </xsd:element>
+      		</xsd:element>
           <xsd:any namespace="http://www.tmforum.org/mtop/nrb/itu/v1" processContents="lax" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
