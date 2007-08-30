@@ -197,12 +197,58 @@
     </xsd:annotation>
   </xsd:element>
   <!-- ================== -->
-  <xsd:element name="getAllManagedElementNamesWrtOsException" type="tns:GetMeNamesException_T">
+  <xsd:element name="getAllManagedElementNamesWrtOsException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getAllManagedElementNamesWrtOs operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised by OS for an optional operation that is not implemented</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised in case of non-specific OS internal failure</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when one or many operation input (request) parameters are invalid</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionTooManyOpenIterators" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when data retrieval iterator capacity is full</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when one or many operation input (request) parameters do not refer to an existing object</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:choice>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================== -->
   <xsd:element name="getAllManagedElementsRequest">

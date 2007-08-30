@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/mdr/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/mdr/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:mlsn="http://www.tmforum.org/mtop/nrf/xsd/mlsn/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/mlsnr/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/mlsnr/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:mlsn="http://www.tmforum.org/mtop/nrf/xsd/mlsn/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Manage Resource Inventory</p>
@@ -9,140 +9,526 @@
     </xsd:documentation>
   </xsd:annotation>
   <!-- ================ -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Mlsn.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/mlsn/v1"/>
   <!-- ================ -->
-  <xsd:element name="Request">
+  <xsd:element name="getAllMultiLayerSubnetworkNamesWrtOsRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the  operation</p>
+        <p>Request message structure of the getAllMultiLayerSubnetworkNamesWrtOs operation</p>
+        <p>This operation returns the data structure for each MultiLayerSubnetwork (MLSN) managed by a given subordinate OS AND contained by a specific Management Domain. Note that Wrt in the name of the operation stands for "with respect to".</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="osName" type="nam:NamingAttributes_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the subordinate OS whose contained MEs are being requested.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="mdName" type="nam:NamingAttributes_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the Management Domain whose contained MEs are being requested.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllMultiLayerSubnetworkNamesWrtOsResponse" type="tns:MultipleObjectNamesResponse_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllMultiLayerSubnetworkNamesWrtOs operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllMultiLayerSubnetworkNamesWrtOsException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllMultiLayerSubnetworkNamesWrtOs operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised by OS for an optional operation that is not implemented</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised in case of non-specific OS internal failure</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when one or many operation input (request) parameters are invalid</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionTooManyOpenIterators" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when data retrieval iterator capacity is full</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when one or many operation input (request) parameters do not refer to an existing object</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllMultiLayerSubnetworksWrtOsRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAllMultiLayerSubnetworksWrtOs operation</p>
         <p>This operation .</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="osName" type="nam:NamingAttributes_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the subordinate OS whose contained MEs are being requested.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="mdName" type="nam:NamingAttributes_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the Management Domain whose contained MEs are being requested.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
-  <xsd:element name="Response">
+  <xsd:element name="getAllMultiLayerSubnetworksWrtOsResponse" type="tns:MultipleObjectsResponse_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the  operation</p>
+        <p>Response message structure of the getAllMultiLayerSubnetworksWrtOs operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="Exception" type="tns:ExceptionProfile1_T">
+  <xsd:element name="getAllMultiLayerSubnetworksWrtOsException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the  operation</p>
+        <p>Exception message structure of the getAllMultiLayerSubnetworksWrtOs operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised by OS for an optional operation that is not implemented</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised in case of non-specific OS internal failure</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when one or many operation input (request) parameters are invalid</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionTooManyOpenIterators" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when data retrieval iterator capacity is full</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when one or many operation input (request) parameters do not refer to an existing object</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllTopLevelMultiLayerSubnetworksRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAllTopLevelMultiLayerSubnetworks operation</p>
+        <p>This operation returns the MLSNs contained by the MD to which the operation is directed.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="mdName" type="nam:NamingAttributes_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the Management Domain whose contained MLSNs are being requested</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllTopLevelMultiLayerSubnetworksResponse" type="tns:MultipleObjectsResponse_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllTopLevelMultiLayerSubnetworks operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <!--<xsd:element name="Request">
+  <xsd:element name="getAllTopLevelMultiLayerSubnetworksException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the  operation</p>
+        <p>Exception message structure of the getAllTopLevelMultiLayerSubnetworks operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised by OS for an optional operation that is not implemented</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised in case of non-specific OS internal failure</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when one or many operation input (request) parameters are invalid</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionTooManyOpenIterators" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when data retrieval iterator capacity is full</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when one or many operation input (request) parameters do not refer to an existing object</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllTopLevelMultiLayerSubnetworkNamesRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAllTopLevelMultiLayerSubnetworkNames operation</p>
+        <p>This operation returns the MLSN names contained by the MD to which the operation is directed.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="mdName" type="nam:NamingAttributes_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the Management Domain whose contained MLSNs are being requested</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllTopLevelMultiLayerSubnetworkNamesResponse" type="tns:MultipleObjectNamesResponse_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllTopLevelMultiLayerSubnetworkNames operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllTopLevelMultiLayerSubnetworkNamesException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllTopLevelMultiLayerSubnetworkNames operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised by OS for an optional operation that is not implemented</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised in case of non-specific OS internal failure</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when one or many operation input (request) parameters are invalid</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionTooManyOpenIterators" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when data retrieval iterator capacity is full</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when one or many operation input (request) parameters do not refer to an existing object</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getContainingMultiLayerSubnetworkNamesRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getContainingMultiLayerSubnetworkNames operation</p>
+        <p>This operation returns the list of MLSN names that the Managed Element supplied as an input parameter belongs to.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="mdName" type="nam:NamingAttributes_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the ME for which to retrieve the containing MLSN names</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getContainingMultiLayerSubnetworkNamesResponse" type="tns:MultipleObjectNamesResponse_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getContainingMultiLayerSubnetworkNames operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getContainingMultiLayerSubnetworkNamesException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getContainingMultiLayerSubnetworkNames operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised by OS for an optional operation that is not implemented</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised in case of non-specific OS internal failure</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when one or many operation input (request) parameters are invalid</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when one or many operation input (request) parameters do not refer to an existing object</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getMultiLayerSubnetworkRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getMultiLayerSubnetwork operation</p>
         <p>This operation .</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="mlsnName" type="nam:NamingAttributes_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the MLSN to retrieve</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
-  <xsd:element name="Response">
+  <xsd:element name="getMultiLayerSubnetworkResponse" type="tns:SingleObjectResponse_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the  operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <xsd:element name="Exception" type="tns:ExceptionProfile1_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Exception message structure of the  operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>-->
-  <!--<xsd:element name="Request">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the  operation</p>
-        <p>This operation .</p>
+        <p>Response message structure of the getMultiLayerSubnetwork operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="Response">
+  <xsd:element name="getMultiLayerSubnetworkException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the  operation</p>
+        <p>Exception message structure of the getMultiLayerSubnetwork operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised in case of non-specific OS internal failure</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when one or many operation input (request) parameters are invalid</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when one or many operation input (request) parameters do not refer to an existing object</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================= -->
+  <!-- Definitions of Iterator messages for Object and Object Name retrievals  -->
+  <!-- ================= -->
+  <xsd:element name="getMultiLayerSubnetworkIteratorRequest" type="msg:GetAllDataIterator_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getMultiLayerSubnetworkIterator operation</p>
+        <p>This is the iterator request to return the next batch of MLSNs from the OS to which an MLSN retrieval request was initially sent.</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="Exception" type="tns:ExceptionProfile1_T">
+  <!-- ================== -->
+  <xsd:element name="getMultiLayerSubnetworkIteratorResponse" type="tns:MultipleObjectsResponse_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the  operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>-->
-  <!--<xsd:element name="Request">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the  operation</p>
-        <p>This operation .</p>
+        <p>Response message structure of the getMultiLayerSubnetworkIterator operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="Response">
+  <!-- ================== -->
+  <xsd:element name="getMultiLayerSubnetworkIteratorException" type="msg:GetAllDataIteratorException_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the  operation</p>
+        <p>Exception message structure of the getMultiLayerSubnetworkIterator operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="Exception" type="tns:ExceptionProfile1_T">
+  <!-- ================= -->
+  <xsd:element name="getMultiLayerSubnetworkNamesIteratorRequest" type="msg:GetAllDataIterator_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the  operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>-->
-  <!--<xsd:element name="Request">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the  operation</p>
-        <p>This operation .</p>
+        <p>Request message structure of the getMultiLayerSubnetworkNamesIterator operation</p>
+        <p>This is the iterator request to return the next batch of MLSN names from the OS to which an MLSN names retrieval request was initially sent.</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="Response">
+  <!-- ================== -->
+  <xsd:element name="getMultiLayerSubnetworkNamesIteratorResponse" type="tns:MultipleObjectNamesResponse_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the  operation</p>
+        <p>Response message structure of the getMultiLayerSubnetworkNamesIterator operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="Exception" type="tns:ExceptionProfile1_T">
+  <!-- ================== -->
+  <xsd:element name="getMultiLayerSubnetworkNamesIteratorException" type="msg:GetAllDataIteratorException_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the  operation</p>
+        <p>Exception message structure of the getMultiLayerSubnetworkNamesIterator operation</p>
       </xsd:documentation>
     </xsd:annotation>
-  </xsd:element>-->
+  </xsd:element>
   <!-- ================ -->
   <!-- == Local Data Types == -->
   <!-- ================ -->
-  <xsd:complexType name="MultipleMlsnObjectsResponse_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Response message structure for a set of MLSN objects</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element name="mlsnList" type="mlsn:MultiLayerSubnetworkList_T" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>The list of MLSN objects</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-    </xsd:sequence>
-  </xsd:complexType>
-  <!-- ================== -->
   <xsd:complexType name="MultipleObjectNamesResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -160,63 +546,38 @@
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================== -->
-  <xsd:complexType name="ExceptionProfile1_T">
+  <xsd:complexType name="SingleObjectResponse_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the getAllEquipment operation</p>
+        <p>Response message structure for a single MLSN object</p>
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:choice>
-      <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T">
+    <xsd:sequence>
+      <xsd:element name="mlsn" type="mlsn:MultiLayerSubnetwork_T" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>Raised in case of non-specific OS internal failure</p>
+            <p>The retrieved MLSN</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised in case one of the request parameters is not a valid object reference</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessage_T">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised in case one of the request parameters does not a refer to an existing object</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="exceptionCommFailure" type="msg:BaseExceptionMessage_T">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-    </xsd:choice>
+    </xsd:sequence>
   </xsd:complexType>
   <!-- ================== -->
-  <xsd:complexType name="ExceptionProfile2_T">
+  <xsd:complexType name="MultipleObjectsResponse_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure operation profile#2</p>
+        <p>Response message structure for a set of MLSN objects</p>
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:complexContent>
-      <xsd:extension base="tns:ExceptionProfile1_T">
-      <xsd:choice>
-      <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage_T">
+    <xsd:sequence>
+      <xsd:element name="mlsnList" type="mlsn:MultiLayerSubnetworkList_T" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>Raised when this optional operation is not implemented</p>
+            <p>The list of MEs</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      </xsd:choice>
-      </xsd:extension>
-    </xsd:complexContent>
+    </xsd:sequence>
   </xsd:complexType>
   <!-- ================== -->
 </xsd:schema>
