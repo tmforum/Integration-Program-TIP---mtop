@@ -145,21 +145,29 @@ See Subnetwork Connection Types for an explanation of fixed SNCs.</p>
       <wsdl:output message="tns:getSncsByUserLabelResponse"/>
       <wsdl:fault name="getSncsByUserLabelException" message="tns:getSncsByUserLabelException"/>
     </wsdl:operation>
-    <wsdl:operation name="getSncIterator">
+    <wsdl:operation name="getSubnetworkConnectionsIterator">
       <wsdl:documentation>
         <p>This SRR operation is used to retrieve batches of SNC objects through an iterator.</p>
       </wsdl:documentation>
-      <wsdl:input message="tns:getSncIteratorRequest"/>
-      <wsdl:output message="tns:getSncIteratorResponse"/>
-      <wsdl:fault name="getSncIteratorException" message="tns:getSncIteratorException"/>
+      <wsdl:input message="tns:getSubnetworkConnectionsIteratorRequest"/>
+      <wsdl:output message="tns:getSubnetworkConnectionsIteratorResponse"/>
+      <wsdl:fault name="getSubnetworkConnectionsIteratorException" message="tns:getSubnetworkConnectionsIteratorException"/>
     </wsdl:operation>
-    <wsdl:operation name="getCcIterator">
+    <wsdl:operation name="getSubnetworkConnectionNamesIterator">
+      <wsdl:documentation>
+        <p>This SRR operation is used to retrieve batches of SNC object names through an iterator.</p>
+      </wsdl:documentation>
+      <wsdl:input message="tns:getSubnetworkConnectionNamesIteratorRequest"/>
+      <wsdl:output message="tns:getSubnetworkConnectionNamesIteratorResponse"/>
+      <wsdl:fault name="getSubnetworkConnectionNamesIteratorException" message="tns:getSubnetworkConnectionNamesIteratorException"/>
+    </wsdl:operation>
+    <wsdl:operation name="getCrossConnectionsIterator">
       <wsdl:documentation>
         <p>This SRR operation is used to retrieve batches of CC objects through an iterator.</p>
       </wsdl:documentation>
-      <wsdl:input message="tns:getCcIteratorRequest"/>
-      <wsdl:output message="tns:getCcIteratorResponse"/>
-      <wsdl:fault name="getCcIteratorException" message="tns:getCcIteratorException"/>
+      <wsdl:input message="tns:getCrossConnectionsIteratorRequest"/>
+      <wsdl:output message="tns:getCrossConnectionsIteratorResponse"/>
+      <wsdl:fault name="getCrossConnectionsIteratorException" message="tns:getCrossConnectionsIteratorException"/>
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="ConnectionRetrievalSoapHttpBinding" type="tns:ConnectionRetrieval_RPC">
@@ -391,32 +399,46 @@ See Subnetwork Connection Types for an explanation of fixed SNCs.</p>
         <soap:fault name="getSncsByUserLabelException" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
-    <wsdl:operation name="getCcIterator">
-      <soap:operation soapAction="getCcIterator" style="document"/>
+    <wsdl:operation name="getCrossConnectionsIterator">
+      <soap:operation soapAction="getCrossConnectionsIterator" style="document"/>
       <wsdl:input>
-        <soap:header message="tns:getCcIteratorRequest" part="mtopHeader" use="literal"/>
+        <soap:header message="tns:getCrossConnectionsIteratorRequest" part="mtopHeader" use="literal"/>
         <soap:body parts="mtopBody" use="literal"/>
       </wsdl:input>
       <wsdl:output>
-        <soap:header message="tns:getCcIteratorResponse" part="mtopHeader" use="literal"/>
+        <soap:header message="tns:getCrossConnectionsIteratorResponse" part="mtopHeader" use="literal"/>
         <soap:body parts="mtopBody" use="literal"/>
       </wsdl:output>
-      <wsdl:fault name="getCcIteratorException">
-        <soap:fault name="getCcIteratorException" use="literal"/>
+      <wsdl:fault name="getCrossConnectionsIteratorException">
+        <soap:fault name="getCrossConnectionsIteratorException" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
-    <wsdl:operation name="getSncIterator">
-      <soap:operation soapAction="getSncIterator" style="document"/>
+    <wsdl:operation name="getSubnetworkConnectionsIterator">
+      <soap:operation soapAction="getSubnetworkConnectionsIterator" style="document"/>
       <wsdl:input>
-        <soap:header message="tns:getSncIteratorRequest" part="mtopHeader" use="literal"/>
+        <soap:header message="tns:getSubnetworkConnectionsIteratorRequest" part="mtopHeader" use="literal"/>
         <soap:body parts="mtopBody" use="literal"/>
       </wsdl:input>
       <wsdl:output>
-        <soap:header message="tns:getSncIteratorResponse" part="mtopHeader" use="literal"/>
+        <soap:header message="tns:getSubnetworkConnectionsIteratorResponse" part="mtopHeader" use="literal"/>
         <soap:body parts="mtopBody" use="literal"/>
       </wsdl:output>
-      <wsdl:fault name="getSncIteratorException">
-        <soap:fault name="getSncIteratorException" use="literal"/>
+      <wsdl:fault name="getSubnetworkConnectionsIteratorException">
+        <soap:fault name="getSubnetworkConnectionsIteratorException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getSubnetworkConnectionNamesIterator">
+      <soap:operation soapAction="getSubnetworkConnectionNamesIterator" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getSubnetworkConnectionNamesIteratorRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getSubnetworkConnectionNamesIteratorResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getSubnetworkConnectionNamesIteratorException">
+        <soap:fault name="getSubnetworkConnectionNamesIteratorException" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
   </wsdl:binding>

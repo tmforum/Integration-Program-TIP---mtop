@@ -1,74 +1,118 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2007 -->
-<wsdl:definitions name="mTOP-EquipmentInventoryRetrievalJmsV1-0" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.tmforum.org/mtop/mri/wsdl/eir/v1-0" targetNamespace="http://www.tmforum.org/mtop/mri/wsdl/eir/v1-0">
+<wsdl:definitions name="mTOP-OsRetrievalJmsV1-0" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.tmforum.org/mtop/mri/wsdl/osr/v1-0" targetNamespace="http://www.tmforum.org/mtop/mri/wsdl/osr/v1-0">
   <wsdl:documentation>
     <p>DDP: Manage Resource Inventory</p>
-    <p>Module: EquipmentInventoryRetrieval Service Interface WSDL JMS Module</p>
-    <p>Description: This module contains the mTOP EquipmentInventoryRetrieval Service Interface WSDL definitions for the Web Service deployment profile with SOAP/JMS binding.</p>
+    <p>Module: OsRetrieval Service Interface WSDL JMS Module</p>
+    <p>Description: This module contains the mTOP OsRetrieval Service Interface WSDL definitions for the Web Service deployment profile with SOAP/JMS binding.</p>
     <p>Version: 1.0</p>
   </wsdl:documentation>
-  <wsdl:import namespace="http://www.tmforum.org/mtop/mri/ws/eir/v1-0" location="EquipmentInventoryRetrievalMessages.wsdl"/>
-  <wsdl:portType name="EquipmentInventoryRetrieval_MSG">
+  <wsdl:import namespace="http://www.tmforum.org/mtop/mri/wsdl/osr/v1-0" location="OsRetrievalMessages.wsdl"/>
+  <wsdl:portType name="OsRetrieval_MSG">
     <wsdl:documentation>
-      <p>The EquipmentInventoryRetrieval porttype (interface) for MSG (asynchronous) based client/server communication patterns.</p>
+      <p>The OsRetrieval porttype (interface) for MSG (asynchronous) based client/server communication patterns.</p>
     </wsdl:documentation>
-    <wsdl:operation name="">
+    <wsdl:operation name="getAllOperationsSystemNames">
       <wsdl:documentation>
-        <p>This ABR operation .</p>
+        <p>ABR operation.</p>
       </wsdl:documentation>
-      <wsdl:input message="tns:Request"/>
-      <wsdl:output message="tns:Response"/>
-      <wsdl:fault name="Exception" message="tns:Exception"/>
+      <wsdl:input message="tns:getAllOperationsSystemNamesRequest"/>
+      <wsdl:output message="tns:getAllOperationsSystemNamesResponse"/>
+      <wsdl:fault name="getAllOperationsSystemNamesException" message="tns:getAllOperationsSystemNamesException"/>
     </wsdl:operation>
-    <!--<wsdl:operation name="">
+    <wsdl:operation name="getAllOperationsSystems">
       <wsdl:documentation>
-        <p>This ABR operation .</p>
+        <p>ABR operation.</p>
       </wsdl:documentation>
-      <wsdl:input message="tns:Request"/>
-      <wsdl:output message="tns:Response"/>
-      <wsdl:fault name="Exception" message="tns:Exception"/>
-    </wsdl:operation>-->
+      <wsdl:input message="tns:getAllOperationsSystemsRequest"/>
+      <wsdl:output message="tns:getAllOperationsSystemsResponse"/>
+      <wsdl:fault name="getAllOperationsSystemsException" message="tns:getAllOperationsSystemsException"/>
+    </wsdl:operation>
+    <wsdl:operation name="getOperationsSystem">
+      <wsdl:documentation>
+        <p>ARR operation.</p>
+      </wsdl:documentation>
+      <wsdl:input message="tns:getOperationsSystemRequest"/>
+      <wsdl:output message="tns:getOperationsSystemResponse"/>
+      <wsdl:fault name="getOperationsSystemException" message="tns:getOperationsSystemException"/>
+    </wsdl:operation>
+    <wsdl:operation name="getSubordinateOperationsSystem">
+      <wsdl:documentation>
+        <p>ARR operation.</p>
+      </wsdl:documentation>
+      <wsdl:input message="tns:getSubordinateOperationsSystemRequest"/>
+      <wsdl:output message="tns:getSubordinateOperationsSystemResponse"/>
+      <wsdl:fault name="getSubordinateOperationsSystemException" message="tns:getSubordinateOperationsSystemException"/>
+    </wsdl:operation>
   </wsdl:portType>
-  <wsdl:binding name="EquipmentInventoryRetrievalSoapJmsBinding" type="tns:EquipmentInventoryRetrieval_MSG">
+  <wsdl:binding name="OsRetrievalSoapJmsBinding" type="tns:OsRetrieval_MSG">
     <wsdl:documentation>
-      <p>SOAP JMS binding definitions of the operations of the EquipmentInventoryRetrieval MSG portType (interface)</p>
+      <p>SOAP JMS binding definitions of the operations of the OsRetrieval MSG portType (interface)</p>
     </wsdl:documentation>
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/jms"/>
-    <wsdl:operation name="">
+    <wsdl:operation name="getAllOperationsSystemNames">
       <soap:operation style="document"/>
       <wsdl:input>
-        <soap:header message="tns:Request" part="mtopHeader" use="literal"/>
+        <soap:header message="tns:getAllOperationsSystemNamesRequest" part="mtopHeader" use="literal"/>
         <soap:body parts="mtopBody" use="literal"/>
       </wsdl:input>
       <wsdl:output>
-        <soap:header message="tns:Response" part="mtopHeader" use="literal"/>
+        <soap:header message="tns:getAllOperationsSystemNamesResponse" part="mtopHeader" use="literal"/>
         <soap:body parts="mtopBody" use="literal"/>
       </wsdl:output>
-      <wsdl:fault name="Exception">
-        <soap:fault name="Exception" use="literal"/>
+      <wsdl:fault name="getAllOperationsSystemNamesException">
+        <soap:fault name="getAllOperationsSystemNamesException" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
-    <!--<wsdl:operation name="">
+    <wsdl:operation name="getAllOperationsSystems">
       <soap:operation style="document"/>
       <wsdl:input>
-        <soap:header message="tns:Request" part="mtopHeader" use="literal"/>
+        <soap:header message="tns:getAllOperationsSystemsRequest" part="mtopHeader" use="literal"/>
         <soap:body parts="mtopBody" use="literal"/>
       </wsdl:input>
       <wsdl:output>
-        <soap:header message="tns:Response" part="mtopHeader" use="literal"/>
+        <soap:header message="tns:getAllOperationsSystemsResponse" part="mtopHeader" use="literal"/>
         <soap:body parts="mtopBody" use="literal"/>
       </wsdl:output>
-      <wsdl:fault name="Exception">
-        <soap:fault name="Exception" use="literal"/>
+      <wsdl:fault name="getAllOperationsSystemsException">
+        <soap:fault name="getAllOperationsSystemsException" use="literal"/>
       </wsdl:fault>
-    </wsdl:operation>-->
+    </wsdl:operation>
+    <wsdl:operation name="getOperationsSystem">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getOperationsSystemRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getOperationsSystemResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getOperationsSystemException">
+        <soap:fault name="getOperationsSystemException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getSubordinateOperationsSystem">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getSubordinateOperationsSystemRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getSubordinateOperationsSystemResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getSubordinateOperationsSystemException">
+        <soap:fault name="getSubordinateOperationsSystemException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
   </wsdl:binding>
-  <wsdl:service name="EquipmentInventoryRetrievalJms">
+  <wsdl:service name="OsRetrievalJms">
     <wsdl:documentation>
-      <p>Example of the EquipmentInventoryRetrieval WSDL Service definition as a deployment example of this mTOP Service Interface. It is expected to be modified to match the specific deployment configuration in a service provider's CCV.</p>
+      <p>Example of the OsRetrieval WSDL Service definition as a deployment example of this mTOP Service Interface. It is expected to be modified to match the specific deployment configuration in a service provider's CCV.</p>
     </wsdl:documentation>
-    <wsdl:port name="EquipmentInventoryRetrievalSoapJms" binding="tns:EquipmentInventoryRetrievalSoapJmsBinding">
-      <soap:address location="jms://aserver/mtosi/EquipmentInventoryRetrieval"/>
+    <wsdl:port name="OsRetrievalSoapJms" binding="tns:OsRetrievalSoapJmsBinding">
+      <soap:address location="jms://aserver/mtosi/OsRetrieval"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

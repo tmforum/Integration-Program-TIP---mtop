@@ -13,136 +13,284 @@
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Os.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/os/v1"/>
   <!-- ================ -->
-  <xsd:element name="Request">
+  <xsd:element name="getAllOperationsSystemNamesRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the  operation</p>
+        <p>Request message structure of the getAllOperationsSystemNames operation</p>
+        <p>This operation returns the name of each OS known to the top-level OS to which the operation is directed. The data structure corresponding to the top-level OS is also returned. This operation can only be directed to a top-level OS and not to a subordinate OS.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllOperationsSystemNamesResponse" type="tns:MultipleObjectNamesResponse_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllOperationsSystemNames operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllOperationsSystemNamesException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllOperationsSystemNames operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised by OS for an optional operation that is not implemented</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionTooManyOpenIterators" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when data retrieval iterator capacity is full</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised in case of non-specific OS internal failure</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllOperationsSystemsRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAllOperationsSystems operation</p>
+        <p>This operation returns the data structure for each OS known to the top-level OS to which the operation is directed. The data structure corresponding to the top-level OS is also returned. This operation can only be directed to a top-level OS and not to a subordinate OS.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllOperationsSystemsResponse" type="tns:MultipleObjectsResponse_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the  getAllOperationsSystemsoperation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllOperationsSystemsException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllOperationsSystems operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised by OS for an optional operation that is not implemented</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionTooManyOpenIterators" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when data retrieval iterator capacity is full</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised in case of non-specific OS internal failure</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getOperationsSystemRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getOperationsSystem operation</p>
+        <p>This operation returns the data structure associated with the addessed OS.
+      This operation may only be directed to a top-level OS and not to a subordinate OS.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getOperationsSystemResponse" type="tns:SingleObjectResponse_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getOperationsSystem operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getOperationsSystemException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getOperationsSystem operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised by OS for an optional operation that is not implemented</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised in case of non-specific OS internal failure</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getSubordinateOperationsSystemRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getSubordinateOperationsSystem operation</p>
+        <p>This operation returns the data structure associated with a given subordinate OS identified by the provided subordinateOSName. The operation can only be directed to a top-level OS and not to a subordinate OS.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="osName" type="nam:NamingAttributes_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of a top-level OS</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getSubordinateOperationsSystemResponse" type="tns:SingleObjectResponse_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getSubordinateOperationsSystem operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getSubordinateOperationsSystemException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getSubordinateOperationsSystem operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised by OS for an optional operation that is not implemented</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised in case of non-specific OS internal failure</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when one or many operation input (request) parameters are invalid</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when one or many operation input (request) parameters do not refer to an existing object</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessage_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================= -->
+  <!-- Definitions of Iterator messages for Object and Object Name retrievals  -->
+  <!-- ================= -->
+  <xsd:element name="getOperationsSystemNamesIteratorRequest" type="msg:GetAllDataIterator_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getOperationsSystemNamesIterator operation</p>
         <p>This operation .</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="Response">
+  <xsd:element name="getOperationsSystemNamesIteratorResponse" type="tns:MultipleObjectNamesResponse_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the  operation</p>
+        <p>Response message structure of the getOperationsSystemNamesIterator operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="Exception" type="tns:ExceptionProfile1_T">
+  <xsd:element name="getOperationsSystemNamesIteratorException" type="msg:GetAllDataIteratorException_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the  operation</p>
+        <p>Exception message structure of the getOperationsSystemNamesIterator operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <!--<xsd:element name="Request">
+  <xsd:element name="getOperationsSystemsIteratorRequest" type="msg:GetAllDataIterator_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the  operation</p>
+        <p>Request message structure of the getOperationsSystemsIterator operation</p>
         <p>This operation .</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="Response">
+  <xsd:element name="getOperationsSystemsIteratorResponse" type="tns:MultipleObjectsResponse_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the  operation</p>
+        <p>Response message structure of the  getOperationsSystemsIterator operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="Exception" type="tns:ExceptionProfile1_T">
+  <xsd:element name=" getOperationsSystemsIteratorException" type="msg:GetAllDataIteratorException_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the  operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>-->
-  <!--<xsd:element name="Request">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the  operation</p>
-        <p>This operation .</p>
+        <p>Exception message structure of the getOperationsSystemsIterator operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="Response">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Response message structure of the  operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <xsd:element name="Exception" type="tns:ExceptionProfile1_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Exception message structure of the  operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>-->
-  <!--<xsd:element name="Request">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the  operation</p>
-        <p>This operation .</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <xsd:element name="Response">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Response message structure of the  operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <xsd:element name="Exception" type="tns:ExceptionProfile1_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Exception message structure of the  operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>-->
-  <!--<xsd:element name="Request">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the  operation</p>
-        <p>This operation .</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <xsd:element name="Response">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Response message structure of the  operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <xsd:element name="Exception" type="tns:ExceptionProfile1_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Exception message structure of the  operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>-->
   <!-- ================ -->
   <!-- == Local Data Types == -->
   <!-- ================ -->
-  <xsd:complexType name="MultipleOsObjectsResponse_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Response message structure for a set of OS objects</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element name="osList" type="os:OperationsSystemList_T" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>The list of OS objects</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-    </xsd:sequence>
-  </xsd:complexType>
-  <!-- ================== -->
   <xsd:complexType name="MultipleObjectNamesResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -160,63 +308,38 @@
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================== -->
-  <xsd:complexType name="ExceptionProfile1_T">
+  <xsd:complexType name="SingleObjectResponse_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the getAllEquipment operation</p>
+        <p>Response message structure for an OS object</p>
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:choice>
-      <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T">
+    <xsd:sequence>
+      <xsd:element name="os" type="os:OperationsSystem_T" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>Raised in case of non-specific OS internal failure</p>
+            <p>The OS object</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised in case one of the request parameters is not a valid object reference</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessage_T">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised in case one of the request parameters does not a refer to an existing object</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="exceptionCommFailure" type="msg:BaseExceptionMessage_T">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-    </xsd:choice>
+    </xsd:sequence>
   </xsd:complexType>
   <!-- ================== -->
-  <xsd:complexType name="ExceptionProfile2_T">
+  <xsd:complexType name="MultipleObjectsResponse_T">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure operation profile#2</p>
+        <p>Response message structure for a set of OS objects</p>
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:complexContent>
-      <xsd:extension base="tns:ExceptionProfile1_T">
-      <xsd:choice>
-      <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage_T">
+    <xsd:sequence>
+      <xsd:element name="osList" type="os:OperationsSystemList_T" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>Raised when this optional operation is not implemented</p>
+            <p>The list of OS objects</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      </xsd:choice>
-      </xsd:extension>
-    </xsd:complexContent>
+    </xsd:sequence>
   </xsd:complexType>
   <!-- ================== -->
 </xsd:schema>
