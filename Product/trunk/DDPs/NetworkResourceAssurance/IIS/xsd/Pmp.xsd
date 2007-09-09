@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/pmp/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:prc="http://www.tmforum.org/mtop/nra/prc/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/pmp/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:itu="http://www.tmforum.org/mtop/nrb/xsd/itu/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/pmp/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:prc="http://www.tmforum.org/mtop/nra/prc/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/pmp/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:itu="http://www.tmforum.org/mtop/nrb/xsd/itu/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
 	<xsd:annotation>
 		<xsd:documentation>
 			<p>DDP: Data Model Network Resource Assurance</p>
@@ -13,6 +13,7 @@
 	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd"/>
 	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd"/>
 	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/itu/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/ITU-T-Definitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
 	<!-- ================= -->
 	<xsd:complexType name="PerformanceMonitoringPoint_T">
 		<xsd:annotation>
@@ -97,6 +98,17 @@
 		</xsd:complexContent>
 	</xsd:complexType>
 	<!-- ================ -->
+	<xsd:complexType name="PerformanceMonitoringPointList_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A list of PerformanceMonitoringPoint</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="pmp" type="tns:PerformanceMonitoringPoint_T" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================ -->
 	<xsd:complexType name="PMParameterWithThresholdsList_T">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -104,7 +116,7 @@
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
-			<xsd:element name="pmParameterWithThresholdsList" type="tns:PMParameterWithThresholds_T" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="pmParameterWithThreshold" type="tns:PMParameterWithThresholds_T" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<!-- ================= -->
@@ -139,7 +151,7 @@
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
-			<xsd:element name="pmParameterNameList" type="tns:PMParameterName_T" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="pmParameterName" type="tns:PMParameterName_T" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<!-- ================= -->
@@ -152,6 +164,47 @@
 		</xsd:annotation>
 		<xsd:restriction base="xsd:string"/>
 	</xsd:simpleType>
+	<!-- ================ -->
+	<xsd:complexType name="PMParameterList_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A list of PMParameter</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="pmParameter" type="tns:PMParameter_T" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Represents the name of the PM Measure.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="PMParameter_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Used to represent the PM parameter name of the PM measure qualified by its location.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="pmParameter" type="tns:PMParameter_T" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Represents the name of the PM Measurement.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="pmLocation" type="tns:PMLocation_T" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Represents the location of the PM Measure.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
 	<!-- ================ -->
 	<xsd:complexType name="PMThresholdList_T">
 		<xsd:annotation>
@@ -202,7 +255,104 @@
 		</xsd:sequence>
 	</xsd:complexType>
 	<!-- ================ -->
+	<xsd:complexType name="PMThresholdValueList_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A list of PMThresholdValues</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="pmThresholdValue" type="tns:PMThresholdValue_T" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="PMThresholdValue_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This structure represents a Holds a PM threshold value.</p>
+				<p>See SD1-37 PM Threshold Types for information on how threshold values are used.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="pmParameterName" type="tns:PMParameterName_T" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Holds the name of the PM Measure. It has been defined as a string to accomodate backward compatibility and proprietary extensions.</p>
+						<p>Refer to SD1-28 Performance Parameters for an overview of the standardized PM parameters currently supported by the MTNM interface.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="pmLocation" type="tns:PMLocation_T" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Represents the location of the PM Measurement.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="thresholdType" type="tns:PMThresholdType_T" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Represents the type of threshold value.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="triggerFlag" type="xsd:boolean" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Indicates if the threshold is for the trigger (TRUE) or the clear (FALSE).</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="value" type="xsd:float" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Threshold value (float used to incorporate gauge PM parameters).</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="units" type="xsd:string" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Free format string describing the units for the threshold value.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="TCAParameters_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>The TCAParameters structure is used to get or set one or more PM Threshold values for a given TP/layer/granularity measurement point.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+					<xsd:element name="layerRate" type="lay:LayerRate_T" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Identifies the layer to which tcaTypeValues applies.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="granularity" type="tns:PMGranularity_T" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Identifies the granularity of the data. For gauges, this should be "NA".</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="tcaTypeValues" type="tns:PMThresholdValueList_T" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Identifies threshold values. for PM parameters, PM locations and threshold types, and indicates Trigger/Clear properties.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================ -->
 	<xsd:simpleType name="PMThresholdType_T">
+		<!-- == NOTE: TODO This should be made extensible: Can take any minunte/hr value == -->
 		<xsd:annotation>
 			<xsd:documentation>
 				<p>Count period (interval) for which PM data may be collected (and subsequently retrieved).</p>
@@ -219,6 +369,17 @@
 		</xsd:restriction>
 	</xsd:simpleType>
 	<!-- ================ -->
+	<xsd:complexType name="PMGranularityList_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A list of PMGranularity</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="pmGranularity" type="tns:PMGranularity_T" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================ -->
 	<xsd:simpleType name="PMGranularity_T">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -232,10 +393,235 @@
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:restriction base="xsd:string">
-			<xsd:enumeration value="TWM_HIGHEST "/>
-			<xsd:enumeration value="TWM_HIGH "/>
-			<xsd:enumeration value="TWM_LOW "/>
-			<xsd:enumeration value="TWM_LOWEST  "/>
+			<xsd:enumeration value="TWM_HIGHEST"/>
+			<xsd:enumeration value="TWM_HIGH"/>
+			<xsd:enumeration value="TWM_LOW"/>
+			<xsd:enumeration value="TWM_LOWEST"/>
 		</xsd:restriction>
 	</xsd:simpleType>
+	<!-- ================ -->
+	<xsd:simpleType name="PMIntervalStatus_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>The following string values, to indicate the relationship of measurement value and measurement interval</p>
+				<p><br>The value is one of: </br>
+				<br>PMIS_Valid - Valid data</br>
+				<br>PMIS_Incomplete - Data not available for the complete interval</br>
+				<br>PMIS_Invalid - Data available but marked as invalid for the interval (when the NMS can not distinguish incomplete measurements from invalid measurements</br>
+				<br>PMIS_Unavailable - No data available at all for this interval</br>
+				<br>PMIS_ZeroSuppressed - Zero-suppressed intervals.</br></p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="PMIS_Valid"/>
+			<xsd:enumeration value="PMIS_Incomplete"/>
+			<xsd:enumeration value="PMIS_Invalid"/>
+			<xsd:enumeration value="PMIS_Unavailable"/>
+			<xsd:enumeration value="PMIS_ZeroSuppressed"/>
+		</xsd:restriction>
+	</xsd:simpleType>	
+	<!-- ================ -->
+	<xsd:complexType name="PMLocationList_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A list of PMLocation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="pmLocation" type="tns:PMLocation_T" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================ -->
+	<xsd:simpleType name="PMLocation_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Specification of PM location. For further details, see supporting documentation: Location Identification).</p>
+				<p>PM parameters may relate to measurements taken on receive or transmit traffic either at the named TP (PML_NEAR_END_Rx/Tx) or at the TP at the far end of the trail (circuit/path) connected to the named TP (PML_FAR_END_Rx/Tx). Alternatively, the PM parameters may be bidirectional (PML_BIDIRECTIONAL) e.g. resulting from a second by second summation and evaluation of both far and near TPs.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="PML_NEAR_END_Rx"/>
+			<xsd:enumeration value="PML_FAR_END_Rx"/>
+			<xsd:enumeration value="PML_FAR_END_Tx"/>
+			<xsd:enumeration value="PML_BIDIRECTIONAL"/>
+			<xsd:enumeration value="PML_CONTRA_NEAR_END_Rx"/>
+			<xsd:enumeration value="PML_CONTRA_FAR_END_Rx"/>
+		</xsd:restriction>
+	</xsd:simpleType>	
+	<!-- ================ -->
+	<xsd:complexType name="PMMeasurementList_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A list of PMMeasurements</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="pmMeasurement" type="tns:PMMeasurement_T" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="PMMeasurement_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Holds a PM measurement and description of validity.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="pmParameterName" type="tns:PMParameterName_T" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Represents the name of the PM Measure.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="pmLocation" type="tns:PMLocation_T" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Represents the location of the PM Measure.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="value" type="xsd:float" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Threshold value (float used to incorporate gauge PM parameters).</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="measurementUnits" type="xsd:string" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Free format string describing the units for the threshold value.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="pmIntervalStatus" type="tns:PMIntervalStatus_T" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Represents the relationship of measurement value and measurement interval.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================ -->
+	<xsd:complexType name="PMDataList_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A list of PMData</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="pmData" type="tns:PMData_T" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="PMData_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This struct is used to pass current PM data for one collection bin from the EMS to the NMS. It is also used to pass historic PM data across the NML-EML interface when the file transfer capability via FTP is not preferred.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="tpName" type="nam:NamingAttributes_T" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Represents the name of the PM Measure.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="layerRate" type="lay:LayerRate_T" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Represents the layer rate of the Layer of the collected PM data.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="granularity" type="tns:PMGranularity_T" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This attribute identifies the granularity of the data.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="retrievalTime" type="xsd:dateTime" minOccurs="0">
+				<!-- =TODO: Is this the correct type here: xsd:dateTime? Taken from definition of neTime in EventStateChange.xsd= -->
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The time provided by the NE. In a case where the NE does not report time, this field is optional or an empty string can be reported.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="pmMeasurementList" type="tns:PMMeasurementList_T" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This attribute identifies the PM measurement values.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================ -->
+	<xsd:complexType name="PMTPSelectList_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A list of PMTPSelect_T</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="pmTPSelect" type="tns:PMTPSelect_T" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="PMTPSelect_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This is used to specify the scope/target for a PM operation.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="name" type="nam:NamingAttributes_T" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The name of the object to which this selection applies. (i.e. the target of the PM operation). This may be:</p>
+						<p><br>ManagedElement: The selection applies to all termination points contained within the ManagedElement.</br>
+						<br>TerminationPoint: The selection applies only to the named termination point which will be a PTP, an FTP or a CTP. Unlike the case for ManagedElement, the operation will not apply to any "contained" TPs when a PTP, an FTP or CTP is specified.</br></p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="layerRates" type="lay:LayerRateList_T" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Identifies the set of layers to which the selection applies. An empty list means all layers supported by the equipment.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="pMLocationList" type="tns:PMLocationList_T" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Identifies the set of locations to which the selection applies. An empty list means all locations supported by the equipment.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="granularityList" type="tns:PMGranularityList_T" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Identifies set of granularities to which the selection applies. An empty list means all granularities supported by the equipment.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================ -->
+	<xsd:simpleType name="HoldingTime_T">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>By means of this struct, the EMS informs the NMS about the minimum time it holds 24h PM data records and 15min PM data records. This minimum time refers to the time after the particular collection bins are closed.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="storeTime24hr"/>
+			<xsd:enumeration value="storeTime15min"/>
+		</xsd:restriction>
+	</xsd:simpleType>	
 </xsd:schema>
