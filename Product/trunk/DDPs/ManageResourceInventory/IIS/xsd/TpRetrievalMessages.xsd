@@ -712,18 +712,29 @@ Operation getContainedInUseTPs then returns three CTPs:<ul>
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getGtp operation</p>
-        <p>This operation .</p>
+        <p>This operation returns the GTP structure for the given GTP name SD1-3 Bundled SNC overview.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="gtpName" type="nam:NamingAttributes_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Name of the GTP</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getGtpResponse">
+  <xsd:element name="getGtpResponse" type="tns:SingleGtpObjectResponse_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure of the getGtp operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getGtpException">
+  <xsd:element name="getGtpException" type="tns:ExceptionProfile3_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getGtp operation</p>
@@ -731,22 +742,22 @@ Operation getContainedInUseTPs then returns three CTPs:<ul>
     </xsd:annotation>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getTpRequest">
+  <xsd:element name="getTpRequest" type="tns:RequestProfile2_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getTp operation</p>
-        <p>This operation .</p>
+        <p>This operation returns the termination point structure for the given TP name (CTP, FTP or PTP). The termination point name must be explicit (a generic endpoint specification may not be used in this case). See SD1-25_objectNaming.pdf for further detail on FTP naming. The termination point structure contains SD1-16_LayeredParameters.pdf. The transmission parameters returned will be the parameters in place on the actual termination point on the NE.  If there are no transmission parameters or the TP does not actually exist on the NE, then transmissionParams will be empty. The field transmissionParams will also be empty for "potential" ATM VP/VC CTPs.</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getTpResponse">
+  <xsd:element name="getTpResponse" type="tns:SingleTpObjectResponse_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure of the getTp operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getTpException">
+  <xsd:element name="getTpException" type="tns:ExceptionProfile4_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getTp operation</p>
@@ -788,18 +799,29 @@ If a TP name is supplied, the method will return the names of any associated TPP
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getTpPool operation</p>
-        <p>This operation .</p>
+        <p>This operation returns the TPPool structure for the given TPPool name, and the additional attributes numberOfMembers, numberOfIdleMembers, and descriptionOfUse. The attribute containedMembers, i.e. the list of names of contained TPs, can be retrieved by means of the operation getTPGroupingRelationships() with input tpPoolName.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="tpPoolName" type="nam:NamingAttributes_T">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the TP pool or TP for which to retrieve the association.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getTpPoolResponse">
+  <xsd:element name="getTpPoolResponse" type="tns:SingleTpPoolObjectResponse_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure of the getTpPool operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getTpPoolException">
+  <xsd:element name="getTpPoolException" type="tns:ExceptionProfile3_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getTpPool operation</p>
@@ -807,7 +829,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
     </xsd:annotation>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getTerminationPointNamesIteratorRequest">
+  <xsd:element name="getTerminationPointNamesIteratorRequest" type="msg:GetAllDataIterator_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getTerminationPointNamesIterator operation</p>
@@ -822,7 +844,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getTerminationPointNamesIteratorException">
+  <xsd:element name="getTerminationPointNamesIteratorException" type="msg:GetAllDataIteratorException_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getTerminationPointNamesIterator operation</p>
@@ -830,7 +852,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
     </xsd:annotation>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getTerminationPointsIteratorRequest">
+  <xsd:element name="getTerminationPointsIteratorRequest" type="msg:GetAllDataIterator_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getTerminationPointsIterator operation</p>
@@ -845,7 +867,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getTerminationPointsIteratorException">
+  <xsd:element name="getTerminationPointsIteratorException" type="msg:GetAllDataIteratorException_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getTerminationPointsIterator operation</p>
@@ -853,7 +875,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
     </xsd:annotation>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getTpPoolNamesIteratorRequest">
+  <xsd:element name="getTpPoolNamesIteratorRequest" type="msg:GetAllDataIterator_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getTpPoolNamesIterator operation</p>
@@ -868,7 +890,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getTpPoolNamesIteratorException">
+  <xsd:element name="getTpPoolNamesIteratorException" type="msg:GetAllDataIteratorException_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getTpPoolNamesIterator operation</p>
@@ -876,7 +898,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
     </xsd:annotation>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getTpPoolsIteratorRequest">
+  <xsd:element name="getTpPoolsIteratorRequest" type="msg:GetAllDataIterator_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getTpPoolsIterator operation</p>
@@ -884,14 +906,14 @@ If a TP name is supplied, the method will return the names of any associated TPP
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getTpPoolsIteratorResponse">
+  <xsd:element name="getTpPoolsIteratorResponse" type="tns:MultipleTpPoolObjectsResponse_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure of the getTpPoolsIterator operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getTpPoolsIteratorException">
+  <xsd:element name="getTpPoolsIteratorException" type="msg:GetAllDataIteratorException_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getTpPoolsIterator operation</p>
@@ -1249,6 +1271,22 @@ If a TP name is supplied, the method will return the names of any associated TPP
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
+  <xsd:complexType name="SingleTpObjectResponse_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure for one TP object</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="tp" type="tp:TerminationPoint_T" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The TP object</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
   <xsd:complexType name="SingleGtpObjectResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -1292,6 +1330,22 @@ If a TP name is supplied, the method will return the names of any associated TPP
         <xsd:annotation>
           <xsd:documentation>
             <p>The list of TpPool objects</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="SingleTpPoolObjectResponse_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure for one TPPool object</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="tpPool" type="tpp:TpPool_T" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The TpPool</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
