@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 编辑使用 XMLSpy v2006 U (http://www.altova.com) 由 any (any) -->
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2007 -->
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.tmforum.org/mtop/fmw/wsdl/mart/v1-0" targetNamespace="http://www.tmforum.org/mtop/fmw/wsdl/mart/v1-0" name="mTOP-MartV1-0">
+	<wsdl:import location="Mart_PortType.wsdl"/>
+	<wsdl:binding name="MartSoapHttpBinding" type="tns:Mart">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:documentation>
+			<p>SOAP HTTP binding definitions of the operations of the Mart portType (interface)</p>
+		</wsdl:documentation>
+		<!-- ================ -->
+		<wsdl:operation name="mart">
+			<soap:operation soapAction="mart" style="document"/>
+			<wsdl:input>
+				<soap:header message="tns:martRequest" part="mtopHeader" use="literal"/>
+				<soap:body parts="mtopBody" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="tns:martResponse" part="mtopHeader" use="literal"/>
+				<soap:body parts="mtopBody" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="martException">
+				<soap:fault name="martException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<!-- ================ -->
+		<wsdl:operation name="getProgress">
+			<soap:operation soapAction="getProgress" style="document"/>
+			<wsdl:input>
+				<soap:header message="tns:martGetProgressRequest" part="mtopHeader" use="literal"/>
+				<soap:body parts="mtopBody" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="tns:martGetProgressResponse" part="mtopHeader" use="literal"/>
+				<soap:body parts="mtopBody" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="martException">
+				<soap:fault name="martException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<!-- ================ -->
+		<wsdl:operation name="termination">
+			<soap:operation soapAction="termination" style="document"/>
+			<wsdl:input>
+				<soap:header message="tns:martTerminationRequest" part="mtopHeader" use="literal"/>
+				<soap:body parts="mtopBody" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="tns:martTerminationResponse" part="mtopHeader" use="literal"/>
+				<soap:body parts="mtopBody" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="martException">
+				<soap:fault name="martException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="MartHttp">
+		<wsdl:port name="MartSoapHttp" binding="tns:MartSoapHttpBinding">
+			<soap:address location="http://aserver/mtosi/martV1-draft"/>
+			<wsdl:documentation>
+				<p> It is expected to be modified to match the specific deployment configuration in a service provider's CCV.</p>
+			</wsdl:documentation>
+		</wsdl:port>
+	</wsdl:service>
+	<wsdl:documentation>
+		<p>DDP: Framework</p>
+		<p>Module: Mart Service Interface WSDL HTTP Module</p>
+		<p>Description: This module contains all the mTOP Mart Service Interface WSDL SOAP/HTTP binding definitions.</p>
+		<p>Version: 1.0</p>
+	</wsdl:documentation>
+</wsdl:definitions>
