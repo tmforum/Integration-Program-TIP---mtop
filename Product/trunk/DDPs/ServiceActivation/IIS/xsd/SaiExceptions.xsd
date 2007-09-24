@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM Service Activation Interface (SAI) - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/srvact/xsd/saiexcpt/v1" xmlns:tns="http://www.tmforum.org/mtop/srvact/xsd/saiexcpt/v1" 
-xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" 
-xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" 
-xmlns:csi="http://www.tmforum.org/mtop/sb/xsd/csi/v1" 
-attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/sa/xsd/saiexcpt/v1" xmlns:tns="http://www.tmforum.org/mtop/sa/xsd/saiexcpt/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:csi="http://www.tmforum.org/mtop/sb/xsd/csi/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Service Activation</p>
@@ -21,18 +17,18 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     <xsd:annotation>
       <xsd:documentation>
         <p> This exception is an indication that the target OS was not able to accomplish the requested task. </p>
-		<p>NOT_IMPLEMENTED – raised when the target OS does not support this operation.</p>
-		<p>INVALID_INPUT – raised if any input parameter is syntactically incorrect. </p>
-		<p>UNABLE_TO_COMPLY – raised when the target OS cannot fulfill the request. 
+        <p>NOT_IMPLEMENTED – raised when the target OS does not support this operation.</p>
+        <p>INVALID_INPUT – raised if any input parameter is syntactically incorrect. </p>
+        <p>UNABLE_TO_COMPLY – raised when the target OS cannot fulfill the request. 
 		This can be used in either the initial or final response. </p>
-		<p>COMM_FAILURE – raised when the target OS is not able to communicate with one or 
+        <p>COMM_FAILURE – raised when the target OS is not able to communicate with one or 
 		more entities and as a consequence could not complete the rollback.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:choice>
       <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage_T"/>
       <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T"/>
-	  <xsd:element name="exceptionUnableToComply" type="msg:BaseExceptionMessage_T"/>
+      <xsd:element name="exceptionUnableToComply" type="msg:BaseExceptionMessage_T"/>
       <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessage_T"/>
     </xsd:choice>
   </xsd:complexType>
@@ -42,22 +38,22 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
       <xsd:documentation>
         <p>This event is an indication that the target OS is reporting a CFS state transition failure 
 		from the current state to the next one in the CFS activation lifecycle.</p>
-		<p>The following parameters are supported:</p>
-		<p>serviceRequestID – identifies the initial request</p>
-		<p>productName – identifies the associated product instance</p>
-		<p>cfsName – identifies the CFS to which the exception applies</p>
-		<p>currentState – identifies the current state of the CFS</p>
-		<p>failedState – identifies the state into which the target OS
+        <p>The following parameters are supported:</p>
+        <p>serviceRequestID – identifies the initial request</p>
+        <p>productName – identifies the associated product instance</p>
+        <p>cfsName – identifies the CFS to which the exception applies</p>
+        <p>currentState – identifies the current state of the CFS</p>
+        <p>failedState – identifies the state into which the target OS
 		attempted (and failed) to transition the CFS.</p>
       </xsd:documentation>
     </xsd:annotation>
-	<xsd:sequence>
-		<xsd:element name="serviceRequestID" type="xsd:string"/>
-		<xsd:element name="productName" type="xsd:string"/>
-		<xsd:element name="cfsName" type="nam:NamingAttributes_T"/>
-        <xsd:element name="currentState" type="xsd:string"/>
-		<xsd:element name="failedState" type="xsd:string"/>
-	</xsd:sequence>
+    <xsd:sequence>
+      <xsd:element name="serviceRequestID" type="xsd:string"/>
+      <xsd:element name="productName" type="xsd:string"/>
+      <xsd:element name="cfsName" type="nam:NamingAttributes_T"/>
+      <xsd:element name="currentState" type="xsd:string"/>
+      <xsd:element name="failedState" type="xsd:string"/>
+    </xsd:sequence>
   </xsd:complexType>
   <!-- ===================== Service Creation  Failure Event  ========= -->
   <xsd:complexType name="ServiceCreationFailureEvent_T">
@@ -65,17 +61,17 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
       <xsd:documentation>
         <p>This event is an indication that the target OS could not create a CFS (in support
 		of a given product instance).</p>
-		<p>The following parameters are supported:</p>
-		<p>serviceRequestID – identifies the initial request</p>
-		<p>productName – identifies the associated product instance</p>
-		<p>cfsName – identifies the CFS to which the exception applies</p>
+        <p>The following parameters are supported:</p>
+        <p>serviceRequestID – identifies the initial request</p>
+        <p>productName – identifies the associated product instance</p>
+        <p>cfsName – identifies the CFS to which the exception applies</p>
       </xsd:documentation>
     </xsd:annotation>
-	<xsd:sequence>
-		<xsd:element name="cfsName" type="nam:NamingAttributes_T"/>
-        <xsd:element name="currentState" type="xsd:string"/>
-		<xsd:element name="failedState" type="xsd:string"/>
-	</xsd:sequence>
+    <xsd:sequence>
+      <xsd:element name="cfsName" type="nam:NamingAttributes_T"/>
+      <xsd:element name="currentState" type="xsd:string"/>
+      <xsd:element name="failedState" type="xsd:string"/>
+    </xsd:sequence>
   </xsd:complexType>
   <!-- ===================== Service State Transition Failure Event  ========= -->
   <xsd:complexType name="ServiceDeletionFailureEvent_T">
@@ -83,19 +79,19 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
       <xsd:documentation>
         <p>This event is an indication that the target OS could not delete a CFS (in support
 		of a given product instance).</p>
-		<p>The following parameters are supported:</p>
-		<p>serviceRequestID – identifies the initial request</p>
-		<p>productName – identifies the associated product instance</p>
-		<p>cfsName – identifies the CFS to which the exception applies</p>
-		<p>currentState – identifies the current state of the CFS</p>
+        <p>The following parameters are supported:</p>
+        <p>serviceRequestID – identifies the initial request</p>
+        <p>productName – identifies the associated product instance</p>
+        <p>cfsName – identifies the CFS to which the exception applies</p>
+        <p>currentState – identifies the current state of the CFS</p>
       </xsd:documentation>
     </xsd:annotation>
-	<xsd:sequence>
-		<xsd:element name="serviceRequestID" type="xsd:string"/>
-		<xsd:element name="productName" type="xsd:string"/>
-		<xsd:element name="cfsName" type="nam:NamingAttributes_T"/>
-        <xsd:element name="currentState" type="xsd:string"/>
-	</xsd:sequence>
+    <xsd:sequence>
+      <xsd:element name="serviceRequestID" type="xsd:string"/>
+      <xsd:element name="productName" type="xsd:string"/>
+      <xsd:element name="cfsName" type="nam:NamingAttributes_T"/>
+      <xsd:element name="currentState" type="xsd:string"/>
+    </xsd:sequence>
   </xsd:complexType>
   <!-- ===================== Service Attribute Value Change (AVC) Failure Event  ========= -->
   <xsd:complexType name="ServiceAvcFailureEvent_T">
@@ -104,26 +100,26 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
         <p>This event is an indication that the target OS could not make the serviceCharacteristicValue 
 		changes necessary to support a request to change a productCharacteristicValue. Multiple such 
 		failures can be reported in a single servieAvcFailureEvent.</p>
-		<p>The following parameters are supported:</p>
-		<p>serviceRequestID – identifies the initial request</p>
-		<p>productName – identifies the associated product instance</p>
-		<p>cfsName - the name of CFS for which one or more serviceCharacteristicValues could not be changed.</p>
-		<p>productSpecCharacteristicID - identifies a productSpecCharacteristic whose value change could not be 
+        <p>The following parameters are supported:</p>
+        <p>serviceRequestID – identifies the initial request</p>
+        <p>productName – identifies the associated product instance</p>
+        <p>cfsName - the name of CFS for which one or more serviceCharacteristicValues could not be changed.</p>
+        <p>productSpecCharacteristicID - identifies a productSpecCharacteristic whose value change could not be 
 		made because of value change failure in an associated serviceCharacteristicValue.</p>
-		<p>serviceSpecCharacteristicID - identifies a serviceSpecCharacteristicValue that could not be changed
-		in support of a value change to a given productSpecCharacteristicID.</p> 
+        <p>serviceSpecCharacteristicID - identifies a serviceSpecCharacteristicValue that could not be changed
+		in support of a value change to a given productSpecCharacteristicID.</p>
       </xsd:documentation>
     </xsd:annotation>
-	<xsd:sequence>
-		<xsd:element name="serviceRequestID" type="xsd:string"/>
-		<xsd:element name="productName" type="xsd:string"/>
-		<xsd:sequence minOccurs="1" maxOccurs="unbounded">
-			<xsd:element name="cfsName" type="nam:NamingAttributes_T"/>
-				<xsd:sequence minOccurs="1" maxOccurs="unbounded">
-					<xsd:element name="productSpecCharacteristicID" type="nam:NamingAttributes_T"/>
-					<xsd:element name="serviceSpecCharacteristicID" type="nam:NamingAttributes_T" minOccurs="1" maxOccurs="unbounded"/> 
-				</xsd:sequence>
+    <xsd:sequence>
+      <xsd:element name="serviceRequestID" type="xsd:string"/>
+      <xsd:element name="productName" type="xsd:string"/>
+      <xsd:sequence minOccurs="1" maxOccurs="unbounded">
+        <xsd:element name="cfsName" type="nam:NamingAttributes_T"/>
+        <xsd:sequence minOccurs="1" maxOccurs="unbounded">
+          <xsd:element name="productSpecCharacteristicID" type="nam:NamingAttributes_T"/>
+          <xsd:element name="serviceSpecCharacteristicID" type="nam:NamingAttributes_T" minOccurs="1" maxOccurs="unbounded"/>
         </xsd:sequence>
-	</xsd:sequence>
+      </xsd:sequence>
+    </xsd:sequence>
   </xsd:complexType>
 </xsd:schema>
