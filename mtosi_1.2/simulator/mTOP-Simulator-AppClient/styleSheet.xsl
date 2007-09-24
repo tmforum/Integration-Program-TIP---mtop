@@ -45,7 +45,6 @@
 	<xsl:template match="ctpList">
 		<xsl:apply-templates select="ctpInv"/>
 	</xsl:template>
-	
 	<!-- ************** inventories **************** -->
 	<xsl:template match="md">
 		<div style="position:relative;left:5px">
@@ -139,7 +138,6 @@
 			<xsl:apply-templates select="tlList"/>
 		</div>
 	</xsl:template>
-	
 	<xsl:template match="meInv">
 		<div style="position:relative;left:45px">
 			<table border="3" bordercolor="330099">
@@ -299,7 +297,6 @@
 				</body>
 			</table>
 			<br/>
-			
 			<xsl:apply-templates select="ehList"/>
 			<xsl:if test="ptpList">
 				<xsl:apply-templates select="ptpList"/>
@@ -315,11 +312,10 @@
 			</xsl:if>
 		</div>
 	</xsl:template>
-		
 	<xsl:template match="mlsnInv">
 		<div style="position:relative;left:45px">
 			<table border="3" bordercolor="009999">
-					<body>
+				<body>
 					<tr>
 						<th bgcolor="ff3333">mlsnNm</th>
 						<xsl:if test="mlsnAttrs/discoveredName">
@@ -422,7 +418,6 @@
 			</xsl:if>
 		</div>
 	</xsl:template>
-	
 	<xsl:template match="tlInv">
 		<div style="position:relative;left:45px">
 			<table border="3" bordercolor="FF9966">
@@ -473,7 +468,7 @@
 						</xsl:if>
 					</tr>
 					<tr>
-							<td>
+						<td>
 							<xsl:value-of select="tlNm"/>
 						</td>
 						<xsl:if test="tlAttrs/discoveredName">
@@ -558,7 +553,6 @@
 			</xsl:if>
 		</div>
 	</xsl:template>
-	
 	<xsl:template match="ehInv">
 		<div style="position:relative;left:65px">
 			<table border="3" bordercolor="6666FF">
@@ -707,12 +701,12 @@
 			</xsl:if>
 		</div>
 	</xsl:template>
-	
 	<xsl:template match="ptpInv">
 		<div style="position:relative;left:65px">
 			<table border="3" bordercolor="99FFFF">
 				<body>
-					<tr><th bgcolor="ff3333">ptpNm</th>
+					<tr>
+						<th bgcolor="ff3333">ptpNm</th>
 						<xsl:if test="ptpAttrs/discoveredName">
 							<th bgcolor="ffff99">discoveredName</th>
 						</xsl:if>
@@ -858,10 +852,11 @@
 				</body>
 			</table>
 			<br/>
-			<xsl:apply-templates select="ctpInv"/>
+			<xsl:if test="ctpList">
+				<xsl:apply-templates select="ctpList"/>
+			</xsl:if>
 		</div>
 	</xsl:template>
-	
 	<xsl:template match="ftpInv">
 		<div style="position:relative;left:65px">
 			<table border="1">
@@ -929,7 +924,7 @@
 							<th bgcolor="ffff99">vendorExtensions</th>
 						</xsl:if>
 					</tr>
-						<tr>
+					<tr>
 						<td>
 							<xsl:value-of select="ftpNm"/>
 						</td>
@@ -1022,12 +1017,11 @@
 				</body>
 			</table>
 			<br/>
-			<xsl:if test="ctpInv">
-				<xsl:apply-templates select="ctpInv"/>
+			<xsl:if test="ctpList">
+				<xsl:apply-templates select="ctpList"/>
 			</xsl:if>
 		</div>
 	</xsl:template>
-	
 	<xsl:template match="pgpInv">
 		<div style="position:relative;left:65px">
 			<table border="1">
@@ -1080,7 +1074,7 @@
 							<th bgcolor="ffff99">vendorExtensions</th>
 						</xsl:if>
 					</tr>
-						<tr>
+					<tr>
 						<td>
 							<xsl:value-of select="pgpNm"/>
 						</td>
@@ -1164,7 +1158,6 @@
 			</table>
 		</div>
 	</xsl:template>
-	
 	<xsl:template match="epgpInv">
 		<div style="position:relative;left:65px">
 			<table border="1">
@@ -1217,7 +1210,7 @@
 							<th bgcolor="ffff99">vendorExtensions</th>
 						</xsl:if>
 					</tr>
-						<tr>
+					<tr>
 						<td>
 							<xsl:value-of select="epgpNm"/>
 						</td>
@@ -1301,7 +1294,6 @@
 			</table>
 		</div>
 	</xsl:template>
-		
 	<xsl:template match="sncInv">
 		<div style="position:relative;left:65px">
 			<table border="3" bordercolor="FF9999">
@@ -1370,7 +1362,7 @@
 						</xsl:if>
 					</tr>
 					<tr>
-					<td>
+						<td>
 							<xsl:value-of select="sncNm"/>
 						</td>
 						<xsl:if test="sncAttrs/discoveredName">
@@ -1453,17 +1445,17 @@
 								<xsl:value-of select="sncAttrs/networkRouted"/>
 							</td>
 						</xsl:if>
-							<xsl:if test="sncAttrs/networkRouted">
+						<xsl:if test="sncAttrs/networkRouted">
 							<td>
 								<xsl:value-of select="sncAttrs/networkAccessDomain"/>
 							</td>
 						</xsl:if>
-							<xsl:if test="sncAttrs/alarmReportingIndicator">
+						<xsl:if test="sncAttrs/alarmReportingIndicator">
 							<td>
 								<xsl:value-of select="sncAttrs/alarmReportingIndicator"/>
 							</td>
 						</xsl:if>
-							<xsl:if test="sncAttrs/fixed">
+						<xsl:if test="sncAttrs/fixed">
 							<td>
 								<xsl:value-of select="sncAttrs/fixed"/>
 							</td>
@@ -1479,7 +1471,6 @@
 			<br/>
 		</div>
 	</xsl:template>
-	
 	<xsl:template match="tpPoolInv">
 		<div style="position:relative;left:65px">
 			<table border="3" bordercolor="9999CC">
@@ -1534,9 +1525,8 @@
 						<xsl:if test="tppoolAttrs/vendorExtensions">
 							<th bgcolor="ffff99">vendorExtensions</th>
 						</xsl:if>
-						
 					</tr>
-						<tr>
+					<tr>
 						<td>
 							<xsl:value-of select="tpPoolNm"/>
 						</td>
@@ -1575,7 +1565,7 @@
 								<xsl:value-of select="tppoolAttrs/resourceState"/>
 							</td>
 						</xsl:if>
-							<xsl:if test="tppoolAttrs/alarmReportingIndicator">
+						<xsl:if test="tppoolAttrs/alarmReportingIndicator">
 							<td>
 								<xsl:value-of select="tppoolAttrs/alarmReportingIndicator"/>
 							</td>
@@ -1585,7 +1575,7 @@
 								<xsl:value-of select="tppoolAttrs/holderType"/>
 							</td>
 						</xsl:if>
-							<xsl:if test="tppoolAttrs/acceptableEquipmentTypeList">
+						<xsl:if test="tppoolAttrs/acceptableEquipmentTypeList">
 							<td>
 								<xsl:value-of select="tppoolAttrs/acceptableEquipmentTypeList"/>
 							</td>
@@ -1620,7 +1610,6 @@
 			</table>
 		</div>
 	</xsl:template>
-	
 	<xsl:template match="ctpInv">
 		<div style="position:relative;left:85px">
 			<table border="3" bordercolor="CCFFFF">
@@ -1792,12 +1781,11 @@
 								<xsl:value-of select="ctpAttrs/vendorExtensions"/>
 							</td>
 						</xsl:if>
-						</tr>
+					</tr>
 				</body>
 			</table>
 		</div>
 	</xsl:template>
-	
 	<xsl:template match="eqInv">
 		<div style="position:relative;left:85px">
 			<table border="3" bordercolor="9999FF">
@@ -1846,16 +1834,16 @@
 						<xsl:if test="eqAttrs/installedVersion">
 							<th bgcolor="ffff99">installedVersion</th>
 						</xsl:if>
-							<xsl:if test="eqAttrs/manufacturer">
+						<xsl:if test="eqAttrs/manufacturer">
 							<th bgcolor="ffff99">manufacturer</th>
 						</xsl:if>
-							<xsl:if test="eqAttrs/protectionRole">
+						<xsl:if test="eqAttrs/protectionRole">
 							<th bgcolor="ffff99">protectionRole</th>
 						</xsl:if>
-							<xsl:if test="eqAttrs/protectionRoleSchemeState">
+						<xsl:if test="eqAttrs/protectionRoleSchemeState">
 							<th bgcolor="ffff99">protectionRoleSchemeState</th>
 						</xsl:if>
-							<xsl:if test="eqAttrs/manufacturerDate">
+						<xsl:if test="eqAttrs/manufacturerDate">
 							<th bgcolor="ffff99">manufacturerDate</th>
 						</xsl:if>
 						<xsl:if test="eqAttrs/vendorExtensions">
@@ -1961,12 +1949,11 @@
 								<xsl:value-of select="eqAttrs/vendorExtensions"/>
 							</td>
 						</xsl:if>
-						</tr>
+					</tr>
 				</body>
 			</table>
 		</div>
 	</xsl:template>
-
-
 </xsl:stylesheet>
 <!-- web27705.mail.ukl.yahoo.com uncompressed/chunked Sun Sep 23 07:48:15 GMT 2007 -->
+<!-- web50911.mail.re2.yahoo.com uncompressed/chunked Mon Sep 24 01:26:40 PDT 2007 -->
