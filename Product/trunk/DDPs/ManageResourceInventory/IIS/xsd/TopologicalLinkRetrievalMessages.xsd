@@ -174,22 +174,21 @@
     </xsd:annotation>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getAllTopologicalLinksOfFdRequest">
+  <xsd:element name="getAllTopologicalLinksOfFdRequest" type="tns:getAllTopologicalLinksOfFdRequest_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAllTopologicalLinksOfFd operation</p>
-        <p>This operation .</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getAllTopologicalLinksOfFdResponse">
+  <xsd:element name="getAllTopologicalLinksOfFdResponse" type="tns:getAllTopologicalLinksOfFdResponse_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure of the getAllTopologicalLinksOfFd operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getAllTopologicalLinksOfFdException">
+  <xsd:element name="getAllTopologicalLinksOfFdException" type="ExceptionProfile3_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getAllTopologicalLinksOfFd operation</p>
@@ -371,4 +370,53 @@
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================== -->
+
+<!-- ===================== getAllTopologicalLinksOfFd Request/Response Messages ========= -->
+  <xsd:complexType name="getAllTopologicalLinksOfFdRequest_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        This service returns a list of TopologicalLinks (at the encapsulation
+        layer) which are terminated at the Flow Domain whose name is 
+        passed as a parameter.
+        Raises globaldefs::ProcessingFailureException
+        EXCPT_NOT_IMPLEMENTED - Raised if the entire request is not supported 
+        by the EMS or the request with the specified input parameters 
+        is not supported.
+        EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+        failure
+        EXCPT_INVALID_INPUT - Raised when flowDomainName does not reference a 
+        FlowDomain object
+        EXCPT_ENTITY_NOT_FOUND - Raised when flowDomainName references an object that
+        does not exist
+        EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is lost
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="flowDomainName" type="nam:NamingAttributes_T">
+        <xsd:annotation>
+          <xsd:documentation>
+             The name of the Flow Domain.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="getAllTopologicalLinksOfFdResponse_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        This is the response of the getAllTopologicalLinksOfFd operation.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="topoList" type="tl:TopologicalLinkList_T">
+        <xsd:annotation>
+          <xsd:documentation>
+             List of topological links.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
 </xsd:schema>
