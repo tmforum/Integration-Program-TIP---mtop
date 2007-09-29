@@ -1,0 +1,30 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:m="http://www.tmforum.org/xsd/WsDgSamples/Iterator/v1" xmlns:m1="http://www.tmforum.org/mtossj/ws/aservice" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:rr="http://www.tmforum.org/xsd/WsDgSamples/RequestResponse/v1" xmlns:o="http://www.tmforum.org/xsd/WsDgSamples/Common/Object/v1" xsi:schemaLocation="http://schemas.xmlsoap.org/soap/envelope/ http://schemas.xmlsoap.org/soap/envelope/ http://www.tmforum.org/xsd/WsDgSamples/Iterator/v1 IteratorMessagesV1-0.xsd">
+  <SOAP-ENV:Header>
+    <wsa:To>http://host:port/iterator/sc</wsa:To>
+    <wsa:Action>http://www.tmforum.org/xsd/WsDgSamples/Iterator/v1-0/getNextResponse</wsa:Action>
+  </SOAP-ENV:Header>
+  <SOAP-ENV:Body>
+    <m:getNextResponse>
+      <m:sequence>2</m:sequence>
+      <m:endOfReply>true</m:endOfReply>
+      <m:iteratorId>123456</m:iteratorId>
+      <m:iteratorEpr>
+        <wsa:Address>http://localhost/IteratorWS</wsa:Address>
+      </m:iteratorEpr>
+      <!-- Insert here the response payload of the operation -->
+      <m1:operationResponse>
+        <rr:getObjectResponse>
+          <rr:listOfObj>
+            <o:obj>
+              <o:att1>string</o:att1>
+              <o:att2>true</o:att2>
+              <o:vendorExtension xmlns:vendor="http://www.vendor.com/object">
+                <vendor:attribute1>test</vendor:attribute1>
+              </o:vendorExtension>
+            </o:obj>
+          </rr:listOfObj>
+        </rr:getObjectResponse>
+      </m1:operationResponse>
+    </m:getNextResponse>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Framework</p>
+      <p>Module: Dataset XSD Module</p>
+      <p>Description: This module contains the XML Schema definitions of generic mTOP simple data types.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================= -->
+  <xsd:complexType name="AliasNameList">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the definition of the object attribute that contains the list of aliases for the network entity. The attribute is a name-value list. The name refers to the type of alias (e.g., nativeEMSname) and the value component holds the alias itself</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="alias" minOccurs="0" maxOccurs="unbounded">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="aliasName" type="xsd:string"/>
+            <xsd:element name="aliasValue" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:simpleType name="DiscoveredName">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the definition of the name of the object when its existence is first published on the CCV but only in the case where the OS that publishes the object on the CCV is not the naming OS. If the naming OS first publishes the object on the CCV, this attribute may be left empty.</p>
+        <p>The discovered name is assumed to be unique from the perspective of the publishing OS.</p>
+        <p>The discovered name published on the CCV does not necessarily need to be the name of the object as discovered by the OS from the subtending network.</p>
+        <p>There are no specific rules concerning the relationship between the "name" and "discovered name" of the object. They could be set to the same value or they could be different.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================ -->
+  <xsd:simpleType name="Location">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The location is the geographic location. This is a free format string and can be an empty string. The attribute has no impact on the operation of the system. It is a readonly attribute.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="Manufacturer">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The resource manufacturer name.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="ManufacturerDate">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The manufacturerDate attribute identifies the production date of the resource.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:date"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="MeiAttributes">
+    <xsd:annotation>
+      <xsd:documentation>This attribute is used when a object instance is embedded in the inventory
+			layout payload of a Multi-Event Inventory (MEI) notification.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="neTime" type="xsd:date" minOccurs="0" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This is the time at which the NE detected the inventory change (if available)</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="eventIndication" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This is an indication of the type of inventory update.</p>
+            <p>Possible values are Object Creation (OC), Object Discovery (ODsc), Object Deletion (OD), 
+				  Attribute Value Change (AVC), State Change (SC) and AVC_SC_and_Childern. Only the acronym (e.g., OC) 
+				  is used in the actual attribute value. The following conventions apply:</p>
+            <p>If an object creation or object discovery indicator is applied to a parent object, 
+					it implicitly applies to all the children, i.e., the OS sending the notification only needs 
+					to set the indicator attribute in the parent object.</p>
+            <p>If an object deletion is applied to a parent object, it is assumed that all the children 
+					are also deleted. The childern should not be listed.</p>
+            <p>The AVC_SC_and_Childern indication may be applied to a parent object to imply that there 
+					may be AVC or SC changes to the parent and some or all of the children.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="NameValue">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The strings used for the value field of a hierarchical name will be at most 1024 characters (from ISO8859) long with white space character allowed in the value but with no leading or trailing spaces. Value strings are case sensitive.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="NamingOs">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the object attribute definition to identify the name of the OS that provided the unique MTOSI name for the object. It is assumed that each object (that is published on the CCV) has a unique naming OS. This attribute is optional in a point to point NMS-EMS paradigm.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="NetworkAccessDomain">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A free-format string used to associate a resource to a Network Access Domain.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="ObjectType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the definition of all the object types. It is left as a string for maximum compatibility.</p>
+        <p>Acceptable values for known object types are: CTP, EH, EQ, FTP, GTP, MD, ME, MLSN, OS, PGP, PTP, SNC, TL, TP</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="Owner">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the definition of the object attribute that represents an identifier for the owner of the object.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="ProductName">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The product/type name</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="ServiceStateEnum">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="IN_SERVICE">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The entity has been put into operation and is operating as provisioned (completely or partially).</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="OUT_OF_SERVICE">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The entity is entirely not capable of performing its provisioned functions and is not restricted by administrative actions.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="OUT_OF_SERVICE_BY_MAINTENANCE">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The entity has been taken intentionally out of service by a management action.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SERV_NA">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The service state is not applicable.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="ServiceState">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This object attribute indicates basic administration state of equipment and OS objects.
+      Also, this object attribute accepts Qualifiable extension.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:ServiceStateEnum">
+        <xsd:attribute name="qualifier" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="UserLabel">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the definition of the object attribute that represents a provisionable, "user friendly" name for the object. The user label is filled by the naming OS.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+</xsd:schema>

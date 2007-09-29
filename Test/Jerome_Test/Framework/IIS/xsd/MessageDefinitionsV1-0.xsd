@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:hdr="http://www.tmforum.org/mtop/fmw/xsd/hdr/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Framework</p>
+      <p>Module: XSD Aggregate Module</p>
+      <p>Description: This module contains the XML Schema definitions of all the generic mTOP XML message structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:complexType name="BaseExceptionMessage" abstract="false">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The (abstract) base type definition of all exception messages.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="reason" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>A string indicating further details about the exception. It is a free format string filled by the OS.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:complexType name="ExceptionProfile1">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllManagedElementNamesPassingFilter operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice>
+      <xsd:element name="exceptionNotImplemented" type="tns:BaseExceptionMessage">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Raised by OS for an optional operation that is not implemented</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="exceptionInternalError" type="tns:BaseExceptionMessage">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Raised in case of non-specific OS internal failure</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="exceptionInvalidInput" type="tns:BaseExceptionMessage">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Raised when one or many operation input (request) parameters are invalid</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="exceptionTooManyOpenIterators" type="tns:BaseExceptionMessage">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Raised when data retrieval iterator capacity is full</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="exceptionEntityNotFound" type="tns:BaseExceptionMessage">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Raised when one or many operation input (request) parameters do not refer to an existing object</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="exceptionCommunicationFailure" type="tns:BaseExceptionMessage">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:choice>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:complexType name="AllExceptionTypes">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Reference to all supported exception types.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice>
+      <xsd:element name="exceptionNotImplemented" type="tns:BaseExceptionMessage">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Raised by OS for an optional operation that is not implemented</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="exceptionInternalError" type="tns:BaseExceptionMessage">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Raised in case of non-specific OS internal failure</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="exceptionInvalidInput" type="tns:BaseExceptionMessage">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Raised when one or many operation input (request) parameters are invalid</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="exceptionTooManyOpenIterators" type="tns:BaseExceptionMessage">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Raised when data retrieval iterator capacity is full</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="exceptionEntityNotFound" type="tns:BaseExceptionMessage">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Raised when one or many operation input (request) parameters do not refer to an existing object</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="exceptionCommunicationFailure" type="tns:BaseExceptionMessage">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:choice>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:complexType name="GetAllObjectNamesException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Generic exception message structure for all object names retrieval.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice>
+      <xsd:element name="exceptionNotImplemented" type="tns:BaseExceptionMessage">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Raised by OS for an optional operation that is not implemented</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="exceptionInternalError" type="tns:BaseExceptionMessage">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Raised in case of non-specific OS internal failure</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="exceptionInvalidInput" type="tns:BaseExceptionMessage">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Raised when one or many operation input (request) parameters are invalid</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="exceptionCommunicationFailure" type="tns:BaseExceptionMessage">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:choice>
+  </xsd:complexType>
+  <!-- ================== -->
+  <xsd:complexType name="GetAllDataIterator">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Generic request message structure for all data iterator operations</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:complexType name="GetAllDataIteratorException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Generic exception message structure for all data iterator retrieval.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice>
+      <xsd:element name="exceptionNotImplemented" type="tns:BaseExceptionMessage">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Raised by OS for an optional operation that is not implemented</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="exceptionInternalError" type="tns:BaseExceptionMessage">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Raised in case of non-specific OS internal failure</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="exceptionInvalidInput" type="tns:BaseExceptionMessage">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Raised when one or many operation input (request) parameters are invalid</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="exceptionCommunicationFailure" type="tns:BaseExceptionMessage">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:choice>
+  </xsd:complexType>
+</xsd:schema>

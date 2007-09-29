@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- TMF NGOSS WS Design Guidelines - Copyright TeleManagement Forum 2007 -->
+<wsdl:definitions xmlns:tns="http://www.tmforum.org/mtop/fmw/wsdl/notcpp/v1-0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsnt="http://docs.oasis-open.org/wsn/bw-2" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" name="TMF-CreatePullPointV1-0" targetNamespace="http://www.tmforum.org/mtop/fmw/wsdl/notcpp/v1-0">
+  <wsdl:documentation>
+    <p>DDP: Framework</p>
+    <p>Module: CreatePullPoint Service Interface WSDL Module</p>
+    <p>Description: This module contains the mTOP CreatePullPoint Service Interface WSDL binding and service definitions based on the OASIS WSN v1.3 Base Notification CreatePullPoint WSDL portType definitions.</p>
+    <p>Version: 1.0</p>
+  </wsdl:documentation>
+  <wsdl:import namespace="http://docs.oasis-open.org/wsn/bw-2" location="http://docs.oasis-open.org/wsn/bw-2.wsdl"/>
+  <wsdl:binding name="CreatePullPointSoapHttpBinding" type="wsnt:CreatePullPoint">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsaw:UsingAddressing wsdl:required="true"/>
+    <wsdl:operation name="CreatePullPoint">
+      <soap:operation soapAction="CreatePullPoint" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="UnableToCreatePullPointFault">
+        <soap:fault name="UnableToCreatePullPointFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="CreatePullPointSoapJmsBinding" type="wsnt:CreatePullPoint">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/jms"/>
+    <wsaw:UsingAddressing wsdl:required="true"/>
+    <wsdl:operation name="CreatePullPoint">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="UnableToCreatePullPointFault">
+        <soap:fault name="UnableToCreatePullPointFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CreatePullPoint">
+    <wsdl:documentation/>
+    <wsdl:port name="CreatePullPointHttpPort" binding="tns:CreatePullPointSoapHttpBinding">
+      <soap:address location="http://localhost/CreatePullPointV1-0"/>
+    </wsdl:port>
+    <wsdl:port name="CreatePullPointJmsPort" binding="tns:CreatePullPointSoapJmsBinding">
+      <soap:address location="jms://localhost/CreatePullPointV1-0"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

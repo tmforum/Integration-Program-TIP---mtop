@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/mepbn/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/mepbn/v1" xmlns:mep="http://www.tmforum.org/mtop/fmw/xsd/mep/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Framework</p>
+      <p>Module: XSD Aggregate Module</p>
+      <p>Description: This module contains the XML Schema definitions of the mTOP RequestReponseWithBatchNotification operation base messages.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================= -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/mep/v1" schemaLocation="MepDefinitionsV1-0.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" schemaLocation="MessageDefinitionsV1-0.xsd"/>
+  <!-- ================= -->
+  <xsd:complexType name="OperationWithBatchNotificationRequest" abstract="true">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The base definition of the "operation"WithBatchNotification operation request message</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="howMany" type="mep:HowMany" nillable="true" minOccurs="0"/>
+      <xsd:element name="batchNotificationEpr" type="mep:ServiceEndpoint" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>A NotificationConsumer WS end-point to receive pushed batches of data for a bulk retrieval operation</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!--  ============== -->
+  <xsd:complexType name="OperationWithBatchNotificationResponse" abstract="true">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The base definition of the "operation"WithBatchNotification operation response message</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!--  ============== -->
+  <xsd:complexType name="OperationWithBatchNotificationException" abstract="true">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The base definition of the "operation"WithBatchNotification operation exception message</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:choice>
+        <xsd:element name="internalError" type="msg:BaseExceptionMessage"/>
+        <xsd:element name="notImplemented" type="msg:BaseExceptionMessage"/>
+      </xsd:choice>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!--  ============== -->
+  <xsd:complexType name="Notification" abstract="true">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The base definition of the "notification" operation message</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="sequence" type="mep:SequenceNumber"/>
+      <xsd:element name="endOfReply" type="mep:SequenceEndOfReply"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

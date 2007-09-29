@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- TMF NGOSS WS Design Guidelines - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/it/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/it/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:mep="http://www.tmforum.org/mtop/fmw/xsd/mep/v1" xmlns:mepit="http://www.tmforum.org/mtop/fmw/xsd/mepit/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>This XSD module is part of the TMF NGOSS WS DG examples. It can be found in TMF GForge mtossj project SVN repository</p>
+      <p>This XSD Message module includes the XML Schema of all operation messages used in the definition of the generic Iterator NGOSS WS used in the Request-Response with Iterator MEP</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!--  ============== -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" schemaLocation="MessageDefinitionsV1-0.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/mep/v1" schemaLocation="MepDefinitionsV1-0.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/mepit/v1" schemaLocation="MepIteratorDefinitionsV1-0.xsd"/>
+  <!--  ============== -->
+  <xsd:element name="getNextRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The request message of the Iterator getNext operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="iteratorId" type="mepit:IteratorId"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <!--  ============== -->
+  <xsd:element name="getNextResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The response message of the Iterator getNext operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="sequence" type="mep:SequenceNumber"/>
+        <xsd:element name="endOfReply" type="mep:SequenceEndOfReply"/>
+        <xsd:element name="iteratorId" type="mepit:IteratorId"/>
+        <xsd:element name="iteratorEpr" type="mep:ServiceEndpoint"/>
+        <xsd:any namespace="##other" processContents="lax"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <!--  ============== -->
+  <xsd:element name="getNextException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The exception message of the Iterator getNext operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element name="expired" type="msg:BaseExceptionMessage"/>
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <!--  ============== -->
+  <xsd:element name="cancelRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The request message of the cancel Iterator operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="iteratorId" type="mepit:IteratorId"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <!--  ============== -->
+  <xsd:element name="cancelResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The response message of the cancel Iterator operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+    </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <!--  ============== -->
+  <xsd:element name="cancelException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The exception message of the cancel Iterator operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:choice>
+        <xsd:element name="expired" type="msg:BaseExceptionMessage"/>
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <!--  ============== -->
+</xsd:schema>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- TMF NGOSS WS Design Guidelines - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/mep/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/mep/v1" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Framework</p>
+      <p>Module: XSD Dataset Module</p>
+      <p>Description: This module contains the XML Schema definitions of all the mTOP MEP parameter data types.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <xsd:import namespace="http://schemas.xmlsoap.org/ws/2004/08/addressing" schemaLocation="http://schemas.xmlsoap.org/ws/2004/08/addressing"/>
+  <!--  ============== -->
+  <xsd:simpleType name="HowMany">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The maximum number of items per batch as defined by the atomicity/granularity of the data being retrieved</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:unsignedInt"/>
+  </xsd:simpleType>
+  <!--  ============== -->
+  <xsd:simpleType name="SequenceNumber">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The number of a given batch in the sequence of batches of data being retrieved </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:unsignedInt"/>
+  </xsd:simpleType>
+  <!--  ============== -->
+  <xsd:simpleType name="SequenceEndOfReply">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The confirmation that the given batch is the last one in the sequence</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:boolean"/>
+  </xsd:simpleType>
+  <!--  ============== -->
+  <xsd:complexType name="ServiceEndpoint">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The endpoint reference (as in WSA) of the notification consumer WS that consumes the notification of batches</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="wsa:EndpointReferenceType"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="CompressionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Specify if compression of the data is to be performed.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:CompressionEnum">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="CompressionEnum">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Enumeration of supported data compressions. All extensions allowed.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="NO_COMPRESSION"/>
+      <xsd:enumeration value="GZIP"/>
+      <xsd:enumeration value="VENDOR_EXT"/>
+      <xsd:enumeration value="MINOR_EXT"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="PackingType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Specify if the file(s) are to be packed.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:PackingEnum">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="PackingEnum">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Enumeration of supported packing/packaging. All extensions allowed.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="NO_PACKING"/>
+      <xsd:enumeration value="ZIP"/>
+      <xsd:enumeration value="TAR"/>
+      <xsd:enumeration value="VENDOR_EXT"/>
+      <xsd:enumeration value="MINOR_EXT"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="FileLocationURI">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The target location of a file transfer. Format is based on generic URI syntax (http://tools.ietf.org/html/rfc3986). Example; ftp://user;auth@host:port/pathname/filename</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:anyURI">
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="FileTransferStatusEnum">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Describe transfer status type. This is used for file transfer protocol notifications.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="IN_PROGRESS"/>
+      <xsd:enumeration value="FAILED"/>
+      <xsd:enumeration value="COMPLETED"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>

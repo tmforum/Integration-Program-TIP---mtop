@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/mepft/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/mepft/v1" xmlns:mep="http://www.tmforum.org/mtop/fmw/xsd/mep/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Framework</p>
+      <p>Module: XSD Aggregate Module</p>
+      <p>Description: This module contains the XML Schema definitions of all the mTOP RequestReponseWithFileTransfer operation base messages.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================= -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/mep/v1" schemaLocation="MepDefinitionsV1-0.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" schemaLocation="MessageDefinitionsV1-0.xsd"/>
+  <!-- ================= -->
+  <xsd:complexType name="OperationWithFileTransferRequest" abstract="true">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The base definition of the "operation"WithFileTransfer operation request message</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="fileLocationURI" type="mep:FileLocationURI"/>
+      <xsd:element name="howMany" type="mep:HowMany" nillable="true" minOccurs="0"/>
+      <xsd:element name="compressionType" type="mep:CompressionType" nillable="true" minOccurs="0"/>
+      <xsd:element name="packingType" type="mep:PackingType" nillable="true" minOccurs="0"/>
+      <xsd:element name="notificationEpr" type="mep:ServiceEndpoint" nillable="true" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!--  ============== -->
+  <xsd:complexType name="OperationWithFileTransferResponse" abstract="true">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The base definition of the "operation"WithFileTransfer operation response message</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!--  ============== -->
+  <xsd:complexType name="OperationWithFileTransferException" abstract="true">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The base definition of the "operation"WithFileTransfer operation exception message</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:choice>
+        <xsd:element name="internalError" type="msg:BaseExceptionMessage"/>
+        <xsd:element name="notImplemented" type="msg:BaseExceptionMessage"/>
+      </xsd:choice>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!--  ============== -->
+  <xsd:complexType name="FileTransferStatusEvent">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The template/base definition of the FileTransferStatus notification (event) message</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="fileLocationURI" type="mep:FileLocationURI" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Name of the file being transferred as provided in the fileLocationURI request parameter of an operation using the RequestResponseWithFileTransfer.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="transferStatus" type="mep:FileTransferStatusEnum" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Indicates file transfer status.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="percentComplete" type="xsd:unsignedInt" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Indicates percent of file transfer complete must be in the range 0..100. Only applies if transferStatus is IN_PROGRESS or COMPLETED. This field is optional otherwise.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="failureReason" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This string will contain the failure reason. Only applies if transferStatus is FAILED
+This field is optional otherwise.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- TMF WS Design Guidelines - Copyright TeleManagement Forum 2007 -->
+<wsdl:definitions name="TMF-IteratorV1-0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.tmforum.org/wsdl/WsDgSamples/Iterator/v1-0" xmlns:its="http://www.tmforum.org/xsd/WsDgSamples/Iterator/v1" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" targetNamespace="http://www.tmforum.org/wsdl/WsDgSamples/Iterator/v1-0">
+  <wsdl:documentation>
+    <p>This WSDL module is part of the TMF NGOSS WS DG examples. It can be found in TMF GForge mtossj project SVN repository</p>
+    <p>This module includes all the WSDL definitions for the TMF NGOSS Iterator Service Interface (NGOSS WS), which is used in the RequestResponseWithIterator exchange pattern.</p>
+    <p>Version: 1.0</p>
+  </wsdl:documentation>
+  <wsdl:types>
+    <xsd:schema>
+      <xsd:import namespace="http://www.tmforum.org/xsd/WsDgSamples/Iterator/v1" schemaLocation="IteratorMessagesV1-0.xsd"/>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="getNextRequest">
+    <wsdl:documentation>
+      <p>The getNext operation request message.</p>
+    </wsdl:documentation>
+    <wsdl:part name="body" element="its:getNextRequest"/>
+  </wsdl:message>
+  <wsdl:message name="getNextResponse">
+    <wsdl:documentation>
+      <p>The getNext operation response message.</p>
+    </wsdl:documentation>
+    <wsdl:part name="body" element="its:getNextResponse"/>
+  </wsdl:message>
+  <wsdl:message name="getNextException">
+    <wsdl:documentation>
+      <p>The getNext operation exception message.</p>
+    </wsdl:documentation>
+    <wsdl:part name="body" element="its:getNextException"/>
+  </wsdl:message>
+  <wsdl:message name="cancelRequest">
+    <wsdl:documentation>
+      <p>The cancel operation request message.</p>
+    </wsdl:documentation>
+    <wsdl:part name="body" element="its:cancelRequest"/>
+  </wsdl:message>
+  <wsdl:message name="cancelResponse">
+    <wsdl:documentation>
+      <p>The cancel operation response message.</p>
+    </wsdl:documentation>
+    <wsdl:part name="body" element="its:cancelResponse"/>
+  </wsdl:message>
+  <wsdl:message name="cancelException">
+    <wsdl:documentation>
+      <p>The cancel operation exception message.</p>
+    </wsdl:documentation>
+    <wsdl:part name="body" element="its:cancelException"/>
+  </wsdl:message>
+  <wsdl:portType name="Iterator">
+    <wsdl:documentation>
+      <p>The porttype of the Iterator service interface</p>
+    </wsdl:documentation>
+    <wsdl:operation name="getNext">
+      <wsdl:input message="tns:getNextRequest"/>
+      <wsdl:output message="tns:getNextResponse"/>
+      <wsdl:fault name="getNextException" message="tns:getNextException"/>
+    </wsdl:operation>
+    <wsdl:operation name="cancel">
+      <wsdl:input message="tns:cancelRequest"/>
+      <wsdl:output message="tns:cancelResponse"/>
+      <wsdl:fault name="cancelException" message="tns:cancelException"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding type="tns:Iterator" name="IteratorSoapHttpBinding">
+    <wsdl:documentation/>
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsaw:UsingAddressing wsdl:required="true"/>
+    <wsdl:operation name="getNext">
+      <soap:operation soapAction="getNext" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getNextException">
+        <soap:fault name="getNextException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="cancel">
+      <soap:operation soapAction="cancel" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="cancelException">
+        <soap:fault name="cancelException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding type="tns:Iterator" name="IteratorSoapJmsBinding">
+    <wsdl:documentation/>
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/jms"/>
+    <wsaw:UsingAddressing wsdl:required="true"/>
+    <wsdl:operation name="getNext">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getNextException">
+        <soap:fault name="getNextException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="cancel">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="cancelException">
+        <soap:fault name="cancelException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Iterator">
+    <wsdl:documentation/>
+    <wsdl:port name="IteratorHttpPort" binding="tns:IteratorSoapHttpBinding">
+      <soap:address location="http://localhost/IteratorV1-0"/>
+    </wsdl:port>
+    <wsdl:port name="IteratorJmsPort" binding="tns:IteratorSoapJmsBinding">
+      <soap:address location="jms://localhost/IteratorV1-0"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

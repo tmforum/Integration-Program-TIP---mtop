@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/mepit/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/mepit/v1" xmlns:mep="http://www.tmforum.org/mtop/fmw/xsd/mep/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Framework</p>
+      <p>Module: XSD Aggregate Module</p>
+      <p>Description: This module contains the XML Schema definitions of all the generic mTOP Iterator.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================= -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/mep/v1" schemaLocation="MepDefinitionsV1-0.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" schemaLocation="MessageDefinitionsV1-0.xsd"/>
+  <!-- ================= -->
+  <xsd:simpleType name="IteratorId">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The ID of the data iterator (unique for each client) used for the management of active iterators by the iterator WS</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!--  ============== -->
+  <xsd:complexType name="OperationWithIteratorRequest" abstract="true">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The base definition of the "operation"WithIterator operation request message</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="howMany" type="mep:HowMany" nillable="true" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!--  ============== -->
+  <xsd:complexType name="OperationWithIteratorResponse" abstract="true">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The base definition of the "operation"WithIterator operation response message</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="sequence" type="mep:SequenceNumber"/>
+      <xsd:element name="endOfReply" type="mep:SequenceEndOfReply"/>
+      <xsd:element name="iteratorId" type="tns:IteratorId"/>
+      <xsd:element name="iteratorEpr" type="mep:ServiceEndpoint"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!--  ============== -->
+  <xsd:complexType name="OperationWithIteratorException" abstract="true">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The base definition of the "operation"WithIterator operation exception message</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice>
+      <xsd:element name="internalError" type="msg:BaseExceptionMessage"/>
+      <xsd:element name="expired" type="msg:BaseExceptionMessage"/>
+      <xsd:element name="tooManyIterators" type="msg:BaseExceptionMessage"/>
+      <xsd:element name="notImplemented" type="msg:BaseExceptionMessage"/>
+    </xsd:choice>
+  </xsd:complexType>
+</xsd:schema>

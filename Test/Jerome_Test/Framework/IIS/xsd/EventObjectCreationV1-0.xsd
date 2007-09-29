@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/oc/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/oc/v1" 
+xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" 
+xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" 
+xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" 
+attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Framework</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema definitions of the ObjectCreation event.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="CommonEventInfoV1-0.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/cei/v1"/>
+  <xsd:import schemaLocation="NamingDefinitionsV1-0.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="GeneralDefinitionsV1-0.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
+  <!-- ================ -->
+  <xsd:element name="objectCreation" type="tns:ObjectCreation" substitutionGroup="cei:commonEventInfo">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The element definition of the ObjectCreation event.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:complexType name="ObjectCreation">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The type definition of the ObjectCreation event.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="cei:CommonEventInfo">
+        <xsd:sequence>
+          <xsd:element name="objectType" type="gen:ObjectType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Identifies the type of the object associated with the event.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="objectName" type="nam:NamingAttributes" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Identifies the name of the object associated with the event.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="object" type="cei:AnyList" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This definition allows for the full XML object to be inserted here.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================ -->
+</xsd:schema>
