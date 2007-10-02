@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2007 -->
+<wsdl:definitions name="mTOP-ManagementDomainRetrievalV1-0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:mdr="http://www.tmforum.org/mtop/mri/xsd/mdr/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/wsdl/mdr/v1-0" targetNamespace="http://www.tmforum.org/mtop/mri/wsdl/mdr/v1-0">
+  <wsdl:documentation>
+    <p>DDP: ManageResourceInventory</p>
+    <p>Module: ManagementDomainRetrieval Service Interface WSDL Module</p>
+    <p>Description: This module contains all the mTOP ManagementDomainRetrieval Service Interface WSDL definitions.</p>
+    <p>Version: 1.0</p>
+  </wsdl:documentation>
+  <wsdl:types>
+    <xsd:schema>
+      <xsd:import namespace="http://www.tmforum.org/mtop/mri/xsd/mdr/v1" schemaLocation="../xsd/ManagementDomainRetrievalMessagesV1-0.xsd"/>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="getAllManagementDomainNamesRequest">
+    <wsdl:documentation>
+      <p>The getAllManagementDomainNames request message.</p>
+    </wsdl:documentation>
+    <wsdl:part name="mtopBody" element="mdr:getAllManagementDomainNamesRequest"/>
+  </wsdl:message>
+  <wsdl:message name="getAllManagementDomainNamesResponse">
+    <wsdl:documentation>
+      <p>The getAllManagementDomainNames response message.</p>
+    </wsdl:documentation>
+    <wsdl:part name="mtopBody" element="mdr:getAllManagementDomainNamesResponse"/>
+  </wsdl:message>
+  <wsdl:message name="getAllManagementDomainNamesException">
+    <wsdl:documentation>
+      <p>The getAllManagementDomainNames exception message.</p>
+    </wsdl:documentation>
+    <wsdl:part name="mtopBody" element="mdr:getAllManagementDomainNamesException"/>
+  </wsdl:message>
+  <wsdl:message name="getAllManagementDomainsRequest">
+    <wsdl:documentation>
+      <p>The getAllManagementDomains request message.</p>
+    </wsdl:documentation>
+    <wsdl:part name="mtopBody" element="mdr:getAllManagementDomainsRequest"/>
+  </wsdl:message>
+  <wsdl:message name="getAllManagementDomainsResponse">
+    <wsdl:documentation>
+      <p>The getAllManagementDomains response message.</p>
+    </wsdl:documentation>
+    <wsdl:part name="mtopBody" element="mdr:getAllManagementDomainsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="getAllManagementDomainsException">
+    <wsdl:documentation>
+      <p>The getAllManagementDomains exception message.</p>
+    </wsdl:documentation>
+    <wsdl:part name="mtopBody" element="mdr:getAllManagementDomainsException"/>
+  </wsdl:message>
+  <wsdl:message name="getManagementDomainRequest">
+    <wsdl:documentation>
+      <p>The getManagementDomain request message.</p>
+    </wsdl:documentation>
+    <wsdl:part name="mtopBody" element="mdr:getManagementDomainRequest"/>
+  </wsdl:message>
+  <wsdl:message name="getManagementDomainResponse">
+    <wsdl:documentation>
+      <p>The getManagementDomain response message.</p>
+    </wsdl:documentation>
+    <wsdl:part name="mtopBody" element="mdr:getManagementDomainResponse"/>
+  </wsdl:message>
+  <wsdl:message name="getManagementDomainException">
+    <wsdl:documentation>
+      <p>The getManagementDomain exception message.</p>
+    </wsdl:documentation>
+    <wsdl:part name="mtopBody" element="mdr:getManagementDomainException"/>
+  </wsdl:message>
+  <wsdl:portType name="ManagementDomainRetrieval">
+    <wsdl:documentation>
+      <p>The ManagementDomainRetrieval porttype (abstract interface) common to both RPC (synchronous) and MSG (asynchronous) based client/server communication patterns.</p>
+    </wsdl:documentation>
+    <wsdl:operation name="getAllManagementDomainNames">
+      <wsdl:input message="tns:getAllManagementDomainNamesRequest"/>
+      <wsdl:output message="tns:getAllManagementDomainNamesResponse"/>
+      <wsdl:fault name="getAllManagementDomainNamesException" message="tns:getAllManagementDomainNamesException"/>
+    </wsdl:operation>
+    <wsdl:operation name="getAllManagementDomains">
+      <wsdl:input message="tns:getAllManagementDomainsRequest"/>
+      <wsdl:output message="tns:getAllManagementDomainsResponse"/>
+      <wsdl:fault name="getAllManagementDomainsException" message="tns:getAllManagementDomainsException"/>
+    </wsdl:operation>
+    <wsdl:operation name="getManagementDomain">
+      <wsdl:input message="tns:getManagementDomainRequest"/>
+      <wsdl:output message="tns:getManagementDomainResponse"/>
+      <wsdl:fault name="getManagementDomainException" message="tns:getManagementDomainException"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ManagementDomainRetrievalSoapHttpBinding" type="tns:ManagementDomainRetrieval">
+    <wsdl:documentation>
+      <p>SOAP HTTP binding definitions (concrete interface) of the operations defined in portType</p>
+    </wsdl:documentation>
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsaw:UsingAddressing wsdl:required="true"/>
+    <wsdl:operation name="getAllManagementDomainNames">
+      <soap:operation soapAction="getAllManagementDomainNames" style="document"/>
+      <wsdl:input>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getAllManagementDomainNamesException">
+        <soap:fault name="getAllManagementDomainNamesException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getAllManagementDomains">
+      <soap:operation soapAction="getAllManagementDomains" style="document"/>
+      <wsdl:input>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getAllManagementDomainsException">
+        <soap:fault name="getAllManagementDomainsException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getManagementDomain">
+      <soap:operation soapAction="getManagementDomain" style="document"/>
+      <wsdl:input>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getManagementDomainException">
+        <soap:fault name="getManagementDomainException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ManagementDomainRetrievalSoapJmsBinding" type="tns:ManagementDomainRetrieval">
+    <wsdl:documentation>
+      <p>SOAP JMS binding definitions (concrete interface) of the operations defined in portType</p>
+    </wsdl:documentation>
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/jms"/>
+    <wsdl:operation name="getAllManagementDomainNames">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getAllManagementDomainNamesException">
+        <soap:fault name="getAllManagementDomainNamesException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getAllManagementDomains">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getAllManagementDomainsException">
+        <soap:fault name="getAllManagementDomainsException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getManagementDomain">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getManagementDomainException">
+        <soap:fault name="getManagementDomainException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ManagementDomainRetrieval">
+    <wsdl:documentation>
+      <p>Example of the ManagementDomainRetrieval WSDL Service definition as a deployment example of this mTOP Service Interface. It is expected to be modified to match the specific deployment configuration in a service provider's CCV.</p>
+    </wsdl:documentation>
+    <wsdl:port name="ManagementDomainRetrievalSoapJms" binding="tns:ManagementDomainRetrievalSoapJmsBinding">
+      <soap:address location="jms://aserver/mtosi/ManagementDomainRetrieval"/>
+    </wsdl:port>
+    <wsdl:port name="ManagementDomainRetrievalSoapHttp" binding="tns:ManagementDomainRetrievalSoapHttpBinding">
+      <soap:address location="http://aserver/mtosi/ManagementDomainRetrieval"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

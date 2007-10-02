@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/rir/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/rir/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:it="http://www.tmforum.org/mtop/fmw/xsd/mepit/v1" xmlns:ft="http://www.tmforum.org/mtop/fmw/xsd/mepft/v1" xmlns:bn="http://www.tmforum.org/mtop/fmw/xsd/mepbn/v1" xmlns:invdata="http://www.tmforum.org/mtop/nrf/xsd/invdata/v1" 
+attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: ManageResourceInventory</p>
+      <p>Module:  Message XSD Module</p>
+      <p>Description: This module contains the XML Schema type definitions of all the mTOP ResourceInventoryRetrieval SI XML message structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitionsV1-0.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitionsV1-0.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/MepBatchNotificationDefinitionsV1-0.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/mepbn/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/MepIteratorDefinitionsV1-0.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/mepit/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/MepFileTransferDefinitionsV1-0.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/mepft/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/ResourceInventoryLayoutV1-0.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/invdata/v1"/> 
+  <!-- ================ -->
+  <xsd:element name="getInventoryWithIteratorRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getInventoryWithIterator operation</p>
+        <p>This operation .</p>
+        <p>This operation is the first operation of the RequestResponseWithIterator MEP.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:extension base="it:OperationWithIteratorRequest">
+          <xsd:sequence>
+            <!-- Add operation specific input parameters here -->
+        <xsd:element name="filter" type="tns:SimpleFilter" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>defines the subset of the total inventory to be returned to the requesting OS.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="diffDateAndTime" type="xsd:dateTime" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>All objects with a modification date equal to or greater than this value are in scope of this operation.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+          </xsd:sequence>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getInventoryWithIteratorResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getInventoryWithIterator operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:extension base="it:OperationWithIteratorResponse">
+          <xsd:sequence>
+            <!-- Add operation specific output parameters here -->
+        <xsd:element name="inventoryData" type="invdata:InventoryData" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The inventory data which may vary based on the MEP. Refer to the TMF 854 XML Solution Set for more details. Also, note that the atomic elements of the inventory data XML representation are all the following top-level objects: MD, ME, MLSN, OS, TL, and TMD. It means that all top-level object instances must be fully encapsulated in one batch when the MEP involves multiple responses.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+          </xsd:sequence>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getInventoryWithIteratorException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getInventoryWithIterator operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:extension base="it:OperationWithIteratorException"/>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getInventoryWithBatchNotificationsRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getInventoryWithBatchNotifications operation</p>
+        <p>This operation .</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <!-- Add operation specific input parameters here -->
+        <xsd:element name="filter" type="tns:SimpleFilter" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>defines the subset of the total inventory to be returned to the requesting OS.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="diffDateAndTime" type="xsd:dateTime" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>All objects with a modification date equal to or greater than this value are in scope of this operation.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getInventoryWithBatchNotificationsResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getInventoryWithBatchNotifications operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <!-- Add operation specific output parameters here -->
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getInventoryWithBatchNotificationsException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getInventoryWithBatchNotifications operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:choice>
+        <!-- Add operation specific exception types here -->
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getInventoryWithFileTransferRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getInventoryWithFileTransfer operation</p>
+        <p>This operation .</p>
+        <p>This operation is the first operation of the RequestResponseWithFileTransfer MEP.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:extension base="ft:OperationWithFileTransferRequest">
+          <xsd:sequence>
+            <!-- Add operation specific input parameters here -->
+        <xsd:element name="filter" type="tns:SimpleFilter" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>defines the subset of the total inventory to be returned to the requesting OS.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="diffDateAndTime" type="xsd:dateTime" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>All objects with a modification date equal to or greater than this value are in scope of this operation.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+          </xsd:sequence>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getInventoryWithFileTransferResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getInventoryWithFileTransfer operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:extension base="ft:OperationWithFileTransferResponse">
+          <xsd:sequence>
+            <!-- Add operation specific output parameters here -->
+          </xsd:sequence>
+        </xsd:extension>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getInventoryWithFileTransferException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getInventoryWithFileTransfer operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:extension base="ft:OperationWithFileTransferException"/>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================= -->
+  <!--         All local types       -->
+  <!-- ================= -->
+  <xsd:simpleType name="Granularity">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Filter attribute used to select the granularity of the Inventory report.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="NAME">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Retrieve the name only.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ATTRS">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Retrieve the name and the other object attributes.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="FULL">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Retrieve the name, the object attributes adn all the relationsship object pointers.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="SimpleFilter">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The data structure of the Inventory Retrieval filter. Some examples are listed in the following table.
+        <table cellspacing="0" cellpadding="0">
+            <tr>
+              <td valign="top">
+                <p>
+                  <b>Filter Constraint</b>
+                </p>
+              </td>
+              <td valign="top">
+                <p>
+                  <b>Simple Filter</b>
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <p>Given an ME name (e.g., md1/ME123), get all the EHs and Equipment
+          Attributes</p>
+              </td>
+              <td valign="top">
+                <p>BaseInstanceList: { (MD=md1;ME=ME123)}</p>
+                <p>IncludedObjectTypes: { (EH, ATTRS), (EQ, ATTRS) }</p>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <p>Given an ME name
+          (e.g., md1/ME123), get all the contained Ehs Attributes and the ME attibutes</p>
+              </td>
+              <td valign="top">
+                <p>BaseInstanceList: { (MD=md1;ME=ME123) }</p>
+                <p>IncludedObjectTypes: { (ME, ATTRS), (EH, ATTRS) }</p>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <p>Get all MEs and
+          associated attributes (within the entire inventory known to the target OS)</p>
+              </td>
+              <td valign="top">
+                <p>BaseInstanceList: { }</p>
+                <p>IncludedObjectTypes { (ME, ATTRS) }</p>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <p>Get all ME, OS
+          and MD names (within the entire inventory known to the target OS)</p>
+              </td>
+              <td valign="top">
+                <p>BaseInstanceList: { }</p>
+                <p>IncludedObjectTypes: { (ME, NAME), (MD, NAME), (OS, NAME) }</p>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <p>Given an EH name
+          (e.g., md1/ME123/ACME7), get all the contained Equipment (and relationship
+          pointers)</p>
+              </td>
+              <td valign="top">
+                <p>BaseInstanceList: { (MD=md1;ME=ME123;EH=ACME7) }</p>
+                <p>IncludedObjectTypes: { (EQ,FULL)}</p>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <p>Given a PTP name
+          (e.g., md1/ME123/PTPxyz), get the PTP Attributes</p>
+              </td>
+              <td valign="top">
+                <p>BaseInstanceList: { (MD=md1;ME=ME123;PTP=PTPxyz) }</p>
+                <p>IncludedObjectTypes: { (PTP, ATTRS) }</p>
+              </td>
+            </tr>
+          </table>
+        </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="baseInstance" type="nam:NamingAttributes" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This attribute identifies a list of base object instances for the subtrees to be retrieved. BaseInstanceList is a list of serialized MTOSI names. If the BaseInstanceList is left empty then all the nodes at the top of the MTOSI instance tree are selected (i.e., all MDs, TMDs, and OSs are selected). Specification of the BaseInstanceList does not select any objects in and of itself. In order to select specific objects, one needs to specify the IncludedObjectTypes.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="includedObjectType" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This attribute identifies the type of objects contained under the selected base object instances that are to be included in the returned inventory file. The base object itself is included only if the type of the base instance appears in the IncludedObjectTypes list. If no included object types are listed, then the entire subtree under the base object instance is returned. For each included object type, one needs to indicate whether.
+            <ul>
+                <li>just the name,</li>
+                <li>all the associated attributes (including the name), or</li>
+                <li>the associated attributes and relationship pointers are to be returned for each instance.</li>
+              </ul>
+            The IncludedObjectTypes need to be picked such that each selected base class has a single (connected) subtree below it. For example, if all the EHs under a given MD where needed, the requesting OS would need to list the given MD as a base instance and put ME and EH in the IncludedObjectTypes list. The requesting OS could just request the names of the MEs to reduce the size of the returned file.
+            </p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="objectType" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>Specify the object type acronym.  The ";" is used as a separator, and "=" is used to associate a value with a type of object. For example, MD=md1;ME=ME123;EH=ACME7 identifies an equipment holder within managed element ME123 within management domain md1. The relative name of the equipment holder is ACME7.</p>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="granularity" type="tns:Granularity">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>Specify the granularity of the inventory report.</p>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

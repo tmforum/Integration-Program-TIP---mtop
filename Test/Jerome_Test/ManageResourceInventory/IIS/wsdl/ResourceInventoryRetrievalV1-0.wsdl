@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2007 -->
+<wsdl:definitions name="mTOP-ResourceInventoryRetrievalV1-0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:rir="http://www.tmforum.org/mtop/mri/xsd/rir/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/wsdl/rir/v1-0" targetNamespace="http://www.tmforum.org/mtop/mri/wsdl/rir/v1-0">
+  <wsdl:documentation>
+    <p>DDP: ManageResourceInventory</p>
+    <p>Module: ResourceInventoryRetrieval Service Interface WSDL Module</p>
+    <p>Description: This module contains all the mTOP ResourceInventoryRetrieval Service Interface WSDL definitions.</p>
+    <p>Version: 1.0</p>
+  </wsdl:documentation>
+  <wsdl:types>
+    <xsd:schema>
+      <xsd:import namespace="http://www.tmforum.org/mtop/mri/xsd/rir/v1" schemaLocation="../xsd/ResourceInventoryRetrievalMessagesV1-0.xsd"/>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="getInventoryWithIteratorRequest">
+    <wsdl:documentation>
+      <p>The getInventoryWithIterator request message.</p>
+    </wsdl:documentation>
+    <wsdl:part name="mtopBody" element="rir:getInventoryWithIteratorRequest"/>
+  </wsdl:message>
+  <wsdl:message name="getInventoryWithIteratorResponse">
+    <wsdl:documentation>
+      <p>The getInventoryWithIterator response message.</p>
+    </wsdl:documentation>
+    <wsdl:part name="mtopBody" element="rir:getInventoryWithIteratorResponse"/>
+  </wsdl:message>
+  <wsdl:message name="getInventoryWithIteratorException">
+    <wsdl:documentation>
+      <p>The getInventoryWithIterator exception message.</p>
+    </wsdl:documentation>
+    <wsdl:part name="mtopBody" element="rir:getInventoryWithIteratorException"/>
+  </wsdl:message>
+  <wsdl:message name="getInventoryWithBatchNotificationsRequest">
+    <wsdl:documentation>
+      <p>The getInventoryWithBatchNotifications request message.</p>
+    </wsdl:documentation>
+    <wsdl:part name="mtopBody" element="rir:getInventoryWithBatchNotificationsRequest"/>
+  </wsdl:message>
+  <wsdl:message name="getInventoryWithBatchNotificationsResponse">
+    <wsdl:documentation>
+      <p>The getInventoryWithBatchNotifications response message.</p>
+    </wsdl:documentation>
+    <wsdl:part name="mtopBody" element="rir:getInventoryWithBatchNotificationsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="getInventoryWithBatchNotificationsException">
+    <wsdl:documentation>
+      <p>The getInventoryWithBatchNotifications exception message.</p>
+    </wsdl:documentation>
+    <wsdl:part name="mtopBody" element="rir:getInventoryWithBatchNotificationsException"/>
+  </wsdl:message>
+  <wsdl:message name="getInventoryWithFileTransferRequest">
+    <wsdl:documentation>
+      <p>The getInventoryWithFileTransfer request message.</p>
+    </wsdl:documentation>
+    <wsdl:part name="mtopBody" element="rir:getInventoryWithFileTransferRequest"/>
+  </wsdl:message>
+  <wsdl:message name="getInventoryWithFileTransferResponse">
+    <wsdl:documentation>
+      <p>The getInventoryWithFileTransfer response message.</p>
+    </wsdl:documentation>
+    <wsdl:part name="mtopBody" element="rir:getInventoryWithFileTransferResponse"/>
+  </wsdl:message>
+  <wsdl:message name="getInventoryWithFileTransferException">
+    <wsdl:documentation>
+      <p>The getInventoryWithFileTransfer exception message.</p>
+    </wsdl:documentation>
+    <wsdl:part name="mtopBody" element="rir:getInventoryWithFileTransferException"/>
+  </wsdl:message>
+  <wsdl:portType name="ResourceInventoryRetrieval">
+    <wsdl:documentation>
+      <p>The ResourceInventoryRetrieval porttype (abstract interface) common to both RPC (synchronous) and MSG (asynchronous) based client/server communication patterns.</p>
+    </wsdl:documentation>
+    <wsdl:operation name="getInventoryWithIterator">
+      <wsdl:input message="tns:getInventoryWithIteratorRequest"/>
+      <wsdl:output message="tns:getInventoryWithIteratorResponse"/>
+      <wsdl:fault name="getInventoryWithIteratorException" message="tns:getInventoryWithIteratorException"/>
+    </wsdl:operation>
+    <wsdl:operation name="getInventoryWithBatchNotifications">
+      <wsdl:input message="tns:getInventoryWithBatchNotificationsRequest"/>
+      <wsdl:output message="tns:getInventoryWithBatchNotificationsResponse"/>
+      <wsdl:fault name="getInventoryWithBatchNotificationsException" message="tns:getInventoryWithBatchNotificationsException"/>
+    </wsdl:operation>
+    <wsdl:operation name="getInventoryWithFileTransfer">
+      <wsdl:input message="tns:getInventoryWithFileTransferRequest"/>
+      <wsdl:output message="tns:getInventoryWithFileTransferResponse"/>
+      <wsdl:fault name="getInventoryWithFileTransferException" message="tns:getInventoryWithFileTransferException"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ResourceInventoryRetrievalSoapHttpBinding" type="tns:ResourceInventoryRetrieval">
+    <wsdl:documentation>
+      <p>SOAP HTTP binding definitions (concrete interface) of the operations defined in portType</p>
+    </wsdl:documentation>
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsaw:UsingAddressing wsdl:required="true"/>
+    <wsdl:operation name="getInventoryWithIterator">
+      <soap:operation soapAction="getInventoryWithIterator" style="document"/>
+      <wsdl:input>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getInventoryWithIteratorException">
+        <soap:fault name="getInventoryWithIteratorException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getInventoryWithBatchNotifications">
+      <soap:operation soapAction="getInventoryWithBatchNotifications" style="document"/>
+      <wsdl:input>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getInventoryWithBatchNotificationsException">
+        <soap:fault name="getInventoryWithBatchNotificationsException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getInventoryWithFileTransfer">
+      <soap:operation soapAction="getInventoryWithFileTransfer" style="document"/>
+      <wsdl:input>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getInventoryWithFileTransferException">
+        <soap:fault name="getInventoryWithFileTransferException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ResourceInventoryRetrievalSoapJmsBinding" type="tns:ResourceInventoryRetrieval">
+    <wsdl:documentation>
+      <p>SOAP JMS binding definitions (concrete interface) of the operations defined in portType</p>
+    </wsdl:documentation>
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/jms"/>
+    <wsdl:operation name="getInventoryWithIterator">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getInventoryWithIteratorException">
+        <soap:fault name="getInventoryWithIteratorException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getInventoryWithBatchNotifications">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getInventoryWithBatchNotificationsException">
+        <soap:fault name="getInventoryWithBatchNotificationsException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getInventoryWithFileTransfer">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getInventoryWithFileTransferException">
+        <soap:fault name="getInventoryWithFileTransferException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ResourceInventoryRetrieval">
+    <wsdl:documentation>
+      <p>Example of the ResourceInventoryRetrieval WSDL Service definition as a deployment example of this mTOP Service Interface. It is expected to be modified to match the specific deployment configuration in a service provider's CCV.</p>
+    </wsdl:documentation>
+    <wsdl:port name="ResourceInventoryRetrievalSoapJms" binding="tns:ResourceInventoryRetrievalSoapJmsBinding">
+      <soap:address location="jms://aserver/mtosi/ResourceInventoryRetrieval"/>
+    </wsdl:port>
+    <wsdl:port name="ResourceInventoryRetrievalSoapHttp" binding="tns:ResourceInventoryRetrievalSoapHttpBinding">
+      <soap:address location="http://aserver/mtosi/ResourceInventoryRetrieval"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
