@@ -28,16 +28,19 @@ Synchronous (RPC) for HTTP:
   - 6-2_sit_getAllManagedElementsResponse.xml
   - 6-3_sit_getManagedElementsIteratorRequest.xml
   - 6-4_sit_getManagedElementsIteratorResponse.xml
-  - 6-5_sit_getManagedElementsIteratorException.xml
+  - 6-5_sit_getAllManagedElementsException.xml
+  - 6-6_sit_getManagedElementsIteratorException.xml
 
   MultipleBatchResponse (SIT)
   - 7-1_sit_getInventoryRequest.xml
   - 7-2_sit_getInventoryResponse.xml
   - 7-3_sit_getInventoryIteratorRequest.xml
   - 7-4_sit_getInventoryIteratorResponse.xml
-  - 7-5_sit_getInventoryIteratorException.xml
+  - 7-5_sit_getInventoryException.xml
+  - 7-6_sit_getInventoryIteratorException.xml
 
   BulkResponse (SFR)
   - 8-1_sfr_getInventoryRequest.xml
   - 8-2_sfr_getInventoryResponse.xml
   - 8-3_sfb_getInventoryException.xml
+  - 8-4_sfb_batchfile_getInventoryResponse.xml (note a message but a file send via FTP or else)
