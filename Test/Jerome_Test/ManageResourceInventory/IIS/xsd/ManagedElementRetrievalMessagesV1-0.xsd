@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/mer/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/mer/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:it="http://www.tmforum.org/mtop/fmw/xsd/mepit/v1" xmlns:ft="http://www.tmforum.org/mtop/fmw/xsd/mepft/v1" xmlns:bn="http://www.tmforum.org/mtop/fmw/xsd/mepbn/v1" xmlns:me="http://www.tmforum.org/mtop/nrf/xsd/me/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/mer/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/mer/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:it="http://www.tmforum.org/mtop/fmw/xsd/mepit/v1" xmlns:ft="http://www.tmforum.org/mtop/fmw/xsd/mepft/v1" xmlns:bn="http://www.tmforum.org/mtop/fmw/xsd/mepbn/v1" xmlns:me="http://www.tmforum.org/mtop/nrf/xsd/me/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: ManageResourceInventory</p>
@@ -11,6 +11,7 @@
   <!-- ================ -->
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitionsV1-0.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitionsV1-0.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/CommonEventInfoV1-0.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/cei/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/MepBatchNotificationDefinitionsV1-0.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/mepbn/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/MepIteratorDefinitionsV1-0.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/mepit/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/MepFileTransferDefinitionsV1-0.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/mepft/v1"/>
@@ -229,41 +230,72 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getAllManagedElementsWithBatchNotificationsRequest">
+  <xsd:element name="getAllManagedElementsWithBatchNotificationRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the getAllManagedElementsWithBatchNotifications operation</p>
+        <p>Request message structure of the getAllManagedElementsWithBatchNotification operation</p>
         <p>This operation .</p>
+        <p>This operation is the first operation of the RequestResponseWithBatchNotification MEP.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
-      <xsd:sequence>
-        <!-- Add operation specific input parameters here -->
-      </xsd:sequence>
+      <xsd:complexContent>
+        <xsd:extension base="bn:OperationWithBatchNotificationRequest">
+          <xsd:sequence>
+            <!-- Add operation specific input parameters here -->
+            <xsd:element name="mdName" type="nam:NamingAttributes">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>the name of the Management Domain whose contained MEs are being requested</p>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:extension>
+      </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getAllManagedElementsWithBatchNotificationsResponse">
+  <xsd:element name="getAllManagedElementsWithBatchNotificationResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the getAllManagedElementsWithBatchNotifications operation</p>
+        <p>Response message structure of the getAllManagedElementsWithBatchNotification operation</p>
+        <p>Empty message structure as batch of data is received by getAllManagedElementsWithBatchNotificationNotificationBatch notifications</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllManagedElementsWithBatchNotificationEvent" substitutionGroup="bn:operationNotificationBatch">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Notification message structure of a batch of getAllManagedElementsWithBatchNotification operation data</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
-      <xsd:sequence>
-        <!-- Add operation specific output parameters here -->
-      </xsd:sequence>
+      <xsd:complexContent>
+        <xsd:extension base="bn:OperationNotificationBatch">
+          <xsd:sequence>
+            <!-- Add operation specific output parameters here -->
+            <xsd:element name="meList" type="me:ManagedElementList" minOccurs="0">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>The list of MEs</p>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:extension>
+      </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getAllManagedElementsWithBatchNotificationsException">
+  <xsd:element name="getAllManagedElementsWithBatchNotificationException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the getAllManagedElementsWithBatchNotifications operation</p>
+        <p>Exception message structure of the getAllManagedElementsWithBatchNotification operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
-      <xsd:choice>
-        <!-- Add operation specific exception types here -->
-      </xsd:choice>
+      <xsd:complexContent>
+        <xsd:extension base="bn:OperationWithBatchNotificationException"/>
+      </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
@@ -314,41 +346,58 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getAllManagedElementsPassingFilterWithBatchNotificationsRequest">
+  <xsd:element name="getAllManagedElementsPassingFilterWithBatchNotificationRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the getAllManagedElementsPassingFilterWithBatchNotifications operation</p>
+        <p>Request message structure of the getAllManagedElementsPassingFilterWithBatchNotification operation</p>
         <p>This operation .</p>
+        <p>This operation is the first operation of the RequestResponseWithBatchNotification MEP.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
-      <xsd:sequence>
-        <!-- Add operation specific input parameters here -->
-      </xsd:sequence>
+      <xsd:complexContent>
+        <xsd:extension base="bn:OperationWithBatchNotificationRequest">
+          <xsd:sequence>
+            <!-- Add operation specific input parameters here -->
+          </xsd:sequence>
+        </xsd:extension>
+      </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getAllManagedElementsPassingFilterWithBatchNotificationsResponse">
+  <xsd:element name="getAllManagedElementsPassingFilterWithBatchNotificationResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the getAllManagedElementsPassingFilterWithBatchNotifications operation</p>
+        <p>Response message structure of the getAllManagedElementsPassingFilterWithBatchNotification operation</p>
+        <p>Empty message structure as batch of data is received by getAllManagedElementsPassingFilterWithBatchNotificationNotificationBatch notifications</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllManagedElementsPassingFilterWithBatchNotificationEvent" substitutionGroup="bn:operationNotificationBatch">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Notification message structure of a batch of getAllManagedElementsPassingFilterWithBatchNotification operation data</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
-      <xsd:sequence>
-        <!-- Add operation specific output parameters here -->
-      </xsd:sequence>
+      <xsd:complexContent>
+        <xsd:extension base="bn:OperationNotificationBatch">
+          <xsd:sequence>
+            <!-- Add operation specific output parameters here -->
+          </xsd:sequence>
+        </xsd:extension>
+      </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getAllManagedElementsPassingFilterWithBatchNotificationsException">
+  <xsd:element name="getAllManagedElementsPassingFilterWithBatchNotificationException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the getAllManagedElementsPassingFilterWithBatchNotifications operation</p>
+        <p>Exception message structure of the getAllManagedElementsPassingFilterWithBatchNotification operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
-      <xsd:choice>
-        <!-- Add operation specific exception types here -->
-      </xsd:choice>
+      <xsd:complexContent>
+        <xsd:extension base="bn:OperationWithBatchNotificationException"/>
+      </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
@@ -399,41 +448,58 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getAllManagedElementsWrtMlsnWithBatchNotificationsRequest">
+  <xsd:element name="getAllManagedElementsWrtMlsnWithBatchNotificationRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the getAllManagedElementsWrtMlsnWithBatchNotifications operation</p>
+        <p>Request message structure of the getAllManagedElementsWrtMlsnWithBatchNotification operation</p>
         <p>This operation .</p>
+        <p>This operation is the first operation of the RequestResponseWithBatchNotification MEP.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
-      <xsd:sequence>
-        <!-- Add operation specific input parameters here -->
-      </xsd:sequence>
+      <xsd:complexContent>
+        <xsd:extension base="bn:OperationWithBatchNotificationRequest">
+          <xsd:sequence>
+            <!-- Add operation specific input parameters here -->
+          </xsd:sequence>
+        </xsd:extension>
+      </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getAllManagedElementsWrtMlsnWithBatchNotificationsResponse">
+  <xsd:element name="getAllManagedElementsWrtMlsnWithBatchNotificationResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the getAllManagedElementsWrtMlsnWithBatchNotifications operation</p>
+        <p>Response message structure of the getAllManagedElementsWrtMlsnWithBatchNotification operation</p>
+        <p>Empty message structure as batch of data is received by getAllManagedElementsWrtMlsnWithBatchNotificationNotificationBatch notifications</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllManagedElementsWrtMlsnWithBatchNotificationEvent" substitutionGroup="bn:operationNotificationBatch">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Notification message structure of a batch of getAllManagedElementsWrtMlsnWithBatchNotification operation data</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
-      <xsd:sequence>
-        <!-- Add operation specific output parameters here -->
-      </xsd:sequence>
+      <xsd:complexContent>
+        <xsd:extension base="bn:OperationNotificationBatch">
+          <xsd:sequence>
+            <!-- Add operation specific output parameters here -->
+          </xsd:sequence>
+        </xsd:extension>
+      </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getAllManagedElementsWrtMlsnWithBatchNotificationsException">
+  <xsd:element name="getAllManagedElementsWrtMlsnWithBatchNotificationException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the getAllManagedElementsWrtMlsnWithBatchNotifications operation</p>
+        <p>Exception message structure of the getAllManagedElementsWrtMlsnWithBatchNotification operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
-      <xsd:choice>
-        <!-- Add operation specific exception types here -->
-      </xsd:choice>
+      <xsd:complexContent>
+        <xsd:extension base="bn:OperationWithBatchNotificationException"/>
+      </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
@@ -484,41 +550,58 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getAllManagedElementsWrtOsWithBatchNotificationsRequest">
+  <xsd:element name="getAllManagedElementsWrtOsWithBatchNotificationRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the getAllManagedElementsWrtOsWithBatchNotifications operation</p>
+        <p>Request message structure of the getAllManagedElementsWrtOsWithBatchNotification operation</p>
         <p>This operation .</p>
+        <p>This operation is the first operation of the RequestResponseWithBatchNotification MEP.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
-      <xsd:sequence>
-        <!-- Add operation specific input parameters here -->
-      </xsd:sequence>
+      <xsd:complexContent>
+        <xsd:extension base="bn:OperationWithBatchNotificationRequest">
+          <xsd:sequence>
+            <!-- Add operation specific input parameters here -->
+          </xsd:sequence>
+        </xsd:extension>
+      </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getAllManagedElementsWrtOsWithBatchNotificationsResponse">
+  <xsd:element name="getAllManagedElementsWrtOsWithBatchNotificationResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the getAllManagedElementsWrtOsWithBatchNotifications operation</p>
+        <p>Response message structure of the getAllManagedElementsWrtOsWithBatchNotification operation</p>
+        <p>Empty message structure as batch of data is received by getAllManagedElementsWrtOsWithBatchNotificationNotificationBatch notifications</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllManagedElementsWrtOsWithBatchNotificationEvent" substitutionGroup="bn:operationNotificationBatch">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Notification message structure of a batch of getAllManagedElementsWrtOsWithBatchNotification operation data</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
-      <xsd:sequence>
-        <!-- Add operation specific output parameters here -->
-      </xsd:sequence>
+      <xsd:complexContent>
+        <xsd:extension base="bn:OperationNotificationBatch">
+          <xsd:sequence>
+            <!-- Add operation specific output parameters here -->
+          </xsd:sequence>
+        </xsd:extension>
+      </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getAllManagedElementsWrtOsWithBatchNotificationsException">
+  <xsd:element name="getAllManagedElementsWrtOsWithBatchNotificationException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the getAllManagedElementsWrtOsWithBatchNotifications operation</p>
+        <p>Exception message structure of the getAllManagedElementsWrtOsWithBatchNotification operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
-      <xsd:choice>
-        <!-- Add operation specific exception types here -->
-      </xsd:choice>
+      <xsd:complexContent>
+        <xsd:extension base="bn:OperationWithBatchNotificationException"/>
+      </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
@@ -532,6 +615,13 @@
     <xsd:complexType>
       <xsd:sequence>
         <!-- Add operation specific input parameters here -->
+        <xsd:element name="mdName" type="nam:NamingAttributes">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the name of the Management Domain whose contained MEs are being requested</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
@@ -544,6 +634,13 @@
     <xsd:complexType>
       <xsd:sequence>
         <!-- Add operation specific output parameters here -->
+        <xsd:element name="me" type="me:ManagedElement" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The retrieved ME</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
@@ -556,6 +653,34 @@
     <xsd:complexType>
       <xsd:choice>
         <!-- Add operation specific exception types here -->
+        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised in case of non-specific OS internal failure</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when one or many operation input (request) parameters are invalid</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessage">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when one or many operation input (request) parameters do not refer to an existing object</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessage">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>

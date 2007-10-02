@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/mepbn/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/mepbn/v1" xmlns:mep="http://www.tmforum.org/mtop/fmw/xsd/mep/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/mepbn/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/mepbn/v1" xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" xmlns:mep="http://www.tmforum.org/mtop/fmw/xsd/mep/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Framework</p>
@@ -11,6 +11,7 @@
   <!-- ================= -->
   <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/mep/v1" schemaLocation="MepDefinitionsV1-0.xsd"/>
   <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" schemaLocation="MessageDefinitionsV1-0.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" schemaLocation="CommonEventInfoV1-0.xsd"/>
   <!-- ================= -->
   <xsd:complexType name="OperationWithBatchNotificationRequest" abstract="true">
     <xsd:annotation>
@@ -30,16 +31,6 @@
     </xsd:sequence>
   </xsd:complexType>
   <!--  ============== -->
-  <xsd:complexType name="OperationWithBatchNotificationResponse" abstract="true">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>The base definition of the "operation"WithBatchNotification operation response message</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-    </xsd:sequence>
-  </xsd:complexType>
-  <!--  ============== -->
   <xsd:complexType name="OperationWithBatchNotificationException" abstract="true">
     <xsd:annotation>
       <xsd:documentation>
@@ -54,15 +45,23 @@
     </xsd:sequence>
   </xsd:complexType>
   <!--  ============== -->
-  <xsd:complexType name="OperationBatchNotification" abstract="true">
+  <xsd:element name="operationNotificationBatch" type="tns:OperationNotificationBatch" substitutionGroup="cei:commonEventInfo"/>
+  <xsd:complexType name="OperationNotificationBatch">
     <xsd:annotation>
       <xsd:documentation>
-        <p>The base definition of the "operation"BatchNotification operation (notification) message</p>
+        <p>The base definition of the notification message of a batch of "operation" data</p>
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element name="sequence" type="mep:SequenceNumber"/>
-      <xsd:element name="endOfReply" type="mep:SequenceEndOfReply"/>
-    </xsd:sequence>
+    <xsd:complexContent>
+      <xsd:extension base="cei:CommonEventInfo">
+        <xsd:choice>
+          <xsd:element name="exception" type="tns:OperationWithBatchNotificationException"/>
+          <xsd:sequence>
+            <xsd:element name="sequence" type="mep:SequenceNumber"/>
+            <xsd:element name="endOfReply" type="mep:SequenceEndOfReply"/>
+          </xsd:sequence>
+        </xsd:choice>
+      </xsd:extension>
+    </xsd:complexContent>
   </xsd:complexType>
 </xsd:schema>
