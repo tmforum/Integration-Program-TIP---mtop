@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:hdr="http://www.tmforum.org/mtop/fmw/xsd/hdr/v1" xmlns:invr="http://www.tmforum.org/mtop/mri/xsd/rir/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.tmforum.org/mtop/mri/xsd/rir/v1 ../xsd/ResourceInventoryRetrievalMessages.xsd  
-http://schemas.xmlsoap.org/soap/envelope/ http://schemas.xmlsoap.org/soap/envelope/">
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:rir="http://www.tmforum.org/mtop/mri/xsd/rir/v1" xmlns:bn="http://www.tmforum.org/mtop/fmw/xsd/mepbn/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.tmforum.org/mtop/mri/xsd/rir/v1 ../xsd/ResourceInventoryRetrievalMessagesV1-0.xsd http://schemas.xmlsoap.org/soap/envelope/ http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Header>
-    <hdr:header>
-      <hdr:activityName>getInventory</hdr:activityName>
-      <hdr:msgName>getInventoryIteratorRequest</hdr:msgName>
-      <hdr:msgType>REQUEST</hdr:msgType>
-      <hdr:senderURI>/MTOSI/InventoryOS</hdr:senderURI>
-      <hdr:destinationURI>/MTOSI/EMS01</hdr:destinationURI>
-      <hdr:communicationPattern>MultipleBatchResponse</hdr:communicationPattern>
-      <hdr:communicationStyle>RPC</hdr:communicationStyle>
-      <hdr:iteratorReferenceURI>http://host:port/ResourceInventoryRetrievalV1/iterator123</hdr:iteratorReferenceURI>
-      <hdr:timestamp>2007-07-30T09:26:00</hdr:timestamp>
-    </hdr:header>
+    <wsa:To>http://host:port/ServiceConsumer</wsa:To>
+    <wsa:Action>http://www.tmforum.org/mtop/mri/wsdl/mer/v1-0/getInventoryWithBatchNotificationException</wsa:Action>
   </soap:Header>
   <soap:Body>
-    <invr:getInventoryIteratorRequest/>
+    <soap:Fault>
+      <faultcode>Client</faultcode>
+      <faultstring>Unrecognized object type "MF" used in filter</faultstring>
+      <faultactor>http://host:port/ManagedElementRetrievalV1</faultactor>
+      <detail>
+        <rir:getInventoryWithBatchNotificationException>
+          <bn:invalidInput>
+            <msg:reason>Value of request parameter (howMany) is too large</msg:reason>
+          </bn:invalidInput>
+        </rir:getInventoryWithBatchNotificationException>
+      </detail>
+    </soap:Fault>
   </soap:Body>
 </soap:Envelope>

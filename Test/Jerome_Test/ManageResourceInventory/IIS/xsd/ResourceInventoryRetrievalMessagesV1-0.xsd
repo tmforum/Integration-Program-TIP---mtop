@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/rir/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/rir/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:it="http://www.tmforum.org/mtop/fmw/xsd/mepit/v1" xmlns:ft="http://www.tmforum.org/mtop/fmw/xsd/mepft/v1" xmlns:bn="http://www.tmforum.org/mtop/fmw/xsd/mepbn/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/rir/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/rir/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:it="http://www.tmforum.org/mtop/fmw/xsd/mepit/v1" xmlns:ft="http://www.tmforum.org/mtop/fmw/xsd/mepft/v1" xmlns:bn="http://www.tmforum.org/mtop/fmw/xsd/mepbn/v1" xmlns:invdata="http://www.tmforum.org/mtop/nrf/xsd/invdata/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: ManageResourceInventory</p>
@@ -15,6 +15,7 @@
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/MepBatchNotificationDefinitionsV1-0.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/mepbn/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/MepIteratorDefinitionsV1-0.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/mepit/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/MepFileTransferDefinitionsV1-0.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/mepft/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/ResourceInventoryLayoutV1-0.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/invdata/v1"/>
   <!-- ================ -->
   <xsd:element name="getInventoryWithIteratorRequest">
     <xsd:annotation>
@@ -29,6 +30,20 @@
         <xsd:extension base="it:OperationWithIteratorRequest">
           <xsd:sequence>
             <!-- Add operation specific input parameters here -->
+            <xsd:element name="filter" type="tns:SimpleFilter" minOccurs="0">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>defines the subset of the total inventory to be returned to the requesting OS.</p>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="diffDateAndTime" type="xsd:dateTime" minOccurs="0">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>All objects with a modification date equal to or greater than this value are in scope of this operation.</p>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
           </xsd:sequence>
         </xsd:extension>
       </xsd:complexContent>
@@ -45,6 +60,13 @@
         <xsd:extension base="it:OperationWithIteratorResponse">
           <xsd:sequence>
             <!-- Add operation specific output parameters here -->
+            <xsd:element name="inventoryData" type="invdata:InventoryData" minOccurs="0">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>The inventory data which may vary based on the MEP. Refer to the TMF 854 XML Solution Set for more details. Also, note that the atomic elements of the inventory data XML representation are all the following top-level objects: MD, ME, MLSN, OS, TL, and TMD. It means that all top-level object instances must be fully encapsulated in one batch when the MEP involves multiple responses.</p>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
           </xsd:sequence>
         </xsd:extension>
       </xsd:complexContent>
@@ -76,6 +98,20 @@
         <xsd:extension base="bn:OperationWithBatchNotificationRequest">
           <xsd:sequence>
             <!-- Add operation specific input parameters here -->
+            <xsd:element name="filter" type="tns:SimpleFilter" minOccurs="0">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>defines the subset of the total inventory to be returned to the requesting OS.</p>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="diffDateAndTime" type="xsd:dateTime" minOccurs="0">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>All objects with a modification date equal to or greater than this value are in scope of this operation.</p>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
           </xsd:sequence>
         </xsd:extension>
       </xsd:complexContent>
@@ -89,7 +125,7 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getInventoryWithBatchNotificationEvent" substitutionGroup="bn:operationNotificationBatch">
+  <xsd:element name="getInventoryBatchEvent" substitutionGroup="bn:operationNotificationBatch">
     <xsd:annotation>
       <xsd:documentation>
         <p>Notification message structure of a batch of getInventoryWithBatchNotification operation data</p>
@@ -100,6 +136,13 @@
         <xsd:extension base="bn:OperationNotificationBatch">
           <xsd:sequence>
             <!-- Add operation specific output parameters here -->
+            <xsd:element name="inventoryData" type="invdata:InventoryData" minOccurs="0">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>The inventory data which may vary based on the MEP. Refer to the TMF 854 XML Solution Set for more details. Also, note that the atomic elements of the inventory data XML representation are all the following top-level objects: MD, ME, MLSN, OS, TL, and TMD. It means that all top-level object instances must be fully encapsulated in one batch when the MEP involves multiple responses.</p>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
           </xsd:sequence>
         </xsd:extension>
       </xsd:complexContent>
@@ -167,6 +210,29 @@
     <xsd:complexType>
       <xsd:complexContent>
         <xsd:extension base="ft:OperationWithFileTransferException"/>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getInventoryFileBatch">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Structure of the batch of data captured in file generated by getInventoryWithFileTransfer operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:extension base="ft:OperationFileBatch">
+          <xsd:sequence>
+            <!-- Add file schema definitions here of batch of data -->
+            <xsd:element name="inventoryData" type="invdata:InventoryData" minOccurs="0">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>The inventory data which may vary based on the MEP. Refer to the TMF 854 XML Solution Set for more details. Also, note that the atomic elements of the inventory data XML representation are all the following top-level objects: MD, ME, MLSN, OS, TL, and TMD. It means that all top-level object instances must be fully encapsulated in one batch when the MEP involves multiple responses.</p>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:extension>
       </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>

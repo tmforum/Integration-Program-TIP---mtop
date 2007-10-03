@@ -1,40 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- TMF NGOSS WS Design Guidelines - Copyright TeleManagement Forum 2007 -->
-<wsdl:definitions name="TMF-NotificationConsumerV1-0" xmlns:tns="http://www.tmforum.org/mtop/fmw/wsdl/notc/v1-0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsnt="http://docs.oasis-open.org/wsn/bw-2" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" targetNamespace="http://www.tmforum.org/mtop/fmw/wsdl/notc/v1-0">
+<!-- mTOP DDP - OM Framework - Copyright TeleManagement Forum 2007 -->
+<wsdl:definitions name="mTOP-NotificationConsumerV1-0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:notc="http://www.tmforum.org/mtop/fmw/xsd/notmsg/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/wsdl/notc/v1-0" targetNamespace="http://www.tmforum.org/mtop/fmw/wsdl/notc/v1-0">
   <wsdl:documentation>
     <p>DDP: Framework</p>
-    <p>Module: CreatePullPoint Service Interface WSDL Module</p>
-    <p>Description: This module contains the mTOP CreatePullPoint Service Interface WSDL binding and service definitions based on the OASIS WSN v1.3 Base Notification NotificationConsumer WSDL portType definitions.</p>
+    <p>Module: NotificationConsumer Service Interface WSDL Module</p>
+    <p>Description: This module contains all the mTOP NotificationConsumer Service Interface WSDL definitions.</p>
     <p>Version: 1.0</p>
   </wsdl:documentation>
-  <wsdl:import namespace="http://docs.oasis-open.org/wsn/bw-2" location="http://docs.oasis-open.org/wsn/bw-2.wsdl"/>
-  <wsdl:binding name="NotificationConsumerSoapHttpBinding" type="wsnt:NotificationConsumer">
+  <wsdl:types>
+    <xsd:schema>
+      <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/notmsg/v1" schemaLocation="../xsd/NotificationMessagesV1-0.xsd"/>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="notify">
+    <wsdl:documentation>
+      <p>The notify message.</p>
+    </wsdl:documentation>
+    <wsdl:part name="mtopBody" element="notc:notify"/>
+  </wsdl:message>
+  <wsdl:portType name="NotificationConsumer">
+    <wsdl:documentation>
+      <p>The NotificationConsumer porttype (abstract interface) common to both RPC (synchronous) and MSG (asynchronous) based client/server communication patterns.</p>
+    </wsdl:documentation>
+    <wsdl:operation name="notify">
+      <wsdl:input message="tns:notify"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="NotificationConsumerSoapHttpBinding" type="tns:NotificationConsumer">
+    <wsdl:documentation>
+      <p>SOAP HTTP binding definitions (concrete interface) of the operations defined in portType</p>
+    </wsdl:documentation>
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
     <wsaw:UsingAddressing wsdl:required="true"/>
-    <wsdl:operation name="Notify">
-      <soap:operation soapAction="Notify" style="document"/>
+    <wsdl:operation name="notify">
+      <soap:operation soapAction="notify" style="document"/>
       <wsdl:input>
-        <soap:body use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
       </wsdl:input>
     </wsdl:operation>
   </wsdl:binding>
-  <wsdl:binding name="NotificationConsumerSoapJmsBinding" type="wsnt:NotificationConsumer">
+  <wsdl:binding name="NotificationConsumerSoapJmsBinding" type="tns:NotificationConsumer">
+    <wsdl:documentation>
+      <p>SOAP JMS binding definitions (concrete interface) of the operations defined in portType</p>
+    </wsdl:documentation>
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/jms"/>
-    <wsaw:UsingAddressing wsdl:required="true"/>
-    <wsdl:operation name="Notify">
+    <wsdl:operation name="notify">
       <soap:operation style="document"/>
       <wsdl:input>
-        <soap:body use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
       </wsdl:input>
     </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="NotificationConsumer">
-    <wsdl:documentation/>
-    <wsdl:port binding="tns:NotificationConsumerSoapHttpBinding" name="NotificationConsumerHttpPort">
-      <soap:address location="http://localhost/NotificationConsumerV1-0"/>
+    <wsdl:documentation>
+      <p>Example of the NotificationConsumer WSDL Service definition as a deployment example of this mTOP Service Interface. It is expected to be modified to match the specific deployment configuration in a service provider's CCV.</p>
+    </wsdl:documentation>
+    <wsdl:port name="NotificationConsumerSoapJms" binding="tns:NotificationConsumerSoapJmsBinding">
+      <soap:address location="jms://aserver/mtosi/NotificationConsumer"/>
     </wsdl:port>
-    <wsdl:port binding="tns:NotificationConsumerSoapJmsBinding" name="NotificationConsumerJmsPort">
-      <soap:address location="jms://localhost/NotificationConsumerV1-0"/>
+    <wsdl:port name="NotificationConsumerSoapHttp" binding="tns:NotificationConsumerSoapHttpBinding">
+      <soap:address location="http://aserver/mtosi/NotificationConsumer"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
