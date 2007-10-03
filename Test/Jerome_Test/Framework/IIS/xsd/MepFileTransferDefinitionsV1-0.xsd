@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/mepft/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/mepft/v1" xmlns:mep="http://www.tmforum.org/mtop/fmw/xsd/mep/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/mepft/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/mepft/v1" xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" xmlns:mep="http://www.tmforum.org/mtop/fmw/xsd/mep/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Framework</p>
@@ -11,6 +11,7 @@
   <!-- ================= -->
   <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/mep/v1" schemaLocation="MepDefinitionsV1-0.xsd"/>
   <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" schemaLocation="MessageDefinitionsV1-0.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" schemaLocation="CommonEventInfoV1-0.xsd"/>
   <!-- ================= -->
   <xsd:complexType name="OperationWithFileTransferRequest" abstract="true">
     <xsd:annotation>
@@ -27,16 +28,6 @@
     </xsd:sequence>
   </xsd:complexType>
   <!--  ============== -->
-  <xsd:complexType name="OperationWithFileTransferResponse" abstract="true">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>The base definition of the "operation"WithFileTransfer operation response message</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-    </xsd:sequence>
-  </xsd:complexType>
-  <!--  ============== -->
   <xsd:complexType name="OperationWithFileTransferException" abstract="true">
     <xsd:annotation>
       <xsd:documentation>
@@ -46,47 +37,56 @@
     <xsd:sequence>
       <xsd:choice>
         <xsd:element name="internalError" type="msg:BaseExceptionMessage"/>
+        <xsd:element name="invalidInput" type="msg:BaseExceptionMessage"/>
         <xsd:element name="notImplemented" type="msg:BaseExceptionMessage"/>
       </xsd:choice>
     </xsd:sequence>
   </xsd:complexType>
   <!--  ============== -->
+  <xsd:element name="fileTransferStatusEvent" type="tns:FileTransferStatusEvent" substitutionGroup="cei:commonEventInfo"/>
   <xsd:complexType name="FileTransferStatusEvent">
     <xsd:annotation>
       <xsd:documentation>
-        <p>The template/base definition of the FileTransferStatus notification (event) message</p>
+        <p>The base definition of the FileTransferStatus notification (event) message</p>
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element name="fileLocationURI" type="mep:FileLocationURI" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Name of the file being transferred.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="transferStatus" type="mep:FileTransferStatusEnum" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Indicates the status of the File Transfer MEP.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="percentComplete" type="xsd:unsignedInt" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Indicates percent of file transfer complete must be in the range 0..100. Only applies if transferStatus is IN_PROGRESS or COMPLETED. This field is optional otherwise.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="failureReason" type="xsd:string" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>This string will contain the failure reason. Only applies if transferStatus is FAILED
+    <xsd:complexContent>
+      <xsd:extension base="cei:CommonEventInfo">
+        <xsd:choice>
+          <xsd:element name="exception" type="tns:OperationWithFileTransferException"/>
+          <xsd:sequence>
+            <xsd:element name="fileLocationURI" type="mep:FileLocationURI" minOccurs="0">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>Name of the file being transferred.</p>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="transferStatus" type="mep:FileTransferStatusEnum" minOccurs="0">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>Indicates the status of the File Transfer MEP.</p>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="percentComplete" type="xsd:unsignedInt" minOccurs="0">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>Indicates percent of file transfer complete must be in the range 0..100. Only applies if transferStatus is IN_PROGRESS or COMPLETED. This field is optional otherwise.</p>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="failureReason" type="xsd:string" minOccurs="0">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>This string will contain the failure reason. Only applies if transferStatus is FAILED
 This field is optional otherwise.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-    </xsd:sequence>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:choice>
+      </xsd:extension>
+    </xsd:complexContent>
   </xsd:complexType>
 </xsd:schema>
