@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/snc/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/snc/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:tpdata="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource FulFillment</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP SNC XML structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitionsV1-0.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRatesV1-0.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfoV1-0.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1"/>
+  <xsd:import schemaLocation="CommonTypesV1-0.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1"/>
+  <xsd:import schemaLocation="TpDataV1-0.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1"/>
+  <!-- ================= -->
+  <xsd:element name="snc" type="tns:SubnetworkConnection"/>
+  <!-- ================= -->
+  <xsd:complexType name="SubnetworkConnection">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This aggregate defines the Subnetwor Connection mTOP network resource object.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="cri:CommonResourceInfo">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This element entails the attributes common to all mTOP network resource objects.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="sncState" type="com:SNCState" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The sncState is an attribute managed by the EMS. The EMS manages the state transition of this attribute. The EMS will assess the cross-connections in the network that support the SNC and will appropriately adjust the value of SNCState to reflect the actual state of the SNC in the network.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="direction" type="com:ConnectionDirection" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="rate" type="lay:LayerRate" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The rate of the SubnetworkConnection is obtained by reading this attribute.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="staticProtectionLevel" type="com:StaticProtectionLevel" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="sncType" type="com:SNCType" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="aEnd" type="tpdata:TpDataList" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The list of Aend termination points TP where this SNC terminates. For a detailed description of the use of this attribute, see MTNM SNC Types supporting document.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="zEnd" type="tpdata:TpDataList" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The list of Zend termination points TP where this SNC terminates. For a detailed description of the use of this attribute, see MTNM SNC Types supporting document.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="rerouteAllowed" type="com:Reroute" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="networkRouted" type="com:NetworkRouted" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="alarmReportingIndicator" type="com:AlarmReporting" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="fixed" type="xsd:boolean" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Takes value True  when all cross-connects of the SNC are fixed.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="SubnetworkConnectionList">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A list of SubnetworkConnections</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element ref="tns:snc" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - DM Network Resources Basic - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:tns="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:coi="http://www.tmforum.org/mtop/fmw/xsd/coi/v1" xmlns:itu="http://www.tmforum.org/mtop/nrb/xsd/itu/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource Basic</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP XML CommonResourceInfo structure.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================= -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/CommonObjectInfoV1-0.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/coi/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitionsV1-0.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
+  <!-- ================= -->
+  <xsd:element name="commonResourceInfo" type="tns:CommonResourceInfo" substitutionGroup="coi:commonObjectInfo">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The element definition for common resource info</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:complexType name="CommonResourceInfo">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This aggregate defines attributes common to all mTOP resource objects.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="coi:CommonObjectInfo">
+        <xsd:sequence>
+          <xsd:element name="source" type="tns:Source" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Indicates whether the object was discovered or entered in OS inventory.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="networkAccessDomain" type="gen:NetworkAccessDomain" nillable="true" minOccurs="0">
+      		</xsd:element>
+          <xsd:element name="meiAttributes" type="gen:MeiAttributes" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This attribute is used when a object instance is embedded in the inventory
+					layout payload of a Multi-Event Inventory (MEI) notification. It provides the 
+					time at which the NE detected the inventory change (if available) and an indication
+					of the type of inventory update, e.g., Object Creation.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="resourceState" type="tns:ResourceState" nillable="true" minOccurs="0">
+      		</xsd:element>
+          <xsd:any namespace="http://www.tmforum.org/mtop/nrb/itu/v1" processContents="lax" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Containment for all the ITU-T status and state parameters</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:any>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="Source">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the definition of the object attribute that indicates whether the object was discovered from the network, or was entered into the OS's inventory.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:SourceEnum">
+        <xsd:attribute name="qualifier" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="SourceEnum">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="networkME">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>the object was discovered directly from the ME.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="OS">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>the object was entered into an OS on the CCV, e.g., OS GUI or file transfer to the OS from some other system.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="networkEMS">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>the object was discovered from an EMS.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="ResourceState">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the definition of the object attribute that indicates the state of the resource.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:ResourceStateEnum">
+        <xsd:attribute name="overlap" type="xsd:string" use="optional"/>
+        <xsd:attribute name="qualifier" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="ResourceStateEnum">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="PLANNED"/>
+      <xsd:enumeration value="INSTALLED"/>
+      <xsd:enumeration value="RETIRED"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>

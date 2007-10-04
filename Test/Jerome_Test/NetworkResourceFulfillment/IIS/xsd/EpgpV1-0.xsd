@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/epgp/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/epgp/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource FulFillment</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP EPGP XML structure.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitionsV1-0.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfoV1-0.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1"/>
+  <xsd:import schemaLocation="CommonTypesV1-0.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1"/>
+  <!-- ================= -->
+  <xsd:element name="epgp" type="tns:EquipmentProtectionGroup"/>
+  <!-- ================= -->
+  <xsd:complexType name="EquipmentProtectionGroup">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This aggregate defines all the EquipmentProtectionGroup mTOP network resource object attributes.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="cri:CommonResourceInfo">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This element entails the attributes common to all mTOP network resource objects.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="eProtectionGroupType" type="com:EProtectionGroupType" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="protectionSchemeState" type="com:ProtectionSchemeState" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="reversionMode" type="com:ReversionMode" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="ePgpParameters" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The epgpParameters contains a list of the associated parameters for the equipment protection group. It is a readonly attribute</p>
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="protectedList" type="nam:NamingAttributesList" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This provides a list of the protected equipment instances. For M:N equipment protection, this list would have N elements</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="protectingList" type="nam:NamingAttributesList" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This provides a list of the protecting equipment instances. For M:N equipment protection, this list would have M elements</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="G_774_3_APSfunction" type="com:G_774_3_APSfunction" nillable="true" minOccurs="0">
+      </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="EquipmentProtectionGroupList">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>List of EquipmentProtectionGroups</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element ref="tns:epgp" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>
