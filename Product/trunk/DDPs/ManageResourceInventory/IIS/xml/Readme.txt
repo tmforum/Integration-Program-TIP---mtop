@@ -16,6 +16,7 @@ Asynchronous (MSG) for JMS:
   - 3-1_afr_getInventoryRequest.xml
   - 3-2_afr_getInventoryResponse.xml
   - 3-3_afb_getInventoryException.xml
+  - Batchfile same as 8-4
 
 Synchronous (RPC) for HTTP:
   SimpleResponse (SRR)
@@ -43,4 +44,4 @@ Synchronous (RPC) for HTTP:
   - 8-1_sfr_getInventoryRequest.xml
   - 8-2_sfr_getInventoryResponse.xml
   - 8-3_sfb_getInventoryException.xml
-  - 8-4_sfb_batchfile_getInventoryResponse.xml (note a message but a file send via FTP or else)
+  - 8-4_fb_batchfile_getInventoryResponse.xml (This is not a message but a file send via FTP or else)

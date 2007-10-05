@@ -13,38 +13,15 @@
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/ITU-T-Definitions.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/itu/v1"/>
-  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayeredParameters.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lp/v1"/>
   <xsd:import schemaLocation="CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1"/>
-
-  <!-- ======== Global Type Declarations ========= -->
-  <!-- ========= FDFrType_T Declaration ======== -->
-  <xsd:simpleType name="FDFrType_T">
+  <!-- ============== -->
+  <xsd:element name="fdfr" type="tns:FlowDomainFragment_T"/>
+  <!-- ============== -->
+  <xsd:complexType name="FlowDomainFragment_T">
     <xsd:annotation>
       <xsd:documentation>
-        This (read-only) attribute provides an indication of the type 
-        of the matrix flow domain fragment. It may have one of the following values: 
-        "FDFRT_POINT_TO_POINT": the FDFr is between exactly two points
-        "FDFRT_POINT_TO_MULTIPOINT": (E-tree)
-        "FDFRT_MULTIPOINT": the FDFr is between at least two points 
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:restriction base="xsd:string">
-    </xsd:restriction>
-  </xsd:simpleType>
-
-  <!-- ========= MatrixFlowDomainFragment_T Declaration ======== -->
-  <xsd:element name="mfdfr" type="tns:MatrixFlowDomainFragment_T"/>
-  <xsd:complexType name="MatrixFlowDomainFragment_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        A Matrix Flow Domain Fragment (MFDFr) object represents 
-        the portion of a Flow Domain Fragment within a Matrix Flow Domain (MFD)
-        inside a Network Element (NE).
-        An MFDFr is atomic and is similar to a Flow Domain Fragment (FDFr) 
-        in a singleton Flow Domain.
-        An MFDFr is primarily used in the specification of an FDFr Route, 
-        in cases where the route must be specified by the NMS.
+        <p>A flow domain fragment represents connectivity between flow points.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
@@ -54,452 +31,69 @@
             <p>This element entails the attributes common to all mTOP network resource objects.</p>
           </xsd:documentation>
         </xsd:annotation>
-		<xsd:sequence>
-		  <xsd:element name="direction" type="com:ConnectionDirection_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				This attribute shall represent the directionality of the FDFr
-				(bidirectional or unidirectional).
-				Note: In the case of Ethernet, the directionality is always bidirectional.
+        <xsd:sequence>
+          <xsd:element name="direction" type="com:ConnectionDirection_T" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+				<p>This attribute shall represent the directionality of the FDFr (bidirectional or unidirectional). Note: In the case of Ethernet, the directionality is always bidirectional.</p>
 			  </xsd:documentation>
-			</xsd:annotation>  
-		  </xsd:element>
-		  <xsd:element name="transmissionParams" type="lp:LayeredParametersList_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				The layer rate on which connectivity is established and a related set
-				of connectionless parameters. Refer to chapter "Connectionless Technology
-				Parameters" of the supporting document LayeredParameters.pdf for details of
-				the currently defined connectionless parameters
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="transmissionParams" type="lp:LayeredParametersList_T" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+				<p>The layer rate on which connectivity is established and a related set of connectionless parameters. Refer to chapter "Connectionless Technology Parameters" of the supporting document LayeredParameters.pdf for details of the currently defined connectionless parameters</p>
 			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="aEnd" type="nam:NamingAttributesList_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				The flow points between which connectivity is established by this
-				matrix flow domain fragment. The flow points must be connectable on the same layer
-				as the flow domain fragment's layer rate. Only between client flow points of 
-				flow domain edge CPTPs of the same flow domain connectivity can be established.
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="aEnd" type="nam:NamingAttributesList_T" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+				<p>The flow points between which connectivity is established by this flow domain fragment. The flow points must be connectable on the same layer as the flow domain fragment's layer rate. Only between client flow points of flow domain edge CPTPs of the same flow domain connectivity can be established.</p>
 			  </xsd:documentation>
-			</xsd:annotation>  
-		  </xsd:element>
-		  <xsd:element name="zEnd" type="nam:NamingAttributesList_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				The flow points between which connectivity is established by this
-				matrix flow domain fragment. The flow points must be connectable on the same layer
-				as the flow domain fragment's layer rate. Only between client flow points of 
-				flow domain edge CPTPs of the same flow domain connectivity can be established.
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="zEnd" type="nam:NamingAttributesList_T" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+				<p>The flow points between which connectivity is established by this flow domain fragment. The flow points must be connectable on the same layer as the flow domain fragment's layer rate. Only between client flow points of  flow domain edge CPTPs of the same flow domain connectivity can be established.</p>
 			  </xsd:documentation>
-			</xsd:annotation>  
-		  </xsd:element>
-		  <xsd:element name="flexible" type="xsd:boolean" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				Indicates whether the flow domain fragment is fixed (i.e., cannot be modified 
-				or deleted by the NMS, in particular flow points cannot be added or/ removed) or
-				is flexible.
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="flexible" type="xsd:boolean" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+				<p>Indicates whether the flow domain fragment is fixed (i.e., cannot be modified or deleted by the NMS, in particular flow points cannot be added or/ removed) or is flexible.</p>
 			  </xsd:documentation>
-			</xsd:annotation>  
-		  </xsd:element>
-		  <xsd:element name="active" type="xsd:boolean" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				Indicates if the MFDFr has been successfully activated in 
-				the Network Element (NE).True if the MFDFr is active in the ME; false 
-				otherwise. An "active" MFDFr means that no further intervention on the 
-				MFDFr itself is required from the NMS to activate it. The fact that an 
-				MFDFr is "active" does not necessarily imply that there is traffic flow on 
-				the network.
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="administrativeState" type="itu:X721.AdministrativeState_T" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+				<p>Indicates whether the FDFr is locked (i.e., traffic units cannot flow through the FDFr) or unlocked (i.e., traffic units are allowed to flow through the FDFr).</p>
 			  </xsd:documentation>
-			</xsd:annotation>  
-		  </xsd:element>
-		  <xsd:element name="mfdfrType" type="tns:FDFrType_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				Represents the type of the FDFr. Possible values are:
-				- point-to-point
-				- point-to-multipoint (E-tree)
-				- multipoint
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="fdfrState" type="com:SncState_T" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+				<p>Indicates  one of the following values: Active if  all MFDFrs and all (edge and internal) FPs for the FDFr are active in the network. Partial if not all parts (MFDFrs or FPs) of the FDFr were created during the creation operation, or not all parts of the FDFr were deleted  during the deletion operation.</p>
 			  </xsd:documentation>
-			</xsd:annotation>  
-		  </xsd:element>
-		</xsd:sequence>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
-
-  <!-- ========= MFDFrList_T Declaration ======== -->
-  <xsd:complexType name="MFDFrList_T">
+  <!-- ============== -->
+  <xsd:complexType name="FdfrList_T">
     <xsd:annotation>
       <xsd:documentation>
-        List of MatrixFlowDomainFragments
-      </xsd:documentation>
+		<p>List of FlowDomainFragment</p>
+	  </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element ref="tns:mfdfr" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element ref="tns:fdfr" minOccurs="0" maxOccurs="unbounded"/>
     </xsd:sequence>
-  </xsd:complexType>
-
-  <!-- ========= FDFrRoute_T Declaration ======== -->
-  <xsd:complexType name="FDFrRoute_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        A route for an FDFr is defined as a list of matrix flow domain fragments.
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element ref="tns:mfdfr" minOccurs="0" maxOccurs="unbounded"/>
-    </xsd:sequence>
-  </xsd:complexType>
-
-  <!-- ========= FlowDomainFragment_T Declaration ======== -->
-  <xsd:complexType name="FlowDomainFragment_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        A flow domain fragment represents connectivity between flow points.
-        The read/write attributes can be set by the NMS by either the common methods 
-        of the common::Common_I interface or by the methods for provisioning of flow 
-        domain fragments of the FlowDomainMgr_I interface
-      </xsd:documentation>
-    </xsd:annotation>
-	<xsd:complexContent>
-	  <xsd:extension base="cri:CommonResourceInfo_T">
-		<xsd:annotation>
-		  <xsd:documentation>
-			<p>This element entails the attributes common to all mTOP network resource objects.</p>
-		  </xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-		  <xsd:element name="name" type="nam:NamingAttributes_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				This attribute represents a unique identifier for the object on the CCV.
-				Refer to the type definition for more details.
-			  </xsd:documentation>
-			</xsd:annotation>  
-		  </xsd:element>
-		  gen:UserLabel_T<xsd:element name="discoveredName" type="gen:DiscoveredName_T" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				This attribute represents a unique identifier for the object when its
-				existence is first published on the CCV. Refer to the type definition for more details.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="namingOS" type="gen:NamingOs_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				This attribute contains the name of the OS that provided the unique MTOSI
-				name for the object. Refer to the type definition for more details.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="userLabel" type="gen:UserLabel_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				"User-friendly" name for the object. Refer to the type definition for more details.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="owner" type="gen:Owner_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				The owner is provisionable by the NMS.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="direction" type="com:ConnectionDirection_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				This attribute shall represent the directionality of the FDFr
-				(bidirectional or unidirectional).
-				Note: In the case of Ethernet, the directionality is always bidirectional.
-			  </xsd:documentation>
-			</xsd:annotation>  
-		  </xsd:element>
-		  <xsd:element name="transmissionParams" type="lp:LayeredParametersList_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				The layer rate on which connectivity is established and a related set
-				of connectionless parameters. Refer to chapter "Connectionless Technology
-				Parameters" of the supporting document LayeredParameters.pdf for details of
-				the currently defined connectionless parameters
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="aEnd" type="nam:NamingAttributesList_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				The flow points between which connectivity is established by this
-				flow domain fragment. The flow points must be connectable on the same layer
-				as the flow domain fragment's layer rate. Only between client flow points of 
-				flow domain edge CPTPs of the same flow domain connectivity can be established.
-			  </xsd:documentation>
-			</xsd:annotation>  
-		  </xsd:element>
-		  <xsd:element name="zEnd" type="nam:NamingAttributesList_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				The flow points between which connectivity is established by this
-				flow domain fragment. The flow points must be connectable on the same layer
-				as the flow domain fragment's layer rate. Only between client flow points of 
-				flow domain edge CPTPs of the same flow domain connectivity can be established.
-			  </xsd:documentation>
-			</xsd:annotation>  
-		  </xsd:element>
-		  <xsd:element name="flexible" type="xsd:boolean" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				Indicates whether the flow domain fragment is fixed (i.e., cannot be modified 
-				or deleted by the NMS, in particular flow points cannot be added or/ removed)
-				or is flexible.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="administrativeState" type="itu:X721.AdministrativeState_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				Indicates whether the FDFr is locked (i.e., traffic units cannot flow 
-				through the FDFr) or unlocked (i.e., traffic units are allowed to flow through 
-				the FDFr).
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="fdfrState" type="com:SNCState_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				Indicates  one of the following values:
-				Active if  all MFDFrs and all (edge and internal) FPs for the FDFr 
-				are active in the network.
-				Partial if not all parts (MFDFrs or FPs) of the FDFr were created during
-				the creation operation, or not all parts of the FDFr were deleted 
-				during the deletion operation.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		</xsd:sequence>
-	  </xsd:extension>
-	</xsd:complexContent>
-  </xsd:complexType>
-
-  <!-- ========= FDFrList_T Declaration ======== -->
-  <xsd:complexType name="FDFrList_T">
-	<xsd:annotation>
-	  <xsd:documentation>
-		List of FlowDomainFragment
-	  </xsd:documentation>
-	</xsd:annotation>
-	<xsd:sequence>
-	  <xsd:element ref="tns:fdfr" minOccurs="0" maxOccurs="unbounded"/>
-	</xsd:sequence>
-  </xsd:complexType>
-
-  <!-- ========= FDFrCreateData_T Declaration ======== -->
-  <xsd:complexType name="FDFrCreateData_T">
-	<xsd:annotation>
-	  <xsd:documentation>
-		The read/write attributes required for the creation of a
-		flow domain fragment on the EMS are packed together in an FDFrCreateData
-		structure which the NMS will pass to the EMS at flow domain fragment
-		creation time.
-	  </xsd:documentation>
-	</xsd:annotation>
-	<xsd:complexContent>
-	  <xsd:extension base="cri:CommonResourceInfo_T">
-		<xsd:annotation>
-		  <xsd:documentation>
-			<p>This element entails the attributes common to all mTOP network resource objects.</p>
-		  </xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-		  <xsd:element name="name" type="nam:NamingAttributes_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				This attribute represents a unique identifier for the object on the CCV.
-				Refer to the type definition for more details.
-			  </xsd:documentation>
-			</xsd:annotation>  
-		  </xsd:element>
-		  <xsd:element name="userLabel" type="gen:UserLabel_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				"User-friendly" name for the object. Refer to the type definition for more details.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="forceUniqueness" type="xsd:boolean" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				Specifies whether uniqueness of the userLabel is required amongst flow
-				domain fragments of the EMS. In case of uniqueness, the operation will fail if the
-				userLabel is already in use.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="owner" type="gen:Owner_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				The owner is provisionable by the NMS.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="direction" type="com:ConnectionDirection_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				This attribute shall represent the directionality of the FDFr
-				(bidirectional or unidirectional).
-				Note: In the case of Ethernet, the directionality is always bidirectional.
-			  </xsd:documentation>
-			</xsd:annotation>  
-		  </xsd:element>
-		  <xsd:element name="administrativeState" type="itu:X721.AdministrativeState_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				Indicates whether the FDFr is locked (i.e., traffic units cannot flow 
-				through the FDFr) or unlocked (i.e., traffic units are allowed to flow through 
-				the FDFr).
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="transmissionParams" type="lp:LayeredParametersList_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				The layer rate on which connectivity is established and a related set
-				of connectionless parameters. Refer to chapter "Connectionless Technology
-				Parameters" of the supporting document LayeredParameters.pdf for details of
-				the currently defined connectionless parameters
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="fullRoute" type="xsd:boolean" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				This parameter identifies if the internalTPs and mfdfrs parameters
-				of the createAndActivateFDFr operation describe the full route 
-				of the Flow Domain Fragment (as opposed to only a partial constraint). 
-				When no routing constraints are specified, 
-				false must be used.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="fdfrType" type="tns:FDFrType_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				Represents the type of the FDFr. Possible values are:
-				- point-to-point
-				- point-to-multipoint (E-tree)
-				- multipoint
-			  </xsd:documentation>
-			</xsd:annotation>  
-		  </xsd:element>
-		</xsd:sequence>
-      </xsd:extension>
-    </xsd:complexContent>
-  </xsd:complexType>
-
-  <!-- ========= FDFrModifyData_T Declaration ======== -->
-  <xsd:complexType name="FDFrModifyData_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        The read/write attributes required for the modification of a
-        flow domain fragment on the EMS are packed together in an FDFrModifyData
-        structure which the NMS will pass to the EMS at flow domain fragment
-        modification time.
-      </xsd:documentation>
-    </xsd:annotation>
-	<xsd:complexContent>
-	  <xsd:extension base="cri:CommonResourceInfo_T">
-		<xsd:annotation>
-		  <xsd:documentation>
-			<p>This element entails the attributes common to all mTOP network resource objects.</p>
-		  </xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-		  <xsd:element name="userLabel" type="gen:UserLabel_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				"User-friendly" name for the object. Refer to the type definition for more details.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="forceUniqueness" type="xsd:boolean" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				Specifies whether uniqueness of the userLabel is required amongst flow
-				domain fragments of the EMS. In case of uniqueness, the operation will fail if the
-				userLabel is already in use.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="owner" type="gen:UserLabel_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				The owner is provisionable by the NMS.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="administrativeState" type="itu:X721.AdministrativeState_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				Indicates whether the FDFr is locked (i.e., traffic units cannot flow 
-				through the FDFr) or unlocked (i.e., traffic units are allowed to flow through 
-				the FDFr).
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="transmissionParams" type="lp:LayeredParametersList_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				The layer rate on which connectivity is established and a related set
-				of connectionless parameters. Refer to chapter "Connectionless Technology
-				Parameters" of the supporting document LayeredParameters.pdf for details of
-				the currently defined connectionless parameters
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="tpNamesToRemove" type="nam:NamingAttributesList_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				A list of Connection Port Termination Point (CPTP) names 
-				that must be removed from the Flow Domain Fragment (FDFr). 
-				As a result of modifying the FDFr, the client Flow Points are deleted.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="aEndTPNames" type="nam:NamingAttributesList_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				A list of additional Connection Port Termination Point (CPTP) names 
-				that delimit the Flow Domain Fragment (FDFr) and characterize its edges 
-				(entrance and/or exit points). As a result of modifying the FDFr, 
-				Flow Points are created as clients of the FD Edge CPTPs.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="zEndTPNames" type="nam:NamingAttributesList_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				A list of additional Connection Port Termination Point (CPTP) names 
-				that delimit the Flow Domain Fragment (FDFr) and characterize its edges 
-				(entrance and/or exit points). As a result of modifying the FDFr, 
-				Flow Points are created as clients of the FD Edge CPTPs.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="internalTPNames" type="nam:NamingAttributesList_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				A list of additional internal Connection Port Termination Point (CPTP) names 
-				that must be added to the route of the Flow Domain Fragment (FDFr). 
-				As a result of modifying the FDFr, Flow Points are created 
-				as clients of the internal CPTPs.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		</xsd:sequence>
-      </xsd:extension>
-    </xsd:complexContent>
   </xsd:complexType>
 </xsd:schema>

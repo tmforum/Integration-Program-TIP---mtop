@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ResourceProvisioning - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rp/xsd/fdc/v1" xmlns:tns="http://www.tmforum.org/mtop/rp/xsd/fdc/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:fd="http://www.tmforum.org/mtop/nrf/xsd/fd/v1" xmlns:fdfr="http://www.tmforum.org/mtop/nrf/xsd/fdfr/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lp="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" xmlns:tpdata="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1"  attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rp/xsd/fdc/v1" xmlns:tns="http://www.tmforum.org/mtop/rp/xsd/fdc/v1" xmlns:fd="http://www.tmforum.org/mtop/nrf/xsd/fd/v1" xmlns:fdfr="http://www.tmforum.org/mtop/nrf/xsd/fdfr/v1" xmlns:mfd="http://www.tmforum.org/mtop/nrf/xsd/mfd/v1" xmlns:mfdfr="http://www.tmforum.org/mtop/nrf/xsd/mfdfr/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lp="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" xmlns:tpdata="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: ResourceProvisioning</p>
@@ -8,19 +8,23 @@
       <p>Description: This module contains the XML Schema type definitions of all the mTOP FlowDomainControl SI XML message structures.</p>
     </xsd:documentation>
   </xsd:annotation>
-
   <!-- ================ -->
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
-  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Fd.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/Fd/v1"/>
-  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Fdfr.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/Fdfr/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Fd.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/fd/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Fdfr.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/fdfr/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Mfd.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/mfd/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Mfdfr.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/mfdfr/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Cc.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/cc/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/TpData.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayeredParameters.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lp/v1"/>
-
+  <xsd:include schemaLocation="FdControlTypes.xsd"/>
+  <xsd:include schemaLocation="FdfrControlTypes.xsd"/>
+  <xsd:include schemaLocation="MFdControlTypes.xsd"/>
+  <xsd:complexType name="ExceptionProfile2_T"/>
   <!-- ================ -->
   <xsd:element name="assignCptpsToMfdRequest" type="tns:assignCptpsToMfdRequest_T">
     <xsd:annotation>
@@ -29,7 +33,6 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <xsd:element name="assignCptpsToMfdResponse" type="tns:assignCptpsToMfdResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -37,15 +40,13 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
-  <xsd:element name="assignCptpsToMfdException" type="ExceptionProfile2_T">
+  <xsd:element name="assignCptpsToMfdException" type="tns:ExceptionProfile2_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the assignCptpsToMfd operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <!-- ================ -->
   <xsd:element name="associateCptpsWithFlowDomainRequest" type="tns:associateCptpsWithFlowDomainRequest_T">
     <xsd:annotation>
@@ -54,7 +55,6 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <xsd:element name="associateCptpsWithFlowDomainResponse" type="tns:associateCptpsWithFlowDomainResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -62,15 +62,13 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
-  <xsd:element name="associateCptpsWithFlowDomainException" type="ExceptionProfile2_T">
+  <xsd:element name="associateCptpsWithFlowDomainException" type="tns:ExceptionProfile2_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the associateCptpsWithFlowDomain operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <!-- ================ -->
   <xsd:element name="associateMfdsWithFlowDomainRequest" type="tns:associateMfdsWithFlowDomainRequest_T">
     <xsd:annotation>
@@ -79,7 +77,6 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <xsd:element name="associateMfdsWithFlowDomainResponse" type="tns:associateMfdsWithFlowDomainResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -87,15 +84,13 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
-  <xsd:element name="associateMfdsWithFlowDomainException" type="ExceptionProfile2_T">
+  <xsd:element name="associateMfdsWithFlowDomainException" type="tns:ExceptionProfile2_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the associateMfdsWithFlowDomain operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <!-- ================ -->
   <xsd:element name="createAndActivateFdfrRequest" type="tns:createAndActivateFdfrRequest_T">
     <xsd:annotation>
@@ -104,7 +99,6 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <xsd:element name="createAndActivateFdfrResponse" type="tns:createAndActivateFdfrResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -112,15 +106,13 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
-  <xsd:element name="createAndActivateFdfrException" type="ExceptionProfile2_T">
+  <xsd:element name="createAndActivateFdfrException" type="tns:ExceptionProfile2_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the createAndActivateFdfr operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <!-- ================ -->
   <xsd:element name="createFlowDomainRequest" type="tns:createFlowDomainRequest_T">
     <xsd:annotation>
@@ -129,7 +121,6 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <xsd:element name="createFlowDomainResponse" type="tns:createFlowDomainResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -137,15 +128,13 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
-  <xsd:element name="createFlowDomainException" type="ExceptionProfile2_T">
+  <xsd:element name="createFlowDomainException" type="tns:ExceptionProfile2_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the createFlowDomain operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <!-- ================ -->
   <xsd:element name="createMfdRequest" type="tns:createMfdRequest_T">
     <xsd:annotation>
@@ -154,7 +143,6 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <xsd:element name="createMfdResponse" type="tns:createMfdResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -162,15 +150,13 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
-  <xsd:element name="createMfdException" type="ExceptionProfile2_T">
+  <xsd:element name="createMfdException" type="tns:ExceptionProfile2_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the createMfd operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <!-- ================ -->
   <xsd:element name="deactivateAndDeleteFdfrRequest" type="tns:deactivateAndDeleteFdfrRequest_T">
     <xsd:annotation>
@@ -179,7 +165,6 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <xsd:element name="deactivateAndDeleteFdfrResponse" type="tns:deactivateAndDeleteFdfrResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -187,15 +172,13 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
-  <xsd:element name="deactivateAndDeleteFdfrException" type="ExceptionProfile2_T">
+  <xsd:element name="deactivateAndDeleteFdfrException" type="tns:ExceptionProfile2_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the deactivateAndDeleteFdfr operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <!-- ================ -->
   <xsd:element name="deAssociateCptpsFromFlowDomainRequest" type="tns:deAssociateCptpsFromFlowDomainRequest_T">
     <xsd:annotation>
@@ -204,7 +187,6 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <xsd:element name="deAssociateCptpsFromFlowDomainResponse" type="tns:deAssociateCptpsFromFlowDomainResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -212,15 +194,13 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
-  <xsd:element name="deAssociateCptpsFromFlowDomainException" type="ExceptionProfile2_T">
+  <xsd:element name="deAssociateCptpsFromFlowDomainException" type="tns:ExceptionProfile2_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the deAssociateCptpsFromFlowDomain operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <!-- ================ -->
   <xsd:element name="deassociateMfdsFromFlowDomainRequest" type="tns:deassociateMfdsFromFlowDomainRequest_T">
     <xsd:annotation>
@@ -229,7 +209,6 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <xsd:element name="deassociateMfdsFromFlowDomainResponse" type="tns:deassociateMfdsFromFlowDomainResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -237,15 +216,13 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
-  <xsd:element name="deassociateMfdsFromFlowDomainException" type="ExceptionProfile2_T">
+  <xsd:element name="deassociateMfdsFromFlowDomainException" type="tns:ExceptionProfile2_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the deAssociateMfdsFromFlowDomain operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <!-- ================ -->
   <xsd:element name="deleteFlowDomainRequest" type="tns:deleteFlowDomainRequest_T">
     <xsd:annotation>
@@ -254,7 +231,6 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <xsd:element name="deleteFlowDomainResponse" type="tns:deleteFlowDomainResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -262,15 +238,13 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
-  <xsd:element name="deleteFlowDomainException" type="ExceptionProfile2_T">
+  <xsd:element name="deleteFlowDomainException" type="tns:ExceptionProfile2_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the deleteFlowDomain operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <!-- ================ -->
   <xsd:element name="deleteMfdRequest" type="tns:deleteMfdRequest_T">
     <xsd:annotation>
@@ -279,7 +253,6 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <xsd:element name="deleteMfdResponse" type="tns:deleteMfdResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -287,15 +260,13 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
-  <xsd:element name="deleteMfdException" type="ExceptionProfile2_T">
+  <xsd:element name="deleteMfdException" type="tns:ExceptionProfile2_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the deleteMfd operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <!-- ================ -->
   <xsd:element name="modifyFdfrRequest" type="tns:modifyFdfrRequest_T">
     <xsd:annotation>
@@ -304,7 +275,6 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <xsd:element name="modifyFdfrResponse" type="tns:modifyFdfrResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -312,15 +282,13 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
-  <xsd:element name="modifyFdfrException" type="ExceptionProfile2_T">
+  <xsd:element name="modifyFdfrException" type="tns:ExceptionProfile2_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the modifyFdfr operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <!-- ================ -->
   <xsd:element name="modifyFlowDomainRequest" type="tns:modifyFlowDomainRequest_T">
     <xsd:annotation>
@@ -329,7 +297,6 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <xsd:element name="modifyFlowDomainResponse" type="tns:modifyFlowDomainResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -337,15 +304,13 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
-  <xsd:element name="modifyFlowDomainException" type="ExceptionProfile2_T">
+  <xsd:element name="modifyFlowDomainException" type="tns:ExceptionProfile2_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the modifyFlowDomain operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <!-- ================ -->
   <xsd:element name="modifyMfdRequest" type="tns:modifyMfdRequest_T">
     <xsd:annotation>
@@ -354,7 +319,6 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <xsd:element name="modifyMfdResponse" type="tns:modifyMfdResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -362,15 +326,13 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
-  <xsd:element name="modifyMfdException" type="ExceptionProfile2_T">
+  <xsd:element name="modifyMfdException" type="tns:ExceptionProfile2_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the modifyMfd operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <!-- ================ -->
   <xsd:element name="unassignCptpsFromMfdRequest" type="tns:unassignCptpsFromMfdRequest_T">
     <xsd:annotation>
@@ -379,7 +341,6 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
   <xsd:element name="unassignCptpsFromMfdResponse" type="tns:unassignCptpsFromMfdResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -387,16 +348,14 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
-  <xsd:element name="unassignCptpsFromMfdException" type="ExceptionProfile2_T">
+  <xsd:element name="unassignCptpsFromMfdException" type="tns:ExceptionProfile2_T">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the unassignCptpsFromMfd operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-
-<!-- ===================== assignCptpsToMfd Request/Response Messages ========= -->
+  <!-- ===================== assignCptpsToMfd Request/Response Messages ========= -->
   <xsd:complexType name="assignCptpsToMfdRequest_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -436,7 +395,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T">
+      <xsd:element name="tpsToModify" type="tpdata:TpDataList_T">
         <xsd:annotation>
           <xsd:documentation>
             The list of TPs with associated parameters to be applied.
@@ -445,7 +404,6 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
   <xsd:complexType name="assignCptpsToMfdResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -453,7 +411,7 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T" minOccurs="0">
+      <xsd:element name="tpsToModify" type="tpdata:TpDataList_T" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             The list of TPs with associated parameters to be applied.
@@ -469,8 +427,7 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
-<!-- ===================== unassignCptpsFromMfd Request/Response Messages ========= -->
+  <!-- ===================== unassignCptpsFromMfd Request/Response Messages ========= -->
   <xsd:complexType name="unassignCptpsFromMfdRequest_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -512,7 +469,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T">
+      <xsd:element name="tpsToModify" type="tpdata:TpDataList_T">
         <xsd:annotation>
           <xsd:documentation>
             The list of TPs with associated parameters to be applied.
@@ -521,7 +478,6 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
   <xsd:complexType name="unassignCptpsFromMfdResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -529,7 +485,7 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T" minOccurs="0">
+      <xsd:element name="tpsToModify" type="tpdata:TpDataList_T" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             The list of TPs with associated parameters to be applied.
@@ -545,8 +501,7 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
-<!-- ===================== createFlowDomain Request/Response Messages ========= -->
+  <!-- ===================== createFlowDomain Request/Response Messages ========= -->
   <xsd:complexType name="createFlowDomainRequest_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -580,7 +535,7 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="createData" type="fd:FdCreateData_T">
+      <xsd:element name="createData" type="tns:FdCreateData_T">
         <xsd:annotation>
           <xsd:documentation>
             Structure describing the flow domain structure to be created.
@@ -596,7 +551,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T">
+      <xsd:element name="tpsToModify" type="tpdata:TpDataList_T">
         <xsd:annotation>
           <xsd:documentation>
             The list of TPs with associated parameters to be applied.
@@ -605,7 +560,6 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
   <xsd:complexType name="createFlowDomainResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -621,7 +575,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T" minOccurs="0">
+      <xsd:element name="tpsToModify" type="tpdata:TpDataList_T" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             The list of TPs with associated parameters to be applied.
@@ -648,8 +602,7 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
-<!-- ===================== deleteFlowDomain Request/Response Messages ========= -->
+  <!-- ===================== deleteFlowDomain Request/Response Messages ========= -->
   <xsd:complexType name="deleteFlowDomainRequest_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -680,7 +633,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T">
+      <xsd:element name="tpsToModify" type="tpdata:TpDataList_T">
         <xsd:annotation>
           <xsd:documentation>
             The list of TPs with associated parameters to be applied.
@@ -689,7 +642,6 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
   <xsd:complexType name="deleteFlowDomainResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -697,7 +649,7 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T" minOccurs="0">
+      <xsd:element name="tpsToModify" type="tpdata:TpDataList_T" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             The list of TPs with associated parameters to be applied.
@@ -713,8 +665,7 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
-<!-- ===================== modifyFlowDomain Request/Response Messages ========= -->
+  <!-- ===================== modifyFlowDomain Request/Response Messages ========= -->
   <xsd:complexType name="modifyFlowDomainRequest_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -747,7 +698,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="modifyData" type="fd:FdModifyData_T">
+      <xsd:element name="modifyData" type="tns:FdModifyData_T">
         <xsd:annotation>
           <xsd:documentation>
             Structure describing how the flow domain should be modified. If the
@@ -758,7 +709,6 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
   <xsd:complexType name="modifyFlowDomainResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -789,8 +739,7 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
-<!-- ===================== associateMfdsWithFlowDomain Request/Response Messages ========= -->
+  <!-- ===================== associateMfdsWithFlowDomain Request/Response Messages ========= -->
   <xsd:complexType name="associateMfdsWithFlowDomainRequest_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -831,7 +780,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T">
+      <xsd:element name="tpsToModify" type="tpdata:TpDataList_T">
         <xsd:annotation>
           <xsd:documentation>
             The list of TPs with associated parameters to be applied.
@@ -840,7 +789,6 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
   <xsd:complexType name="associateMfdsWithFlowDomainResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -848,7 +796,7 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T" minOccurs="0">
+      <xsd:element name="tpsToModify" type="tpdata:TpDataList_T" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             The list of TPs with associated parameters to be applied.
@@ -864,8 +812,7 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
-<!-- ===================== deassociateMfdsFromFlowDomain Request/Response Messages ========= -->
+  <!-- ===================== deassociateMfdsFromFlowDomain Request/Response Messages ========= -->
   <xsd:complexType name="deassociateMfdsFromFlowDomainRequest_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -908,7 +855,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T">
+      <xsd:element name="tpsToModify" type="tpdata:TpDataList_T">
         <xsd:annotation>
           <xsd:documentation>
               The list of TPs with associated parameters to be applied.
@@ -917,7 +864,6 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
   <xsd:complexType name="deassociateMfdsFromFlowDomainResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -925,7 +871,7 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T" minOccurs="0">
+      <xsd:element name="tpsToModify" type="tpdata:TpDataList_T" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             The list of TPs with associated parameters to be applied.
@@ -941,8 +887,7 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
-<!-- ===================== associateCptpsWithFlowDomain Request/Response Messages ========= -->
+  <!-- ===================== associateCptpsWithFlowDomain Request/Response Messages ========= -->
   <xsd:complexType name="associateCptpsWithFlowDomainRequest_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -981,7 +926,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T">
+      <xsd:element name="tpsToModify" type="tpdata:TpDataList_T">
         <xsd:annotation>
           <xsd:documentation>
             The list of TPs with associated parameters to be applied.
@@ -990,7 +935,6 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
   <xsd:complexType name="associateCptpsWithFlowDomainResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -998,7 +942,7 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T" minOccurs="0">
+      <xsd:element name="tpsToModify" type="tpdata:TpDataList_T" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             The list of TPs with associated parameters to be applied.
@@ -1014,9 +958,8 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
-<!-- ===================== deassociateCptpsFromFlowDomain Request/Response Messages ========= -->
-  <xsd:complexType name="deassociateCptpsFromFlowDomainRequest_T">
+  <!-- ===================== deassociateCptpsFromFlowDomain Request/Response Messages ========= -->
+  <xsd:complexType name="deAssociateCptpsFromFlowDomainRequest_T">
     <xsd:annotation>
       <xsd:documentation>
         This service allows an NMS to request from the EMS the de-association
@@ -1058,7 +1001,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T">
+      <xsd:element name="tpsToModify" type="tpdata:TpDataList_T">
         <xsd:annotation>
           <xsd:documentation>
             The list of TPs with associated parameters to be applied.
@@ -1067,15 +1010,14 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
-  <xsd:complexType name="deassociateCptpsFromFlowDomainResponse_T">
+  <xsd:complexType name="deAssociateCptpsFromFlowDomainResponse_T">
     <xsd:annotation>
       <xsd:documentation>
        This is the response of the deassociateCptpsFromFlowDomain operation.
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T" minOccurs="0">
+      <xsd:element name="tpsToModify" type="tpdata:TpDataList_T" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             The list of TPs with associated parameters to be applied.
@@ -1091,8 +1033,7 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
-<!-- ===================== createMfd Request/Response Messages ========= -->
+  <!-- ===================== createMfd Request/Response Messages ========= -->
   <xsd:complexType name="createMfdRequest_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -1122,14 +1063,14 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="createData" type="fd:MfdCreateData_T">
+      <xsd:element name="createData" type="tns:MfdCreateData_T">
         <xsd:annotation>
           <xsd:documentation>
             Structure describing the matrix flow domain structure to be created.
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T">
+      <xsd:element name="tpsToModify" type="tpdata:TpDataList_T">
         <xsd:annotation>
           <xsd:documentation>
             The list of TPs with associated parameters to be applied.
@@ -1138,7 +1079,6 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
   <xsd:complexType name="createMfdResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -1146,14 +1086,14 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T" minOccurs="0">
+      <xsd:element name="tpsToModify" type="tpdata:TpDataList_T" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             The list of TPs with associated parameters to be applied.
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="theMfd" type="fd:MatrixFlowDomain_T" minOccurs="0">
+      <xsd:element name="theMfd" type="mfd:MatrixFlowDomain_T" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             The new created matrix flow domain. The EMS is responsible for guaranteeing
@@ -1171,8 +1111,7 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
-<!-- ===================== deleteMfd Request/Response Messages ========= -->
+  <!-- ===================== deleteMfd Request/Response Messages ========= -->
   <xsd:complexType name="deleteMfdRequest_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -1201,7 +1140,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T">
+      <xsd:element name="tpsToModify" type="tpdata:TpDataList_T">
         <xsd:annotation>
           <xsd:documentation>
             The list of TPs with associated parameters to be applied.
@@ -1210,7 +1149,6 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
   <xsd:complexType name="deleteMfdResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -1218,7 +1156,7 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T" minOccurs="0">
+      <xsd:element name="tpsToModify" type="tpdata:TpDataList_T" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             The list of TPs with associated parameters to be applied.
@@ -1235,8 +1173,7 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
-<!-- ===================== modifyMfd Request/Response Messages ========= -->
+  <!-- ===================== modifyMfd Request/Response Messages ========= -->
   <xsd:complexType name="modifyMfdRequest_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -1266,7 +1203,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="mfdModifyData" type="fd:MfdModifyData_T">
+      <xsd:element name="mfdModifyData" type="tns:MfdModifyData_T">
         <xsd:annotation>
           <xsd:documentation>
             Structure describing how the matrix flow domain shall be modified. This
@@ -1277,7 +1214,6 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
   <xsd:complexType name="modifyMfdResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -1285,7 +1221,7 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="newMfd" type="fd:MatrixFlowDomain_T">
+      <xsd:element name="newMfd" type="mfd:MatrixFlowDomain_T">
         <xsd:annotation>
           <xsd:documentation>
             The modified matrix flow domain.
@@ -1309,8 +1245,7 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
-<!-- ===================== createAndActivateFdfr Request/Response Messages ========= -->
+  <!-- ===================== createAndActivateFdfr Request/Response Messages ========= -->
   <xsd:complexType name="createAndActivateFdfrRequest_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -1341,7 +1276,7 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="createData" type="fdfr:FdfrCreateData_T">
+      <xsd:element name="createData" type="tns:FdfrCreateData_T">
         <xsd:annotation>
           <xsd:documentation>
             Structure describing the Fdfr structure to be created. Setting of
@@ -1350,7 +1285,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="connectivityRequirement" type="fd:ConnectivityRequirement_T">
+      <xsd:element name="connectivityRequirement" type="tns:ConnectivityRequirement_T">
         <xsd:annotation>
           <xsd:documentation>
             For a "connectivity-aware" EMS, this parameter shall identify 
@@ -1401,7 +1336,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="mfdfrs" type="fdfr:MFDFrList_T">
+      <xsd:element name="mfdfrs" type="mfdfr:MfdfrList_T">
         <xsd:annotation>
           <xsd:documentation>
             An optional (possibly empty) list of MfdFrs that make up the route 
@@ -1410,7 +1345,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T">
+      <xsd:element name="tpsToModify" type="tpdata:TpDataList_T">
         <xsd:annotation>
           <xsd:documentation>
             A list of TPs and parameters to apply. On method return the list is 
@@ -1422,7 +1357,6 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
   <xsd:complexType name="createAndActivateFdfrResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -1472,7 +1406,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="mfdfrs" type="fdfr:MFDFrList_T">
+      <xsd:element name="mfdfrs" type="mfdfr:MfdfrList_T">
         <xsd:annotation>
           <xsd:documentation>
             An optional (possibly empty) list of MfdFrs that make up the route 
@@ -1481,7 +1415,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T">
+      <xsd:element name="tpsToModify" type="tpdata:TpDataList_T">
         <xsd:annotation>
           <xsd:documentation>
             A list of TPs and parameters to apply. On method return the list is 
@@ -1525,8 +1459,7 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
-<!-- ===================== deactivateAndDeleteFdfr Request/Response Messages ========= -->
+  <!-- ===================== deactivateAndDeleteFdfr Request/Response Messages ========= -->
   <xsd:complexType name="deactivateAndDeleteFdfrRequest_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -1556,7 +1489,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T">
+      <xsd:element name="tpsToModify" type="tpdata:TpDataList_T">
         <xsd:annotation>
           <xsd:documentation>
             A list of TPs and parameters to apply. On method return the list is 
@@ -1567,7 +1500,6 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
   <xsd:complexType name="deactivateAndDeleteFdfrResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -1575,7 +1507,7 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T">
+      <xsd:element name="tpsToModify" type="tpdata:TpDataList_T">
         <xsd:annotation>
           <xsd:documentation>
             A list of TPs and parameters to apply. On method return the list is 
@@ -1593,8 +1525,7 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
-<!-- ===================== modifyFdfr Request/Response Messages ========= -->
+  <!-- ===================== modifyFdfr Request/Response Messages ========= -->
   <xsd:complexType name="modifyFdfrRequest_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -1631,7 +1562,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="fdfrModifyData" type="fdfr:FdfrModifyData_T">
+      <xsd:element name="fdfrModifyData" type="tns:FdfrModifyData_T">
         <xsd:annotation>
           <xsd:documentation>
             Structure describing how the flow domain fragment should be modified.
@@ -1640,7 +1571,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T">
+      <xsd:element name="tpsToModify" type="tpdata:TpDataList_T">
         <xsd:annotation>
           <xsd:documentation>
             A list of TPs and parameters to apply. On method return the list is 
@@ -1651,7 +1582,6 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
   <xsd:complexType name="modifyFdfrResponse_T">
     <xsd:annotation>
       <xsd:documentation>
@@ -1659,7 +1589,7 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T">
+      <xsd:element name="tpsToModify" type="tpdata:TpDataList_T">
         <xsd:annotation>
           <xsd:documentation>
             A list of TPs and parameters to apply. On method return the list is 
@@ -1704,5 +1634,4 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-
 </xsd:schema>

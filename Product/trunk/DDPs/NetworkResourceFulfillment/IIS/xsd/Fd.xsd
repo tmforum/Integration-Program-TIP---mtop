@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/fd/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/fd/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:itu="http://www.tmforum.org/mtop/nrb/xsd/itu/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:lp="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/fd/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/fd/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:lp="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Data Model Network Resource FulFillment</p>
@@ -9,124 +9,60 @@
     </xsd:documentation>
   </xsd:annotation>
   <!-- ============== -->
-  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
-  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1"/>
-  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/ITU-T-Definitions.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/itu/v1"/>
-  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayeredParameters.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lp/v1"/>
-  <xsd:import schemaLocation="CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1"/>
-
-  <!-- ======== Global Type Declarations ========= -->
-  <!-- ========= ConnectivityState_T Declaration ======== -->
+  <!-- ============== -->
   <xsd:simpleType name="ConnectivityState_T">
     <xsd:annotation>
       <xsd:documentation>
-        This attribute provides an indication to the NMS about the server layer
-        connectivity between the MFDs associated to an FD. It shall have one of the 
-        following values:
-        CS_UNKNOWN: all FD Edge CPTPs are reachable to each other 
-        CS_FULLY_CONNECTED: at least one FD Edge CPTP is not reachable by another FD Edge CPTP
-        CS_NOT_FULLY_CONNECTED: the Connectivity state of the FD is not known by the EMS
+        <p>This attribute provides an indication to the NMS about the server layer connectivity between the MFDs associated to an FD.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:restriction base="xsd:string">
-      <xsd:enumeration value="CS_UNKNOWN"/>
-      <xsd:enumeration value="CS_FULLY_CONNECTED"/>
-      <xsd:enumeration value="CS_NOT_FULLY_CONNECTED"/>
-    </xsd:restriction>
-  </xsd:simpleType>
-
-  <!-- ========= ConnectivityRequirement_T Declaration ======== -->
-  <xsd:simpleType name="ConnectivityRequirement_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        This attribute shall identify (for a "connectivity-aware" EMS) 
-        the requested operation mode in case not all FPs have potential connectivity 
-        to one another. If the EMS is not connectivity-aware, this parameter is ignored.
-        It shall have one of the following values:
-        CR_IGNORE: in case not all FPs have potential connectivity to one another, 
-        add all Flow Points regardless of potential connectivity (default value).
-        CR_REJECT: in case not all FPs have potential connectivity 
-        to one another, reject the request.
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:restriction base="xsd:string">
-      <xsd:enumeration value="CR_IGNORE"/>
-      <xsd:enumeration value="CR_REJECT"/>
-    </xsd:restriction>
-  </xsd:simpleType>
-
-  <!-- ========= CPTP_Role_T Declaration ======== -->
-  <xsd:simpleType name="CPTP_Role_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        This parameter shall identify the role in the flow domain of
-        the requested CPTPs.
-        It shall have one of the following values:
-        CPTPR_FD_EDGE: Return Flow Domain Edge CPTPs.
-        CPTPR_FD_INTERNAL: Return Flow Domain Internal CPTPs.
-        CPTPR_ALL: Return all CPTPs.
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:restriction base="xsd:string">
-      <xsd:enumeration value="CPTPR_FD_EDGE"/>
-      <xsd:enumeration value="CPTPR_FD_INTERNAL"/>
-      <xsd:enumeration value="CPTPR_ALL"/>
-    </xsd:restriction>
-  </xsd:simpleType>
-
-  <!-- ========= FDType_T Declaration ======== -->
-  <xsd:simpleType name="FDType_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        This (read-only) attribute provides an indication of the type 
-        of the FD. It may have one of the following values: 
-        "FDT_SINGLETON": The FD contains at most one MFD.
-        "FDT_NETWORK": The FD may contain more than one MFD.
-       </xsd:documentation>
-    </xsd:annotation>
-    <xsd:restriction base="xsd:string">
-      <xsd:enumeration value="FDT_SINGLETON"/>
-      <xsd:enumeration value="FDT_NETWORK"/>
-    </xsd:restriction>
-  </xsd:simpleType>
-
-  <!-- ========= ParameterGroupsList_T Declaration ======== -->
-  <xsd:complexType name="ParameterGroupsList_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        List of transmission parameter group names
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexContent>
-      <xsd:extension base="cri:CommonResourceInfo_T">
+      <xsd:enumeration value="CS_UNKNOWN">
         <xsd:annotation>
-          <xsd:documentation>
-            <p>This element entails the attributes common to all mTOP network resource objects.</p>
-          </xsd:documentation>
+          <xsd:documentation>all FD Edge CPTPs are reachable to each other</xsd:documentation>
         </xsd:annotation>
-		<xsd:sequence>
-      	  <xsd:element name="parameterGroup" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
-		</xsd:sequence>
-      </xsd:extension>
-    </xsd:complexContent>
-  </xsd:complexType>
-
-  <!-- ========= FlowDomain_T Declaration ======== -->
+      </xsd:enumeration>
+      <xsd:enumeration value="CS_FULLY_CONNECTED">
+        <xsd:annotation>
+          <xsd:documentation>at least one FD Edge CPTP is not reachable by another FD Edge CPTP</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="CS_NOT_FULLY_CONNECTED">
+        <xsd:annotation>
+          <xsd:documentation>the Connectivity state of the FD is not known by the EMS</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ============== -->
+  <xsd:simpleType name="FdType_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This (read-only) attribute provides an indication of the type of the FD.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="FDT_SINGLETON">
+        <xsd:annotation>
+          <xsd:documentation>The FD contains at most one MFD</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="FDT_NETWORK">
+        <xsd:annotation>
+          <xsd:documentation>The FD may contain more than one MFD</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ============== -->
   <xsd:element name="fd" type="tns:FlowDomain_T"/>
+  <!-- ============== -->
   <xsd:complexType name="FlowDomain_T">
     <xsd:annotation>
       <xsd:documentation>
-        A flow domain is associated with a set of flow domain edge CPTPs and
-        matrix flow domains. Connectivity can be created between flow points 
-        contained by flow domain edge CPTPs through flow domain fragments.
-        The read/write attributes can be set by the NMS by either the common methods 
-        of the common::Common_I interface or by the createFlowDomain(), 
-        modifyFlowDomain(), associateMFDsWithFlowDomain(), 
-        deAssociateMFDsFromFlowDomain(), associateCPTPsWithFlowDomain(), 
-        deAssociateCPTPsFromFlowDomain()
-        methods of the FlowDomainMgr_I interface.
+        <p>A flow domain is associated with a set of flow domain edge CPTPs and matrix flow domains. Connectivity can be created between flow points contained by flow domain edge CPTPs through flow domain fragments.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
@@ -136,447 +72,41 @@
             <p>This element entails the attributes common to all mTOP network resource objects.</p>
           </xsd:documentation>
         </xsd:annotation>
-		<xsd:sequence>
-		  <xsd:element name="name" type="nam:NamingAttributes_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				The name represents the name of the flow domain
-				which is assigned by the EMS upon creation. The EMS is responsible
-				for guaranteeing the uniqueness of the name within the context
-				of the FlowDomainMgr.
-				See Supporting Documentation for the naming of flow domains. 
-			  </xsd:documentation>
-			</xsd:annotation>  
-		  </xsd:element>
-		  <xsd:element name="discoveredName" type="gen:DiscoveredName_T" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				This attribute represents a unique identifier for the object when its
-				existence is first published on the CCV. Refer to the type definition for more details.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="namingOS" type="gen:NamingOs_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				This attribute contains the name of the OS that provided the unique MTOSI
-				name for the object. Refer to the type definition for more details.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="userLabel" type="gen:UserLabel_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				"User-friendly" name for the object. Refer to the type definition for more details.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="owner" type="gen:Owner_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				Identifier for the owner of the object. Refer to the type definition for more details.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="transmissionParams" type="lp:LayeredParametersList_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				A list of layer rates on which connectivity can be established in the
-				flow domain together with a set of connectionless technology parameters for 
-				each layer rate. Refer to chapter "Connectionless Technology Parameters" of the
-				supporting document LayeredParameters.pdf for details of the currently defined
-				connectionless parameters.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="fDConnectivityState" type="tns:ConnectivityState_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				Indication about the server layer connectivity between matrix flow
-				domains associated to the flow domain.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="fdType" type="tns:FDType_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				This (read-only) attribute provides an indication of the type of the FD. 
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		</xsd:sequence>
+        <xsd:sequence>
+          <xsd:element name="transmissionParams" type="lp:LayeredParametersList_T" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>A list of layer rates on which connectivity can be established in the flow domain together with a set of connectionless technology parameters for each layer rate. Refer to chapter "Connectionless Technology Parameters" of the supporting document LayeredParameters.pdf for details of the currently defined connectionless parameters.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="connectivityState" type="tns:ConnectivityState_T" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Indication about the server layer connectivity between matrix flow domains associated to the flow domain.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="type" type="tns:FdType_T" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This (read-only) attribute provides an indication of the type of the FD.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
-
-  <!-- ========= FDList_T Declaration ======== -->
-  <xsd:complexType name="FDList_T">
+  <!-- ============== -->
+  <xsd:complexType name="FdList_T">
     <xsd:annotation>
       <xsd:documentation>
-        List of FlowDomains
+        <p>List of FlowDomains</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element ref="fd" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element ref="tns:fd" minOccurs="0" maxOccurs="unbounded"/>
     </xsd:sequence>
-   </xsd:complexType>
-
-  <!-- ========= FDCreateData_T Declaration ======== -->
-  <xsd:complexType name="FDCreateData_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        The read/write attributes required for the creation of an
-        flow domain on the EMS are packed together in an FDCreateData
-        structure which the NMS will pass to the EMS at flow domain
-        creation time.
-     </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexContent>
-      <xsd:extension base="cri:CommonResourceInfo_T">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>This element entails the attributes common to all mTOP network resource objects.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-    	<xsd:sequence>
-		  <xsd:element name="name" type="nam:NamingAttributes_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				The identifier of the flow domain which will be used over the interface.
-				The EMS has to make sure that the name of the flow domain is unique within the
-				EMS. If no name is provided by the NMS, the EMS has to define a
-				unique name.
-			  </xsd:documentation>
-			</xsd:annotation>  
-		  </xsd:element>
-		  <xsd:element name="userLabel" type="gen:UserLabel_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				An userLabel may be specified by the NMS. May be empty.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="forceUniqueness" type="xsd:boolean" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				Specifies whether uniqueness of the userLabel is required amongst flow
-				domains of the EMS. In case of uniqueness, the operation will fail if the
-				userLabel is already in use.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="owner" type="gen:Owner_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				An owner may be specified by the NMS. May be empty.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="mfds" type="nam:NamingAttributesList_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				Identifies the list of existing matrix flow domains to be associated to
-				the flow domain. The MFDs must not already be associated to another flow domain.
-				This may be an empty list.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="transmissionParams" type="lp:LayeredParametersList_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				A list of layer rates on which connectivity can be established in the
-				flow domain together with a set of connectionless technology parameters for 
-				each layer rate. Refer to chapter "Connectionless Technology Parameters" of the
-				supporting document LayeredParameters.pdf for details of the currently defined
-				connectionless parameters.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		</xsd:sequence>
-      </xsd:extension>
-    </xsd:complexContent>
-  </xsd:complexType>
-
-  <!-- ========= FDModifyData_T Declaration ======== -->
-  <xsd:complexType name="FDModifyData_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        The read/write attributes required for the modification of a
-        flow domain on the EMS are packed together in an FDModifyData
-        structure which the NMS will pass to the EMS in a request to modify an 
-        existing flow domain.
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexContent>
-      <xsd:extension base="cri:CommonResourceInfo_T">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>This element entails the attributes common to all mTOP network resource objects.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-    	<xsd:sequence>
-		  <xsd:element name="userLabel" type="gen:UserLabel_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				An userLabel may be specified by the NMS. May be empty.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="forceUniqueness" type="xsd:boolean" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				Specifies whether uniqueness of the userLabel is required amongst flow
-				domains of the EMS. In case of uniqueness, the operation will fail if the
-				userLabel is already in use.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="owner" type="gen:Owner_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				An owner may be specified by the NMS. May be empty.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="transmissionParams" type="lp:LayeredParametersList_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				A list of layer rates on which connectivity can be established in the
-				flow domain together with a set of connectionless technology parameters for 
-				each layer rate. Refer to chapter "Connectionless Technology Parameters" of the
-				supporting document LayeredParameters.pdf for details of the currently defined
-				connectionless parameters.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		</xsd:sequence>
-      </xsd:extension>
-    </xsd:complexContent>
-  </xsd:complexType>
-
-  <!-- ========= MatrixFlowDomain_T Declaration ======== -->
-  <xsd:element name="mfd" type="tns:MatrixFlowDomain_T"/>
-  <xsd:complexType name="MatrixFlowDomain_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        A matrix flow domain is associated with a set of CPTPs. It reflects
-        an atomic switching matrix.
-        The read/write attributes can be set by the NMS by either the common methods 
-        of the common::Common_I interface or by the createMFD(), modifyMFD() 
-        methods.
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexContent>
-      <xsd:extension base="cri:CommonResourceInfo_T">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>This element entails the attributes common to all mTOP network resource objects.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-    	<xsd:sequence>
-		  <xsd:element name="name" type="nam:NamingAttributes_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				This attribute represents a unique identifier for the object on the CCV.
-				Refer to the type definition for more details.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="discoveredName" type="gen:DiscoveredName_T" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				This attribute represents a unique identifier for the object when its
-				existence is first published on the CCV. Refer to the type definition for more details.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="namingOS" type="gen:NamingOs_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				This attribute contains the name of the OS that provided the unique MTOSI
-				name for the object. Refer to the type definition for more details.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="userLabel" type="gen:UserLabel_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				An userLabel may be specified by the NMS. May be empty.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="owner" type="gen:Owner_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				An owner may be specified by the NMS. May be empty.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="transmissionParams" type="lp:LayeredParametersList_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				A list of layer rates on which connectivity can be established in the
-				flow domain together with a set of connectionless technology parameters for 
-				each layer rate. Refer to chapter "Connectionless Technology Parameters" of the
-				supporting document LayeredParameters.pdf for details of the currently defined
-				connectionless parameters.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="flexible" type="xsd:boolean" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				Indicates whether the MFD is fixed (i.e., cannot be configured by
-				the NMS) or flexible.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		</xsd:sequence>
-      </xsd:extension>
-    </xsd:complexContent>
-  </xsd:complexType>
-
-  <!-- ========= MFDList_T Declaration ======== -->
-  <xsd:complexType name="MFDList_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        List of MatrixFlowDomain
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element ref="mfd" minOccurs="0" maxOccurs="unbounded"/>
-    </xsd:sequence>
-  </xsd:complexType>
-
-  <!-- ========= MFDCreateData_T Declaration ======== -->
-  <xsd:complexType name="MFDCreateData_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        The read/write attributes required for the creation of an
-        matrix flow domain on the EMS are packed together in an MFDCreateData
-        structure which the NMS will pass to the EMS at matrix flow domain
-        creation time.
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexContent>
-      <xsd:extension base="cri:CommonResourceInfo_T">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>This element entails the attributes common to all mTOP network resource objects.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-    	<xsd:sequence>
-		  <xsd:element name="name" type="nam:NamingAttributes_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				The identifier of the matrix flow domain which will be used over the interface.
-				The EMS has to make sure that the name of the matrix flow domain is unique within the
-				EMS. If no name is provided by the NMS, the EMS has to define a
-				unique name.
-			  </xsd:documentation>
-			</xsd:annotation>  
-		  </xsd:element>
-		  <xsd:element name="userLabel" type="gen:UserLabel_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				An userLabel may be specified by the NMS. May be empty.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="forceUniqueness" type="xsd:boolean" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				Specifies whether uniqueness of the userLabel is required amongst matrix flow
-				domains of the EMS. In case of uniqueness, the operation will fail if the
-				userLabel is already in use.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="owner" type="gen:Owner_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				An owner may be specified by the NMS. May be empty.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="unassignedCPTPs" type="nam:NamingAttributesList_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				A list of names of unassigned CPTPs that shall be assigned to the
-				matrix flow domain.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="transmissionParams" type="lp:LayeredParametersList_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				A list of layer rates on which connectivity can be established in the
-				flow domain together with a set of connectionless technology parameters for 
-				each layer rate. Refer to chapter "Connectionless Technology Parameters" of the
-				supporting document LayeredParameters.pdf for details of the currently defined
-				connectionless parameters.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		</xsd:sequence>
-      </xsd:extension>
-    </xsd:complexContent>
-  </xsd:complexType>
-
-  <!-- ========= MFDModifyData_T Declaration ======== -->
-  <xsd:complexType name="MFDModifyData_T">
-    <xsd:annotation>
-      <xsd:documentation>
-        The read/write attributes required for the modification of a 
-        matrix flow domain on the EMS are packed together in an MFDModifyData
-        structure which the NMS will pass to the EMS in a request to modify an
-        existing matrix flow domain.
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexContent>
-      <xsd:extension base="cri:CommonResourceInfo_T">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>This element entails the attributes common to all mTOP network resource objects.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-    	<xsd:sequence>
-		  <xsd:element name="userLabel" type="gen:UserLabel_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				An userLabel may be specified by the NMS. May be empty.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="forceUniqueness" type="xsd:boolean" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				Specifies whether uniqueness of the userLabel is required amongst matrix flow
-				domains of the EMS. In case of uniqueness, the operation will fail if the
-				userLabel is already in use.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="owner" type="gen:Owner_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				An owner may be specified by the NMS. May be empty.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		  <xsd:element name="transmissionParams" type="lp:LayeredParametersList_T" nillable="true" minOccurs="0">
-			<xsd:annotation>
-			  <xsd:documentation>
-				A list of layer rates on which connectivity can be established in the
-				flow domain together with a set of connectionless technology parameters for 
-				each layer rate. Refer to chapter "Connectionless Technology Parameters" of the
-				supporting document LayeredParameters.pdf for details of the currently defined
-				connectionless parameters.
-			  </xsd:documentation>
-			</xsd:annotation>
-		  </xsd:element>
-		</xsd:sequence>
-      </xsd:extension>
-    </xsd:complexContent>
   </xsd:complexType>
 </xsd:schema>
