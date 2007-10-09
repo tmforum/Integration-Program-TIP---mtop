@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - DM Network Resource Fulfillment - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/com/v1" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/com/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/com/v1" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/com/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Data Model Network Resource Assurance</p>
@@ -8,6 +8,35 @@
       <p>Description: This module contains the XML Schema common type definitions used in some the mTOP XML Network Resource Assurance objects.</p>
     </xsd:documentation>
   </xsd:annotation>
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+  <!-- @TODO
+#1: Combine a single enum from AssignedSeverityEnum_T and PerceivedSeverity_T
+-->
+  <!-- ================= -->
+  <xsd:simpleType name="AcknowledgeIndication_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>AcknowledgeIndication_T describes the event acknowledge state. </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="AI_EVENT_ACKNOWLEDGED">
+        <xsd:annotation>
+          <xsd:documentation>provided in case of manual or auto acknowledgement</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="AI_EVENT_UNACKNOWLEDGED">
+        <xsd:annotation>
+          <xsd:documentation>provided if the event has not been acknowledged but the OS supports acknowledgement for this event or in the case that the alarm has been previously acknowledged and then unacknowledged</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="AI_NA">
+        <xsd:annotation>
+          <xsd:documentation>provided in case the OS does not support acknowledgement for this event or does not support acknowledgement at all</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
   <!-- ===================== -->
   <xsd:complexType name="AssignedSeverity_T">
     <xsd:annotation>
@@ -43,4 +72,134 @@
       <xsd:enumeration value="FREE_CHOICE"/>
     </xsd:restriction>
   </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="PerceivedSeverity_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The PerceivedSeverity values are consistent with ITU-T X.733 definitions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="PS_INDETERMINATE"/>
+      <xsd:enumeration value="PS_CRITICAL"/>
+      <xsd:enumeration value="PS_MAJOR"/>
+      <xsd:enumeration value="PS_MINOR"/>
+      <xsd:enumeration value="PS_WARNING"/>
+      <xsd:enumeration value="PS_CLEARED"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="ProposedRepairAction_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Element of ProposedRepairActionList_T.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="ProposedRepairActionList_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>List of ProposedRepairAction_T elements.</p>
+The optional "X.733::ProposedRepairActions" parameter uses this type.
+When present in an alarm notification, it indicates if the cause is known and the system being managed can suggest one or more solutions (such as switch in standby equipment, retry, replace media). This is consistent with the ITU-T X.733 definition.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="proposedRepairAction" type="tns:ProposedRepairAction_T" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="ServiceAffecting_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Describes the impact of a fault on monitored entities </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="SA_UNKNOWN">
+        <xsd:annotation>
+          <xsd:documentation>The OS cannot determine if the condition affects service or not</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SA_SERVICE_AFFECTING">
+        <xsd:annotation>
+          <xsd:documentation>The OS determines that the condition affects service</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SA_NON_SERVICE_AFFECTING">
+        <xsd:annotation>
+          <xsd:documentation>TheOS determines that the condition does not affect service</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="SpecificProblem_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Element of SpecificProblemList_T.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="CorrelatedNotifications_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Correlated notifications are identified by the object that emitted the notification and the notification IDs. Both are included in case the Notification IDs are not unique across objects.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:all>
+      <xsd:element name="name" type="nam:NamingAttributes_T"/>
+      <xsd:element name="notifIDs" type="tns:NotifIDList_T"/>
+    </xsd:all>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="CorrelatedNotificationList_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>List of CorrelatedNotifications_T elements.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="correlatedNotifications" type="tns:CorrelatedNotifications_T" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="PerceivedSeverityList_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>List of PerceivedSeverity_T elements.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="perceivedSeverity" type="tns:PerceivedSeverity_T" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="SpecificProblemList_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>List of SpecificProblem_T elements.
+The optional "X.733::SpecificProblems" parameter uses that type.
+When present in an alarm notification, it identifies further refinements to the probable cause of the alarm. This is consistent with the ITU-T X.733 definition.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="specificProblem" type="tns:SpecificProblem_T" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="NotifIDList_T">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>List of notification IDs  (free string). Also,  the value found in notificationId field of the event.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="notificationId" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
 </xsd:schema>
