@@ -72,13 +72,17 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
-      <xsd:choice>
-        <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage_T"/>
-        <xsd:element name="exceptionInvalidFilterDefinition" type="msg:BaseExceptionMessage_T"/>
-        <xsd:element name="exceptionInternalTopic" type="msg:BaseExceptionMessage_T"/>
-        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T"/>
-        <xsd:element name="exceptionNotificationServiceProblem" type="msg:BaseExceptionMessage_T"/>
-      </xsd:choice>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionTypes">
+          <xsd:choice>
+            <xsd:element ref="msg:invalidFilterDefinition"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:invalidTopic"/>
+            <xsd:element ref="msg:notificationServiceProblem"/>
+            <xsd:element ref="msg:notImplemented"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
   <!--  ============== -->
@@ -129,11 +133,15 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
-      <xsd:choice>
-        <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage_T"/>
-        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T"/>
-        <xsd:element name="exceptionNotificationServiceProblem" type="msg:BaseExceptionMessage_T"/>
-      </xsd:choice>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionTypes">
+          <xsd:choice>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notificationServiceProblem"/>
+            <xsd:element ref="msg:notImplemented"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
   <!--  ============== -->
@@ -157,7 +165,7 @@
           <xsd:annotation>
             <xsd:documentation>
               <p>the notification payload which can be one of the supported mTOP XML events, which are all based on the commonEventInfo</p>
-                </xsd:documentation>
+            </xsd:documentation>
           </xsd:annotation>
           <xsd:complexType>
             <xsd:sequence>

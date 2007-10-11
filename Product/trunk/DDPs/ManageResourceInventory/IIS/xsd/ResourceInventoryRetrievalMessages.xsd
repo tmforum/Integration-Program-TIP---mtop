@@ -73,14 +73,18 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
-      <xsd:choice>
-        <xsd:element name="exceptionTooManyOpenIterators" type="msg:BaseExceptionMessage_T"/>
-        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T"/>
-        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T"/>
-        <xsd:element name="exceptionCommFailure" type="msg:BaseExceptionMessage_T"/>
-        <xsd:element name="exceptionUnsupportedCompressionFormat" type="msg:BaseExceptionMessage_T"/>
-        <xsd:element name="exceptionUnsupportedPackingFormat" type="msg:BaseExceptionMessage_T"/>
-      </xsd:choice>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionTypes">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+            <xsd:element ref="msg:unsupportedCompressionFormat"/>
+            <xsd:element ref="msg:unsupportedPackingFormat"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
   <!-- ================= -->
@@ -107,7 +111,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     </xsd:complexType>
   </xsd:element>
   <!-- ================== -->
-  <xsd:element name="getInventoryIteratorException" type="msg:GetAllDataIteratorException_T">
+  <xsd:element name="getInventoryIteratorException" type="msg:ExceptionProfile2">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getInventoryIterator operation</p>
