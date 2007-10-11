@@ -24,7 +24,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="filter" type="tns:ActiveAlarmFilter_T" minOccurs="0">
+        <xsd:element name="filter" type="tns:ActiveAlarmFilterType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
           Defines the subset of the set of active alarms known to the target OS that are to be returned to the requesting OS
@@ -34,7 +34,7 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getActiveAlarmsResponse" type="alm:AlarmList_T">
+  <xsd:element name="getActiveAlarmsResponse" type="alm:AlarmListType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure of the getActiveAlarms operation</p>
@@ -49,7 +49,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:complexContent>
-        <xsd:restriction base="msg:AllExceptionTypes">
+        <xsd:restriction base="msg:AllExceptionsType">
           <xsd:choice>
             <xsd:element ref="msg:communicationFailure"/>
             <xsd:element ref="msg:internalError"/>
@@ -72,14 +72,14 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getActiveAlarmsIteratorResponse" type="alm:AlarmList_T">
+  <xsd:element name="getActiveAlarmsIteratorResponse" type="alm:AlarmListType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure of the getActiveAlarmsIterator operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getActiveAlarmsIteratorException" type="msg:ExceptionProfile2">
+  <xsd:element name="getActiveAlarmsIteratorException" type="msg:ExceptionProfile2Type">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getActiveAlarmsIterator operation</p>
@@ -96,7 +96,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="filter" type="tns:ActiveAlarmFilter_T" minOccurs="0">
+        <xsd:element name="filter" type="tns:ActiveAlarmFilterType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
           Defines the subset of the set of active alarms known to the target OS that are to be returned to the requesting OS
@@ -132,7 +132,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:complexContent>
-        <xsd:restriction base="msg:AllExceptionTypes">
+        <xsd:restriction base="msg:AllExceptionsType">
           <xsd:choice>
             <xsd:element ref="msg:communicationFailure"/>
             <xsd:element ref="msg:internalError"/>
@@ -144,7 +144,7 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================= -->
-  <xsd:simpleType name="AlarmSource_T">
+  <xsd:simpleType name="AlarmSourceType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The source of the alarm with respect to the OS receiving this request. This is one of  the active alarm filter criteria.</p>
@@ -156,7 +156,7 @@
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:complexType name="ActiveAlarmFilter_T">
+  <xsd:complexType name="ActiveAlarmFilterType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The active alarm filter data structure. Default interpretation (filter criteria is missing or is an empty list) indicates that it is not relevant to the query. All the filter criteria possible enumerations are applicable.</p>
@@ -169,14 +169,14 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="source" type="tns:AlarmSource_T" minOccurs="0">
+      <xsd:element name="source" type="tns:AlarmSourceType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>This attribute filters the alarms based on their source (with respect to the OS receiving this request). Possible values are INTERNAL, EXTERNAL, NOT_APPLICABLE. The value NOT_APPLICABLE means there is no filtering on the alarm source; i.e., internal and external alarms are in the scope.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="scope" type="nam:NamingAttributesList_T" minOccurs="0">
+      <xsd:element name="scope" type="nam:NamingAttributesListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>This attribute filters the alarms based on a list of managed elements. The listed managed elements are in the scope. 
@@ -184,7 +184,7 @@ If no managed element is provided, alarms from all managed elements are in scope
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="perceivedSeverityList" type="com:PerceivedSeverityList_T" minOccurs="0">
+      <xsd:element name="perceivedSeverityList" type="com:PerceivedSeverityListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>This attribute filters the alarms based on a list of severities (see ITU-T X.733 definitions). The listed severities are in the scope. 
@@ -192,14 +192,14 @@ If no severity is provided, alarms with any severity are in scope.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="probableCauseList" type="prc:ProbableCauseList_T" minOccurs="0">
+      <xsd:element name="probableCauseList" type="prc:ProbableCauseListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>This attribute filters the alarms based on a list of probable causes (for details refer to the supporting document: ProbableCauses). The listed probable causes are in the scope. If no probable cause is provided, alarms with any probable cause are in scope.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="acknowledgeIndication" type="com:AcknowledgeIndication_T" minOccurs="0">
+      <xsd:element name="acknowledgeIndication" type="com:AcknowledgeIndicationType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>This attribute filters the alarms based on its acknowledge indication. Possible values are EVENT_ACKNOWLEDGED, EVENT_UNACKNOWLEDGED, and NOT_APPLICABLE. The value NOT_APPLICABLE indicates that alarms with any acknowledge indication are in scope.</p>

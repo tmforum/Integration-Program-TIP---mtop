@@ -17,17 +17,17 @@
 	<!-- ================= -->
 	<!-- ======== Common Data Types for Services ========= -->
 	<!-- === Common Service Info === -->
-	<xsd:complexType name="CommonServiceInfo_T">
+	<xsd:complexType name="CommonServiceInfoType">
 		<xsd:annotation>
 			<xsd:documentation>
 				<p>This aggregate defines attributes common to all mTOP service objects.</p>
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:complexContent>
-			<xsd:extension base="fmw.coi:CommonObjectInfo_T">
+			<xsd:extension base="fmw.coi:CommonObjectInfoType">
 				<xsd:sequence>
 					<!-- TODO: Need to be confirmed other using generic name parameter in cri 
-      <xsd:element name="name" type="nam:NamingAttributes_T" nillable="true" minOccurs="0">
+      <xsd:element name="name" type="nam:NamingAttributesType" nillable="true" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>This attribute represents a unique identifier for the object on the CCV. Refer to the object type definition for more details.</p>
@@ -65,7 +65,7 @@
 		</xsd:complexContent>
 	</xsd:complexType>
 	<!-- === Common Service Spec Info === -->
-	<xsd:complexType name="ServiceSpecVersion_T">
+	<xsd:complexType name="ServiceSpecVersionType">
 		<xsd:annotation>
 			<xsd:documentation>
 				<p>The service specification version </p>
@@ -78,30 +78,30 @@
 			<xsd:element name="svcSpecRevisionReason" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="svcSpecRevisionSemantics" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="svcSpecRevisionTimestamp" type="xsd:date" minOccurs="0"/>
-			<xsd:element name="svcSpecRevisionValidityPeriod" type="tns:TimePeriod_T" minOccurs="0"/>
+			<xsd:element name="svcSpecRevisionValidityPeriod" type="tns:TimePeriodType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<!-- ================= -->
-	<xsd:complexType name="ServiceSpecChar_T">
+	<xsd:complexType name="ServiceSpecCharType">
 		<xsd:annotation>
 			<xsd:documentation>
 				<p>The ServiceSpecCharacteristic takes on Service(Spec)CharacteristicValues  </p>
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:complexContent>
-			<xsd:extension base="tns:CommonServiceInfo_T">
+			<xsd:extension base="tns:CommonServiceInfoType">
 				<xsd:sequence>
 					<xsd:element name="valueType" type="xsd:string" minOccurs="0"/>
 					<xsd:element name="minCardinality" type="xsd:int" minOccurs="0"/>
 					<xsd:element name="maxCardinality" type="xsd:int" minOccurs="0"/>
 					<xsd:element name="derivationFormula" type="xsd:string" minOccurs="0"/>
-					<xsd:element name="validFor" type="tns:TimePeriod_T" minOccurs="0"/>
-					<xsd:element name="serviceSpecCharacteristicValue" type="tns:ServiceSpecCharValue_T" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="validFor" type="tns:TimePeriodType" minOccurs="0"/>
+					<xsd:element name="serviceSpecCharacteristicValue" type="tns:ServiceSpecCharValueType" minOccurs="0" maxOccurs="unbounded"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
-	<xsd:complexType name="ServiceCharValue_T">
+	<xsd:complexType name="ServiceCharValueType">
 		<xsd:annotation>
 			<xsd:documentation>
 				<p>A service is described by Service Characteristic Values </p>
@@ -109,12 +109,12 @@
 		</xsd:annotation>
 		<xsd:sequence>
 			<xsd:element name="value" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="validFor" type="tns:TimePeriod_T" minOccurs="0"/>
-			<xsd:element name="serviceSpecCharacteristic" type="tns:ServiceSpecChar_T" minOccurs="0"/>
+			<xsd:element name="validFor" type="tns:TimePeriodType" minOccurs="0"/>
+			<xsd:element name="serviceSpecCharacteristic" type="tns:ServiceSpecCharType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<!-- ================= -->
-	<xsd:complexType name="ServiceSpecCharValue_T">
+	<xsd:complexType name="ServiceSpecCharValueType">
 		<xsd:annotation>
 			<xsd:documentation>
 				<p>A service spec is characterized by Service Spec Characteristic Values </p>
@@ -127,52 +127,52 @@
 			<xsd:element name="unitOfMeasure" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="valueFrom" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="valueTo" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="validFor" type="tns:TimePeriod_T" minOccurs="0"/>
+			<xsd:element name="validFor" type="tns:TimePeriodType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<!-- ================= -->
-	<xsd:complexType name="ServiceAccessPoint_T">
+	<xsd:complexType name="ServiceAccessPointType">
 		<xsd:sequence>
 			<xsd:element name="type" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="name" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="description" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="serviceState" type="tns:ServiceState_T" minOccurs="0"/>
-			<xsd:element name="operationalState" type="tns:OperState_T" minOccurs="0"/>
+			<xsd:element name="serviceState" type="tns:ServiceStateType" minOccurs="0"/>
+			<xsd:element name="operationalState" type="tns:OperStateType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<!-- ================= -->
-	<xsd:complexType name="PartyRole_T">
+	<xsd:complexType name="PartyRoleType">
 		<xsd:sequence>
 			<xsd:element name="partyRoleId" type="xsd:anyType" minOccurs="0"/>
 			<xsd:element name="status" type="xsd:anyType" minOccurs="0"/>
-			<xsd:element name="validFor" type="tns:TimePeriod_T" minOccurs="0"/>
+			<xsd:element name="validFor" type="tns:TimePeriodType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<!-- ================= -->
-	<xsd:complexType name="Subscriber_T">
+	<xsd:complexType name="SubscriberType">
 		<xsd:complexContent>
-			<xsd:extension base="tns:PartyRole_T">
+			<xsd:extension base="tns:PartyRoleType">
 				<xsd:sequence/>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
 	<!-- ================= -->
-	<xsd:complexType name="User_T">
+	<xsd:complexType name="UserType">
 		<xsd:complexContent>
-			<xsd:extension base="tns:PartyRole_T">
+			<xsd:extension base="tns:PartyRoleType">
 				<xsd:sequence/>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
 	<!-- ================= -->
-	<xsd:complexType name="TimePeriod_T">
+	<xsd:complexType name="TimePeriodType">
 		<xsd:sequence>
 			<xsd:element name="startDateTime" type="xsd:anyType" minOccurs="0"/>
 			<xsd:element name="endDateTime" type="xsd:anyType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<!-- ================= -->
-	<xsd:simpleType name="OperState_T">
+	<xsd:simpleType name="OperStateType">
 		<xsd:restriction base="xsd:string">
 			<xsd:enumeration value="DISABLED">
 				<xsd:annotation>
@@ -191,7 +191,7 @@
 		</xsd:restriction>
 	</xsd:simpleType>
 	<!-- ================= -->
-	<xsd:simpleType name="ServiceState_T">
+	<xsd:simpleType name="ServiceStateType">
 		<xsd:annotation>
 			<xsd:documentation>
 				<p>This "service state" is used by the Service Management interfaces.</p>

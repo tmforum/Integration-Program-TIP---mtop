@@ -45,21 +45,21 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
       		</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
-			<xsd:element name="inventoryUpdate" type="invdata:InventoryData_T" minOccurs="0">
+			<xsd:element name="inventoryUpdate" type="invdata:InventoryDataType" minOccurs="0">
 				<xsd:annotation>
 					<xsd:documentation>
 						This attribute defines the requested inventory update. Note that the same data structure is used as in the response to the getInventory operation. 
           			</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="effortMode" type="tns:EffortMode_T" minOccurs="0">
+			<xsd:element name="effortMode" type="tns:EffortModeType" minOccurs="0">
 				<xsd:annotation>
 					<xsd:documentation>
 						This attribute is used to indicate the effort level for the updateInventory operations. The two possible values are "bestEffort" and "atomic". Either effort mode can be applied to any of the integration modes.
           			</xsd:documentation>
 				</xsd:annotation>
 			</xsd:element>
-			<xsd:element name="integrationMode" type="tns:IntegrationMode_T" minOccurs="0">
+			<xsd:element name="integrationMode" type="tns:IntegrationModeType" minOccurs="0">
 				<xsd:annotation>
 					<xsd:documentation>
 						This attribute describes how the requested inventory update should be integrated into the existing inventory of the receiving OS. 
@@ -69,7 +69,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
 		</xsd:sequence>
 	</xsd:complexType>
   <!-- ===================== updateInventorResponse Message ========= -->
-	<xsd:complexType name="updateInventoryResponse_T">
+	<xsd:complexType name="updateInventoryResponseType">
 		<xsd:annotation>
 			<xsd:documentation>
 				<p>This is the response of the updateInventory operation.</p> 
@@ -90,12 +90,12 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice minOccurs="1" maxOccurs="unbounded">
-        <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage_T"/>
-        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T"/>
+        <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessageType"/>
+        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessageType"/>
 		<!-- ===================== Object does not exist ========= -->
 		<xsd:sequence> 
-        	<xsd:element name="exceptionInvalidInput_ObjectDoesNotExist" type="msg:BaseExceptionMessage_T"/>
-      		<xsd:element name="nonexistentContainingObject" type="nam:NamingAttributes_T" minOccurs="0" maxOccurs="unbounded">
+        	<xsd:element name="exceptionInvalidInput_ObjectDoesNotExist" type="msg:BaseExceptionMessageType"/>
+      		<xsd:element name="nonexistentContainingObject" type="nam:NamingAttributesType" minOccurs="0" maxOccurs="unbounded">
         		<xsd:annotation>
           			<xsd:documentation>
             			<p>If while attempting to create an object whose containing object (possibly several 
@@ -108,8 +108,8 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
 		</xsd:sequence>
 		<!-- ===================== Unsupported object types ========= -->
 		<xsd:sequence> 
-        	<xsd:element name="exceptionInvalidInput_UnsupportedObjectTypes" type="msg:BaseExceptionMessage_T"/>
-      		<xsd:element name="unsupportedObjectTypes" type="gen:ObjectType_T" minOccurs="0" maxOccurs="unbounded">
+        	<xsd:element name="exceptionInvalidInput_UnsupportedObjectTypes" type="msg:BaseExceptionMessageType"/>
+      		<xsd:element name="unsupportedObjectTypes" type="gen:ObjectTypeType" minOccurs="0" maxOccurs="unbounded">
         		<xsd:annotation>
           			<xsd:documentation>
             			<p>If the requesting OS is trying to create instance of one or more object types that
@@ -121,8 +121,8 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
 		</xsd:sequence>
 				<!-- ===================== Unsupported attributes or attribute values ========= -->
 		<xsd:sequence> 
-        	<xsd:element name="exceptionInvalidInput_UnsupportAttributesOrValues" type="msg:BaseExceptionMessage_T"/>
-      		<xsd:element name="unsupportedObjectTypes" type="gen:ObjectType_T" minOccurs="0" maxOccurs="unbounded">
+        	<xsd:element name="exceptionInvalidInput_UnsupportAttributesOrValues" type="msg:BaseExceptionMessageType"/>
+      		<xsd:element name="unsupportedObjectTypes" type="gen:ObjectTypeType" minOccurs="0" maxOccurs="unbounded">
         		<xsd:annotation>
           			<xsd:documentation>
             			<p>If the requesting OS is trying to modify an unsupported attribute type or set an attribute
@@ -137,8 +137,8 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
 		</xsd:sequence>
 		<!-- ===================== Objects in use ========= -->
 		<xsd:sequence>
-			<xsd:element name="exceptionObjectInUse" type="msg:BaseExceptionMessage_T"/>
-			<xsd:element name="objectInUse" type="nam:NamingAttributes_T" minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="exceptionObjectInUse" type="msg:BaseExceptionMessageType"/>
+			<xsd:element name="objectInUse" type="nam:NamingAttributesType" minOccurs="0" maxOccurs="unbounded">
         		<xsd:annotation>
           			<xsd:documentation>
             			<p>If requesting OS is trying to modify an object that is in use (this may depend on the 
@@ -155,8 +155,8 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
 		</xsd:sequence>
 		<!-- ===================== Policy violation ========= -->
 		<xsd:sequence>
-			<xsd:element name="exceptionPolicyViolation" type="msg:BaseExceptionMessage_T"/>
-			<xsd:element name="baseInstance" type="nam:NamingAttributes_T" minOccurs="0" maxOccurs="unbounded">
+			<xsd:element name="exceptionPolicyViolation" type="msg:BaseExceptionMessageType"/>
+			<xsd:element name="baseInstance" type="nam:NamingAttributesType" minOccurs="0" maxOccurs="unbounded">
         		<xsd:annotation>
           			<xsd:documentation>
             			<p>If creation of a given object violates a policy of the target OS, the target OS should 
@@ -174,7 +174,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     </xsd:complexType>
   </xsd:element>
   <!-- =========== Local Definitions ========= -->
-  <xsd:simpleType name="EffortMode_T">
+  <xsd:simpleType name="EffortModeType">
 		<xsd:annotation>
 			<xsd:documentation>
 				This parameter is used to indicate the effort level for the updateInventory operations. 
@@ -198,7 +198,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
 		</xsd:restriction>
 	</xsd:simpleType>
 	<!-- ================= -->
-	<xsd:simpleType name="IntegrationMode_T">
+	<xsd:simpleType name="IntegrationModeType">
 		<xsd:annotation>
 			<xsd:documentation>
 				<p>This parameter describes how the requested inventory update should be integrated into 

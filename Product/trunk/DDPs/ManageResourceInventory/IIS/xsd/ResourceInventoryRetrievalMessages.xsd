@@ -29,7 +29,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="filter" type="tns:SimpleFilter_T" minOccurs="0">
+        <xsd:element name="filter" type="tns:SimpleFilterType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>defines the subset of the total inventory to be returned to the requesting OS.</p>
@@ -55,7 +55,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="inventoryData" type="invdata:InventoryData_T" minOccurs="0">
+        <xsd:element name="inventoryData" type="invdata:InventoryDataType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The inventory data which may vary based on the MEP. Refer to the TMF 854 XML Solution Set for more details. Also, note that the atomic elements of the inventory data XML representation are all the following top-level objects: MD, ME, MLSN, OS, TL, and TMD. It means that all top-level object instances must be fully encapsulated in one batch when the MEP involves multiple responses.</p>
@@ -74,7 +74,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     </xsd:annotation>
     <xsd:complexType>
       <xsd:complexContent>
-        <xsd:restriction base="msg:AllExceptionTypes">
+        <xsd:restriction base="msg:AllExceptionsType">
           <xsd:choice>
             <xsd:element ref="msg:communicationFailure"/>
             <xsd:element ref="msg:internalError"/>
@@ -88,7 +88,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     </xsd:complexType>
   </xsd:element>
   <!-- ================= -->
-  <xsd:element name="getInventoryIteratorRequest" type="msg:GetAllDataIterator_T">
+  <xsd:element name="getInventoryIteratorRequest" type="msg:GetAllDataIteratorType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getInventoryIterator operation</p>
@@ -105,13 +105,13 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="inventoryData" type="invdata:InventoryData_T" minOccurs="0">
+        <xsd:element name="inventoryData" type="invdata:InventoryDataType" minOccurs="0">
         </xsd:element>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
   <!-- ================== -->
-  <xsd:element name="getInventoryIteratorException" type="msg:ExceptionProfile2">
+  <xsd:element name="getInventoryIteratorException" type="msg:ExceptionProfile2Type">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getInventoryIterator operation</p>
@@ -121,7 +121,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <!-- ================= -->
   <!--         All local types       -->
   <!-- ================= -->
-  <xsd:simpleType name="Granularity_T">
+  <xsd:simpleType name="GranularityType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Filter attribute used to select the granularity of the Inventory report.</p>
@@ -152,7 +152,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:complexType name="SimpleFilter_T">
+  <xsd:complexType name="SimpleFilterType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The data structure of the Inventory Retrieval filter. Some examples are listed in the following table.
@@ -235,7 +235,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="baseInstance" type="nam:NamingAttributes_T" minOccurs="0" maxOccurs="unbounded">
+      <xsd:element name="baseInstance" type="nam:NamingAttributesType" minOccurs="0" maxOccurs="unbounded">
         <xsd:annotation>
           <xsd:documentation>
             <p>This attribute identifies a list of base object instances for the subtrees to be retrieved. BaseInstanceList is a list of serialized MTOSI names. If the BaseInstanceList is left empty then all the nodes at the top of the MTOSI instance tree are selected (i.e., all MDs, TMDs, and OSs are selected). Specification of the BaseInstanceList does not select any objects in and of itself. In order to select specific objects, one needs to specify the IncludedObjectTypes.</p>
@@ -257,14 +257,14 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="objectType" type="gen:ObjectType_T">
+            <xsd:element name="objectType" type="gen:ObjectTypeType">
               <xsd:annotation>
                 <xsd:documentation>
                   <p>Specify the object type acronym.  The ";" is used as a separator, and "=" is used to associate a value with a type of object. For example, MD=md1;ME=ME123;EH=ACME7 identifies an equipment holder within managed element ME123 within management domain md1. The relative name of the equipment holder is ACME7.</p>
                 </xsd:documentation>
               </xsd:annotation>
             </xsd:element>
-            <xsd:element name="granularity" type="tns:Granularity_T">
+            <xsd:element name="granularity" type="tns:GranularityType">
               <xsd:annotation>
                 <xsd:documentation>
                   <p>Specify the granularity of the inventory report.</p>

@@ -12,7 +12,7 @@
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayeredParameters.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lp/v1"/>
   <!-- ============== -->
-  <xsd:simpleType name="ConnectivityState_T">
+  <xsd:simpleType name="ConnectivityStateType">
     <xsd:annotation>
       <xsd:documentation>
         <p>This attribute provides an indication to the NMS about the server layer connectivity between the MFDs associated to an FD.</p>
@@ -37,7 +37,7 @@
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ============== -->
-  <xsd:simpleType name="FdType_T">
+  <xsd:simpleType name="FdTypeType">
     <xsd:annotation>
       <xsd:documentation>
         <p>This (read-only) attribute provides an indication of the type of the FD.</p>
@@ -57,37 +57,37 @@
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ============== -->
-  <xsd:element name="fd" type="tns:FlowDomain_T"/>
+  <xsd:element name="fd" type="tns:FlowDomainType"/>
   <!-- ============== -->
-  <xsd:complexType name="FlowDomain_T">
+  <xsd:complexType name="FlowDomainType">
     <xsd:annotation>
       <xsd:documentation>
         <p>A flow domain is associated with a set of flow domain edge CPTPs and matrix flow domains. Connectivity can be created between flow points contained by flow domain edge CPTPs through flow domain fragments.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
-      <xsd:extension base="cri:CommonResourceInfo_T">
+      <xsd:extension base="cri:CommonResourceInfoType">
         <xsd:annotation>
           <xsd:documentation>
             <p>This element entails the attributes common to all mTOP network resource objects.</p>
           </xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
-          <xsd:element name="transmissionParams" type="lp:LayeredParametersList_T" nillable="true" minOccurs="0">
+          <xsd:element name="transmissionParams" type="lp:LayeredParametersListType" nillable="true" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>A list of layer rates on which connectivity can be established in the flow domain together with a set of connectionless technology parameters for each layer rate. Refer to chapter "Connectionless Technology Parameters" of the supporting document LayeredParameters.pdf for details of the currently defined connectionless parameters.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="connectivityState" type="tns:ConnectivityState_T" nillable="true" minOccurs="0">
+          <xsd:element name="connectivityState" type="tns:ConnectivityStateType" nillable="true" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>Indication about the server layer connectivity between matrix flow domains associated to the flow domain.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="type" type="tns:FdType_T" nillable="true" minOccurs="0">
+          <xsd:element name="type" type="tns:FdTypeType" nillable="true" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>This (read-only) attribute provides an indication of the type of the FD.</p>
@@ -99,7 +99,7 @@
     </xsd:complexContent>
   </xsd:complexType>
   <!-- ============== -->
-  <xsd:complexType name="FdList_T">
+  <xsd:complexType name="FdListType">
     <xsd:annotation>
       <xsd:documentation>
         <p>List of FlowDomains</p>

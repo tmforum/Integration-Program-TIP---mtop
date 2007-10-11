@@ -15,35 +15,35 @@
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Me.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/me/v1"/>
   <!-- ================ -->
-  <xsd:complexType name="MeFilter_T">
+  <xsd:complexType name="MeFilterType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Me Filter</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="location" type="gen:Location_T" minOccurs="0">
+      <xsd:element name="location" type="gen:LocationType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The location is the geographical location of the Managed Element.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="manufacturer" type="gen:Manufacturer_T" minOccurs="0">
+      <xsd:element name="manufacturer" type="gen:ManufacturerType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The manufacturer attribute identifies the managed element manufacturer name.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="productName" type="gen:ProductName_T" minOccurs="0">
+      <xsd:element name="productName" type="gen:ProductNameType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The productName identifies the managed element product/type name.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="resourceState" type="cri:ResourceState_T" minOccurs="0"/>
+      <xsd:element name="resourceState" type="cri:ResourceStateType" minOccurs="0"/>
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================ -->
@@ -56,7 +56,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="mdName" type="nam:NamingAttributes_T">
+        <xsd:element name="mdName" type="nam:NamingAttributesType">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the Management Domain whose contained MEs are being requested</p>
@@ -67,7 +67,7 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getAllManagedElementNamesResponse" type="tns:MultipleMeObjectNamesResponse_T">
+  <xsd:element name="getAllManagedElementNamesResponse" type="tns:MultipleMeObjectNamesResponseType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure of the getAllManagedElementNames operation</p>
@@ -83,35 +83,35 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice>
-        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised in case of non-specific OS internal failure</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when one or many operation input (request) parameters are invalid</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionTooManyOpenIterators" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionTooManyOpenIterators" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when data retrieval iterator capacity is full</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when one or many operation input (request) parameters do not refer to an existing object</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
@@ -131,14 +131,14 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="mdName" type="nam:NamingAttributes_T">
+        <xsd:element name="mdName" type="nam:NamingAttributesType">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the Management Domain whose contained MEs are being requested</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="filter" type="tns:MeFilter_T">
+        <xsd:element name="filter" type="tns:MeFilterType">
           <xsd:annotation>
             <xsd:documentation>
               <p>A list of any combination of a location, manufacturer, productName and resourceState. The matching is based on "AND", i.e., all the supplied filter conditions must be met</p>
@@ -149,7 +149,7 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================== -->
-  <xsd:element name="getAllManagedElementNamesPassingFilterResponse" type="tns:MultipleMeObjectNamesResponse_T">
+  <xsd:element name="getAllManagedElementNamesPassingFilterResponse" type="tns:MultipleMeObjectNamesResponseType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure of the getAllManagedElementNamesPassingFilter operation</p>
@@ -165,42 +165,42 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice>
-        <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised by OS for an optional operation that is not implemented</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised in case of non-specific OS internal failure</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when one or many operation input (request) parameters are invalid</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionTooManyOpenIterators" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionTooManyOpenIterators" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when data retrieval iterator capacity is full</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when one or many operation input (request) parameters do not refer to an existing object</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
@@ -220,7 +220,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="mlsnName" type="nam:NamingAttributes_T">
+        <xsd:element name="mlsnName" type="nam:NamingAttributesType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Name of the MLSN</p>
@@ -231,7 +231,7 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================== -->
-  <xsd:element name="getAllManagedElementNamesWrtMlsnResponse" type="tns:MultipleMeObjectNamesResponse_T">
+  <xsd:element name="getAllManagedElementNamesWrtMlsnResponse" type="tns:MultipleMeObjectNamesResponseType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure of the getAllManagedElementNamesWrtMlsn operation</p>
@@ -247,35 +247,35 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice>
-        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised in case of non-specific OS internal failure</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when one or many operation input (request) parameters are invalid</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionTooManyOpenIterators" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionTooManyOpenIterators" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when data retrieval iterator capacity is full</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when one or many operation input (request) parameters do not refer to an existing object</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
@@ -295,14 +295,14 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="osName" type="nam:NamingAttributes_T">
+        <xsd:element name="osName" type="nam:NamingAttributesType">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the subordinate OS whose contained MEs are being requested.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="mdName" type="nam:NamingAttributes_T">
+        <xsd:element name="mdName" type="nam:NamingAttributesType">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the Management Domain whose contained MEs are being requested.</p>
@@ -313,7 +313,7 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================== -->
-  <xsd:element name="getAllManagedElementNamesWrtOsResponse" type="tns:MultipleMeObjectNamesResponse_T">
+  <xsd:element name="getAllManagedElementNamesWrtOsResponse" type="tns:MultipleMeObjectNamesResponseType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure of the getAllManagedElementNamesWrtOs operation</p>
@@ -329,42 +329,42 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice>
-        <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised by OS for an optional operation that is not implemented</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised in case of non-specific OS internal failure</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when one or many operation input (request) parameters are invalid</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionTooManyOpenIterators" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionTooManyOpenIterators" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when data retrieval iterator capacity is full</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when one or many operation input (request) parameters do not refer to an existing object</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
@@ -384,7 +384,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="mdName" type="nam:NamingAttributes_T">
+        <xsd:element name="mdName" type="nam:NamingAttributesType">
           <xsd:annotation>
             <xsd:documentation>
               <p>the name of the Management Domain whose contained MEs are being requested</p>
@@ -395,7 +395,7 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================== -->
-  <xsd:element name="getAllManagedElementsResponse" type="tns:MultipleMeObjectsResponse_T">
+  <xsd:element name="getAllManagedElementsResponse" type="tns:MultipleMeObjectsResponseType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure of the getAllManagedElements operation</p>
@@ -411,14 +411,14 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice>
-        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised in case of non-specific OS internal failure</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionTooManyOpenIterators" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionTooManyOpenIterators" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when data retrieval iterator capacity is full</p>
@@ -439,14 +439,14 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="mdName" type="nam:NamingAttributes_T">
+        <xsd:element name="mdName" type="nam:NamingAttributesType">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the Management Domain whose contained MEs are being requested</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="filter" type="tns:MeFilter_T">
+        <xsd:element name="filter" type="tns:MeFilterType">
           <xsd:annotation>
             <xsd:documentation>
               <p>A list of any combination of a location, manufacturer, productName and resourceState. The matching is based on "AND", i.e., all the supplied filter conditions must be met</p>
@@ -457,7 +457,7 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================== -->
-  <xsd:element name="getAllManagedElementsPassingFilterResponse" type="tns:MultipleMeObjectsResponse_T">
+  <xsd:element name="getAllManagedElementsPassingFilterResponse" type="tns:MultipleMeObjectsResponseType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAllManagedElementsPassingFilter operation</p>
@@ -473,35 +473,35 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice>
-        <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised by OS for an optional operation that is not implemented</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised in case of non-specific OS internal failure</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when one or many operation input (request) parameters are invalid</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when one or many operation input (request) parameters do not refer to an existing object</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
@@ -521,7 +521,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="mlsnName" type="nam:NamingAttributes_T">
+        <xsd:element name="mlsnName" type="nam:NamingAttributesType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Name of the MLSN</p>
@@ -532,7 +532,7 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================== -->
-  <xsd:element name="getAllManagedElementsWrtMlsnResponse" type="tns:MultipleMeObjectsResponse_T">
+  <xsd:element name="getAllManagedElementsWrtMlsnResponse" type="tns:MultipleMeObjectsResponseType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure of the getAllManagedElementsWrtMlsn operation</p>
@@ -548,28 +548,28 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice>
-        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised in case of non-specific OS internal failure</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when one or many operation input (request) parameters are invalid</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when one or many operation input (request) parameters do not refer to an existing object</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
@@ -589,14 +589,14 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="osName" type="nam:NamingAttributes_T">
+        <xsd:element name="osName" type="nam:NamingAttributesType">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the subordinate OS whose contained MEs are being requested.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="mdName" type="nam:NamingAttributes_T">
+        <xsd:element name="mdName" type="nam:NamingAttributesType">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the Management Domain whose contained MEs are being requested.</p>
@@ -607,7 +607,7 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================== -->
-  <xsd:element name="getAllManagedElementsWrtOsResponse" type="tns:MultipleMeObjectsResponse_T">
+  <xsd:element name="getAllManagedElementsWrtOsResponse" type="tns:MultipleMeObjectsResponseType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAllManagedElementsWrtOs operation</p>
@@ -623,35 +623,35 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice>
-        <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised by OS for an optional operation that is not implemented</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised in case of non-specific OS internal failure</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when one or many operation input (request) parameters are invalid</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when one or many operation input (request) parameters do not refer to an existing object</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
@@ -671,7 +671,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="meName" type="nam:NamingAttributes_T">
+        <xsd:element name="meName" type="nam:NamingAttributesType">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the Managed Element requested.</p>
@@ -682,7 +682,7 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================== -->
-  <xsd:element name="getManagedElementResponse" type="tns:SingleMeObjectResponse_T">
+  <xsd:element name="getManagedElementResponse" type="tns:SingleMeObjectResponseType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure of the getManagedElement operation</p>
@@ -698,28 +698,28 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice>
-        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised in case of non-specific OS internal failure</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when one or many operation input (request) parameters are invalid</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when one or many operation input (request) parameters do not refer to an existing object</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessage_T">
+        <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessageType">
           <xsd:annotation>
             <xsd:documentation>
               <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
@@ -732,7 +732,7 @@
   <!-- ================= -->
   <!-- Definitions of Iterator messages for Object and Object Name retrievals  -->
   <!-- ================= -->
-  <xsd:element name="getManagedElementsIteratorRequest" type="msg:GetAllDataIterator_T">
+  <xsd:element name="getManagedElementsIteratorRequest" type="msg:GetAllDataIteratorType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getManagedElementsIterator operation</p>
@@ -741,7 +741,7 @@
     </xsd:annotation>
   </xsd:element>
   <!-- ================== -->
-  <xsd:element name="getManagedElementsIteratorResponse" type="tns:MultipleMeObjectsResponse_T">
+  <xsd:element name="getManagedElementsIteratorResponse" type="tns:MultipleMeObjectsResponseType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure of the getManagedElementsIterator operation</p>
@@ -749,7 +749,7 @@
     </xsd:annotation>
   </xsd:element>
   <!-- ================== -->
-  <xsd:element name="getManagedElementsIteratorException" type="msg:ExceptionProfile2">
+  <xsd:element name="getManagedElementsIteratorException" type="msg:ExceptionProfile2Type">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getManagedElementsIterator operation</p>
@@ -757,7 +757,7 @@
     </xsd:annotation>
   </xsd:element>
   <!-- ================= -->
-  <xsd:element name="getManagedElementNamesIteratorRequest" type="msg:GetAllDataIterator_T">
+  <xsd:element name="getManagedElementNamesIteratorRequest" type="msg:GetAllDataIteratorType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getManagedElementNamesIterator operation</p>
@@ -766,7 +766,7 @@
     </xsd:annotation>
   </xsd:element>
   <!-- ================== -->
-  <xsd:element name="getManagedElementNamesIteratorResponse" type="tns:MultipleMeObjectNamesResponse_T">
+  <xsd:element name="getManagedElementNamesIteratorResponse" type="tns:MultipleMeObjectNamesResponseType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure of the getManagedElementNamesIterator operation</p>
@@ -774,7 +774,7 @@
     </xsd:annotation>
   </xsd:element>
   <!-- ================== -->
-  <xsd:element name="getManagedElementNamesIteratorException" type="msg:ExceptionProfile2">
+  <xsd:element name="getManagedElementNamesIteratorException" type="msg:ExceptionProfile2Type">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getManagedElementNamesIterator operation</p>
@@ -784,14 +784,14 @@
   <!-- ================= -->
   <!-- Type Definitions of various Object responses  -->
   <!-- ================= -->
-  <xsd:complexType name="SingleMeObjectResponse_T">
+  <xsd:complexType name="SingleMeObjectResponseType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure for a single ManagedElement object</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="me" type="me:ManagedElement_T" minOccurs="0">
+      <xsd:element name="me" type="me:ManagedElementType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The retrieved ME</p>
@@ -801,14 +801,14 @@
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================== -->
-  <xsd:complexType name="MultipleMeObjectsResponse_T">
+  <xsd:complexType name="MultipleMeObjectsResponseType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure for a set of ManagedElement objects</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="meList" type="me:ManagedElementList_T" minOccurs="0">
+      <xsd:element name="meList" type="me:ManagedElementListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The list of MEs</p>
@@ -818,14 +818,14 @@
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================== -->
-  <xsd:complexType name="MultipleMeObjectNamesResponse_T">
+  <xsd:complexType name="MultipleMeObjectNamesResponseType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure for a set of ManagedElement object names</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="nameList" type="nam:NamingAttributesList_T" minOccurs="0">
+      <xsd:element name="nameList" type="nam:NamingAttributesListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The list of ME names</p>

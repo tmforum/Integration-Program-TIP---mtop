@@ -13,42 +13,42 @@
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayeredParameters.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lp/v1"/>
   <xsd:import schemaLocation="CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1"/>
   <!-- ================= -->
-  <xsd:complexType name="TpData_T">
+  <xsd:complexType name="TpDataType">
     <xsd:annotation>
       <xsd:documentation>
         <p>This aggregate defines a set of attributes associated with a TP.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="tpName" type="nam:NamingAttributes_T">
+      <xsd:element name="tpName" type="nam:NamingAttributesType">
         <xsd:annotation>
           <xsd:documentation>
             <p>Specifies aEnd termination point.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="tpMappingMode" type="com:TerminationMode_T" nillable="true" minOccurs="0">
+      <xsd:element name="tpMappingMode" type="com:TerminationModeType" nillable="true" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The mapping mode to put the TP in.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="transmissionParams" type="lp:LayeredParametersList_T" nillable="true" minOccurs="0">
+      <xsd:element name="transmissionParams" type="lp:LayeredParametersListType" nillable="true" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>When used as output to the NMS, this is the transmission parameters of the TP. When used as input to the EMS, this is a "delta" list that needs to be applied to the specified TP. Only a subset of the parameters may be specified in the list, and only those should be applied in the NE. If the list is empty then this means do nothing. To remove a parameter from the list, "-" should be specified in the value part of the structure. When a BLSR connection is created, the SPRING_NodeId parameter should be provided for the aEnd and zEnd CTPs.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="ingressTransmissionDescriptorName" type="nam:NamingAttributes_T" nillable="true" minOccurs="0">
+      <xsd:element name="ingressTransmissionDescriptorName" type="nam:NamingAttributesType" nillable="true" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>A connection termination point may have an optional reference to an ingress (incoming)Transmission Descriptor. The Descriptor name will be empty if there is no associated Descriptor.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="egressTransmissionDescriptorName" type="nam:NamingAttributes_T" nillable="true" minOccurs="0">
+      <xsd:element name="egressTransmissionDescriptorName" type="nam:NamingAttributesType" nillable="true" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>A connection termination point may have an optional reference to an egress (outgoing)Transmission Descriptor. The Transmission Descriptor name will be empty if there is no associated Descriptor.</p>
@@ -58,14 +58,14 @@
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================= -->
-  <xsd:complexType name="TpDataList_T">
+  <xsd:complexType name="TpDataListType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>List of TpData_T elements.</p>
+        <p>List of TpDataType elements.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="tpData" type="tns:TpData_T" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="tpData" type="tns:TpDataType" minOccurs="0" maxOccurs="unbounded"/>
     </xsd:sequence>
   </xsd:complexType>
 </xsd:schema>

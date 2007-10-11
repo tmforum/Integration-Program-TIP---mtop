@@ -13,27 +13,27 @@
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
   <xsd:import schemaLocation="../../../ServiceBasic/IIS/xsd/CommonServiceInfo.xsd" namespace="http://www.tmforum.org/mtop/sb/xsd/csi/v1"/>
   <!-- ===================== Basic Failure Exception ========= -->
-  <xsd:complexType name="BasicFailureEvent_T">
+  <xsd:complexType name="BasicFailureEventType">
     <xsd:annotation>
       <xsd:documentation>
         <p> This exception is an indication that the target OS was not able to accomplish the requested task. </p>
         <p>NOT_IMPLEMENTED – raised when the target OS does not support this operation.</p>
         <p>INVALID_INPUT – raised if any input parameter is syntactically incorrect. </p>
-        <p>UNABLE_TO_COMPLY – raised when the target OS cannot fulfill the request. 
+        <p>UNABLETypeO_COMPLY – raised when the target OS cannot fulfill the request. 
 		This can be used in either the initial or final response. </p>
         <p>COMM_FAILURE – raised when the target OS is not able to communicate with one or 
 		more entities and as a consequence could not complete the rollback.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:choice>
-      <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage_T"/>
-      <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage_T"/>
-      <xsd:element name="exceptionUnableToComply" type="msg:BaseExceptionMessage_T"/>
-      <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessage_T"/>
+      <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessageType"/>
+      <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessageType"/>
+      <xsd:element name="exceptionUnableToComply" type="msg:BaseExceptionMessageType"/>
+      <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessageType"/>
     </xsd:choice>
   </xsd:complexType>
   <!-- ===================== Service State Transition Failure Event  ========= -->
-  <xsd:complexType name="ServiceStateTransitionFailureEvent_T">
+  <xsd:complexType name="ServiceStateTransitionFailureEventType">
     <xsd:annotation>
       <xsd:documentation>
         <p>This event is an indication that the target OS is reporting a CFS state transition failure 
@@ -50,13 +50,13 @@
     <xsd:sequence>
       <xsd:element name="serviceRequestID" type="xsd:string"/>
       <xsd:element name="productName" type="xsd:string"/>
-      <xsd:element name="cfsName" type="nam:NamingAttributes_T"/>
+      <xsd:element name="cfsName" type="nam:NamingAttributesType"/>
       <xsd:element name="currentState" type="xsd:string"/>
       <xsd:element name="failedState" type="xsd:string"/>
     </xsd:sequence>
   </xsd:complexType>
   <!-- ===================== Service Creation  Failure Event  ========= -->
-  <xsd:complexType name="ServiceCreationFailureEvent_T">
+  <xsd:complexType name="ServiceCreationFailureEventType">
     <xsd:annotation>
       <xsd:documentation>
         <p>This event is an indication that the target OS could not create a CFS (in support
@@ -68,13 +68,13 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="cfsName" type="nam:NamingAttributes_T"/>
+      <xsd:element name="cfsName" type="nam:NamingAttributesType"/>
       <xsd:element name="currentState" type="xsd:string"/>
       <xsd:element name="failedState" type="xsd:string"/>
     </xsd:sequence>
   </xsd:complexType>
   <!-- ===================== Service State Transition Failure Event  ========= -->
-  <xsd:complexType name="ServiceDeletionFailureEvent_T">
+  <xsd:complexType name="ServiceDeletionFailureEventType">
     <xsd:annotation>
       <xsd:documentation>
         <p>This event is an indication that the target OS could not delete a CFS (in support
@@ -89,12 +89,12 @@
     <xsd:sequence>
       <xsd:element name="serviceRequestID" type="xsd:string"/>
       <xsd:element name="productName" type="xsd:string"/>
-      <xsd:element name="cfsName" type="nam:NamingAttributes_T"/>
+      <xsd:element name="cfsName" type="nam:NamingAttributesType"/>
       <xsd:element name="currentState" type="xsd:string"/>
     </xsd:sequence>
   </xsd:complexType>
   <!-- ===================== Service Attribute Value Change (AVC) Failure Event  ========= -->
-  <xsd:complexType name="ServiceAvcFailureEvent_T">
+  <xsd:complexType name="ServiceAvcFailureEventType">
     <xsd:annotation>
       <xsd:documentation>
         <p>This event is an indication that the target OS could not make the serviceCharacteristicValue 
@@ -114,10 +114,10 @@
       <xsd:element name="serviceRequestID" type="xsd:string"/>
       <xsd:element name="productName" type="xsd:string"/>
       <xsd:sequence minOccurs="1" maxOccurs="unbounded">
-        <xsd:element name="cfsName" type="nam:NamingAttributes_T"/>
+        <xsd:element name="cfsName" type="nam:NamingAttributesType"/>
         <xsd:sequence minOccurs="1" maxOccurs="unbounded">
-          <xsd:element name="productSpecCharacteristicID" type="nam:NamingAttributes_T"/>
-          <xsd:element name="serviceSpecCharacteristicID" type="nam:NamingAttributes_T" minOccurs="1" maxOccurs="unbounded"/>
+          <xsd:element name="productSpecCharacteristicID" type="nam:NamingAttributesType"/>
+          <xsd:element name="serviceSpecCharacteristicID" type="nam:NamingAttributesType" minOccurs="1" maxOccurs="unbounded"/>
         </xsd:sequence>
       </xsd:sequence>
     </xsd:sequence>

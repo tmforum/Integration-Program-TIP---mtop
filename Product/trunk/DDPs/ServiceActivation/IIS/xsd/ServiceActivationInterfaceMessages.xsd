@@ -15,7 +15,7 @@
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
   <!-- ===================== Data Types ========= -->
   <!-- === Product Info === -->
-  <xsd:complexType name="ProductInfo_T">
+  <xsd:complexType name="ProductInfoType">
     <xsd:annotation>
       <xsd:documentation>
         <p>This data type defines the product information that in included in many of the
@@ -23,18 +23,18 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="productName" type="nam:NamingAttributes_T"/>
-      <xsd:element name="productSpecificationName" type="nam:NamingAttributes_T" nillable="true"/>
-      <xsd:element name="productBundleName" type="nam:NamingAttributes_T" nillable="true"/>
+      <xsd:element name="productName" type="nam:NamingAttributesType"/>
+      <xsd:element name="productSpecificationName" type="nam:NamingAttributesType" nillable="true"/>
+      <xsd:element name="productBundleName" type="nam:NamingAttributesType" nillable="true"/>
       <!-- === List of (ProductSpecCharacteristicID, ProductCharacteristicValue) === -->
       <xsd:sequence minOccurs="0" maxOccurs="unbounded">
-        <xsd:element name="productSpecCharacteristicID" type="nam:NamingAttributes_T" nillable="true"/>
-        <xsd:element name="productCharacteristicValue" type="nam:NamingAttributes_T" nillable="true"/>
+        <xsd:element name="productSpecCharacteristicID" type="nam:NamingAttributesType" nillable="true"/>
+        <xsd:element name="productCharacteristicValue" type="nam:NamingAttributesType" nillable="true"/>
       </xsd:sequence>
     </xsd:sequence>
   </xsd:complexType>
   <!-- === Schedules === -->
-  <xsd:complexType name="PeriodicSchedule_T">
+  <xsd:complexType name="PeriodicScheduleType">
     <xsd:annotation>
       <xsd:documentation>
         <p>This data type defines a periodic schedule. There is an start and optionally an end date and
@@ -62,7 +62,7 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-  <xsd:complexType name="RandomSchedule_T">
+  <xsd:complexType name="RandomScheduleType">
     <xsd:annotation>
       <xsd:documentation>
         <p>This data type defines a random schedule. It is basically a list of start times and associated
@@ -90,7 +90,7 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-  <xsd:complexType name="AvailabilitySchedule_T">
+  <xsd:complexType name="AvailabilityScheduleType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The availability schedule indicates when the services associated with a product shall be 
@@ -98,12 +98,12 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:choice>
-      <xsd:element name="periodicSchedule" type="tns:PeriodicSchedule_T"/>
-      <xsd:element name="randomSchedule" type="tns:RandomSchedule_T"/>
+      <xsd:element name="periodicSchedule" type="tns:PeriodicScheduleType"/>
+      <xsd:element name="randomSchedule" type="tns:RandomScheduleType"/>
     </xsd:choice>
   </xsd:complexType>
   <!-- === Root Request === -->
-  <xsd:complexType name="RootRequest_T">
+  <xsd:complexType name="RootRequestType">
     <xsd:annotation>
       <xsd:documentation>
         <p>This is the root request. It is extended by other request types.</p>
@@ -125,11 +125,11 @@
     </xsd:sequence>
   </xsd:complexType>
   <!-- === Request Info Basic === -->
-  <xsd:complexType name="RequestInfoBasic_T">
+  <xsd:complexType name="RequestInfoBasicType">
     <xsd:complexContent>
-      <xsd:extension base="tns:RootRequest_T">
+      <xsd:extension base="tns:RootRequestType">
         <xsd:sequence>
-          <xsd:element name="productInfo" type="tns:ProductInfo_T">
+          <xsd:element name="productInfo" type="tns:ProductInfoType">
             <xsd:annotation>
               <xsd:documentation>
                 <p>This parameter identifies the product information associated with the
@@ -138,7 +138,7 @@
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="subscriberList" type="nam:NamingAttributes_T" minOccurs="0" maxOccurs="unbounded">
+          <xsd:element name="subscriberList" type="nam:NamingAttributesType" minOccurs="0" maxOccurs="unbounded">
             <xsd:annotation>
               <xsd:documentation>
                 <p>This parameter provides a list of the subscribers associated with the request.
@@ -147,7 +147,7 @@
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="userList" type="nam:NamingAttributes_T" minOccurs="0" maxOccurs="unbounded">
+          <xsd:element name="userList" type="nam:NamingAttributesType" minOccurs="0" maxOccurs="unbounded">
             <xsd:annotation>
               <xsd:documentation>
                 <p>This parameter provides a list of the users associated with the request.
@@ -156,7 +156,7 @@
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="sapList" type="nam:NamingAttributes_T" minOccurs="0" maxOccurs="unbounded">
+          <xsd:element name="sapList" type="nam:NamingAttributesType" minOccurs="0" maxOccurs="unbounded">
             <xsd:annotation>
               <xsd:documentation>
                 <p>This parameter provides a list of the SAPs associated with the request.</p>
@@ -168,7 +168,7 @@
     </xsd:complexContent>
   </xsd:complexType>
   <!-- === Request Info - Service Order Aware === -->
-  <xsd:complexType name="RequestInfoSOAware_T">
+  <xsd:complexType name="RequestInfoSOAwareType">
     <xsd:sequence>
       <xsd:annotation>
         <xsd:documentation>
@@ -213,7 +213,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="feasibilityCheckRequestInput" type="tns:RequestInfoBasic_T"/>
+        <xsd:element name="feasibilityCheckRequestInput" type="tns:RequestInfoBasicType"/>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
@@ -226,9 +226,9 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice maxOccurs="unbounded">
-        <xsd:element name="initialResponse" type="sairsp:InitialResponse_T"/>
-        <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEvent_T"/>
-        <xsd:element name="cfsCreation" type="sairsp:CfsCreationEvent_T"/>
+        <xsd:element name="initialResponse" type="sairsp:InitialResponseType"/>
+        <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEventType"/>
+        <xsd:element name="cfsCreation" type="sairsp:CfsCreationEventType"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -241,8 +241,8 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice maxOccurs="unbounded">
-        <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEvent_T"/>
-        <xsd:element name="serviceCreationFailureEvent" type="saiexcpt:ServiceCreationFailureEvent_T"/>
+        <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEventType"/>
+        <xsd:element name="serviceCreationFailureEvent" type="saiexcpt:ServiceCreationFailureEventType"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -271,8 +271,8 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="basicInput" type="tns:RequestInfoBasic_T"/>
-        <xsd:element name="soaInput" type="tns:RequestInfoSOAware_T"/>
+        <xsd:element name="basicInput" type="tns:RequestInfoBasicType"/>
+        <xsd:element name="soaInput" type="tns:RequestInfoSOAwareType"/>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
@@ -285,10 +285,10 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice maxOccurs="unbounded">
-        <xsd:element name="initialResponse" type="sairsp:InitialResponse_T"/>
-        <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEvent_T"/>
-        <xsd:element name="cfsCreation" type="sairsp:CfsCreationEvent_T"/>
-        <xsd:element name="cfsStateChange" type="sairsp:CfsStateChangeEvent_T"/>
+        <xsd:element name="initialResponse" type="sairsp:InitialResponseType"/>
+        <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEventType"/>
+        <xsd:element name="cfsCreation" type="sairsp:CfsCreationEventType"/>
+        <xsd:element name="cfsStateChange" type="sairsp:CfsStateChangeEventType"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -301,9 +301,9 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice maxOccurs="unbounded">
-        <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEvent_T"/>
-        <xsd:element name="serviceCreationFailureEvent" type="saiexcpt:ServiceCreationFailureEvent_T"/>
-        <xsd:element name="serviceStateTransitionFailureEvent" type="saiexcpt:ServiceStateTransitionFailureEvent_T"/>
+        <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEventType"/>
+        <xsd:element name="serviceCreationFailureEvent" type="saiexcpt:ServiceCreationFailureEventType"/>
+        <xsd:element name="serviceStateTransitionFailureEvent" type="saiexcpt:ServiceStateTransitionFailureEventType"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -336,8 +336,8 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="basicInput" type="tns:RequestInfoBasic_T"/>
-        <xsd:element name="soaInput" type="tns:RequestInfoSOAware_T"/>
+        <xsd:element name="basicInput" type="tns:RequestInfoBasicType"/>
+        <xsd:element name="soaInput" type="tns:RequestInfoSOAwareType"/>
         <xsd:element name="expiringTime" type="xsd:dateTime">
           <xsd:annotation>
             <xsd:documentation>
@@ -346,7 +346,7 @@
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="productAvailabilitySchedule" type="tns:AvailabilitySchedule_T">
+        <xsd:element name="productAvailabilitySchedule" type="tns:AvailabilityScheduleType">
           <xsd:annotation>
             <xsd:documentation>
               <p>This is the schedule for when the product shall be made available. 
@@ -385,10 +385,10 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice maxOccurs="unbounded">
-        <xsd:element name="initialResponse" type="sairsp:InitialResponse_T"/>
-        <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEvent_T"/>
-        <xsd:element name="cfsCreation" type="sairsp:CfsCreationEvent_T"/>
-        <xsd:element name="cfsStateChange" type="sairsp:CfsStateChangeEvent_T"/>
+        <xsd:element name="initialResponse" type="sairsp:InitialResponseType"/>
+        <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEventType"/>
+        <xsd:element name="cfsCreation" type="sairsp:CfsCreationEventType"/>
+        <xsd:element name="cfsStateChange" type="sairsp:CfsStateChangeEventType"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -401,9 +401,9 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice maxOccurs="unbounded">
-        <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEvent_T"/>
-        <xsd:element name="serviceCreationFailureEvent" type="saiexcpt:ServiceCreationFailureEvent_T"/>
-        <xsd:element name="serviceStateTransitionFailureEvent" type="saiexcpt:ServiceStateTransitionFailureEvent_T"/>
+        <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEventType"/>
+        <xsd:element name="serviceCreationFailureEvent" type="saiexcpt:ServiceCreationFailureEventType"/>
+        <xsd:element name="serviceStateTransitionFailureEvent" type="saiexcpt:ServiceStateTransitionFailureEventType"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -434,8 +434,8 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="basicInput" type="tns:RequestInfoBasic_T"/>
-        <xsd:element name="soaInput" type="tns:RequestInfoSOAware_T"/>
+        <xsd:element name="basicInput" type="tns:RequestInfoBasicType"/>
+        <xsd:element name="soaInput" type="tns:RequestInfoSOAwareType"/>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
@@ -448,10 +448,10 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice maxOccurs="unbounded">
-        <xsd:element name="initialResponse" type="sairsp:InitialResponse_T"/>
-        <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEvent_T"/>
-        <xsd:element name="cfsCreation" type="sairsp:CfsCreationEvent_T"/>
-        <xsd:element name="cfsStateChange" type="sairsp:CfsStateChangeEvent_T"/>
+        <xsd:element name="initialResponse" type="sairsp:InitialResponseType"/>
+        <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEventType"/>
+        <xsd:element name="cfsCreation" type="sairsp:CfsCreationEventType"/>
+        <xsd:element name="cfsStateChange" type="sairsp:CfsStateChangeEventType"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -464,9 +464,9 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice maxOccurs="unbounded">
-        <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEvent_T"/>
-        <xsd:element name="serviceCreationFailureEvent" type="saiexcpt:ServiceCreationFailureEvent_T"/>
-        <xsd:element name="serviceStateTransitionFailureEvent" type="saiexcpt:ServiceStateTransitionFailureEvent_T"/>
+        <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEventType"/>
+        <xsd:element name="serviceCreationFailureEvent" type="saiexcpt:ServiceCreationFailureEventType"/>
+        <xsd:element name="serviceStateTransitionFailureEvent" type="saiexcpt:ServiceStateTransitionFailureEventType"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -497,8 +497,8 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="basicInput" type="tns:RequestInfoBasic_T"/>
-        <xsd:element name="soaInput" type="tns:RequestInfoSOAware_T"/>
+        <xsd:element name="basicInput" type="tns:RequestInfoBasicType"/>
+        <xsd:element name="soaInput" type="tns:RequestInfoSOAwareType"/>
         <xsd:element name="cfsCurrentState" type="xsd:string">
           <xsd:annotation>
             <xsd:documentation>
@@ -522,10 +522,10 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice maxOccurs="unbounded">
-        <xsd:element name="initialResponse" type="sairsp:InitialResponse_T"/>
-        <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEvent_T"/>
-        <xsd:element name="cfsCreation" type="sairsp:CfsCreationEvent_T"/>
-        <xsd:element name="cfsStateChange" type="sairsp:CfsStateChangeEvent_T"/>
+        <xsd:element name="initialResponse" type="sairsp:InitialResponseType"/>
+        <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEventType"/>
+        <xsd:element name="cfsCreation" type="sairsp:CfsCreationEventType"/>
+        <xsd:element name="cfsStateChange" type="sairsp:CfsStateChangeEventType"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -538,9 +538,9 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice maxOccurs="unbounded">
-        <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEvent_T"/>
-        <xsd:element name="serviceCreationFailureEvent" type="saiexcpt:ServiceCreationFailureEvent_T"/>
-        <xsd:element name="serviceStateTransitionFailureEvent" type="saiexcpt:ServiceStateTransitionFailureEvent_T"/>
+        <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEventType"/>
+        <xsd:element name="serviceCreationFailureEvent" type="saiexcpt:ServiceCreationFailureEventType"/>
+        <xsd:element name="serviceStateTransitionFailureEvent" type="saiexcpt:ServiceStateTransitionFailureEventType"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -569,9 +569,9 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="rootRequest" type="tns:RootRequest_T"/>
-        <xsd:element name="productName" type="nam:NamingAttributes_T"/>
-        <xsd:element name="soaInput" type="tns:RequestInfoSOAware_T"/>
+        <xsd:element name="rootRequest" type="tns:RootRequestType"/>
+        <xsd:element name="productName" type="nam:NamingAttributesType"/>
+        <xsd:element name="soaInput" type="tns:RequestInfoSOAwareType"/>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
@@ -584,9 +584,9 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice maxOccurs="unbounded">
-        <xsd:element name="initialResponse" type="sairsp:InitialResponse_T"/>
-        <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEvent_T"/>
-        <xsd:element name="cfsStateChange" type="sairsp:CfsStateChangeEvent_T"/>
+        <xsd:element name="initialResponse" type="sairsp:InitialResponseType"/>
+        <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEventType"/>
+        <xsd:element name="cfsStateChange" type="sairsp:CfsStateChangeEventType"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -599,8 +599,8 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice maxOccurs="unbounded">
-        <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEvent_T"/>
-        <xsd:element name="serviceStateTransitionFailureEvent" type="saiexcpt:ServiceStateTransitionFailureEvent_T"/>
+        <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEventType"/>
+        <xsd:element name="serviceStateTransitionFailureEvent" type="saiexcpt:ServiceStateTransitionFailureEventType"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -626,9 +626,9 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="rootRequest" type="tns:RootRequest_T"/>
-        <xsd:element name="productName" type="nam:NamingAttributes_T"/>
-        <xsd:element name="soaInput" type="tns:RequestInfoSOAware_T"/>
+        <xsd:element name="rootRequest" type="tns:RootRequestType"/>
+        <xsd:element name="productName" type="nam:NamingAttributesType"/>
+        <xsd:element name="soaInput" type="tns:RequestInfoSOAwareType"/>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
@@ -641,9 +641,9 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice maxOccurs="unbounded">
-        <xsd:element name="initialResponse" type="sairsp:InitialResponse_T"/>
-        <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEvent_T"/>
-        <xsd:element name="cfsStateChange" type="sairsp:CfsStateChangeEvent_T"/>
+        <xsd:element name="initialResponse" type="sairsp:InitialResponseType"/>
+        <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEventType"/>
+        <xsd:element name="cfsStateChange" type="sairsp:CfsStateChangeEventType"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -656,8 +656,8 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice maxOccurs="unbounded">
-        <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEvent_T"/>
-        <xsd:element name="serviceStateTransitionFailureEvent" type="saiexcpt:ServiceStateTransitionFailureEvent_T"/>
+        <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEventType"/>
+        <xsd:element name="serviceStateTransitionFailureEvent" type="saiexcpt:ServiceStateTransitionFailureEventType"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -682,9 +682,9 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="rootRequest" type="tns:RootRequest_T"/>
-        <xsd:element name="productName" type="nam:NamingAttributes_T"/>
-        <xsd:element name="soaInput" type="tns:RequestInfoSOAware_T"/>
+        <xsd:element name="rootRequest" type="tns:RootRequestType"/>
+        <xsd:element name="productName" type="nam:NamingAttributesType"/>
+        <xsd:element name="soaInput" type="tns:RequestInfoSOAwareType"/>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
@@ -697,9 +697,9 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice maxOccurs="unbounded">
-        <xsd:element name="initialResponse" type="sairsp:InitialResponse_T"/>
-        <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEvent_T"/>
-        <xsd:element name="cfsDeleteEvent" type="sairsp:CfsDeletionEvent_T"/>
+        <xsd:element name="initialResponse" type="sairsp:InitialResponseType"/>
+        <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEventType"/>
+        <xsd:element name="cfsDeleteEvent" type="sairsp:CfsDeletionEventType"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -712,8 +712,8 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice maxOccurs="unbounded">
-        <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEvent_T"/>
-        <xsd:element name="serviceDeletionFailureEvent" type="saiexcpt:ServiceDeletionFailureEvent_T"/>
+        <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEventType"/>
+        <xsd:element name="serviceDeletionFailureEvent" type="saiexcpt:ServiceDeletionFailureEventType"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -741,9 +741,9 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="rootRequest" type="tns:RootRequest_T"/>
-        <xsd:element name="productName" type="nam:NamingAttributes_T"/>
-        <xsd:element name="soaInput" type="tns:RequestInfoSOAware_T"/>
+        <xsd:element name="rootRequest" type="tns:RootRequestType"/>
+        <xsd:element name="productName" type="nam:NamingAttributesType"/>
+        <xsd:element name="soaInput" type="tns:RequestInfoSOAwareType"/>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
@@ -756,9 +756,9 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice maxOccurs="unbounded">
-        <xsd:element name="initialResponse" type="sairsp:InitialResponse_T"/>
-        <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEvent_T"/>
-        <xsd:element name="cfsDeleteEvent" type="sairsp:CfsDeletionEvent_T"/>
+        <xsd:element name="initialResponse" type="sairsp:InitialResponseType"/>
+        <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEventType"/>
+        <xsd:element name="cfsDeleteEvent" type="sairsp:CfsDeletionEventType"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -771,8 +771,8 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice maxOccurs="unbounded">
-        <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEvent_T"/>
-        <xsd:element name="serviceDeletionFailureEvent" type="saiexcpt:ServiceDeletionFailureEvent_T"/>
+        <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEventType"/>
+        <xsd:element name="serviceDeletionFailureEvent" type="saiexcpt:ServiceDeletionFailureEventType"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -801,8 +801,8 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="rootRequest" type="tns:RootRequest_T"/>
-        <xsd:element name="productName" type="nam:NamingAttributes_T"/>
+        <xsd:element name="rootRequest" type="tns:RootRequestType"/>
+        <xsd:element name="productName" type="nam:NamingAttributesType"/>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
@@ -815,7 +815,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice maxOccurs="unbounded">
-        <xsd:element name="initialResponse" type="sairsp:InitialResponse_T"/>
+        <xsd:element name="initialResponse" type="sairsp:InitialResponseType"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -828,7 +828,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice maxOccurs="unbounded">
-        <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEvent_T"/>
+        <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEventType"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -862,8 +862,8 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="basicInput" type="tns:RequestInfoBasic_T"/>
-        <xsd:element name="soaInput" type="tns:RequestInfoSOAware_T"/>
+        <xsd:element name="basicInput" type="tns:RequestInfoBasicType"/>
+        <xsd:element name="soaInput" type="tns:RequestInfoSOAwareType"/>
         <xsd:element name="targetState" type="xsd:string">
           <xsd:annotation>
             <xsd:documentation>
@@ -884,12 +884,12 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice maxOccurs="unbounded">
-        <xsd:element name="initialResponse" type="sairsp:InitialResponse_T"/>
-        <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEvent_T"/>
-        <xsd:element name="cfsCreation" type="sairsp:CfsCreationEvent_T"/>
-        <xsd:element name="cfsDeletion" type="sairsp:CfsDeletionEvent_T"/>
-        <xsd:element name="cfsStateChange" type="sairsp:CfsStateChangeEvent_T"/>
-        <xsd:element name="cfsAvcChange" type="sairsp:CfsAvcEvent_T"/>
+        <xsd:element name="initialResponse" type="sairsp:InitialResponseType"/>
+        <xsd:element name="beginProcessingEvent" type="sairsp:BeginProcessingEventType"/>
+        <xsd:element name="cfsCreation" type="sairsp:CfsCreationEventType"/>
+        <xsd:element name="cfsDeletion" type="sairsp:CfsDeletionEventType"/>
+        <xsd:element name="cfsStateChange" type="sairsp:CfsStateChangeEventType"/>
+        <xsd:element name="cfsAvcChange" type="sairsp:CfsAvcEventType"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -902,11 +902,11 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:choice maxOccurs="unbounded">
-        <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEvent_T"/>
-        <xsd:element name="serviceCreationFailureEvent" type="saiexcpt:ServiceCreationFailureEvent_T"/>
-        <xsd:element name="serviceDeletionFailureEvent" type="saiexcpt:ServiceDeletionFailureEvent_T"/>
-        <xsd:element name="serviceStateTransitionFailureEvent" type="saiexcpt:ServiceStateTransitionFailureEvent_T"/>
-        <xsd:element name="serviceAvcFailureEvent" type="saiexcpt:ServiceAvcFailureEvent_T"/>
+        <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEventType"/>
+        <xsd:element name="serviceCreationFailureEvent" type="saiexcpt:ServiceCreationFailureEventType"/>
+        <xsd:element name="serviceDeletionFailureEvent" type="saiexcpt:ServiceDeletionFailureEventType"/>
+        <xsd:element name="serviceStateTransitionFailureEvent" type="saiexcpt:ServiceStateTransitionFailureEventType"/>
+        <xsd:element name="serviceAvcFailureEvent" type="saiexcpt:ServiceAvcFailureEventType"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -929,8 +929,8 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="rootRequest" type="tns:RootRequest_T"/>
-        <xsd:element name="productName" type="nam:NamingAttributes_T"/>
+        <xsd:element name="rootRequest" type="tns:RootRequestType"/>
+        <xsd:element name="productName" type="nam:NamingAttributesType"/>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
@@ -943,7 +943,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence maxOccurs="unbounded">
-        <xsd:element name="cfsName" type="nam:NamingAttributes_T"/>
+        <xsd:element name="cfsName" type="nam:NamingAttributesType"/>
         <xsd:element name="cfsState" type="xsd:string"/>
       </xsd:sequence>
     </xsd:complexType>
@@ -960,7 +960,7 @@
 		We could use a sequence with one element or a choice with only one possibility. Decided to
 		use choice to align with the format of the other exceptions. -->
       <xsd:choice maxOccurs="unbounded">
-        <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEvent_T"/>
+        <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEventType"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>

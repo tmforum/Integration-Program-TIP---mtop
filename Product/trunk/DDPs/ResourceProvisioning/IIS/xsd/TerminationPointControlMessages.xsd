@@ -13,7 +13,7 @@
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Ftp.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/ftp/v1"/>
   <!-- ================ -->
-  <xsd:element name="createFtpRequest" type="tns:createFtpRequest_T">
+  <xsd:element name="createFtpRequest" type="tns:createFtpRequestType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the createFtp operation</p>
@@ -21,7 +21,7 @@
     </xsd:annotation>
   </xsd:element>
 
-  <xsd:element name="createFtpResponse" type="tns:createFtpResponse_T">
+  <xsd:element name="createFtpResponse" type="tns:createFtpResponseType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure of the createFtp operation</p>
@@ -29,7 +29,7 @@
     </xsd:annotation>
   </xsd:element>
 
-  <xsd:element name="createFtpException" type="ExceptionProfile2_T">
+  <xsd:element name="createFtpException" type="ExceptionProfile2Type">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the createFtp operation</p>
@@ -223,7 +223,7 @@
   </xsd:element>
 
 <!-- ===================== createFTP Request/Response Messages ========= -->
-  <xsd:complexType name="createFTPRequest_T">
+  <xsd:complexType name="createFTPRequestType">
     <xsd:annotation>
       <xsd:documentation>
         Using this service the NMS requests from the EMS the creation of a
@@ -236,7 +236,7 @@
         failure
         EXCPT_INVALID_INPUT - Raised when any input parameter is syntactically
         incorrect (e.g. field of createData is invalid).
-        EXCPT_UNABLE_TO_COMPLY - Raised when the EMS (or NE) does not support explicit creation 
+        EXCPT_UNABLETypeO_COMPLY - Raised when the EMS (or NE) does not support explicit creation 
         of CPTPs. 
         EXCPT_ENTITY_NOT_FOUND - Raised when the specified equipment does not exist.
         EXCPT_CAPACITY_EXCEEDED - Raised when The Equipment does not have the resources 
@@ -250,14 +250,14 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="createData" type="ftp:FTPCreateData_T">
+      <xsd:element name="createData" type="ftp:FTPCreateDataType">
         <xsd:annotation>
           <xsd:documentation>
             Structure describing the floating termination point structure to be created.
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T">
+      <xsd:element name="tpsToModify" type="tpdata:TPDataListType">
         <xsd:annotation>
           <xsd:documentation>
             The list of TPs with associated parameters to be applied.
@@ -276,21 +276,21 @@
     </xsd:sequence>
   </xsd:complexType>
 
-  <xsd:complexType name="createFTPResponse_T">
+  <xsd:complexType name="createFTPResponseType">
     <xsd:annotation>
       <xsd:documentation>
         This is the response of the createFTP operation.
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T" minOccurs="0">
+      <xsd:element name="tpsToModify" type="tpdata:TPDataListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             The list of TPs with associated parameters to be applied.
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="theFTP" type="ftp:FloatingTerminationPoint_T" minOccurs="0">
+      <xsd:element name="theFTP" type="ftp:FloatingTerminationPointType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             The new floating termination point. The EMS is responsible for guaranteeing
@@ -310,7 +310,7 @@
   </xsd:complexType>
 
 <!-- ===================== deleteFTP Request/Response Messages ========= -->
-  <xsd:complexType name="deleteFTPRequest_T">
+  <xsd:complexType name="deleteFTPRequestType">
     <xsd:annotation>
       <xsd:documentation>
         This service allows an NMS to request the deletion of a floating termination point from
@@ -326,20 +326,20 @@
         EXCPT_ENTITY_NOT_FOUND - Raised when tpName references an object that does 
         not exist 
         EXCPT_OBJECT_IN_USE - Raised when the CPTP is an ELL endpoint.
-        EXCPT_UNABLE_TO_COMPLY - Raised if the TP is is not deleteable.
+        EXCPT_UNABLETypeO_COMPLY - Raised if the TP is is not deleteable.
         EXCPT_NE_COMM_LOSS - Raised when communcation is lost to a managed element
         involved in this operation
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="ftpName" type="nam:NamingAttributesList_T">
+      <xsd:element name="ftpName" type="nam:NamingAttributesListType">
         <xsd:annotation>
           <xsd:documentation>
             The name of the termination point to be deleted.    
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T">
+      <xsd:element name="tpsToModify" type="tpdata:TPDataListType">
         <xsd:annotation>
           <xsd:documentation>
             The list of TPs with associated parameters to be applied.
@@ -349,14 +349,14 @@
     </xsd:sequence>
   </xsd:complexType>
 
-  <xsd:complexType name="deleteFTPResponse_T">
+  <xsd:complexType name="deleteFTPResponseType">
     <xsd:annotation>
       <xsd:documentation>
         This is the response of the deleteFTP operation.
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataList_T" minOccurs="0">
+      <xsd:element name="tpsToModify" type="tpdata:TPDataListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             The list of TPs with associated parameters to be applied.

@@ -51,7 +51,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:import schemaLocation="TpPool.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/tppool/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/VendorResourceObject.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/vro/v1"/>
   <!-- === InventoryData Definition === -->
-  <xsd:complexType name="InventoryData_T">
+  <xsd:complexType name="InventoryDataType">
     <xsd:sequence>
       <xsd:element name="mdList" minOccurs="0">
         <xsd:annotation>
@@ -61,7 +61,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="md" type="tns:MdInventory_T" maxOccurs="unbounded">
+            <xsd:element name="md" type="tns:MdInventoryType" maxOccurs="unbounded">
               <xsd:annotation>
                 <xsd:documentation>
                   <p>An MD inventory with the OS relationship</p>
@@ -79,7 +79,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="topLevelTopLink" type="tns:TlInventory_T" maxOccurs="unbounded">
+            <xsd:element name="topLevelTopLink" type="tns:TlInventoryType" maxOccurs="unbounded">
               <xsd:annotation>
                 <xsd:documentation>
                   <p>A TL inventory with the OS relationship</p>
@@ -97,7 +97,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="tmd" type="tns:TmdInventory_T" maxOccurs="unbounded">
+            <xsd:element name="tmd" type="tns:TmdInventoryType" maxOccurs="unbounded">
               <xsd:annotation>
                 <xsd:documentation>
                   <p>A TMD inventory with the OS relationship</p>
@@ -115,7 +115,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="os" type="tns:OsInventory_T" maxOccurs="unbounded">
+            <xsd:element name="os" type="tns:OsInventoryType" maxOccurs="unbounded">
               <xsd:annotation>
                 <xsd:documentation>
                   <p>An OS inventory</p>
@@ -125,7 +125,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="voList" type="vro:VendorResourceObjectList_T" minOccurs="0">
+      <xsd:element name="voList" type="vro:VendorResourceObjectListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The list of Vendor Objects.</p>
@@ -135,7 +135,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     </xsd:sequence>
   </xsd:complexType>
   <!-- ==================== -->
-  <xsd:complexType name="DataQualityIndicator_T">
+  <xsd:complexType name="DataQualityIndicatorType">
     <xsd:annotation>
       <xsd:documentation>
         <p>This is the in-line exception log found in the inventory report on object retrieval exception.
@@ -167,7 +167,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================= -->
-  <xsd:complexType name="OsInventory_T">
+  <xsd:complexType name="OsInventoryType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The data structure of the Operations System as returned in inventory report.
@@ -182,7 +182,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="osAttrs" type="os:OperationsSystem_T" minOccurs="0">
+      <xsd:element name="osAttrs" type="os:OperationsSystemType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The specific attributes of the OS.</p>
@@ -225,7 +225,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicator_T" minOccurs="0">
+      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicatorType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The quality indicator used to report exception information on OS data retrieval.</p>
@@ -235,7 +235,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================= -->
-  <xsd:complexType name="MdInventory_T">
+  <xsd:complexType name="MdInventoryType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The data structure of the Management Domain as returned in inventory report.
@@ -250,7 +250,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="mdAttrs" type="md:ManagementDomain_T" minOccurs="0">
+      <xsd:element name="mdAttrs" type="md:ManagementDomainType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The specific attributes of the MD.</p>
@@ -283,7 +283,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="meInv" type="tns:MeInventory_T" maxOccurs="unbounded">
+            <xsd:element name="meInv" type="tns:MeInventoryType" maxOccurs="unbounded">
               <xsd:annotation>
                 <xsd:documentation>
                   <p>A Managed Element inventory.</p>
@@ -301,7 +301,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="mlsnInv" type="tns:MlsnInventory_T" maxOccurs="unbounded">
+            <xsd:element name="mlsnInv" type="tns:MlsnInventoryType" maxOccurs="unbounded">
               <xsd:annotation>
                 <xsd:documentation>
                   <p>An MLSN inventory.</p>
@@ -319,7 +319,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="tlInv" type="tns:TlInventory_T" maxOccurs="unbounded">
+            <xsd:element name="tlInv" type="tns:TlInventoryType" maxOccurs="unbounded">
               <xsd:annotation>
                 <xsd:documentation>
                   <p>A Topological Link inventory.</p>
@@ -329,7 +329,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicator_T" minOccurs="0">
+      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicatorType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The quality indicator used to report exception information on MD data retrieval.</p>
@@ -339,7 +339,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================= -->
-  <xsd:complexType name="MeInventory_T">
+  <xsd:complexType name="MeInventoryType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The data structure of the Managed Element as returned in inventory report.
@@ -354,14 +354,14 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="meAttrs" type="me:ManagedElement_T" minOccurs="0">
+      <xsd:element name="meAttrs" type="me:ManagedElementType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The specific attributes of the ME.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="containingMLSNNameList" type="nam:NamingAttributesList_T" minOccurs="0">
+      <xsd:element name="containingMLSNNameList" type="nam:NamingAttributesListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The list of MLSN names that the Managed Element belongs to.</p>
@@ -376,7 +376,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="ehInv" type="tns:EhInventory_T" maxOccurs="unbounded">
+            <xsd:element name="ehInv" type="tns:EhInventoryType" maxOccurs="unbounded">
               <xsd:annotation>
                 <xsd:documentation>
                   <p>An Equipment Holder inventory (note recursivity of EH)</p>
@@ -394,7 +394,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="ptpInv" type="tns:PtpInventory_T" maxOccurs="unbounded">
+            <xsd:element name="ptpInv" type="tns:PtpInventoryType" maxOccurs="unbounded">
               <xsd:annotation>
                 <xsd:documentation>
                   <p>A PTP inventory.</p>
@@ -412,7 +412,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="ftpInv" type="tns:FtpInventory_T" maxOccurs="unbounded">
+            <xsd:element name="ftpInv" type="tns:FtpInventoryType" maxOccurs="unbounded">
               <xsd:annotation>
                 <xsd:documentation>
                   <p>A FTP inventory.</p>
@@ -430,7 +430,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="ccAttr" type="cc:CrossConnect_T" maxOccurs="unbounded">
+            <xsd:element name="ccAttr" type="cc:CrossConnectType" maxOccurs="unbounded">
               <xsd:annotation>
                 <xsd:documentation>
                   <p>Cross Connect attributes.</p>
@@ -448,7 +448,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="pgpInv" type="tns:PgpInventory_T" maxOccurs="unbounded">
+            <xsd:element name="pgpInv" type="tns:PgpInventoryType" maxOccurs="unbounded">
               <xsd:annotation>
                 <xsd:documentation>
                   <p>A PGP inventory.</p>
@@ -466,7 +466,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="epgpInv" type="tns:EpgpInventory_T" maxOccurs="unbounded">
+            <xsd:element name="epgpInv" type="tns:EpgpInventoryType" maxOccurs="unbounded">
               <xsd:annotation>
                 <xsd:documentation>
                   <p>A EPGP inventory.</p>
@@ -476,7 +476,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicator_T" minOccurs="0">
+      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicatorType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The quality indicator used to report exception information on ME data retrieval.</p>
@@ -486,7 +486,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================= -->
-  <xsd:complexType name="EhInventory_T">
+  <xsd:complexType name="EhInventoryType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The data structure of the Equipment Holder as returned in inventory report.
@@ -501,7 +501,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="ehAttrs" type="eh:EquipmentHolder_T" minOccurs="0">
+      <xsd:element name="ehAttrs" type="eh:EquipmentHolderType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The specific attributes of the Equipment Holder.</p>
@@ -517,7 +517,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="ehInv" type="tns:EhInventory_T" maxOccurs="unbounded">
+            <xsd:element name="ehInv" type="tns:EhInventoryType" maxOccurs="unbounded">
               <xsd:annotation>
                 <xsd:documentation>
                   <p>Inventory of a contained Equipment Holder.</p>
@@ -527,14 +527,14 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="eqInv" type="tns:EqInventory_T" minOccurs="0">
+      <xsd:element name="eqInv" type="tns:EqInventoryType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The inventory of the Equipment contained directly in this Equipment Holder</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicator_T" minOccurs="0">
+      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicatorType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The quality indicator used to report exception information on EH data retrieval.</p>
@@ -544,7 +544,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================= -->
-  <xsd:complexType name="EqInventory_T">
+  <xsd:complexType name="EqInventoryType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The data structure of the Equipment as returned in inventory report.
@@ -559,35 +559,35 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="eqAttrs" type="eq:Equipment_T" minOccurs="0">
+      <xsd:element name="eqAttrs" type="eq:EquipmentType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The specific attributes of the Equipment.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="supportedPTPNameList" type="nam:NamingAttributesList_T" minOccurs="0">
+      <xsd:element name="supportedPTPNameList" type="nam:NamingAttributesListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The PTPs that are returned are those that share their physical layer with the primary equipment (i.e. that represent a port on the equipment or are connected by a fibre, wire, etc.). The FTPs that are returned are those which are implemented by the physical circuitry supported by the equipment and will include FTPs that are named from the specified equipment (the FTPs will depend upon the presence of that equipment for their most basic operation). When there is equipment protection, this list reports PTPs/FTPs for the primary equipment only. That is, when called on a protecting equipment (as opposed to the primary equipment), this list returns an empty list, irrespective of the current switch status.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="supportedEQNameList" type="nam:NamingAttributesList_T" minOccurs="0">
+      <xsd:element name="supportedEQNameList" type="nam:NamingAttributesListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The list of equipment names supported by a given piece of equipment, e.g., a power pack might support many circuit packs.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="supportingEQNameList" type="nam:NamingAttributesList_T" minOccurs="0">
+      <xsd:element name="supportingEQNameList" type="nam:NamingAttributesListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The list of equipment that supports a given piece of equipment, e.g., the power pack and synchronization card that support a given piece of equipment.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicator_T" minOccurs="0">
+      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicatorType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The quality indicator used to report exception information on EQ data retrieval.</p>
@@ -597,7 +597,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================= -->
-  <xsd:complexType name="PtpInventory_T">
+  <xsd:complexType name="PtpInventoryType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The data structure of the Physical Termination Point as returned in inventory report.
@@ -612,14 +612,14 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="ptpAttrs" type="ptp:PhysicalTerminationPoint_T" minOccurs="0">
+      <xsd:element name="ptpAttrs" type="ptp:PhysicalTerminationPointType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The specific attributes of the PTP.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="supportingEquipList" type="nam:NamingAttributesList_T" minOccurs="0">
+      <xsd:element name="supportingEquipList" type="nam:NamingAttributesListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The list of absolute names of supporting equipment associated with the PTP.</p>
@@ -634,7 +634,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="ctpInv" type="tns:CtpInventory_T" minOccurs="0" maxOccurs="unbounded">
+            <xsd:element name="ctpInv" type="tns:CtpInventoryType" minOccurs="0" maxOccurs="unbounded">
               <xsd:annotation>
                 <xsd:documentation>
                   <p>A contained CTP inventory.</p>
@@ -644,7 +644,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicator_T" minOccurs="0">
+      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicatorType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The quality indicator used to report exception information on PTP data retrieval.</p>
@@ -654,7 +654,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================= -->
-  <xsd:complexType name="FtpInventory_T">
+  <xsd:complexType name="FtpInventoryType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The data structure of the Floating Termination Point as returned in inventory report.
@@ -669,14 +669,14 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="ftpAttrs" type="ftp:FloatingTerminationPoint_T" minOccurs="0">
+      <xsd:element name="ftpAttrs" type="ftp:FloatingTerminationPointType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The specific attributes of the FTP.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="supportingEquipList" type="nam:NamingAttributesList_T" minOccurs="0">
+      <xsd:element name="supportingEquipList" type="nam:NamingAttributesListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The list of absolute names of supporting equipment associated with the FTP.</p>
@@ -691,7 +691,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="ctpInv" type="tns:CtpInventory_T" minOccurs="0" maxOccurs="unbounded">
+            <xsd:element name="ctpInv" type="tns:CtpInventoryType" minOccurs="0" maxOccurs="unbounded">
               <xsd:annotation>
                 <xsd:documentation>
                   <p>A contained CTP inventory.</p>
@@ -701,7 +701,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicator_T" minOccurs="0">
+      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicatorType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The quality indicator used to report exception information on FTP data retrieval.</p>
@@ -711,7 +711,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================= -->
-  <xsd:complexType name="CtpInventory_T">
+  <xsd:complexType name="CtpInventoryType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The data structure of the Connection Termination Point as returned in inventory report.
@@ -726,14 +726,14 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="ctpAttrs" type="ctp:ConnectionTerminationPoint_T" minOccurs="0">
+      <xsd:element name="ctpAttrs" type="ctp:ConnectionTerminationPointType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The specific attributes of the CTP.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicator_T" minOccurs="0">
+      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicatorType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The quality indicator used to report exception information on CTP data retrieval.</p>
@@ -743,7 +743,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================= -->
-  <xsd:complexType name="TpPoolInventory_T">
+  <xsd:complexType name="TpPoolInventoryType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The data structure of the TPPool as returned in inventory report.
@@ -758,14 +758,14 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="tppoolAttrs" type="tppool:TpPool_T" minOccurs="0">
+      <xsd:element name="tppoolAttrs" type="tppool:TpPoolType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The specific attributes of the TPPool.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicator_T" minOccurs="0">
+      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicatorType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The quality indicator used to report exception information on TPPool data retrieval</p>
@@ -775,7 +775,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================= -->
-  <xsd:complexType name="PgpInventory_T">
+  <xsd:complexType name="PgpInventoryType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The data structure of the Protection Group as returned in inventory report.
@@ -790,14 +790,14 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="pgpAttrs" type="pgp:ProtectionGroup_T" minOccurs="0">
+      <xsd:element name="pgpAttrs" type="pgp:ProtectionGroupType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The specific attributes of the PGP.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicator_T" minOccurs="0">
+      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicatorType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The quality indicator used to report exception information on PGP data retrieval.</p>
@@ -807,7 +807,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================= -->
-  <xsd:complexType name="EpgpInventory_T">
+  <xsd:complexType name="EpgpInventoryType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The data structure of the Equipment Protection Group as returned in inventory report.
@@ -822,14 +822,14 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="epgpAttrs" type="epgp:EquipmentProtectionGroup_T" minOccurs="0">
+      <xsd:element name="epgpAttrs" type="epgp:EquipmentProtectionGroupType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The specific attributes of the EPGP.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicator_T" minOccurs="0">
+      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicatorType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The quality indicator used to report exception information on EPGP data retrieval.</p>
@@ -839,7 +839,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================= -->
-  <xsd:complexType name="MlsnInventory_T">
+  <xsd:complexType name="MlsnInventoryType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The data structure of the Multi Layer Subnetwork as returned in inventory report.
@@ -854,7 +854,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="mlsnAttrs" type="mlsn:MultiLayerSubnetwork_T" minOccurs="0">
+      <xsd:element name="mlsnAttrs" type="mlsn:MultiLayerSubnetworkType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The specific attributes of the MLSN.</p>
@@ -869,7 +869,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="sncInv" type="tns:SncInventory_T" minOccurs="0" maxOccurs="unbounded">
+            <xsd:element name="sncInv" type="tns:SncInventoryType" minOccurs="0" maxOccurs="unbounded">
               <xsd:annotation>
                 <xsd:documentation>
                   <p>A SNC inventory.</p>
@@ -887,7 +887,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="tpPoolInv" type="tns:TpPoolInventory_T" minOccurs="0" maxOccurs="unbounded">
+            <xsd:element name="tpPoolInv" type="tns:TpPoolInventoryType" minOccurs="0" maxOccurs="unbounded">
               <xsd:annotation>
                 <xsd:documentation>
                   <p>A TPPool inventory.</p>
@@ -905,7 +905,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="tlInv" type="tns:TlInventory_T" minOccurs="0" maxOccurs="unbounded">
+            <xsd:element name="tlInv" type="tns:TlInventoryType" minOccurs="0" maxOccurs="unbounded">
               <xsd:annotation>
                 <xsd:documentation>
                   <p>A TL inventory.</p>
@@ -931,7 +931,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
               </xsd:annotation>
               <xsd:complexType>
                 <xsd:sequence>
-                  <xsd:element name="name" type="nam:NamingAttributes_T">
+                  <xsd:element name="name" type="nam:NamingAttributesType">
                     <xsd:annotation>
                       <xsd:documentation>
                         <p>An absolute ME name.</p>
@@ -946,7 +946,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
                     </xsd:annotation>
                     <xsd:complexType>
                       <xsd:sequence>
-                        <xsd:element name="edgePtpInv" type="tns:PtpInventory_T" minOccurs="0" maxOccurs="unbounded">
+                        <xsd:element name="edgePtpInv" type="tns:PtpInventoryType" minOccurs="0" maxOccurs="unbounded">
                           <xsd:annotation>
                             <xsd:documentation>
                               <p>An edge PTP inventory.</p>
@@ -964,7 +964,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
                     </xsd:annotation>
                     <xsd:complexType>
                       <xsd:sequence>
-                        <xsd:element name="edgeFtpInv" type="tns:FtpInventory_T" minOccurs="0" maxOccurs="unbounded">
+                        <xsd:element name="edgeFtpInv" type="tns:FtpInventoryType" minOccurs="0" maxOccurs="unbounded">
                           <xsd:annotation>
                             <xsd:documentation>
                               <p>An edge FTP inventory.</p>
@@ -980,7 +980,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicator_T" minOccurs="0">
+      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicatorType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The quality indicator used to report exception information on MLSN data retrieval.</p>
@@ -990,7 +990,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================= -->
-  <xsd:complexType name="SncInventory_T">
+  <xsd:complexType name="SncInventoryType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The data structure of the Subnetwork Connection as returned in inventory report.
@@ -1005,21 +1005,21 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="sncAttrs" type="snc:SubnetworkConnection_T" minOccurs="0">
+      <xsd:element name="sncAttrs" type="snc:SubnetworkConnectionType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The specific attributes of the SNC.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="route" type="route:Route_T" minOccurs="0">
+      <xsd:element name="route" type="route:RouteType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>Route for the SNC (List of cross-connects)</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicator_T" minOccurs="0">
+      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicatorType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The quality indicator used to report exception information on SNC data retrieval .</p>
@@ -1029,7 +1029,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================= -->
-  <xsd:complexType name="TlInventory_T">
+  <xsd:complexType name="TlInventoryType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The data structure of the Topological Link as returned in inventory report.
@@ -1044,14 +1044,14 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="tlAttrs" type="tl:TopologicalLink_T" minOccurs="0">
+      <xsd:element name="tlAttrs" type="tl:TopologicalLinkType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The specific attributes of the TL.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicator_T" minOccurs="0">
+      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicatorType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The quality indicator used to report exception information on TL data retrieval.</p>
@@ -1061,7 +1061,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================= -->
-  <xsd:complexType name="TmdInventory_T">
+  <xsd:complexType name="TmdInventoryType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The data structure of the Transmission Descriptor as returned in inventory report.
@@ -1076,14 +1076,14 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="tmdAttrs" type="tmd:TransmissionDescriptor_T" minOccurs="0">
+      <xsd:element name="tmdAttrs" type="tmd:TransmissionDescriptorType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The specific attributes of the TMD.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicator_T" minOccurs="0">
+      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicatorType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The quality indicator used to report exception information on TMD data retrieval.</p>

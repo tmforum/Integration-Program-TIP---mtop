@@ -11,7 +11,7 @@
   <!-- ============== -->
   <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="GeneralDefinitions.xsd"/>
   <!-- ============== -->
-  <xsd:simpleType name="ActivityStatusEnum_T">
+  <xsd:simpleType name="ActivityStatusEnumType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Specifies the high-level response status for an activity.  Required for response messages, including error responses.</p>
@@ -24,20 +24,20 @@
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ============== -->
-  <xsd:complexType name="ActivityStatus_T">
+  <xsd:complexType name="ActivityStatusType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Add to the initial enumerations the Qualifiable extension.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:simpleContent>
-      <xsd:extension base="tns:ActivityStatusEnum_T">
+      <xsd:extension base="tns:ActivityStatusEnumType">
         <xsd:attribute name="qualifier" type="xsd:string" use="optional"/>
       </xsd:extension>
     </xsd:simpleContent>
   </xsd:complexType>
   <!-- ============== -->
-  <xsd:simpleType name="MsgType_T">
+  <xsd:simpleType name="MsgTypeType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The type of the message that is being exchanged as part of an activity.</p>
@@ -51,7 +51,7 @@
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ============== -->
-  <xsd:simpleType name="CommunicationPattern_T">
+  <xsd:simpleType name="CommunicationPatternType">
     <xsd:annotation>
       <xsd:documentation>
         <p>See Communication Styles supporting document</p>
@@ -65,7 +65,7 @@
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ============== -->
-  <xsd:simpleType name="CommunicationStyle_T">
+  <xsd:simpleType name="CommunicationStyleType">
     <xsd:annotation>
       <xsd:documentation>
         <p>See Communication Style supporting document</p>
@@ -77,20 +77,20 @@
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:complexType name="CompressionType_T">
+  <xsd:complexType name="CompressionTypeType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Specify if compression is to be performed.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:simpleContent>
-      <xsd:extension base="tns:CompressionEnum_T">
+      <xsd:extension base="tns:CompressionEnumType">
         <xsd:attribute name="extension" type="xsd:string" use="optional"/>
       </xsd:extension>
     </xsd:simpleContent>
   </xsd:complexType>
   <!-- ================= -->
-  <xsd:simpleType name="CompressionEnum_T">
+  <xsd:simpleType name="CompressionEnumType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Enumeration of supported compressions. All extensions allowed.</p>
@@ -104,20 +104,20 @@
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:complexType name="PackingType_T">
+  <xsd:complexType name="PackingTypeType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Specify if the output file(s) are to be packed.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:simpleContent>
-      <xsd:extension base="tns:PackingEnum_T">
+      <xsd:extension base="tns:PackingEnumType">
         <xsd:attribute name="extension" type="xsd:string" use="optional"/>
       </xsd:extension>
     </xsd:simpleContent>
   </xsd:complexType>
   <!-- ================= -->
-  <xsd:simpleType name="PackingEnum_T">
+  <xsd:simpleType name="PackingEnumType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Enumeration of supported packing/packaging. All extensions allowed.</p>
@@ -158,7 +158,7 @@ This field corresponds to the message name in the WSDL.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="msgType" type="tns:MsgType_T" minOccurs="0">
+        <xsd:element name="msgType" type="tns:MsgTypeType" minOccurs="0">
         </xsd:element>
         <xsd:element name="senderURI" type="xsd:anyURI" minOccurs="0">
           <xsd:annotation>
@@ -195,7 +195,7 @@ This field corresponds to the message name in the WSDL.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="activityStatus" type="tns:ActivityStatus_T" minOccurs="0">
+        <xsd:element name="activityStatus" type="tns:ActivityStatusType" minOccurs="0">
         </xsd:element>
         <xsd:element name="correlationId" type="xsd:string" minOccurs="0">
           <xsd:annotation>
@@ -248,9 +248,9 @@ This field corresponds to the message name in the WSDL.</p>
             </xsd:sequence>
           </xsd:complexType>
         </xsd:element>
-        <xsd:element name="communicationPattern" type="tns:CommunicationPattern_T" minOccurs="0">
+        <xsd:element name="communicationPattern" type="tns:CommunicationPatternType" minOccurs="0">
         </xsd:element>
-        <xsd:element name="communicationStyle" type="tns:CommunicationStyle_T" minOccurs="0">
+        <xsd:element name="communicationStyle" type="tns:CommunicationStyleType" minOccurs="0">
         </xsd:element>
         <xsd:element name="requestedBatchSize" type="xsd:unsignedInt" minOccurs="0">
           <xsd:annotation>
@@ -288,9 +288,9 @@ This field corresponds to the message name in the WSDL.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="compressionType" type="tns:CompressionType_T" minOccurs="0">
+        <xsd:element name="compressionType" type="tns:CompressionTypeType" minOccurs="0">
         </xsd:element>
-        <xsd:element name="packingType" type="tns:PackingType_T" minOccurs="0">
+        <xsd:element name="packingType" type="tns:PackingTypeType" minOccurs="0">
         </xsd:element>
         <xsd:element name="timestamp" type="xsd:dateTime" minOccurs="0">
           <xsd:annotation>

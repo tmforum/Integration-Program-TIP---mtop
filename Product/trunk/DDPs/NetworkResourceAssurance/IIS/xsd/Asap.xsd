@@ -13,20 +13,20 @@
 	<xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/com/v1" schemaLocation="./CommonTypes.xsd"/>
 	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd"/>
 	<!-- ================= -->
-	<xsd:element name="asap" type="tns:AlarmSeverityAssignmentProfile_T"/>
+	<xsd:element name="asap" type="tns:AlarmSeverityAssignmentProfileType"/>
 	<!-- ================= -->
-	<xsd:complexType name="AlarmSeverityAssignmentList_T">
+	<xsd:complexType name="AlarmSeverityAssignmentListType">
 		<xsd:annotation>
 			<xsd:documentation>
 				<p>A list of Alarm Severity Assignments.</p>
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:sequence>
-			<xsd:element name="alarmSeverityAssignment" type="tns:AlarmSeverityAssignment_T" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="alarmSeverityAssignment" type="tns:AlarmSeverityAssignmentType" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<!-- ================= -->
-	<xsd:complexType name="AlarmSeverityAssignment_T">
+	<xsd:complexType name="AlarmSeverityAssignmentType">
 		<xsd:annotation>
 			<xsd:documentation>
 				<p>The Alarm Severity Assignment (ASA) object represents the specific severities for the various </p>
@@ -34,49 +34,49 @@
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:complexContent>
-			<xsd:extension base="cri:CommonResourceInfo_T">
+			<xsd:extension base="cri:CommonResourceInfoType">
 				<xsd:annotation>
 					<xsd:documentation>
 						<p>This element entails the attributes common to all mTOP network resource objects.</p>
 					</xsd:documentation>
 				</xsd:annotation>
 				<xsd:sequence>
-					<xsd:element name="probableCause" type="prc:ProbableCause_T" nillable="true" minOccurs="1">
+					<xsd:element name="probableCause" type="prc:ProbableCauseType" nillable="true" minOccurs="1">
 						<xsd:annotation>
 							<xsd:documentation>
 								<p>The name of a specific probable cause to which the severities are to be assigned.</p>
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element name="probableCauseQualifier" type="tns:ProbableCauseQualifier_T" nillable="true" minOccurs="0">
+					<xsd:element name="probableCauseQualifier" type="tns:ProbableCauseQualifierType" nillable="true" minOccurs="0">
 						<xsd:annotation>
 							<xsd:documentation>
 								<p>the probable cause qualifier and shall be present if the probable cause attribute is not sufficient to uniquely identify an alarm.</p>
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element name="nativeProbableCause" type="tns:NativeProbableCause_T" nillable="true" minOccurs="0">
+					<xsd:element name="nativeProbableCause" type="tns:NativeProbableCauseType" nillable="true" minOccurs="0">
 						<xsd:annotation>
 							<xsd:documentation>
 								<p>The native probable cause.</p>
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element name="serviceAffecting" type="com:AssignedSeverity_T" nillable="true" minOccurs="1">
+					<xsd:element name="serviceAffecting" type="com:AssignedSeverityType" nillable="true" minOccurs="1">
 						<xsd:annotation>
 							<xsd:documentation>
 								<p>The value to be assigned in the case where the reportable alarm is service affecting.</p>
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element name="nonServiceAffectingSeverity" type="com:AssignedSeverity_T" nillable="true" minOccurs="1">
+					<xsd:element name="nonServiceAffectingSeverity" type="com:AssignedSeverityType" nillable="true" minOccurs="1">
 						<xsd:annotation>
 							<xsd:documentation>
 								<p>The severity value to be assigned in the case where the reportable alarm is non-service affecting.</p>
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element name="serviceIndependentSeverity" type="com:AssignedSeverity_T" nillable="true" minOccurs="1">
+					<xsd:element name="serviceIndependentSeverity" type="com:AssignedSeverityType" nillable="true" minOccurs="1">
 						<xsd:annotation>
 							<xsd:documentation>
 								<p>the severity value to be assigned in the case where the reportable alarm is service independent. This severity value may also be assigned in the case where the reporting OS is unable to determine whether the alarm is service affecting or not.</p>
@@ -88,7 +88,7 @@
 		</xsd:complexContent>
 	</xsd:complexType>
 	<!-- ================= -->
-	<xsd:simpleType name="ProbableCauseQualifier_T">
+	<xsd:simpleType name="ProbableCauseQualifierType">
 		<xsd:annotation>
 			<xsd:documentation>
 				<p>Represents the probable cause qualifier and shall be present if the probable cause </p>
@@ -98,7 +98,7 @@
 		<xsd:restriction base="xsd:string"/>
 	</xsd:simpleType>
 	<!-- ================= -->
-	<xsd:simpleType name="NativeProbableCause_T">
+	<xsd:simpleType name="NativeProbableCauseType">
 		<xsd:annotation>
 			<xsd:documentation>
 				<p>Represents the native probable cause.</p>
@@ -107,14 +107,14 @@
 		<xsd:restriction base="xsd:string"/>
 	</xsd:simpleType>
 	<!-- ================ -->
-	<xsd:complexType name="AlarmSeverityAssignmentProfile_T">
+	<xsd:complexType name="AlarmSeverityAssignmentProfileType">
 		<xsd:annotation>
 			<xsd:documentation>
 				<p>This aggregate defines all the AlarmSeverityAssignmentProfile mTOP network resource object attributes.</p>
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:complexContent>
-			<xsd:extension base="cri:CommonResourceInfo_T">
+			<xsd:extension base="cri:CommonResourceInfoType">
 				<xsd:annotation>
 					<xsd:documentation>
 						<p>This element entails the attributes common to all mTOP network resource objects.</p>
@@ -128,10 +128,10 @@
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>
-					<xsd:element name="alarmSeverityAssignmentList" type="tns:AlarmSeverityAssignmentList_T" nillable="true" minOccurs="0">
+					<xsd:element name="alarmSeverityAssignmentList" type="tns:AlarmSeverityAssignmentListType" nillable="true" minOccurs="0">
 						<xsd:annotation>
 							<xsd:documentation>
-								<p>This attribute represents a list of Alarm Severity Assignments (ASA). Refer to requirement R_TMF518_NRA_I_0003 for the details of an ASA.</p>
+								<p>This attribute represents a list of Alarm Severity Assignments (ASA). Refer to requirement RTypeMF518_NRA_I_0003 for the details of an ASA.</p>
 							</xsd:documentation>
 						</xsd:annotation>
 					</xsd:element>

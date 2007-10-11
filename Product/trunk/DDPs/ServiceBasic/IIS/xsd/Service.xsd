@@ -18,7 +18,7 @@
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:complexContent>
-			<xsd:extension base="csi:CommonServiceInfo_T">
+			<xsd:extension base="csi:CommonServiceInfoType">
 				<xsd:annotation>
 					<xsd:documentation>
 						<p>This element entails the attributes common to all mTOP service objects.</p>
@@ -30,13 +30,13 @@
 					<xsd:element name="isMandatory" type="xsd:boolean" minOccurs="0"/>
 					<xsd:element name="startMode" type="xsd:int" minOccurs="0"/>
 					<xsd:element name="isStateful" type="xsd:boolean" minOccurs="0"/>
-					<xsd:element name="subscriber" type="nam:NamingAttributesList_T" minOccurs="0" maxOccurs="unbounded"/>
-					<xsd:element name="user" type="nam:NamingAttributesList_T" minOccurs="0" maxOccurs="unbounded"/>
-					<xsd:element name="serviceState" type="csi:ServiceState_T" minOccurs="0"/>
-					<xsd:element name="operationalState" type="csi:OperState_T" minOccurs="0"/>
-					<xsd:element name="serviceAccessPoint" type="nam:NamingAttributesList_T" minOccurs="0" maxOccurs="unbounded"/>
-					<xsd:element name="serviceCharacteristicValue" type="csi:ServiceCharValue_T" minOccurs="0" maxOccurs="unbounded"/>
-					<xsd:element name="serviceTemplate" type="nam:NamingAttributesList_T" minOccurs="0"/>
+					<xsd:element name="subscriber" type="nam:NamingAttributesListType" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="user" type="nam:NamingAttributesListType" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="serviceState" type="csi:ServiceStateType" minOccurs="0"/>
+					<xsd:element name="operationalState" type="csi:OperStateType" minOccurs="0"/>
+					<xsd:element name="serviceAccessPoint" type="nam:NamingAttributesListType" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="serviceCharacteristicValue" type="csi:ServiceCharValueType" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="serviceTemplate" type="nam:NamingAttributesListType" minOccurs="0"/>
 					<xsd:element name="vendorExtensions" nillable="true" minOccurs="0">
 						<xsd:annotation>
 							<xsd:documentation>
@@ -74,20 +74,20 @@
 		</xsd:complexContent>
 	</xsd:complexType>
 	<!-- ================= -->
-	<xsd:element name="serviceSpecification" type="tns:ServiceSpecification_T"/>
-	<xsd:complexType name="ServiceSpecification_T">
+	<xsd:element name="serviceSpecification" type="tns:ServiceSpecificationType"/>
+	<xsd:complexType name="ServiceSpecificationType">
 		<xsd:complexContent>
 			<xsd:annotation>
 				<xsd:documentation>
 					<p>The service specification defines invarient characteristics of a service </p>
 				</xsd:documentation>
 			</xsd:annotation>
-			<xsd:extension base="csi:CommonServiceInfo_T">
+			<xsd:extension base="csi:CommonServiceInfoType">
 				<xsd:sequence>
-					<xsd:element name="serviceSpecificationHas" type="tns:ServiceSpecification_T" minOccurs="0" maxOccurs="unbounded"/>
-					<xsd:element name="serviceSpecVersion" type="csi:ServiceSpecVersion_T" minOccurs="0" maxOccurs="unbounded"/>
-					<xsd:element name="serviceSpecCharacteristic" type="csi:ServiceSpecChar_T" minOccurs="0" maxOccurs="unbounded"/>
-					<xsd:element name="serviceSpecCharacteristicValue" type="csi:ServiceSpecCharValue_T" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="serviceSpecificationHas" type="tns:ServiceSpecificationType" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="serviceSpecVersion" type="csi:ServiceSpecVersionType" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="serviceSpecCharacteristic" type="csi:ServiceSpecCharType" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="serviceSpecCharacteristicValue" type="csi:ServiceSpecCharValueType" minOccurs="0" maxOccurs="unbounded"/>
 					<xsd:element name="vendorExtensions" nillable="true" minOccurs="0">
 						<xsd:annotation>
 							<xsd:documentation>
@@ -105,15 +105,15 @@
 		</xsd:complexContent>
 	</xsd:complexType>
 	<!-- ================= -->
-	<xsd:element name="serviceTemplate" type="tns:ServiceTemplate_T"/>
-	<xsd:complexType name="ServiceTemplate_T">
+	<xsd:element name="serviceTemplate" type="tns:ServiceTemplateType"/>
+	<xsd:complexType name="ServiceTemplateType">
 		<xsd:complexContent>
 			<xsd:annotation>
 				<xsd:documentation>
 					<p>The service template is an extension to the service specification </p>
 				</xsd:documentation>
 			</xsd:annotation>
-			<xsd:extension base="tns:ServiceSpecification_T">
+			<xsd:extension base="tns:ServiceSpecificationType">
 				<xsd:sequence>
 					<xsd:element name="source" type="xsd:string" minOccurs="0"/>
 					<xsd:element name="serviceLocation" type="xsd:string" minOccurs="0"/>
@@ -123,15 +123,15 @@
 		</xsd:complexContent>
 	</xsd:complexType>
 	<!-- ================= -->
-	<xsd:element name="serviceDefinition" type="tns:ServiceDefinition_T"/>
-	<xsd:complexType name="ServiceDefinition_T">
+	<xsd:element name="serviceDefinition" type="tns:ServiceDefinitionType"/>
+	<xsd:complexType name="ServiceDefinitionType">
 		<xsd:complexContent>
 			<xsd:annotation>
 				<xsd:documentation>
 					<p>The service definition is an extension to the service specification </p>
 				</xsd:documentation>
 			</xsd:annotation>
-			<xsd:extension base="tns:ServiceSpecification_T">
+			<xsd:extension base="tns:ServiceSpecificationType">
 				<xsd:sequence>
 					<xsd:element name="activationMode" type="xsd:string" minOccurs="0"/>
 					<xsd:element name="typeOfDefinition" type="xsd:string" minOccurs="0"/>

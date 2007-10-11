@@ -16,7 +16,7 @@
   <xsd:import schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/ProbableCauses.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/prc/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/com/v1"/>
   <!-- ================ -->
-  <xsd:element name="alarm" type="tns:Alarm_T" substitutionGroup="cei:commonEventInfo">
+  <xsd:element name="alarm" type="tns:AlarmType" substitutionGroup="cei:commonEventInfo">
     <xsd:annotation>
       <xsd:documentation>
         <p>The element definition of the alarm event.</p>
@@ -24,23 +24,23 @@
     </xsd:annotation>
   </xsd:element>
   <!-- ================ -->
-  <xsd:complexType name="Alarm_T">
+  <xsd:complexType name="AlarmType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The type definition of the alarm event.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
-      <xsd:extension base="cei:CommonEventInfo_T">
+      <xsd:extension base="cei:CommonEventInfoType">
         <xsd:sequence>
-          <xsd:element name="objectType" type="gen:ObjectType_T" minOccurs="0">
+          <xsd:element name="objectType" type="gen:ObjectTypeType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>Identifies the type of the object associated with the event.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="objectName" type="nam:NamingAttributes_T" minOccurs="0">
+          <xsd:element name="objectName" type="nam:NamingAttributesType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>Identifies the name of the object associated with the event.</p>
@@ -61,21 +61,21 @@
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="aliasNameList" type="gen:AliasNameList_T" minOccurs="0">
+          <xsd:element name="aliasNameList" type="gen:AliasNameListType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>Identifies all the object list of aliases to describe the network entity as portrayed on the OS user interface.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="layerRate" type="lay:LayerRate_T">
+          <xsd:element name="layerRate" type="lay:LayerRateType">
             <xsd:annotation>
               <xsd:documentation>
                 <p>The layer which this alarm is relevant to.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="probableCause" type="prc:ProbableCause_T">
+          <xsd:element name="probableCause" type="prc:ProbableCauseType">
             <xsd:annotation>
               <xsd:documentation>
                 <p>No other string than the ones defined by the TM Forum should be used for this field.</p>
@@ -96,14 +96,14 @@
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="perceivedSeverity" type="com:PerceivedSeverity_T">
+          <xsd:element name="perceivedSeverity" type="com:PerceivedSeverityType">
             <xsd:annotation>
               <xsd:documentation>
                 <p>Indicates the severity of the alarm.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="affectedTPList" type="nam:NamingAttributesList_T" minOccurs="0">
+          <xsd:element name="affectedTPList" type="nam:NamingAttributesListType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>A list of affected TPs. Contained CTPs are not listed. This field is optional for all alarms except for alarms on equipment.
@@ -112,7 +112,7 @@ The list should be ordered by PTP names (ASCII order).</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="serviceAffecting" type="com:ServiceAffecting_T">
+          <xsd:element name="serviceAffecting" type="com:ServiceAffectingType">
             <xsd:annotation>
               <xsd:documentation>
                 <p>Indicates whether the alarm has affected service</p>
@@ -128,7 +128,7 @@ FALSE (meaning the alarm is a raw alarm).</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="acknowledgeIndication" type="com:AcknowledgeIndication_T" minOccurs="0">
+          <xsd:element name="acknowledgeIndication" type="com:AcknowledgeIndicationType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>The acknowledge indication state.</p>
@@ -144,7 +144,7 @@ This field is optional.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="X733_SpecificProblems" type="com:SpecificProblemList_T" minOccurs="0">
+          <xsd:element name="X733_SpecificProblems" type="com:SpecificProblemListType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>Identifies further refinements to the Probable cause of the alarm. (Similar to ProbableCauseQualifier, but this parameter is designed to be human readable and compatible with ITU usage.) This field is optional.</p>
@@ -160,7 +160,7 @@ This field is optional.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="X733_BackUpObject" type="nam:NamingAttributes_T" minOccurs="0">
+          <xsd:element name="X733_BackUpObject" type="nam:NamingAttributesType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>Specifies the object that is providing back-up services for the object about which the notification pertains.
@@ -169,7 +169,7 @@ This field is optional otherwise.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="X733_TrendIndication" type="xsd:string" minOccurs="0">
+          <xsd:element name="X733TyperendIndication" type="xsd:string" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>Specifies the current severity trend of the object. If present it indicates that there are one or more alarms ("outstanding alarms") which have not been cleared, and pertain to the same object as that to which this alarm ("current alarm") pertains.
@@ -178,7 +178,7 @@ This field is optional.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="X733_CorrelatedNotifications" type="com:CorrelatedNotificationList_T" minOccurs="0">
+          <xsd:element name="X733_CorrelatedNotifications" type="com:CorrelatedNotificationListType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>Contains a set of Notification identifiers and, if necessary, their associated object names.
@@ -187,7 +187,7 @@ This field is optional.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="X733_MonitoredAttributes" type="nam:NvsList_T" minOccurs="0">
+          <xsd:element name="X733_MonitoredAttributes" type="nam:NvsListType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>Defines one or more attributes of the managed object and their corresponding values at the time of the alarm.
@@ -195,7 +195,7 @@ This field is optional.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="X733_ProposedRepairActions" type="com:ProposedRepairActionList_T" minOccurs="0">
+          <xsd:element name="X733_ProposedRepairActions" type="com:ProposedRepairActionListType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>Used if the cause is known and the system being managed can suggest one or more solutions (such as switch in standby equipment, retry, replace media).
@@ -208,14 +208,14 @@ This field is optional.</p>
     </xsd:complexContent>
   </xsd:complexType>
   <!-- ===================== -->
-  <xsd:complexType name="AlarmList_T">
+  <xsd:complexType name="AlarmListType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The list of alarms.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="alarm" type="tns:Alarm_T" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="alarm" type="tns:AlarmType" minOccurs="0" maxOccurs="unbounded"/>
     </xsd:sequence>
   </xsd:complexType>
 </xsd:schema>
