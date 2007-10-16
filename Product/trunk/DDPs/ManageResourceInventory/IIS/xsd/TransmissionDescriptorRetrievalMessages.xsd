@@ -36,22 +36,18 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
-      <xsd:choice>
-        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessageType">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>Raised in case of non-specific OS internal failure</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-        <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessageType">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>Raised by OS for an optional operation that is not implemented</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-      </xsd:choice>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
   <!-- ================== -->
@@ -87,13 +83,27 @@
         <p>Exception message structure of the getAllTransmissionDescriptorNamesWrtOs operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================== -->
   <xsd:element name="getAllTransmissionDescriptorsRequest">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAllTransmissionDescriptors operation</p>
-        <p>This operation .</p>
+        <p>This operation returns the list of existing TransmissionDescriptors and their associated distinguishing information. This operation may only be directed to a top-level OS and not to a subordinate OS.</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
@@ -110,15 +120,40 @@
         <p>Exception message structure of the getAllTransmissionDescriptors operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================== -->
   <xsd:element name="getAllTransmissionDescriptorsWrtOsRequest">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAllTransmissionDescriptorsWrtOs operation</p>
-        <p>This operation .</p>
+        <p>This operation returns the data structure for each Transmission Descriptor (TMD) associated with a given subordinate OS. Note that Wrt in the name of the operation stands for "with respect to".</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="osName" type="nam:NamingAttributesType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the OS whose associated TMDs are being requested.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="getAllTransmissionDescriptorsWrtOsResponse" type="tns:MultipleTmdObjectsResponseType">
     <xsd:annotation>
@@ -133,6 +168,20 @@
         <p>Exception message structure of the getAllTransmissionDescriptorsWrtOs operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================== -->
   <xsd:element name="getTransmissionDescriptorRequest">
