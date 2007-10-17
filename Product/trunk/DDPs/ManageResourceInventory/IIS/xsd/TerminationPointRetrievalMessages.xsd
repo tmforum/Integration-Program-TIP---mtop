@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/tpr/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/tpr/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lr="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:tp="http://www.tmforum.org/mtop/nrf/xsd/tp/v1" xmlns:tpp="http://www.tmforum.org/mtop/nrf/xsd/tppool/v1" xmlns:gtp="http://www.tmforum.org/mtop/nrf/xsd/gtp/v1" xmlns:fd="http://www.tmforum.org/mtop/nrf/xsd/fd/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/tpr/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/tpr/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lr="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:tp="http://www.tmforum.org/mtop/nrf/xsd/tp/v1" xmlns:tpp="http://www.tmforum.org/mtop/nrf/xsd/tppool/v1" xmlns:gtp="http://www.tmforum.org/mtop/nrf/xsd/gtp/v1" xmlns:fd="http://www.tmforum.org/mtop/nrf/xsd/fd/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Manage Resource Inventory</p>
@@ -12,80 +12,196 @@
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Fd.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/fd/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Tp.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/tp/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/TpPool.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/tppool/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Gtp.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/gtp/v1"/>
   <!-- ================ -->
-  <xsd:element name="getAllAssignableCptpsRequest" type="tns:getAllAssignableCptpsRequestType">
+  <xsd:element name="getAllAssignableCptpsRequest">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAllAssignableCptps operation</p>
-        <p>This operation .</p>
+        <p>This operation returns the structures of all "CPTP" TPs that which are potentially able to be assigned to a matrix flow domain Potentially means: The CPTPs are on the same equipment or same rack with backplane connectivity as the NMS specified Mfd. It is irrelevant whether the CPTPs are already assigned to an Mfd or not.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="mfdName" type="nam:NamingAttributesType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Name of the matrix flow domain whose potential CPTPs shall be returned.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getAllAssignableCptpsResponse" type="tns:getAllAssignableCptpsResponseType">
+  <xsd:element name="getAllAssignableCptpsResponse">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure of the getAllAssignableCptps operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="cptpList" type="tp:TerminationPointListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Retrieved CPTPs with the name as specified in input.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getAllAssignableCptpsException" type="ExceptionProfile3Type">
+  <xsd:element name="getAllAssignableCptpsException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getAllAssignableCptps operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getAllAssignedCptpsRequest" type="tns:getAllAssignedCptpsRequestType">
+  <xsd:element name="getAllAssignedCptpsRequest">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAllAssignedCptps operation</p>
-        <p>This operation .</p>
+        <p>This operation returns the structures of all CPTPs assigned to a matrix flow domain..</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="mfdName" type="nam:NamingAttributesType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Name of the matrix flow domain whose assigned CPTPs shall be returned.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getAllAssignedCptpsResponse" type="tns:getAllAssignedCptpsResponseType">
+  <xsd:element name="getAllAssignedCptpsResponse">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure of the getAllAssignedCptps operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="cptpList" type="tp:TerminationPointListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Retrieved CPTPs with the name as specified in input.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getAllAssignedCptpsException" type="ExceptionProfile3Type">
+  <xsd:element name="getAllAssignedCptpsException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getAllAssignedCptps operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getAllCptpsRequest" type="tns:getAllCptpsRequestType">
+  <xsd:element name="getAllCptpsRequest">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAllCptps operation</p>
-        <p>This operation .</p>
+        <p>This operation returns the structures of all CPTPs, or all flow domain edge CPTPs, or all flow domain internal CPTPs, associated with a flow domain.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="fdName" type="nam:NamingAttributesType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Name of the flow domain whose associated edge CPTPs shall be returned    
+            or name of the matrix flow domain whose assigned CPTPs shall be returned</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="cptpRole" type="com:CptpRoleType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Which CPTPs to return : flow domain edge, flow domain internal, or all CPTPs.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getAllCptpsResponse" type="tns:getAllCptpsResponseType">
+  <xsd:element name="getAllCptpsResponse">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure of the getAllCptps operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="cptpList" type="tp:TerminationPointListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Retrieved CPTPs with the name as specified in input.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getAllCptpsException" type="ExceptionProfile3Type">
+  <xsd:element name="getAllCptpsException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getAllCptps operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
-
   <!-- ================ -->
   <xsd:element name="getAllEdgePointNamesRequest" type="tns:GetAllEdgePointsType">
     <xsd:annotation>
@@ -102,12 +218,25 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getAllEdgePointNamesException" type="tns:ExceptionProfile1Type">
+  <xsd:element name="getAllEdgePointNamesException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getAllEdgePointNames operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getAllEdgePointsRequest" type="tns:GetAllEdgePointsType">
@@ -125,12 +254,25 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getAllEdgePointsException" type="tns:ExceptionProfile1Type">
+  <xsd:element name="getAllEdgePointsException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getAllEdgePoints operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getAllFtpNamesRequest" type="tns:GetAllTpsType">
@@ -148,12 +290,25 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getAllFtpNamesException" type="tns:ExceptionProfile1Type">
+  <xsd:element name="getAllFtpNamesException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getAllFtpNames operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getAllFtpsRequest" type="tns:GetAllTpsType">
@@ -171,12 +326,25 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getAllFtpsException" type="tns:ExceptionProfile1Type">
+  <xsd:element name="getAllFtpsException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getAllFtps operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getAllGtpNamesRequest" type="tns:GetAllGtpsType">
@@ -194,12 +362,26 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getAllGtpNamesException" type="tns:ExceptionProfile2Type">
+  <xsd:element name="getAllGtpNamesException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getAllGtpNames operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getAllGtpsRequest" type="tns:GetAllGtpsType">
@@ -217,12 +399,26 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getAllGtpsException" type="tns:ExceptionProfile2Type">
+  <xsd:element name="getAllGtpsException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getAllGtps operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getAllPtpNamesRequest" type="tns:GetAllTpsType">
@@ -240,12 +436,25 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getAllPtpNamesException" type="tns:ExceptionProfile1Type">
+  <xsd:element name="getAllPtpNamesException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getAllPtpNames operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getAllPtpNamesWithoutFtpsRequest" type="tns:GetAllTpsType">
@@ -263,12 +472,25 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getAllPtpNamesWithoutFtpsException" type="tns:ExceptionProfile1Type">
+  <xsd:element name="getAllPtpNamesWithoutFtpsException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getAllPtpNamesWithoutFtps operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getAllPtpsRequest" type="tns:GetAllTpsType">
@@ -286,12 +508,25 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getAllPtpsException" type="tns:ExceptionProfile1Type">
+  <xsd:element name="getAllPtpsException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getAllPtps operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getAllPtpsWithoutFtpsRequest" type="tns:GetAllTpsType">
@@ -309,12 +544,25 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getAllPtpsWithoutFtpsException" type="tns:ExceptionProfile1Type">
+  <xsd:element name="getAllPtpsWithoutFtpsException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getAllPtpsWithoutFtps operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getAllSupportedPtpNamesRequest" type="tns:RequestProfile3Type">
@@ -332,12 +580,25 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getAllSupportedPtpNamesException" type="tns:ExceptionProfile1Type">
+  <xsd:element name="getAllSupportedPtpNamesException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getAllSupportedPtpNames operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getAllSupportedPtpsRequest" type="tns:RequestProfile3Type">
@@ -356,12 +617,25 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getAllSupportedPtpsException" type="tns:ExceptionProfile1Type">
+  <xsd:element name="getAllSupportedPtpsException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getAllSupportedPtps operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getAllTpPoolNamesRequest" type="tns:RequestProfile1Type">
@@ -379,12 +653,26 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getAllTpPoolNamesException" type="tns:ExceptionProfile2Type">
+  <xsd:element name="getAllTpPoolNamesException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getAllTpPoolNames operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getAllTpPoolsRequest" type="tns:RequestProfile1Type">
@@ -402,12 +690,26 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getAllTpPoolsException" type="tns:ExceptionProfile2Type">
+  <xsd:element name="getAllTpPoolsException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getAllTpPools operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getAssociatedTpRequest" type="tns:RequestProfile2Type">
@@ -426,12 +728,26 @@ When this service is invoked with a TP that is not an edge point, the returned T
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getAssociatedTpException" type="tns:ExceptionProfile2Type">
+  <xsd:element name="getAssociatedTpException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getAssociatedTp operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getAssociatedTpsWrtTmdRequest">
@@ -484,12 +800,26 @@ When this service is invoked with a TP that is not an edge point, the returned T
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getContainedCurrentCtpNamesException" type="tns:ExceptionProfile2Type">
+  <xsd:element name="getContainedCurrentCtpNamesException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getContainedCurrentCtpNames operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getContainedCurrentCtpsRequest" type="tns:GetAllCtpsType">
@@ -507,12 +837,26 @@ When this service is invoked with a TP that is not an edge point, the returned T
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getContainedCurrentCtpsException" type="tns:ExceptionProfile2Type">
+  <xsd:element name="getContainedCurrentCtpsException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getContainedCurrentCtps operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getContainedInUseCtpNamesRequest" type="tns:GetAllCtpsType">
@@ -530,12 +874,25 @@ When this service is invoked with a TP that is not an edge point, the returned T
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getContainedInUseCtpNamesException" type="tns:ExceptionProfile1Type">
+  <xsd:element name="getContainedInUseCtpNamesException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getContainedInUseCtpNames operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getContainedInUseCtpsRequest" type="tns:GetAllCtpsType">
@@ -563,12 +920,25 @@ Operation getContainedInUseTPs then returns three CTPs:<ul>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getContainedInUseCtpsException" type="tns:ExceptionProfile1Type">
+  <xsd:element name="getContainedInUseCtpsException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getContainedInUseCtps operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getContainedPotentialCtpNamesRequest" type="tns:GetAllCtpsType">
@@ -586,12 +956,26 @@ Operation getContainedInUseTPs then returns three CTPs:<ul>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getContainedPotentialCtpNamesException" type="tns:ExceptionProfile2Type">
+  <xsd:element name="getContainedPotentialCtpNamesException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getContainedPotentialCtpNames operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getContainedPotentialCtpsRequest" type="tns:GetAllCtpsType">
@@ -633,12 +1017,26 @@ Operation getContainedInUseTPs then returns three CTPs:<ul>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getContainedPotentialCtpsException" type="tns:ExceptionProfile2Type">
+  <xsd:element name="getContainedPotentialCtpsException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getContainedPotentialCtps operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getContainingGtpRequest" type="tns:RequestProfile4Type">
@@ -656,12 +1054,24 @@ Operation getContainedInUseTPs then returns three CTPs:<ul>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getContainingGtpException" type="tns:ExceptionProfile4Type">
+  <xsd:element name="getContainingGtpException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getContainingGtp operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getContainingTpNamesRequest" type="tns:RequestProfile4Type">
@@ -679,12 +1089,25 @@ Operation getContainedInUseTPs then returns three CTPs:<ul>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getContainingTpNamesException" type="tns:ExceptionProfile3Type">
+  <xsd:element name="getContainingTpNamesException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getContainingTpNames operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getContainingTpsRequest" type="tns:RequestProfile4Type">
@@ -702,12 +1125,25 @@ Operation getContainedInUseTPs then returns three CTPs:<ul>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getContainingTpsException" type="tns:ExceptionProfile3Type">
+  <xsd:element name="getContainingTpsException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getContainingTps operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getGtpRequest">
@@ -736,12 +1172,25 @@ Operation getContainedInUseTPs then returns three CTPs:<ul>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getGtpException" type="tns:ExceptionProfile3Type">
+  <xsd:element name="getGtpException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getGtp operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getTpRequest" type="tns:RequestProfile2Type">
@@ -759,12 +1208,24 @@ Operation getContainedInUseTPs then returns three CTPs:<ul>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getTpException" type="tns:ExceptionProfile4Type">
+  <xsd:element name="getTpException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getTp operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getTpGroupingRelationshipsRequest" type="tns:RequestProfile2Type">
@@ -789,12 +1250,25 @@ If a TP name is supplied, the method will return the names of any associated TPP
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getTpGroupingRelationshipsException" type="tns:ExceptionProfile3Type">
+  <xsd:element name="getTpGroupingRelationshipsException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getTpGroupingRelationships operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getTpPoolRequest">
@@ -823,15 +1297,28 @@ If a TP name is supplied, the method will return the names of any associated TPP
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getTpPoolException" type="tns:ExceptionProfile3Type">
+  <xsd:element name="getTpPoolException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getTpPool operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getTerminationPointNamesIteratorRequest" type="msg:GetAllDataIteratorType">
+  <xsd:element name="getTerminationPointNamesIteratorRequest" type="msg:GetAllDataIteratorRequestType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getTerminationPointNamesIterator operation</p>
@@ -846,7 +1333,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getTerminationPointNamesIteratorException" type="msg:ExceptionProfile2Type">
+  <xsd:element name="getTerminationPointNamesIteratorException" type="msg:GetAllDataIteratorExceptionType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getTerminationPointNamesIterator operation</p>
@@ -854,7 +1341,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
     </xsd:annotation>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getTerminationPointsIteratorRequest" type="msg:GetAllDataIteratorType">
+  <xsd:element name="getTerminationPointsIteratorRequest" type="msg:GetAllDataIteratorRequestType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getTerminationPointsIterator operation</p>
@@ -869,7 +1356,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getTerminationPointsIteratorException" type="msg:ExceptionProfile2Type">
+  <xsd:element name="getTerminationPointsIteratorException" type="msg:GetAllDataIteratorExceptionType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getTerminationPointsIterator operation</p>
@@ -877,7 +1364,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
     </xsd:annotation>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getTpPoolNamesIteratorRequest" type="msg:GetAllDataIteratorType">
+  <xsd:element name="getTpPoolNamesIteratorRequest" type="msg:GetAllDataIteratorRequestType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getTpPoolNamesIterator operation</p>
@@ -892,7 +1379,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getTpPoolNamesIteratorException" type="msg:ExceptionProfile2Type">
+  <xsd:element name="getTpPoolNamesIteratorException" type="msg:GetAllDataIteratorExceptionType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getTpPoolNamesIterator operation</p>
@@ -900,7 +1387,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
     </xsd:annotation>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getTpPoolsIteratorRequest" type="msg:GetAllDataIteratorType">
+  <xsd:element name="getTpPoolsIteratorRequest" type="msg:GetAllDataIteratorRequestType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getTpPoolsIterator operation</p>
@@ -915,7 +1402,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getTpPoolsIteratorException" type="msg:ExceptionProfile2Type">
+  <xsd:element name="getTpPoolsIteratorException" type="msg:GetAllDataIteratorExceptionType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getTpPoolsIterator operation</p>
@@ -923,7 +1410,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
     </xsd:annotation>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getGtpNamesIteratorRequest" type="msg:GetAllDataIteratorType">
+  <xsd:element name="getGtpNamesIteratorRequest" type="msg:GetAllDataIteratorRequestType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getGtpNamesIterator operation</p>
@@ -938,7 +1425,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getGtpNamesIteratorException" type="msg:ExceptionProfile2Type">
+  <xsd:element name="getGtpNamesIteratorException" type="msg:GetAllDataIteratorExceptionType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getGtpNamesIterator operation</p>
@@ -946,7 +1433,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
     </xsd:annotation>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getGtpsIteratorRequest" type="msg:GetAllDataIteratorType">
+  <xsd:element name="getGtpsIteratorRequest" type="msg:GetAllDataIteratorRequestType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getGtpsIterator operation</p>
@@ -961,7 +1448,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getGtpsIteratorException" type="msg:ExceptionProfile2Type">
+  <xsd:element name="getGtpsIteratorException" type="msg:GetAllDataIteratorExceptionType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getGtpsIterator operation</p>
@@ -1101,162 +1588,6 @@ If a TP name is supplied, the method will return the names of any associated TPP
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
-  <xsd:complexType name="ExceptionProfile1Type">
-    <xsd:choice>
-      <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessageType">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised in case of non-specific OS internal failure</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessageType">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised when one or many operation input (request) parameters are invalid</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="exceptionTooManyOpenIterators" type="msg:BaseExceptionMessageType">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised when data retrieval iterator capacity is full</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessageType">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised when one or many operation input (request) parameters do not refer to an existing object</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessageType">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-    </xsd:choice>
-  </xsd:complexType>
-  <xsd:complexType name="ExceptionProfile2Type">
-    <xsd:choice>
-      <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessageType">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised by OS for an optional operation that is not implemented</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessageType">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised in case of non-specific OS internal failure</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessageType">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised when one or many operation input (request) parameters are invalid</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="exceptionTooManyOpenIterators" type="msg:BaseExceptionMessageType">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised when data retrieval iterator capacity is full</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessageType">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised when one or many operation input (request) parameters do not refer to an existing object</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessageType">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-    </xsd:choice>
-  </xsd:complexType>
-  <xsd:complexType name="ExceptionProfile3Type">
-    <xsd:choice>
-      <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessageType">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised by OS for an optional operation that is not implemented</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessageType">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised in case of non-specific OS internal failure</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessageType">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised when one or many operation input (request) parameters are invalid</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessageType">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised when one or many operation input (request) parameters do not refer to an existing object</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessageType">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-    </xsd:choice>
-  </xsd:complexType>
-  <xsd:complexType name="ExceptionProfile4Type">
-    <xsd:choice>
-      <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessageType">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised in case of non-specific OS internal failure</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessageType">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised when one or many operation input (request) parameters are invalid</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessageType">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised when one or many operation input (request) parameters do not refer to an existing object</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="exceptionCommunicationFailure" type="msg:BaseExceptionMessageType">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-    </xsd:choice>
-  </xsd:complexType>
   <xsd:complexType name="MultipleTpObjectsResponseType">
     <xsd:annotation>
       <xsd:documentation>
@@ -1371,161 +1702,4 @@ If a TP name is supplied, the method will return the names of any associated TPP
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================== -->
-
-<!-- ===================== getAllCptps Request/Response Messages ========= -->
-  <xsd:complexType name="getAllCptpsRequestType">
-    <xsd:annotation>
-      <xsd:documentation>
-        This service returns the structures of all CPTPs, 
-        or all flow domain edge CPTPs, or all flow domain internal CPTPs,
-        associated with a flow domain.
-        Raises globaldefs::ProcessingFailureException 
-        EXCPT_NOT_IMPLEMENTED - Raised if the entire request is not supported 
-        by the EMS or the request with the specified input parameters 
-        is not supported.
-        EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
-        failure
-        EXCPT_INVALID_INPUT - Raised when fdName does not reference a
-        flow domain object
-        EXCPT_ENTITY_NOT_FOUND - Raised when fdName references an object that 
-        does not exist
-        EXCPT_NE_COMM_LOSS - Raised when communication is lost to a managed element
-        involved in this operation
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element name="fdName" type="nam:NamingAttributesType">
-        <xsd:annotation>
-          <xsd:documentation>
-            Name of the flow domain whose associated edge CPTPs shall be returned    
-            or name of the matrix flow domain whose assigned CPTPs shall be returned
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="cptpRole" type="fd:CPTP_RoleType">
-        <xsd:annotation>
-          <xsd:documentation>
-            Which CPTPs to return : flow domain edge, flow domain internal, or all CPTPs.
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-    </xsd:sequence>
-  </xsd:complexType>
-
-  <xsd:complexType name="getAllCptpsResponseType">
-    <xsd:annotation>
-      <xsd:documentation>
-        This is the response of the getAllCptps operation.
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element name="cptpList" type="tp:TerminationPointListType" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            Retrieved CPTPs with the name as specified in input.
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-    </xsd:sequence>
-  </xsd:complexType>
-
-<!-- ===================== getAllAssignedCptps Request/Response Messages ========= -->
-  <xsd:complexType name="getAllAssignedCptpsRequestType">
-    <xsd:annotation>
-      <xsd:documentation>
-        This service returns the structures of all CPTPs assigned to 
-        a matrix flow domain. 
-        Raises globaldefs::ProcessingFailureException 
-        EXCPT_NOT_IMPLEMENTED - Raised if the entire request is not supported 
-        by the EMS or the request with the specified input parameters 
-        is not supported.
-        EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
-        failure
-        EXCPT_INVALID_INPUT - Raised when mfdName does not reference a
-        matrix flow domain object
-        EXCPT_ENTITY_NOT_FOUND - Raised when mfdName references an object that 
-        does not exist
-        EXCPT_NE_COMM_LOSS - Raised when communication is lost to a managed element
-        involved in this operation
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element name="mfdName" type="nam:NamingAttributesType">
-        <xsd:annotation>
-          <xsd:documentation>
-            Name of the matrix flow domain whose assigned CPTPs shall be returned.
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-    </xsd:sequence>
-  </xsd:complexType>
-
-  <xsd:complexType name="getAllAssignedCptpsResponseType">
-    <xsd:annotation>
-      <xsd:documentation>
-        This is the response of the getAllAssignedCptps operation.
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element name="cptpList" type="tp:TerminationPointListType" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            Retrieved CPTPs with the name as specified in input.
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-    </xsd:sequence>
-  </xsd:complexType>
-
-<!-- ===================== getAllAssignableCptps Request/Response Messages ========= -->
-  <xsd:complexType name="getAllAssignableCptpsRequestType">
-    <xsd:annotation>
-      <xsd:documentation>
-        This service returns the structures of all "CPTP" TPs that which are potentially 
-        able to be assigned to a matrix flow domain
-        Potentially means: The CPTPs are on the same equipment or same rack with 
-        backplane connectivity as the NMS specified Mfd. It is irrelevant whether the CPTPs 
-        are already assigned to an Mfd or not.
-        Raises globaldefs::ProcessingFailureException 
-        EXCPT_NOT_IMPLEMENTED - Raised if the entire request is not supported 
-        by the EMS or the request with the specified input parameters 
-        is not supported.
-        EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
-        failure
-        EXCPT_INVALID_INPUT - Raised when mfdName does not reference a
-        matrix flow domain object
-        EXCPT_ENTITY_NOT_FOUND - Raised when mfdName references an object that 
-        does not exist
-        EXCPT_NE_COMM_LOSS - Raised when communication is lost to a managed element
-        involved in this operation
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element name="mfdName" type="nam:NamingAttributesType">
-        <xsd:annotation>
-          <xsd:documentation>
-            Name of the matrix flow domain whose potential CPTPs shall be returned.
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-    </xsd:sequence>
-  </xsd:complexType>
-
-  <xsd:complexType name="getAllAssignableCptpsResponseType">
-    <xsd:annotation>
-      <xsd:documentation>
-        This is the response of the getAllAssignableCptps operation.
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element name="cptpList" type="tp:TerminationPointListType" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            Retrieved CPTPs with the name as specified in input.
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-    </xsd:sequence>
-  </xsd:complexType>
-
 </xsd:schema>
