@@ -37,7 +37,7 @@
 				This is the same convention that was used for the MTOSI getInventory operation. 
 				In this case, the information is being “pushed” rather than “pulled”.</p>
         <p>In the case of effortMode="bestEffort", this operations uses Multi-Object Exceptions. 
-				In the case of effortMode="atomic" a single exception is used.</p>
+				In the case of effortMode="atomic" the first encountered exception is returned.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -82,6 +82,90 @@
 		further in TMF518_MRI.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="msg:internalError"/>
+        <xsd:element ref="msg:notImplemented"/>
+        <!-- ===================== Object does not exist ========= -->
+        <xsd:sequence>
+          <xsd:element name="invalidInputObjectDoesNotExist" type="msg:BaseExceptionMessageType"/>
+          <xsd:element name="nonExistentContainingObject" type="nam:NamingAttributesType" minOccurs="0" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>If while attempting to create an object whose containing object (possibly several 
+						layers up) does not exist, the target OS should raise an exception and supply the name 
+						of the containing object that it claims does not exist. The "reason" parameter of the 
+						exception should state "containing object does not exist".</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- ===================== Unsupported object types ========= -->
+        <xsd:sequence>
+          <xsd:element name="invalidInputUnsupportedObjectTypes" type="msg:BaseExceptionMessageType"/>
+          <xsd:element name="objectType" type="gen:ObjectTypeType" minOccurs="0" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>If the requesting OS is trying to create instance of one or more object types that
+						are unsupported by the target OS, the target OS should raise an exception and list the 
+						unsupported object types.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- ===================== Unsupported attributes or attribute values ========= -->
+        <xsd:sequence>
+          <xsd:element name="invalidInputUnsupportAttributesOrValues" type="msg:BaseExceptionMessageType"/>
+          <xsd:element name="objectType" type="gen:ObjectTypeType" minOccurs="0" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>If the requesting OS is trying to modify an unsupported attribute type or set an attribute
+						to a not allowed value (either because the value is not supported or because the current situation
+						does not allow the value to be set as requested, e.g., trying to reuse the name of an existing
+						object), the target OS should raise an exception and list the problem attributes types.</p>
+                <p>Depending on the situation, the reason parameter should state either
+						"unsupported attribute type" or "attempted to set attribute to not allowed value."</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- ===================== Objects in use ========= -->
+        <xsd:sequence>
+          <xsd:element name="objectInUse" type="msg:BaseExceptionMessageType"/>
+          <xsd:element name="objectName" type="nam:NamingAttributesType" minOccurs="0" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>If requesting OS is trying to modify an object that is in use (this may depend on the 
+						policies of the target OS), the target OS should raise an exception and provide 
+						the type and name of the object instances in question that are already in use.</p>
+                <p>If the requesting OS is attempting to delete an object when an associated object 
+						(possibly several layers up) is currently in use (e.g., attempting to delete a CTP when 
+						an associated SNC is still in use may violate a policy of the target OS) then the 
+						target OS should raise an exception and supply the name of the containing object that is 
+						in use. The "reason" parameter of the exception should say "Containing object is in use".</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- ===================== Policy violation ========= -->
+        <xsd:sequence>
+          <xsd:element name="policyViolation" type="msg:BaseExceptionMessageType"/>
+          <xsd:element name="objectName" type="nam:NamingAttributesType" minOccurs="0" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>If creation of a given object violates a policy of the target OS, the target OS should 
+						raise an exception, identify the object (can leave the relative name empty if not provided
+						by the requesting OS) and indicate the specific policy that has been violated in the 
+						"reason" parameter of the exception.</p>
+                <p>If modification or deletion of a given object violates a policy of the target OS, the target 
+						OS should raise an exception, identify the object and indicate the specific policy that has been 
+						violated in the "reason" parameter of the exception.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:choice>
+    </xsd:complexType>
   </xsd:element>
   <!-- =========== Local Definitions ========= -->
   <xsd:simpleType name="EffortModeType">
