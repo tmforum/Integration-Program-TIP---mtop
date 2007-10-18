@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ResourceProvisioning - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rp/xsd/tpc/v1" xmlns:tns="http://www.tmforum.org/mtop/rp/xsd/tpc/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:ftp="http://www.tmforum.org/mtop/nrf/xsd/ftp/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rp/xsd/tpc/v1" xmlns:tns="http://www.tmforum.org/mtop/rp/xsd/tpc/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:ftp="http://www.tmforum.org/mtop/nrf/xsd/ftp/v1" xmlns:tpdata="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: ResourceProvisioning</p>
@@ -12,31 +12,101 @@
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Ftp.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/ftp/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/TpData.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1"/>
   <!-- ================ -->
-  <xsd:element name="createFtpRequest" type="tns:createFtpRequestType">
+  <xsd:element name="createFtpRequest">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the createFtp operation</p>
+        <p>This operation allows an NMS requests from the EMS the creation of an FTP given the parameters passed in the method.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="createData" type="ftp:FtpCreateDataType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Structure describing the floating termination point structure to be created.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tpsToModify" type="tpdata:TpDataListType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The list of TPs with associated parameters to be applied.
+            Applying transmission parameters is best-effort (where not stated 
+            otherwise) and the resulting values of the transmission parameters are 
+            provided in the updated tpsToModify parameter. If the parameter is "not 
+            best effort" then the whole operation will be rejected and the appropriate 
+            exception thrown (see exceptions below).</p>
+              <p>This parameter may be used by the NMS to determine
+            the number of server layer CTPs to create for the specified FTP.
+            An empty list means that the number of server layer CTPs 
+            is determined by the EMS.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
-
-  <xsd:element name="createFtpResponse" type="tns:createFtpResponseType">
+  <xsd:element name="createFtpResponse">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure of the createFtp operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="tpsToModify" type="tpdata:TpDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The list of TPs with associated parameters to be applied.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="theFtp" type="ftp:FloatingTerminationPointType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The new floating termination point. The EMS is responsible for guaranteeing
+            uniqueness of the name of the FTP. The name may be specified
+            by the NMS in the createData.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Specifies the creation error(s) if any.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
-
-  <xsd:element name="createFtpException" type="ExceptionProfile2Type">
+  <xsd:element name="createFtpException">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the createFtp operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:capacityExceeded"/>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:objectInUse"/>
+            <xsd:element ref="msg:unableToComply"/>
+            <xsd:element ref="msg:userlabelInUse"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
-
   <!-- ================ -->
   <xsd:element name="createGtpRequest">
     <xsd:annotation>
@@ -59,6 +129,23 @@
         <p>Exception message structure of the createGtp operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:capacityExceeded"/>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:objectInUse"/>
+            <xsd:element ref="msg:unableToComply"/>
+            <xsd:element ref="msg:userlabelInUse"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="createTpPoolRequest">
@@ -82,6 +169,23 @@
         <p>Exception message structure of the createTpPool operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:capacityExceeded"/>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:objectInUse"/>
+            <xsd:element ref="msg:unableToComply"/>
+            <xsd:element ref="msg:userlabelInUse"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="deleteFtpRequest">
@@ -91,6 +195,24 @@
         <p>This operation .</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="ftpName" type="nam:NamingAttributesListType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the termination point to be deleted.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tpsToModify" type="tpdata:TpDataListType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The list of TPs with associated parameters to be applied.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="deleteFtpResponse">
     <xsd:annotation>
@@ -98,6 +220,25 @@
         <p>Response message structure of the deleteFtp operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="tpsToModify" type="tpdata:TpDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The list of TPs with associated parameters to be applied.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>In case a "best effort" parameter could not be set
+            an indication of the fault reason is provided by the EMS.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="deleteFtpException">
     <xsd:annotation>
@@ -105,6 +246,21 @@
         <p>Exception message structure of the deleteFtp operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:objectInUse"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="deleteGtpRequest">
@@ -128,6 +284,23 @@
         <p>Exception message structure of the deleteGtp operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:capacityExceeded"/>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:objectInUse"/>
+            <xsd:element ref="msg:unableToComply"/>
+            <xsd:element ref="msg:userlabelInUse"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="deleteTpPoolRequest">
@@ -151,6 +324,23 @@
         <p>Exception message structure of the deleteTpPool operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:capacityExceeded"/>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:objectInUse"/>
+            <xsd:element ref="msg:unableToComply"/>
+            <xsd:element ref="msg:userlabelInUse"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="modifyGtpRequest">
@@ -174,6 +364,23 @@
         <p>Exception message structure of the modifyGtp operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:capacityExceeded"/>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:objectInUse"/>
+            <xsd:element ref="msg:unableToComply"/>
+            <xsd:element ref="msg:userlabelInUse"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="modifyTpPoolRequest">
@@ -197,6 +404,23 @@
         <p>Exception message structure of the modifyTpPool operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:capacityExceeded"/>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:objectInUse"/>
+            <xsd:element ref="msg:unableToComply"/>
+            <xsd:element ref="msg:userlabelInUse"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="setTpDataRequest">
@@ -220,157 +444,22 @@
         <p>Exception message structure of the setTpData operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:capacityExceeded"/>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:objectInUse"/>
+            <xsd:element ref="msg:unableToComply"/>
+            <xsd:element ref="msg:userlabelInUse"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
-
-<!-- ===================== createFTP Request/Response Messages ========= -->
-  <xsd:complexType name="createFTPRequestType">
-    <xsd:annotation>
-      <xsd:documentation>
-        Using this service the NMS requests from the EMS the creation of a
-        FTP given the parameters passed in the method. 
-        Raises globaldefs::ProcessingFailureException
-        EXCPT_NOT_IMPLEMENTED - Raised if the entire request is not supported 
-        by the EMS or the request with the specified input parameters 
-        is not supported.
-        EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
-        failure
-        EXCPT_INVALID_INPUT - Raised when any input parameter is syntactically
-        incorrect (e.g. field of createData is invalid).
-        EXCPT_UNABLETypeO_COMPLY - Raised when the EMS (or NE) does not support explicit creation 
-        of CPTPs. 
-        EXCPT_ENTITY_NOT_FOUND - Raised when the specified equipment does not exist.
-        EXCPT_CAPACITY_EXCEEDED - Raised when The Equipment does not have the resources 
-        (e.g., not enough overall back-plane bandwidth, not enough usable timeslots, etc.)
-        EXCPT_NE_COMM_LOSS - Raised when communcation is lost to the managed element
-        that shall contain the FTP
-        EXCPT_USERLABEL_IN_USE - Raised when the userLabel uniqueness constraint is 
-        not met
-        EXCPT_OBJECT_IN_USE - Raised when the object identified in the request is
-        currently in use
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element name="createData" type="ftp:FTPCreateDataType">
-        <xsd:annotation>
-          <xsd:documentation>
-            Structure describing the floating termination point structure to be created.
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataListType">
-        <xsd:annotation>
-          <xsd:documentation>
-            The list of TPs with associated parameters to be applied.
-            Applying transmission parameters is best-effort (where not stated 
-            otherwise) and the resulting values of the transmission parameters are 
-            provided in the updated tpsToModify parameter. If the parameter is "not 
-            best effort" then the whole operation will be rejected and the appropriate 
-            exception thrown (see exceptions below).
-            This parameter may be used by the NMS to determine
-            the number of server layer CTPs to create for the specified FTP.
-            An empty list means that the number of server layer CTPs 
-            is determined by the EMS.
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-    </xsd:sequence>
-  </xsd:complexType>
-
-  <xsd:complexType name="createFTPResponseType">
-    <xsd:annotation>
-      <xsd:documentation>
-        This is the response of the createFTP operation.
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataListType" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            The list of TPs with associated parameters to be applied.
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="theFTP" type="ftp:FloatingTerminationPointType" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            The new floating termination point. The EMS is responsible for guaranteeing
-            uniqueness of the name of the FTP. The name may be specified
-            by the NMS in the createData.
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            Specifies the creation error(s) if any.
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-    </xsd:sequence>
-  </xsd:complexType>
-
-<!-- ===================== deleteFTP Request/Response Messages ========= -->
-  <xsd:complexType name="deleteFTPRequestType">
-    <xsd:annotation>
-      <xsd:documentation>
-        This service allows an NMS to request the deletion of a floating termination point from
-        the EMS. The service may be used to delete "CPTP" FTPs. 
-        Raises globaldefs::ProcessingFailureException 
-        EXCPT_NOT_IMPLEMENTED - Raised if the entire request is not supported 
-        by the EMS or the request with the specified input parameters 
-        is not supported.
-        EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
-        failure
-        EXCPT_INVALID_INPUT - Raised when any input parameter is syntactical 
-        incorrect, i.e. tpName does not refer to a "CPTP" termination point object 
-        EXCPT_ENTITY_NOT_FOUND - Raised when tpName references an object that does 
-        not exist 
-        EXCPT_OBJECT_IN_USE - Raised when the CPTP is an ELL endpoint.
-        EXCPT_UNABLETypeO_COMPLY - Raised if the TP is is not deleteable.
-        EXCPT_NE_COMM_LOSS - Raised when communcation is lost to a managed element
-        involved in this operation
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element name="ftpName" type="nam:NamingAttributesListType">
-        <xsd:annotation>
-          <xsd:documentation>
-            The name of the termination point to be deleted.    
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataListType">
-        <xsd:annotation>
-          <xsd:documentation>
-            The list of TPs with associated parameters to be applied.
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-    </xsd:sequence>
-  </xsd:complexType>
-
-  <xsd:complexType name="deleteFTPResponseType">
-    <xsd:annotation>
-      <xsd:documentation>
-        This is the response of the deleteFTP operation.
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element name="tpsToModify" type="tpdata:TPDataListType" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            The list of TPs with associated parameters to be applied.
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            In case a "best effort" parameter could not be set
-            an indication of the fault reason is provided by the EMS.
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-    </xsd:sequence>
-  </xsd:complexType>
 </xsd:schema>
