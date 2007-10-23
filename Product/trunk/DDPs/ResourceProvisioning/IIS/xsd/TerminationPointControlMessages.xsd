@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ResourceProvisioning - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rp/xsd/tpc/v1" xmlns:tns="http://www.tmforum.org/mtop/rp/xsd/tpc/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:ftp="http://www.tmforum.org/mtop/nrf/xsd/ftp/v1" xmlns:tpdata="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rp/xsd/tpc/v1" xmlns:tns="http://www.tmforum.org/mtop/rp/xsd/tpc/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:tp="http://www.tmforum.org/mtop/nrf/xsd/tp/v1" xmlns:ftp="http://www.tmforum.org/mtop/nrf/xsd/ftp/v1" xmlns:gtp="http://www.tmforum.org/mtop/nrf/xsd/gtp/v1" xmlns:mlsn="http://www.tmforum.org/mtop/nrf/xsd/mlsn/v1" xmlns:tppool="http://www.tmforum.org/mtop/nrf/xsd/tppool/v1" xmlns:lp="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" xmlns:tpdata="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: ResourceProvisioning</p>
@@ -11,7 +11,12 @@
   <!-- ================ -->
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayeredParameters.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lp/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Tp.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/tp/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Ftp.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/ftp/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Gtp.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/gtp/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Mlsn.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/mlsn/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/TpPool.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/tppool/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/TpData.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1"/>
   <!-- ================ -->
   <xsd:element name="createFtpRequest">
@@ -112,9 +117,89 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the createGtp operation</p>
-        <p>This operation .</p>
+        <p>The NMS uses this operation to request the creation of a GTP see SD1-3_BundledSNC.pdf 
+   for further information on GTP usage). The NMS can either specify the list
+   of CTPs comprising the GTP (the list is placed in the listOfTPs parameter) 
+   or, in the case of contiguous CTPs of the same layerRate, the NMS may list 
+   the first CTP (in the initialCTPname parameter) and the number of 
+   following CTPs (in the numberOfCTPs parameter). The NMS 
+   may also provide the EMS with the flexibility to decide the list of CTPs  
+   by using the gtpEffort parameter. In this flexible mode the EMS uses the 
+   listOfTPs parameter or the initialCTPname/ numberOfCTPs parameters to 
+   determine the total requested bandwidth but it may return a GTP (newGTP 
+   parameter) with a different set of CTPs than those indicated in the 
+   original createGTP request. Note that this mode allows for the GTP 
+   components to be instantiated at a later time by the ME (e.g., upon 
+   detection of user's signal). Therefore the operation may successfully 
+   return a newGTP with an empty listOfTPs attribute (to be updated at a 
+   later time once the component CTPs are created in the ME).</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="userLabel" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the userLabel for the GTP.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="forceUniqueness" type="xsd:boolean" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Specifies whether uniqueness of the userLabel is required amongst GTPs of the EMS.  The operation will fail if userLabel is already in use.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="owner" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the owner of the GTP.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="listOfTps" type="nam:NamingAttributesListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the list of CTPs that comprise the GTP.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="initialCtpName" type="nam:NamingAttributesType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>in cases where the CTPs are contiguous and of the same layerRate, this parameter is used to indicate the first CTP in the group. This parameter is used in lieu of the listOfTPs parameter.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="numberOfCtps" type="xsd:long" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This parameter is used in conjunction with the initialCTPname parameter. It indicates the number of contiguous CTPs that follow the initial CTP. It equals 1 minus the total number of CTPs in the GTP.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="gtpEffort" type="tns:GtpEffortType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This parameter is used to indicate if the GTP bandwidth specification can be met with a different list of CTPs.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="vendorExtensions">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This is a container for all vendor extensions.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="createGtpResponse">
     <xsd:annotation>
@@ -122,6 +207,17 @@
         <p>Response message structure of the createGtp operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="newGtp" type="gtp:GroupTerminationPointType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This output parameter contains the newly created GTP.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="createGtpException">
     <xsd:annotation>
@@ -133,9 +229,7 @@
       <xsd:complexContent>
         <xsd:restriction base="msg:AllExceptionsType">
           <xsd:choice>
-            <xsd:element ref="msg:capacityExceeded"/>
             <xsd:element ref="msg:communicationFailure"/>
-            <xsd:element ref="msg:entityNotFound"/>
             <xsd:element ref="msg:internalError"/>
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
@@ -155,6 +249,71 @@
         <p>This operation .</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="userLabel" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the userLabel for the TpPool.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="forceUniqueness" type="xsd:boolean" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Specifies whether uniqueness of the userLabel is required amongst TpPools of the MLSN.  The operation will fail if userLabel is already in use.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="owner" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the owner of the TpPool.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="containingMLSN" type="mlsn:MultiLayerSubnetworkType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The subnetwork that shall contain the TPPool to be created.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="containedMembers" type="nam:NamingAttributesListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The list of TPs or GTPs that shall comprise the TPPool.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="transmissionParams" type="lp:LayeredParametersListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The common layers and transmission parameters the above-specified Contained TPs, or TPs contained in Contained GTPs, are required to have (e.g., ATM VP layer with prescribed traffic characteristics).</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="descriptionOfUse" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>A description of the specific use of the TP pool, in particular how its members are collected and administered. It could include, for example, the name of a TP with the meaning that all TP pool members have to be collected from the set of potential client CTPs of this TP.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="vendorExtensions">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This is a container for all vendor extensions.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="createTpPoolResponse">
     <xsd:annotation>
@@ -162,6 +321,17 @@
         <p>Response message structure of the createTpPool operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="newTpPool" type="tppool:TpPoolType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This parameter contains the newly created TPPool.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="createTpPoolException">
     <xsd:annotation>
@@ -175,7 +345,6 @@
           <xsd:choice>
             <xsd:element ref="msg:capacityExceeded"/>
             <xsd:element ref="msg:communicationFailure"/>
-            <xsd:element ref="msg:entityNotFound"/>
             <xsd:element ref="msg:internalError"/>
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
@@ -192,7 +361,7 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the deleteFtp operation</p>
-        <p>This operation .</p>
+        <p>This operation allows an NMS to request the deletion of a floating termination point from the EMS. The operation may be used to delete "CPTP" FTPs.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -267,9 +436,20 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the deleteGtp operation</p>
-        <p>This operation .</p>
+        <p>This operation is used to delete a GTP (see SD1-3 Bundled SNC overview for further information on GTP usage). An attempt to delete a GTP that is involved in a cross connection or SNC should be rejected by the EMS. This operation is idempotent. If the service is called with the name of a non-existent GTP, it will succeed.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="gtpName" type="nam:NamingAttributesType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>name of GTP to be deleted.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="deleteGtpResponse">
     <xsd:annotation>
@@ -277,6 +457,7 @@
         <p>Response message structure of the deleteGtp operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType/>
   </xsd:element>
   <xsd:element name="deleteGtpException">
     <xsd:annotation>
@@ -288,15 +469,11 @@
       <xsd:complexContent>
         <xsd:restriction base="msg:AllExceptionsType">
           <xsd:choice>
-            <xsd:element ref="msg:capacityExceeded"/>
-            <xsd:element ref="msg:communicationFailure"/>
             <xsd:element ref="msg:entityNotFound"/>
             <xsd:element ref="msg:internalError"/>
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
             <xsd:element ref="msg:objectInUse"/>
-            <xsd:element ref="msg:unableToComply"/>
-            <xsd:element ref="msg:userlabelInUse"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
@@ -307,9 +484,20 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the deleteTpPool operation</p>
-        <p>This operation .</p>
+        <p>The delete TPPool operation is used to delete a TPPool. This operation is idempotent.  If the service is called with the name of a non-existent TPPool, it will succeed.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="tpPoolName" type="nam:NamingAttributesType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the TPPool to be deleted.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="deleteTpPoolResponse">
     <xsd:annotation>
@@ -317,6 +505,7 @@
         <p>Response message structure of the deleteTpPool operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType/>
   </xsd:element>
   <xsd:element name="deleteTpPoolException">
     <xsd:annotation>
@@ -328,15 +517,10 @@
       <xsd:complexContent>
         <xsd:restriction base="msg:AllExceptionsType">
           <xsd:choice>
-            <xsd:element ref="msg:capacityExceeded"/>
-            <xsd:element ref="msg:communicationFailure"/>
-            <xsd:element ref="msg:entityNotFound"/>
             <xsd:element ref="msg:internalError"/>
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
             <xsd:element ref="msg:objectInUse"/>
-            <xsd:element ref="msg:unableToComply"/>
-            <xsd:element ref="msg:userlabelInUse"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
@@ -347,9 +531,37 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the modifyGtp operation</p>
-        <p>This operation .</p>
+        <p>This operation is used to add TPs to or delete TPs from a GTP (see SD1-3_BundledSNC.pdf  for further information on GTP usage). For a given request, the NMS can only add or delete CTPs, not both. It is not possible to add a CTP that is already involved in a cross 
+connection or SNC, or that is part of another GTP. Attempts to modify a GTP 
+that is involved in a cross connection (or SNC) should be rejected by the EMS. The operation is best-effort, i.e., the EMS will add or delete as many of the identified CTPs as possible. If the service is called with the name of a non-existent GTP or CTP, it will fail.</p>
+        <p>If the NMS created a GTP with gtpEffort equal to EFFORT_SAME, this also implies that the EMS will not modify on its own, i.e., the EMS will only modify the GTP if requested by the NMS via the modifyGTP operation.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="gtpName" type="nam:NamingAttributesType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the GTP to be modified.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tpNames" type="nam:NamingAttributesListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>names of the CTPs to be added or deleted.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="actionType" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>an indication of whether the listed TPs are to be added or deleted. Two values are possible "add" or "delete".</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="modifyGtpResponse">
     <xsd:annotation>
@@ -357,6 +569,17 @@
         <p>Response message structure of the modifyGtp operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="modifiedGtp" type="gtp:GroupTerminationPointType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the structure for the modified GTP.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="modifyGtpException">
     <xsd:annotation>
@@ -368,7 +591,6 @@
       <xsd:complexContent>
         <xsd:restriction base="msg:AllExceptionsType">
           <xsd:choice>
-            <xsd:element ref="msg:capacityExceeded"/>
             <xsd:element ref="msg:communicationFailure"/>
             <xsd:element ref="msg:entityNotFound"/>
             <xsd:element ref="msg:internalError"/>
@@ -376,7 +598,6 @@
             <xsd:element ref="msg:notImplemented"/>
             <xsd:element ref="msg:objectInUse"/>
             <xsd:element ref="msg:unableToComply"/>
-            <xsd:element ref="msg:userlabelInUse"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
@@ -387,9 +608,34 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the modifyTpPool operation</p>
-        <p>This operation .</p>
+        <p>The modify TPPool operation is used to add TPs/GTPs to or delete TPs/GTPs from a TPPool.  For a given request, the NMS can only add TPs/GTPs or delete TPs/GTPs, not both.  When TPs/GTPs are to be added, all the specified TPs/GTPs shall be contained in MEs of the TPPool's Subnetwork.  It is not possible to add a TP/GTP that is part of another TPPool or GTP.  The operation is best-effort, i.e., the EMS will add or delete as many of the identified TPs as possible. If the service is called with the name of a non-existent TPPool or TP or GTP, it will fail.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="tpPoolName" type="nam:NamingAttributesType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the TPPool to be modified.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="containedMembers" type="nam:NamingAttributesListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The names of the TPs or GTPs to be added or deleted.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="actionType" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>an indication of whether the listed TPs or GTPs are to be added or deleted. Two values are possible "add" or "delete".</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="modifyTpPoolResponse">
     <xsd:annotation>
@@ -397,6 +643,17 @@
         <p>Response message structure of the modifyTpPool operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="modifiedTpPool" type="tppool:TpPoolType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the structure for the modified TPPool.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="modifyTpPoolException">
     <xsd:annotation>
@@ -416,7 +673,6 @@
             <xsd:element ref="msg:notImplemented"/>
             <xsd:element ref="msg:objectInUse"/>
             <xsd:element ref="msg:unableToComply"/>
-            <xsd:element ref="msg:userlabelInUse"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
@@ -427,9 +683,48 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the setTpData operation</p>
-        <p>This operation .</p>
+        <p>This operation allows the NMS to set parameters on a specified Termination Point (CTP, PTP or FTP). See SD1-16_LayeredParameters.pdf  for further information.</p>
+        <p>This operation is best effort (except where specified otherwise for a 
+   particular parameter). The results of the operation are returned
+   so that the NMS is aware of what modifications succeeded.</p>
+        <p>If the source TP of a broadcast system is used as input, then
+   the entire multipoint system will be affected based on the new
+   parameter values for the source TP.</p>
+        <p>The tpMappingMode may be set with this operation. When the mode is
+   set to TM_TERMINATED_AND_AVAILABLE_FOR_MAPPING, the EMS will terminate the
+   specified CTP. In this case the EMS must create the specified CTP on 
+   the NE if it does not actually exist. 
+   Setting the tpMappingMode of an ATM VP or VC CTP can only be done if
+   the CTP has been created. Note that the tpMappingMode can be set
+   only on the ingress and egress CTPs of an ATM SNC since they are the only
+   ones which may not be cross-connected.</p>
+        <p>No change to tpMappingMode or trafficDescriptors will take place if
+   there is any active cross connect (NE cross connect)
+   using the CTP passed in parameter.</p>
+        <p>The transmissionParams is a "delta" list that needs to be
+   applied to the specified TP, i.e. only a subset of the
+   parameters may be specified in the list, in which case only those
+   should be applied in the NE. Transmission parameters are used to associate 
+   a TCA profile with a TP using this service. In this case there are 
+   potentially additional failure modes (see exceptions).</p>
+        <p> The assignment of a Transmission Descriptor (TMD) to a Termination Point (TP) 
+   as egress or ingress TMD by using the TMD's name amounts to an overwriting 
+   of the layered transmission parameters of the TP by the layered transmission 
+   parameters of the TMD, and to an overwriting of the additional info parameters
+   of the TP by the "additional TP information" parameters of the TMD. </p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="tpInfo" type="tpdata:TpDataType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Details of modifications required..</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="setTpDataResponse">
     <xsd:annotation>
@@ -437,6 +732,17 @@
         <p>Response message structure of the setTpData operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="modifiedTP" type="tp:TerminationPointType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Result of modification.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="setTpDataException">
     <xsd:annotation>
@@ -448,18 +754,36 @@
       <xsd:complexContent>
         <xsd:restriction base="msg:AllExceptionsType">
           <xsd:choice>
-            <xsd:element ref="msg:capacityExceeded"/>
             <xsd:element ref="msg:communicationFailure"/>
             <xsd:element ref="msg:entityNotFound"/>
             <xsd:element ref="msg:internalError"/>
             <xsd:element ref="msg:invalidInput"/>
-            <xsd:element ref="msg:notImplemented"/>
-            <xsd:element ref="msg:objectInUse"/>
             <xsd:element ref="msg:unableToComply"/>
-            <xsd:element ref="msg:userlabelInUse"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
+  <!-- Types -->
+  <xsd:simpleType name="GtpEffortType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The GTP effort is a statement of the requirement of the list of CTPs
+   that a new GTP. If EFFORT_SAME is specified then the EMS must create the 
+   GTP with the exact same list of CTPs as provided with the GTP creation 
+   request. Further, if the NMS uses EFFORT_SAME, it is assume that the EMS 
+   will not modify the CTP list comprising the GTP at some later point (unless 
+   requested by the NMS via the modifyGTP operation). If EFFORT_WHATEVER is 
+   specified then the EMS may comply with the total bandwidth requirement by 
+   using a different set of CTPs.</p>
+        <p>If the NMS requests a GTP with gtpEffort equal to EFFORT_SAME, this also 
+   implies that the EMS will not modify on its own, i.e., the EMS will only 
+   modify the GTP if requested by the NMS via the modifyGTP operation.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="EFFORT_WHATEVER"/>
+      <xsd:enumeration value="EFFORT_SAME"/>
+    </xsd:restriction>
+  </xsd:simpleType>
 </xsd:schema>

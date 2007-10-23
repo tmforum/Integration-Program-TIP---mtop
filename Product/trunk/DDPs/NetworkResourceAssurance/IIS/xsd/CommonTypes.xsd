@@ -111,6 +111,34 @@ When present in an alarm notification, it indicates if the cause is known and th
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================= -->
+  <xsd:simpleType name="ProtectionCommandType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This type identifies the possible protection switch commands. See ITU-T Recommendation G.841 for definitions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="PC_CLEAR"/>
+      <xsd:enumeration value="PC_LOCKOUT"/>
+      <xsd:enumeration value="PC_FORCED_SWITCH"/>
+      <xsd:enumeration value="PC_MANUAL_SWITCH"/>
+      <xsd:enumeration value="PC_EXERCISER"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="ProtectionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The protection type identifies whether a protection switch is an MS protection switch or an SNCP protection switch.</p>
+   <p>It should be noted that although the term MSP was chosen as the original specific protection scheme to which the related behaviour applied was Multiplex Section Protection, the label is now more generally applied to any 1+1 or 1:N Trail protection scheme.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="PT_MSP_APS"/>
+      <xsd:enumeration value="PT_SNCP"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
   <xsd:simpleType name="ServiceAffectingType">
     <xsd:annotation>
       <xsd:documentation>
@@ -143,6 +171,51 @@ When present in an alarm notification, it indicates if the cause is known and th
       </xsd:documentation>
     </xsd:annotation>
     <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="SwitchReasonType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The switch reason reflects the reason why a switch occurred.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="SR_NA">
+        <xsd:annotation>
+        <xsd:documentation>Value used upon retrieval of switch data for non-revertive groups, if a more precise value is not available</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SR_RESTORED">
+        <xsd:annotation>
+        <xsd:documentation>used for revertive groups to indicate a return to the normal state</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SR_SIGNAL_FAIL">
+        <xsd:annotation>
+        <xsd:documentation></xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SR_SIGNAL_MISMATCH">
+        <xsd:annotation>
+        <xsd:documentation>Value used in the case the signal is ok, but is identified as coming from an incorrect source: TRAIL_TRACE_IDENTIFIER_MISMATCH, Signal Label Mismatch, etc</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SR_SIGNAL_DEGRADE">
+        <xsd:annotation>
+        <xsd:documentation></xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SR_AUTOMATIC_SWITCH">
+        <xsd:annotation>
+        <xsd:documentation>Value used when the exact switch reason is unknown, in retrievals of switch data if a protection switch is currently active or in protection switch notifications</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SR_MANUAL">
+        <xsd:annotation>
+        <xsd:documentation>Value indicates a switch that was requested by the operator and includes forced switches</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
   <xsd:complexType name="CorrelatedNotificationsType">
