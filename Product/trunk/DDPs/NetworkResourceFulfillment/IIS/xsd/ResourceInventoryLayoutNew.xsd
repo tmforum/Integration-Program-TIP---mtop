@@ -22,31 +22,7 @@
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="mdInv" type="tns:MdInventoryType" maxOccurs="unbounded">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>An MD inventory with the OS relationship</p>
-                </xsd:documentation>
-              </xsd:annotation>
-            </xsd:element>
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:element name="topLevelTlList" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>The list of top level TL inventories.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element name="topLevelTlInv" type="tns:TlInventoryType" maxOccurs="unbounded">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>A TL inventory with the OS relationship</p>
-                </xsd:documentation>
-              </xsd:annotation>
-            </xsd:element>
+            <xsd:element name="md" type="tns:MdInventoryType" maxOccurs="unbounded"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
@@ -58,13 +34,7 @@
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="tmdInv" type="tns:TmdInventoryType" maxOccurs="unbounded">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>A TMD inventory with the OS relationship</p>
-                </xsd:documentation>
-              </xsd:annotation>
-            </xsd:element>
+            <xsd:element name="tmd" type="tns:TmdInventoryType" maxOccurs="unbounded"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
@@ -76,13 +46,7 @@
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="osInv" type="tns:OsInventoryType" maxOccurs="unbounded">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>An OS inventory</p>
-                </xsd:documentation>
-              </xsd:annotation>
-            </xsd:element>
+            <xsd:element name="os" type="tns:OsInventoryType" maxOccurs="unbounded"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
@@ -143,41 +107,26 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:any>
-      <xsd:element name="subordinateOsNameList" minOccurs="0">
+      <xsd:element name="subordinateOsNameList" type="nam:NamingAttributesListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The list of the subordinate OS names.</p>
           </xsd:documentation>
         </xsd:annotation>
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element name="osNm" type="xsd:string" maxOccurs="unbounded">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>The name of a subordinate OS</p>
-                </xsd:documentation>
-              </xsd:annotation>
-            </xsd:element>
-          </xsd:sequence>
-        </xsd:complexType>
       </xsd:element>
-      <xsd:element name="supportedMdNameList" minOccurs="0">
+      <xsd:element name="supportedMdNameList" type="nam:NamingAttributesListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The list of the supported Management Domain names.</p>
           </xsd:documentation>
         </xsd:annotation>
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element name="mdNm" type="xsd:string" maxOccurs="unbounded">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>The name of a supported MD.</p>
-                </xsd:documentation>
-              </xsd:annotation>
-            </xsd:element>
-          </xsd:sequence>
-        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="offersTmdNameList" type="nam:NamingAttributesListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The list of the TMD names associated with this OS.</p>
+          </xsd:documentation>
+        </xsd:annotation>
       </xsd:element>
       <xsd:element name="qualityIndicator" type="tns:DataQualityIndicatorType" minOccurs="0">
         <xsd:annotation>
@@ -204,25 +153,14 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:any>
-      <xsd:element name="supportingOsNameList" minOccurs="0">
+      <xsd:element name="supportingOsNameList" type="nam:NamingAttributesListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>List of OS names supporting this MD.</p>
           </xsd:documentation>
         </xsd:annotation>
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element name="osNm" type="xsd:string" maxOccurs="unbounded">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>The name of a supporting OS.</p>
-                </xsd:documentation>
-              </xsd:annotation>
-            </xsd:element>
-          </xsd:sequence>
-        </xsd:complexType>
       </xsd:element>
-      <xsd:element name="meInvList" minOccurs="0">
+      <xsd:element name="meList" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>List of ME inventories contained in this MD.</p>
@@ -230,17 +168,11 @@
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="meInv" type="tns:MeInventoryType" maxOccurs="unbounded">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>A Managed Element inventory.</p>
-                </xsd:documentation>
-              </xsd:annotation>
-            </xsd:element>
+            <xsd:element name="meInv" type="tns:MeInventoryType" maxOccurs="unbounded"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="mlsnInvList" minOccurs="0">
+      <xsd:element name="mlsnList" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>List of MLSN inventories contained in this MD</p>
@@ -248,17 +180,23 @@
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="mlsnInv" type="tns:MlsnInventoryType" maxOccurs="unbounded">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>An MLSN inventory.</p>
-                </xsd:documentation>
-              </xsd:annotation>
-            </xsd:element>
+            <xsd:element name="mlsnInv" type="tns:MlsnInventoryType" maxOccurs="unbounded"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="tlInvList" minOccurs="0">
+      <xsd:element name="fdList" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>List of FD inventories contained in this MD</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="fdInv" type="tns:FdInventoryType" maxOccurs="unbounded"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="tlList" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>List of TL inventories contained in this MD</p>
@@ -266,13 +204,7 @@
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="tlInv" type="tns:TlInventoryType" maxOccurs="unbounded">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>A Topological Link inventory.</p>
-                </xsd:documentation>
-              </xsd:annotation>
-            </xsd:element>
+            <xsd:element name="tlInv" type="tns:TlInventoryType" maxOccurs="unbounded"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
@@ -308,7 +240,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="ehInvList" minOccurs="0">
+      <xsd:element name="ehList" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The equipment inventory contained in ME.</p>
@@ -316,17 +248,11 @@
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="ehInv" type="tns:EhInventoryType" maxOccurs="unbounded">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>An Equipment Holder inventory (note recursivity of EH)</p>
-                </xsd:documentation>
-              </xsd:annotation>
-            </xsd:element>
+            <xsd:element name="ehInv" type="tns:EhInventoryType" maxOccurs="unbounded"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="ptpInvList" minOccurs="0">
+      <xsd:element name="ptpList" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The list of PTP inventories contained in ME.</p>
@@ -334,17 +260,11 @@
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="ptpInv" type="tns:PtpInventoryType" maxOccurs="unbounded">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>A PTP inventory.</p>
-                </xsd:documentation>
-              </xsd:annotation>
-            </xsd:element>
+            <xsd:element name="ptpInv" type="tns:PtpInventoryType" maxOccurs="unbounded"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="ftpInvList" minOccurs="0">
+      <xsd:element name="ftpList" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The list of FTP inventories contained in ME.</p>
@@ -352,13 +272,7 @@
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="ftpInv" type="tns:FtpInventoryType" maxOccurs="unbounded">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>A FTP inventory.</p>
-                </xsd:documentation>
-              </xsd:annotation>
-            </xsd:element>
+            <xsd:element name="ftpInv" type="tns:FtpInventoryType" maxOccurs="unbounded"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
@@ -380,7 +294,7 @@
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="pgpInvList" minOccurs="0">
+      <xsd:element name="pgpList" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The list of PGP inventories contained in ME.</p>
@@ -388,17 +302,11 @@
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="pgpInv" type="tns:PgpInventoryType" maxOccurs="unbounded">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>A PGP inventory.</p>
-                </xsd:documentation>
-              </xsd:annotation>
-            </xsd:element>
+            <xsd:element name="pgpInv" type="tns:PgpInventoryType" maxOccurs="unbounded"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="epgpInvList" minOccurs="0">
+      <xsd:element name="epgpList" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The list of EPGP inventories contained in ME.</p>
@@ -406,15 +314,40 @@
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="epgpInv" type="tns:EpgpInventoryType" maxOccurs="unbounded">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>A EPGP inventory.</p>
-                </xsd:documentation>
-              </xsd:annotation>
-            </xsd:element>
+            <xsd:element name="epgpInv" type="tns:EpgpInventoryType" maxOccurs="unbounded"/>
           </xsd:sequence>
         </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="gtpList" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The list of GTP inventories contained in ME.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="gtpInv" type="tns:GtpInventoryType" maxOccurs="unbounded"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="mfdList" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The list of MFD inventories contained in ME.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="mfdInv" type="tns:MfdInventoryType" maxOccurs="unbounded"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="tlNameList" type="nam:NamingAttributesListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The list of TL names associated with this ME.</p>
+          </xsd:documentation>
+        </xsd:annotation>
       </xsd:element>
       <xsd:element name="qualityIndicator" type="tns:DataQualityIndicatorType" minOccurs="0">
         <xsd:annotation>
@@ -441,7 +374,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:any>
-      <xsd:element name="ehInvList" minOccurs="0">
+      <xsd:element name="ehList" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>List of contained equipments (EQ or EH).
@@ -450,13 +383,7 @@
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="ehInv" type="tns:EhInventoryType" maxOccurs="unbounded">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>Inventory of a contained Equipment Holder.</p>
-                </xsd:documentation>
-              </xsd:annotation>
-            </xsd:element>
+            <xsd:element name="ehInv" type="tns:EhInventoryType" maxOccurs="unbounded"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
@@ -492,7 +419,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:any>
-      <xsd:element name="supportedPtpNameList" type="nam:NamingAttributesListType" minOccurs="0">
+      <xsd:element name="supportedPptpNameList" type="nam:NamingAttributesListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The PTPs that are returned are those that share their physical layer with the primary equipment (i.e. that represent a port on the equipment or are connected by a fibre, wire, etc.). The FTPs that are returned are those which are implemented by the physical circuitry supported by the equipment and will include FTPs that are named from the specified equipment (the FTPs will depend upon the presence of that equipment for their most basic operation). When there is equipment protection, this list reports PTPs/FTPs for the primary equipment only. That is, when called on a protecting equipment (as opposed to the primary equipment), this list returns an empty list, irrespective of the current switch status.</p>
@@ -553,13 +480,7 @@
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="ctpInv" type="tns:CtpInventoryType" minOccurs="0" maxOccurs="unbounded">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>A contained CTP inventory.</p>
-                </xsd:documentation>
-              </xsd:annotation>
-            </xsd:element>
+            <xsd:element name="ctpInv" type="tns:CtpInventoryType" minOccurs="0" maxOccurs="unbounded"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
@@ -603,13 +524,7 @@
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="ctpInv" type="tns:CtpInventoryType" minOccurs="0" maxOccurs="unbounded">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>A contained CTP inventory.</p>
-                </xsd:documentation>
-              </xsd:annotation>
-            </xsd:element>
+            <xsd:element name="ctpInv" type="tns:CtpInventoryType" minOccurs="0" maxOccurs="unbounded"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
@@ -642,6 +557,128 @@
         <xsd:annotation>
           <xsd:documentation>
             <p>The quality indicator used to report exception information on CTP data retrieval.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="GtpInventoryType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The data structure of the GTP as returned in inventory report.
+        Refer to the InventoryLayout supporting document.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:any namespace="http://www.tmforum.org/mtop/nrf/xsd/gtp/v1" processContents="lax" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Reference to the GTP element.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:any>
+      <xsd:element name="ctpNameList" type="nam:NamingAttributesListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The list of CTP (aboslute) names associated with GTP.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicatorType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The quality indicator used to report exception information on GTP data retrieval</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="MfdInventoryType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The data structure of the MFD as returned in inventory report.
+        Refer to the InventoryLayout supporting document.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:any namespace="http://www.tmforum.org/mtop/nrf/xsd/mfd/v1" processContents="lax" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Reference to the MFD element.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:any>
+      <xsd:element name="ptpNameList" type="nam:NamingAttributesListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The list of PTP (aboslute) names associated with MFD.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="ftpNameList" type="nam:NamingAttributesListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The list of FTP (aboslute) names associated with MFD.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="mfdfrInvList" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The list of MFDFr inventories.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="mfdfrInv" type="tns:MfdfrInventoryType" maxOccurs="unbounded"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicatorType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The quality indicator used to report exception information on MFD data retrieval</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="MfdfrInventoryType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The data structure of the MFDFr as returned in inventory report.
+        Refer to the InventoryLayout supporting document.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:any namespace="http://www.tmforum.org/mtop/nrf/xsd/mfdfr/v1" processContents="lax" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Reference to the MFDFr element.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:any>
+      <xsd:element name="ctpNameList" type="nam:NamingAttributesListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The list of CTP (aboslute) names associated with MFDFr.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="ftpNameList" type="nam:NamingAttributesListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The list of FTP (aboslute) names associated with MFDFr.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicatorType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The quality indicator used to report exception information on MFDFr data retrieval</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
@@ -738,7 +775,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:any>
-      <xsd:element name="sncInvList" minOccurs="0">
+      <xsd:element name="sncList" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The list of SubnetworkConnection inventories contained in the MLSN.</p>
@@ -746,17 +783,11 @@
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="sncInv" type="tns:SncInventoryType" minOccurs="0" maxOccurs="unbounded">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>A SNC inventory.</p>
-                </xsd:documentation>
-              </xsd:annotation>
-            </xsd:element>
+            <xsd:element name="sncInv" type="tns:SncInventoryType" minOccurs="0" maxOccurs="unbounded"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="tpPoolInvList" minOccurs="0">
+      <xsd:element name="tpPoolList" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The list of TPPool inventories contained in the MLSN.</p>
@@ -764,98 +795,35 @@
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="tpPoolInv" type="tns:TpPoolInventoryType" minOccurs="0" maxOccurs="unbounded">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>A TPPool inventory.</p>
-                </xsd:documentation>
-              </xsd:annotation>
-            </xsd:element>
+            <xsd:element name="tpPoolInv" type="tns:TpPoolInventoryType" minOccurs="0" maxOccurs="unbounded"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="tlInvList" minOccurs="0">
+      <xsd:element name="fdList" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>The list of TL inventories contained in the MLSN.</p>
+            <p>The list of FD inventories contained in the MLSN.</p>
           </xsd:documentation>
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="tlInv" type="tns:TlInventoryType" minOccurs="0" maxOccurs="unbounded">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>A TL inventory.</p>
-                </xsd:documentation>
-              </xsd:annotation>
-            </xsd:element>
+            <xsd:element name="fdInv" type="tns:FdInventoryType" minOccurs="0" maxOccurs="unbounded"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="associatedMeList" minOccurs="0">
+      <xsd:element name="associatedMeNameList" type="nam:NamingAttributesListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The list of ME names associated with the MLSN.</p>
           </xsd:documentation>
         </xsd:annotation>
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element name="associatedMe" minOccurs="0" maxOccurs="unbounded">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>An associated ME structure including the ME absolute name and edge PTPs/FTPs.</p>
-                </xsd:documentation>
-              </xsd:annotation>
-              <xsd:complexType>
-                <xsd:sequence>
-                  <xsd:element name="name" type="nam:NamingAttributesType">
-                    <xsd:annotation>
-                      <xsd:documentation>
-                        <p>An absolute ME name.</p>
-                      </xsd:documentation>
-                    </xsd:annotation>
-                  </xsd:element>
-                  <xsd:element name="edgePtpList" minOccurs="0">
-                    <xsd:annotation>
-                      <xsd:documentation>
-                        <p>The list of edge PTP inventories associated with the MLSN. When this list is populated, the associated ME and the Topological Links are typically not provided.</p>
-                      </xsd:documentation>
-                    </xsd:annotation>
-                    <xsd:complexType>
-                      <xsd:sequence>
-                        <xsd:element name="edgePtpList" type="nam:NamingAttributesListType" minOccurs="0" maxOccurs="unbounded">
-                          <xsd:annotation>
-                            <xsd:documentation>
-                              <p>The list of all edge PTP names.</p>
-                            </xsd:documentation>
-                          </xsd:annotation>
-                        </xsd:element>
-                      </xsd:sequence>
-                    </xsd:complexType>
-                  </xsd:element>
-                  <xsd:element name="edgeFtpList" minOccurs="0">
-                    <xsd:annotation>
-                      <xsd:documentation>
-                        <p>The list of edge FTP inventories associated with the MLSN. When this list is populated, the associated ME and the Topological Links are typically not provided.</p>
-                      </xsd:documentation>
-                    </xsd:annotation>
-                    <xsd:complexType>
-                      <xsd:sequence>
-                        <xsd:element name="edgeFtpList" type="nam:NamingAttributesListType" minOccurs="0" maxOccurs="unbounded">
-                          <xsd:annotation>
-                            <xsd:documentation>
-                              <p>An edge FTP inventory.</p>
-                            </xsd:documentation>
-                          </xsd:annotation>
-                        </xsd:element>
-                      </xsd:sequence>
-                    </xsd:complexType>
-                  </xsd:element>
-                </xsd:sequence>
-              </xsd:complexType>
-            </xsd:element>
-          </xsd:sequence>
-        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="tlNameList" type="nam:NamingAttributesListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The list of TL names associated with this MLSN.</p>
+          </xsd:documentation>
+        </xsd:annotation>
       </xsd:element>
       <xsd:element name="qualityIndicator" type="tns:DataQualityIndicatorType" minOccurs="0">
         <xsd:annotation>
@@ -893,6 +861,89 @@
         <xsd:annotation>
           <xsd:documentation>
             <p>The quality indicator used to report exception information on SNC data retrieval .</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="FdInventoryType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The data structure of the FD as returned in inventory report.
+        Refer to the InventoryLayout supporting document.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:any namespace="http://www.tmforum.org/mtop/nrf/xsd/fd/v1" processContents="lax" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Reference to the FD element.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:any>
+      <xsd:element name="ptpNameList" type="nam:NamingAttributesListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The list of PTP (aboslute) names associated with FD.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="ftpNameList" type="nam:NamingAttributesListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The list of FTP (aboslute) names associated with FD.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="fdfrInvList" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The list of FDFr inventories.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="fdfrInv" type="tns:FdfrInventoryType" maxOccurs="unbounded"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicatorType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The quality indicator used to report exception information on TL data retrieval.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="FdfrInventoryType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The data structure of the FDFr as returned in inventory report.
+        Refer to the InventoryLayout supporting document.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:any namespace="http://www.tmforum.org/mtop/nrf/xsd/fdfr/v1" processContents="lax" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Reference to the FDFr element.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:any>
+      <xsd:any namespace="http://www.tmforum.org/mtop/nrf/xsd/fdfrroute/v1" processContents="lax" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Reference to the FdfrRoute element.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:any>
+      <xsd:element name="qualityIndicator" type="tns:DataQualityIndicatorType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The quality indicator used to report exception information on FDFr data retrieval</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
