@@ -154,6 +154,27 @@ For a detailed description of the use of this attribute see SNC Types supporting
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
+  <xsd:simpleType name="GradesOfImpactType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Grades of maximum tolerable disruption to traffic as a result of the operation that this parameter is describing.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="GOI_HITLESS"/>
+      <xsd:enumeration value="GOI_MINOR_IMPACT">
+        <xsd:annotation>
+          <xsd:documentation>Less or equal to 50ms</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="GOI_MAJOR_IMPACT">
+        <xsd:annotation>
+          <xsd:documentation>Greater than 50ms</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
   <xsd:simpleType name="HolderStateType">
     <xsd:annotation>
       <xsd:documentation>
@@ -350,6 +371,20 @@ For a detailed description of the use of this attribute see SNC Types supporting
     <xsd:restriction base="xsd:unsignedInt"/>
   </xsd:simpleType>
   <!-- ================= -->
+  <xsd:simpleType name="OsFreedomLevelType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Describes the NMS-specified EMS level of freedom when performing SNC operations.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="EMSFL_CC_AT_SNC_LAYER"/>
+      <xsd:enumeration value="EMSFL_TERMINATE_AND_MAP"/>
+      <xsd:enumeration value="EMSFL_HIGHER_ORDER_SNCS"/>
+      <xsd:enumeration value="EMSFL_RECONFIGURATION"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
   <xsd:simpleType name="OwnerType">
     <xsd:annotation>
       <xsd:documentation>
@@ -357,6 +392,22 @@ For a detailed description of the use of this attribute see SNC Types supporting
       </xsd:documentation>
     </xsd:annotation>
     <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="ProtectionEffortType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The protection effort is a statement of the requirement of the static protection level. For example if EFFORT_SAME_OR_WORSE is specified for a 3-ended FULLY_PROTECTED connection, a 3-ended PARTIALLY_PROTECTED connection is acceptable, but a 2-ended connection (ST_SIMPLE) is not acceptable i.e. ProtectionEffort does not have any bearing on the externaly visible shape of the SNC.
+EFFORT_WHATEVER indicates that the specified static protection level is preferred, but that any other level is acceptable.</p>
+        <p>For a detailed description of the use of this attribute see SNC Types.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="EFFORT_WHATEVER"/>
+      <xsd:enumeration value="EFFORT_SAME_OR_BETTER"/>
+      <xsd:enumeration value="EFFORT_SAME_OR_WORSE"/>
+      <xsd:enumeration value="EFFORT_SAME "/>
+    </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
   <xsd:simpleType name="ProtectionRoleType">
@@ -521,7 +572,7 @@ T<p>he RR_NO value means that the EMS/MEs are not allowed to reroute the SNC. Th
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="SNCTypeType">
+  <xsd:simpleType name="SncTypeType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The SNC Type describes the connection based on the signal flows. 
@@ -617,7 +668,7 @@ For a detailed description of the use of this attribute, see SNC Types.</p>
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="TMDStateType">
+  <xsd:simpleType name="TmdStateType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Contains the state of consistency between a TP and its associated TransmissionDescriptor.</p>
@@ -700,7 +751,7 @@ For a detailed description of the use of this attribute, see SNC Types.</p>
     </xsd:union>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="TPConnectionStateType">
+  <xsd:simpleType name="TpConnectionStateType">
     <xsd:annotation>
       <xsd:documentation>
         <p>A CTP/FTP may be involved in zero, one, or many connections. The value TPConnectionState indicates the degree to which a CTP/FTP is used. The values TPCS_SOURCE_CONNECTED and TPCS_SINK_CONNECTED reflect the presence of a one way connection. The value TPCS_BI_CONNECTED means that the TP is both sink and source connected.</p>
@@ -717,7 +768,7 @@ For a detailed description of the use of this attribute, see SNC Types.</p>
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="TPProtectionAssociationType">
+  <xsd:simpleType name="TpProtectionAssociationType">
     <xsd:annotation>
       <xsd:documentation>
         <p>tpProtectionAssociation expresses constraints on PTPs/CTPs/FTPs for PSR connection management.</p>
@@ -728,6 +779,30 @@ For a detailed description of the use of this attribute, see SNC Types.</p>
     <xsd:restriction base="xsd:string">
       <xsd:enumeration value="TPPA_NA"/>
       <xsd:enumeration value="TPPA_PSR_RELATED"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ==================== -->
+  <xsd:simpleType name="TpRoleInSncType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Defines the enumeration of all possible end point roles of a TP of an SNC.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="CM_END_POINT">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>At a connection matrix (CM) end point the span of the SNC starts at a G.805 CP with a fixed or flexible connection through the ME at the SNC layer, i.e. the connectable layer of the end point.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="LC_END_POINT">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>At a link connection (LC) end point connectivity is adapted from a server layer and the span of the SNC starts with a G.805 TCP with mapping mode set to TM_TERMINATED_ AND_AVAILABLE_FOR_MAPPING.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
