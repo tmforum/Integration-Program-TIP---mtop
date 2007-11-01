@@ -9,7 +9,20 @@
     </xsd:documentation>
   </xsd:annotation>
   <!-- ================= -->
-  <xsd:simpleType name="SwitchModeType">
+  <xsd:complexType name="SwitchModeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The SwitchMode with MTOSI minor version extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:SwitchModeEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ===================== -->
+  <xsd:simpleType name="SwitchModeEnumType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The protection switch mode.</p>
@@ -18,78 +31,47 @@
         </p>
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:union>
-      <xsd:simpleType>
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>All the MTOSI extensions in a minor version.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-        <xsd:restriction base="xsd:string">
-          <xsd:pattern value="MINOR_([a-z]|[A-Z]|[0-9]|(_|-))*"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType>
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>All the vendor specific extensions must start with the prefix "PROP_"</p>
-          </xsd:documentation>
-        </xsd:annotation>
-        <xsd:restriction base="xsd:string">
-          <xsd:pattern value="PROP_([a-z]|[A-Z]|[0-9]|(_|-))*"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:enumeration value="SingleEnded"/>
-          <xsd:enumeration value="DualEnded"/>
-          <xsd:enumeration value="G841_NonStandard"/>
-          <xsd:enumeration value="Unknown"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-    </xsd:union>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="VENDOR_EXT"/>
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="SingleEnded"/>
+      <xsd:enumeration value="DualEnded"/>
+      <xsd:enumeration value="G841_NonStandard"/>
+      <xsd:enumeration value="Unknown"/>
+    </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="SPRINGProtocolType">
+  <xsd:complexType name="SpringProtocolType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>The protection SPRING protocol.</p>
+        <p>The SpringProtocol with MTOSI minor version extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:SpringProtocolEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ===================== -->
+  <xsd:simpleType name="SpringProtocolEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The enumeration definition of the protection SPRING protocol.</p>
         <p>
           <b>2-F MSSPRING, 4-F MSSPRING</b>
         </p>
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:union>
-      <xsd:simpleType>
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>All the MTOSI extensions in a minor version.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-        <xsd:restriction base="xsd:string">
-          <xsd:pattern value="MINOR_([a-z]|[A-Z]|[0-9]|(_|-))*"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType>
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>All the vendor specific extensions must start with the prefix "PROP_"</p>
-          </xsd:documentation>
-        </xsd:annotation>
-        <xsd:restriction base="xsd:string">
-          <xsd:pattern value="PROP_([a-z]|[A-Z]|[0-9]|(_|-))*"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:enumeration value="Standard"/>
-          <xsd:enumeration value="TransOceanic"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-    </xsd:union>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="VENDOR_EXT"/>
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="Standard"/>
+      <xsd:enumeration value="TransOceanic"/>
+    </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="SPRINGNodeIdType">
+  <xsd:simpleType name="SpringNodeIdType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The protection SPRING node ID. The SPRINGNodeId is used to identify the managedElement during creation of SNCs. This is needed for BLSRs to identify the ingress and the egress nodes so that they know where to loop around in case of failure.
@@ -173,7 +155,7 @@
     </xsd:union>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="LODNumSwitchesType">
+  <xsd:simpleType name="LodNumSwitchesType">
     <xsd:annotation>
       <xsd:documentation>
         <p>LODNumSwitches and LODDuration are used together to specify when Lock Out should occur. If the specified number of switches occur within the specified duration, the result is Lock Out for that group.</p>
@@ -186,7 +168,7 @@
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="LODDurationType">
+  <xsd:simpleType name="LodDurationType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Refer to LODNumSwitchesType.
@@ -254,7 +236,20 @@
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="AvailabilityStatusType">
+  <xsd:complexType name="AvailabilityStatusType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The AvailabilityStatus with MTOSI minor version extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:AvailabilityStatusEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ===================== -->
+  <xsd:simpleType name="AvailabilityStatusEnumType">
     <xsd:annotation>
       <xsd:documentation>
         <p>This attribute is used to indicate the availability of a protection group, summarizing both operatively and usage (see X.731). Used values are:<ul>
@@ -268,29 +263,29 @@
         </p>
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:union>
-      <xsd:simpleType>
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>All the MTOSI extensions in a minor version.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-        <xsd:restriction base="xsd:string">
-          <xsd:pattern value="MINOR_([a-z]|[A-Z]|[0-9]|(_|-))*"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:enumeration value="Failed"/>
-          <xsd:enumeration value="InTest"/>
-          <xsd:enumeration value="Degraded"/>
-          <xsd:enumeration value="OK"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-    </xsd:union>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="Failed"/>
+      <xsd:enumeration value="InTest"/>
+      <xsd:enumeration value="Degraded"/>
+      <xsd:enumeration value="OK"/>
+    </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="SwitchCriteriaEnableType">
+  <xsd:complexType name="SwitchCriteriaEnableType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The SwitchCriteriaEnable with MTOSI minor version extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:SwitchCriteriaEnableEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="SwitchCriteriaEnableEnumType">
     <xsd:annotation>
       <xsd:documentation>
         <p>This attribute restricts the severity of alarms for which switching criteria is enabled. See Enums::PerceivedSeverity in IA.</p>
@@ -299,28 +294,15 @@
         </p>
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:union>
-      <xsd:simpleType>
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>All the MTOSI extensions in a minor version.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-        <xsd:restriction base="xsd:string">
-          <xsd:pattern value="MINOR_([a-z]|[A-Z]|[0-9]|(_|-))*"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:enumeration value="INDETERMINATE"/>
-          <xsd:enumeration value="CRITICAL"/>
-          <xsd:enumeration value="MAJOR"/>
-          <xsd:enumeration value="MINOR"/>
-          <xsd:enumeration value="WARNING"/>
-          <xsd:enumeration value="CLEARED"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-    </xsd:union>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="INDETERMINATE"/>
+      <xsd:enumeration value="CRITICAL"/>
+      <xsd:enumeration value="MAJOR"/>
+      <xsd:enumeration value="MINOR"/>
+      <xsd:enumeration value="WARNING"/>
+      <xsd:enumeration value="CLEARED"/>
+    </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
   <xsd:simpleType name="PrivilegedChannelType">
@@ -352,22 +334,22 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="SwitchMode" type="tns:SwitchModeType" minOccurs="0"/>
-      <xsd:element name="SPRINGProtocol" type="tns:SPRINGProtocolType" minOccurs="0"/>
-      <xsd:element name="SPRINGNodeId" type="tns:SPRINGNodeIdType" minOccurs="0"/>
-      <xsd:element name="SwitchPosition" type="tns:SwitchPositionType" minOccurs="0"/>
-      <xsd:element name="NonPreEmptibleTraffic" type="tns:NonPreEmptibleTrafficType" minOccurs="0"/>
-      <xsd:element name="WtrTime" type="tns:WtrTimeType" minOccurs="0"/>
-      <xsd:element name="HoldOffTime" type="tns:HoldOffTimeType" minOccurs="0"/>
-      <xsd:element name="LODNumSwitches" type="tns:LODNumSwitchesType" minOccurs="0"/>
-      <xsd:element name="LODDuration" type="tns:LODDurationType" minOccurs="0"/>
-      <xsd:element name="TandemSwitching" type="tns:TandemSwitchingType" minOccurs="0"/>
-      <xsd:element name="BundleSwitching" type="tns:BundleSwitchingType" minOccurs="0"/>
-      <xsd:element name="Hitless" type="tns:HitlessType" minOccurs="0"/>
-      <xsd:element name="ExerciseOn" type="tns:ExerciseOnType" minOccurs="0"/>
-      <xsd:element name="AvailabilityStatus" type="tns:AvailabilityStatusType" minOccurs="0"/>
-      <xsd:element name="SwitchCriteriaEnable" type="tns:SwitchCriteriaEnableType" minOccurs="0"/>
-      <xsd:element name="PrivilegedChannel" type="tns:PrivilegedChannelType" minOccurs="0"/>
+      <xsd:element name="switchMode" type="tns:SwitchModeType" minOccurs="0"/>
+      <xsd:element name="springProtocol" type="tns:SpringProtocolType" minOccurs="0"/>
+      <xsd:element name="springNodeId" type="tns:SpringNodeIdType" minOccurs="0"/>
+      <xsd:element name="switchPosition" type="tns:SwitchPositionType" minOccurs="0"/>
+      <xsd:element name="nonPreEmptibleTraffic" type="tns:NonPreEmptibleTrafficType" minOccurs="0"/>
+      <xsd:element name="wtrTime" type="tns:WtrTimeType" minOccurs="0"/>
+      <xsd:element name="holdOffTime" type="tns:HoldOffTimeType" minOccurs="0"/>
+      <xsd:element name="lodNumSwitches" type="tns:LodNumSwitchesType" minOccurs="0"/>
+      <xsd:element name="lodDuration" type="tns:LodDurationType" minOccurs="0"/>
+      <xsd:element name="tandemSwitching" type="tns:TandemSwitchingType" minOccurs="0"/>
+      <xsd:element name="bundleSwitching" type="tns:BundleSwitchingType" minOccurs="0"/>
+      <xsd:element name="hitless" type="tns:HitlessType" minOccurs="0"/>
+      <xsd:element name="exerciseOn" type="tns:ExerciseOnType" minOccurs="0"/>
+      <xsd:element name="availabilityStatus" type="tns:AvailabilityStatusType" minOccurs="0"/>
+      <xsd:element name="switchCriteriaEnable" type="tns:SwitchCriteriaEnableType" minOccurs="0"/>
+      <xsd:element name="privilegedChannel" type="tns:PrivilegedChannelType" minOccurs="0"/>
       <xsd:element name="vendorExtensions" minOccurs="0">
         <xsd:complexType>
           <xsd:sequence>

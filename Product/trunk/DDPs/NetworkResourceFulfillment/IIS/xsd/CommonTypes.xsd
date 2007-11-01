@@ -234,50 +234,59 @@ For a detailed description of the use of this attribute see SNC Types supporting
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="EProtectionGroupTypeType">
+  <xsd:complexType name="EProtectionGroupTypeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The EProtectionGroupType with MTOSI minor version extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:EProtectionGroupTypeEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="EProtectionGroupTypeEnumType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The equipment protection group type is a string that identifies the type of equipment protection. The string can take on the following value: "M_FOR_N." M:N equipment protection means that M pieces of equipment protect N pieces of equipment</p>
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:union>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:pattern value="MINOR_([a-z]|[A-Z]|[0-9]|(_|-))*"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:enumeration value="M_FOR_N"/>
-          <xsd:enumeration value="M:N"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-    </xsd:union>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="M_FOR_N"/>
+      <xsd:enumeration value="M:N"/>
+    </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="EquipmentHolderTypeType">
+  <xsd:complexType name="EquipmentHolderTypeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The EquipmentHolder with MTOSI minor version extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:EquipmentHolderEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="EquipmentHolderEnumType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Equipment holder type</p>
-        @TODO: Re-visit this definition
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:union>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:pattern value="MINOR_([a-z]|[A-Z]|[0-9]|(_|-))*"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:enumeration value="rack"/>
-          <xsd:enumeration value="shelf"/>
-          <xsd:enumeration value="sub_shelf"/>
-          <xsd:enumeration value="slot"/>
-          <xsd:enumeration value="sub_slot"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-    </xsd:union>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="rack"/>
+      <xsd:enumeration value="shelf"/>
+      <xsd:enumeration value="sub_shelf"/>
+      <xsd:enumeration value="slot"/>
+      <xsd:enumeration value="sub_slot"/>
+    </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
   <xsd:simpleType name="EquipmentObjectTypeType">
@@ -410,118 +419,134 @@ EFFORT_WHATEVER indicates that the specified static protection level is preferre
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="ProtectionRoleType">
+  <xsd:complexType name="ProtectionRoleType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The ProtectionRole with MTOSI minor version extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:ProtectionRoleEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="ProtectionRoleEnumType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Protection role type.</p>
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:union>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:pattern value="MINOR_([a-z]|[A-Z]|[0-9]|(_|-))*"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:enumeration value="NA"/>
-          <xsd:enumeration value="PRIMARY"/>
-          <xsd:enumeration value="BACKUP"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-    </xsd:union>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="NA"/>
+      <xsd:enumeration value="PRIMARY"/>
+      <xsd:enumeration value="BACKUP"/>
+    </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="ProtectionSchemeStateType">
+  <xsd:complexType name="ProtectionSchemeStateType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The ProtectionSchemeState with MTOSI minor version extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:ProtectionSchemeStateEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="ProtectionSchemeStateEnumType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The protection scheme state identifies the state in which the protection scheme is in.
 Individual locks can be reported through transmission parameters on the appropriate TPs or equipment instances.</p>
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:union>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:pattern value="MINOR_([a-z]|[A-Z]|[0-9]|(_|-))*"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:enumeration value="PSS_UNKNOWN">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>Protection scheme state is unknown by the system.</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:enumeration>
-          <xsd:enumeration value="PSS_AUTOMATIC">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>It indicates partial locking of the entire group.</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:enumeration>
-          <xsd:enumeration value="PSS_FORCED_OR_LOCKED_OUT">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>It indicates that the entire group is locked.</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:enumeration>
-        </xsd:restriction>
-      </xsd:simpleType>
-    </xsd:union>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="PSS_UNKNOWN">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Protection scheme state is unknown by the system.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="PSS_AUTOMATIC">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>It indicates partial locking of the entire group.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="PSS_FORCED_OR_LOCKED_OUT">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>It indicates that the entire group is locked.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="ProtectionGroupTypeType">
+  <xsd:complexType name="ProtectionGroupTypeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The ProtectionGroupType with MTOSI minor version extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:ProtectionGroupTypeEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="ProtectionGroupTypeEnumType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The protection group type identifies the type of the protection Group. </p>
         <p>It should be noted that although the term MSP was chosen as the original specific protection scheme to which the related behaviour applied was Multiplex Section Protection, the label is now more generally applied to any 1+1 or 1:N Trail protection scheme</p>
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:union>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:pattern value="MINOR_([a-z]|[A-Z]|[0-9]|(_|-))*"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:enumeration value="PGT_MSP_1_PLUS_1"/>
-          <xsd:enumeration value="PGT_MSP_1_FOR_N"/>
-          <xsd:enumeration value="PGT_2_FIBER_BLSR"/>
-          <xsd:enumeration value="PGT_4_FIBER_BLSR"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-    </xsd:union>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="PGT_MSP_1_PLUS_1"/>
+      <xsd:enumeration value="PGT_MSP_1_FOR_N"/>
+      <xsd:enumeration value="PGT_2_FIBER_BLSR"/>
+      <xsd:enumeration value="PGT_4_FIBER_BLSR"/>
+    </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="ProtectionTypeType">
+  <xsd:complexType name="ProtectionTypeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The ProtectionType with MTOSI minor version and vendor extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:ProtectionTypeEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="ProtectionTypeEnumType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The protection type identifies whether a protection switch is an MS protection switch or an SNCP protection switch. 
 It should be noted that although the term MSP was chosen as the original specific protection scheme to which the related behaviour applied was Multiplex Section Protection, the label is now more generally applied to any 1+1 or 1:N Trail protection scheme.</p>
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:union>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:pattern value="MINOR_([a-z]|[A-Z]|[0-9]|(_|-))*"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:pattern value="PROP_([a-z]|[A-Z]|[0-9]|(_|-))*"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:enumeration value="PT_MSP_APS"/>
-          <xsd:enumeration value="PT_SNCP"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-    </xsd:union>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="VENDOR_EXT"/>
+      <xsd:enumeration value="PT_MSP_APS"/>
+      <xsd:enumeration value="PT_SNCP"/>
+    </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
   <xsd:simpleType name="RerouteType">
@@ -602,7 +627,20 @@ In case of an ATM SNC (VP or VC), ST_SIMPLE is used to specify a 'plain' (hard o
     <xsd:restriction base="xsd:string"/>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="StaticProtectionLevelType">
+  <xsd:complexType name="StaticProtectionLevelType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The StaticProtectionLevel with MTOSI minor version extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:StaticProtectionLevelEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="StaticProtectionLevelEnumType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The static protection level is a statement of the internal resiliency of the SNC (internal to the subnetwork). The more resilient an SNC is, the more bandwidth it will consume.</p>
@@ -610,22 +648,14 @@ In case of an ATM SNC (VP or VC), ST_SIMPLE is used to specify a 'plain' (hard o
 For a detailed description of the use of this attribute, see SNC Types.</p>
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:union>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:pattern value="MINOR_([a-z]|[A-Z]|[0-9]|(_|-))*"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:enumeration value="PREEMPTIBLE"/>
-          <xsd:enumeration value="UNPROTECTED"/>
-          <xsd:enumeration value="PARTIALLY_PROTECTED"/>
-          <xsd:enumeration value="FULLY_PROTECTED"/>
-          <xsd:enumeration value="HIGHLY_PROTECTED"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-    </xsd:union>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="PREEMPTIBLE"/>
+      <xsd:enumeration value="UNPROTECTED"/>
+      <xsd:enumeration value="PARTIALLY_PROTECTED"/>
+      <xsd:enumeration value="FULLY_PROTECTED"/>
+      <xsd:enumeration value="HIGHLY_PROTECTED"/>
+    </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
   <xsd:simpleType name="TerminationModeType">
@@ -682,73 +712,79 @@ For a detailed description of the use of this attribute, see SNC Types.</p>
       <xsd:enumeration value="MISMATCH"/>
     </xsd:restriction>
   </xsd:simpleType>
-  <xsd:simpleType name="TopologyType">
+  <!-- ================= -->
+  <xsd:complexType name="TopologyType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The Topology with MTOSI minor version extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:TopologyEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="TopologyEnumType">
     <xsd:annotation>
       <xsd:documentation>
         <p>TopologyType is used to describe the subnetwork configuration. The EMS shall be capable of providing a SubNetwork Connection through any physical termination point of any managed element that belongs to the Subnetwork.</p>
         <p>Composite subnetworks (i.e. containing other Subnetworks) are not supported in this release of the interface</p>
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:union>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:pattern value="MINOR_([a-z]|[A-Z]|[0-9]|(_|-))*"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:enumeration value="TOPO_SINGLETON">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>TOPO_SINGLETON, which is used for a single NE (of any type) that is managed independently of its Topological Link connectivity to other NEs. It may for example be a member of a ring that is managed by a number of EMSes. It is acceptable for an EMS to represent all NEs as being in Singleton subnetworks regardless of the actual network configuration. A singleton subnetwork does not contain internal topological links.</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:enumeration>
-          <xsd:enumeration value="TOPO_CHAIN">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>TOPO_CHAIN, which is used to cover the case where two or more NEs are managed by the same EMS and are connected by Topological Links in a chain.</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:enumeration>
-          <xsd:enumeration value="TOPO_PSR">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>TOPO_PSR, which is used to cover the case where two or more NEs are managed by the same EMS and are connected by Topological Links in a ring that is capable of supporting subnetwork connection protection.</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:enumeration>
-          <xsd:enumeration value="TOPO_OPEN_PSR">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>TOPO_OPEN_PSR, which is used to cover the case where two or more NEs of a PS ring (but not the entire ring) are managed by the same EMS.</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:enumeration>
-          <xsd:enumeration value="TOPO_SPRING">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>TOPO_SPRING, which is used to cover the case where two or more NEs are managed by the same EMS and are connected by Topological Links in a complete ring that supports Shared Line Protection.</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:enumeration>
-          <xsd:enumeration value="TOPO_OPEN_SPRING">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>TOPO_OPEN_SPRING, which is used to cover cases where two or more NEs of an SP ring (but not the entire ring) are managed by one EMS.</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:enumeration>
-          <xsd:enumeration value="TOPO_MESH">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>TOPO_MESH, which is used to cover an arbitrary set of two or more NEs not covered by any other type.</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:enumeration>
-        </xsd:restriction>
-      </xsd:simpleType>
-    </xsd:union>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="TOPO_SINGLETON">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>TOPO_SINGLETON, which is used for a single NE (of any type) that is managed independently of its Topological Link connectivity to other NEs. It may for example be a member of a ring that is managed by a number of EMSes. It is acceptable for an EMS to represent all NEs as being in Singleton subnetworks regardless of the actual network configuration. A singleton subnetwork does not contain internal topological links.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="TOPO_CHAIN">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>TOPO_CHAIN, which is used to cover the case where two or more NEs are managed by the same EMS and are connected by Topological Links in a chain.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="TOPO_PSR">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>TOPO_PSR, which is used to cover the case where two or more NEs are managed by the same EMS and are connected by Topological Links in a ring that is capable of supporting subnetwork connection protection.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="TOPO_OPEN_PSR">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>TOPO_OPEN_PSR, which is used to cover the case where two or more NEs of a PS ring (but not the entire ring) are managed by the same EMS.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="TOPO_SPRING">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>TOPO_SPRING, which is used to cover the case where two or more NEs are managed by the same EMS and are connected by Topological Links in a complete ring that supports Shared Line Protection.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="TOPO_OPEN_SPRING">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>TOPO_OPEN_SPRING, which is used to cover cases where two or more NEs of an SP ring (but not the entire ring) are managed by one EMS.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="TOPO_MESH">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>TOPO_MESH, which is used to cover an arbitrary set of two or more NEs not covered by any other type.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
   <xsd:simpleType name="TpConnectionStateType">
@@ -817,29 +853,30 @@ For a detailed description of the use of this attribute, see SNC Types.</p>
 	</xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="G_774_3_APSfunctionType">
+  <xsd:complexType name="G_774_3_APSfunctionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The G_774_3_APSfunction with MTOSI minor version and vendor extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:G_774_3_APSfunctionEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="G_774_3_APSfunctionEnumType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Indicates if the switching function is based on APS standardized protocol or on a proprietary protocol.  "G.783" is set in case of K1/K2 based APS, and "Legacy" is set in case of proprietary protocol, as for radio equipment for example.</p>
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:union>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:pattern value="MINOR_([a-z]|[A-Z]|[0-9]|(_|-))*"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:pattern value="PROP_([a-z]|[A-Z]|[0-9]|(_|-))*"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-      <xsd:simpleType>
-        <xsd:restriction base="xsd:string">
-          <xsd:enumeration value="G.783"/>
-          <xsd:enumeration value="Legacy"/>
-        </xsd:restriction>
-      </xsd:simpleType>
-    </xsd:union>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="VENDOR_EXT"/>
+      <xsd:enumeration value="G.783"/>
+      <xsd:enumeration value="Legacy"/>
+    </xsd:restriction>
   </xsd:simpleType>
 </xsd:schema>
