@@ -1,143 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/asap/v1" xmlns:prc="http://www.tmforum.org/mtop/nra/prc/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:com="http://www.tmforum.org/mtop/nra/xsd/com/v1" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/asap/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
-	<xsd:annotation>
-		<xsd:documentation>
-			<p>DDP: Data Model Network Resource Assurance</p>
-			<p>Module: Aggregate XSD Module</p>
-			<p>Description: This module contains the XML Schema type definition of the mTOP Asap XML structure.</p>
-		</xsd:documentation>
-	</xsd:annotation>
-	<!-- ============== -->
-	<xsd:import namespace="http://www.tmforum.org/mtop/nra/prc/v1" schemaLocation="./ProbableCauses.xsd"/>
-	<xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/com/v1" schemaLocation="./CommonTypes.xsd"/>
-	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd"/>
-	<!-- ================= -->
-	<xsd:element name="asap" type="tns:AlarmSeverityAssignmentProfileType"/>
-	<!-- ================= -->
-	<xsd:complexType name="AlarmSeverityAssignmentListType">
-		<xsd:annotation>
-			<xsd:documentation>
-				<p>A list of Alarm Severity Assignments.</p>
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:element name="alarmSeverityAssignment" type="tns:AlarmSeverityAssignmentType" minOccurs="0" maxOccurs="unbounded"/>
-		</xsd:sequence>
-	</xsd:complexType>
-	<!-- ================= -->
-	<xsd:complexType name="AlarmSeverityAssignmentType">
-		<xsd:annotation>
-			<xsd:documentation>
-				<p>The Alarm Severity Assignment (ASA) object represents the specific severities for the various </p>
-				<p>service affecting conditions that are to be assigned to a specific alarm probable cause.</p>
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="cri:CommonResourceInfoType">
-				<xsd:annotation>
-					<xsd:documentation>
-						<p>This element entails the attributes common to all mTOP network resource objects.</p>
-					</xsd:documentation>
-				</xsd:annotation>
-				<xsd:sequence>
-					<xsd:element name="probableCause" type="prc:ProbableCauseType" nillable="true" minOccurs="1">
-						<xsd:annotation>
-							<xsd:documentation>
-								<p>The name of a specific probable cause to which the severities are to be assigned.</p>
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element name="probableCauseQualifier" type="tns:ProbableCauseQualifierType" nillable="true" minOccurs="0">
-						<xsd:annotation>
-							<xsd:documentation>
-								<p>the probable cause qualifier and shall be present if the probable cause attribute is not sufficient to uniquely identify an alarm.</p>
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element name="nativeProbableCause" type="tns:NativeProbableCauseType" nillable="true" minOccurs="0">
-						<xsd:annotation>
-							<xsd:documentation>
-								<p>The native probable cause.</p>
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element name="serviceAffecting" type="com:AssignedSeverityType" nillable="true" minOccurs="1">
-						<xsd:annotation>
-							<xsd:documentation>
-								<p>The value to be assigned in the case where the reportable alarm is service affecting.</p>
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element name="nonServiceAffectingSeverity" type="com:AssignedSeverityType" nillable="true" minOccurs="1">
-						<xsd:annotation>
-							<xsd:documentation>
-								<p>The severity value to be assigned in the case where the reportable alarm is non-service affecting.</p>
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element name="serviceIndependentSeverity" type="com:AssignedSeverityType" nillable="true" minOccurs="1">
-						<xsd:annotation>
-							<xsd:documentation>
-								<p>the severity value to be assigned in the case where the reportable alarm is service independent. This severity value may also be assigned in the case where the reporting OS is unable to determine whether the alarm is service affecting or not.</p>
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-	<!-- ================= -->
-	<xsd:simpleType name="ProbableCauseQualifierType">
-		<xsd:annotation>
-			<xsd:documentation>
-				<p>Represents the probable cause qualifier and shall be present if the probable cause </p>
-				<p>attribute is not sufficient to uniquely identify an alarm.</p>
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:restriction base="xsd:string"/>
-	</xsd:simpleType>
-	<!-- ================= -->
-	<xsd:simpleType name="NativeProbableCauseType">
-		<xsd:annotation>
-			<xsd:documentation>
-				<p>Represents the native probable cause.</p>
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:restriction base="xsd:string"/>
-	</xsd:simpleType>
-	<!-- ================ -->
-	<xsd:complexType name="AlarmSeverityAssignmentProfileType">
-		<xsd:annotation>
-			<xsd:documentation>
-				<p>This aggregate defines all the AlarmSeverityAssignmentProfile mTOP network resource object attributes.</p>
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:complexContent>
-			<xsd:extension base="cri:CommonResourceInfoType">
-				<xsd:annotation>
-					<xsd:documentation>
-						<p>This element entails the attributes common to all mTOP network resource objects.</p>
-					</xsd:documentation>
-				</xsd:annotation>
-				<xsd:sequence>
-					<xsd:element name="fixed" type="xsd:boolean" nillable="true" minOccurs="0">
-						<xsd:annotation>
-							<xsd:documentation>
-								<p>This attribute indicates whether the ASAP is modifiable by an OS. If not, the ASAP can be neither modified nor deleted by an OS, but only assigned/de-assigned.</p>
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-					<xsd:element name="alarmSeverityAssignmentList" type="tns:AlarmSeverityAssignmentListType" nillable="true" minOccurs="0">
-						<xsd:annotation>
-							<xsd:documentation>
-								<p>This attribute represents a list of Alarm Severity Assignments (ASA). Refer to requirement RTypeMF518_NRA_I_0003 for the details of an ASA.</p>
-							</xsd:documentation>
-						</xsd:annotation>
-					</xsd:element>
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
-	<!-- ================ -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/asap/v1" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/asap/v1" xmlns:asa="http://www.tmforum.org/mtop/nra/xsd/asa/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource Assurance</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP Asap XML structure.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/asa/v1" schemaLocation="Asa.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd"/>
+  <!-- ================= -->
+  <xsd:element name="asap" type="tns:AlarmSeverityAssignmentProfileType"/>
+  <!-- ================ -->
+  <xsd:complexType name="AlarmSeverityAssignmentProfileType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This aggregate defines all the AlarmSeverityAssignmentProfile mTOP network resource object attributes.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="cri:CommonResourceInfoType">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This element entails the attributes common to all mTOP network resource objects.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="fixed" type="xsd:boolean" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This attribute indicates whether the ASAP is modifiable by an OS. If not, the ASAP can be neither modified nor deleted by an OS, but only assigned/de-assigned.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="alarmSeverityAssignmentList" type="asa:AlarmSeverityAssignmentListType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This attribute represents a list of Alarm Severity Assignments (ASA). Refer to requirement RTypeMF518_NRA_I_0003 for the details of an ASA.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================ -->
 </xsd:schema>

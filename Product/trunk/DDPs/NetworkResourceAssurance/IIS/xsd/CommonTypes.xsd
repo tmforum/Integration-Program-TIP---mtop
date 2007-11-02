@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - DM Network Resource Fulfillment - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/com/v1" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/com/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/com/v1" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/com/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Data Model Network Resource Assurance</p>
@@ -8,10 +8,6 @@
       <p>Description: This module contains the XML Schema common type definitions used in some the mTOP XML Network Resource Assurance objects.</p>
     </xsd:documentation>
   </xsd:annotation>
-  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
-  <!-- @TODO
-#1: Combine a single enum from AssignedSeverityEnumType and PerceivedSeverityType
--->
   <!-- ================= -->
   <xsd:simpleType name="AcknowledgeIndicationType">
     <xsd:annotation>
@@ -72,6 +68,26 @@
       <xsd:enumeration value="FREE_CHOICE"/>
     </xsd:restriction>
   </xsd:simpleType>
+	<!-- ================= -->
+	<xsd:simpleType name="NativeProbableCauseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Represents the native probable cause.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="PerceivedSeverityListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>List of PerceivedSeverityType elements.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="perceivedSeverity" type="tns:PerceivedSeverityType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
   <!-- ================= -->
   <xsd:simpleType name="PerceivedSeverityType">
     <xsd:annotation>
@@ -88,6 +104,16 @@
       <xsd:enumeration value="PS_CLEARED"/>
     </xsd:restriction>
   </xsd:simpleType>
+	<!-- ================= -->
+	<xsd:simpleType name="ProbableCauseQualifierType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Represents the probable cause qualifier and shall be present if the probable cause </p>
+				<p>attribute is not sufficient to uniquely identify an alarm.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
   <!-- ================= -->
   <xsd:simpleType name="ProposedRepairActionType">
     <xsd:annotation>
@@ -164,6 +190,19 @@ When present in an alarm notification, it indicates if the cause is known and th
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
+  <xsd:complexType name="SpecificProblemListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>List of SpecificProblemType elements.
+The optional "X.733::SpecificProblems" parameter uses that type.
+When present in an alarm notification, it identifies further refinements to the probable cause of the alarm. This is consistent with the ITU-T X.733 definition.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="specificProblem" type="tns:SpecificProblemType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
   <xsd:simpleType name="SpecificProblemType">
     <xsd:annotation>
       <xsd:documentation>
@@ -217,62 +256,4 @@ When present in an alarm notification, it indicates if the cause is known and th
       </xsd:enumeration>
     </xsd:restriction>
   </xsd:simpleType>
-  <!-- ================= -->
-  <xsd:complexType name="CorrelatedNotificationsType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Correlated notifications are identified by the object that emitted the notification and the notification IDs. Both are included in case the Notification IDs are not unique across objects.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:all>
-      <xsd:element name="name" type="nam:NamingAttributesType"/>
-      <xsd:element name="notifIDs" type="tns:NotifIDListType"/>
-    </xsd:all>
-  </xsd:complexType>
-  <!-- ================= -->
-  <xsd:complexType name="CorrelatedNotificationListType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>List of CorrelatedNotificationsType elements.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element name="correlatedNotifications" type="tns:CorrelatedNotificationsType" minOccurs="0" maxOccurs="unbounded"/>
-    </xsd:sequence>
-  </xsd:complexType>
-  <!-- ================= -->
-  <xsd:complexType name="PerceivedSeverityListType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>List of PerceivedSeverityType elements.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element name="perceivedSeverity" type="tns:PerceivedSeverityType" minOccurs="0" maxOccurs="unbounded"/>
-    </xsd:sequence>
-  </xsd:complexType>
-  <!-- ================= -->
-  <xsd:complexType name="SpecificProblemListType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>List of SpecificProblemType elements.
-The optional "X.733::SpecificProblems" parameter uses that type.
-When present in an alarm notification, it identifies further refinements to the probable cause of the alarm. This is consistent with the ITU-T X.733 definition.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element name="specificProblem" type="tns:SpecificProblemType" minOccurs="0" maxOccurs="unbounded"/>
-    </xsd:sequence>
-  </xsd:complexType>
-  <!-- ================= -->
-  <xsd:complexType name="NotifIDListType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>List of notification IDs  (free string). Also,  the value found in notificationId field of the event.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element name="notificationId" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
-    </xsd:sequence>
-  </xsd:complexType>
 </xsd:schema>

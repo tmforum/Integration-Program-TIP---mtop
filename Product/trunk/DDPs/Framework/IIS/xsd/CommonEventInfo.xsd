@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Framework</p>
@@ -8,6 +8,8 @@
       <p>Description: This module contains the XML Schema definitions of the common event information.</p>
     </xsd:documentation>
   </xsd:annotation>
+  <!-- ================ -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="GeneralDefinitions.xsd"/>
   <!-- ================ -->
   <xsd:element name="commonEventInfo" type="tns:CommonEventInfoType">
     <xsd:annotation>
@@ -17,26 +19,6 @@
     </xsd:annotation>
   </xsd:element>
   <!-- ================ -->
-  <xsd:simpleType name="NotificationIDType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>The type definition of the notification ID.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:restriction base="xsd:string"/>
-  </xsd:simpleType>
-  <!-- ================= -->
-  <xsd:complexType name="AnyListType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>A generic list of any type of elements. Used in OC, AVC, SC and Alarm notifications.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-      <xsd:any namespace="##other" minOccurs="0" processContents="lax" maxOccurs="unbounded"/>
-    </xsd:sequence>
-  </xsd:complexType>
-  <!-- ================ -->
   <xsd:complexType name="CommonEventInfoType" abstract="true">
     <xsd:annotation>
       <xsd:documentation>
@@ -44,7 +26,7 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="notificationId" type="tns:NotificationIDType" minOccurs="0">
+      <xsd:element name="notificationId" type="gen:NotificationIdType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The uniqueness and the sequence of the notificationId are not guaranteed.</p>
@@ -58,7 +40,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="vendorExtensions" type="tns:AnyListType" minOccurs="0">
+      <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>Containment for all vendor extensions</p>
