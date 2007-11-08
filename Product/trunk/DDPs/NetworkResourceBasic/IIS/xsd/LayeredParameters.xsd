@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - DM Network Resource Fulfillment - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" targetNamespace="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" xmlns:lr="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" targetNamespace="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:lr="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
   <!-- ============== -->
   <xsd:annotation>
     <xsd:documentation>
@@ -11,6 +11,7 @@
     </xsd:documentation>
   </xsd:annotation>
   <!-- ================= -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
   <xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" schemaLocation="LayerRates.xsd"/>
   <!-- ============== -->
   <xsd:complexType name="LayeredParametersListType">
@@ -40,17 +41,12 @@
       </xsd:element>
       <xsd:element name="transmissionParams">
       </xsd:element>
-      <xsd:element name="vendorExtensions" minOccurs="0">
+      <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
           The specific containment for vendor extensions of the list of tranmission parameters.
           </xsd:documentation>
         </xsd:annotation>
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
-          </xsd:sequence>
-        </xsd:complexType>
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>

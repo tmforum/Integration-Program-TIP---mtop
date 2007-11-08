@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - DM Network Resource Fulfillment - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/pgpp/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/pgpp/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/pgpp/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/pgpp/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Data Model Network Resource FulFillment</p>
@@ -8,6 +8,8 @@
       <p>Description: This module contains the XML Schema type definition of the mTOP PGParameters XML structure.</p>
     </xsd:documentation>
   </xsd:annotation>
+  <!-- ============== -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
   <!-- ================= -->
   <xsd:complexType name="SwitchModeType">
     <xsd:annotation>
@@ -350,12 +352,7 @@
       <xsd:element name="availabilityStatus" type="tns:AvailabilityStatusType" minOccurs="0"/>
       <xsd:element name="switchCriteriaEnable" type="tns:SwitchCriteriaEnableType" minOccurs="0"/>
       <xsd:element name="privilegedChannel" type="tns:PrivilegedChannelType" minOccurs="0"/>
-      <xsd:element name="vendorExtensions" minOccurs="0">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
-          </xsd:sequence>
-        </xsd:complexType>
+      <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>

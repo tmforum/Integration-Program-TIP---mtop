@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ResourceProvisioning - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rp/xsd/tpc/v1" xmlns:tns="http://www.tmforum.org/mtop/rp/xsd/tpc/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:tp="http://www.tmforum.org/mtop/nrf/xsd/tp/v1" xmlns:ftp="http://www.tmforum.org/mtop/nrf/xsd/ftp/v1" xmlns:gtp="http://www.tmforum.org/mtop/nrf/xsd/gtp/v1" xmlns:mlsn="http://www.tmforum.org/mtop/nrf/xsd/mlsn/v1" xmlns:tppool="http://www.tmforum.org/mtop/nrf/xsd/tppool/v1" xmlns:lp="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" xmlns:tpdata="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rp/xsd/tpc/v1" xmlns:tns="http://www.tmforum.org/mtop/rp/xsd/tpc/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:tp="http://www.tmforum.org/mtop/nrf/xsd/tp/v1" xmlns:ftp="http://www.tmforum.org/mtop/nrf/xsd/ftp/v1" xmlns:gtp="http://www.tmforum.org/mtop/nrf/xsd/gtp/v1" xmlns:mlsn="http://www.tmforum.org/mtop/nrf/xsd/mlsn/v1" xmlns:tppool="http://www.tmforum.org/mtop/nrf/xsd/tppool/v1" xmlns:lp="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" xmlns:tpdata="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: ResourceProvisioning</p>
@@ -9,6 +9,7 @@
     </xsd:documentation>
   </xsd:annotation>
   <!-- ================ -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayeredParameters.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lp/v1"/>
@@ -28,14 +29,14 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="createData" type="ftp:FtpCreateDataType">
+        <xsd:element name="createData" type="ftp:FtpCreateDataType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Structure describing the floating termination point structure to be created.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="tpsToModify" type="tpdata:TpDataListType">
+        <xsd:element name="tpsToModify" type="tpdata:TpDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The list of TPs with associated parameters to be applied.
@@ -186,17 +187,12 @@
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="vendorExtensions">
+        <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>This is a container for all vendor extensions.</p>
             </xsd:documentation>
           </xsd:annotation>
-          <xsd:complexType>
-            <xsd:sequence>
-              <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
-            </xsd:sequence>
-          </xsd:complexType>
         </xsd:element>
       </xsd:sequence>
     </xsd:complexType>
@@ -300,17 +296,12 @@
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="vendorExtensions">
+        <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>This is a container for all vendor extensions.</p>
             </xsd:documentation>
           </xsd:annotation>
-          <xsd:complexType>
-            <xsd:sequence>
-              <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
-            </xsd:sequence>
-          </xsd:complexType>
         </xsd:element>
       </xsd:sequence>
     </xsd:complexType>
@@ -366,14 +357,14 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="ftpName" type="nam:NamingAttributesListType">
+        <xsd:element name="ftpName" type="nam:NamingAttributesListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the termination point to be deleted.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="tpsToModify" type="tpdata:TpDataListType">
+        <xsd:element name="tpsToModify" type="tpdata:TpDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The list of TPs with associated parameters to be applied.</p>
