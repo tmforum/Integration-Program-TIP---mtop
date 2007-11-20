@@ -33,14 +33,14 @@ cp=`cygpath -w -p "$cp"`
 ## Generate the library (JAR) of all java classes
 ## 
 #    cp=`cygpath -w -p "$cp"`
-java -Xmx256m -classpath "$cp" org.apache.xmlbeans.impl.tool.SchemaCompiler -mx 800m  -d $CLASS_HOME -src $SRC_HOME -out $DDP_HOME/Framework.jar -javasource 1.5 -debug ../xsd
+java -Xmx256m -classpath "$cp" org.apache.xmlbeans.impl.tool.SchemaCompiler -mx 800m  -d $CLASS_HOME -src $SRC_HOME -out $DDP_HOME/derived/Framework.jar -javasource 1.5 -debug ../xsd
 
 ##
 ## Generate the ZIP of all java source files
 ## 
 
 cd $SRC_HOME
-jar -cvf $DDP_HOME/FrameworkJava.zip . 
+jar -cvf $DDP_HOME/derived/FrameworkJava.zip . 
 cd ../../tools
 
 exit 0
