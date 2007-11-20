@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- TMF NGOSS WS Design Guidelines - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/mep/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/mep/v1" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/mep" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/mep" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Framework</p>
-      <p>Module: XSD Dataset Module</p>
+      <p>Module: Types XSD Module</p>
       <p>Description: This module contains the XML Schema definitions of all the mTOP MEP parameter data types.</p>
     </xsd:documentation>
   </xsd:annotation>
   <xsd:import namespace="http://schemas.xmlsoap.org/ws/2004/08/addressing" schemaLocation="http://schemas.xmlsoap.org/ws/2004/08/addressing"/>
   <!--  ============== -->
-  <xsd:simpleType name="HowMany">
+  <xsd:simpleType name="HowManyType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The maximum number of items per batch as defined by the atomicity/granularity of the data being retrieved</p>
@@ -19,7 +19,7 @@
     <xsd:restriction base="xsd:unsignedInt"/>
   </xsd:simpleType>
   <!--  ============== -->
-  <xsd:simpleType name="SequenceNumber">
+  <xsd:simpleType name="SequenceNumberType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The number of a given batch in the sequence of batches of data being retrieved </p>
@@ -28,7 +28,7 @@
     <xsd:restriction base="xsd:unsignedInt"/>
   </xsd:simpleType>
   <!--  ============== -->
-  <xsd:simpleType name="SequenceEndOfReply">
+  <xsd:simpleType name="SequenceEndOfReplyType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The confirmation that the given batch is the last one in the sequence</p>
@@ -37,7 +37,7 @@
     <xsd:restriction base="xsd:boolean"/>
   </xsd:simpleType>
   <!--  ============== -->
-  <xsd:complexType name="ServiceEndpoint">
+  <xsd:complexType name="ServiceEndPointType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The endpoint reference (as in WSA) of the notification consumer WS that consumes the notification of batches</p>
@@ -55,13 +55,13 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:simpleContent>
-      <xsd:extension base="tns:CompressionEnum">
+      <xsd:extension base="tns:CompressionEnumType">
         <xsd:attribute name="extension" type="xsd:string" use="optional"/>
       </xsd:extension>
     </xsd:simpleContent>
   </xsd:complexType>
   <!-- ================= -->
-  <xsd:simpleType name="CompressionEnum">
+  <xsd:simpleType name="CompressionEnumType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Enumeration of supported data compressions. All extensions allowed.</p>
@@ -70,8 +70,7 @@
     <xsd:restriction base="xsd:string">
       <xsd:enumeration value="NO_COMPRESSION"/>
       <xsd:enumeration value="GZIP"/>
-      <xsd:enumeration value="VENDOR_EXT"/>
-      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="ENUM_EXT"/>
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
@@ -82,13 +81,13 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:simpleContent>
-      <xsd:extension base="tns:PackingEnum">
+      <xsd:extension base="tns:PackingEnumType">
         <xsd:attribute name="extension" type="xsd:string" use="optional"/>
       </xsd:extension>
     </xsd:simpleContent>
   </xsd:complexType>
   <!-- ================= -->
-  <xsd:simpleType name="PackingEnum">
+  <xsd:simpleType name="PackingEnumType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Enumeration of supported packing/packaging. All extensions allowed.</p>
@@ -98,12 +97,11 @@
       <xsd:enumeration value="NO_PACKING"/>
       <xsd:enumeration value="ZIP"/>
       <xsd:enumeration value="TAR"/>
-      <xsd:enumeration value="VENDOR_EXT"/>
-      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="ENUM_EXT"/>
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="FileLocationURI">
+  <xsd:simpleType name="FileLocationUriType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The target location of a file transfer. Format is based on generic URI syntax (http://tools.ietf.org/html/rfc3986). Example; ftp://user;auth@host:port/pathname/filename</p>
@@ -113,7 +111,7 @@
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="FileTransferStatusEnum">
+  <xsd:simpleType name="FileTransferStatusEnumType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Describe transfer status type. This is used for file transfer protocol notifications.</p>
@@ -125,4 +123,61 @@
       <xsd:enumeration value="COMPLETED"/>
     </xsd:restriction>
   </xsd:simpleType>
+  <!--  ============== -->
+  <xsd:simpleType name="SubscriptionIdentifierType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>the identifier to uniquely identify a valid subscription.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!--  ============== -->
+  <xsd:simpleType name="TopicExpressionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>the unique name of topic instance published on the CCV.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!--  ============== -->
+  <xsd:simpleType name="QueryDialectTypeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>the enumeration of all the supported query dialect types.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="ANSI-92"/>
+      <xsd:enumeration value="XPATH1"/>
+      <xsd:enumeration value="XPATH2"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!--  ============== -->
+  <xsd:complexType name="QueryExpressionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>the notification filter</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="dialect" type="tns:QueryDialectTypeType">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>the dialect of the given query expression</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="query" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>the query expression in the language specified by the dialect attribute</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType mixed="true">
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
 </xsd:schema>

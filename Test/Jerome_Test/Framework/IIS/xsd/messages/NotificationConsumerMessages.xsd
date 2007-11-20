@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/notmsg" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/notmsg" xmlns:mep="http://www.tmforum.org/mtop/fmw/xsd/mep" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Framework</p>
+      <p>Module: Messages XSD Module</p>
+      <p>Description: This module contains the XML Schema message element definitions of the mTOP notification consumer service interface.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!--  ============== -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/mep" schemaLocation="MepTypes.xsd"/>
+  <!--  ============== -->
+  <xsd:element name="notify">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>One way (notification) message structure of the notify operation</p>
+        <p>This operation allows event notification to a client OS.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="topic" type="mep:TopicExpressionType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>it is the unique name of the topic on which the notification "message" was published. The topic is based on a TopicExpression, which is associated as a unique JNDI entry. In MTOSI Release 1, it represents the address of a JMS topic instance created at deployment.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="message">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the notification payload which can be one of the supported mTOP XML events, which are all based on the commonEventInfo</p>
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:any namespace="http://www.tmforum.org/mtop/xsd/events" processContents="lax" minOccurs="1" maxOccurs="unbounded">
+              </xsd:any>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

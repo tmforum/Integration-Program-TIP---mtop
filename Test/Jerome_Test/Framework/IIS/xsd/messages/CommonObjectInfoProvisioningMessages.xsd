@@ -9,9 +9,9 @@
     </xsd:documentation>
   </xsd:annotation>
   <!-- ================ -->
-  <xsd:import schemaLocation="GeneralDefinitionsV1-0.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
-  <xsd:import schemaLocation="MessageDefinitionsV1-0.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
-  <xsd:import schemaLocation="NamingDefinitionsV1-0.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
+  <xsd:import schemaLocation="MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
+  <xsd:import schemaLocation="NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
   <!--  ============== -->
   <xsd:element name="setAliasNamesRequest">
     <xsd:annotation>
@@ -22,14 +22,14 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="objectName" type="nam:NamingAttributes" minOccurs="0">
+        <xsd:element name="objectName" type="nam:NamingAttributesType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Name of the object for which to change the owner designation</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="aliasNames" type="gen:AliasNameList" minOccurs="0">
+        <xsd:element name="aliasNames" type="gen:AliasNameListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The list of alias names to set or modify</p>
@@ -48,7 +48,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="aliasNames" type="gen:AliasNameList" minOccurs="0">
+        <xsd:element name="aliasNames" type="gen:AliasNameListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The list of alias names that were successfully set.</p>
@@ -66,14 +66,18 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
-      <xsd:choice>
-        <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage"/>
-        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage"/>
-        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage"/>
-        <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessage"/>
-        <xsd:element name="exceptionUnableToComply" type="msg:BaseExceptionMessage"/>
-        <xsd:element name="exceptionCommFailure" type="msg:BaseExceptionMessage"/>
-      </xsd:choice>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
   <!--  ============== -->
@@ -90,14 +94,14 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="objectName" type="nam:NamingAttributes" minOccurs="0">
+        <xsd:element name="objectName" type="nam:NamingAttributesType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Name of the object for which to change the userLabel designation</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="userLabel" type="gen:UserLabel" minOccurs="0">
+        <xsd:element name="userLabel" type="gen:UserLabelType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>New userLabel value to assign to the object</p>
@@ -122,8 +126,6 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
-      <xsd:sequence>
-      </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
   <!--  ============== -->
@@ -134,15 +136,19 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
-      <xsd:choice>
-        <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage"/>
-        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage"/>
-        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage"/>
-        <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessage"/>
-        <xsd:element name="exceptionUnableToComply" type="msg:BaseExceptionMessage"/>
-        <xsd:element name="exceptionCommFailure" type="msg:BaseExceptionMessage"/>
-        <xsd:element name="exceptionUserLabelInUse" type="msg:BaseExceptionMessage"/>
-      </xsd:choice>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+            <xsd:element ref="msg:userlabelInUse"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
   <!--  ============== -->
@@ -155,14 +161,14 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="objectName" type="nam:NamingAttributes" minOccurs="0">
+        <xsd:element name="objectName" type="nam:NamingAttributesType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Name of the object for which to change the userLabel designation</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="owner" type="gen:Owner" minOccurs="0">
+        <xsd:element name="owner" type="gen:OwnerType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>New owner value to assign to the object</p>
@@ -192,14 +198,18 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
-      <xsd:choice>
-        <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage"/>
-        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage"/>
-        <xsd:element name="exceptionInvalidInput" type="msg:BaseExceptionMessage"/>
-        <xsd:element name="exceptionEntityNotFound" type="msg:BaseExceptionMessage"/>
-        <xsd:element name="exceptionUnableToComply" type="msg:BaseExceptionMessage"/>
-        <xsd:element name="exceptionCommFailure" type="msg:BaseExceptionMessage"/>
-      </xsd:choice>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
   <!--  ============== -->
@@ -212,14 +222,14 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="objectName" type="nam:NamingAttributes" minOccurs="0">
+        <xsd:element name="objectName" type="nam:NamingAttributesType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Name of the object for which to change the userLabel designation</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="networkAccessDomain" type="gen:NetworkAccessDomain" minOccurs="0">
+        <xsd:element name="networkAccessDomain" type="gen:NetworkAccessDomainType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>New networkAccessDomain value to assign to the object</p>
@@ -237,8 +247,6 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
-      <xsd:sequence>
-      </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
   <!--  ============== -->
@@ -249,11 +257,15 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
-      <xsd:choice>
-        <xsd:element name="exceptionNotImplemented" type="msg:BaseExceptionMessage"/>
-        <xsd:element name="exceptionInternalError" type="msg:BaseExceptionMessage"/>
-        <xsd:element name="exceptionUnableToComply" type="msg:BaseExceptionMessage"/>
-      </xsd:choice>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
   <!--  ============== -->

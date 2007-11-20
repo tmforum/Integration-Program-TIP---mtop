@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/gen" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/gen" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Framework</p>
-      <p>Module: Dataset XSD Module</p>
+      <p>Module: Types XSD Module</p>
       <p>Description: This module contains the XML Schema definitions of generic mTOP simple data types.</p>
     </xsd:documentation>
   </xsd:annotation>
   <!-- ================= -->
-  <xsd:complexType name="AliasNameList">
+  <xsd:complexType name="AliasNameListType">
     <xsd:annotation>
       <xsd:documentation>
         <p>This is the definition of the object attribute that contains the list of aliases for the network entity. The attribute is a name-value list. The name refers to the type of alias (e.g., nativeEMSname) and the value component holds the alias itself</p>
@@ -26,8 +26,19 @@
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="AnyListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A generic list of any type of elements. Used for vendor Extensions or loose element encapsulation from other namespaces.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:any namespace="##other" minOccurs="0" processContents="lax" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
   <!-- ================ -->
-  <xsd:simpleType name="DiscoveredName">
+  <xsd:simpleType name="DiscoveredNameType">
     <xsd:annotation>
       <xsd:documentation>
         <p>This is the definition of the name of the object when its existence is first published on the CCV but only in the case where the OS that publishes the object on the CCV is not the naming OS. If the naming OS first publishes the object on the CCV, this attribute may be left empty.</p>
@@ -39,7 +50,7 @@
     <xsd:restriction base="xsd:string"/>
   </xsd:simpleType>
   <!-- ================ -->
-  <xsd:simpleType name="Location">
+  <xsd:simpleType name="LocationType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The location is the geographic location. This is a free format string and can be an empty string. The attribute has no impact on the operation of the system. It is a readonly attribute.</p>
@@ -48,7 +59,7 @@
     <xsd:restriction base="xsd:string"/>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="Manufacturer">
+  <xsd:simpleType name="ManufacturerType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The resource manufacturer name.</p>
@@ -57,7 +68,7 @@
     <xsd:restriction base="xsd:string"/>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="ManufacturerDate">
+  <xsd:simpleType name="ManufacturerDateType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The manufacturerDate attribute identifies the production date of the resource.</p>
@@ -66,7 +77,7 @@
     <xsd:restriction base="xsd:date"/>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:complexType name="MeiAttributes">
+  <xsd:complexType name="MeiAttributesType">
     <xsd:annotation>
       <xsd:documentation>This attribute is used when a object instance is embedded in the inventory
 			layout payload of a Multi-Event Inventory (MEI) notification.</xsd:documentation>
@@ -99,16 +110,7 @@
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================= -->
-  <xsd:simpleType name="NameValue">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>The strings used for the value field of a hierarchical name will be at most 1024 characters (from ISO8859) long with white space character allowed in the value but with no leading or trailing spaces. Value strings are case sensitive.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:restriction base="xsd:string"/>
-  </xsd:simpleType>
-  <!-- ================= -->
-  <xsd:simpleType name="NamingOs">
+  <xsd:simpleType name="NamingOsType">
     <xsd:annotation>
       <xsd:documentation>
         <p>This is the object attribute definition to identify the name of the OS that provided the unique MTOSI name for the object. It is assumed that each object (that is published on the CCV) has a unique naming OS. This attribute is optional in a point to point NMS-EMS paradigm.</p>
@@ -117,7 +119,7 @@
     <xsd:restriction base="xsd:string"/>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="NetworkAccessDomain">
+  <xsd:simpleType name="NetworkAccessDomainType">
     <xsd:annotation>
       <xsd:documentation>
         <p>A free-format string used to associate a resource to a Network Access Domain.</p>
@@ -125,18 +127,70 @@
     </xsd:annotation>
     <xsd:restriction base="xsd:string"/>
   </xsd:simpleType>
-  <!-- ================= -->
-  <xsd:simpleType name="ObjectType">
+  <!-- ================ -->
+  <xsd:simpleType name="NotificationIdType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>This is the definition of all the object types. It is left as a string for maximum compatibility.</p>
-        <p>Acceptable values for known object types are: CTP, EH, EQ, FTP, GTP, MD, ME, MLSN, OS, PGP, PTP, SNC, TL, TP</p>
+        <p>The type definition of the notification ID.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:restriction base="xsd:string"/>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="Owner">
+  <xsd:complexType name="NotificationIdListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>List of notification IDs  (free string). Also,  the value found in notificationId field of the event.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="notificationId" type="tns:NotificationIdType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="ObjectTypeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the definition of all the object types. It is left as a string for maximum compatibility.</p>
+        <p>Acceptable values for known object types are: CTP, EH, EPGP, EQ, FD, FDFR, FTP, GTP, MD, ME, MFD, MFDFR, MLSN, OS, PGP, PTP, SNC, TCPROFILE, TL, TMD, TPPOOL</p>
+        <p>Note that this definition is loose to allow the definition of future object types. Usage shall refer to the ObjectEnumType, which is not directly used</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="ObjectEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the enumeration of all the object types. It shall not be used directly as an element definition as it does not guarantee forward/backward compatibility. ObjectTypeType shall be used instead (loose definition)</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="CTP"/>
+      <xsd:enumeration value="EH"/>
+      <xsd:enumeration value="EPGP"/>
+      <xsd:enumeration value="EQ"/>
+      <xsd:enumeration value="FD"/>
+      <xsd:enumeration value="FDFR"/>
+      <xsd:enumeration value="FTP"/>
+      <xsd:enumeration value="GTP"/>
+      <xsd:enumeration value="MD"/>
+      <xsd:enumeration value="ME"/>
+      <xsd:enumeration value="MFD"/>
+      <xsd:enumeration value="MFDFR"/>
+      <xsd:enumeration value="MLSN"/>
+      <xsd:enumeration value="OS"/>
+      <xsd:enumeration value="PGP"/>
+      <xsd:enumeration value="PTP"/>
+      <xsd:enumeration value="SNC"/>
+      <xsd:enumeration value="TCPROFILE"/>
+      <xsd:enumeration value="TL"/>
+      <xsd:enumeration value="TMD"/>
+      <xsd:enumeration value="TPPOOL"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="OwnerType">
     <xsd:annotation>
       <xsd:documentation>
         <p>This is the definition of the object attribute that represents an identifier for the owner of the object.</p>
@@ -145,7 +199,7 @@
     <xsd:restriction base="xsd:string"/>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="ProductName">
+  <xsd:simpleType name="ProductNameType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The product/type name</p>
@@ -154,7 +208,7 @@
     <xsd:restriction base="xsd:string"/>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="ServiceStateEnum">
+  <xsd:simpleType name="ServiceStateEnumType">
     <xsd:restriction base="xsd:string">
       <xsd:enumeration value="IN_SERVICE">
         <xsd:annotation>
@@ -187,7 +241,7 @@
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:complexType name="ServiceState">
+  <xsd:complexType name="ServiceStateType">
     <xsd:annotation>
       <xsd:documentation>
         <p>This object attribute indicates basic administration state of equipment and OS objects.
@@ -195,13 +249,13 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:simpleContent>
-      <xsd:extension base="tns:ServiceStateEnum">
+      <xsd:extension base="tns:ServiceStateEnumType">
         <xsd:attribute name="qualifier" type="xsd:string" use="optional"/>
       </xsd:extension>
     </xsd:simpleContent>
   </xsd:complexType>
   <!-- ================= -->
-  <xsd:simpleType name="UserLabel">
+  <xsd:simpleType name="UserLabelType">
     <xsd:annotation>
       <xsd:documentation>
         <p>This is the definition of the object attribute that represents a provisionable, "user friendly" name for the object. The user label is filled by the naming OS.</p>

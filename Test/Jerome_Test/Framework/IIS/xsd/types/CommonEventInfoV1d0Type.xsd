@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/cei" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/cei" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Framework</p>
+      <p>Module: Type XSD Module</p>
+      <p>Description: This module contains the XML Schema definitions of the common event information type.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen" schemaLocation="GeneralTypes.xsd"/>
+  <!-- ================ -->
+  <xsd:complexType name="CommonEventInfoV1d0Type">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The type definition of the common set of attributes used for all events.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="notificationId" type="gen:NotificationIdType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The uniqueness and the sequence of the notificationId are not guaranteed.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="osTime" type="xsd:dateTime" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The time at which the event was reported by the OS system.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Containment for all vendor extensions</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="majorV" type="xsd:unsignedInt" fixed="1" use="required"/>
+    <xsd:attribute name="minorV" type="xsd:unsignedInt" fixed="0" use="required"/>
+  </xsd:complexType>
+</xsd:schema>

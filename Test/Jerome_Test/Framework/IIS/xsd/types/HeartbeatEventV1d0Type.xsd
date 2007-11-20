@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/hbt" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/hbt" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Framework</p>
+      <p>Module: Type XSD Module</p>
+      <p>Description: This module contains the XML Schema type definitions of the heartbeat event.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="NamingTypes.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam"/>
+  <xsd:import schemaLocation="GeneralTypes.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen"/>
+  <!-- ================ -->
+  <xsd:complexType name="HeartbeatV1d0Type">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The type definition of the heartbeat event.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:any namespace="http://www.tmforum.org/mtop/fmw/xsd/cei" processContents="lax" minOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>The element definition grouping all common attributes of all events</xsd:documentation>
+        </xsd:annotation>
+      </xsd:any>
+      <xsd:element name="objectType" type="gen:ObjectTypeType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Always OS.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="objectName" type="nam:NamingAttributesType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Identifies the OS sending the heartbeat.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>
