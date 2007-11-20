@@ -110,15 +110,6 @@
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================= -->
-  <xsd:simpleType name="NameValueType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>The strings used for the value field of a hierarchical name will be at most 1024 characters (from ISO8859) long with white space character allowed in the value but with no leading or trailing spaces. Value strings are case sensitive.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:restriction base="xsd:string"/>
-  </xsd:simpleType>
-  <!-- ================= -->
   <xsd:simpleType name="NamingOsType">
     <xsd:annotation>
       <xsd:documentation>
@@ -162,10 +153,41 @@
       <xsd:documentation>
         <p>This is the definition of all the object types. It is left as a string for maximum compatibility.</p>
         <p>Acceptable values for known object types are: CTP, EH, EPGP, EQ, FD, FDFR, FTP, GTP, MD, ME, MFD, MFDFR, MLSN, OS, PGP, PTP, SNC, TCPROFILE, TL, TMD, TPPOOL</p>
-        <p>Note that this definition is loose to allow the definition of future object types</p>
+        <p>Note that this definition is loose to allow the definition of future object types. Usage shall refer to the ObjectEnumType, which is not directly used</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="ObjectEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the enumeration of all the object types. It shall not be used directly as an element definition as it does not guarantee forward/backward compatibility. ObjectTypeType shall be used instead (loose definition)</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="CTP"/>
+      <xsd:enumeration value="EH"/>
+      <xsd:enumeration value="EPGP"/>
+      <xsd:enumeration value="EQ"/>
+      <xsd:enumeration value="FD"/>
+      <xsd:enumeration value="FDFR"/>
+      <xsd:enumeration value="FTP"/>
+      <xsd:enumeration value="GTP"/>
+      <xsd:enumeration value="MD"/>
+      <xsd:enumeration value="ME"/>
+      <xsd:enumeration value="MFD"/>
+      <xsd:enumeration value="MFDFR"/>
+      <xsd:enumeration value="MLSN"/>
+      <xsd:enumeration value="OS"/>
+      <xsd:enumeration value="PGP"/>
+      <xsd:enumeration value="PTP"/>
+      <xsd:enumeration value="SNC"/>
+      <xsd:enumeration value="TCPROFILE"/>
+      <xsd:enumeration value="TL"/>
+      <xsd:enumeration value="TMD"/>
+      <xsd:enumeration value="TPPOOL"/>
+    </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
   <xsd:simpleType name="OwnerType">
