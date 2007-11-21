@@ -1,0 +1,36 @@
+<component-set>
+<components>
+
+    <component>
+      <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
+      <role-hint>ddp</role-hint>
+      <implementation>org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping</implementation>
+      <configuration>
+        <phases>
+          <initialize>org.apache.maven.plugins:maven-surefire-plugin:test</initialize>
+          <generate-sources>org.tmforum.lab.mtop:mtop-release-plugin:convert-word-documents</generate-sources>
+          <process-sources></process-sources>
+          <compile>org.tmforum.lab.mtop:mtop-release-plugin:copy-ddp</compile>
+          <process-test-resources>org.apache.maven.plugins:maven-resources-plugin:testResources</process-test-resources>
+          <test-compile>org.apache.maven.plugins:maven-compiler-plugin:testCompile</test-compile>
+          <test>org.apache.maven.plugins:maven-surefire-plugin:test</test>
+          <package>org.tmforum.lab.mtop:mtop-release-plugin:package-ddp</package>
+          <install>org.apache.maven.plugins:maven-install-plugin:install</install>
+          <deploy>org.apache.maven.plugins:maven-deploy-plugin:deploy</deploy>
+        </phases>
+      </configuration>
+    </component>  
+    
+    <component>
+      <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
+      <role-hint>ddp</role-hint>
+      <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
+      <configuration>
+        <type>ddp</type>
+        <extension>zip</extension>
+        <includesDependencies>true</includesDependencies>
+      </configuration>
+    </component> 
+  
+  </components> 
+</component-set>

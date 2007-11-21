@@ -1,0 +1,64 @@
+package org.tmforum.lab.mtop.maven.plugin.release.packagephase;
+
+/*
+ * BASED UPON 
+ *  maven-jar-plugin
+ *  src/main/java/org/apache/maven/plugin/jar/JarMojo.java
+ *
+ * Copyright 2001-2005 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import java.io.File;
+
+/**
+ * Build a Zip from the current project.
+ *
+ * @author <a href="sgaito@tmforum.org">Stephen Gaito</a>
+ * @version $Id $
+ * @goal package-ddp
+ * @phase package
+ * @requiresProject
+ */
+public class ZipMojo
+    extends AbstractZipMojo
+{
+    /**
+     * Directory containing the classes.
+     *
+     * @parameter expression="${project.build.outputDirectory}"
+     * @required
+     */
+    private File classesDirectory;
+
+    /**
+     * Classifier to add to the artifact generated. If given, the artifact will be an attachment instead.
+     *
+     * @parameter
+     */
+    private String classifier;
+
+    protected String getClassifier()
+    {
+        return classifier;
+    }
+
+    /**
+     * Return the main classes directory, so it's used as the root of the jar.
+     */
+    protected File getClassesDirectory()
+    {
+        return classesDirectory;
+    }
+}
