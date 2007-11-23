@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ResourcePerformanceManagement - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rpm/xsd/pmr/v1" xmlns:tns="http://www.tmforum.org/mtop/rpm/xsd/pmr/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:pmtgt="http://www.tmforum.org/mtop/nra/xsd/pmtgt/v1" xmlns:pmdata="http://www.tmforum.org/mtop/nra/xsd/pmdata/v1" xmlns:pm="http://www.tmforum.org/mtop/nra/xsd/pm/v1" xmlns:pmp="http://www.tmforum.org/mtop/nra/xsd/pmp/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rpm/xsd/pmr/v1" xmlns:tns="http://www.tmforum.org/mtop/rpm/xsd/pmr/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:pmtgt="http://www.tmforum.org/mtop/nra/xsd/pmtgt/v1" xmlns:pmdata="http://www.tmforum.org/mtop/nra/xsd/pmdata/v1" xmlns:pm="http://www.tmforum.org/mtop/nra/xsd/pm/v1" xmlns:pmp="http://www.tmforum.org/mtop/nra/xsd/pmp/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:pmpar="http://www.tmforum.org/mtop/nra/xsd/pmpar/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: ResourcePerformanceManagement</p>
@@ -16,6 +16,7 @@
   <xsd:import schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/PmDefinitions.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/pm/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/Pmp.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/pmp/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/PmParameter.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/pmpar/v1"/>
   <!-- ================ -->
   <xsd:element name="getAllCurrentPmDataRequest">
     <xsd:annotation>
@@ -333,6 +334,17 @@
         <p>Response message structure of the getMePmCapabilities operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="pmParameterList" type="pmpar:PmParameterListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Contains the set of PM parameters that are supported by the ME referred to.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="getMePmCapabilitiesException">
     <xsd:annotation>
@@ -340,17 +352,41 @@
         <p>Exception message structure of the getMePmCapabilities operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getProfileAssociatedTpsRequest">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getProfileAssociatedTps operation</p>
-        <p>This operation .</p>
+        <p>This operation gets the set of TPs that are associated with a TCA parameter profile.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="profileName" type="nam:NamingAttributesType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Contains the name gives the name of the TCA parameter profile.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getProfileAssociatedTpsResponse">
+  <xsd:element name="getProfileAssociatedTpsResponse" type="tns:MultipleProfileAssociatedTpObjectNamesResponseType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure of the getProfileAssociatedTps operation</p>
@@ -363,17 +399,63 @@
         <p>Exception message structure of the getProfileAssociatedTps operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getTpHistoryPmDataRequest">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getTpHistoryPmData operation</p>
-        <p>This operation .</p>
+        <p>This operation returns the PM history data on a specified list of TPs.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="pmObjectSelectList" type="pmtgt:PmObjectSelectListType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This parameter contains the relevant data to identify the TPs from which to collect. This must not be empty.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="pmParameters" type="pm:PmParameterNameListType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This parameter specifies which PM parameters within the scope of the pmTPSelectList shall be contained in the returned data. An empty list means all supported parameters should be returned. The returned parameters are best effort, i.e. among the parameters specified only the subset of supported parameters will be returned.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="startTime" type="xsd:dateTime">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Specifies the start of the time window for collection (included).</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="endTime" type="xsd:dateTime">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Specifies the end of the time window for collection (excluded).</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getTpHistoryPmDataResponse">
+  <xsd:element name="getTpHistoryPmDataResponse" type="tns:MultiplePmDataObjectsResponseType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure of the getTpHistoryPmData operation</p>
@@ -386,6 +468,21 @@
         <p>Exception message structure of the getTpHistoryPmData operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================= -->
   <!-- Local Data Type Definitions of various messages  -->
@@ -435,6 +532,24 @@
         <xsd:annotation>
           <xsd:documentation>
             <p>The list of Pmp names</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================== -->
+  <!-- TODO Check should this be imported from TerminationPointRetrieval? -->
+  <xsd:complexType name="MultipleProfileAssociatedTpObjectNamesResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response to GetProfileAssociatedTPsRequestType.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="nameList" type="nam:NamingAttributesListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Provides the set of TPs associated with the profile provided.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
