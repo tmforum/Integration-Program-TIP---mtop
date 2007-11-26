@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/pm/v1" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/pm/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/pm/v1" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/pm/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
 	<xsd:annotation>
 		<xsd:documentation>
 			<p>DDP: Data Model Network Resource Assurance</p>
@@ -8,9 +8,10 @@
 			<p>Description: This module contains the XML Schema type definition of the mTOP PM ParameterName XML structure.</p>
 		</xsd:documentation>
 	</xsd:annotation>
-  <!-- ================= -->
-  <xsd:element name="pmParameterName" type="tns:PmParameterNameType"/>
 	<!-- ================= -->
+	<xsd:element name="pmParameterName" type="tns:PmParameterNameType"/>
+	<!-- ================= -->
+	<!-- TODO Should this be changed to a structure like in layers, where all possibilites are listed? -->
 	<xsd:simpleType name="PmParameterNameType">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -35,34 +36,6 @@
 	<xsd:simpleType name="PmThresholdTypeType">
 		<xsd:annotation>
 			<xsd:documentation>
-				<p>Count period (interval) for which PM data may be collected (and subsequently retrieved).</p>
-				<p><br>The value is one of: </br>
-				<br>"15min" (15 minute interval collection)</br>
-				<br>"24h" (24 hour interval collection)</br>
-				<br>"NA" (for current instantaneous measurements)</br></p>
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:restriction base="xsd:string">
-			<xsd:enumeration value="15min "/>
-			<xsd:enumeration value="24h "/>
-			<xsd:enumeration value="NA "/>
-		</xsd:restriction>
-	</xsd:simpleType>
-	<!-- ================ -->
-	<xsd:complexType name="PmGranularityListType">
-		<xsd:annotation>
-			<xsd:documentation>
-				<p>A list of PMGranularity</p>
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:sequence>
-			<xsd:element name="pmGranularity" type="tns:PmGranularityType" minOccurs="0" maxOccurs="unbounded"/>
-		</xsd:sequence>
-	</xsd:complexType>
-	<!-- ================ -->
-	<xsd:simpleType name="PmGranularityType">
-		<xsd:annotation>
-			<xsd:documentation>
 				<p>Describes threshold types (watermark levels) for TCA parameters. The TWM_HIGH and TWM_HIGHEST types are used for TCAs </p>
 				<p>that are raised when the measured value goes above the threshold. The TWM_LOW and TWM_LOWEST types are used for TCAs that </p>
 				<p>are raised when the measured value goes below the threshold (only apply to gauges). </p>
@@ -80,16 +53,48 @@
 		</xsd:restriction>
 	</xsd:simpleType>
 	<!-- ================ -->
+	<xsd:complexType name="PmGranularityListType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A list of PMGranularity</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="pmGranularity" type="tns:PmGranularityType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================ -->
+	<xsd:simpleType name="PmGranularityType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Count period (interval) for which PM data may be collected (and subsequently retrieved).</p>
+				<p>
+					<br>The value is one of: </br>
+					<br>"15min" (15 minute interval collection)</br>
+					<br>"24h" (24 hour interval collection)</br>
+					<br>"NA" (for current instantaneous measurements)</br>
+				</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="15min "/>
+			<xsd:enumeration value="24h "/>
+			<xsd:enumeration value="NA "/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!-- ================ -->
 	<xsd:simpleType name="PmIntervalStatusType">
 		<xsd:annotation>
 			<xsd:documentation>
 				<p>The following string values, to indicate the relationship of measurement value and measurement interval</p>
-				<p><br>The value is one of: </br>
-				<br>PMIS_Valid - Valid data</br>
-				<br>PMIS_Incomplete - Data not available for the complete interval</br>
-				<br>PMIS_Invalid - Data available but marked as invalid for the interval (when the NMS can not distinguish incomplete measurements from invalid measurements</br>
-				<br>PMIS_Unavailable - No data available at all for this interval</br>
-				<br>PMIS_ZeroSuppressed - Zero-suppressed intervals.</br></p>
+				<p>
+					<br>The value is one of: </br>
+					<br>PMIS_Valid - Valid data</br>
+					<br>PMIS_Incomplete - Data not available for the complete interval</br>
+					<br>PMIS_Invalid - Data available but marked as invalid for the interval (when the NMS can not distinguish incomplete measurements from invalid measurements</br>
+					<br>PMIS_Unavailable - No data available at all for this interval</br>
+					<br>PMIS_ZeroSuppressed - Zero-suppressed intervals.</br>
+				</p>
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:restriction base="xsd:string">
@@ -99,7 +104,7 @@
 			<xsd:enumeration value="PMIS_Unavailable"/>
 			<xsd:enumeration value="PMIS_ZeroSuppressed"/>
 		</xsd:restriction>
-	</xsd:simpleType>	
+	</xsd:simpleType>
 	<!-- ================ -->
 	<xsd:complexType name="PmLocationListType">
 		<xsd:annotation>
@@ -127,7 +132,7 @@
 			<xsd:enumeration value="PML_CONTRA_NEAR_END_Rx"/>
 			<xsd:enumeration value="PML_CONTRA_FAR_END_Rx"/>
 		</xsd:restriction>
-	</xsd:simpleType>	
+	</xsd:simpleType>
 	<!-- ================ -->
 	<xsd:simpleType name="HoldingTimeType">
 		<xsd:annotation>
@@ -139,5 +144,5 @@
 			<xsd:enumeration value="storeTime24hr"/>
 			<xsd:enumeration value="storeTime15min"/>
 		</xsd:restriction>
-	</xsd:simpleType>	
+	</xsd:simpleType>
 </xsd:schema>
