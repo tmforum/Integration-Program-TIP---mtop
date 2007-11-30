@@ -1193,6 +1193,56 @@ Operation getContainedInUseTPs then returns three CTPs:<ul>
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
+  <xsd:element name="getTcProfileAssociatedTpsRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getTcProfileAssociatedTps operation</p>
+        <p>This operation allows an NMS to request all of the TPs associated with the  
+              specified TC Profile. If there are no TPs which are 
+              associated with the specified TC Profile, then an empty list is returned.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="tcProfileName" type="nam:NamingAttributesType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the name of the TC Profile</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getTcProfileAssociatedTpsResponse" type="tns:MultipleTpObjectsResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getTcProfileAssociatedTps operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getTcProfileAssociatedTpsException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getTcProfileAssociatedTps operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
   <xsd:element name="getTpRequest" type="tns:RequestProfile2Type">
     <xsd:annotation>
       <xsd:documentation>
