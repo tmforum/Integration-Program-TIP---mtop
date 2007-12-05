@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM Service Activation Interface (SAI) - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/sa/xsd/sairsp/v1" xmlns:tns="http://www.tmforum.org/mtop/sa/xsd/sairsp/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:csi="http://www.tmforum.org/mtop/sb/xsd/csi/v1" xmlns:soc="http://www.tmforum.org/mtop/msi/xsd/soc/v1" xmlns:sodel="http://www.tmforum.org/mtop/msi/xsd/sodel/v1" xmlns:ssc="http://www.tmforum.org/mtop/msi/xsd/ssc/v1" xmlns:savc="http://www.tmforum.org/mtop/msi/xsd/savc/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Service Activation</p>
+      <p>Module: Message XSD Module</p>
+      <p>Description: This module contains the XML Schema type definitions of all the mTOP Service Activation Interface (SAI) XML message structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../ManageServiceInventory/IIS/xsd/ServiceEventObjectCreation.xsd" namespace="http://www.tmforum.org/mtop/msi/xsd/soc/v1"/>
+  <xsd:import schemaLocation="../../../ManageServiceInventory/IIS/xsd/ServiceEventObjectDeletion.xsd" namespace="http://www.tmforum.org/mtop/msi/xsd/sodel/v1"/>
+  <xsd:import schemaLocation="../../../ManageServiceInventory/IIS/xsd/ServiceEventStateChange.xsd" namespace="http://www.tmforum.org/mtop/msi/xsd/ssc/v1"/>
+  <xsd:import schemaLocation="../../../ManageServiceInventory/IIS/xsd/ServiceEventAvc.xsd" namespace="http://www.tmforum.org/mtop/msi/xsd/savc/v1"/>
+  <xsd:import schemaLocation="../../../ServiceBasic/IIS/xsd/CommonServiceInfo.xsd" namespace="http://www.tmforum.org/mtop/sb/xsd/csi/v1"/>
+  <!-- ===================== Data Types ========= -->
+  <!-- === Service Order Aware Parameters for Response === -->
+  <xsd:complexType name="SOAwareParamsResType">
+    <xsd:annotation>
+      <xsd:documentation>
+			This data type defines the parameters to be used in a response to a service request in cases
+			where the service order aware option is used. 
+     	</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="serviceOrderID" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>
+					This is the name that the target OS assigns to the service order associated with the 
+					request. This parameter is only used when the target OS supports the “order aware” 
+					version of the SAI.
+          		</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="expectedCompletionDate" type="xsd:dateTime">
+        <xsd:annotation>
+          <xsd:documentation>
+					 The date and time at which the target OS expects to complete execution of the service 
+					 order. The target OS will update this parameter as the situation changes (such changes 
+					 will be communicated to the requesting OS via AVC notifications on the given service 
+					 order).
+          		</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ===================== Response Events ========= -->
+  <!-- === Root Response === -->
+  <xsd:complexType name="RootResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+			This response is extended by other SAI responses.
+     	</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="serviceRequestID" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>
+              This is the name (or ID) that the target OS assigns to the request
+           </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="productName" type="nam:NamingAttributesType">
+        <xsd:annotation>
+          <xsd:documentation>
+              This is a unique name for the product instance associated with the request.
+           </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="vendorExtensions" type="gen:AnyListType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Containment for all vendor extensions in</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- === Initial Response === -->
+  <xsd:complexType name="InitialResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the initial response to an SAI request. It provides an indication of whether
+        or not the target OS has accepted the request. If "yes", the request is placed in a queue.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:RootResponseType">
+        <xsd:sequence>
+          <xsd:element name="accept" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This is an indication ("yes" or "no") that the target OS has accepted the
+                    request and has put the request in a queue (awaiting processing).</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- === Begin Processing Event === -->
+  <xsd:complexType name="BeginProcessingEventType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is an indication that the target OS has removed the request from the queue
+        and has started to work on the request. </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:RootResponseType">
+        <xsd:sequence>
+          <xsd:element name="soAwareParamsRes" type="tns:SOAwareParamsResType" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This paramter is used in the service order aware version of the SAI.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- === CFS Creation Event === -->
+  <xsd:complexType name="CfsCreationEventType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This event is an indication that one of the CFSs (supporting the requested product) has been
+        created and is in the Feasibility Checked state.</p>
+        <p>In the case of multiple CFSs corresponding to a single product instance, it may be necessary
+        to send several cfsCreationEvents. Also, it is possible to report on several CFSs in one event.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:RootResponseType">
+        <xsd:sequence>
+          <xsd:sequence minOccurs="1" maxOccurs="unbounded">
+            <xsd:element name="cfsCreationEvent" type="xsd:string">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>This is a creation event for a given CFS.</p>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="feasibilityFlag" type="xsd:boolean">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>This is an indication of whether it is feasible to eventually put the CFS in the
+					Provisioned_Active state. This parameter is only used in conjunction with the 
+					feasibilityCheck operation.</p>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="offeredActivationTime" type="xsd:duration" minOccurs="0" maxOccurs="1">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>This is the estimated maximum time elapsed from the service ordering time until the 
+					time when the target OS activates the given CFS (assuming the requesting OS decides 
+					to go forward with the activation). For a given product instance, there could be a different
+					offeredActivationTime for each associated CFS. This parameter is only used in conjunction 
+					with the feasibilityCheck operation.</p>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+          <xsd:element name="last" type="xsd:boolean" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This Boolean indicates whether or not the target OS has sent the last event in response
+                    to the request. In some cases, not all the CFSs will be in the desired end state when the
+                    target OS decides to stop work on the request. In such cases, the target OS will typically
+                    send an exception to the requesting OS.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- === CFS State Change Event === -->
+  <xsd:complexType name="CfsStateChangeEventType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This event is an indication that the target OS has progressed one or more CFSs from one state to another state.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:RootResponseType">
+        <xsd:sequence>
+          <xsd:element name="serviceStateChangeList" type="ssc:ServiceStateChangeType" minOccurs="1" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p> This is a list of the Service State Change events. Each event has the name of the object,
+					the fromState and the toState in addition to other parameters defined in ServiceStateChangeType.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="last" type="xsd:boolean" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This Boolean indicates whether or not the target OS has sent the last event in response
+                    to the request. In some cases, not all the CFSs will be in the desired end state when the
+                    target OS decides to stop work on the request. In such cases, the target OS will typically
+                    send an exception to the requesting OS.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- === CFS Attribute Value Change Event === -->
+  <xsd:complexType name="CfsAvcEventType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This event is an indication that the target OS has changed the attributes of one or more CFSs. It is
+		also possible to add and delete attributes.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:RootResponseType">
+        <xsd:sequence>
+          <xsd:element name="serviceAttributeValueChangeList" type="savc:ServiceAttributeValueChangeType" minOccurs="1" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p> This is a list of the Service AVC events.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="last" type="xsd:boolean" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This Boolean indicates whether or not the target OS has sent the last event in response
+                    to the request. In some cases, not all the CFSs will be in the desired end state when the
+                    target OS decides to stop work on the request. In such cases, the target OS will typically
+                    send an exception to the requesting OS.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- === CFS Deletion Event === -->
+  <xsd:complexType name="CfsDeletionEventType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This event is an indication that the target OS has deleted one or more CFSs.</p>
+        <p>In the service order aware version of the interface, a Service Order will be assembled. For each CFS, 
+		a service order item will be created and associated with the service order. It is assumed all the CFSs 
+		are driven by the same Service Order instance.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="tns:RootResponseType">
+        <xsd:sequence>
+          <xsd:element name="cfsDeletionEvents" type="sodel:ServiceObjectDeletionType" minOccurs="1" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This is a list of events concerning the CFSs that have been deleted.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="last" type="xsd:boolean" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This Boolean indicates whether or not the target OS has sent the last event in response
+                    to the request. In some cases, not all the CFSs will be in the desired end state when the
+                    target OS decides to stop work on the request. In such cases, the target OS will typically
+                    send an exception to the requesting OS.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+</xsd:schema>
