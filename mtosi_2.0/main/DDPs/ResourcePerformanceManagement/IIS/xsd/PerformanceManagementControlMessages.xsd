@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ResourcePerformanceManagement - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rpm/xsd/pmc/v1" xmlns:tns="http://www.tmforum.org/mtop/rpm/xsd/pmc/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:pmp="http://www.tmforum.org/mtop/nra/xsd/pmp/v1" xmlns:pmtgt="http://www.tmforum.org/mtop/nra/xsd/pmtgt/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: ResourcePerformanceManagement</p>
+      <p>Module:  Message XSD Module</p>
+      <p>Description: This module contains the XML Schema type definitions of all the mTOP PerformanceManagementControl SI XML message structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/Pmp.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/pmp/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/PmObjectSelect.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/pmtgt/v1"/>
+  <!-- ================ -->
+  <xsd:element name="clearPmDataRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the clearPmData operation</p>
+        <p>This operation instructs the EMS to clear (reset) the PM registers for a list of measurement points. Within the request for each measurement point, one may specify the granularity (15min, 24h, NA, etc.) and location (nearEnd and/or farEnd and/or bidirectional) for the PM registers that are to be reset.</p>
+        <p>Clearing PM gauge minimum, maximum, and average registers means to reset them to the current measurement; for the actual gauge measurement, it has no effect. This is not considered a failure case.</p>
+        <p>Clearing PM registers is done on best-effort basis. If registers could not be completely cleared for a subset of cases in the pmTpSelectList, a list identifying this subset is returned.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="pmObjectSelectList" type="pmtgt:PmObjectSelectListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This struct contains the relevant data for the clearPMData request. This must not be empty.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="clearPmDataResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the clearPmData operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="failedTPSelectList" type="pmtgt:PmObjectSelectListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>List of points for which PM registers were not completely cleared. An empty list indicates that the total request was successful.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="clearPmDataException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the clearPmData operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="disablePmDataRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the disablePmData operation</p>
+        <p>This operation instructs the EMS to turn off PM data collection for a list of measurement points. Within the request for each measurement point, one may specify the granularity (15min, 24h, NA, etc.) and location (nearEnd and/or farEnd and/or bidirectional) for the PM parameters that are to be deactivated.</p>
+        <p>Disabling is done on a best-effort basis. If PM could not be disabled for a subset of cases in the PMTPSelectList a list identifying this subset is returned.</p>
+        <p>PM collection stops immediately, i.e., before the completion of the current 15 minute or 24 hour monitoring period. This may lead to incomplete collection periods. If PM collection was never started for this TP, the operation is considered successful.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="pmTpSelectList" type="pmtgt:PmObjectSelectListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This struct contains the relevant data for the disablePmDataRequest. It must not be empty.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="disablePmDataResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the disablePmData operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="failedTpSelectList" type="pmtgt:PmObjectSelectListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>List of points which were not completely disabled. An empty list indicates that the total request was successful.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="disablePmDataException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the disablePmData operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:capacityExceeded"/>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="enablePmDataRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the enablePmData operation</p>
+        <p>This operation instructs the EMS to enable (turn on) PM data collection for a list of measurement points. Within the request for each measurement point, one may specify the granularity (15min, 24h, NA, etc.) and location (nearEnd and/or farEnd and/or bidirectional) for the PM parameters that are to be activated.</p>
+        <p>Enabling is done on best-effort basis. If PM could not be enabled for a subset of cases in the pmTPSelectList, a list identifying this subset is returned.</p>
+        <p>PM data collection starts immediately, i.e., before the completion of the current 15 minute or 24 hour monitoring period. This may lead to incomplete collection periods. If PM collection was already on for a TP, the operation is considered successful.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="pmTpSelectList" type="pmtgt:PmObjectSelectListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This struct contains the relevant data for the enablePmDataRequest. This must not be empty.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="enablePmDataResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the enablePmData operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="failedTpSelectList" type="pmtgt:PmObjectSelectListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>List of points which were not completely enabled. An empty list indicates that the total request was successful.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="enablePmDataException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the enablePmData operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>
