@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ResourceProvisioning - Copyright TeleManagement Forum 2007 -->
+<wsdl:definitions name="mTOP-TransmissionDescriptorControlV1-0" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.tmforum.org/mtop/rp/wsdl/tmdc/v1-0" targetNamespace="http://www.tmforum.org/mtop/rp/wsdl/tmdc/v1-0">
+  <wsdl:documentation>
+    <p>DDP: ResourceProvisioning</p>
+    <p>Module: TransmissionDescriptorControl Service Interface WSDL JMS Module</p>
+    <p>Description: This module contains all the mTOP TransmissionDescriptorControl Service Interface WSDL definitions for the Web Service deployment profile with SOAP/JMS binding.</p>
+    <p>Version: 1.0</p>
+  </wsdl:documentation>
+  <wsdl:import namespace="http://www.tmforum.org/mtop/rp/wsdl/tmdc/v1-0" location="TransmissionDescriptorControlPortType.wsdl"/>
+  <wsdl:binding name="TransmissionDescriptorControlSoapJmsBinding" type="tns:TransmissionDescriptorControl">
+    <wsdl:documentation>
+      <p>SOAP JMS binding definitions of the operations of the TransmissionDescriptorControl portType (interface)</p>
+    </wsdl:documentation>
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/jms"/>
+    <wsdl:operation name="createTransmissionDescriptor">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:createTransmissionDescriptorRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:createTransmissionDescriptorResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="createTransmissionDescriptorException">
+        <soap:fault name="createTransmissionDescriptorException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="deleteTransmissionDescriptor">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:deleteTransmissionDescriptorRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:deleteTransmissionDescriptorResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="deleteTransmissionDescriptorException">
+        <soap:fault name="deleteTransmissionDescriptorException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="verifyTmdAssignment">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:verifyTmdAssignmentRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:verifyTmdAssignmentResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="verifyTmdAssignmentException">
+        <soap:fault name="verifyTmdAssignmentException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="TransmissionDescriptorControlJms">
+    <wsdl:documentation>
+      <p>Example of the TransmissionDescriptorControl WSDL Service definition as a deployment example of this mTOP Service Interface. It is expected to be modified to match the specific deployment configuration in a service provider's CCV.</p>
+    </wsdl:documentation>
+    <wsdl:port name="TransmissionDescriptorControlSoapJms" binding="tns:TransmissionDescriptorControlSoapJmsBinding">
+      <soap:address location="jms://aserver/mtosi/TransmissionDescriptorControl"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
