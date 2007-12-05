@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ResourceTroubleManagement - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rtm/xsd/pc/v1" xmlns:tns="http://www.tmforum.org/mtop/rtm/xsd/pc/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:com="http://www.tmforum.org/mtop/nra/xsd/com/v1" xmlns:sd="http://www.tmforum.org/mtop/nra/xsd/sd/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: ResourceTroubleManagement</p>
+      <p>Module:  Message XSD Module</p>
+      <p>Description: This module contains the XML Schema type definitions of all the mTOP ProtectionControl SI XML message structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/com/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/SwitchData.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/sd/v1"/>
+  <!-- ================ -->
+  <xsd:element name="performProtectionCommandRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the performProtectionCommand operation</p>
+        <p>This operation is used to execute a protection switch. The protection switch may be performed via a protection switch command, on a protection group or on a CTP/FTP involved in an SNCP. The NMS requests the EMS to move the traffic received from the fromTP to the toTP.  The same command is used to clear all existing commands.</p>
+        <p>For 4-fiber SONET/SDH SPRINGS, the span switch is performed on the   
+   PGT_MSP_1_FOR_N protection group, and the ring switch on the 
+   PGT_4_FIBER_BLSR group.</p>
+        <p>See SD1-34_protectionSwitch.pdf for more information.</p>
+        <p>It should be noted that although the term MSP was chosen 
+   as the original specific protection scheme to which the related behaviour
+   applied was Multiplex Section Protection, the label is now more generally 
+   applied to any 1+1 or 1:N Trail protection scheme.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="protectionCommand" type="com:ProtectionCommandType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The command to be performed.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="reliableSinkCtpOrGroupName" type="nam:NamingAttributesType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This is the CTP/FTP that is the output of a service selector in case of the SNC or the group name for which the switch data is being requested. The termination point name must be explicit (a generic endpoint specification may not be used in this case). See SD1-25_objectNaming.pdf  for further detail on FTP naming.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="fromTp" type="nam:NamingAttributesType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The present source of the traffic. The termination point name must be explicit (a generic endpoint specification may not be used in this case)</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="toTp" type="nam:NamingAttributesType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The requested source of the traffic after the command. The termination point name must be explicit (a generic endpoint specification may not be used in this case)</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="performProtectionCommandResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the performProtectionCommand operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="switchData" type="sd:SwitchDataType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The protection switch status of the toTp provided after the execution of the command</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="performProtectionCommandException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the performProtectionCommand operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>
