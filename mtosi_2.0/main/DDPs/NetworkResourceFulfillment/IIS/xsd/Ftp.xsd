@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/ftp/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/ftp/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lp="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource FulFillment</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP FTP XML structure.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayeredParameters.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lp/v1"/>
+  <xsd:import schemaLocation="CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1"/>
+  <!-- ================= -->
+  <xsd:element name="ftp" type="tns:FloatingTerminationPointType"/>
+  <!-- ================= -->
+  <xsd:complexType name="FloatingTerminationPointType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This aggregate defines the FloatingTerminationPoint mTOP network resource object.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="cri:CommonResourceInfoType">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This element entails the attributes common to all mTOP network resource objects.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="direction" type="com:DirectionalityType" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="tpProtectionAssociation" type="com:TpProtectionAssociationType" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="edgePoint" type="xsd:boolean" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Indicates if the TP is an edge point of at least one subnetwork, i.e. if it is an end point of a potential inter-subnetwork topological link.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="equipmentProtected" type="xsd:boolean" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The attribute indicates whether or not the TP is supported by a protected equipment. </p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="egressTmdState" type="com:TmdStateType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Contains the state of consistency between a TP and its associated egress TransmissionDescriptor.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="ingressTmdState" type="com:TmdStateType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Contains the state of consistency between a TP and its associated eingress TransmissionDescriptor.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="connectionState" type="com:TpConnectionStateType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This attribute is only applicable to CTPs and FTPs. If the source is connected to one entity and the sink is connected to another entity then the value of this attribute is TPCS_BI_CONNECTED.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="tpMappingMode" type="com:TerminationModeType" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="ingressTransmissionDescriptorName" type="nam:NamingAttributesType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>A connection Floating Termination Point may have an optional reference to an ingress (incoming) Transmission Descriptor. The Descriptor name will be empty if there is no associated Descriptor. It is expected that Transmission Descriptors are not mixed on a single TP. Therefore if the Ingress Descriptor name is that of a Transmission Descriptor then the Egress Descriptor name should either be that of a Transmission Descriptor or a null value.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="egressTransmissionDescriptorName" type="nam:NamingAttributesType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>A connection Floating Termination Point may have an optional reference to an egress (outgoing) Transmission Descriptor. The Transmission Descriptor name will be empty if there is no associated Descriptor. It is expected that Transmission Descriptors are not mixed on a single TP. Therefore if the Egress Descriptor name is that of a Transmission Descriptor then the Ingress Descriptor name should either be that of a Transmission Descriptor or a null value.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="transmissionParams" type="lp:LayeredParametersListType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>A list of transmission parameters which can be set and/or retrieved on the TP at a specified layer. This attribute must contain the complete set of layer rates represented by a FTP - even if they have no parameters associated with them. The layerRates are listed in the order of their client-server relationship (see layering for more details).</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="FloatingTerminationPointListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A list of FloatinglTerminationPoints.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element ref="tns:ftp" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>
