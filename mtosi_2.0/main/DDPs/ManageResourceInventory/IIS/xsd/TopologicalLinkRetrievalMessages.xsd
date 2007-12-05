@@ -1,0 +1,629 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/tlr/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/tlr/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:tl="http://www.tmforum.org/mtop/nrf/xsd/tl/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Manage Resource Inventory</p>
+      <p>Module:  Message XSD Module</p>
+      <p>Description: This module contains the XML Schema type definitions of all the mTOP TL Retrieval SI XML message structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Tl.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/tl/v1"/>
+  <!-- ================ -->
+  <xsd:element name="getAllTopLevelTopologicalLinkNamesRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAllTopLevelTopologicalLinkNames operation</p>
+        <p>This operation returns the names of the TLs between the subnetworks contained by the MD to which the operation is directed.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="mdName" type="nam:NamingAttributesType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the MD for which associated top level TL names are being requested.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllTopLevelTopologicalLinkNamesResponse" type="tns:MultipleObjectNamesResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllTopLevelTopologicalLinkNames operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllTopLevelTopologicalLinkNamesException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllTopLevelTopologicalLinkNames operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getAllTopLevelTopologicalLinksRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAllTopLevelTopologicalLinks operation</p>
+        <p>This operation returns the TL objects between the subnetworks contained by the MD to which the operation is directed.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="mdName" type="nam:NamingAttributesType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the MD for which associated top level TLs are being requested.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllTopLevelTopologicalLinksResponse" type="tns:MultipleTlObjectsResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllTopLevelTopologicalLinks operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllTopLevelTopologicalLinksException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllTopLevelTopologicalLinks operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getAllTopologicalLinkNamesRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAllTopologicalLinkNames operation</p>
+        <p>This operation returns a list of TopologicalLink names which exist inside the Subnetwork whose name is passed as a parameter. For singletons, no topologicalLinks will be returned. The OS should report topological links at the "lowest" layer (i.e. closest to physical) about which it has accurate knowledge.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="subnetName" type="nam:NamingAttributesType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Name of the subnetwork.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllTopologicalLinkNamesResponse" type="tns:MultipleObjectNamesResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllTopologicalLinkNames operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllTopologicalLinkNamesException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllTopologicalLinkNames operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getAllTopologicalLinkNamesBetweenMdsRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAllTopologicalLinkNamesBetweenMds operation</p>
+        <p>This operation returns the name of each TopologicalLink (TL) with end points in two different ManagementDomains (MDs) which are managed by the addressed top-level OS.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType/>
+  </xsd:element>
+  <xsd:element name="getAllTopologicalLinkNamesBetweenMdsResponse" type="tns:MultipleObjectNamesResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllTopologicalLinkNamesBetweenMds operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllTopologicalLinkNamesBetweenMdsException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllTopologicalLinkNamesBetweenMds operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getAllTopologicalLinkNamesWrtOsRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAllTopologicalLinkNamesWrtOs operation</p>
+        <p>This operation returns the name of each Topological Link (TL) managed by a given subordinate OS AND contained by a specific Management Domain. Note that Wrt in the name of the operation stands for "with respect to".</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="osName" type="nam:NamingAttributesType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the subordinate OS whose associated TLs requested.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="mdName" type="nam:NamingAttributesType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the Management Domain whose contained TLs are requested.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllTopologicalLinkNamesWrtOsResponse" type="tns:MultipleObjectNamesResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllTopologicalLinkNamesWrtOs operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllTopologicalLinkNamesWrtOsException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllTopologicalLinkNamesWrtOs operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getAllTopologicalLinksRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAllTopologicalLinks operation</p>
+        <p>This operation returns a list of TopologicalLinks which exist inside the Subnetwork whose name is passed as a parameter. For singletons, no topologicalLinks will be returned. The OS should report topological links at the "lowest" layer (i.e. closest to physical) about which it has accurate knowledge.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="subnetName" type="nam:NamingAttributesType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Name of the subnetwork.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllTopologicalLinksResponse" type="tns:MultipleTlObjectsResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllTopologicalLinks operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllTopologicalLinksException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllTopologicalLinks operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getAllTopologicalLinksBetweenMdsRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAllTopologicalLinksBetweenMds operation</p>
+        <p>This operation returns all TopologicalLinks (TL) with end points in two different ManagementDomains (MDs) which are managed by the addressed top-level OS.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType/>
+  </xsd:element>
+  <xsd:element name="getAllTopologicalLinksBetweenMdsResponse" type="tns:MultipleTlObjectsResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllTopologicalLinksBetweenMds operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllTopologicalLinksBetweenMdsException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllTopologicalLinksBetweenMds operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getAllTopologicalLinksOfFdRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAllTopologicalLinksOfFd operation</p>
+        <p>This operation returns a list of TopologicalLinks (at the encapsulation layer) which are terminated at the Flow Domain whose name is passed as a parameter.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="flowDomainName" type="nam:NamingAttributesType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the Flow Domain.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllTopologicalLinksOfFdResponse" type="tns:MultipleTlObjectsResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllTopologicalLinksOfFd operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllTopologicalLinksOfFdException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllTopologicalLinksOfFd operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getAllTopologicalLinksWrtOsRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAllTopologicalLinksWrtOs operation</p>
+        <p>This operation returns all Topological Links (TL) managed by a given subordinate OS AND contained by a specific Management Domain. Note that Wrt in the name of the operation stands for "with respect to".</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="osName" type="nam:NamingAttributesType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the subordinate OS whose associated TLs requested.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="mdName" type="nam:NamingAttributesType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the Management Domain whose contained TLs are requested.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllTopologicalLinksWrtOsResponse" type="tns:MultipleTlObjectsResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllTopologicalLinksWrtOs operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllTopologicalLinksWrtOsException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllTopologicalLinksWrtOs operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getRouteAndTopologicalLinksRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getRouteAndTopologicalLinks operation</p>
+        <p>This operation .</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getRouteAndTopologicalLinksResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getRouteAndTopologicalLinks operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getRouteAndTopologicalLinksException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getRouteAndTopologicalLinks operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getTopLevelTopologicalLinkRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getTopLevelTopologicalLink operation</p>
+        <p>This operation .</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getTopLevelTopologicalLinkResponse" type="tns:MultipleTlObjectsResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getTopLevelTopologicalLink operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getTopLevelTopologicalLinkException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getTopLevelTopologicalLink operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getTopologicalLinkRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getTopologicalLink operation</p>
+        <p>This operation .</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getTopologicalLinkResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getTopologicalLink operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getTopologicalLinkException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getTopologicalLink operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getTopologicalLinksIteratorRequest" type="msg:GetAllDataIteratorRequestType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getTopologicalLinksIterator operation</p>
+        <p>This operation .</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getTopologicalLinksIteratorResponse" type="tns:MultipleTlObjectsResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getTopologicalLinksIterator operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getTopologicalLinksIteratorException" type="msg:GetAllDataIteratorExceptionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getTopologicalLinksIterator operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getTopologicalLinkNamesIteratorRequest" type="msg:GetAllDataIteratorRequestType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getTopologicalLinkNamesIterator operation</p>
+        <p>This operation .</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getTopologicalLinkNamesIteratorResponse" type="tns:MultipleObjectNamesResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getTopologicalLinkNamesIterator operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getTopologicalLinkNamesIteratorException" type="msg:GetAllDataIteratorExceptionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getTopologicalLinkNamesIterator operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <!-- == Local Data Types == -->
+  <!-- ================ -->
+  <xsd:complexType name="MultipleTlObjectsResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure for a set of TL objects</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="tlList" type="tl:TopologicalLinkListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The list of TL objects</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================== -->
+  <xsd:complexType name="MultipleObjectNamesResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure for a set of object names</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="nameList" type="nam:NamingAttributesListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The list of object names</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================== -->
+</xsd:schema>

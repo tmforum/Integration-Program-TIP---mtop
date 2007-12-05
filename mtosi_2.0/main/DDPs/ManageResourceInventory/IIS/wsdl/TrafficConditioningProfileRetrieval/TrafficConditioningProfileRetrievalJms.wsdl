@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2007 -->
+<wsdl:definitions name="mTOP-TrafficConditioningProfileRetrievalV1-0" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.tmforum.org/mtop/mri/wsdl/tcpr/v1-0" targetNamespace="http://www.tmforum.org/mtop/mri/wsdl/tcpr/v1-0">
+  <wsdl:documentation>
+    <p>DDP: ManageResourceInventory</p>
+    <p>Module: TrafficConditioningProfileRetrieval Service Interface WSDL JMS Module</p>
+    <p>Description: This module contains all the mTOP TrafficConditioningProfileRetrieval Service Interface WSDL definitions for the Web Service deployment profile with SOAP/JMS binding.</p>
+    <p>Version: 1.0</p>
+  </wsdl:documentation>
+  <wsdl:import namespace="http://www.tmforum.org/mtop/mri/wsdl/tcpr/v1-0" location="TrafficConditioningProfileRetrievalMessages.wsdl"/>
+  <wsdl:portType name="TrafficConditioningProfileRetrieval_MSG">
+    <wsdl:documentation>
+      <p>The TrafficConditioningProfileRetrieval porttype (interface) for MSG (asynchronous) based client/server communication patterns.</p>
+    </wsdl:documentation>
+    <wsdl:operation name="getAllTcProfiles">
+      <wsdl:input message="tns:getAllTcProfilesRequest"/>
+      <wsdl:output message="tns:getAllTcProfilesResponse"/>
+      <wsdl:fault name="getAllTcProfilesException" message="tns:getAllTcProfilesException"/>
+    </wsdl:operation>
+    <wsdl:operation name="getTcProfile">
+      <wsdl:input message="tns:getTcProfileRequest"/>
+      <wsdl:output message="tns:getTcProfileResponse"/>
+      <wsdl:fault name="getTcProfileException" message="tns:getTcProfileException"/>
+    </wsdl:operation>
+    <wsdl:operation name="getTcProfilesIterator">
+      <wsdl:input message="tns:getTcProfilesIteratorRequest"/>
+      <wsdl:output message="tns:getTcProfilesIteratorResponse"/>
+      <wsdl:fault name="getTcProfilesIteratorException" message="tns:getTcProfilesIteratorException"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="TrafficConditioningProfileRetrievalSoapJmsBinding" type="tns:TrafficConditioningProfileRetrieval_MSG">
+    <wsdl:documentation>
+      <p>SOAP JMS binding definitions of the operations of the TrafficConditioningProfileRetrieval MSG portType (interface)</p>
+    </wsdl:documentation>
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/jms"/>
+    <wsdl:operation name="getAllTcProfiles">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getAllTcProfilesRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getAllTcProfilesResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getAllTcProfilesException">
+        <soap:fault name="getAllTcProfilesException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getTcProfile">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getTcProfileRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getTcProfileResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getTcProfileException">
+        <soap:fault name="getTcProfileException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getTcProfilesIterator">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getTcProfilesIteratorRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getTcProfilesIteratorResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getTcProfilesIteratorException">
+        <soap:fault name="getTcProfilesIteratorException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="TrafficConditioningProfileRetrievalJms">
+    <wsdl:documentation>
+      <p>Example of the TrafficConditioningProfileRetrieval WSDL Service definition as a deployment example of this mTOP Service Interface. It is expected to be modified to match the specific deployment configuration in a service provider's CCV.</p>
+    </wsdl:documentation>
+    <wsdl:port name="TrafficConditioningProfileRetrievalSoapJms" binding="tns:TrafficConditioningProfileRetrievalSoapJmsBinding">
+      <soap:address location="jms://aserver/mtosi/TrafficConditioningProfileRetrieval"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

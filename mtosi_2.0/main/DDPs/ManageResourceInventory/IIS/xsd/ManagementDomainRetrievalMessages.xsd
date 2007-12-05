@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/mdr/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/mdr/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:md="http://www.tmforum.org/mtop/nrf/xsd/md/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Manage Resource Inventory</p>
+      <p>Module:  Message XSD Module</p>
+      <p>Description: This module contains the XML Schema type definitions of all the mTOP MD Retrieval SI XML message structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Md.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/md/v1"/>
+  <!-- ================ -->
+  <xsd:element name="getAllManagementDomainNamesRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAllManagementDomainNames operation</p>
+        <p>This operation returns the name of each Management Domain (MD) associated with a top-level OS.
+        This operation can only be directed to a top-level OS and not to a subordinate OS.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllManagementDomainNamesResponse" type="tns:MultipleObjectNamesResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllManagementDomainNames operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllManagementDomainNamesException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllManagementDomainNames operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:internalError"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllManagementDomainsRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAllManagementDomains operation</p>
+        <p>This operation returns the data structure for each Management Domain (MD) associated with a top-level OS.
+        This operation can only be directed to a top-level OS and not to a subordinate OS.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllManagementDomainsResponse" type="tns:MultipleObjectsResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllManagementDomains operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllManagementDomainsException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllManagementDomains operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:internalError"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getManagementDomainRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getManagementDomain operation</p>
+        <p>This operation returns the data structure associated with a given Management Domain (MD) identified by the provided mdName.
+        This operation can only be directed to a top-level OS and not to a subordinate OS.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getManagementDomainResponse" type="tns:SingeObjectResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getManagementDomain operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getManagementDomainException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getManagementDomain operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <!-- == Local Data Types == -->
+  <!-- ================ -->
+  <xsd:complexType name="SingeObjectResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure for one object</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="md" type="md:ManagementDomainType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The MD object</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================== -->
+  <xsd:complexType name="MultipleObjectsResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure for a set of objects</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="mdList" type="md:ManagementDomainListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The list of MD objects</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================== -->
+  <xsd:complexType name="MultipleObjectNamesResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure for a set of object names</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="nameList" type="nam:NamingAttributesListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The list of object names</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================== -->
+</xsd:schema>
