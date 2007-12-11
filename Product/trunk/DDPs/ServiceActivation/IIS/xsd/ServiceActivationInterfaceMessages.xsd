@@ -304,7 +304,8 @@
     </xsd:complexType>
   </xsd:element>
   <!-- === Reserve === -->
-  <!-- ===================== Reserve Request Message ========= -->
+  <!-- ===================== Reserve Request Messages ========= -->
+  <!-- === Reserve Request === -->
   <xsd:element name="reserveRequest">
     <xsd:annotation>
       <xsd:documentation>
@@ -372,7 +373,31 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
+  <!-- === Amend === -->
+  <xsd:element name="amend">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This operation is used by the requesting OS to confirm that it wants to go ahead with the reservation. 
+		It is only used when “commit” is set to false in the initial reserve request. If a commit is not made in 
+		either the initial reserve request or a subsequent amend request before the expiringTime, the target OS will 
+		cancel the reserve request. </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="serviceRequestID" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>
+              This is the request ID from the initial reservation request. It is required so that the target OS
+			  can correlate the amend operation with the proper reserve request.  
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
   <!-- ===================== Reserve Response Messages ========= -->
+  <!-- === Reserve Response === -->
   <xsd:element name="reserveResponse">
     <xsd:annotation>
       <xsd:documentation>
@@ -388,7 +413,36 @@
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
+  <!-- === Amend Response === -->
+  <xsd:element name="amendResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is a positive or negative acknowledgment with no parameters. In the case, of a negative 
+		acknowledgment, a reason is also given, e.g., “expiringTime has passed”..</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="ack" type="xsd:boolean">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This is an indication of whether or not the amend request was accepted.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="nackReason" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>In the case where a negative acknowledgment is provided, the target OS may provide a reason. The 
+			  most common reason would be "the expiringTime has passed."</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
   <!-- ===================== Reserve Exceptions ========= -->
+  <!-- === Reserve Request Exceptions === -->
   <xsd:element name="reserveException">
     <xsd:annotation>
       <xsd:documentation>
@@ -400,6 +454,22 @@
         <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEventType"/>
         <xsd:element name="serviceCreationFailureEvent" type="saiexcpt:ServiceCreationFailureEventType"/>
         <xsd:element name="serviceStateTransitionFailureEvent" type="saiexcpt:ServiceStateTransitionFailureEventType"/>
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- === Amend Exceptions === -->
+  <xsd:element name="amendException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This type defines the allowable exceptions to the amend operation.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <!-- XML is a bit awkward here. It will not allow just an element within a complexType.
+		We could use a sequence with one element or a choice with only one possibility. Decided to
+		use choice to align with the format of the other exceptions. -->
+      <xsd:choice maxOccurs="unbounded">
+        <xsd:element name="basicFailureEvent" type="saiexcpt:BasicFailureEventType"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -948,7 +1018,7 @@
   <xsd:element name="retrieveServiceStatesException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>This type defines the allowable exceptions to the cancel operation.</p>
+        <p>This type defines the allowable exceptions to the retrieveServiceStates operation.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
