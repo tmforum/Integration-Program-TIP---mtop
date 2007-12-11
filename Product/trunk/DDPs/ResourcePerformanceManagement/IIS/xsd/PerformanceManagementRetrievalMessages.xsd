@@ -21,10 +21,12 @@
   <xsd:element name="getAllCurrentPmDataRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the getAllCurrentPmData operation</p>
-        <p>This operation instructs the EMS to enable (turn on) PM data collection for a list of measurement points. Within the request for each measurement point, one may specify the granularity (15min, 24h, NA, etc.) and location (nearEnd and/or farEnd and/or bidirectional) for the PM parameters that are to be activated.</p>
-        <p>Enabling is done on best-effort basis. If PM could not be enabled for a subset of cases in the pmTpSelectList, a list identifying this subset is returned.</p>
-        <p>PM data collection starts immediately, i.e., before the completion of the current 15 minute or 24 hour monitoring period. This may lead to incomplete collection periods. If PM collection was already on for a TP, the operation is considered successful.</p>
+        <p>This allows an NMS to request a filtered set (scoped by the input parameter pmParameters) of the current PM data 
+        for a list of TP measurement points. Within the request for each measurement point, granularity (15min, 24h, NA, etc.) and 
+        location (nearEnd and/or farEnd and/or bidirectional) may be specified. 
+        The operation mode is best effort. Current data will generally be marked as incomplete, as the current bin is not completed. 
+        If no PM data are available as specified, an empty list is returned. In order to allow the NMS to deal with a large number of 
+        objects this operation uses an iterator. See SD1-15 iterator overview for information on how iterators are used in this interface.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
