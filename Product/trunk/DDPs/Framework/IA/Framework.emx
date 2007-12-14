@@ -108,7 +108,7 @@
         <ownedLiteral xmi:id="_y-k-EPx3EduuuoHTWmKVyQ" name="TC_PROFILE"/>
         <ownedLiteral xmi:id="_2d-dIPx3EduuuoHTWmKVyQ" name="TRAFFIC_DESCRIPTOR"/>
       </packagedElement>
-      <packagedElement xmi:type="uml:Enumeration" xmi:id="_4Y8NoPx6EduuuoHTWmKVyQ" name="ServiceState">
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="_4Y8NoPx6EduuuoHTWmKVyQ" name="ResourceFulfillmentState">
         <ownedLiteral xmi:id="_-IJzMPx6EduuuoHTWmKVyQ" name="IN_SERVICE"/>
         <ownedLiteral xmi:id="__crWIPx6EduuuoHTWmKVyQ" name="OUT_OF_SERVICE"/>
         <ownedLiteral xmi:id="_A34I0Px7EduuuoHTWmKVyQ" name="OUT_OF_SERVICE_BY_MAINTENANCE"/>
@@ -192,13 +192,13 @@ Mm		&quot;00&quot;..&quot;59&quot;			time zone difference in minutes.</body>
         <ownedLiteral xmi:id="_JfwXEPybEduuuoHTWmKVyQ" name="WARNING"/>
         <ownedLiteral xmi:id="_Kel94PybEduuuoHTWmKVyQ" name="CLEARED"/>
       </packagedElement>
-      <packagedElement xmi:type="uml:DataType" xmi:id="_MPswEP_FEduKKLvC_EB00A" name="CommonResourceModifyData" isAbstract="true">
+      <packagedElement xmi:type="uml:DataType" xmi:id="_MPswEP_FEduKKLvC_EB00A" name="CommonObjectModifyData" isAbstract="true">
         <ownedComment xmi:id="_yii_8P_FEduKKLvC_EB00A" annotatedElement="_MPswEP_FEduKKLvC_EB00A">
           <body>This data type contains the common parameters that are required in create and modify operations for resources.</body>
         </ownedComment>
         <ownedAttribute xmi:id="__DKn4P_FEduKKLvC_EB00A" name="userLabel" visibility="public">
           <ownedComment xmi:id="__DKn4f_FEduKKLvC_EB00A" annotatedElement="__DKn4P_FEduKKLvC_EB00A">
-            <body>This parameter defines the provisionable, user friendly name for the new/modified resource.</body>
+            <body>This parameter defines the provisionable, user friendly name for the new/modified object.</body>
           </ownedComment>
           <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
           <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="__DKn4v_FEduKKLvC_EB00A">
@@ -217,7 +217,7 @@ Mm		&quot;00&quot;..&quot;59&quot;			time zone difference in minutes.</body>
         </ownedAttribute>
         <ownedAttribute xmi:id="__DKn5v_FEduKKLvC_EB00A" name="owner" visibility="public">
           <ownedComment xmi:id="__DKn5__FEduKKLvC_EB00A" annotatedElement="__DKn5v_FEduKKLvC_EB00A">
-            <body>This parameter defines the label of the owner of the new/modified resource.</body>
+            <body>This parameter defines the label of the owner of the new/modified object.</body>
           </ownedComment>
           <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
           <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="__DKn6P_FEduKKLvC_EB00A">
@@ -225,14 +225,17 @@ Mm		&quot;00&quot;..&quot;59&quot;			time zone difference in minutes.</body>
             <body>empty string</body>
           </defaultValue>
         </ownedAttribute>
-        <ownedAttribute xmi:id="_YboPgP_HEduKKLvC_EB00A" name="networkAccessDomain" visibility="public">
-          <ownedComment xmi:id="_YboPgf_HEduKKLvC_EB00A" annotatedElement="_YboPgP_HEduKKLvC_EB00A">
-            <body>This parameter defines the free-format string used to associate the new/modified physical resource to a Network Access Domain.</body>
+        <ownedAttribute xmi:id="_mJCtUKmSEdy39Z05qVqfpQ" name="aliasNameList" visibility="public" type="_8_P-sPo7EduVsYI7mfNDXQ">
+          <ownedComment xmi:id="_mJCtUamSEdy39Z05qVqfpQ" annotatedElement="_mJCtUKmSEdy39Z05qVqfpQ">
+            <body>This parameter contains a list of aliases for the new/modified object.</body>
           </ownedComment>
-          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
-          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_YboPgv_HEduKKLvC_EB00A">
-            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
-            <body>empty string</body>
+          <ownedComment xmi:id="_mJCtUqmSEdy39Z05qVqfpQ" annotatedElement="_mJCtUKmSEdy39Z05qVqfpQ">
+            <body>This attribute contains a list of aliases for the entity.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_mJCtU6mSEdy39Z05qVqfpQ" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_mJCtVKmSEdy39Z05qVqfpQ"/>
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_mJCtVamSEdy39Z05qVqfpQ" type="_8_P-sPo7EduVsYI7mfNDXQ">
+            <body>empty list</body>
           </defaultValue>
         </ownedAttribute>
         <ownedAttribute xmi:id="__DKn6f_FEduKKLvC_EB00A" name="additionalInfo" visibility="public" type="_8_P-sPo7EduVsYI7mfNDXQ">
@@ -300,7 +303,7 @@ See R_TMF518_FMW_II_0023.</body>
           <specification xmi:type="uml:LiteralInteger" xmi:id="_vbV9cJmfEdyyzpZ_RxHd0w" value="7"/>
         </ownedLiteral>
       </packagedElement>
-      <packagedElement xmi:type="uml:DataType" xmi:id="_fJJBQKf4EdyBvu4QgH3iCw" name="CommonResourceCreateData" isAbstract="true">
+      <packagedElement xmi:type="uml:DataType" xmi:id="_fJJBQKf4EdyBvu4QgH3iCw" name="CommonObjectCreateData" isAbstract="true">
         <ownedComment xmi:id="_fJJBQaf4EdyBvu4QgH3iCw" annotatedElement="_fJJBQKf4EdyBvu4QgH3iCw">
           <body>This data type contains the common parameters that are required in create and modify operations for resources.</body>
         </ownedComment>
@@ -462,7 +465,7 @@ Any information encoded in the additionalInfo is optional: the target OS need no
               <styles xmi:type="umlnotation:UMLShapeCompartmentStyle" xmi:id="_daCP1Px9EduuuoHTWmKVyQ"/>
             </children>
             <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_dZ2Ckfx9EduuuoHTWmKVyQ" fontName="Arial" showListSignature="true" showParent="QualifiedName" showStereotype="Label"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_dZ2Ckvx9EduuuoHTWmKVyQ" x="1450" y="7317"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_dZ2Ckvx9EduuuoHTWmKVyQ" x="1268" y="9827"/>
           </children>
           <children xmi:id="_sup2cA6yEdyd7PUNb-IYCQ" element="_o9aZcA6yEdyd7PUNb-IYCQ">
             <children xmi:id="_sup2cw6yEdyd7PUNb-IYCQ" type="ImageCompartment">
@@ -495,7 +498,7 @@ Any information encoded in the additionalInfo is optional: the target OS need no
             </children>
             <styles xmi:type="notation:ShapeStyle" xmi:id="_WWVVM2g5EdybUdEk71hLJA" fontName="Arial" description="root of the MTOSI naming tree" fillColor="13369343" lineColor="6737151"/>
             <element xsi:nil="true"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_WWVVNGg5EdybUdEk71hLJA" x="12390" y="5985" width="2433" height="1638"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_WWVVNGg5EdybUdEk71hLJA" x="10778" y="7608" width="2433" height="1638"/>
           </children>
           <styles xmi:type="umlnotation:UMLDiagramStyle" xmi:id="__2wfIe2JEduD1d0J9j2p4g"/>
           <element xsi:nil="true"/>
@@ -1357,7 +1360,7 @@ Any information encoded in the additionalInfo is optional: the target OS need no
               <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_gdBCapjuEdyuNMSCXkXoCg"/>
             </children>
             <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_gdBCa5juEdyuNMSCXkXoCg" fontName="Arial" showListSignature="true" showParent="QualifiedName" showStereotype="Label"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_gdBCbJjuEdyuNMSCXkXoCg" x="6195" y="6405"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_gdBCbJjuEdyuNMSCXkXoCg" x="5389" y="6023"/>
           </children>
           <children xmi:id="_eJg5QJjvEdyuNMSCXkXoCg" element="_ccpu0JjvEdyuNMSCXkXoCg">
             <children xmi:id="_eJg5Q5jvEdyuNMSCXkXoCg" type="ImageCompartment">
@@ -1391,19 +1394,10 @@ Any information encoded in the additionalInfo is optional: the target OS need no
               <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_jJcN-af4EdyBvu4QgH3iCw"/>
             </children>
             <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_jJTEAaf4EdyBvu4QgH3iCw" showListSignature="true" showParent="QualifiedName" showStereotype="Label"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_jJTEAqf4EdyBvu4QgH3iCw" x="7608" y="11095"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_jJTEAqf4EdyBvu4QgH3iCw" x="6974" y="10778"/>
           </children>
           <styles xmi:type="umlnotation:UMLDiagramStyle" xmi:id="_iGOcASSnEdyqcomT-DTtQQ"/>
           <element xsi:nil="true"/>
-          <edges xmi:id="_gDddcJjvEdyuNMSCXkXoCg" element="_gC41sJjvEdyuNMSCXkXoCg" source="_Ce8V4CVPEdyiv86aejkLcA" target="_eJg5QJjvEdyuNMSCXkXoCg">
-            <children xmi:id="_gDddc5jvEdyuNMSCXkXoCg" type="NameLabel">
-              <children xmi:id="_gDdddZjvEdyuNMSCXkXoCg" type="Stereotype"/>
-              <children xmi:id="_gDdddpjvEdyuNMSCXkXoCg" type="Name"/>
-              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_gDdddJjvEdyuNMSCXkXoCg" y="-186"/>
-            </children>
-            <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_gDddcZjvEdyuNMSCXkXoCg" showStereotype="Text"/>
-            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_gDddcpjvEdyuNMSCXkXoCg" points="[-3, -76, -3, 80]$[-3, -123, -3, 33]"/>
-          </edges>
           <edges xmi:id="_qUQO0Kf4EdyBvu4QgH3iCw" element="_qUGd0Kf4EdyBvu4QgH3iCw" source="_jJTEAKf4EdyBvu4QgH3iCw" target="_gdBCYJjuEdyuNMSCXkXoCg">
             <children xmi:id="_qUQO06f4EdyBvu4QgH3iCw" type="NameLabel">
               <children xmi:id="_qUQO1af4EdyBvu4QgH3iCw" type="Stereotype"/>
@@ -1412,6 +1406,15 @@ Any information encoded in the additionalInfo is optional: the target OS need no
             </children>
             <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_qUQO0af4EdyBvu4QgH3iCw" showStereotype="Text"/>
             <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_qUQO0qf4EdyBvu4QgH3iCw" points="[2, -67, 9, 97]$[2, -95, 9, 69]"/>
+          </edges>
+          <edges xmi:id="_L0mikagFEdyBvu4QgH3iCw" element="_L0mikKgFEdyBvu4QgH3iCw" source="_Ce8V4CVPEdyiv86aejkLcA" target="_eJg5QJjvEdyuNMSCXkXoCg">
+            <children xmi:id="_L0milKgFEdyBvu4QgH3iCw" type="NameLabel">
+              <children xmi:id="_L0milqgFEdyBvu4QgH3iCw" type="Stereotype"/>
+              <children xmi:id="_L0mil6gFEdyBvu4QgH3iCw" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_L0milagFEdyBvu4QgH3iCw" y="-186"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_L0mikqgFEdyBvu4QgH3iCw" showStereotype="Text"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_L0mik6gFEdyBvu4QgH3iCw" points="[16, -76, 15, 96]$[41, -128, 40, 44]"/>
           </edges>
         </contents>
         <contents xmi:type="notation:Diagram" xmi:id="_ikI6QCVbEdyiv86aejkLcA" type="Class" name="Operation Exceptions Class Diagram">
@@ -1694,185 +1697,8 @@ Any information encoded in the additionalInfo is optional: the target OS need no
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_-nGYoO2KEduD1d0J9j2p4g" name="Interfaces">
       <eAnnotations xmi:id="_-nGYoe2KEduD1d0J9j2p4g" source="uml2.diagrams"/>
-      <packagedElement xmi:type="uml:Interface" xmi:id="_8KmqACVOEdyiv86aejkLcA" name="CommonObjectProvisioning" clientDependency="_gC41sJjvEdyuNMSCXkXoCg">
-        <ownedOperation xmi:id="_VWqjuySoEdyqcomT-DTtQQ" name="setAdditionalInfo" visibility="public" raisedException="_RoIsICVbEdyiv86aejkLcA _uArPACVbEdyiv86aejkLcA _TAYcACVcEdyiv86aejkLcA _rYlggCVdEdyiv86aejkLcA _6VdIcCVdEdyiv86aejkLcA _c9oFECVYEdyiv86aejkLcA" precondition="_VWqjvSSoEdyqcomT-DTtQQ" postcondition="_VWqjvySoEdyqcomT-DTtQQ">
-          <ownedComment xmi:id="_VWqjvCSoEdyqcomT-DTtQQ" annotatedElement="_VWqjuySoEdyqcomT-DTtQQ">
-            <body>This operation sets the additional info attribute of the object (i.e. resource).&#xD;
-As an input only the list of parameters to be changed, removed, or added shall be provided. If an entry is to be removed, &quot;-&quot; shall be specified as a value. If a parameter is specified that is currently not part of the additionalInfo attribute of the resource that parameter is added by the target OS with the specified value.&#xD;
-The operation is best effort.&#xD;
-The output specifies the values which were actually set.</body>
-          </ownedComment>
-          <ownedRule xmi:id="_VWqjvSSoEdyqcomT-DTtQQ" constrainedElement="_VWqjuySoEdyqcomT-DTtQQ">
-            <specification xmi:type="uml:OpaqueExpression" xmi:id="_VWqjviSoEdyqcomT-DTtQQ">
-              <body>Parameter to be set is a best-effort parameter.</body>
-            </specification>
-          </ownedRule>
-          <ownedRule xmi:id="_VWqjvySoEdyqcomT-DTtQQ" constrainedElement="_VWqjuySoEdyqcomT-DTtQQ">
-            <specification xmi:type="uml:OpaqueExpression" xmi:id="_VWqjwCSoEdyqcomT-DTtQQ">
-              <body>Additional info of resource is set/modified.</body>
-            </specification>
-          </ownedRule>
-          <ownedParameter xmi:id="_VWqjwiSoEdyqcomT-DTtQQ" name="void" direction="return"/>
-          <ownedParameter xmi:id="_Iwi3ECSwEdyqcomT-DTtQQ" name="objectName" type="_Pt7dcPoSEduSgtmTzBJnVw">
-            <ownedComment xmi:id="_Iwi3ESSwEdyqcomT-DTtQQ" annotatedElement="_Iwi3ECSwEdyqcomT-DTtQQ">
-              <body>This parameter identifies the name of the object whose additional info attribute has to be changed.</body>
-            </ownedComment>
-            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_Iwi3EiSwEdyqcomT-DTtQQ">
-              <body>NA</body>
-            </defaultValue>
-          </ownedParameter>
-          <ownedParameter xmi:id="_VWqjwySoEdyqcomT-DTtQQ" name="additionalInfo" type="_8_P-sPo7EduVsYI7mfNDXQ" direction="inout">
-            <ownedComment xmi:id="_VWqjxCSoEdyqcomT-DTtQQ" annotatedElement="_VWqjwySoEdyqcomT-DTtQQ">
-              <body>The input parameter contains the list of parameters to be changed, added, or removed.&#xD;
-The output parameter contains the actually updated, changed or added parameters.</body>
-            </ownedComment>
-            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_bEIOESSuEdyqcomT-DTtQQ" value="*"/>
-            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_bEIOECSuEdyqcomT-DTtQQ"/>
-            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_VWqjxSSoEdyqcomT-DTtQQ">
-              <body>empty list</body>
-            </defaultValue>
-          </ownedParameter>
-        </ownedOperation>
-        <ownedOperation xmi:id="_LZdIICSyEdyqcomT-DTtQQ" name="setAliasNameList" visibility="public" raisedException="_c9oFECVYEdyiv86aejkLcA _RoIsICVbEdyiv86aejkLcA _uArPACVbEdyiv86aejkLcA _TAYcACVcEdyiv86aejkLcA _rYlggCVdEdyiv86aejkLcA _6VdIcCVdEdyiv86aejkLcA" precondition="_LZdIIiSyEdyqcomT-DTtQQ" postcondition="_LZdIJCSyEdyqcomT-DTtQQ">
-          <ownedComment xmi:id="_LZdIISSyEdyqcomT-DTtQQ" annotatedElement="_LZdIICSyEdyqcomT-DTtQQ">
-            <body>This operation sets the alias names of the specified object.&#xD;
-As an input only the alias names to be changed, removed, or added shall be provided. If a name is to be removed, &quot;-&quot; shall be specified as a value. If a name is specified that is currently not part of the aliasNameList attribute of the object, the name is added by the target OS with the specified value.&#xD;
-The output contains all current alias names.</body>
-          </ownedComment>
-          <ownedRule xmi:id="_LZdIIiSyEdyqcomT-DTtQQ" constrainedElement="_LZdIICSyEdyqcomT-DTtQQ">
-            <specification xmi:type="uml:OpaqueExpression" xmi:id="_LZdIIySyEdyqcomT-DTtQQ">
-              <body>None</body>
-            </specification>
-          </ownedRule>
-          <ownedRule xmi:id="_LZdIJCSyEdyqcomT-DTtQQ" constrainedElement="_LZdIICSyEdyqcomT-DTtQQ">
-            <specification xmi:type="uml:OpaqueExpression" xmi:id="_LZdIJSSyEdyqcomT-DTtQQ">
-              <body>The aliasNameList attribute of the object is set/modified.</body>
-            </specification>
-          </ownedRule>
-          <ownedParameter xmi:id="_LZdIJiSyEdyqcomT-DTtQQ" isUnique="false" direction="return"/>
-          <ownedParameter xmi:id="_LZdIJySyEdyqcomT-DTtQQ" direction="return"/>
-          <ownedParameter xmi:id="_LZdIKCSyEdyqcomT-DTtQQ" name="objectName" type="_Pt7dcPoSEduSgtmTzBJnVw">
-            <ownedComment xmi:id="_LZdIKSSyEdyqcomT-DTtQQ" annotatedElement="_LZdIKCSyEdyqcomT-DTtQQ">
-              <body>This parameter identifies the name of the object whose alias names have to be changed.</body>
-            </ownedComment>
-            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_LZdIKiSyEdyqcomT-DTtQQ">
-              <body>NA</body>
-            </defaultValue>
-          </ownedParameter>
-          <ownedParameter xmi:id="_LZdIKySyEdyqcomT-DTtQQ" name="aliasNameList" type="_8_P-sPo7EduVsYI7mfNDXQ" direction="inout">
-            <ownedComment xmi:id="_LZdILCSyEdyqcomT-DTtQQ" annotatedElement="_LZdIKySyEdyqcomT-DTtQQ">
-              <body>The input parameter contains the list of alias names to be changed, added, or removed.&#xD;
-The output parameter contains all current alias names.</body>
-            </ownedComment>
-            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_LZdILSSyEdyqcomT-DTtQQ" value="*"/>
-            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_LZdILiSyEdyqcomT-DTtQQ"/>
-            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_LZdILySyEdyqcomT-DTtQQ">
-              <body>empty list</body>
-            </defaultValue>
-          </ownedParameter>
-        </ownedOperation>
-        <ownedOperation xmi:id="_VWeWcCSoEdyqcomT-DTtQQ" name="setNativeEMSName" visibility="public" raisedException="_c9oFECVYEdyiv86aejkLcA _RoIsICVbEdyiv86aejkLcA _uArPACVbEdyiv86aejkLcA _TAYcACVcEdyiv86aejkLcA _rYlggCVdEdyiv86aejkLcA _6VdIcCVdEdyiv86aejkLcA" precondition="_VWeWciSoEdyqcomT-DTtQQ" postcondition="_VWeWdCSoEdyqcomT-DTtQQ">
-          <ownedComment xmi:id="_VWeWcSSoEdyqcomT-DTtQQ" annotatedElement="_VWeWcCSoEdyqcomT-DTtQQ">
-            <body>The nativeEMSName is owned by the EMS. It represents how an EMS user addresses an object on the EMS GUI. The EMS may or may not support changing this value.&#xD;
-&#xD;
-When an object is created by the EMS, the EMS selects the nativeEMSName for the object.&#xD;
-&#xD;
-When an object is created by an NMS, the NMS specifies the userLabel for the object. If the EMS supports setting of nativeEMSNames, the nativeEMSName should be set to the same value as the userLabel. If the EMS does not support setting of nativeEMSNames, or if the nativeEMSName has constraints that the userLabel does not satisfy, the EMS selects the nativeEMSName for the object.&#xD;
-&#xD;
-After an object has been created, the nativeEMSName may be changed by the NMS, if the EMS supports this functionality, using the setNativeEMSName operation.&#xD;
-&#xD;
-If there has been a change in the native EMS name, then the EMS forwards an AVC notification.&#xD;
-</body>
-          </ownedComment>
-          <ownedRule xmi:id="_VWeWciSoEdyqcomT-DTtQQ" constrainedElement="_VWeWcCSoEdyqcomT-DTtQQ">
-            <specification xmi:type="uml:OpaqueExpression" xmi:id="_VWeWcySoEdyqcomT-DTtQQ">
-              <body>1. The NMS knows the object for which it wishes to set the native EMS name.&#xA;2. The EMS supports setting of native EMS Name by NMS.&#xA;</body>
-            </specification>
-          </ownedRule>
-          <ownedRule xmi:id="_VWeWdCSoEdyqcomT-DTtQQ" constrainedElement="_VWeWcCSoEdyqcomT-DTtQQ">
-            <specification xmi:type="uml:OpaqueExpression" xmi:id="_VWeWdSSoEdyqcomT-DTtQQ">
-              <body>Native EMS Name of specified object is set/modified and the corresponding AVC notification is sent.</body>
-            </specification>
-          </ownedRule>
-          <ownedParameter xmi:id="_VWeWdiSoEdyqcomT-DTtQQ" isUnique="false" direction="return"/>
-          <ownedParameter xmi:id="_VWeWdySoEdyqcomT-DTtQQ" direction="return"/>
-          <ownedParameter xmi:id="_VWeWeCSoEdyqcomT-DTtQQ" name="objectName" type="_Pt7dcPoSEduSgtmTzBJnVw">
-            <ownedComment xmi:id="_VWeWeSSoEdyqcomT-DTtQQ" annotatedElement="_VWeWeCSoEdyqcomT-DTtQQ">
-              <body>This parameter identifies the name of the object whose nativeEMSName has to be changed.</body>
-            </ownedComment>
-            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_l0ICYCStEdyqcomT-DTtQQ">
-              <body>NA</body>
-            </defaultValue>
-          </ownedParameter>
-          <ownedParameter xmi:id="_VWeWeiSoEdyqcomT-DTtQQ" name="nativeEMSName">
-            <ownedComment xmi:id="_VWeWeySoEdyqcomT-DTtQQ" annotatedElement="_VWeWeiSoEdyqcomT-DTtQQ">
-              <body>This parameter identifies the new nativeEMSName of the object.</body>
-            </ownedComment>
-            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
-            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_PhLkwCStEdyqcomT-DTtQQ">
-              <body>empty sting</body>
-            </defaultValue>
-          </ownedParameter>
-        </ownedOperation>
-        <ownedOperation xmi:id="_VWqjsCSoEdyqcomT-DTtQQ" name="setNetworkAccessDomain" visibility="public" raisedException="_c9oFECVYEdyiv86aejkLcA _RoIsICVbEdyiv86aejkLcA _rYlggCVdEdyiv86aejkLcA _6VdIcCVdEdyiv86aejkLcA" precondition="_VWqjsiSoEdyqcomT-DTtQQ" postcondition="_VWqjtCSoEdyqcomT-DTtQQ">
-          <ownedComment xmi:id="_VWqjsSSoEdyqcomT-DTtQQ" annotatedElement="_VWqjsCSoEdyqcomT-DTtQQ">
-            <body>The operation allows the requesting OS to change the association of the resource (which contains a networkAccessDomain attribute) to a Network Access Domain.</body>
-          </ownedComment>
-          <ownedRule xmi:id="_VWqjsiSoEdyqcomT-DTtQQ" constrainedElement="_VWqjsCSoEdyqcomT-DTtQQ">
-            <specification xmi:type="uml:OpaqueExpression" xmi:id="_VWqjsySoEdyqcomT-DTtQQ">
-              <body>1. The resource must contain the attribute networkAccessDomain.&#xA;2. The EMS supports setting of the Network Access Domain attribute by the NMS.&#xA;</body>
-            </specification>
-          </ownedRule>
-          <ownedRule xmi:id="_VWqjtCSoEdyqcomT-DTtQQ" constrainedElement="_VWqjsCSoEdyqcomT-DTtQQ">
-            <specification xmi:type="uml:OpaqueExpression" xmi:id="_VWqjtSSoEdyqcomT-DTtQQ">
-              <body>Network Access Domain attribute is set/modified and the corresponding AVC notification is sent.</body>
-            </specification>
-          </ownedRule>
-          <ownedParameter xmi:id="_VWqjtiSoEdyqcomT-DTtQQ" isUnique="false" direction="return"/>
-          <ownedParameter xmi:id="_VWqjtySoEdyqcomT-DTtQQ" direction="return"/>
-          <ownedParameter xmi:id="_VWqjuCSoEdyqcomT-DTtQQ" name="networkAccessDomain">
-            <ownedComment xmi:id="_VWqjuSSoEdyqcomT-DTtQQ" annotatedElement="_VWqjuCSoEdyqcomT-DTtQQ">
-              <body>This parameter identifies the new Network Access Domain name.</body>
-            </ownedComment>
-            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
-            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_VWqjuiSoEdyqcomT-DTtQQ">
-              <body>empty string</body>
-            </defaultValue>
-          </ownedParameter>
-        </ownedOperation>
-        <ownedOperation xmi:id="_VWkdECSoEdyqcomT-DTtQQ" name="setOwner" visibility="public" raisedException="_c9oFECVYEdyiv86aejkLcA _RoIsICVbEdyiv86aejkLcA _uArPACVbEdyiv86aejkLcA _TAYcACVcEdyiv86aejkLcA _rYlggCVdEdyiv86aejkLcA _6VdIcCVdEdyiv86aejkLcA" precondition="_VWkdEiSoEdyqcomT-DTtQQ" postcondition="_VWkdFCSoEdyqcomT-DTtQQ">
-          <ownedComment xmi:id="_VWkdESSoEdyqcomT-DTtQQ" annotatedElement="_VWkdECSoEdyqcomT-DTtQQ">
-            <body>This operation sets the owner attribute of the specified object.</body>
-          </ownedComment>
-          <ownedRule xmi:id="_VWkdEiSoEdyqcomT-DTtQQ" constrainedElement="_VWkdECSoEdyqcomT-DTtQQ">
-            <specification xmi:type="uml:OpaqueExpression" xmi:id="_VWkdEySoEdyqcomT-DTtQQ">
-              <body>The NMS knows the object for which it wishes to set the owner.</body>
-            </specification>
-          </ownedRule>
-          <ownedRule xmi:id="_VWkdFCSoEdyqcomT-DTtQQ" constrainedElement="_VWkdECSoEdyqcomT-DTtQQ">
-            <specification xmi:type="uml:OpaqueExpression" xmi:id="_VWkdFSSoEdyqcomT-DTtQQ">
-              <body>Owner of specified object is set/modified and the corresponding AVC notification is sent.</body>
-            </specification>
-          </ownedRule>
-          <ownedParameter xmi:id="_VWkdFySoEdyqcomT-DTtQQ" direction="return"/>
-          <ownedParameter xmi:id="_VWkdGCSoEdyqcomT-DTtQQ" name="objectName" type="_Pt7dcPoSEduSgtmTzBJnVw">
-            <ownedComment xmi:id="_VWkdGSSoEdyqcomT-DTtQQ" annotatedElement="_VWkdGCSoEdyqcomT-DTtQQ">
-              <body>This parameter identifies the name of the object whose owner has to be changed.</body>
-            </ownedComment>
-            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_UdSkUCSrEdyqcomT-DTtQQ">
-              <body>NA</body>
-            </defaultValue>
-          </ownedParameter>
-          <ownedParameter xmi:id="_VWkdGiSoEdyqcomT-DTtQQ" name="owner">
-            <ownedComment xmi:id="_VWkdGySoEdyqcomT-DTtQQ" annotatedElement="_VWkdGiSoEdyqcomT-DTtQQ">
-              <body>This parameter identifies the new owner of the object.</body>
-            </ownedComment>
-            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
-            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_yeQdkCSrEdyqcomT-DTtQQ">
-              <body>empty string</body>
-            </defaultValue>
-          </ownedParameter>
-        </ownedOperation>
+      <packagedElement xmi:type="uml:Interface" xmi:id="_8KmqACVOEdyiv86aejkLcA" name="CommonObjectProvisioning" isAbstract="true">
+        <generalization xmi:id="_L0mikKgFEdyBvu4QgH3iCw" general="_ccpu0JjvEdyuNMSCXkXoCg"/>
         <ownedOperation xmi:id="_VWkdHCSoEdyqcomT-DTtQQ" name="setUserLabel" visibility="public" raisedException="_c9oFECVYEdyiv86aejkLcA _RoIsICVbEdyiv86aejkLcA _uArPACVbEdyiv86aejkLcA _TAYcACVcEdyiv86aejkLcA _gSxfICVcEdyiv86aejkLcA _rYlggCVdEdyiv86aejkLcA _6VdIcCVdEdyiv86aejkLcA" precondition="_VWkdHiSoEdyqcomT-DTtQQ" postcondition="_VWkdICSoEdyqcomT-DTtQQ">
           <ownedComment xmi:id="_VWkdHSSoEdyqcomT-DTtQQ" annotatedElement="_VWkdHCSoEdyqcomT-DTtQQ">
             <body>This operation sets the user label of an object.&#xD;
@@ -1918,8 +1744,117 @@ If true, then the operation will fail if provided userLabel is already in use.</
             </defaultValue>
           </ownedParameter>
         </ownedOperation>
+        <ownedOperation xmi:id="_VWkdECSoEdyqcomT-DTtQQ" name="setOwner" visibility="public" raisedException="_c9oFECVYEdyiv86aejkLcA _RoIsICVbEdyiv86aejkLcA _uArPACVbEdyiv86aejkLcA _TAYcACVcEdyiv86aejkLcA _rYlggCVdEdyiv86aejkLcA _6VdIcCVdEdyiv86aejkLcA" precondition="_VWkdEiSoEdyqcomT-DTtQQ" postcondition="_VWkdFCSoEdyqcomT-DTtQQ">
+          <ownedComment xmi:id="_VWkdESSoEdyqcomT-DTtQQ" annotatedElement="_VWkdECSoEdyqcomT-DTtQQ">
+            <body>This operation sets the owner attribute of the specified object.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_VWkdEiSoEdyqcomT-DTtQQ" constrainedElement="_VWkdECSoEdyqcomT-DTtQQ">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_VWkdEySoEdyqcomT-DTtQQ">
+              <body>The NMS knows the object for which it wishes to set the owner.</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_VWkdFCSoEdyqcomT-DTtQQ" constrainedElement="_VWkdECSoEdyqcomT-DTtQQ">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_VWkdFSSoEdyqcomT-DTtQQ">
+              <body>Owner of specified object is set/modified and the corresponding AVC notification is sent.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_VWkdFySoEdyqcomT-DTtQQ" direction="return"/>
+          <ownedParameter xmi:id="_VWkdGCSoEdyqcomT-DTtQQ" name="objectName" type="_Pt7dcPoSEduSgtmTzBJnVw">
+            <ownedComment xmi:id="_VWkdGSSoEdyqcomT-DTtQQ" annotatedElement="_VWkdGCSoEdyqcomT-DTtQQ">
+              <body>This parameter identifies the name of the object whose owner has to be changed.</body>
+            </ownedComment>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_UdSkUCSrEdyqcomT-DTtQQ">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_VWkdGiSoEdyqcomT-DTtQQ" name="owner">
+            <ownedComment xmi:id="_VWkdGySoEdyqcomT-DTtQQ" annotatedElement="_VWkdGiSoEdyqcomT-DTtQQ">
+              <body>This parameter identifies the new owner of the object.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_yeQdkCSrEdyqcomT-DTtQQ">
+              <body>empty string</body>
+            </defaultValue>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_LZdIICSyEdyqcomT-DTtQQ" name="setAliasNameList" visibility="public" raisedException="_c9oFECVYEdyiv86aejkLcA _RoIsICVbEdyiv86aejkLcA _uArPACVbEdyiv86aejkLcA _TAYcACVcEdyiv86aejkLcA _rYlggCVdEdyiv86aejkLcA _6VdIcCVdEdyiv86aejkLcA" precondition="_LZdIIiSyEdyqcomT-DTtQQ" postcondition="_LZdIJCSyEdyqcomT-DTtQQ">
+          <ownedComment xmi:id="_LZdIISSyEdyqcomT-DTtQQ" annotatedElement="_LZdIICSyEdyqcomT-DTtQQ">
+            <body>This operation sets the alias names of the specified object.&#xD;
+As an input only the alias names to be changed, removed, or added shall be provided. If a name is to be removed, &quot;-&quot; shall be specified as a value. If a name is specified that is currently not part of the aliasNameList attribute of the object, the name is added by the target OS with the specified value.&#xD;
+The output contains all current alias names.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_LZdIIiSyEdyqcomT-DTtQQ" constrainedElement="_LZdIICSyEdyqcomT-DTtQQ">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_LZdIIySyEdyqcomT-DTtQQ">
+              <body>None</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_LZdIJCSyEdyqcomT-DTtQQ" constrainedElement="_LZdIICSyEdyqcomT-DTtQQ">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_LZdIJSSyEdyqcomT-DTtQQ">
+              <body>The aliasNameList attribute of the object is set/modified.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_LZdIJiSyEdyqcomT-DTtQQ" isUnique="false" direction="return"/>
+          <ownedParameter xmi:id="_LZdIJySyEdyqcomT-DTtQQ" direction="return"/>
+          <ownedParameter xmi:id="_LZdIKCSyEdyqcomT-DTtQQ" name="objectName" type="_Pt7dcPoSEduSgtmTzBJnVw">
+            <ownedComment xmi:id="_LZdIKSSyEdyqcomT-DTtQQ" annotatedElement="_LZdIKCSyEdyqcomT-DTtQQ">
+              <body>This parameter identifies the name of the object whose alias names have to be changed.</body>
+            </ownedComment>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_LZdIKiSyEdyqcomT-DTtQQ">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_LZdIKySyEdyqcomT-DTtQQ" name="aliasNameList" type="_8_P-sPo7EduVsYI7mfNDXQ" direction="inout">
+            <ownedComment xmi:id="_LZdILCSyEdyqcomT-DTtQQ" annotatedElement="_LZdIKySyEdyqcomT-DTtQQ">
+              <body>The input parameter contains the list of alias names to be changed, added, or removed.&#xD;
+The output parameter contains all current alias names.</body>
+            </ownedComment>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_LZdILSSyEdyqcomT-DTtQQ" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_LZdILiSyEdyqcomT-DTtQQ"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_LZdILySyEdyqcomT-DTtQQ">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_VWqjuySoEdyqcomT-DTtQQ" name="setAdditionalInfo" visibility="public" raisedException="_RoIsICVbEdyiv86aejkLcA _uArPACVbEdyiv86aejkLcA _TAYcACVcEdyiv86aejkLcA _rYlggCVdEdyiv86aejkLcA _6VdIcCVdEdyiv86aejkLcA _c9oFECVYEdyiv86aejkLcA" precondition="_VWqjvSSoEdyqcomT-DTtQQ" postcondition="_VWqjvySoEdyqcomT-DTtQQ">
+          <ownedComment xmi:id="_VWqjvCSoEdyqcomT-DTtQQ" annotatedElement="_VWqjuySoEdyqcomT-DTtQQ">
+            <body>This operation sets the additional info attribute of the object (i.e. resource).&#xD;
+As an input only the list of parameters to be changed, removed, or added shall be provided. If an entry is to be removed, &quot;-&quot; shall be specified as a value. If a parameter is specified that is currently not part of the additionalInfo attribute of the resource that parameter is added by the target OS with the specified value.&#xD;
+The operation is best effort.&#xD;
+The output specifies the values which were actually set.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_VWqjvSSoEdyqcomT-DTtQQ" constrainedElement="_VWqjuySoEdyqcomT-DTtQQ">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_VWqjviSoEdyqcomT-DTtQQ">
+              <body>Parameter to be set is a best-effort parameter.</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_VWqjvySoEdyqcomT-DTtQQ" constrainedElement="_VWqjuySoEdyqcomT-DTtQQ">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_VWqjwCSoEdyqcomT-DTtQQ">
+              <body>Additional info of resource is set/modified.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_VWqjwiSoEdyqcomT-DTtQQ" name="void" direction="return"/>
+          <ownedParameter xmi:id="_Iwi3ECSwEdyqcomT-DTtQQ" name="objectName" type="_Pt7dcPoSEduSgtmTzBJnVw">
+            <ownedComment xmi:id="_Iwi3ESSwEdyqcomT-DTtQQ" annotatedElement="_Iwi3ECSwEdyqcomT-DTtQQ">
+              <body>This parameter identifies the name of the object whose additional info attribute has to be changed.</body>
+            </ownedComment>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_Iwi3EiSwEdyqcomT-DTtQQ">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_VWqjwySoEdyqcomT-DTtQQ" name="additionalInfo" type="_8_P-sPo7EduVsYI7mfNDXQ" direction="inout">
+            <ownedComment xmi:id="_VWqjxCSoEdyqcomT-DTtQQ" annotatedElement="_VWqjwySoEdyqcomT-DTtQQ">
+              <body>The input parameter contains the list of parameters to be changed, added, or removed.&#xD;
+The output parameter contains the actually updated, changed or added parameters.</body>
+            </ownedComment>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_bEIOESSuEdyqcomT-DTtQQ" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_bEIOECSuEdyqcomT-DTtQQ"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_VWqjxSSoEdyqcomT-DTtQQ">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+        </ownedOperation>
       </packagedElement>
-      <packagedElement xmi:type="uml:Interface" xmi:id="_ccpu0JjvEdyuNMSCXkXoCg" name="Common">
+      <packagedElement xmi:type="uml:Interface" xmi:id="_ccpu0JjvEdyuNMSCXkXoCg" name="Common" isAbstract="true">
         <ownedComment xmi:id="_xBg78JmdEdyyzpZ_RxHd0w" annotatedElement="_ccpu0JjvEdyuNMSCXkXoCg">
           <body>This interface contains the operations common to all Interfaces.</body>
         </ownedComment>
@@ -1985,7 +1920,6 @@ For Connectionless networks, the &quot;Connectivity_Awareness&quot; capability i
           <ownedParameter xmi:id="_G02h4JmdEdyyzpZ_RxHd0w" name="void" direction="return"/>
         </ownedOperation>
       </packagedElement>
-      <packagedElement xmi:type="uml:Realization" xmi:id="_gC41sJjvEdyuNMSCXkXoCg" supplier="_ccpu0JjvEdyuNMSCXkXoCg" client="_8KmqACVOEdyiv86aejkLcA"/>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_9iESkCVWEdyiv86aejkLcA" name="Operation Exceptions">
       <eAnnotations xmi:id="_9iKZMCVWEdyiv86aejkLcA" source="uml2.diagrams"/>
@@ -2892,7 +2826,6 @@ Object Lifecycle: Created by the reporting OS.</body>
   <Default:Documentation xmi:id="__DKn7f_FEduKKLvC_EB00A" base_Comment="__DKn6v_FEduKKLvC_EB00A"/>
   <Default:Documentation xmi:id="__DKn7v_FEduKKLvC_EB00A" base_Comment="__DKn5__FEduKKLvC_EB00A"/>
   <Default:Documentation xmi:id="__DKn7__FEduKKLvC_EB00A" base_Comment="__DKn5P_FEduKKLvC_EB00A"/>
-  <Default:Documentation xmi:id="_YboPg__HEduKKLvC_EB00A" base_Comment="_YboPgf_HEduKKLvC_EB00A"/>
   <Default:Documentation xmi:id="_8xi70P_LEduKKLvC_EB00A" base_Comment="_8xc1MP_LEduKKLvC_EB00A"/>
   <Default:Documentation xmi:id="_4zdIQw62Edyd7PUNb-IYCQ" base_Comment="_4zdIQQ62Edyd7PUNb-IYCQ"/>
   <Default:Documentation xmi:id="_FvBfcA66Edy1DqAHMbUTOw" base_Comment="_Fu1SMA66Edy1DqAHMbUTOw"/>
@@ -2906,16 +2839,11 @@ Object Lifecycle: Created by the reporting OS.</body>
   <Default:Documentation xmi:id="_VWqjxySoEdyqcomT-DTtQQ" base_Comment="_VWkdESSoEdyqcomT-DTtQQ"/>
   <Default:Documentation xmi:id="_VWqjyCSoEdyqcomT-DTtQQ" base_Comment="_VWkdJSSoEdyqcomT-DTtQQ"/>
   <Default:Documentation xmi:id="_VWqjySSoEdyqcomT-DTtQQ" base_Comment="_VWkdKSSoEdyqcomT-DTtQQ"/>
-  <Default:Documentation xmi:id="_VWqjyiSoEdyqcomT-DTtQQ" base_Comment="_VWqjuSSoEdyqcomT-DTtQQ"/>
-  <Default:Documentation xmi:id="_VWqjyySoEdyqcomT-DTtQQ" base_Comment="_VWeWcSSoEdyqcomT-DTtQQ"/>
   <Default:Documentation xmi:id="_VWwqUCSoEdyqcomT-DTtQQ" base_Comment="_VWqjxCSoEdyqcomT-DTtQQ"/>
-  <Default:Documentation xmi:id="_VWwqUSSoEdyqcomT-DTtQQ" base_Comment="_VWeWeySoEdyqcomT-DTtQQ"/>
   <Default:Documentation xmi:id="_VWwqUiSoEdyqcomT-DTtQQ" base_Comment="_VWkdGSSoEdyqcomT-DTtQQ"/>
   <Default:Documentation xmi:id="_VWwqUySoEdyqcomT-DTtQQ" base_Comment="_VWkdJySoEdyqcomT-DTtQQ"/>
   <Default:Documentation xmi:id="_VWwqVCSoEdyqcomT-DTtQQ" base_Comment="_VWkdHSSoEdyqcomT-DTtQQ"/>
   <Default:Documentation xmi:id="_VWwqVSSoEdyqcomT-DTtQQ" base_Comment="_VWqjvCSoEdyqcomT-DTtQQ"/>
-  <Default:Documentation xmi:id="_VWwqViSoEdyqcomT-DTtQQ" base_Comment="_VWqjsSSoEdyqcomT-DTtQQ"/>
-  <Default:Documentation xmi:id="_VWwqVySoEdyqcomT-DTtQQ" base_Comment="_VWeWeSSoEdyqcomT-DTtQQ"/>
   <Default:Documentation xmi:id="_Iwi3EySwEdyqcomT-DTtQQ" base_Comment="_Iwi3ESSwEdyqcomT-DTtQQ"/>
   <Default:Documentation xmi:id="_LZdIMCSyEdyqcomT-DTtQQ" base_Comment="_LZdIISSyEdyqcomT-DTtQQ"/>
   <Default:Documentation xmi:id="_LZdIMSSyEdyqcomT-DTtQQ" base_Comment="_LZdIKSSyEdyqcomT-DTtQQ"/>
@@ -2970,7 +2898,6 @@ Object Lifecycle: Created by the reporting OS.</body>
   <mTOPUMLProfile_1:mTOPAttribute xmi:id="_nMv9pJmaEdyyzpZ_RxHd0w" base_StructuralFeature="__DKn5v_FEduKKLvC_EB00A"/>
   <mTOPUMLProfile_1:mTOPAttribute xmi:id="_nMv9pZmaEdyyzpZ_RxHd0w" base_StructuralFeature="__DKn6f_FEduKKLvC_EB00A"/>
   <mTOPUMLProfile:mTOPDataType xmi:id="_mwn8e2KeEdy306iEsAaQdA"/>
-  <mTOPUMLProfile_1:mTOPAttribute xmi:id="_nMv9ppmaEdyyzpZ_RxHd0w" base_StructuralFeature="_YboPgP_HEduKKLvC_EB00A"/>
   <mTOPUMLProfile:mTOPDataType xmi:id="_mwuDEGKeEdy306iEsAaQdA" base_DataType="_3OrwoCPwEdypgfGA_0P3-g"/>
   <mTOPUMLProfile_1:mTOPAttribute xmi:id="_nMv9p5maEdyyzpZ_RxHd0w" base_StructuralFeature="_eLQXwvyFEduuuoHTWmKVyQ" writeable="TARGET_OS_ONLY" isInvariant="true"/>
   <mTOPUMLProfile_1:mTOPAttribute xmi:id="_nMv9qJmaEdyyzpZ_RxHd0w" base_StructuralFeature="_eLQXxPyFEduuuoHTWmKVyQ" writeable="TARGET_OS_ONLY" isInvariant="true"/>
@@ -3036,8 +2963,6 @@ Object Lifecycle: Created by the reporting OS.</body>
     <messageExchangePattern>SIT</messageExchangePattern>
   </mTOPUMLProfile_1:mTOPOperation>
   <mTOPUMLProfile_1:mTOPOperation xmi:id="_nNCRgZmaEdyyzpZ_RxHd0w" base_Operation="_LZdIICSyEdyqcomT-DTtQQ"/>
-  <mTOPUMLProfile_1:mTOPOperation xmi:id="_nNCRgpmaEdyyzpZ_RxHd0w" base_Operation="_VWeWcCSoEdyqcomT-DTtQQ"/>
-  <mTOPUMLProfile_1:mTOPOperation xmi:id="_nNCRg5maEdyyzpZ_RxHd0w" base_Operation="_VWqjsCSoEdyqcomT-DTtQQ"/>
   <mTOPUMLProfile_1:mTOPOperation xmi:id="_nNCRhJmaEdyyzpZ_RxHd0w" base_Operation="_VWkdECSoEdyqcomT-DTtQQ"/>
   <mTOPUMLProfile_1:mTOPOperation xmi:id="_nNIYIJmaEdyyzpZ_RxHd0w" base_Operation="_VWkdHCSoEdyqcomT-DTtQQ"/>
   <mTOPUMLProfile:mTOPDataType xmi:id="_mxGdlmKeEdy306iEsAaQdA" base_DataType="_c9oFECVYEdyiv86aejkLcA"/>
@@ -3100,4 +3025,7 @@ Object Lifecycle: Created by the reporting OS.</body>
   <mTOPUMLProfile_1:mTOPAttribute xmi:id="_fJJBVKf4EdyBvu4QgH3iCw" base_StructuralFeature="_fJJBQqf4EdyBvu4QgH3iCw" isInvariant="true"/>
   <Default:Documentation xmi:id="_fJJBV6f4EdyBvu4QgH3iCw" base_Comment="_fJJBQ6f4EdyBvu4QgH3iCw"/>
   <Default:Documentation xmi:id="_fJJBWaf4EdyBvu4QgH3iCw" base_Comment="_fJJBQaf4EdyBvu4QgH3iCw"/>
+  <Default:Documentation xmi:id="_mJCtVqmSEdy39Z05qVqfpQ" base_Comment="_mJCtUamSEdy39Z05qVqfpQ"/>
+  <Default:Documentation xmi:id="_mJCtV6mSEdy39Z05qVqfpQ" base_Comment="_mJCtUqmSEdy39Z05qVqfpQ"/>
+  <mTOPUMLProfile_1:mTOPAttribute xmi:id="_mJCtWKmSEdy39Z05qVqfpQ" notificationType="ATTRIBUTE_VALUE_CHANGE" base_StructuralFeature="_mJCtUKmSEdy39Z05qVqfpQ" writeable="TARGET_OS_ONLY"/>
 </xmi:XMI>
