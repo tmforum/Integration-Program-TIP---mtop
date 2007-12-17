@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ResourceTroubleManagement - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rtm/xsd/pr/v1" xmlns:tns="http://www.tmforum.org/mtop/rtm/xsd/pr/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rtm/xsd/pr/v1" xmlns:tns="http://www.tmforum.org/mtop/rtm/xsd/pr/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:sd="http://www.tmforum.org/mtop/nra/xsd/sd/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: ResourceTroubleManagement</p>
@@ -11,6 +11,7 @@
   <!-- ================ -->
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/SwitchData.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/sd/v1"/>
   <!-- ================ -->
   <xsd:element name="getAllEquipmentProtectionGroupsRequest">
     <xsd:annotation>
@@ -223,9 +224,44 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the retrieveSwitchData operation</p>
-        <p>This operation .</p>
+        <p>This operation is used by the NMS to get the latest switch status
+           on a SNC or a MSP group.</p>
+        <p>It should be noted that although the term MSP was chosen 
+         as the original specific protection scheme to which the related behaviour
+         applied was Multiplex Section Protection, the label is now more generally 
+         applied to any 1+1 or 1:N Trail protection scheme.</p>
+        <p>When used on the reliable CTP/FTP of an SNC, a single struct is returned 
+         and the group name is NULL. The switchToTP indicates the presently active
+         source of the traffic to the protectedTP.</p>
+        <p> When used on a 1+1 MSP, a single struct is provided with the 
+         relevant data.</p>
+        <p> When used on a 1:N MSP, a struct per worker TP is presented with
+       protectedTP being the worker TP Name and the switchToTP identifying
+       the present source of the traffic.</p>
+        <p> When used on a 2F BLSR, two structs are returned, one per TP. 
+       In a stable state, the protectedTP and the switchToTP are the same TP. 
+       In a switched state, the switchToTP is the same for both protectedTPs.</p>
+        <p> When used on a 4F BLSR, two structs are returned,
+       each one identifying a span with the protectedTP being the worker TP 
+       and the switchToTP identifying the present source of the ring traffic
+       for that span. See SD1-34_protectionSwitch.pdf for more information.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="reliableSinkCtpOrGroupName" type="nam:NamingAttributesType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This is the CTP/FTP that is the output of a service selector in 
+         case of the SNC or the group name for which the switch data is 
+         being requested. The termination point name must be explicit (a 
+         generic endpoint specification may not be used in this case). See 
+         SD1-25_objectNaming.pdf for further detail on FTP naming</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="retrieveSwitchDataResponse">
     <xsd:annotation>
@@ -233,6 +269,17 @@
         <p>Response message structure of the retrieveSwitchData operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="switchDataList" type="sd:SwitchDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The current protection switch status of the CTP, FTP or PG provided</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="retrieveSwitchDataException">
     <xsd:annotation>
@@ -240,5 +287,18 @@
         <p>Exception message structure of the retrieveSwitchData operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
 </xsd:schema>

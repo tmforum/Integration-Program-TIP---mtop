@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ResourceProvisioning - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rp/xsd/tlc/v1" xmlns:tns="http://www.tmforum.org/mtop/rp/xsd/tlc/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rp/xsd/tlc/v1" xmlns:tns="http://www.tmforum.org/mtop/rp/xsd/tlc/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lr="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:tl="http://www.tmforum.org/mtop/nrf/xsd/tl/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:crcd="http://www.tmforum.org/mtop/rp/xsd/crcd/v1" xmlns:crmd="http://www.tmforum.org/mtop/rp/xsd/crmd/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: ResourceProvisioning</p>
@@ -11,14 +11,35 @@
   <!-- ================ -->
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Tl.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/tl/v1"/>
+  <xsd:import schemaLocation="CommonResourceCreateDataType.xsd" namespace="http://www.tmforum.org/mtop/rp/xsd/crcd/v1"/>
+  <xsd:import schemaLocation="CommonResourceModifyDataType.xsd" namespace="http://www.tmforum.org/mtop/rp/xsd/crmd/v1"/>
   <!-- ================ -->
   <xsd:element name="createTopologicalLinkRequest">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the createTopologicalLink operation</p>
-        <p>This operation .</p>
+        <p>This operation can be used to create top-level topological links as well 
+         as intra-MLSN topological links.</p>
+        <p>The behaviour of this operation should be the same as if an EMS user 
+         were to attempt to create a topological link (or equivalent operation) at 
+         the EMS user interface.  Therefore, the specific conditions under which the 
+         creation is rejected are left to the EMS implementation.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="newTlCreateData" type="tns:TlCreateDataType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Structure describing the topological link to be created</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="createTopologicalLinkResponse">
     <xsd:annotation>
@@ -26,6 +47,17 @@
         <p>Response message structure of the createTopologicalLink operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="newTopologicalLink" type="tl:TopologicalLinkType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the newly created topological link reflecting the input data</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="createTopologicalLinkException">
     <xsd:annotation>
@@ -33,15 +65,50 @@
         <p>Exception message structure of the createTopologicalLink operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:objectInUse"/>
+            <xsd:element ref="msg:unableToComply"/>
+            <xsd:element ref="msg:userlabelInUse"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="deleteTopologicalLinkRequest">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the deleteTopologicalLink operation</p>
-        <p>This operation .</p>
+        <p>This operation can be used to delete top-level topological links as well 
+         as intra-MLSN topological links.</p>
+        <p>The behaviour of this operation should be the same as if an EMS user 
+         were to attempt to delete a topological link (or equivalent operation) at 
+         the EMS user interface.  Therefore, the specific conditions under which the 
+         deletion is rejected are left to the EMS implementation.</p>
+        <p>It is at the discretion of the EMS to delete topological links created 
+         by the NMS, as the owner of the topological link is the EMS, not 
+         the NMS.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="topoLinkName" type="nam:NamingAttributesType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the topological link to be deleted</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="deleteTopologicalLinkResponse">
     <xsd:annotation>
@@ -49,6 +116,9 @@
         <p>Response message structure of the deleteTopologicalLink operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence/>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="deleteTopologicalLinkException">
     <xsd:annotation>
@@ -56,5 +126,59 @@
         <p>Exception message structure of the deleteTopologicalLink operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
+  <!-- ================ -->
+  <xsd:complexType name="TlCreateDataType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p/>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="crcd:CommonResourceCreateDataType">
+        <xsd:sequence>
+          <xsd:element name="direction" type="com:ConnectionDirectionType">
+            <xsd:annotation>
+              <xsd:documentation><p>Direction of the topological link.  A topological link can be 
+         unidirectional even if both its ends are bidirectional TPs</p></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="layerRate" type="lr:LayerRateType">
+            <xsd:annotation>
+              <xsd:documentation><p>The layer of the topological link</p></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="aEnd" type="nam:NamingAttributesListType">
+            <xsd:annotation>
+              <xsd:documentation><p>Name of A end TP. The 
+             termination point name must be explicit (a generic endpoint specification 
+             may not be used in this case). See SD1-25_objectNaming.pdf  
+             for further detail on FTP naming</p></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="zEnd" type="nam:NamingAttributesListType">
+            <xsd:annotation>
+              <xsd:documentation><p>Name of Z end TP. The 
+             termination point name must be explicit (a generic endpoint specification 
+             may not be used in this case). See SD1-25_objectNaming.pdf  
+             for further detail on FTP naming</p></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
 </xsd:schema>
