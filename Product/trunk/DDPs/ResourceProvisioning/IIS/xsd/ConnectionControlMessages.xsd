@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ResourceProvisioning - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rp/xsd/conc/v1" xmlns:tns="http://www.tmforum.org/mtop/rp/xsd/conc/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:lr="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:snc="http://www.tmforum.org/mtop/nrf/xsd/snc/v1" xmlns:cc="http://www.tmforum.org/mtop/nrf/xsd/cc/v1" xmlns:route="http://www.tmforum.org/mtop/nrf/xsd/route/v1" xmlns:routedes="http://www.tmforum.org/mtop/nrf/xsd/routedes/v1" xmlns:tpdata="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rp/xsd/conc/v1" xmlns:tns="http://www.tmforum.org/mtop/rp/xsd/conc/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:lr="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:snc="http://www.tmforum.org/mtop/nrf/xsd/snc/v1" xmlns:cc="http://www.tmforum.org/mtop/nrf/xsd/cc/v1" xmlns:route="http://www.tmforum.org/mtop/nrf/xsd/route/v1" xmlns:routedes="http://www.tmforum.org/mtop/nrf/xsd/routedes/v1" xmlns:tpdata="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" xmlns:crcd="http://www.tmforum.org/mtop/rp/xsd/crcd/v1" xmlns:crmd="http://www.tmforum.org/mtop/rp/xsd/crmd/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: ResourceProvisioning</p>
@@ -19,6 +19,8 @@
   <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Route.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/route/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/RouteDescriptor.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/routedes/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/TpData.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1"/>
+  <xsd:import schemaLocation="CommonResourceCreateDataType.xsd" namespace="http://www.tmforum.org/mtop/rp/xsd/crcd/v1"/>
+  <xsd:import schemaLocation="CommonResourceModifyDataType.xsd" namespace="http://www.tmforum.org/mtop/rp/xsd/crmd/v1"/>
   <!-- ================ -->
   <xsd:element name="activateSncRequest">
     <xsd:annotation>
@@ -1401,191 +1403,163 @@
       The read-create attributes required for the creation of a subnetworkConnection on the EMS are packaged together in an SNCCreateData structure which the NMS will pass to the EMS at SNC creation time. These are the read-create attributes of the SNC.
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element name="name" type="nam:NamingAttributesType" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>SNC name may be specified by an OS.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="userLabel" type="gen:UserLabelType" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>SNC userLabel may be specified by an OS.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="forceUniqueness" type="xsd:boolean">
-        <xsd:annotation>
-          <xsd:documentation>Specifies whether uniqueness of the userLabel is required amongst SNCs of the EMS. The operation will fail if userLabel is already in use.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="owner" type="gen:OwnerType" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>SNC owner may be specified by the OS.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="direction" type="com:ConnectionDirectionType">
-        <xsd:annotation>
-          <xsd:documentation>The connection directionality must be specified by the NMS.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="staticProtectionLevel" type="com:StaticProtectionLevelType">
-        <xsd:annotation>
-          <xsd:documentation>The NMS must specify the requested staticProtectionLevel as specified in SNC Types.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="protectionEffort" type="com:ProtectionEffortType">
-        <xsd:annotation>
-          <xsd:documentation>The NMS must specify the protectionEffort as specified in SNC Types.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="rerouteAllowed" type="com:RerouteType">
-        <xsd:annotation>
-          <xsd:documentation>This attribute indicates if the EMS/MEs are allowed and/or required to reroute this SNC if there is a failure on this SNC, periodically to optimize the routes, of for any other reason. It is an EMS/ME implementation whether this is done using network routing protocols or if the EMS/MEs detect the failure and take appropriate action to attempt to fix the SNC. There is no requirement for the reroutes to respect the constraints specified in the creation request (ccInclusions, neTpInclusions, fullRoute, neTpSncExclusions).</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="networkRouted" type="com:NetworkRoutedType">
-        <xsd:annotation>
-          <xsd:documentation>This attribute specifies if the network is allowed/required to route this SNC.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="sncType" type="com:SncTypeType">
-        <xsd:annotation>
-          <xsd:documentation>The NMS must specify the sncType as specified in SNC Types.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="layerRate" type="lr:LayerRateType">
-        <xsd:annotation>
-          <xsd:documentation>Identifies the layer at which the SNC is to be made.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="ccInclusions" type="cc:CrossConnectListType" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>Specifies a list of cross-connects that must be used by the SNC. The list must be empty if no cross-connect constraints are required. If the EMS cannot fully satisfy the constraints, then the request will be rejected.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="neTpInclusions" type="nam:NamingAttributesListType" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>Specifies a list of MEs, TLs, PTPs, FTPs and/or CTPs that must be used by the SNC when carrying out a full reroute or adding a routing leg. The list must be empty if no ME/TL/PTP/CTP/FTP constraints are required.If the EMScannot fully satisfy the constraints, then the request will be rejected.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="fullRoute" type="xsd:boolean">
-        <xsd:annotation>
-          <xsd:documentation>Specifies if the neTpInclusions constraints describe the full route of the SNC or routing leg (as opposed to only a partial constraint). When no inclusions constraints are specified, false must be used.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="neTpSncExclusions" type="nam:NamingAttributesListType" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>Specifies a list of MEs, TLs, PTPs, FTPs, CTPs, and/or SNCs to be excluded. This is applicable for adding the leg or doing a full reroute and the route must not use any of the NEs, TLs, PTPs, FTPs and CTPs specified, nor any resource used by the SNCs specified. Specifying both inclusion and exclusion constraints is not supported, therefore this list must be empty if neTpInclusions is not empty.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="aEnd" type="nam:NamingAttributesListType">
-        <xsd:annotation>
-          <xsd:documentation>The NMS must specify the aEnd (CTP/FTP) as specified in SNC Types. Is also used to indicate the Source TP when adding a leg to an existing broadcast system. If the TP is an FTP the NMS is allowed to specify a generic end point within a ME, the EMS will choose the appropriate TP instance. See Object Naming for further detail.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="zEnd" type="nam:NamingAttributesListType">
-        <xsd:annotation>
-          <xsd:documentation>The NMS must specify the zEnd (CTP/FTP) as specified in SNC Types. Is also used to indicate the Sink TP when adding a leg to an existing broadcast system. If the NMS supplies an invalid combination of TPs in aEnd and zEnd, then the EMS will throw an INVALID_INPUT exception. Aend and Zend TPs have to be on the same subnetwork If the TP is an FTP the NMS is allowed to specify a generic end point within a ME, the EMS will choose the appropriate TP instance. See Object Naming for further detail.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="aRoles" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
+    <xsd:complexContent>
+      <xsd:extension base="crcd:CommonResourceCreateDataType">
+        <xsd:sequence>
+          <xsd:element name="direction" type="com:ConnectionDirectionType">
+            <xsd:annotation>
+              <xsd:documentation>The connection directionality must be specified by the NMS.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="staticProtectionLevel" type="com:StaticProtectionLevelType">
+            <xsd:annotation>
+              <xsd:documentation>The NMS must specify the requested staticProtectionLevel as specified in SNC Types.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="protectionEffort" type="com:ProtectionEffortType">
+            <xsd:annotation>
+              <xsd:documentation>The NMS must specify the protectionEffort as specified in SNC Types.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="rerouteAllowed" type="com:RerouteType">
+            <xsd:annotation>
+              <xsd:documentation>This attribute indicates if the EMS/MEs are allowed and/or required to reroute this SNC if there is a failure on this SNC, periodically to optimize the routes, of for any other reason. It is an EMS/ME implementation whether this is done using network routing protocols or if the EMS/MEs detect the failure and take appropriate action to attempt to fix the SNC. There is no requirement for the reroutes to respect the constraints specified in the creation request (ccInclusions, neTpInclusions, fullRoute, neTpSncExclusions).</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="networkRouted" type="com:NetworkRoutedType">
+            <xsd:annotation>
+              <xsd:documentation>This attribute specifies if the network is allowed/required to route this SNC.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="sncType" type="com:SncTypeType">
+            <xsd:annotation>
+              <xsd:documentation>The NMS must specify the sncType as specified in SNC Types.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="layerRate" type="lr:LayerRateType">
+            <xsd:annotation>
+              <xsd:documentation>Identifies the layer at which the SNC is to be made.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="ccInclusions" type="cc:CrossConnectListType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>Specifies a list of cross-connects that must be used by the SNC. The list must be empty if no cross-connect constraints are required. If the EMS cannot fully satisfy the constraints, then the request will be rejected.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="neTpInclusions" type="nam:NamingAttributesListType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>Specifies a list of MEs, TLs, PTPs, FTPs and/or CTPs that must be used by the SNC when carrying out a full reroute or adding a routing leg. The list must be empty if no ME/TL/PTP/CTP/FTP constraints are required.If the EMScannot fully satisfy the constraints, then the request will be rejected.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="fullRoute" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation>Specifies if the neTpInclusions constraints describe the full route of the SNC or routing leg (as opposed to only a partial constraint). When no inclusions constraints are specified, false must be used.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="neTpSncExclusions" type="nam:NamingAttributesListType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>Specifies a list of MEs, TLs, PTPs, FTPs, CTPs, and/or SNCs to be excluded. This is applicable for adding the leg or doing a full reroute and the route must not use any of the NEs, TLs, PTPs, FTPs and CTPs specified, nor any resource used by the SNCs specified. Specifying both inclusion and exclusion constraints is not supported, therefore this list must be empty if neTpInclusions is not empty.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="aEnd" type="nam:NamingAttributesListType">
+            <xsd:annotation>
+              <xsd:documentation>The NMS must specify the aEnd (CTP/FTP) as specified in SNC Types. Is also used to indicate the Source TP when adding a leg to an existing broadcast system. If the TP is an FTP the NMS is allowed to specify a generic end point within a ME, the EMS will choose the appropriate TP instance. See Object Naming for further detail.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="zEnd" type="nam:NamingAttributesListType">
+            <xsd:annotation>
+              <xsd:documentation>The NMS must specify the zEnd (CTP/FTP) as specified in SNC Types. Is also used to indicate the Sink TP when adding a leg to an existing broadcast system. If the NMS supplies an invalid combination of TPs in aEnd and zEnd, then the EMS will throw an INVALID_INPUT exception. Aend and Zend TPs have to be on the same subnetwork If the TP is an FTP the NMS is allowed to specify a generic end point within a ME, the EMS will choose the appropriate TP instance. See Object Naming for further detail.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="aRoles" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
           Defines the element that defines the end point role of all aEnd TPs of an SNC. This is an ordered list indexed with the aEnd TP list of the SNC.
           </xsd:documentation>
-        </xsd:annotation>
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element name="role" type="com:TpRoleInSncType" minOccurs="0" maxOccurs="unbounded"/>
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:element name="alarmReportingIndicator" type="xsd:boolean" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="role" type="com:TpRoleInSncType" minOccurs="0" maxOccurs="unbounded"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="alarmReportingIndicator" type="xsd:boolean" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
 Provides an indication whether alarm reporting for this instance is active or not.
           </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="networkAccessDomain" type="gen:NetworkAccessDomainType" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="networkAccessDomain" type="gen:NetworkAccessDomainType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
           A free-format string used to associate the resource to a Network Access Domain.
           </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="networkReroute" type="xsd:string" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="networkReroute" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
           Indicates if the reroute of an SNC (if allowed) should be computed by the network, by the EMS, or if it does not matter. Values are "Yes", "No", "NotSet"
           </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="revertive" type="xsd:boolean" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>Takes value "True" when an SNC can be switched back to its original route..
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="revertive" type="xsd:boolean" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>Takes value "True" when an SNC can be switched back to its original route..
           </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="revertiveReroute" type="xsd:boolean" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="revertiveReroute" type="xsd:boolean" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
           Indicates whether the rerouting of an SNC is revertive or not.
           </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="intendedRouteAEnds" type="xsd:string" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="intendedRouteAEnds" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
           Must be specified when creating an SNC with multiple routes in case the end points of the intended route are a subset of SNC end points. Value is "aEnd-i-j-k-..." where i, j, k are the indexes of SNC aEnd points.
           </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="intendedRouteExclusive" type="xsd:boolean" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="intendedRouteExclusive" type="xsd:boolean" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
           Specifies when creating an SNC with multiple routes if the intended route is EXCLUSIVE or not; if EXCLUSIVE, then the EMS must find a route that does not conflict or shared CCs or CTPs with any other existing SNC route, in any state (pending/partial/current). Once an EXCLUSIVE (intended) route has been created by the EMS, any further creation operation which conflicts with the exclusive route shall be rejected.
           </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="intendedRouteZEnds" type="xsd:string" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="intendedRouteZEnds" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
           Must be specified when creating an SNC with multiple routes in case the end points of the intended route are a subset of SNC end points. Value is "zEnd-i-j-k-..." where i, j, k are the indexes of SNC zEnd points.
           </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="priority" type="xsd:unsignedInt" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="priority" type="xsd:unsignedInt" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
           The SNC creation priority.
           </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="zRoles" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="zRoles" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
           Defines the element that defines the end point role of all zEnd TPs of an SNC. This is an ordered list indexed with the zEnd TP list of the SNC.
           </xsd:documentation>
-        </xsd:annotation>
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element name="role" type="com:TpRoleInSncType" minOccurs="0" maxOccurs="unbounded"/>
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      <xsd:element name="vendorExtensions">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>This is a container for all vendor extensions.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-    </xsd:sequence>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="role" type="com:TpRoleInSncType" minOccurs="0" maxOccurs="unbounded"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
   </xsd:complexType>
   <!-- ==================== -->
   <xsd:complexType name="SncModifyDataType">
@@ -1594,154 +1568,131 @@ Provides an indication whether alarm reporting for this instance is active or no
       The read-create attributes required for the modification of a subnetworkConnection on the EMS are packaged together in an SNCModifyData structure which the NMS will pass to the EMS in a request to modify an existing SNC.
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element name="userLabel" type="gen:UserLabelType" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>userLabel may be specified by the NMS. May be empty</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="forceUniqueness" type="xsd:boolean">
-        <xsd:annotation>
-          <xsd:documentation>Specifies whether uniqueness of the userLabel is required amongst SNCs of the EMS. The operation will fail if userLabel is already in use.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="owner" type="gen:OwnerType" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>owner may be specified by the NMS. May be empty.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="direction" type="com:ConnectionDirectionType">
-        <xsd:annotation>
-          <xsd:documentation>The connection directionality must be specified by the NMS.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="modifyType" type="xsd:string">
-        <xsd:annotation>
-          <xsd:documentation>Class of modification: "rerouting", "add_protection" or "remove_protection".</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="retainOldSNC" type="xsd:boolean">
-        <xsd:annotation>
-          <xsd:documentation>Request for the EMS to keep the old SNC in pending state.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="modifyServers_allowed" type="xsd:boolean">
-        <xsd:annotation>
-          <xsd:documentation>Allow to modify the server layers to fulfil the protection constraint.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="staticProtectionLevel" type="com:StaticProtectionLevelType">
-        <xsd:annotation>
-          <xsd:documentation>The NMS must specify the requested staticProtectionLevel as specified in SNC Types.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="protectionEffort" type="com:ProtectionEffortType">
-        <xsd:annotation>
-          <xsd:documentation>The NMS must specify the protectionEffort as specified in SNC Types.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="rerouteAllowed" type="com:RerouteType">
-        <xsd:annotation>
-          <xsd:documentation>This attribute indicates if the EMS/MEs are allowed and/or required to reroute this SNC if there is a failure on this SNC, periodically to optimize the routes, of for any other reason. It is an EMS/ME implementation whether this is done using network routing protocols or if the EMS/MEs detect the failure and take appropriate action to attempt to fix the SNC. There is no requirement for the reroutes to respect the constraints specified in the creation request (ccInclusions, neTpInclusions, fullRoute, neTpSncExclusions).</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="networkRouted" type="com:NetworkRoutedType">
-        <xsd:annotation>
-          <xsd:documentation>This attribute specifies if the network is allowed/required to route this SNC.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="sncType" type="com:SncTypeType">
-        <xsd:annotation>
-          <xsd:documentation>The NMS must specify the sncType as specified in SNC Types.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="layerRate" type="lr:LayerRateType">
-        <xsd:annotation>
-          <xsd:documentation>Identifies the layer at which the SNC is to be made.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="addedOrNewRoute" type="route:RouteListType">
-        <xsd:annotation>
-          <xsd:documentation>Depending on the modifyType, AddedOrNewRoute describes the route of a new protection leg or the whole SNC. When it describes a segment to be added, either the SNCP cross-connects or the switch TPs that will be changed in the segment may be specified by the NMS. The EMS then chooses the missing segments. Alternatively, the NMS may specify the full route.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="removedRoute" type="route:RouteListType">
-        <xsd:annotation>
-          <xsd:documentation>RemovedRoute describes dropping of a protection leg from the original SNC. Either the last cross-connects (that contain the SNCP) are specified by the NMS or the full route may be specified. This parameter can be used in conjunction with addedOrNewRoute only to reroute a segment.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="neTpInclusions" type="nam:NamingAttributesListType">
-        <xsd:annotation>
-          <xsd:documentation>Specifies a list of MEs, TLs, PTPs, FTPs and/or CTPs that must be used by the SNC when carrying out a full reroute or adding a routing leg. The list must be empty if no ME/TL/PTP/CTP/FTP constraints are required.If the EMScannot fully satisfy the constraints, then the request will be rejected.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="fullRoute" type="xsd:boolean">
-        <xsd:annotation>
-          <xsd:documentation>Specifies if the neTpInclusions constraints describe the full route of the SNC or routing leg (as opposed to only a partial constraint). When no inclusions constraints are specified, false must be used.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="neTpSncExclusions" type="nam:NamingAttributesListType">
-        <xsd:annotation>
-          <xsd:documentation>Specifies a list of MEs, TLs, PTPs, FTPs, CTPs, and/or SNCs to be excluded. This is applicable for adding the leg or doing a full reroute and the route must not use any of the NEs, TLs, PTPs, FTPs and CTPs specified, nor any resource used by the SNCs specified. Specifying both inclusion and exclusion constraints is not supported, therefore this list must be empty if neTpInclusions is not empty.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="aEnd" type="nam:NamingAttributesListType">
-        <xsd:annotation>
-          <xsd:documentation>The NMS must specify the aEnd (CTP/FTP) as specified in SNC Types. Is also used to indicate the Source TP when adding a leg to an existing broadcast system. If the TP is an FTP the NMS is allowed to specify a generic end point within a ME, the EMS will choose the appropriate TP instance. See Object Naming for further detail.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="zEnd" type="nam:NamingAttributesListType">
-        <xsd:annotation>
-          <xsd:documentation>The NMS must specify the zEnd (CTP/FTP) as specified in SNC Types. Is also used to indicate the Sink TP when adding a leg to an existing broadcast system. If the NMS supplies an invalid combination of TPs in aEnd and zEnd, then the EMS will throw an INVALID_INPUT exception. Aend and Zend TPs have to be on the same subnetwork If the TP is an FTP the NMS is allowed to specify a generic end point within a ME, the EMS will choose the appropriate TP instance. See Object Naming for further detail.</xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="alarmReportingIndicator" type="xsd:boolean" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
+    <xsd:complexContent>
+      <xsd:extension base="crmd:CommonResourceModifyDataType">
+        <xsd:sequence>
+          <xsd:element name="direction" type="com:ConnectionDirectionType">
+            <xsd:annotation>
+              <xsd:documentation>The connection directionality must be specified by the NMS.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="modifyType" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation>Class of modification: "rerouting", "add_protection" or "remove_protection".</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="retainOldSNC" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation>Request for the EMS to keep the old SNC in pending state.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="modifyServers_allowed" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation>Allow to modify the server layers to fulfil the protection constraint.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="staticProtectionLevel" type="com:StaticProtectionLevelType">
+            <xsd:annotation>
+              <xsd:documentation>The NMS must specify the requested staticProtectionLevel as specified in SNC Types.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="protectionEffort" type="com:ProtectionEffortType">
+            <xsd:annotation>
+              <xsd:documentation>The NMS must specify the protectionEffort as specified in SNC Types.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="rerouteAllowed" type="com:RerouteType">
+            <xsd:annotation>
+              <xsd:documentation>This attribute indicates if the EMS/MEs are allowed and/or required to reroute this SNC if there is a failure on this SNC, periodically to optimize the routes, of for any other reason. It is an EMS/ME implementation whether this is done using network routing protocols or if the EMS/MEs detect the failure and take appropriate action to attempt to fix the SNC. There is no requirement for the reroutes to respect the constraints specified in the creation request (ccInclusions, neTpInclusions, fullRoute, neTpSncExclusions).</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="networkRouted" type="com:NetworkRoutedType">
+            <xsd:annotation>
+              <xsd:documentation>This attribute specifies if the network is allowed/required to route this SNC.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="sncType" type="com:SncTypeType">
+            <xsd:annotation>
+              <xsd:documentation>The NMS must specify the sncType as specified in SNC Types.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="layerRate" type="lr:LayerRateType">
+            <xsd:annotation>
+              <xsd:documentation>Identifies the layer at which the SNC is to be made.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="addedOrNewRoute" type="route:RouteListType">
+            <xsd:annotation>
+              <xsd:documentation>Depending on the modifyType, AddedOrNewRoute describes the route of a new protection leg or the whole SNC. When it describes a segment to be added, either the SNCP cross-connects or the switch TPs that will be changed in the segment may be specified by the NMS. The EMS then chooses the missing segments. Alternatively, the NMS may specify the full route.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="removedRoute" type="route:RouteListType">
+            <xsd:annotation>
+              <xsd:documentation>RemovedRoute describes dropping of a protection leg from the original SNC. Either the last cross-connects (that contain the SNCP) are specified by the NMS or the full route may be specified. This parameter can be used in conjunction with addedOrNewRoute only to reroute a segment.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="neTpInclusions" type="nam:NamingAttributesListType">
+            <xsd:annotation>
+              <xsd:documentation>Specifies a list of MEs, TLs, PTPs, FTPs and/or CTPs that must be used by the SNC when carrying out a full reroute or adding a routing leg. The list must be empty if no ME/TL/PTP/CTP/FTP constraints are required.If the EMScannot fully satisfy the constraints, then the request will be rejected.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="fullRoute" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation>Specifies if the neTpInclusions constraints describe the full route of the SNC or routing leg (as opposed to only a partial constraint). When no inclusions constraints are specified, false must be used.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="neTpSncExclusions" type="nam:NamingAttributesListType">
+            <xsd:annotation>
+              <xsd:documentation>Specifies a list of MEs, TLs, PTPs, FTPs, CTPs, and/or SNCs to be excluded. This is applicable for adding the leg or doing a full reroute and the route must not use any of the NEs, TLs, PTPs, FTPs and CTPs specified, nor any resource used by the SNCs specified. Specifying both inclusion and exclusion constraints is not supported, therefore this list must be empty if neTpInclusions is not empty.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="aEnd" type="nam:NamingAttributesListType">
+            <xsd:annotation>
+              <xsd:documentation>The NMS must specify the aEnd (CTP/FTP) as specified in SNC Types. Is also used to indicate the Source TP when adding a leg to an existing broadcast system. If the TP is an FTP the NMS is allowed to specify a generic end point within a ME, the EMS will choose the appropriate TP instance. See Object Naming for further detail.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="zEnd" type="nam:NamingAttributesListType">
+            <xsd:annotation>
+              <xsd:documentation>The NMS must specify the zEnd (CTP/FTP) as specified in SNC Types. Is also used to indicate the Sink TP when adding a leg to an existing broadcast system. If the NMS supplies an invalid combination of TPs in aEnd and zEnd, then the EMS will throw an INVALID_INPUT exception. Aend and Zend TPs have to be on the same subnetwork If the TP is an FTP the NMS is allowed to specify a generic end point within a ME, the EMS will choose the appropriate TP instance. See Object Naming for further detail.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="alarmReportingIndicator" type="xsd:boolean" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
 Provides an indication whether alarm reporting for this instance is active or not.
           </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="networkAccessDomain" type="gen:NetworkAccessDomainType" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="networkAccessDomain" type="gen:NetworkAccessDomainType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
           A free-format string used to associate the resource to a Network Access Domain.
           </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="networkReroute" type="com:RerouteType" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="networkReroute" type="com:RerouteType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
           Indicates if the reroute of an SNC (if allowed) should be computed by the network, by the EMS, or if it does not matter.
           </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="revertive" type="xsd:boolean" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>Takes value "True" when an SNC can be switched back to its original route..
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="revertive" type="xsd:boolean" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>Takes value "True" when an SNC can be switched back to its original route..
           </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="revertiveReroute" type="xsd:boolean" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="revertiveReroute" type="xsd:boolean" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
           Indicates whether the rerouting of an SNC is revertive or not.
           </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="vendorExtensions">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>This is a container for all vendor extensions.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-    </xsd:sequence>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
   </xsd:complexType>
   <!-- ================ -->
   <xsd:complexType name="RouteCreateDataType">

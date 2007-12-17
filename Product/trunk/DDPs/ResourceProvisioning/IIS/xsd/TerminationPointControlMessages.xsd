@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ResourceProvisioning - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rp/xsd/tpc/v1" xmlns:tns="http://www.tmforum.org/mtop/rp/xsd/tpc/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:tp="http://www.tmforum.org/mtop/nrf/xsd/tp/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:ftp="http://www.tmforum.org/mtop/nrf/xsd/ftp/v1" xmlns:gtp="http://www.tmforum.org/mtop/nrf/xsd/gtp/v1" xmlns:mlsn="http://www.tmforum.org/mtop/nrf/xsd/mlsn/v1" xmlns:tppool="http://www.tmforum.org/mtop/nrf/xsd/tppool/v1" xmlns:lp="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" xmlns:tpdata="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rp/xsd/tpc/v1" xmlns:tns="http://www.tmforum.org/mtop/rp/xsd/tpc/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:tp="http://www.tmforum.org/mtop/nrf/xsd/tp/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:ftp="http://www.tmforum.org/mtop/nrf/xsd/ftp/v1" xmlns:gtp="http://www.tmforum.org/mtop/nrf/xsd/gtp/v1" xmlns:mlsn="http://www.tmforum.org/mtop/nrf/xsd/mlsn/v1" xmlns:tppool="http://www.tmforum.org/mtop/nrf/xsd/tppool/v1" xmlns:lp="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" xmlns:tpdata="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" xmlns:crcd="http://www.tmforum.org/mtop/rp/xsd/crcd/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: ResourceProvisioning</p>
@@ -20,6 +20,7 @@
   <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Mlsn.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/mlsn/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/TpPool.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/tppool/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/TpData.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1"/>
+  <xsd:import schemaLocation="CommonResourceCreateDataType.xsd" namespace="http://www.tmforum.org/mtop/rp/xsd/crcd/v1"/>
   <!-- ================ -->
   <xsd:element name="createFtpRequest">
     <xsd:annotation>
@@ -788,102 +789,62 @@ that is involved in a cross connection (or SNC) should be rejected by the EMS. T
         FTP creation time.</p>
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element name="equipmentName" type="nam:NamingAttributesType" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>The identifier of the equipment hosting the new FTP in the NE.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="userLabel" type="gen:UserLabelType" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>A userLabel may be specified by the NMS. May be empty.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="forceUniqueness" type="xsd:boolean" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Specifies whether uniqueness of the userLabel is required amongst FTPs
-				of the EMS. In case of uniqueness, the operation will fail if the
-				userLabel is already in use.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="owner" type="gen:OwnerType" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>An owner may be specified by the NMS. May be empty.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="networkAccessDomain" type="gen:NetworkAccessDomainType" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>The Network Access Domain to which this FTP has been assigned to.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="ingressTrafficDescriptorName" type="nam:NamingAttributesType" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>The FTP may have an optional reference to an ingress (incoming) Transmission Descriptor.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="egressTrafficDescriptorName" type="nam:NamingAttributesType" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>The FTP may have an optional reference to an egress (outgoing) Transmission Descriptor.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="tpMappingMode" type="com:TerminationModeType" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>Within the facade definition, the CTP/FTP can act as an 
+    <xsd:complexContent>
+      <xsd:extension base="crcd:CommonResourceCreateDataType">
+        <xsd:sequence>
+          <xsd:element name="ingressTrafficDescriptorName" type="nam:NamingAttributesType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The FTP may have an optional reference to an ingress (incoming) Transmission Descriptor.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="egressTrafficDescriptorName" type="nam:NamingAttributesType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The FTP may have an optional reference to an egress (outgoing) Transmission Descriptor.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="tpMappingMode" type="com:TerminationModeType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Within the facade definition, the CTP/FTP can act as an 
 				aggregate of associated G.805 TCPs, G.805 Termination Functions and G.805 
 				CPs at one or more LayerRates. The CTP is contained within a PTP or FTP.</p>
-            <p>The TerminationMode attribute indicates and controls the connection of
+                <p>The TerminationMode attribute indicates and controls the connection of
 				the named CP at a specified LayerRate to the dedicated G.805 TCP and 
 				associated G.805 Termination Function at the same LayerRate within the 
 				CTP/FTP.</p>
-            <p>The TerminationMode is used, for example, to control the Termination and
+                <p>The TerminationMode is used, for example, to control the Termination and
 				mapping to VT1.5 of an STS1 Trail within an OC3 port. This capability
 				could potentially be used to terminate an STS1 backbone Trail within 
 				a lower order mux that has the capability to alternatively 
 				cross-connect the STS1 unterminated. The same capability is used in SDH
 				and is potentially applicable to any LayerRate.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="directionality" type="com:DirectionalityType" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>The direction of the termination point.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="transmissionParams" type="lp:LayeredParametersListType" nillable="true" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>A list of layer rates on which connectivity can be established in the
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="directionality" type="com:DirectionalityType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The direction of the termination point.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="transmissionParams" type="lp:LayeredParametersListType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>A list of layer rates on which connectivity can be established in the
 				flow domain together with a set of connectionless technology parameters for 
 				each layer rate. Refer to chapter "Connectionless Technology Parameters" of the
 				supporting document LayeredParameters.pdf for details of the currently defined
 				connectionless parameters.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>This is a container for all vendor extensions.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-    </xsd:sequence>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
   </xsd:complexType>
 </xsd:schema>
