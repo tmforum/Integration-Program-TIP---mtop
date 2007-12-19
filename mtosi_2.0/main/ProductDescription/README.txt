@@ -7,8 +7,29 @@ of the MTOSI DDPs you need into the SAME directory.
 
 ----------
 
-Each of the MTOSI zipfiles contains the contents of one Document 
-Delivery Package (DDP) at a specific release date and time.
+This release is made of 10 Document Delivery Packages (DDPs).
+Some of them may depend on artifacts defined in one or several other DDPs.
+For this reason you may have to download and extract the contents
+of more than one DDP.
+Here below is the dependency graph between those 10 DDPs:
+
+                          FMW
+                           |
+             ----------------------------
+            |                            |
+           NRB                           SB
+            |                            |
+        ----------                       |
+       |          |                      | 
+      NRF         NRA                    |
+       |          :                      |
+    --------------------                 |
+   |..............:.....|.               |
+   |:     |:     |:     |:               |
+  MRI     RP    RPM    RTM               SA
+
+Each of the MTOSI zipfiles contains the contents of one DDP
+at a specific release date and time.
 
 You may need to download and unzip multiple DDPs to completely 
 cover the MTOSI subinterfaces of interest to you. All of the
