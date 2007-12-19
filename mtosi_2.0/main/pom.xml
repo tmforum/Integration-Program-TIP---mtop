@@ -1,0 +1,192 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.tmforum.lab.mtop</groupId>
+  <artifactId>mtop-products</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>mTOP Products</name>
+  <url>http://www.tmforum.org/mtop</url>
+  <description> mTOP Products description</description>
+  <modules>
+    <module>ProductDescription</module>
+    <module>DDPs</module>
+  </modules>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.tmforum.lab.mtop</groupId>
+        <artifactId>mtop-release-plugin</artifactId>
+        <extensions>true</extensions>
+        <!-- executions>
+          <execution>
+            <id>upload-odt-documents</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>upload-odt-documents</goal>
+            </goals>
+          </execution>
+        </executions -->
+        <configuration>
+          <wordInputDir>${basedir}</wordInputDir>
+          <wordIncludesRegexp>doc$</wordIncludesRegexp>
+          <wordOutputDir>${basedir}/target/output-docs</wordOutputDir>
+          <odtOutputDir>${distributionManagement.repository.url}</odtOutputDir>
+          <existUri>xmldb:exist://labbook:8888/xmlrpc</existUri>
+          <existCollection>/db/mTOP</existCollection>
+          <odtDir>${distributionManagement.repository.url}</odtDir>
+          <existUserName>${exist.username}</existUserName>
+          <existPassword>${exist.password}</existPassword>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <issueManagement>
+    <system>GForge MTOSI R2.0 Errata (bugs) tracker</system>
+    <url>http://gforge.tmforum.org/tracker/?atid=177&amp;group_id=12&amp;func=browse</url>
+  </issueManagement>
+  <mailingLists>
+    <mailingList>
+      <name>mTOP-ResourceManagement email list</name>
+      <post>mtop-rm@lists.tmfourm.org</post>
+      <archive>http://www.tmforum.org/cws/view_folder.aspx?SelectedIndex=4&amp;team_ID=123</archive>
+    </mailingList>
+  </mailingLists>
+  <distributionManagement>
+    <downloadUrl>https://lab.tmforum.org/mtop/maven/repository</downloadUrl>
+    <repository>
+      <id>org.tmforum.lab.mtop.site</id>
+      <name>Local TMForum LabMachine mTOP repository</name>
+      <url>file:target/repository</url>
+    </repository>
+    <site>
+      <id>org.tmforum.lab.mtop</id>
+      <name>Local TMForum LabMachine mTOP Products website</name>
+      <url>file:target/website</url>
+    </site>
+  </distributionManagement>
+  <profiles>
+    <profile>
+      <id>deployOnLabMachine</id>
+      <activation>
+        <file>
+          <exists>/etc/lab.tmforum.org</exists>
+        </file>
+      </activation>
+      <distributionManagement>
+        <downloadUrl>https://lab.tmforum.org/mtop/maven/repository</downloadUrl>
+        <repository>
+          <id>org.tmforum.lab.mtop</id>
+          <name>TMForum LabMachine mTOP repository</name>
+          <url>file:///home/mtop/httpsdocs/maven/repository</url>
+        </repository>
+        <site>
+          <id>org.tmforum.lab.mtop.site</id>
+          <name>TMForum LabMachine mTOP Products website</name>
+          <url>file:///home/mtop/httpsdocs/maven/mtop-products</url>
+        </site>
+      </distributionManagement>
+    </profile>
+    <profile>
+      <id>use-bluetetra-wsdldoc</id>
+      <activation>
+        <property>
+          <name>use-bluetetra-wsdldoc</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.bluetetra</groupId>
+            <artifactId>bluetetra-wsdldoc-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>build-wsdl-docs</id>
+                <phase>generate-sources</phase>
+                <goals>
+                  <goal>build-wsdl-docs</goal>
+                </goals>
+                <configuration>
+                  <propFile>${wsdldoc-directory}/config/wsdldoc.properties</propFile>
+                  <templateDir>${wsdldoc-directory}/template/default</templateDir>
+                  <inputDir>${basedir}/IIS</inputDir>
+                  <includesRegexp>wsdl</includesRegexp>
+                  <excludesRegexp>_Messages.wsdl</excludesRegexp>
+                  <outputDir>${basedir}/target/classes/IIS/wsdl-docs</outputDir>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.tmforum.lab.mtop</groupId>
+            <artifactId>mtop-release-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>fix-wsdldoc</id>
+                <phase>process-sources</phase>
+                <goals>
+                  <goal>find-replace-text</goal>
+                </goals>
+                <configuration>
+                  <includesRegexp>html</includesRegexp>
+                  <findPatternRegexp>file:${basedir}/IIS/</findPatternRegexp>
+                  <textDir>${basedir}/target/classes/IIS/wsdl-docs</textDir>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+  <developers>
+    <developer>
+      <id>sgaito</id>
+      <name>Stephen Gaito</name>
+      <email>sgaito@tmforum.org</email>
+      <url>http://www.tmforum.org</url>
+      <organization>TMForum</organization>
+      <organizationUrl>http://www.tmforum.org</organizationUrl>
+      <roles>
+        <role>developer</role>
+      </roles>
+      <timezone>0</timezone>
+      <properties>
+        <picUrl>http://www.tmforum.org</picUrl>
+      </properties>
+    </developer>
+  </developers>
+  <contributors>
+    <contributor>
+      <name>Michel Besson</name>
+      <email>Michel.Besson@amdocs.com</email>
+      <organization>Amdocs</organization>
+      <organizationUrl>http://www.amdocs.com</organizationUrl>
+      <roles>
+        <role>DDP process expert</role>
+      </roles>
+      <timezone>+1</timezone>
+    </contributor>
+  </contributors>
+  <organization>
+    <name>TMForum mTOP program</name>
+    <url>http://www.tmforum.org/cws/view_folder.aspx?team_ID=81</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>TMForum OpenOSS License (based upon Apache 2.0)</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+      <comments>TMForum OpenOSS License (based upon Apache 2.0)</comments>
+    </license>
+  </licenses>
+</project>
