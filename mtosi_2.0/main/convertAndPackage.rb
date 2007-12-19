@@ -18,6 +18,15 @@ def reportLinks()
   linkFile.close();
 end
 
+# copy a file to the target directory
+def copyFileToTarget(file, srcDir, destDir) 
+  inFileName = "#{srcDir}/#{file}";
+  outFileName = "#{destDir}/#{file}";
+  puts "copying: [#{inFileName}]";
+  puts "\tto: [#{outFileName}]";
+  system("cp #{inFileName} #{outFileName}");
+end
+
 # convert a pdf file
 def convertPdf(file, srcDir, destDir)
 
@@ -74,6 +83,8 @@ def findPdfFiles(file, srcDir, destDir)
   else 
     if (srcFile =~ /\.pdf/) then
       convertPdf(file, srcDir, destDir);
+    elsif (srcFile =~ /SD2-18_VPNServiceModel\.xls/) then
+      copyFileToTarget(file, srcDir, destDir);
     end
   end
 
@@ -103,7 +114,7 @@ def createZipFiles()
     next if (aFile =~ /^pom.xml$/);
     next if (aFile =~ /^\.svn$/);
     puts "building zipfile for [#{aFile}]";
-    releaseNotesFileName = "TMF521_MTOSI_Release2.0BA-#{$ddpName[aFile]}.pdf";
+    releaseNotesFileName = "TMF521_MTOSI_Release2.0BA.pdf";
     system("cp ../ProductDescription/TMF521_MTOSI_Release2.0BA.pdf ProductDescription/#{releaseNotesFileName}");
 
     readmeFileName = "README-#{$ddpName[aFile]}.txt";
