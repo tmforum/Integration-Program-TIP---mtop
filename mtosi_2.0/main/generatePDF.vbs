@@ -59,6 +59,7 @@ Call WordConverter("ProductDescription\TMF521_MTOSI_Release2.0BA.doc", "")
 'Framework
 Call WordConverter("DDPs\Framework\BA\TMF518_FMW.doc", "")
 Call WordConverter("DDPs\Framework\SD\SD1-6_ContainedTPs.doc", "")
+Call WordConverter("DDPs\Framework\SD\SD1-8_encodingX731M3100.doc", ""
 Call WordConverter("DDPs\Framework\SD\SD1-14_IMOverview.doc", "")
 Call WordConverter("DDPs\Framework\SD\SD1-16_LayeredParameters.doc", "")
 Call WordConverter("DDPs\Framework\SD\SD1-17_LayerRates.doc", "")
