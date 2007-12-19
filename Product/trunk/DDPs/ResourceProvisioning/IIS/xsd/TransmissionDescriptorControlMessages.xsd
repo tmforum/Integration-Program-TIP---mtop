@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ResourceProvisioning - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rp/xsd/tmdc/v1" xmlns:tns="http://www.tmforum.org/mtop/rp/xsd/tmdc/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rp/xsd/tmdc/v1" xmlns:tns="http://www.tmforum.org/mtop/rp/xsd/tmdc/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lp="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" xmlns:tmd="http://www.tmforum.org/mtop/nrf/xsd/tmd/v1" xmlns:tpdata="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" xmlns:crcd="http://www.tmforum.org/mtop/rp/xsd/crcd/v1" xmlns:crmd="http://www.tmforum.org/mtop/rp/xsd/crmd/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: ResourceProvisioning</p>
@@ -11,14 +11,34 @@
   <!-- ================ -->
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayeredParameters.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lp/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Tmd.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/tmd/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/TpData.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1"/>
+  <xsd:import schemaLocation="CommonResourceCreateDataType.xsd" namespace="http://www.tmforum.org/mtop/rp/xsd/crcd/v1"/>
+  <xsd:import schemaLocation="CommonResourceModifyDataType.xsd" namespace="http://www.tmforum.org/mtop/rp/xsd/crmd/v1"/>
   <!-- ================ -->
   <xsd:element name="createTransmissionDescriptorRequest">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the createTransmissionDescriptor operation</p>
-        <p>This operation .</p>
+        <p>This operation is used to create
+         a new Transmission Descriptor on the server. A Transmission Descriptor 
+         create data representing the new Transmission Descriptor is 
+         passed as input. The resulting Transmission Descriptor is 
+         returned as a result.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="newTmdCreateData" type="tns:TmdCreateDataType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>information about the TMD to be created</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="createTransmissionDescriptorResponse">
     <xsd:annotation>
@@ -26,6 +46,17 @@
         <p>Response message structure of the createTransmissionDescriptor operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="newTransmissionDescriptor" type="tmd:TransmissionDescriptorType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The resulting TMD</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="createTransmissionDescriptorException">
     <xsd:annotation>
@@ -33,15 +64,43 @@
         <p>Exception message structure of the createTransmissionDescriptor operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:capacityExceeded"/>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:userlabelInUse"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="deleteTransmissionDescriptorRequest">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the deleteTransmissionDescriptor operation</p>
-        <p>This operation .</p>
+        <p>This operation is used to 
+         delete a Transmission Descriptor on the server. This operation is
+         idempotent. If the service is called with the
+         name of a non-existent Transmission Descriptor, it will succeed.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="transmissionDescriptorName" type="nam:NamingAttributesType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the TMD to be deleted</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="deleteTransmissionDescriptorResponse">
     <xsd:annotation>
@@ -49,6 +108,9 @@
         <p>Response message structure of the deleteTransmissionDescriptor operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence/>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="deleteTransmissionDescriptorException">
     <xsd:annotation>
@@ -56,6 +118,135 @@
         <p>Exception message structure of the deleteTransmissionDescriptor operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:objectInUse"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="modifyTransmissionDescriptorRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the modifyTransmissionDescriptor operation</p>
+        <p>This operation is used to modify a
+         Transmission Descriptor (TMD) in the EMS.
+         The resulting Transmission Descriptor is 
+         returned as a result.</p>
+         <p> When transmission parameters are modified, this will automatically 
+         modify the corresponding parameters in all associated TPs/MFDs on a best 
+         effort basis. TPs/MFDs whose parameters could not be modified shall be 
+         returned by the EMS. </p>
+         <p> Note: Only the modified parameters will be updated in the TPs/MFDs;
+         i.e., the TMD parameter/value list may be inconsistent with the corresponding 
+         parameter/value list of the associated TPs/MFDs.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="transmissionDescriptorName" type="nam:NamingAttributesType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the TMD to be modified</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tmdModifyData" type="tns:TmdModifyDataType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>information about the TMD to be modified</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tpsToModify" type="tpdata:TpDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The list of TPs with associated parameters to be applied</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="modifyTransmissionDescriptorResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the modifyTransmissionDescriptor operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="tpsToModify" type="tpdata:TpDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The list of TPs with associated applied parameters</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="modifiedTransmissionDescriptor" type="tmd:TransmissionDescriptorType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>result of the modification</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="failedMeList" type="nam:NamingAttributesListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the names of all
+             TMD associated MEs that could not be reached by the EMS</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="failedTpsMfdsList" type="nam:NamingAttributesListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the names of all
+             TPs and MFDs that could not be changed to the new parameter values due to
+             some error reasons</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>In case a "best effort" parameter could not be set   
+               an indication of the fault reason is provided by the EMS</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="modifyTransmissionDescriptorException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the modifyTransmissionDescriptor operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:userlabelInUse"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="verifyTmdAssignmentRequest">
@@ -80,4 +271,113 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
+  <!-- ================ -->
+  <xsd:complexType name="TmdCreateDataType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The attributes required for the creation of a transmission descriptor
+           on the EMS are packaged together in a TMDCreateData structure which the NMS
+           will pass to the EMS at TMD creation time. These are the read-create
+           attributes of the TMD</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="crcd:CommonResourceCreateDataType">
+        <xsd:sequence>
+          <xsd:element name="transmissionParams" type="lp:LayeredParametersListType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>A list of traffic conditioning parameters which can be set and/or 
+             retrieved at a specified connectionless layer on a Termination Point (TP) 
+             having this TC Profile associated. Refer to chapter "Traffic Conditioning 
+             Parameters" of the supporting document SD1-16_LayeredParameters.pdf
+             for details of the currently defined connectionless parameters</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="additionalObjectInfo" type="nam:NvsListType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Additional info parameters which can be set 
+                 on a TP or MFD by associating this TMD</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="containingTmdName" type="nam:NamingAttributesType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The name of another TMD which is considered to contain this TMD.
+               The semantics of the containment is that the TMD to be created shall
+               inherit the layered transmission parameters and additional TP
+               information from the containing TMD</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="externalRepresentationReference" type="xsd:string" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>A means to store at the EMS a reference to the external representation
+                 of the TMD (e.g., an XML file name).  The contents of this
+                 attribute is opaque at the NML-EML interface and not utilized</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:complexType name="TmdModifyDataType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The attributes required for the modification of a transmission descriptor
+         on the EMS are packaged together in a TMDModifyData structure which the NMS
+         will pass to the EMS</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="crmd:CommonResourceModifyDataType">
+        <xsd:sequence>
+          <xsd:element name="transmissionParams" type="lp:LayeredParametersListType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>A list of traffic conditioning parameters which can be set and/or 
+             retrieved at a specified connectionless layer on a Termination Point (TP) 
+             having this TC Profile associated. Refer to chapter "Traffic Conditioning 
+             Parameters" of the supporting document SD1-16_LayeredParameters.pdf
+             for details of the currently defined connectionless parameters</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="additionalObjectInfo" type="nam:NvsListType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Additional info parameters which can be set 
+                 on a TP or MFD by associating this TMD</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="containingTmdName" type="nam:NamingAttributesType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The name of another TMD which is considered to contain this TMD.
+               The semantics of the containment is that the TMD to be created shall
+               inherit the layered transmission parameters and additional TP
+               information from the containing TMD</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="externalRepresentationReference" type="xsd:string" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>A means to store at the EMS a reference to the external representation
+                 of the TMD (e.g., an XML file name).  The contents of this
+                 attribute is opaque at the NML-EML interface and not utilized</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
 </xsd:schema>
