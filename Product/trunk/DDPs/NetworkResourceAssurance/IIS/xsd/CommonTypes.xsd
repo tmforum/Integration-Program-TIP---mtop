@@ -68,6 +68,32 @@
       <xsd:enumeration value="FREE_CHOICE"/>
     </xsd:restriction>
   </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="EProtectionGroupTypeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The EProtectionGroupType with MTOSI minor version extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:EProtectionGroupTypeEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="EProtectionGroupTypeEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The equipment protection group type is a string that identifies the type of equipment protection. The string can take on the following value: "M_FOR_N." M:N equipment protection means that M pieces of equipment protect N pieces of equipment</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="M_FOR_N"/>
+      <xsd:enumeration value="M:N"/>
+    </xsd:restriction>
+  </xsd:simpleType>
 	<!-- ================= -->
 	<xsd:simpleType name="NativeProbableCauseType">
 		<xsd:annotation>
@@ -152,16 +178,73 @@ When present in an alarm notification, it indicates if the cause is known and th
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="ProtectionType">
+  <xsd:complexType name="ProtectionGroupTypeType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>The protection type identifies whether a protection switch is an MS protection switch or an SNCP protection switch.</p>
-   <p>It should be noted that although the term MSP was chosen as the original specific protection scheme to which the related behaviour applied was Multiplex Section Protection, the label is now more generally applied to any 1+1 or 1:N Trail protection scheme.</p>
+        <p>The ProtectionGroupType with MTOSI minor version extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:ProtectionGroupTypeEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="ProtectionGroupTypeEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The protection group type identifies the type of the protection Group. </p>
+        <p>It should be noted that although the term MSP was chosen as the original specific protection scheme to which the related behaviour applied was Multiplex Section Protection, the label is now more generally applied to any 1+1 or 1:N Trail protection scheme</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="PGT_MSP_1_PLUS_1"/>
+      <xsd:enumeration value="PGT_MSP_1_FOR_N"/>
+      <xsd:enumeration value="PGT_2_FIBER_BLSR"/>
+      <xsd:enumeration value="PGT_4_FIBER_BLSR"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="ProtectionTypeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The ProtectionType with MTOSI minor version and vendor extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:ProtectionTypeEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="ProtectionTypeEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The protection type identifies whether a protection switch is an MS protection switch or an SNCP protection switch. 
+It should be noted that although the term MSP was chosen as the original specific protection scheme to which the related behaviour applied was Multiplex Section Protection, the label is now more generally applied to any 1+1 or 1:N Trail protection scheme.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="VENDOR_EXT"/>
       <xsd:enumeration value="PT_MSP_APS"/>
       <xsd:enumeration value="PT_SNCP"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="ReversionModeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Reversion mode is used to indicate whether, after repair of a failed resource, an additional switch should be made to revert to the preferred resource. Revertive modes may require a wait to restore (WTR) time setting.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="RM_UNKNOWN"/>
+      <xsd:enumeration value="RM_NON_REVERTIVE"/>
+      <xsd:enumeration value="RM_REVERTIVE"/>
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
@@ -254,6 +337,33 @@ When present in an alarm notification, it identifies further refinements to the 
         <xsd:documentation>Value indicates a switch that was requested by the operator and includes forced switches</xsd:documentation>
         </xsd:annotation>
       </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="G_774_3_APSfunctionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The G_774_3_APSfunction with MTOSI minor version and vendor extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:G_774_3_APSfunctionEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="G_774_3_APSfunctionEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Indicates if the switching function is based on APS standardized protocol or on a proprietary protocol.  "G.783" is set in case of K1/K2 based APS, and "Legacy" is set in case of proprietary protocol, as for radio equipment for example.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="VENDOR_EXT"/>
+      <xsd:enumeration value="G.783"/>
+      <xsd:enumeration value="Legacy"/>
     </xsd:restriction>
   </xsd:simpleType>
 </xsd:schema>

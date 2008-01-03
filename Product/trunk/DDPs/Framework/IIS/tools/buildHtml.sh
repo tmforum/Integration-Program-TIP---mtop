@@ -20,7 +20,7 @@ mkdir $HTML_HOME
 ##
 ## Generate doc
 ##
-java -DWSDL_HOME=$WSDL_HOME -Xmx256m -jar $WSDL_HOME/wsdldoc.jar -title "MTOSI R2.0 Framework DDP IIS" -verbose -dir $HTML_HOME ../wsdl/CommonObjectInfoProvisioning/* ../wsdl/NotificationBroker/* ../wsdl/NotificationConsumer/* ../wsdl/NotificationProducer/* ../xsd/Event*
+java -DWSDL_HOME=$WSDL_HOME -Xmx256m -jar $WSDL_HOME/wsdldoc.jar -title "MTOSI R2.0 Framework DDP IIS" -verbose -dir $HTML_HOME ../wsdl/NotificationBroker/* ../wsdl/NotificationConsumer/* ../wsdl/NotificationProducer/* ../xsd/Event*
 
 #
 # Fix absolute path issues with WSDLdoc HTML generation
