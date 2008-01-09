@@ -113,17 +113,187 @@
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="priority" type="xsd:unsignedInt" nillable="true" minOccurs="0">
+          <xsd:element name="aRoles" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-                <p>The priority allows to prevent activating routes because of CC or CTP conflicts with equal or higher prior SNCs.  An SNC or a Connection in the Control Plane can pre-empt resources of another SNC of lower priority for restoration purposes.</p>
+          Defines the element that defines the end point role of all aEnd TPs of an SNC. This is an ordered list indexed with the aEnd TP list of the SNC.
+          </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="role" type="com:TpRoleInSncType" minOccurs="0" maxOccurs="unbounded"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="aEndTpList" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>String representing a sequence of name-value pairs. The backslash (“\”) character is used as separator.</p>
+                <p>Format: \name=OS\value=CompanyName/OSname\name=ME\value=ManagedElementName\name=PTP\value=PTPName\name=CTP\value=CTPName
+E.g.: 
+\name=OS\value=BigCompany/SmallEMS\name=ME\value=YellowManagedElement\name=PTP\value=BluePTP\name=CTP\value=RedCTP</p>
               </xsd:documentation>
             </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="aEndTnaNameOrGroupTnaName" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Represent the TNA or Group-TNA of the Connection. A TNA Name List may have 3 value pairs.
+Format:
+\name=TNAName\value=TNANameValue\name=LogicalPortId\value=LogicalPortIdValue\name= Index\value=IndexValue.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="bundledSncIndicator" type="xsd:boolean" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Indicates whether the SNC constitutes a Bundled SNC service (value “True”) or not..</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="callId" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This is the control plane identifier. This attribute is the Call Name attribute in G.7713.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="callName" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This attribute indicates the Call Name which the connection is supporting in a non control plane case.</p>
+                <p>String containing the RDN of the Call Name.The value in the last name-value pair of name structure</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="connectionId" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This is the control plane identifier. This attribute is the Connection Name attribute in G.7713.
+Note that also the Cross Connection points to its superior Connection.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="connectionSetUpType" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This attribute indicates whether the connection has been established by UNI signalling (SC) or NMS (SPC, PC).</p>
+                <p>Legal values are:<ul>
+                    <li>PC</li>
+                    <li>SC</li>
+                    <li>SPC</li>
+                  </ul>
+                </p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="connectionState" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Indicates that all (“Complete”) or not all (“Searching”) the resources necessary to support the connection have been successfully allocated yet.</p>
+                <p>Legal values are:<ul>
+                    <li>Complete</li>
+                    <li>Searching</li>
+                    <li>N/A</li>
+                  </ul>
+                </p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="maximumCost" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The maximum link/node cost allowed for routing.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="mustRemoveGtpList" type="xsd:boolean" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The parameter is only used for bundled SNCs.  
+If set to “True” the EMS when removing the SNC must make a best-effort attempt to remove the interior GTPs that once belonged to the SNC, and if set to “False” the NMS does not care whether the EMS removes the interior GTPs or not.  
+Any behavior other than best-effort is likely to involve a complicated rollback procedure for the EMS and NEs.  In the case that the parameter is set to “True” and the EMS cannot remove all the interior GTPs, the EMS should return a list of the GTPs that could not be removed in the errorReason field of the deactivateAndDeleteSNC() and deleteSNC() operations.  The errorReason would 
+be “not all interior GTPs could be deleted”;  this would be followed by the names of the GTPs that could not be deleted.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="protectionEffort" type="com:ProtectionEffortType" nillable="true" minOccurs="0">
           </xsd:element>
           <xsd:element name="routeGroupLabel" type="xsd:string" nillable="true" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>This attribute shall represent the route group of the connection.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="routingConstraintEffort" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The effort required for routing constraint application.</p>
+                <p>Legal Values are:<ul>
+                    <li>BEST_EFFORT</li>
+                    <li>EXACT_MATCH</li>
+                  </ul>
+                </p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="srg" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>E.g.:/bridge=123,456/duct=12,34 or /block=123/room=56,78,99.</p>
+                <p>Complex string, slash is used as separator.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="supportedConnectionName" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This attribute indicates the Connection Name (i.e. its superior connection) which the connection is supporting in a non control plane case. Note that this superior connection must be defined in a top level MLSN – which allows identifying it with a simple string – RDN value.</p>
+                <p>RDN of Connection Name, i.e., the value in the last name-value pair of name structure</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="supportingSncList" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This attribute shall contain the names of the supporting Subnetwork Connections if any.
+Note: This attribute is only applicable for top level connections in a non-Control Plane environment if SNCs support indirectly the Call.
+Format: 
+\name=OS\value=CompanyName/EMSname\name=MLSN\value= SubnetworkName\name= SNC\value=SubnetworkName</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="usingHomeRoute" type="xsd:boolean" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Indicates whether the connection is using the home route or not.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="zRoles" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Defines the element that defines the end point role of all zEnd TPs of an SNC. This is an ordered list indexed with the zEnd TP list of the SNC</p>
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="role" type="com:TpRoleInSncType" minOccurs="0" maxOccurs="unbounded"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="zEndTpList" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>see aEndTpList.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="zEndTnaNameOrGroupTnaName" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>see aEndTNANameOrGroupTNAName.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>

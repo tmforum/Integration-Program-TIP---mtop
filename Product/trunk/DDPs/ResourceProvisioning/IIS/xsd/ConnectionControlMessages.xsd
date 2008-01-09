@@ -1493,62 +1493,173 @@ Provides an indication whether alarm reporting for this instance is active or no
           <xsd:element name="networkReroute" type="xsd:string" nillable="true" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-          Indicates if the reroute of an SNC (if allowed) should be computed by the network, by the EMS, or if it does not matter. Values are "Yes", "No", "NotSet"
-          </xsd:documentation>
+                <p>Indicates if the reroute of an SNC (if allowed) should be computed by the network, by the EMS, or if it does not matter. Values are "Yes", "No", "NotSet"</p>
+              </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element name="revertive" type="xsd:boolean" nillable="true" minOccurs="0">
             <xsd:annotation>
-              <xsd:documentation>Takes value "True" when an SNC can be switched back to its original route..
-          </xsd:documentation>
+              <xsd:documentation>
+                <p>Takes value "True" when an SNC can be switched back to its original route.</p>
+              </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element name="revertiveReroute" type="xsd:boolean" nillable="true" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-          Indicates whether the rerouting of an SNC is revertive or not.
-          </xsd:documentation>
+                <p>Indicates whether the rerouting of an SNC is revertive or not.</p>
+              </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element name="intendedRouteAEnds" type="xsd:string" nillable="true" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-          Must be specified when creating an SNC with multiple routes in case the end points of the intended route are a subset of SNC end points. Value is "aEnd-i-j-k-..." where i, j, k are the indexes of SNC aEnd points.
-          </xsd:documentation>
+                <p>Must be specified when creating an SNC with multiple routes in case the end points of the intended route are a subset of SNC end points. Value is "aEnd-i-j-k-..." where i, j, k are the indexes of SNC aEnd points.</p>
+              </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element name="intendedRouteExclusive" type="xsd:boolean" nillable="true" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-          Specifies when creating an SNC with multiple routes if the intended route is EXCLUSIVE or not; if EXCLUSIVE, then the EMS must find a route that does not conflict or shared CCs or CTPs with any other existing SNC route, in any state (pending/partial/current). Once an EXCLUSIVE (intended) route has been created by the EMS, any further creation operation which conflicts with the exclusive route shall be rejected.
-          </xsd:documentation>
+                <p>Specifies when creating an SNC with multiple routes if the intended route is EXCLUSIVE or not; if EXCLUSIVE, then the EMS must find a route that does not conflict or shared CCs or CTPs with any other existing SNC route, in any state (pending/partial/current). Once an EXCLUSIVE (intended) route has been created by the EMS, any further creation operation which conflicts with the exclusive route shall be rejected.</p>
+              </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element name="intendedRouteZEnds" type="xsd:string" nillable="true" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-          Must be specified when creating an SNC with multiple routes in case the end points of the intended route are a subset of SNC end points. Value is "zEnd-i-j-k-..." where i, j, k are the indexes of SNC zEnd points.
-          </xsd:documentation>
+                <p>Must be specified when creating an SNC with multiple routes in case the end points of the intended route are a subset of SNC end points. Value is "zEnd-i-j-k-..." where i, j, k are the indexes of SNC zEnd points.</p>
+              </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element name="priority" type="xsd:unsignedInt" nillable="true" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-          The SNC creation priority.
-          </xsd:documentation>
+                <p>The SNC creation priority</p>
+              </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element name="zRoles" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-          Defines the element that defines the end point role of all zEnd TPs of an SNC. This is an ordered list indexed with the zEnd TP list of the SNC.
-          </xsd:documentation>
+                <p>Defines the element that defines the end point role of all zEnd TPs of an SNC. This is an ordered list indexed with the zEnd TP list of the SNC.</p>
+              </xsd:documentation>
             </xsd:annotation>
             <xsd:complexType>
               <xsd:sequence>
                 <xsd:element name="role" type="com:TpRoleInSncType" minOccurs="0" maxOccurs="unbounded"/>
               </xsd:sequence>
             </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="asapPointer" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Indicates the assignment of an ASAP to this SNC object. Value is of the ASAP name.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="aEndTpList" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>String representing a sequence of name-value pairs. The backslash (“\”) character is used as separator.</p>
+                <p>Format: \name=OS\value=CompanyName/OSname\name=ME\value=ManagedElementName\name=PTP\value=PTPName\name=CTP\value=CTPName
+E.g.: 
+\name=OS\value=BigCompany/SmallEMS\name=ME\value=YellowManagedElement\name=PTP\value=BluePTP\name=CTP\value=RedCTP</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="aEndTnaNameOrGroupTnaName" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Represent the TNA or Group-TNA of the Connection. A TNA Name List may have 3 value pairs.
+Format:
+\name=TNAName\value=TNANameValue\name=LogicalPortId\value=LogicalPortIdValue\name= Index\value=IndexValue.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="blsrDirection" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Used in conjunction with “Timeslot” when the EMS cannot use the routing constraints for a BLSR case.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="bundledSncIndicator" type="xsd:boolean" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Indicates whether the SNC constitutes a Bundled SNC service (value “True”) or not..</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="maximumCost" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The maximum link/node cost allowed for routing.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="mustRemoveGtpList" type="xsd:boolean" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The parameter is only used for bundled SNCs.  
+If set to “True” the EMS when removing the SNC must make a best-effort attempt to remove the interior GTPs that once belonged to the SNC, and if set to “False” the NMS does not care whether the EMS removes the interior GTPs or not.  
+Any behavior other than best-effort is likely to involve a complicated rollback procedure for the EMS and NEs.  In the case that the parameter is set to “True” and the EMS cannot remove all the interior GTPs, the EMS should return a list of the GTPs that could not be removed in the errorReason field of the deactivateAndDeleteSNC() and deleteSNC() operations.  The errorReason would 
+be “not all interior GTPs could be deleted”;  this would be followed by the names of the GTPs that could not be deleted.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="potentialFutureSetupIndicator" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Refers to the aEnd and is used to convey the likely future (or current) configuration of the SNC (see SD1-16_layeredParameters.pdf).</p>
+                <p>Legal Values are: <ul>
+                    <li>RSU_POINT_TO_POINT</li>
+                    <li>RSU_BROADCAST</li>
+                    <li>RSU_ANY_CONFIG</li>
+                  </ul>
+                </p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="routeGroupLabel" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This attribute shall represent the route group of the connection.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="routingConstraintEffort" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The effort required for routing constraint application.</p>
+                <p>Legal Values are:<ul>
+                    <li>BEST_EFFORT</li>
+                    <li>EXACT_MATCH</li>
+                  </ul>
+                </p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="timeslot" type="xsd:integer" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Used in conjunction with “blsrDirection”.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="zEndTpList" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>see aEndTpList.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="zEndTnaNameOrGroupTnaName" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>see aEndTNANameOrGroupTNAName.</p>
+              </xsd:documentation>
+            </xsd:annotation>
           </xsd:element>
         </xsd:sequence>
       </xsd:extension>
@@ -1674,6 +1785,30 @@ Provides an indication whether alarm reporting for this instance is active or no
               <xsd:documentation>
           Indicates whether the rerouting of an SNC is revertive or not.
           </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="asapPointer" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Indicates the assignment of an ASAP to this SNC object. Value is of the ASAP name.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="mustRemoveGtpList" type="xsd:boolean" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The parameter is only used for bundled SNCs.  
+If set to “True” the EMS when removing the SNC must make a best-effort attempt to remove the interior GTPs that once belonged to the SNC, and if set to “False” the NMS does not care whether the EMS removes the interior GTPs or not.  
+Any behavior other than best-effort is likely to involve a complicated rollback procedure for the EMS and NEs.  In the case that the parameter is set to “True” and the EMS cannot remove all the interior GTPs, the EMS should return a list of the GTPs that could not be removed in the errorReason field of the deactivateAndDeleteSNC() and deleteSNC() operations.  The errorReason would 
+be “not all interior GTPs could be deleted”;  this would be followed by the names of the GTPs that could not be deleted.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="priority" type="xsd:unsignedInt" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The SNC creation priority</p>
+              </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
         </xsd:sequence>

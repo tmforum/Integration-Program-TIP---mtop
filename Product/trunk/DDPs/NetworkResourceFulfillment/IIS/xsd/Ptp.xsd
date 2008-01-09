@@ -84,6 +84,22 @@
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
+          <xsd:element name="clientConnectivity" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Implements the client connectivity state of a TP and should be present on TPs whose direct client TPs can be or are fixed cross-connected. When set to “Connected”, the TP is currently multiplexing, i.e. all its client TPs are cross-connected in a fixed way.
+When set to “NotConnectable”, none of the TP's client TPs are involved in fixed cross-connects and none can be cross-connected.
+When set to “NotSet”, the TP is currently in no client connectivity mode, none of its client TPs are cross-connected in a fixed way and nothing prevents this to happen. In case the client TPs of a TP are permanently involved in fixed cross-connects (hard-wired), clientConnectivity will be locked in state “Connected”.  The EMS should then reject cross-connect creation involving the TP itself or any of its client TPs.  If clientConnectivity of a TP is set to “NotSet” and the TP is getting cross-connected, this sets the clientConnectivity to “Connected”. If clientConnectivity is set to “NotSet” and the TP is getting cross-connected at a direct client layer, this sets the TP in a non multiplexing mode (i.e., clientConnectivity is set to “NotConnectable")</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="serverConnectivity" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Implements the server connectivity state of a TP and should be present on TPs whose direct server TPs can be or are fixed cross-connected. When set to “Connected”, the TP is currently inverse multiplexing, i.e. all its server TPs are cross-connected in a fixed way. When set to “NotConnectable”, none of the TP's server TPs are involved in fixed cross-connects and none can be cross-connected. When set to “NotSet”, the TP is currently in no server connectivity mode, none of its server TPs are cross-connected in a fixed way and nothing prevents this to happen. In case the server TPs of a TP are permanently involved in fixed cross-connects (hard-wired), serverConnectivity will be locked in state “Connected”.  The EMS should then reject cross-connect creation involving the TP itself or any of its server TPs.  If serverConnectivity of a TP is set to “NotSet” and the TP is getting cross-connected, this sets the serverConnectivity to “Connected”.If serverConnectivity is set to “NotSet” and the TP is getting cross-connected at a direct server layer, this sets the TP in a non inverse multiplexing mode (i.e., serverConnectivity will be set to “NotConnectable”).</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
         </xsd:sequence>
       </xsd:extension>
     </xsd:complexContent>

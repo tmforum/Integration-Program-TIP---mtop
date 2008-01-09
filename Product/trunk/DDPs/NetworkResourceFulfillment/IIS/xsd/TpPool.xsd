@@ -42,6 +42,60 @@
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
+          <xsd:element name="containedMemberList" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Refers to the indexed members list of the TPPool.  It is only used within AVC notifications.  Use getTpGroupingRelationships() with tpName = TPPool to read the names of the TPPool members.  Use getTpGroupingRelationships() with tpName = PTP/CTP/FTP/GTP to read the TPPool the TP or GTP is a member of.  For full name qualification consider use of the two attributes; MemberContainingMeList and MemberContainingTpList.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="containedMember" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+                  <xsd:annotation>
+                    <xsd:documentation>
+                      <p>value of TP or GTP (RDN) name component of TP or GTP name.</p>
+                    </xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="memberContainingMeList" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Refers to the indexed list of members of the TPPool (i.e., a TP or a GTP).  It is only used within AVC notifications.  Use getTpGroupingRelationships() with tpName = TPPool to read the names of the TPPool members.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="memberContainingMe" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+                  <xsd:annotation>
+                    <xsd:documentation>
+                      <p>value of ME (RDN) name component of ME name.</p>
+                    </xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="memberContainingTpList" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Refers to the indexed list member of the TPPool when this is a CTP.  It is only used within AVC notifications.  Use getTpGroupingRelationships() with tpName = TPPool to read the names of the TPPool members.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="memberContainingTp" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+                  <xsd:annotation>
+                    <xsd:documentation>
+                      <p>value of PTP/FTP (RDN) name component of PTP/FTP name.</p>
+                    </xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
         </xsd:sequence>
       </xsd:extension>
     </xsd:complexContent>
