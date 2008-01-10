@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ResourceTroubleManagement - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rtm/xsd/asapr/v1" xmlns:tns="http://www.tmforum.org/mtop/rtm/xsd/asapr/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rtm/xsd/asapr/v1" xmlns:tns="http://www.tmforum.org/mtop/rtm/xsd/asapr/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lr="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:asap="http://www.tmforum.org/mtop/nra/xsd/asap/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: ResourceTroubleManagement</p>
@@ -11,14 +11,29 @@
   <!-- ================ -->
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/Asap.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/asap/v1"/>
   <!-- ================ -->
   <xsd:element name="getAllAsapNamesWrtOsRequest">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAllAsapNamesWrtOs operation</p>
-        <p>This operation .</p>
+        <p>This operation has exactly the same behaviour as getAllAsapsWrtOs, but 
+         instead of returning the entire object structures, this operation returns 
+         their names.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="osName" type="nam:NamingAttributesType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the OS whose associated ASAP names are being requested.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="getAllAsapNamesWrtOsResponse">
     <xsd:annotation>
@@ -26,6 +41,17 @@
         <p>Response message structure of the getAllAsapNamesWrtOs operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="nameList" type="nam:NamingAttributesListType" minOccurs="0" maxOccurs="unbounded">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The list of names</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="getAllAsapNamesWrtOsException">
     <xsd:annotation>
@@ -33,15 +59,39 @@
         <p>Exception message structure of the getAllAsapNamesWrtOs operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getAllAsapsWrtOsRequest">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAllAsapsWrtOs operation</p>
-        <p>This operation .</p>
+        <p>This operation returns the data structure for each ASAP associated with a given subordinate OS. Note that Wrt in the name of the operation stands for "with respect to".</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="osName" type="nam:NamingAttributesType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the OS whose associated ASAP are being requested.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="getAllAsapsWrtOsResponse">
     <xsd:annotation>
@@ -49,6 +99,17 @@
         <p>Response message structure of the getAllAsapsWrtOs operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="asap" type="asap:AlarmSeverityAssignmentProfileType" nillable="true" minOccurs="0" maxOccurs="unbounded">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>An ASAP associated with the given OS.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="getAllAsapsWrtOsException">
     <xsd:annotation>
@@ -56,15 +117,40 @@
         <p>Exception message structure of the getAllAsapsWrtOs operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getAsapRequest">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAsap operation</p>
-        <p>This operation .</p>
+        <p>This operation returns an ASAP instance given its name.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="asapName" type="nam:NamingAttributesType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the ASAP being requested.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="getAsapResponse">
     <xsd:annotation>
@@ -72,6 +158,17 @@
         <p>Response message structure of the getAsap operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="asap" type="asap:AlarmSeverityAssignmentProfileType" nillable="true" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the ASAP.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="getAsapException">
     <xsd:annotation>
@@ -79,15 +176,39 @@
         <p>Exception message structure of the getAsap operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getAsapAssociatedResourceNamesRequest">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAsapAssociatedResourceNames operation</p>
-        <p>This operation .</p>
+        <p>This operation retrieves all the resource names (could be TPs, SNCs, 
+         etc.) which point to the addressed ASAP instance.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="asapName" type="nam:NamingAttributesType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the ASAP.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="getAsapAssociatedResourceNamesResponse">
     <xsd:annotation>
@@ -95,6 +216,17 @@
         <p>Response message structure of the getAsapAssociatedResourceNames operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="nameList" type="nam:NamingAttributesListType" minOccurs="0" maxOccurs="unbounded">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The list of names</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="getAsapAssociatedResourceNamesException">
     <xsd:annotation>
@@ -102,15 +234,52 @@
         <p>Exception message structure of the getAsapAssociatedResourceNames operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getAsapByResourceRequest">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAsapByResource operation</p>
-        <p>This operation .</p>
+        <p>This operation retrieves the ASAP(s) which are assigned to the addressed 
+         resource. The ASAP list can have zero or more elements, as all resources 
+         but TPs can refer to at most one ASAP. TPs can refer to more ASAPs, at most 
+         as many as the number of encapsulated layer rates.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="resourceName" type="nam:NamingAttributesType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the resource.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="layerRateList" type="lr:LayerRateListType" nillable="true" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>List of TP 
+             layer rates which assigned ASAPs are to be retrieved. If an empty list is 
+             specified, then all ASAPs assigned to the addressed resource will be 
+             replied. The list shall also be empty if the addressed resource is not a TP.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="getAsapByResourceResponse">
     <xsd:annotation>
@@ -118,8 +287,70 @@
         <p>Response message structure of the getAsapByResource operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="asap" type="asap:AlarmSeverityAssignmentProfileType" nillable="true" minOccurs="0" maxOccurs="unbounded">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>An ASAP associated with the given resource at given layer rate.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="getAsapByResourceException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAsapByResource operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getAsapIteratorRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAsapByResource operation</p>
+        <p>This operation retrieves by iteration the next batch of ASAP(s).</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAsapIteratorResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAsapByResource operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="asap" type="asap:AlarmSeverityAssignmentProfileType" nillable="true" minOccurs="0" maxOccurs="unbounded">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>An ASAP associated with the given resource at given layer rate.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAsapIteratorException" type="msg:GetAllDataIteratorExceptionType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getAsapByResource operation</p>
