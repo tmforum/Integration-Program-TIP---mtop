@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM Framework - Copyright TeleManagement Forum 2007 -->
+<wsdl:definitions name="mTOP-MartV1-0" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.tmforum.org/mtop/fmw/wsdl/mart/v1-0" targetNamespace="http://www.tmforum.org/mtop/fmw/wsdl/mart/v1-0">
+  <wsdl:documentation>
+    <p>DDP: Framework</p>
+    <p>Module: Mart Service Interface WSDL JMS Module</p>
+    <p>Description: This module contains all the mTOP Mart Service Interface WSDL definitions for the Web Service deployment profile with SOAP/JMS binding.</p>
+    <p>Version: 1.0</p>
+  </wsdl:documentation>
+  <wsdl:import namespace="http://www.tmforum.org/mtop/fmw/wsdl/mart/v1-0" location="MartPortType.wsdl"/>
+  <wsdl:binding name="MartSoapJmsBinding" type="tns:Mart">
+    <wsdl:documentation>
+      <p>SOAP JMS binding definitions of the operations of the Mart portType (interface)</p>
+    </wsdl:documentation>
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/jms"/>
+    <wsdl:operation name="doProcess">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:doProcessRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:doProcessResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="doProcessException">
+        <soap:fault name="doProcessException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getProcessState">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getProcessStateRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getProcessStateResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getProcessStateException">
+        <soap:fault name="getProcessStateException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="terminateProcess">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:terminateProcessRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:terminateProcessResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="terminateProcessException">
+        <soap:fault name="terminateProcessException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MartJms">
+    <wsdl:documentation>
+      <p>Example of the Mart WSDL Service definition as a deployment example of this mTOP Service Interface. It is expected to be modified to match the specific deployment configuration in a service provider's CCV.</p>
+    </wsdl:documentation>
+    <wsdl:port name="MartSoapJms" binding="tns:MartSoapJmsBinding">
+      <soap:address location="jms://aserver/mtosi/Mart"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

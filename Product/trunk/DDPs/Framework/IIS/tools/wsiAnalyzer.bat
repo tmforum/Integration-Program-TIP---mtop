@@ -6,5 +6,6 @@ set WSI_HOME=..\..\..\..\..\..\tools\wsi-test-tools
 call %WSI_HOME%\java\bin\Analyzer.bat -config .\wsiNotificationProducer.xml
 call %WSI_HOME%\java\bin\Analyzer.bat -config .\wsiNotificationConsumer.xml
 call %WSI_HOME%\java\bin\Analyzer.bat -config .\wsiNotificationBroker.xml
+call %WSI_HOME%\java\bin\Analyzer.bat -config .\wsiMart.xml
 
 pause
