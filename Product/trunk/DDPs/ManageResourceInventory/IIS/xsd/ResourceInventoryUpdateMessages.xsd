@@ -72,7 +72,9 @@
         <p>Response message structure of the updateInventory operation</p>
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:complexType/>
+    <xsd:complexType>
+      <xsd:sequence/>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="updateInventoryException">
     <xsd:annotation>
@@ -175,14 +177,14 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:restriction base="xsd:string">
-      <xsd:enumeration value="BestEffort">
+      <xsd:enumeration value="BEST_EFFORT">
         <xsd:annotation>
           <xsd:documentation>
             <p>The value "bestEffort" means that the target OS shall make as many of the requested updates as possible and report on the ones that failed.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:enumeration>
-      <xsd:enumeration value="Atomic">
+      <xsd:enumeration value="ATOMIC">
         <xsd:annotation>
           <xsd:documentation>
             <p>The value "atomic" means that the target OS must make all the requested updates or completely roll back the operation.</p>
@@ -202,21 +204,21 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:restriction base="xsd:string">
-      <xsd:enumeration value="Replace">
+      <xsd:enumeration value="REPLACE">
         <xsd:annotation>
           <xsd:documentation>
             <p>For each proposed subtree update, everything from the root and below in the target OS's inventory is replaced by the proposed subtree update.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:enumeration>
-      <xsd:enumeration value="MergeWithoutOverwrite">
+      <xsd:enumeration value="MERGE_WITHOUT_OVERWRITE">
         <xsd:annotation>
           <xsd:documentation>
             <p>Each proposed subtree update is merged with the associated subtree in the target OS's inventory. For each proposed subtree update, additional branches and leaves are added to the associated subtree in the target OS's inventory to achieve alignment with the proposed update. In the case of overlapping objects (in the proposed update and in the target OS's inventory), the objects in the target OS remains unchanged.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:enumeration>
-      <xsd:enumeration value="MergeWithOverwrite">
+      <xsd:enumeration value="MERGE_WITH_OVERWRITE">
         <xsd:annotation>
           <xsd:documentation>
             <p>This is the same as Merge without Overwrite except for the treatment of overlapping objects. In this case, the proposed object replaces its associated object instance in the target OS's inventory.</p>
