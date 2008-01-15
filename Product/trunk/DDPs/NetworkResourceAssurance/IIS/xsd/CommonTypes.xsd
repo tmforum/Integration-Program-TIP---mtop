@@ -94,15 +94,64 @@
       <xsd:enumeration value="M:N"/>
     </xsd:restriction>
   </xsd:simpleType>
-	<!-- ================= -->
-	<xsd:simpleType name="NativeProbableCauseType">
-		<xsd:annotation>
-			<xsd:documentation>
-				<p>Represents the native probable cause.</p>
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:restriction base="xsd:string"/>
-	</xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="EquimentSwitchReasonType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The equipment switch reason reflects the reason why a
+         switch occurred.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:EquimentSwitchReasonEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="EquimentSwitchReasonEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>. EswitchReason is a string that can take 
+         the following values: </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="VENDOR_EXT"/>
+      <xsd:enumeration value="SR_NA">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>is used if a more precise value is not available</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SR_E_FAILURE">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>is used when an instance of equipment has failed</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SR_MANUAL">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>indicates a switch that was requested by the operator
+         and includes forced switches</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="NativeProbableCauseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Represents the native probable cause.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
   <!-- ================= -->
   <xsd:complexType name="PerceivedSeverityListType">
     <xsd:annotation>
@@ -130,16 +179,16 @@
       <xsd:enumeration value="PS_CLEARED"/>
     </xsd:restriction>
   </xsd:simpleType>
-	<!-- ================= -->
-	<xsd:simpleType name="ProbableCauseQualifierType">
-		<xsd:annotation>
-			<xsd:documentation>
-				<p>Represents the probable cause qualifier and shall be present if the probable cause </p>
-				<p>attribute is not sufficient to uniquely identify an alarm.</p>
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:restriction base="xsd:string"/>
-	</xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="ProbableCauseQualifierType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Represents the probable cause qualifier and shall be present if the probable cause </p>
+        <p>attribute is not sufficient to uniquely identify an alarm.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
   <!-- ================= -->
   <xsd:simpleType name="ProposedRepairActionType">
     <xsd:annotation>
@@ -304,37 +353,37 @@ When present in an alarm notification, it identifies further refinements to the 
     <xsd:restriction base="xsd:string">
       <xsd:enumeration value="SR_NA">
         <xsd:annotation>
-        <xsd:documentation>Value used upon retrieval of switch data for non-revertive groups, if a more precise value is not available</xsd:documentation>
+          <xsd:documentation>Value used upon retrieval of switch data for non-revertive groups, if a more precise value is not available</xsd:documentation>
         </xsd:annotation>
       </xsd:enumeration>
       <xsd:enumeration value="SR_RESTORED">
         <xsd:annotation>
-        <xsd:documentation>used for revertive groups to indicate a return to the normal state</xsd:documentation>
+          <xsd:documentation>used for revertive groups to indicate a return to the normal state</xsd:documentation>
         </xsd:annotation>
       </xsd:enumeration>
       <xsd:enumeration value="SR_SIGNAL_FAIL">
         <xsd:annotation>
-        <xsd:documentation></xsd:documentation>
+          <xsd:documentation/>
         </xsd:annotation>
       </xsd:enumeration>
       <xsd:enumeration value="SR_SIGNAL_MISMATCH">
         <xsd:annotation>
-        <xsd:documentation>Value used in the case the signal is ok, but is identified as coming from an incorrect source: TRAIL_TRACE_IDENTIFIER_MISMATCH, Signal Label Mismatch, etc</xsd:documentation>
+          <xsd:documentation>Value used in the case the signal is ok, but is identified as coming from an incorrect source: TRAIL_TRACE_IDENTIFIER_MISMATCH, Signal Label Mismatch, etc</xsd:documentation>
         </xsd:annotation>
       </xsd:enumeration>
       <xsd:enumeration value="SR_SIGNAL_DEGRADE">
         <xsd:annotation>
-        <xsd:documentation></xsd:documentation>
+          <xsd:documentation/>
         </xsd:annotation>
       </xsd:enumeration>
       <xsd:enumeration value="SR_AUTOMATIC_SWITCH">
         <xsd:annotation>
-        <xsd:documentation>Value used when the exact switch reason is unknown, in retrievals of switch data if a protection switch is currently active or in protection switch notifications</xsd:documentation>
+          <xsd:documentation>Value used when the exact switch reason is unknown, in retrievals of switch data if a protection switch is currently active or in protection switch notifications</xsd:documentation>
         </xsd:annotation>
       </xsd:enumeration>
       <xsd:enumeration value="SR_MANUAL">
         <xsd:annotation>
-        <xsd:documentation>Value indicates a switch that was requested by the operator and includes forced switches</xsd:documentation>
+          <xsd:documentation>Value indicates a switch that was requested by the operator and includes forced switches</xsd:documentation>
         </xsd:annotation>
       </xsd:enumeration>
     </xsd:restriction>

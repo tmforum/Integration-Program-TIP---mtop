@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/routec/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/routec/v1" 
-xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" 
-attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/routec/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/routec/v1" xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" xmlns:rt="http://www.tmforum.org/mtop/nrf/xsd/route/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Framework</p>
@@ -12,6 +10,10 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   </xsd:annotation>
   <!-- ================ -->
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/CommonEventInfo.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/cei/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
+  <xsd:import schemaLocation="Route.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/route/v1"/>
+  <xsd:import schemaLocation="CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1"/>
   <!-- ================ -->
   <xsd:element name="routeChange" type="tns:RouteChangeType" substitutionGroup="cei:commonEventInfo">
     <xsd:annotation>
@@ -30,6 +32,41 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     <xsd:complexContent>
       <xsd:extension base="cei:CommonEventInfoType">
         <xsd:sequence>
+          <xsd:element name="objectType" type="gen:ObjectTypeType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Identifies the type of the object associated with the event.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="objectName" type="nam:NamingAttributesType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Identifies the name of the object associated with the event.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="neTime" type="xsd:dateTime" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The time provided by the NE. In a case where the NE does not report time, this field is optional or an empty string can be reported.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="routeChangeEvent" type="com:RerouteChangeEventType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This identifies which state the notification is emitted against.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="route" type="rt:RouteType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This identifies the new route that is chosen, if any; this field is optional otherwise.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
         </xsd:sequence>
       </xsd:extension>
     </xsd:complexContent>
