@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ResourceTroubleManagement - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rtm/xsd/pr/v1" xmlns:tns="http://www.tmforum.org/mtop/rtm/xsd/pr/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:sd="http://www.tmforum.org/mtop/nra/xsd/sd/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rtm/xsd/pr/v1" xmlns:tns="http://www.tmforum.org/mtop/rtm/xsd/pr/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:pg="http://www.tmforum.org/mtop/nra/xsd/pg/v1" xmlns:epg="http://www.tmforum.org/mtop/nra/xsd/epg/v1" xmlns:sd="http://www.tmforum.org/mtop/nra/xsd/sd/v1" xmlns:esd="http://www.tmforum.org/mtop/nra/xsd/esd/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: ResourceTroubleManagement</p>
@@ -11,22 +11,50 @@
   <!-- ================ -->
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/Pg.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/pg/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/Epg.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/epg/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/SwitchData.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/sd/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/EquipmentSwitchData.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/esd/v1"/>
   <!-- ================ -->
   <xsd:element name="getAllEquipmentProtectionGroupsRequest">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAllEquipmentProtectionGroups operation</p>
-        <p>This operation .</p>
+        <p>This operation is used by the client to discover all the 
+         equipment protection groups currently in operation for the managed
+         element.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="meName" type="nam:NamingAttributesType" nillable="true" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the name of the managed element for which the request is made</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="getAllEquipmentProtectionGroupsResponse">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure of the getAllEquipmentProtectionGroups operation</p>
+        <p>This is the first batch of EquipmentProtectionGroup objects. Use getEquipmentProtectionGroupIterator to retrieve iteratively all other batches of EquipmentProtectionGroup objects.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="epgList" type="epg:EquipmentProtectionGroupListType" nillable="true" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The first batch of EquipmentProtectionGroup objects</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="getAllEquipmentProtectionGroupsException">
     <xsd:annotation>
@@ -34,38 +62,102 @@
         <p>Exception message structure of the getAllEquipmentProtectionGroups operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getAllNuttpNamesRequest">
+  <xsd:element name="getAllNonPreemptibleUnprotectedTpNamesRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the getAllNuttpNames operation</p>
-        <p>This operation .</p>
+        <p>Request message structure of the getAllNonPreemptibleUnprotectedTpNames operation</p>
+        <p>This operation gets the list of names of CTPs that are configured to 
+         carry Non-preemptible Unprotected extra Traffic.  The result is independent 
+         of the current switch status.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="pgName" type="nam:NamingAttributesType" nillable="true" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the name of the protection group</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getAllNuttpNamesResponse">
+  <xsd:element name="getAllNonPreemptibleUnprotectedTpNamesResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the getAllNuttpNames operation</p>
+        <p>Response message structure of the getAllNonPreemptibleUnprotectedTpNames operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="tpNameList" type="nam:NamingAttributesListType" nillable="true" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The list of CTP names that have NUT turned on</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getAllNuttpNamesException">
+  <xsd:element name="getAllNonPreemptibleUnprotectedTpNamesException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the getAllNuttpNames operation</p>
+        <p>Exception message structure of the getAllNonPreemptibleUnprotectedTpNames operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getAllPreemptibleTpNamesRequest">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAllPreemptibleTpNames operation</p>
-        <p>This operation .</p>
+        <p>This operation gets the list of names of CTPs that can carry preemptible 
+         extra traffic.  The result is independent of the current
+         switch status.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="pgName" type="nam:NamingAttributesType" nillable="true" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the name of the protection group</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="getAllPreemptibleTpNamesResponse">
     <xsd:annotation>
@@ -73,6 +165,17 @@
         <p>Response message structure of the getAllPreemptibleTpNames operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="tpNameList" type="nam:NamingAttributesListType" nillable="true" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The list of CTP names that can carry preemptible extra traffic</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="getAllPreemptibleTpNamesException">
     <xsd:annotation>
@@ -80,15 +183,40 @@
         <p>Exception message structure of the getAllPreemptibleTpNames operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getAllProtectedTpNamesRequest">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAllProtectedTpNames operation</p>
-        <p>This operation .</p>
+        <p>This operation gets the list of CTPs that can carry protected
+         traffic. The result is independent of the current switch status.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="pgName" type="nam:NamingAttributesType" nillable="true" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the name of the protection group</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="getAllProtectedTpNamesResponse">
     <xsd:annotation>
@@ -96,6 +224,17 @@
         <p>Response message structure of the getAllProtectedTpNames operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="tpNameList" type="nam:NamingAttributesListType" nillable="true" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The list of CTP names that can carry protected traffic</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="getAllProtectedTpNamesException">
     <xsd:annotation>
@@ -103,22 +242,60 @@
         <p>Exception message structure of the getAllProtectedTpNames operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getAllProtectionGroupsRequest">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAllProtectionGroups operation</p>
-        <p>This operation .</p>
+        <p>This operation is used by the client to discover all the 
+         protection groups currently in operation for the managed
+         element.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="meName" type="nam:NamingAttributesType" nillable="true" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the name of the managed element for which the request is made</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="getAllProtectionGroupsResponse">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure of the getAllProtectionGroups operation</p>
+        <p>This is the first batch of ProtectionGroup objects. Use getProtectionGroupIterator to retrieve iteratively all other batches of ProtectionGroup objects.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="pgList" type="pg:ProtectionGroupListType" nillable="true" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The first batch of ProtectionGroup objects</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="getAllProtectionGroupsException">
     <xsd:annotation>
@@ -126,38 +303,102 @@
         <p>Exception message structure of the getAllProtectionGroups operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getContainingPgNamesRequest">
+  <xsd:element name="getContainingProtectionGroupNamesRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the getContainingPgNames operation</p>
-        <p>This operation .</p>
+        <p>Request message structure of the getContainingProtectionGroupNames operation</p>
+        <p>This operation returns the names of the Protection Groups containing the given
+         PhysicalTerminationPoint.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="ptpName" type="nam:NamingAttributesType" nillable="true" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the name of the PTP</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getContainingPgNamesResponse">
+  <xsd:element name="getContainingProtectionGroupNamesResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the getContainingPgNames operation</p>
+        <p>Response message structure of the getContainingProtectionGroupNames operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="pgNameList" type="nam:NamingAttributesListType" nillable="true" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The list of containing ProtectionGroups</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getContainingPgNamesException">
+  <xsd:element name="getContainingProtectionGroupNamesException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the getContainingPgNames operation</p>
+        <p>Exception message structure of the getContainingProtectionGroupNames operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getEquipmentProtectionGroupRequest">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getEquipmentProtectionGroup operation</p>
-        <p>This operation .</p>
+        <p>This operation is used to get the current status of an 
+           Equipment Protection Group. This service is needed so that even if a 
+           filter is established, the NMS can query the status of a 
+           protection group.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="epgName" type="nam:NamingAttributesType" nillable="true" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the name of the EPG</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="getEquipmentProtectionGroupResponse">
     <xsd:annotation>
@@ -165,6 +406,17 @@
         <p>Response message structure of the getEquipmentProtectionGroup operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="epg" type="epg:EquipmentProtectionGroupType" nillable="true" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the EPG</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="getEquipmentProtectionGroupException">
     <xsd:annotation>
@@ -172,15 +424,41 @@
         <p>Exception message structure of the getEquipmentProtectionGroup operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="getProtectionGroupRequest">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getProtectionGroup operation</p>
-        <p>This operation .</p>
+        <p>This operation is used to get the current status of a 
+         protectionGroup. This service is needed so that even if a filter
+         is established, the NMS can query the status of a protection group.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="pgName" type="nam:NamingAttributesType" nillable="true" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the name of the PG</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="getProtectionGroupResponse">
     <xsd:annotation>
@@ -188,6 +466,17 @@
         <p>Response message structure of the getProtectionGroup operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="pg" type="pg:ProtectionGroupType" nillable="true" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the PG</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="getProtectionGroupException">
     <xsd:annotation>
@@ -195,15 +484,45 @@
         <p>Exception message structure of the getProtectionGroup operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="retrieveEquipmentSwitchDataRequest">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the retrieveEquipmentSwitchData operation</p>
-        <p>This operation .</p>
+        <p>This operation is used by the NMS to get the latest switch status
+         on an equipment protection group.
+         For a retrieval of a revertive M:N group, N ESwitchData_T 
+         are returned as a result of retrieveESwitchData (one for 
+         each worker equipment instance).
+       For a retrieval of a non-revertive M:N group, N ESwitchData_T 
+       are returned as a result of retrieveESwitchData (one for 
+       each active equipment instance).</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="epgName" type="nam:NamingAttributesType" nillable="true" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the name of the EPG</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="retrieveEquipmentSwitchDataResponse">
     <xsd:annotation>
@@ -211,6 +530,17 @@
         <p>Response message structure of the retrieveEquipmentSwitchData operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="equimentSwitchDataList" type="esd:EquipmentSwitchDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The current protection switch status equipment protection group provided</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="retrieveEquipmentSwitchDataException">
     <xsd:annotation>
@@ -218,6 +548,19 @@
         <p>Exception message structure of the retrieveEquipmentSwitchData operation</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:communicationFailure"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
   <xsd:element name="retrieveSwitchDataRequest">
@@ -300,5 +643,77 @@
         </xsd:restriction>
       </xsd:complexContent>
     </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getEquipmentProtectionGroupIteratorRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getEquipmentProtectionGroupIterator operation</p>
+        <p>This operation is used to retrieve the other batches (next) of EquipmentProtectionGroup objects.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType><xsd:sequence></xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getEquipmentProtectionGroupIteratorResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getEquipmentProtectionGroupIterator operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="epgList" type="epg:EquipmentProtectionGroupListType" nillable="true" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The next batch of EquipmentProtectionGroup objects</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getEquipmentProtectionGroupIteratorException" type="msg:GetAllDataIteratorExceptionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getEquipmentProtectionGroupIterator operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getProtectionGroupIteratorRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getProtectionGroupIterator operation</p>
+        <p>This operation is used to retrieve the other batches (next) of ProtectionGroup objects.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType><xsd:sequence></xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getProtectionGroupIteratorResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getProtectionGroupIterator operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="pgList" type="pg:ProtectionGroupListType" nillable="true" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The next batch of ProtectionGroup objects</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getProtectionGroupIteratorException" type="msg:GetAllDataIteratorExceptionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getProtectionGroupIterator operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
   </xsd:element>
 </xsd:schema>

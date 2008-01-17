@@ -24,42 +24,65 @@
       <xsd:element name="protectionType" type="com:ProtectionTypeType" minOccurs="0" nillable="true">
         <xsd:annotation>
           <xsd:documentation>
-            <p>.</p>
+            <p>The type of protection.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
       <xsd:element name="switchReason" type="com:SwitchReasonType" minOccurs="0" nillable="true">
         <xsd:annotation>
           <xsd:documentation>
-            <p>.</p>
+            <p>The reason the last switch occurred.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
       <xsd:element name="layerRate" type="lr:LayerRateType" minOccurs="0" nillable="true">
         <xsd:annotation>
           <xsd:documentation>
-            <p>.</p>
+            <p>The layer which this switch is relevant to.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
       <xsd:element name="groupName" type="nam:NamingAttributesType" minOccurs="0" nillable="true">
         <xsd:annotation>
           <xsd:documentation>
-            <p>.</p>
+            <p>Identifies the protectionGroup for which protection switch status is 
+             being reported. NULL if protectionType is SNCP.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="protectedTP" type="nam:NamingAttributesType" minOccurs="0" nillable="true">
+      <xsd:element name="protectedTp" type="nam:NamingAttributesType" minOccurs="0" nillable="true">
         <xsd:annotation>
           <xsd:documentation>
-            <p>.</p>
+            <p>This is the TP that is protected. The protected (worker) and protecting TPs 
+             are fixed in a revertive protection group, the worker can be active or not 
+             at any point in time. In a non-revertive protection group, there is no 
+             fixed worker/protecting distinction. The worker TP is indeed always the 
+             active TP; after a switch, the worker and protecting TPs exchange their 
+             roles.
+             For an SNCP, this is always the reliable TP.
+             For a retrieval of a 2F BLSR, each TP is protected,
+             and two SwitchData_T are returned.
+             For a retrieval of a 4FMSSPR, each worker TP is protected,
+             and two SwitchData_T are returned.
+             For a retrieval of a 1:N MSP, each worker TP is protected,
+             and N SwitchData_T are returned.
+             For a revertive 1+1 MSP, this is always the worker TP.
+             For a retrieval of a non-revertive 1+1 MSP switch, this is the active 
+             TP.
+             Note: The termination point name must be explicit (a generic endpoint 
+             specification may not be used in this case). See 
+             SD1-25_objectNaming.pdf  for further detail on FTP naming.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="switchToTP" type="nam:NamingAttributesType" minOccurs="0" nillable="true">
+      <xsd:element name="switchToTp" type="nam:NamingAttributesType" minOccurs="0" nillable="true">
         <xsd:annotation>
           <xsd:documentation>
-            <p>.</p>
+            <p>Identifies the TP which is being switched to.
+             This identifies the 
+             Note: The termination point name must be explicit (a generic endpoint 
+             specification may not be used in this case). See 
+             SD1-25_objectNaming.pdf  for further detail on FTP naming.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
@@ -75,7 +98,9 @@
   <!-- ===================== -->
   <xsd:complexType name="SwitchDataListType">
     <xsd:annotation>
-      <xsd:documentation><p>The list of SwitchData</p></xsd:documentation>
+      <xsd:documentation>
+        <p>The list of SwitchData</p>
+      </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
       <xsd:element name="switchData" type="tns:SwitchDataType" minOccurs="0" maxOccurs="unbounded">
