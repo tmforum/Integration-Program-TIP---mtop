@@ -20,7 +20,7 @@ mkdir $HTML_HOME
 ##
 ## Generate doc
 ##
-java -DWSDL_HOME=$WSDL_HOME -Xmx256m -jar $WSDL_HOME/wsdldoc.jar -title "MTOSI R2.0 ManageResourceInventory DDP IIS" -verbose -dir $HTML_HOME ../wsdl/*/* ../xsd/*Event*
+java -DWSDL_HOME=$WSDL_HOME -Xmx256m -jar $WSDL_HOME/wsdldoc.jar -title "MTOSI R2.0 ManageResourceInventory DDP IIS" -verbose -dir $HTML_HOME ../wsdl/*/*
 
 #
 # Fix absolute path issues with WSDLdoc HTML generation
@@ -38,7 +38,7 @@ find $HTML_HOME/ -name "*.html" | xargs perl -pi -e 's/>file:\/.:\/GForge_mTOP\/
 find $HTML_HOME/ -name "*.html.bak" -delete
 
 cd ..
-jar -cvf ../../derived/New_ManageResourceInventoryHtml.zip ./html ./xsd ./wsdl
+jar -cvf ./derived/New_ManageResourceInventoryHtml.zip ./html ./xsd ./wsdl
 cd tools
 
 exit 0
