@@ -38,7 +38,7 @@ find $HTML_HOME/ -name "*.html" | xargs perl -pi -e 's/>file:\/.:\/GForge_mTOP\/
 find $HTML_HOME/ -name "*.html.bak" -delete
 
 cd ..
-jar -cvf ../derived/FrameworkHtml.zip ./html ./xsd ./wsdl
+jar -cvf ./derived/FrameworkHtml.zip ./html ./xsd ./wsdl
 cd tools
 
 exit 0
