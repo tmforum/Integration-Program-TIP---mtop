@@ -34,27 +34,6 @@
     <xsd:complexContent>
       <xsd:extension base="cei:CommonEventInfoType">
         <xsd:sequence>
-          <xsd:element name="objectType" type="gen:ObjectTypeType" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>Identifies the type of the object associated with the event.</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
-          <xsd:element name="objectName" type="nam:NamingAttributesType" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>Identifies the name of the object associated with the event.</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
-          <xsd:element name="neTime" type="xsd:dateTime" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>The time provided by the NE. In a case where the NE does not report time, this field is optional or an empty string can be reported.</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
           <xsd:element name="edgePointRelated" type="xsd:boolean" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
@@ -90,6 +69,15 @@
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
+          <xsd:element name="probableCauseQualifier" type="xsd:string" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The probable cause qualifier attribute, when present, identifies further refinements to the probable cause attibute of the alarm, so as to correlate the “raise” and “clear” notifications 
+                of the same fault condition in case of ambiguity (i.e., when several different fault conditions give rise to the same values).  This parameter gives more detail about the alarm, e.g., 
+                it may further qualify the source.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
           <xsd:element name="nativeProbableCause" type="xsd:string" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
@@ -111,7 +99,7 @@
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="affectedTpList" type="nam:NamingAttributesListType" minOccurs="0">
+          <xsd:element name="affectedTpRefList" type="nam:NamingAttributesListType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>A list of affected TPs. Contained CTPs are not listed. This field is optional for all alarms except for alarms on equipment.
@@ -127,7 +115,7 @@ The list should be ordered by PTP names (ASCII order).</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="rcaiIndicator" type="xsd:boolean">
+          <xsd:element name="rootCauseAlarmIndication" type="xsd:boolean">
             <xsd:annotation>
               <xsd:documentation>
                 <p>The RCAI indicator has two values, i.e.,
@@ -136,7 +124,7 @@ FALSE (meaning the alarm is a raw alarm).</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="acknowledgeIndication" type="com:AcknowledgeIndicationType" minOccurs="0">
+          <xsd:element name="acknowledgement" type="com:AcknowledgeIndicationType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>The acknowledge indication state.</p>
@@ -168,7 +156,7 @@ This field is optional.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="X733_BackUpObject" type="nam:NamingAttributesType" minOccurs="0">
+          <xsd:element name="X733_BackUpObjectRef" type="nam:NamingAttributesType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>Specifies the object that is providing back-up services for the object about which the notification pertains.
@@ -186,7 +174,7 @@ This field is optional.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="X733_CorrelatedNotifications" type="cornot:CorrelatedNotificationListType" minOccurs="0">
+          <xsd:element name="X733_CorrelatedNotificationList" type="cornot:CorrelatedNotificationListType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>Contains a set of Notification identifiers and, if necessary, their associated object names.
@@ -195,7 +183,7 @@ This field is optional.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="X733_MonitoredAttributes" type="nam:NvsListType" minOccurs="0">
+          <xsd:element name="X733_MonitoredAttributeList" type="nam:NvsListType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>Defines one or more attributes of the managed object and their corresponding values at the time of the alarm.
@@ -203,7 +191,7 @@ This field is optional.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="X733_ProposedRepairActions" type="com:ProposedRepairActionListType" minOccurs="0">
+          <xsd:element name="X733_ProposedRepairActionList" type="com:ProposedRepairActionListType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>Used if the cause is known and the system being managed can suggest one or more solutions (such as switch in standby equipment, retry, replace media).
