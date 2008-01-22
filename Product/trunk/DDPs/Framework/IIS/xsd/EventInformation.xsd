@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/elo/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/elo/v1" xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/ei/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/ei/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Framework</p>
-      <p>Module: Aggregate XSD Module</p>
-      <p>Description: This module contains the XML Schema definitions of the EventLossOccured event.</p>
+      <p>Module: XSD Aggregate Module</p>
+      <p>Description: This module contains the XML Schema definitions of the common event information.</p>
     </xsd:documentation>
   </xsd:annotation>
   <!-- ================ -->
+  <xsd:import schemaLocation="GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
   <xsd:import schemaLocation="CommonEventInformation.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/cei/v1"/>
   <xsd:import schemaLocation="NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
-  <xsd:import schemaLocation="GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
   <!-- ================ -->
-  <xsd:element name="eventLossOccured" type="tns:EventLossOccuredType" substitutionGroup="cei:commonEventInformation">
+  <xsd:element name="eventInformation" type="tns:EventInformationType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>The element definition of the EventLossOccured event.</p>
+        <p>The element definition of the common set of attributes used for all events.</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <!-- ================ -->
-  <xsd:complexType name="EventLossOccuredType">
+  <xsd:complexType name="EventInformationType" abstract="true">
     <xsd:annotation>
       <xsd:documentation>
-        <p>The type definition of the EventLossOccured event.</p>
+        <p>The type definition of the event information set of attributes.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
@@ -44,20 +44,13 @@
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="startTime" type="xsd:dateTime" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>The time of the first notification lost.</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
-          <xsd:element name="firstEventLostNotificationId" type="gen:NotificationIdType" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>The notificationId of the first notification lost</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
+      <xsd:element name="osTime" type="xsd:dateTime" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The time at which the event was reported by the OS (EMS).</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
         </xsd:sequence>
       </xsd:extension>
     </xsd:complexContent>
