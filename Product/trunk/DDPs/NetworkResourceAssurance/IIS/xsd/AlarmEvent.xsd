@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/alm/v1" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/alm/v1" xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" xmlns:cornot="http://www.tmforum.org/mtop/fmw/xsd/cornot/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:prc="http://www.tmforum.org/mtop/nra/xsd/prc/v1" xmlns:com="http://www.tmforum.org/mtop/nra/xsd/com/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/alm/v1" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/alm/v1" xmlns:ei="http://www.tmforum.org/mtop/fmw/xsd/ei/v1" xmlns:cornot="http://www.tmforum.org/mtop/fmw/xsd/cornot/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:prc="http://www.tmforum.org/mtop/nra/xsd/prc/v1" xmlns:com="http://www.tmforum.org/mtop/nra/xsd/com/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Framework</p>
@@ -9,7 +9,7 @@
     </xsd:documentation>
   </xsd:annotation>
   <!-- ================ -->
-  <xsd:import schemaLocation="../../../Framework/IIS/xsd/CommonEventInformation.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/cei/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/EventInformation.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/ei/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/CorrelatedNotifications.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/cornot/v1"/>
@@ -17,7 +17,7 @@
   <xsd:import schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/ProbableCauses.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/prc/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/com/v1"/>
   <!-- ================ -->
-  <xsd:element name="alarm" type="tns:AlarmType" substitutionGroup="cei:commonEventInformation">
+  <xsd:element name="alarm" type="tns:AlarmType" substitutionGroup="ei:eventInformation">
     <xsd:annotation>
       <xsd:documentation>
         <p>The element definition of the alarm event.</p>
@@ -32,7 +32,7 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
-      <xsd:extension base="cei:CommonEventInformationType">
+      <xsd:extension base="ei:EventInformationType">
         <xsd:sequence>
           <xsd:element name="edgePointRelated" type="xsd:boolean" minOccurs="0">
             <xsd:annotation>
@@ -66,15 +66,6 @@
             <xsd:annotation>
               <xsd:documentation>
                 <p>No other string than the ones defined by the TM Forum should be used for this field.</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
-          <xsd:element name="probableCauseQualifier" type="xsd:string" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>The probable cause qualifier attribute, when present, identifies further refinements to the probable cause attibute of the alarm, so as to correlate the “raise” and “clear” notifications 
-                of the same fault condition in case of ambiguity (i.e., when several different fault conditions give rise to the same values).  This parameter gives more detail about the alarm, e.g., 
-                it may further qualify the source.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
