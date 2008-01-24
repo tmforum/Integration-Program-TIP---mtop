@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/epg/v1" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/epg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:com="http://www.tmforum.org/mtop/nra/xsd/com/v1" xmlns:nrb.com="http://www.tmforum.org/mtop/nrb/xsd/com/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/epg/v1" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/epg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:com="http://www.tmforum.org/mtop/nra/xsd/com/v1" xmlns:nrb.com="http://www.tmforum.org/mtop/nrb/xsd/com/v1" xmlns:pgp="http://www.tmforum.org/mtop/nra/xsd/pgp/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Data Model Network Resource FulFillment</p>
@@ -13,6 +13,7 @@
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/com/v1"/>
   <xsd:import schemaLocation="CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/com/v1"/>
+  <xsd:import schemaLocation="PgParameters.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/pgp/v1"/>
   <!-- ================= -->
   <xsd:element name="epgp" type="tns:EquipmentProtectionGroupType"/>
   <!-- ================= -->
@@ -36,17 +37,12 @@
           </xsd:element>
           <xsd:element name="reversionMode" type="com:ReversionModeType" nillable="true" minOccurs="0">
           </xsd:element>
-          <xsd:element name="epgParameterList" nillable="true" minOccurs="0">
+          <xsd:element name="epgParameterList" type="pgp:PgParametersListType" nillable="true" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-                <p>This contains a list of the associated parameters for the equipment protection group. It is a readonly attribute</p>
+                <p>This contains a list for the known parameters of the equipment protection group. Non-applicable parameters and parameters for which the value is unknown to the EMS may be left out</p>
               </xsd:documentation>
             </xsd:annotation>
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
-              </xsd:sequence>
-            </xsd:complexType>
           </xsd:element>
           <xsd:element name="protectedEquipmentRefList" type="nam:NamingAttributesListType" nillable="true" minOccurs="0">
             <xsd:annotation>
