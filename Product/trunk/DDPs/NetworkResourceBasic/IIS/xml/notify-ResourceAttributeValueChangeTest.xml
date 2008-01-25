@@ -40,6 +40,48 @@
             </nam:object>
           </m2:objectName>
           <m2:osTime>2001-12-17T09:30:47.0Z</m2:osTime>
+          <!-- original (MTOSI 1.x) attribute was attributeList based on AnyListType -->
+          <m3:attributeList>
+            <!-- all elements have to be associated with a namespace -
+                  problem which namespace to use for all various data types supported by AVC?
+                  Two solutions:
+                  1. Use the object global element and populate only the relevent attributes (all are optionals)
+                      See examples below with deleted and set lists (preferred method)
+                  2. Use NvsList for attributes based on simpleType.
+                      Use a global element for each supported attribute data type based complexType.
+                      Need to define them for some data types like aliasNameListType, layeredParametersListType, etc
+ -->
+            <nam:nvsList>
+              <nam:nvs>
+                <nam:name>userLabel</nam:name>
+                <nam:value>new_value</nam:value>
+              </nam:nvs>
+              <nam:nvs>
+                <nam:name>softwareVersion</nam:name>
+                <nam:value>new_value</nam:value>
+              </nam:nvs>
+            </nam:nvsList>
+            <!-- this fails as yet not defined as global element  -->
+            <aliasNameList>
+              <gen:alias>
+                <gen:aliasName>meLabel</gen:aliasName>
+                <gen:aliasValue/>
+              </gen:alias>
+            </aliasNameList>
+            <!-- this fails as yet not defined as global element transmissionParams of type LayeredParametersListType  -->
+            <transmissionParams>
+              <lp:layeredParameters>
+                <lp:layer extension="myLayerRate">VENDOR_EXT</lp:layer>
+                <lp:transmissionParams>
+                  <nam:nvs>
+                    <nam:name>String</nam:name>
+                    <nam:value/>
+                  </nam:nvs>
+                </lp:transmissionParams>
+                <lp:vendorExtensions/>
+              </lp:layeredParameters>
+            </transmissionParams>
+          </m3:attributeList>
           <m3:deletedAttributeList>
             <me:me xmlns:coi="http://www.tmforum.org/mtop/fmw/xsd/coi/v1" xmlns:me="http://www.tmforum.org/mtop/nrf/xsd/me/v1">
               <!-- an alias (meLabel) and vendor extension (att1 & att2) are deleted -->
