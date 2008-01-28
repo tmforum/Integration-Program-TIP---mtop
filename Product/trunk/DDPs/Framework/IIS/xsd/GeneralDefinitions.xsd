@@ -9,6 +9,10 @@
     </xsd:documentation>
   </xsd:annotation>
   <!-- ================= -->
+  <xsd:element name="aliasNameList" type="tns:AliasNameListType"/>
+  <xsd:element name="vendorExtensions" type="tns:AnyListType"/>
+  <xsd:element name="nvList" type="tns:NameAndAnyValueListType"/>
+  <!-- ================= -->
   <xsd:complexType name="AliasNameListType">
     <xsd:annotation>
       <xsd:documentation>
@@ -20,7 +24,25 @@
         <xsd:complexType>
           <xsd:sequence>
             <xsd:element name="aliasName" type="xsd:string"/>
-            <xsd:element name="aliasValue" type="xsd:string"/>
+            <xsd:element name="aliasValue" type="xsd:string" nillable="true"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="NameAndAnyValueListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the definition used to help with the description of attribute value change (AVC) or state change (SC).</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="nv" minOccurs="0" maxOccurs="unbounded">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="attributeName" type="xsd:string"/>
+            <xsd:any namespace="##any" processContents="lax"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
@@ -34,7 +56,7 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:any namespace="##other" minOccurs="0" processContents="lax" maxOccurs="unbounded"/>
+      <xsd:any namespace="##any" minOccurs="0" processContents="lax" maxOccurs="unbounded"/>
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================ -->
