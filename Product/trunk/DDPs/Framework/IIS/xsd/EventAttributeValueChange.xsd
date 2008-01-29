@@ -21,21 +21,24 @@
     <xsd:complexContent>
       <xsd:extension base="ei:EventInformationType">
         <xsd:sequence>
-          <xsd:element name="simpleAttributeList" type="gen:AnyListType" minOccurs="0">
+          <xsd:element name="attributeList" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-                <p>This container encapsulates all the changed values of object attribute elements based on simpleType (i.e. UserLabelType, OwnerType, etc).</p>
+                <p>This container encapsulates the object element populated with the attributes which value changed.</p>
                 <p>Refer to the SD2-14_AVC_SC_Notifications.doc for a description of all object attributes supported by the AVC event</p>
               </xsd:documentation>
             </xsd:annotation>
-          </xsd:element>
-          <xsd:element name="complexAttributeList" type="gen:NameAndAnyValueListType" minOccurs="0">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:any namespace="##any" processContents="lax" minOccurs="1" maxOccurs="1">
             <xsd:annotation>
               <xsd:documentation>
-                <p>This container encapsulates all the changed values of object attribute elements based on complexType (i.e. NamingAttributesListType, LayeredParametersListType, etc).</p>
-                <p>Refer to the SD2-14_AVC_SC_Notifications.doc for a description of all object attributes supported by the AVC event</p>
+                <p>The object element (e.g. me xmlns="http://www.tmforum.org/mtop/nrf/xsd/me/v1") populated with the attributes and their new set value or deleted (nill="true").</p>
               </xsd:documentation>
             </xsd:annotation>
+                </xsd:any>
+              </xsd:sequence>
+            </xsd:complexType>
           </xsd:element>
         </xsd:sequence>
       </xsd:extension>
