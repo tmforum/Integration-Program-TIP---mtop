@@ -72,40 +72,24 @@
           </xsd:element>
           <xsd:element name="tpMappingMode" type="com:TerminationModeType" nillable="true" minOccurs="0">
           </xsd:element>
-          <xsd:element name="ingressTransmissionDescriptorName" type="nam:NamingAttributesType" nillable="true" minOccurs="0">
+          <xsd:element name="ingressTmdRef" type="nam:NamingAttributeType" nillable="true" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>A connection Floating Termination Point may have an optional reference to an ingress (incoming) Transmission Descriptor. The Descriptor name will be empty if there is no associated Descriptor. It is expected that Transmission Descriptors are not mixed on a single TP. Therefore if the Ingress Descriptor name is that of a Transmission Descriptor then the Egress Descriptor name should either be that of a Transmission Descriptor or a null value.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="egressTransmissionDescriptorName" type="nam:NamingAttributesType" nillable="true" minOccurs="0">
+          <xsd:element name="egressTmdRef" type="nam:NamingAttributeType" nillable="true" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>A connection Floating Termination Point may have an optional reference to an egress (outgoing) Transmission Descriptor. The Transmission Descriptor name will be empty if there is no associated Descriptor. It is expected that Transmission Descriptors are not mixed on a single TP. Therefore if the Egress Descriptor name is that of a Transmission Descriptor then the Ingress Descriptor name should either be that of a Transmission Descriptor or a null value.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="transmissionParams" type="lp:LayeredParametersListType" nillable="true" minOccurs="0">
+          <xsd:element name="transmissionParameterList" type="lp:LayeredParametersListType" nillable="true" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>A list of transmission parameters which can be set and/or retrieved on the TP at a specified layer. This attribute must contain the complete set of layer rates represented by a FTP - even if they have no parameters associated with them. The layerRates are listed in the order of their client-server relationship (see layering for more details).</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
-          <xsd:element name="clientConnectivity" type="xsd:string" nillable="true" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>Implements the client connectivity state of a TP and should be present on TPs whose direct client TPs can be or are fixed cross-connected. When set to “Connected”, the TP is currently multiplexing, i.e. all its client TPs are cross-connected in a fixed way.
-When set to “NotConnectable”, none of the TP's client TPs are involved in fixed cross-connects and none can be cross-connected.
-When set to “NotSet”, the TP is currently in no client connectivity mode, none of its client TPs are cross-connected in a fixed way and nothing prevents this to happen. In case the client TPs of a TP are permanently involved in fixed cross-connects (hard-wired), clientConnectivity will be locked in state “Connected”.  The EMS should then reject cross-connect creation involving the TP itself or any of its client TPs.  If clientConnectivity of a TP is set to “NotSet” and the TP is getting cross-connected, this sets the clientConnectivity to “Connected”. If clientConnectivity is set to “NotSet” and the TP is getting cross-connected at a direct client layer, this sets the TP in a non multiplexing mode (i.e., clientConnectivity is set to “NotConnectable")</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
-          <xsd:element name="serverConnectivity" type="xsd:string" nillable="true" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>Implements the server connectivity state of a TP and should be present on TPs whose direct server TPs can be or are fixed cross-connected. When set to “Connected”, the TP is currently inverse multiplexing, i.e. all its server TPs are cross-connected in a fixed way. When set to “NotConnectable”, none of the TP's server TPs are involved in fixed cross-connects and none can be cross-connected. When set to “NotSet”, the TP is currently in no server connectivity mode, none of its server TPs are cross-connected in a fixed way and nothing prevents this to happen. In case the server TPs of a TP are permanently involved in fixed cross-connects (hard-wired), serverConnectivity will be locked in state “Connected”.  The EMS should then reject cross-connect creation involving the TP itself or any of its server TPs.  If serverConnectivity of a TP is set to “NotSet” and the TP is getting cross-connected, this sets the serverConnectivity to “Connected”.If serverConnectivity is set to “NotSet” and the TP is getting cross-connected at a direct server layer, this sets the TP in a non inverse multiplexing mode (i.e., serverConnectivity will be set to “NotConnectable”).</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>

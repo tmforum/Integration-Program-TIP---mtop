@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2007 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:hdr="http://www.tmforum.org/mtop/fmw/xsd/hdr/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:hdr="http://www.tmforum.org/mtop/fmw/xsd/hdr/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Framework</p>
@@ -10,6 +10,7 @@
   </xsd:annotation>
   <!-- ============== -->
   <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/hdr/v1" schemaLocation="HeaderDefinitions.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="GeneralDefinitions.xsd"/>
   <!-- ============== -->
   <xsd:complexType name="BaseExceptionMessageType" abstract="false">
     <xsd:annotation>
@@ -30,17 +31,12 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="vendorExtension" minOccurs="0">
+      <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The extension for specific vendor exception information.</p>
           </xsd:documentation>
         </xsd:annotation>
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
-          </xsd:sequence>
-        </xsd:complexType>
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
@@ -268,8 +264,6 @@
         <p>Generic request message structure for all data iterator operations</p>
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:complexContent>
-      <xsd:restriction base="xsd:anyType"></xsd:restriction>
-    </xsd:complexContent>
+    <xsd:sequence/>
   </xsd:complexType>
 </xsd:schema>

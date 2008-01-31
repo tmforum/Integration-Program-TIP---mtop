@@ -9,10 +9,6 @@
     </xsd:documentation>
   </xsd:annotation>
   <!-- ================= -->
-  <xsd:element name="aliasNameList" type="tns:AliasNameListType"/>
-  <xsd:element name="vendorExtensions" type="tns:AnyListType"/>
-  <xsd:element name="nvList" type="tns:NameAndAnyValueListType"/>
-  <!-- ================= -->
   <xsd:complexType name="AliasNameListType">
     <xsd:annotation>
       <xsd:documentation>
@@ -25,24 +21,6 @@
           <xsd:sequence>
             <xsd:element name="aliasName" type="xsd:string"/>
             <xsd:element name="aliasValue" type="xsd:string" nillable="true"/>
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-    </xsd:sequence>
-  </xsd:complexType>
-  <!-- ================= -->
-  <xsd:complexType name="NameAndAnyValueListType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>This is the definition used to help with the description of attribute value change (AVC) or state change (SC).</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element name="nv" minOccurs="0" maxOccurs="unbounded">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element name="attributeName" type="xsd:string"/>
-            <xsd:any namespace="##any" processContents="lax"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
@@ -90,16 +68,16 @@
     <xsd:restriction base="xsd:string"/>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:simpleType name="ManufacturerDateType">
+  <xsd:simpleType name="ManufactureDateType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>The manufacturerDate attribute identifies the production date of the resource.</p>
+        <p>This data type identifies the production date of the resource.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:restriction base="xsd:date"/>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:complexType name="MeiAttributesType">
+  <xsd:complexType name="MultiEventInventoryAttributesType">
     <xsd:annotation>
       <xsd:documentation>This attribute is used when a object instance is embedded in the inventory
 			layout payload of a Multi-Event Inventory (MEI) notification.</xsd:documentation>
@@ -132,7 +110,7 @@
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================= -->
-  <xsd:simpleType name="NamingOsType">
+  <xsd:simpleType name="NamingOperationsSystemType">
     <xsd:annotation>
       <xsd:documentation>
         <p>This is the object attribute definition to identify the name of the OS that provided the unique MTOSI name for the object. It is assumed that each object (that is published on the CCV) has a unique naming OS. This attribute is optional in a point to point NMS-EMS paradigm.</p>
@@ -150,7 +128,7 @@
     <xsd:restriction base="xsd:string"/>
   </xsd:simpleType>
   <!-- ================ -->
-  <xsd:simpleType name="NotificationIdType">
+  <xsd:simpleType name="NotificationIdentifierType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The type definition of the notification ID.</p>
@@ -159,14 +137,14 @@
     <xsd:restriction base="xsd:string"/>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:complexType name="NotificationIdListType">
+  <xsd:complexType name="NotificationIdentifierListType">
     <xsd:annotation>
       <xsd:documentation>
         <p>List of notification IDs  (free string). Also,  the value found in notificationId field of the event.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="notificationId" type="tns:NotificationIdType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="notificationId" type="tns:NotificationIdentifierType" minOccurs="0" maxOccurs="unbounded"/>
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================= -->
@@ -184,7 +162,7 @@
   <xsd:simpleType name="ObjectEnumType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>This is the enumeration of all the known object types (at the time of this module definition). It is only provided as an implementation helper. For details of all object types and their naming refer to SD2-7 ObjectNaming.</p>
+        <p>This is the enumeration of all the known object type short names (at the time of this module definition). It is only provided as an implementation helper. For details of all object types and their naming refer to SD2-7 ObjectNaming.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:restriction base="xsd:string">
