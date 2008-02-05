@@ -13,10 +13,10 @@
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NotificationMessages.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/notmsg/v1"/>
   <!-- ================ -->
-  <xsd:element name="abortMeBackupRequest">
+  <xsd:element name="abortManagedElementBackupRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the abortMeBackup operation</p>
+        <p>Request message structure of the abortManagedElementBackup operation</p>
         <p>This operation will abort a backup of ME configuration data that is 
          pending or in progress. If there is backup of configuration data of the ME 
          pending or in progress an exception will be thrown.</p>
@@ -24,7 +24,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="managedElementName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="meName" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the ME for which an existing backup process is to be aborted</p>
@@ -34,10 +34,10 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="abortMeBackupResponse">
+  <xsd:element name="abortManagedElementBackupResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the abortMeBackup operation</p>
+        <p>Response message structure of the abortManagedElementBackup operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -45,10 +45,10 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="abortMeBackupException">
+  <xsd:element name="abortManagedElementBackupException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the abortMeBackup operation</p>
+        <p>Exception message structure of the abortManagedElementBackup operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -67,10 +67,10 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="backupMeRequest">
+  <xsd:element name="backupManagedElementRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the backupMe operation</p>
+        <p>Request message structure of the backupManagedElement operation</p>
         <p>This operation will initiate a backup request on the specified ME. This is 
          an asynchronous operation. The EMS will send the results of the backup 
          operation for the Managed Element as notifications to the provided NotificationConsumer end-point.</p>
@@ -78,7 +78,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="managedElementName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="meName" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the ME for which a backup of configuration data is required</p>
@@ -95,10 +95,10 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="backupMeResponse">
+  <xsd:element name="backupManagedElementResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the backupMe operation</p>
+        <p>Response message structure of the backupManagedElement operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -106,10 +106,10 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="backupMeException">
+  <xsd:element name="backupManagedElementException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the backupMe operation</p>
+        <p>Exception message structure of the backupManagedElement operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -141,7 +141,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="managedElementNameList" type="nam:NamingAttributeListType" minOccurs="0">
+        <xsd:element name="meNameList" type="nam:NamingAttributeListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the ME for which a backup of configuration data is required</p>
@@ -192,17 +192,17 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getMeBackupStatusRequest">
+  <xsd:element name="getManagedElementBackupStatusRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the getMeBackupStatus operation</p>
+        <p>Request message structure of the getManagedElementBackupStatus operation</p>
         <p>This operation can be used by the NMS to get the current backup status of 
          an individual ME.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="managedElementName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="meName" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the ME for which a status of the backup of configuration data is required</p>
@@ -212,10 +212,10 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getMeBackupStatusResponse">
+  <xsd:element name="getManagedElementBackupStatusResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the getMeBackupStatus operation</p>
+        <p>Response message structure of the getManagedElementBackupStatus operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -230,10 +230,10 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getMeBackupStatusException">
+  <xsd:element name="getManagedElementBackupStatusException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the getMeBackupStatus operation</p>
+        <p>Exception message structure of the getManagedElementBackupStatus operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -301,7 +301,7 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="managedElementName" type="nam:NamingAttributeType" minOccurs="0">
+      <xsd:element name="meName" type="nam:NamingAttributeType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The name of the Managed Element from which the backup was taken</p>

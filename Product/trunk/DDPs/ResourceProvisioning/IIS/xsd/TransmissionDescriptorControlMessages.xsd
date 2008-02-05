@@ -35,7 +35,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="newTmdCreateData" type="tns:TmdCreateDataType" minOccurs="0">
+        <xsd:element name="newTmdCreateData" type="tns:TransmissionDescriptorCreateDataType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>information about the TMD to be created</p>
@@ -53,7 +53,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="newTransmissionDescriptor" type="tmd:TransmissionDescriptorType" minOccurs="0">
+        <xsd:element name="newTmd" type="tmd:TransmissionDescriptorType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The resulting TMD</p>
@@ -97,7 +97,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="transmissionDescriptorName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="tmdName" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the TMD to be deleted</p>
@@ -158,21 +158,21 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="transmissionDescriptorName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="tmdName" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the TMD to be modified</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="tmdModifyData" type="tns:TmdModifyDataType" minOccurs="0">
+        <xsd:element name="tmdModifyData" type="tns:TransmissionDescriptorModifyDataType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>information about the TMD to be modified</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="tpsToModify" type="tpdata:TpDataListType" minOccurs="0">
+        <xsd:element name="tpListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The list of TPs with associated parameters to be applied</p>
@@ -190,21 +190,21 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tpsToModify" type="tpdata:TpDataListType" minOccurs="0">
+        <xsd:element name="tpListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The list of TPs with associated applied parameters</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="modifiedTransmissionDescriptor" type="tmd:TransmissionDescriptorType" minOccurs="0">
+        <xsd:element name="modifiedTmd" type="tmd:TransmissionDescriptorType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>result of the modification</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="failedMeList" type="nam:NamingAttributeListType" minOccurs="0">
+        <xsd:element name="failedMeRefList" type="nam:NamingAttributeListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>the names of all
@@ -212,7 +212,7 @@
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="failedTpsMfdsList" type="nam:NamingAttributeListType" minOccurs="0">
+        <xsd:element name="failedRefList" type="nam:NamingAttributeListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>the names of all
@@ -254,10 +254,10 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="setTmdAssociationRequest">
+  <xsd:element name="setTransmissionDescriptorAssociationRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the setTmdAssociation operation</p>
+        <p>Request message structure of the setTransmissionDescriptorAssociation operation</p>
         <p>This operation associates/un-associates a TransmissionDescriptor (TMD) 
          to/from a TP or MFD object.</p>
         <p>The association of a TMD to an an object
@@ -313,10 +313,10 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="setTmdAssociationResponse">
+  <xsd:element name="setTransmissionDescriptorAssociationResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the setTmdAssociation operation</p>
+        <p>Response message structure of the setTransmissionDescriptorAssociation operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -335,10 +335,10 @@
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="setTmdAssociationException">
+  <xsd:element name="setTransmissionDescriptorAssociationException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the setTmdAssociation operation</p>
+        <p>Exception message structure of the setTransmissionDescriptorAssociation operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -357,10 +357,10 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="validateTmdAssignmentToObjectRequest">
+  <xsd:element name="validateTransmissionDescriptorAssignmentToObjectRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the validateTmdAssignmentToObject operation</p>
+        <p>Request message structure of the validateTransmissionDescriptorAssignmentToObject operation</p>
         <p>This operation validates the TMD state
          of the specified TP, MFD or FDFr object identified by ObjectName.</p>
         <p>It first verifies the existence of the assigned TMD
@@ -386,10 +386,10 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="validateTmdAssignmentToObjectResponse">
+  <xsd:element name="validateTransmissionDescriptorAssignmentToObjectResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the validateTmdAssignmentToObject operation</p>
+        <p>Response message structure of the validateTransmissionDescriptorAssignmentToObject operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -419,10 +419,10 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="validateTmdAssignmentToObjectException">
+  <xsd:element name="validateTransmissionDescriptorAssignmentToObjectException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the validateTmdAssignmentToObject operation</p>
+        <p>Exception message structure of the validateTransmissionDescriptorAssignmentToObject operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -441,10 +441,10 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="verifyTmdAssignmentRequest">
+  <xsd:element name="verifyTransmissionDescriptorAssignmentRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the verifyTmdAssignment operation</p>
+        <p>Request message structure of the verifyTransmissionDescriptorAssignment operation</p>
         <p>This operation verifies the egress and/or ingress TMD state
          of the specified TP identified by tpName.</p>
         <p>According to the requested transmission direction it checks
@@ -482,10 +482,10 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="verifyTmdAssignmentResponse">
+  <xsd:element name="verifyTransmissionDescriptorAssignmentResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the verifyTmdAssignment operation</p>
+        <p>Response message structure of the verifyTransmissionDescriptorAssignment operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -519,10 +519,10 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="verifyTmdAssignmentException">
+  <xsd:element name="verifyTransmissionDescriptorAssignmentException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the verifyTmdAssignment operation</p>
+        <p>Exception message structure of the verifyTransmissionDescriptorAssignment operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -541,7 +541,7 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:complexType name="TmdCreateDataType">
+  <xsd:complexType name="TransmissionDescriptorCreateDataType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The attributes required for the creation of a transmission descriptor
@@ -596,7 +596,7 @@
     </xsd:complexContent>
   </xsd:complexType>
   <!-- ================ -->
-  <xsd:complexType name="TmdModifyDataType">
+  <xsd:complexType name="TransmissionDescriptorModifyDataType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The attributes required for the modification of a transmission descriptor

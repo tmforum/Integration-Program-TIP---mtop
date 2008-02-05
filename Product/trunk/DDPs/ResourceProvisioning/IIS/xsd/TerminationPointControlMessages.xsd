@@ -22,29 +22,29 @@
   <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/TpData.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceCreateDataType.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/crcd/v1"/>
   <!-- ================ -->
-  <xsd:element name="createFtpRequest">
+  <xsd:element name="createFlowTerminationPointRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the createFtp operation</p>
+        <p>Request message structure of the createFlowTerminationPoint operation</p>
         <p>This operation allows an NMS requests from the EMS the creation of an FTP given the parameters passed in the method.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="createData" type="tns:FtpCreateDataType" minOccurs="0">
+        <xsd:element name="createData" type="tns:FlowTerminationPointCreateDataType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Structure describing the floating termination point structure to be created.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="tpsToModify" type="tpdata:TpDataListType" minOccurs="0">
+        <xsd:element name="tpListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The list of TPs with associated parameters to be applied.
             Applying transmission parameters is best-effort (where not stated 
             otherwise) and the resulting values of the transmission parameters are 
-            provided in the updated tpsToModify parameter. If the parameter is "not 
+            provided in the updated tpListToModify parameter. If the parameter is "not 
             best effort" then the whole operation will be rejected and the appropriate 
             exception thrown (see exceptions below).</p>
               <p>This parameter may be used by the NMS to determine
@@ -57,15 +57,15 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="createFtpResponse">
+  <xsd:element name="createFlowTerminationPointResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the createFtp operation</p>
+        <p>Response message structure of the createFlowTerminationPoint operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tpsToModify" type="tpdata:TpDataListType" minOccurs="0">
+        <xsd:element name="tpListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The list of TPs with associated parameters to be applied.</p>
@@ -91,10 +91,10 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="createFtpException">
+  <xsd:element name="createFlowTerminationPointException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the createFtp operation</p>
+        <p>Exception message structure of the createFlowTerminationPoint operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -116,10 +116,10 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="createGtpRequest">
+  <xsd:element name="createGroupTerminationPointRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the createGtp operation</p>
+        <p>Request message structure of the createGroupTerminationPoint operation</p>
         <p>The NMS uses this operation to request the creation of a GTP see SD1-3_BundledSNC.pdf 
    for further information on GTP usage). The NMS can either specify the list
    of CTPs comprising the GTP (the list is placed in the listOfTPs parameter) 
@@ -161,7 +161,7 @@
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="listOfTps" type="nam:NamingAttributeListType" minOccurs="0">
+        <xsd:element name="tpRefList" type="nam:NamingAttributeListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>the list of CTPs that comprise the GTP.</p>
@@ -175,14 +175,14 @@
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="numberOfCtps" type="xsd:long" minOccurs="0">
+        <xsd:element name="numberOfCtp" type="xsd:long" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>This parameter is used in conjunction with the initialCTPname parameter. It indicates the number of contiguous CTPs that follow the initial CTP. It equals 1 minus the total number of CTPs in the GTP.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="gtpEffort" type="tns:GtpEffortType" minOccurs="0">
+        <xsd:element name="gtpEffort" type="tns:GroupTerminationPointEffortType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>This parameter is used to indicate if the GTP bandwidth specification can be met with a different list of CTPs.</p>
@@ -199,10 +199,10 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="createGtpResponse">
+  <xsd:element name="createGroupTerminationPointResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the createGtp operation</p>
+        <p>Response message structure of the createGroupTerminationPoint operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -217,10 +217,10 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="createGtpException">
+  <xsd:element name="createGroupTerminationPointException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the createGtp operation</p>
+        <p>Exception message structure of the createGroupTerminationPoint operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -240,10 +240,10 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="createTpPoolRequest">
+  <xsd:element name="createTerminationPointPoolRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the createTpPool operation</p>
+        <p>Request message structure of the createTerminationPointPool operation</p>
         <p>This operation .</p>
       </xsd:documentation>
     </xsd:annotation>
@@ -270,14 +270,14 @@
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="containingMLSN" type="mlsn:MultiLayerSubnetworkType" minOccurs="0">
+        <xsd:element name="containingMlsn" type="mlsn:MultiLayerSubnetworkType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The subnetwork that shall contain the TPPool to be created.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="containedMembers" type="nam:NamingAttributeListType" minOccurs="0">
+        <xsd:element name="containedMembersRefList" type="nam:NamingAttributeListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The list of TPs or GTPs that shall comprise the TPPool.</p>
@@ -308,15 +308,15 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="createTpPoolResponse">
+  <xsd:element name="createTerminationPointPoolResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the createTpPool operation</p>
+        <p>Response message structure of the createTerminationPointPool operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="newTpPool" type="tppool:TpPoolType" minOccurs="0">
+        <xsd:element name="newTpPool" type="tppool:TerminationPointPoolType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>This parameter contains the newly created TPPool.</p>
@@ -326,10 +326,10 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="createTpPoolException">
+  <xsd:element name="createTerminationPointPoolException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the createTpPool operation</p>
+        <p>Exception message structure of the createTerminationPointPool operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -350,10 +350,10 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="deleteFtpRequest">
+  <xsd:element name="deleteFlowTerminationPointRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the deleteFtp operation</p>
+        <p>Request message structure of the deleteFlowTerminationPoint operation</p>
         <p>This operation allows an NMS to request the deletion of a floating termination point from the EMS. The operation may be used to delete "CPTP" FTPs.</p>
       </xsd:documentation>
     </xsd:annotation>
@@ -366,7 +366,7 @@
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="tpsToModify" type="tpdata:TpDataListType" minOccurs="0">
+        <xsd:element name="tpListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The list of TPs with associated parameters to be applied.</p>
@@ -376,15 +376,15 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="deleteFtpResponse">
+  <xsd:element name="deleteFlowTerminationPointResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the deleteFtp operation</p>
+        <p>Response message structure of the deleteFlowTerminationPoint operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tpsToModify" type="tpdata:TpDataListType" minOccurs="0">
+        <xsd:element name="tpListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The list of TPs with associated parameters to be applied.</p>
@@ -402,10 +402,10 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="deleteFtpException">
+  <xsd:element name="deleteFlowTerminationPointException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the deleteFtp operation</p>
+        <p>Exception message structure of the deleteFlowTerminationPoint operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -425,10 +425,10 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="deleteGtpRequest">
+  <xsd:element name="deleteGroupTerminationPointRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the deleteGtp operation</p>
+        <p>Request message structure of the deleteGroupTerminationPoint operation</p>
         <p>This operation is used to delete a GTP (see SD1-3 Bundled SNC overview for further information on GTP usage). An attempt to delete a GTP that is involved in a cross connection or SNC should be rejected by the EMS. This operation is idempotent. If the service is called with the name of a non-existent GTP, it will succeed.</p>
       </xsd:documentation>
     </xsd:annotation>
@@ -444,18 +444,18 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="deleteGtpResponse">
+  <xsd:element name="deleteGroupTerminationPointResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the deleteGtp operation</p>
+        <p>Response message structure of the deleteGroupTerminationPoint operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType/>
   </xsd:element>
-  <xsd:element name="deleteGtpException">
+  <xsd:element name="deleteGroupTerminationPointException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the deleteGtp operation</p>
+        <p>Exception message structure of the deleteGroupTerminationPoint operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -473,10 +473,10 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="deleteTpPoolRequest">
+  <xsd:element name="deleteTerminationPointPoolRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the deleteTpPool operation</p>
+        <p>Request message structure of the deleteTerminationPointPool operation</p>
         <p>The delete TPPool operation is used to delete a TPPool. This operation is idempotent.  If the service is called with the name of a non-existent TPPool, it will succeed.</p>
       </xsd:documentation>
     </xsd:annotation>
@@ -492,18 +492,18 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="deleteTpPoolResponse">
+  <xsd:element name="deleteTerminationPointPoolResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the deleteTpPool operation</p>
+        <p>Response message structure of the deleteTerminationPointPool operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType/>
   </xsd:element>
-  <xsd:element name="deleteTpPoolException">
+  <xsd:element name="deleteTerminationPointPoolException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the deleteTpPool operation</p>
+        <p>Exception message structure of the deleteTerminationPointPool operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -520,10 +520,10 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="modifyGtpRequest">
+  <xsd:element name="modifyGroupTerminationPointRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the modifyGtp operation</p>
+        <p>Request message structure of the modifyGroupTerminationPoint operation</p>
         <p>This operation is used to add TPs to or delete TPs from a GTP (see SD1-3_BundledSNC.pdf  for further information on GTP usage). For a given request, the NMS can only add or delete CTPs, not both. It is not possible to add a CTP that is already involved in a cross 
 connection or SNC, or that is part of another GTP. Attempts to modify a GTP 
 that is involved in a cross connection (or SNC) should be rejected by the EMS. The operation is best-effort, i.e., the EMS will add or delete as many of the identified CTPs as possible. If the service is called with the name of a non-existent GTP or CTP, it will fail.</p>
@@ -539,7 +539,7 @@ that is involved in a cross connection (or SNC) should be rejected by the EMS. T
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="tpNames" type="nam:NamingAttributeListType" minOccurs="0">
+        <xsd:element name="tpRefList" type="nam:NamingAttributeListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>names of the CTPs to be added or deleted.</p>
@@ -556,10 +556,10 @@ that is involved in a cross connection (or SNC) should be rejected by the EMS. T
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="modifyGtpResponse">
+  <xsd:element name="modifyGroupTerminationPointResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the modifyGtp operation</p>
+        <p>Response message structure of the modifyGroupTerminationPoint operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -574,10 +574,10 @@ that is involved in a cross connection (or SNC) should be rejected by the EMS. T
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="modifyGtpException">
+  <xsd:element name="modifyGroupTerminationPointException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the modifyGtp operation</p>
+        <p>Exception message structure of the modifyGroupTerminationPoint operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -597,10 +597,10 @@ that is involved in a cross connection (or SNC) should be rejected by the EMS. T
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="modifyTpPoolRequest">
+  <xsd:element name="modifyTerminationPointPoolRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the modifyTpPool operation</p>
+        <p>Request message structure of the modifyTerminationPointPool operation</p>
         <p>The modify TPPool operation is used to add TPs/GTPs to or delete TPs/GTPs from a TPPool.  For a given request, the NMS can only add TPs/GTPs or delete TPs/GTPs, not both.  When TPs/GTPs are to be added, all the specified TPs/GTPs shall be contained in MEs of the TPPool's Subnetwork.  It is not possible to add a TP/GTP that is part of another TPPool or GTP.  The operation is best-effort, i.e., the EMS will add or delete as many of the identified TPs as possible. If the service is called with the name of a non-existent TPPool or TP or GTP, it will fail.</p>
       </xsd:documentation>
     </xsd:annotation>
@@ -613,7 +613,7 @@ that is involved in a cross connection (or SNC) should be rejected by the EMS. T
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="containedMembers" type="nam:NamingAttributeListType" minOccurs="0">
+        <xsd:element name="containedMembersRefList" type="nam:NamingAttributeListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The names of the TPs or GTPs to be added or deleted.</p>
@@ -630,15 +630,15 @@ that is involved in a cross connection (or SNC) should be rejected by the EMS. T
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="modifyTpPoolResponse">
+  <xsd:element name="modifyTerminationPointPoolResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the modifyTpPool operation</p>
+        <p>Response message structure of the modifyTerminationPointPool operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="modifiedTpPool" type="tppool:TpPoolType" minOccurs="0">
+        <xsd:element name="modifiedTpPool" type="tppool:TerminationPointPoolType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>the structure for the modified TPPool.</p>
@@ -648,10 +648,10 @@ that is involved in a cross connection (or SNC) should be rejected by the EMS. T
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="modifyTpPoolException">
+  <xsd:element name="modifyTerminationPointPoolException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the modifyTpPool operation</p>
+        <p>Exception message structure of the modifyTerminationPointPool operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -672,10 +672,10 @@ that is involved in a cross connection (or SNC) should be rejected by the EMS. T
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="setTpDataRequest">
+  <xsd:element name="setTerminationPointDataRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the setTpData operation</p>
+        <p>Request message structure of the setTerminationPointData operation</p>
         <p>This operation allows the NMS to set parameters on a specified Termination Point (CTP, PTP or FTP). See SD1-16_LayeredParameters.pdf  for further information.</p>
         <p>This operation is best effort (except where specified otherwise for a 
    particular parameter). The results of the operation are returned
@@ -709,7 +709,7 @@ that is involved in a cross connection (or SNC) should be rejected by the EMS. T
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tpInfo" type="tpdata:TpDataType" minOccurs="0">
+        <xsd:element name="tpInfo" type="tpdata:TerminationPointDataType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Details of modifications required..</p>
@@ -719,10 +719,10 @@ that is involved in a cross connection (or SNC) should be rejected by the EMS. T
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="setTpDataResponse">
+  <xsd:element name="setTerminationPointDataResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the setTpData operation</p>
+        <p>Response message structure of the setTerminationPointData operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -737,10 +737,10 @@ that is involved in a cross connection (or SNC) should be rejected by the EMS. T
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="setTpDataException">
+  <xsd:element name="setTerminationPointDataException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the setTpData operation</p>
+        <p>Exception message structure of the setTerminationPointData operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -758,7 +758,7 @@ that is involved in a cross connection (or SNC) should be rejected by the EMS. T
     </xsd:complexType>
   </xsd:element>
   <!-- Types -->
-  <xsd:simpleType name="GtpEffortType">
+  <xsd:simpleType name="GroupTerminationPointEffortType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The GTP effort is a statement of the requirement of the list of CTPs
@@ -780,7 +780,7 @@ that is involved in a cross connection (or SNC) should be rejected by the EMS. T
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
-  <xsd:complexType name="FtpCreateDataType">
+  <xsd:complexType name="FlowTerminationPointCreateDataType">
     <xsd:annotation>
       <xsd:documentation>
         <p>The read/write attributes required for the creation of a
@@ -792,14 +792,14 @@ that is involved in a cross connection (or SNC) should be rejected by the EMS. T
     <xsd:complexContent>
       <xsd:extension base="crcd:CommonResourceCreateDataType">
         <xsd:sequence>
-          <xsd:element name="ingressTrafficDescriptorName" type="nam:NamingAttributeType" nillable="true" minOccurs="0">
+          <xsd:element name="ingressTmdRef" type="nam:NamingAttributeType" nillable="true" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>The FTP may have an optional reference to an ingress (incoming) Transmission Descriptor.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="egressTrafficDescriptorName" type="nam:NamingAttributeType" nillable="true" minOccurs="0">
+          <xsd:element name="egressTmdRef" type="nam:NamingAttributeType" nillable="true" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>The FTP may have an optional reference to an egress (outgoing) Transmission Descriptor.</p>
@@ -825,7 +825,7 @@ that is involved in a cross connection (or SNC) should be rejected by the EMS. T
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="directionality" type="com:DirectionalityType" nillable="true" minOccurs="0">
+          <xsd:element name="direction" type="com:DirectionalityType" nillable="true" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>The direction of the termination point.</p>
