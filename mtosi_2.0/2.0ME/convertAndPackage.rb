@@ -114,8 +114,8 @@ def createZipFiles()
     next if (aFile =~ /^pom.xml$/);
     next if (aFile =~ /^\.svn$/);
     puts "building zipfile for [#{aFile}]";
-    releaseNotesFileName = "TMF521_MTOSI_Release2.0BA.pdf";
-    system("cp ../ProductDescription/TMF521_MTOSI_Release2.0BA.pdf ProductDescription/#{releaseNotesFileName}");
+    releaseNotesFileName = "RN306_MTOSI_Release2.0BA.pdf";
+    system("cp ../ProductDescription/RN306_MTOSI_Release2.0BA.pdf ProductDescription/#{releaseNotesFileName}");
 
     readmeFileName = "README-#{$ddpName[aFile]}.txt";
     system("cp ../ProductDescription/README.txt #{readmeFileName}");
