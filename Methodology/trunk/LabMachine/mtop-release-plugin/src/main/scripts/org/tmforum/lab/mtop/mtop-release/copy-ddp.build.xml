@@ -4,8 +4,19 @@
     <target name="copy-ddp-target">
         <echo>copying DDP BA/IA/ISS contents to target/classes</echo>
         <mkdir dir="${basedir}/target/classes" />
+        <mkdir dir="${basedir}/../../ProductDescription/target/output-docs" />
         <copy todir="${basedir}/target/classes">
-            <fileset dir="." excludes="**/target/**" />
+            <fileset dir=".">
+               <exclude name="**/target/**" />
+               <exclude name="**/*.doc" />
+               <exclude name="**/pom.xml" />
+            </fileset>
+            <fileset dir="target/output-docs/">
+               <include name="**/*.pdf" />
+            </fileset>
+            <fileset dir="../../ProductDescription/target/output-docs/">
+               <include name="**/*.pdf" />
+            </fileset>
         </copy>
     </target>
 </project>
