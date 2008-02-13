@@ -31,10 +31,10 @@
         <p>Failure: No exception thrown, except in the cases listed below. If the SNC or any of its network resources have changed as a result of this operation, then no exception can be thrown so that theSNC can be passed back to the NMS. The SNCState in resulting theSNC will be either SNCS_PARTIAL or SNCS_PENDING. The state will be SNCS_PARTIAL if not all cross-connects on MEs have been successfully set up. The state will be SNCS_PENDING if the EMS mode of operation prevents the activation of the SNC. The errorReason parameter is set accordingly</p>
         <p>For more details on how this service affects the state of an SNC see SNC Management Modes of Operation and SNC state diagram.</p>
         <p>During activation of an SNC, the TPs of the SNC are configured, and the necessary cross-connects are established for the SNC and appropriate changes are made to tpMappingMode such that TPs that are not TP_NA have their tpMappingMode set appropriately for the SNC configuration. See also createSNC() for an explanation of tpMappingMode behaviour. An SNC can be activated while in any state. When activated that additional information provided during the creation is also applied to the SNC in the network.</p>
-        <p>In case of an ATM SNC (VP or VC), multiple termination points (VP CTP or VC CTP) can be created as a result of an activateSNC operation. These CTPs are all created/adjusted in compliance with the egress and ingress traffic parameters provided in the tpListToModify structure. For example, a non terminated VP SNC created over 3 managed elements will result, upon activation, in the usage of 6 VP CTPs and 3 VP cross-connections.</p>
+        <p>In case of an ATM SNC (VP or VC), multiple termination points (VP CTP or VC CTP) can be created as a result of an activateSNC operation. These CTPs are all created/adjusted in compliance with the egress and ingress traffic parameters provided in the TpDataListToModify structure. For example, a non terminated VP SNC created over 3 managed elements will result, upon activation, in the usage of 6 VP CTPs and 3 VP cross-connections.</p>
         <p>Note that the activateSNC operation can be called repeatedly and eventually should succeed (except in conflict cases where the SNC remains in SNCS_PENDING or SNCS_PARTIAL). Should the missing cross-connects be activated in the MEs via a craft interface, for example, prior to communications to those MEs being re-established, the activateSNC command ultimately should succeed when communication to the MEs is re-established (even though all cross-connects already exist).</p>
-        <p>The EMS will apply the transmissionParams specified in the tpListToModify parameter (same behaviour as ManagedElementMgr::setTPData(). They may be applied before or after the creation of the CCs, as appropriate. Existing TP transmission parameters for which no changes were requested in tpListToModify will be left unchanged. However, the alarm reporting on the TPs and the containing TPs may be turned on by the EMS as part of this request, unless otherwise specified via the transmission parameter "AlarmReporting". A similar behaviour is also allowed for the serviceState parameter, which may be set to IN_SERVICE for the TPs and the containing TPs. See transmissionParameters.</p>
-        <p>If a given entry in the list of transmission parameters specified in the TPDataType can not be successfully applied to the TP, for any reason, then the errorReason field is appended with an appropriate reason text. Applying transmission parameters is best-effort (where not stated otherwise) and the resulting values of the transmission parameters are provided in the updated tpListToModify parameter. If the parameter is "not best effort" then the whole operation will be rejected and the appropriate exception thrown (see exceptions below).</p>
+        <p>The EMS will apply the transmissionParams specified in the TpDataListToModify parameter (same behaviour as ManagedElementMgr::setTPData(). They may be applied before or after the creation of the CCs, as appropriate. Existing TP transmission parameters for which no changes were requested in TpDataListToModify will be left unchanged. However, the alarm reporting on the TPs and the containing TPs may be turned on by the EMS as part of this request, unless otherwise specified via the transmission parameter "AlarmReporting". A similar behaviour is also allowed for the serviceState parameter, which may be set to IN_SERVICE for the TPs and the containing TPs. See transmissionParameters.</p>
+        <p>If a given entry in the list of transmission parameters specified in the TPDataType can not be successfully applied to the TP, for any reason, then the errorReason field is appended with an appropriate reason text. Applying transmission parameters is best-effort (where not stated otherwise) and the resulting values of the transmission parameters are provided in the updated TpDataListToModify parameter. If the parameter is "not best effort" then the whole operation will be rejected and the appropriate exception thrown (see exceptions below).</p>
         <p>An already active SNC can be activated again; the EMS is allowed to not send the commands to the ME a second time for the cross connect establishment however the commands may be sent for the transmission parameters. While in SNCS_PARTIAL state, it is possible to activate an SNC again, this corresponds to a retry.</p>
         <p>Note that all the SNC routes, intended and backup, if any, are unlocked. The restoration process will take control of the unlocked routes and activate the proper one. The behavior of sncState is the same in case there is only one route or more routes of the SNC.</p>
       </xsd:documentation>
@@ -56,7 +56,7 @@
             <xsd:documentation>The maximum level of freedom allowed to the EMS to perform the activation.</xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="tpListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+        <xsd:element name="TpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>A list of TPs and parameters to apply.</xsd:documentation>
           </xsd:annotation>
@@ -72,7 +72,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tpListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+        <xsd:element name="TpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>A list of updated TPs to provide the resulting parameters.</xsd:documentation>
           </xsd:annotation>
@@ -233,7 +233,7 @@
             <xsd:documentation>Data about the potential SNC</xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="tpListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+        <xsd:element name="TpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>A list of TPs and parameters that would be applied to the potential SNC</xsd:documentation>
           </xsd:annotation>
@@ -313,7 +313,7 @@
             <xsd:documentation>The maximum level of freedom allowed to the EMS to perform the activation.</xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="tpListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+        <xsd:element name="TpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>A list of TPs and parameters to apply.</xsd:documentation>
           </xsd:annotation>
@@ -329,7 +329,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tpListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+        <xsd:element name="TpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>A list of updated TPs to provide the resulting parameters.</xsd:documentation>
           </xsd:annotation>
@@ -412,7 +412,7 @@
             <xsd:documentation>The maximum level of freedom allowed to the EMS to perform the activation.</xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="tpListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+        <xsd:element name="TpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>A list of TPs and parameters to apply.</xsd:documentation>
           </xsd:annotation>
@@ -428,7 +428,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tpListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+        <xsd:element name="TpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>A list of updated TPs to provide the resulting parameters.</xsd:documentation>
           </xsd:annotation>
@@ -597,7 +597,7 @@
             <xsd:documentation>The maximum level of freedom allowed to the EMS to perform the deactivation and deletion</xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="tpListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+        <xsd:element name="TpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>A list of TPs and parameters to apply</xsd:documentation>
           </xsd:annotation>
@@ -613,7 +613,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tpListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+        <xsd:element name="TpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>A list of updated TPs to provide the resulting parameters.</xsd:documentation>
           </xsd:annotation>
@@ -662,8 +662,8 @@
         <p>Failure - No exception thrown (except for cases described below). If the SNC or any of its network resources have changed as a result of this operation, then no exception can be thrown so that theSNC can be passed back to the NMS. The SNCState will be either SNCS_PARTIAL if the command partially completed or SNCS_ACTIVE if no cross-connects were deleted. The errorReason will be detailed accordingly.</p>
         <p>Success - SNC is deactivated in the EMS and the SNCState is set to SNCS_PENDING in the out parameter theSNC. The parameter theSNC will contain the attributes of the deactivated SNC. The errorReason parameter may be set to an empty string.</p>
         <p>For more details on how this service affects the state of an SNC see SNC Management Modes of Operation and SNC state diagram.</p>
-        <p>The EMS will apply the transmissionParams specified in the tpListToModify parameter (same behaviour as setTPData()). They may be applied before or after the creation of the CCs, as appropriate. See transmissionParameters.</p>
-        <p>If a given entry in the list of transmission parameters specified in tpListToModify can not be successfully applied to the TP, for any reason, then the errorReason field is appended with an appropriate reason text. Applying transmission parameters is best-effort (where not stated otherwise) and the resulting values of the transmission parameters are provided in the updated tpListToModify parameter. If the parameter is "not best effort" then the whole operation will be rejected and the appropriate exception thrown (see exceptions below).</p>
+        <p>The EMS will apply the transmissionParams specified in the TpDataListToModify parameter (same behaviour as setTPData()). They may be applied before or after the creation of the CCs, as appropriate. See transmissionParameters.</p>
+        <p>If a given entry in the list of transmission parameters specified in TpDataListToModify can not be successfully applied to the TP, for any reason, then the errorReason field is appended with an appropriate reason text. Applying transmission parameters is best-effort (where not stated otherwise) and the resulting values of the transmission parameters are provided in the updated TpDataListToModify parameter. If the parameter is "not best effort" then the whole operation will be rejected and the appropriate exception thrown (see exceptions below).</p>
         <p>Existing TP transmission parameters for which no changes were requested in transmissionParams will be left unchanged. However, the alarm reporting on the TPs and the containing TPs may be turned off by the EMS as part of this request, unless otherwise specified via the transmission parameter "AlarmReporting".</p>
         <p>An already deactivated SNC can be deactivated again with success (the EMS is allowed to not send the commands to the ME a second time however). While in SNCS_PARTIAL state, it is possible to deactivate an SNC again, this corresponds to a retry.</p>
         <p>If the SNC has more alternative routes, then the operation locks all the SNC routes, intended and backup.</p>
@@ -687,7 +687,7 @@
             <xsd:documentation>The maximum level of freedom allowed to the EMS to perform the deactivation</xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="tpListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+        <xsd:element name="TpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>A list of TPs and parameters to apply</xsd:documentation>
           </xsd:annotation>
@@ -703,7 +703,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tpListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+        <xsd:element name="TpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>A list of updated TPs to provide the resulting parameters.</xsd:documentation>
           </xsd:annotation>
@@ -837,7 +837,7 @@
             <xsd:documentation>The maximum level of freedom allowed to the EMS to perform the creation.</xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="tpListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+        <xsd:element name="TpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>A list of TPs and parameters to apply</xsd:documentation>
           </xsd:annotation>
@@ -853,7 +853,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tpListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+        <xsd:element name="TpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>A list of updated TPs to provide the resulting parameters.</xsd:documentation>
           </xsd:annotation>
@@ -1161,7 +1161,7 @@
             <xsd:documentation>The maximum level of freedom allowed to the EMS to perform the activation.</xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="tpListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+        <xsd:element name="TpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>A list of TPs and parameters to apply</xsd:documentation>
           </xsd:annotation>
@@ -1177,7 +1177,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tpListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+        <xsd:element name="TpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>A list of updated TPs to provide the resulting parameters.</xsd:documentation>
           </xsd:annotation>
@@ -1256,10 +1256,10 @@
    needed, the deactivation of other partial routes as well).</li>
           </ul>
         </p>
-        <p>The EMS will apply the transmissionParams specified in the tpListToModify 
+        <p>The EMS will apply the transmissionParams specified in the TpDataListToModify 
    parameter (same behaviour as setTpData). They may be applied before or 
    after the creation of the CCs, as appropriate. Existing TP transmission 
-   parameters for which no changes were requested in tpListToModify will be left 
+   parameters for which no changes were requested in TpDataListToModify will be left 
    unchanged. However, the alarm reporting on the connected TPs and the 
    containing TPs may be turned on by the EMS as part of this request, unless 
    otherwise specified via the transmission parameter "AlarmReporting". A 
@@ -1270,7 +1270,7 @@
    the errorReason field is appended with an appropriate reason text. Applying 
    transmission parameters is best-effort (where not stated 
    otherwise) and the resulting values of the 
-   transmission parameters are provided in the updated tpListToModify 
+   transmission parameters are provided in the updated TpDataListToModify 
    parameter.</p>
         <p>An already active SNC route can be activated again; the EMS is allowed 
    to not send the commands to the ME a second time for the cross connect 
@@ -1300,7 +1300,7 @@
             <xsd:documentation>The maximum level of freedom allowed to the EMS to perform the deletion.</xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="tpListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+        <xsd:element name="TpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>A list of TPs and parameters to apply.</xsd:documentation>
           </xsd:annotation>
@@ -1323,7 +1323,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tpListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+        <xsd:element name="TpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>A list of TPs and parameters to apply.</xsd:documentation>
           </xsd:annotation>

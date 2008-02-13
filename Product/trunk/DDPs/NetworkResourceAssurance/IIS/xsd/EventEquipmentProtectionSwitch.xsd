@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2008 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/eps/v1" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/eps/v1" xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" xmlns:ei="http://www.tmforum.org/mtop/fmw/xsd/ei/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:com="http://www.tmforum.org/mtop/nra/xsd/com/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/eps/v1" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/eps/v1" xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:com="http://www.tmforum.org/mtop/nra/xsd/com/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Framework</p>
@@ -10,7 +10,6 @@
   </xsd:annotation>
   <!-- ================ -->
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/CommonEventInformation.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/cei/v1"/>
-  <xsd:import schemaLocation="../../../Framework/IIS/xsd/EventInformation.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/ei/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/com/v1"/>
@@ -30,9 +29,16 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
-      <xsd:extension base="ei:EventInformationType">
+      <xsd:extension base="cei:CommonEventInformationType">
         <xsd:sequence>
-          <xsd:element name="equipmentProtectionGroupType" type="com:EquipmentProtectionGroupTypeType" minOccurs="0">
+          <xsd:element name="osTime" type="xsd:dateTime" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The time at which the event was reported by the OS (EMS).</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="epgType" type="com:EquipmentProtectionGroupTypeType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>The type of the equipment protection. If omitted, M:N is assumed.</p>
@@ -46,7 +52,7 @@
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="equipmentProtectionGroupNameRef" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:element name="epgRef" type="nam:NamingAttributeType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>This attribute represents the name of the Equipment Protection Group (EPG) emitting the switch.</p>
