@@ -9,7 +9,7 @@ set XMLBEANS_LIB=..\..\..\..\..\..\tools\xmlBeansLib
 set CP=%XMLBEANS_LIB%/xbean.jar;%XMLBEANS_LIB%\jsr173_1.0_api.jar;%XMLBEANS_LIB%\resolver.jar;%JAVA_HOME%\lib\tools.jar
 
 REM Generate using XMLBeans
-java -Xmx256m -classpath "%cp%" org.apache.xmlbeans.impl.tool.SchemaCompiler -mx 800m  -d %CLASS_HOME% -src %SRC_HOME% -out %DDP_HOME%\derived\New_ServiceActivation.jar -javasource 1.5 -debug ..\xsd
+java -Xmx256m -classpath "%cp%" org.apache.xmlbeans.impl.tool.SchemaCompiler -mx 800m  -d %CLASS_HOME% -src %SRC_HOME% -out %DDP_HOME%\derived\New_ServiceActivation.jar -javasource 1.5 -debug ..\xsd\*.xsd
 
 REM Package into library
 cd %SRC_HOME%
