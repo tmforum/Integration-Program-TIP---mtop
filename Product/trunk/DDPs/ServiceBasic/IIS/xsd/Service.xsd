@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - DM Service Basic - Copyright TeleManagement Forum 2008 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/sb/svc/v1"  xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:csi="http://www.tmforum.org/mtop/sb/xsd/csi/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" targetNamespace="http://www.tmforum.org/mtop/sb/svc/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+<xsd:schema 
+xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+xmlns:tns="http://www.tmforum.org/mtop/sb/svc/v1" 
+xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" 
+xmlns:csi="http://www.tmforum.org/mtop/sb/xsd/csi/v1" 
+xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" 
+targetNamespace="http://www.tmforum.org/mtop/sb/svc/v1" 
+elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
 	<xsd:annotation>
 		<xsd:documentation>
 			<p>DDP: Data Model service Basic</p>
@@ -11,7 +18,141 @@
 	</xsd:annotation>
 	<xsd:import namespace="http://www.tmforum.org/mtop/sb/xsd/csi/v1" schemaLocation="../../../ServiceBasic/IIS/xsd/CommonServiceInfo.xsd"/>
 	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
-	<xsd:complexType name="service" abstract="true">
+	<!-- ================= -->	
+	<xsd:element name="serviceSpecification" type="tns:ServiceSpecificationType"/>
+	<xsd:complexType name="ServiceSpecificationType" abstract="true">
+		<xsd:complexContent>
+			<xsd:annotation>
+				<xsd:documentation>
+					<p>The service specification defines invarient characteristics of a service </p>
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:extension base="csi:CommonServiceInfoType">
+				<xsd:sequence>
+				<!--
+					<xsd:element name="serviceSpecificationHas" type="tns:ServiceSpecificationType" minOccurs="0" maxOccurs="unbounded"/>
+					I don't understand this recursivity.
+				-->
+					<xsd:element name="sst" type="tns:ServiceSpecificationTypeType"/>
+					<xsd:element name="version" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="productSpecRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
+					<xsd:element name="serviceCatalogRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
+					<xsd:element name="describedByList" type="tns:UsedServiceSpecCharacteristicType" minOccurs="1" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="ServiceSpecificationTypeType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This aggregate is used to distinguish the kind of service</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string"/>
+			<xsd:element name="description" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="version" type="xsd:string" minOccurs="0"/>		
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->	
+	<xsd:element name="usedServiceSpecCharacteristicType" type="tns:UsedServiceSpecCharacteristicType"/>
+	<xsd:complexType name="UsedServiceSpecCharacteristicType">
+			<xsd:annotation>
+				<xsd:documentation>
+					<p>This aggregate indicates the usage characteristics of a given SSC</p>
+				</xsd:documentation>
+			</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="sscRef" type="nam:NamingAttributeType"/>
+					<xsd:element name="sscUse" type="tns:ServiceSpecCharacteristicUseType"/>
+					<xsd:element name="valueList"  type="tns:ServiceSpecCharacteristicValueType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+	</xsd:complexType>	
+	<!-- ================= -->	
+	<xsd:element name="serviceSpecCharacteristicUseType" type="tns:ServiceSpecCharacteristicUseType"/>
+	<xsd:complexType name="ServiceSpecCharacteristicUseType">
+			<xsd:annotation>
+				<xsd:documentation>
+					<p>This aggregate is used differently in the case of a Service Definition or a Service Template; 
+					      refer to the Service Basic BA document</p>
+				</xsd:documentation>
+			</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="globallySet" type="xsd:boolean" minOccurs="0"/>           
+							<!-- mandatory for Service Defnition, not applicable for Service Template -->
+					<xsd:element name="canBeOveridden" type="xsd:boolean" minOccurs="0"/> 
+							<!-- mandatory for Service Template, not applicable for Service Definition -->
+					<xsd:element name="minCardinality" type="xsd:int" minOccurs="0"/>
+					<xsd:element name="maxCardinality" type="xsd:int" minOccurs="0"/>
+					<xsd:element name="extensible" type="xsd:boolean" minOccurs="0"/>
+					<xsd:element name="validFor" type="tns:TimePeriodType" minOccurs="0"/>
+				</xsd:sequence>
+	</xsd:complexType>	
+	<!-- ================= -->		
+	<xsd:element name="serviceDefinition" type="tns:ServiceDefinitionType"/>
+	<xsd:complexType name="ServiceDefinitionType">
+		<xsd:complexContent>
+			<xsd:annotation>
+				<xsd:documentation>
+					<p>The service definition is an extension to the Service Specification abstract type.
+					It defines ALL the ServiceSpecCharacteristics that must be used to create corresponding Service instances
+					</p>
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:extension base="tns:ServiceSpecificationType">
+				<xsd:sequence>
+					<xsd:element name="activationMode" type="xsd:string"/>
+					<xsd:element name="sdStatus" type="tns:ServiceDefinitionStatusType" minOccurs="0"/>
+					<xsd:element name="sapSpecificationRefList" type="nam:NamingAttributeListType" minOccurs="1"/>
+					<xsd:element name="dependencyRefList"  type="nam:NamingAttributeListType" minOccurs="0"/>
+					<xsd:element name="validatesRefList" type="nam:NamingAttributeListType" minOccurs="0"/>	
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>	
+	<!-- ================= -->
+	<xsd:element name="serviceTemplate" type="tns:ServiceTemplateType"/>
+	<xsd:complexType name="ServiceTemplateType">
+		<xsd:complexContent>
+			<xsd:annotation>
+				<xsd:documentation>
+					<p>The service template is an extension to the Service Specification abstract type.
+					It defines specific ServiceSpecCharacteristicsValues for the globally set ServiceSpecCharacteristics that can be 
+					dynamically referenced by multiple Service instances during their lifecycle span
+					</p>
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:extension base="tns:ServiceSpecificationType">
+				<xsd:sequence>
+					<xsd:element name="source" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="serviceLocation" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="stStatus" type="tns:ServiceTemplateStatusType" minOccurs="0"/>
+					<xsd:element name="validatedByRef" type="nam:NamingAttributeType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ================= -->	
+	<xsd:element name="serviceCatalog" type="tns:ServiceCatalogType"/>
+	<xsd:complexType name="ServiceCatalogType">
+		<xsd:complexContent>
+			<xsd:annotation>
+				<xsd:documentation>
+					<p>A service catalog represents a grouping of SSCs and Service Specifications</p>
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:extension base="csi:CommonServiceInfoType">
+				<xsd:sequence>
+					<xsd:element name="sscRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
+					<xsd:element name="ssDefinitionRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
+					<xsd:element name="ssTemplateRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ================= -->	
+	<xsd:complexType name="Service" abstract="true">
 		<xsd:annotation>
 			<xsd:documentation>
 				<p>This defines the abstract service </p>
@@ -25,95 +166,287 @@
 					</xsd:documentation>
 				</xsd:annotation>
 				<xsd:sequence>
-					<xsd:element name="isServiceEnabled" type="xsd:boolean" minOccurs="0"/>
-					<xsd:element name="hasStarted" type="xsd:boolean" minOccurs="0"/>
-					<xsd:element name="isMandatory" type="xsd:boolean" minOccurs="0"/>
-					<xsd:element name="startMode" type="xsd:int" minOccurs="0"/>
-					<xsd:element name="isStateful" type="xsd:boolean" minOccurs="0"/>
-					<xsd:element name="subscriber" type="nam:NamingAttributeListType" minOccurs="0" maxOccurs="unbounded"/>
-					<xsd:element name="user" type="nam:NamingAttributeListType" minOccurs="0" maxOccurs="unbounded"/>
-					<xsd:element name="serviceState" type="csi:ServiceStateType" minOccurs="0"/>
-					<xsd:element name="operationalState" type="csi:OperStateType" minOccurs="0"/>
-					<xsd:element name="serviceAccessPoint" type="nam:NamingAttributeListType" minOccurs="0" maxOccurs="unbounded"/>
-					<xsd:element name="serviceCharacteristicValue" type="csi:ServiceCharValueType" minOccurs="0" maxOccurs="unbounded"/>
-					<xsd:element name="serviceTemplate" type="nam:NamingAttributeListType" minOccurs="0"/>
+					<xsd:element name="hasStarted" type="xsd:boolean"/>
+					<xsd:element name="isMandatory" type="xsd:boolean"/>
+					<xsd:element name="startMode" type="tns:StartModeType"/>
+					<xsd:element name="isStateful" type="xsd:boolean"/>
+                    <xsd:element name="adminState" type="tns:AdminStateType"/>
+					<xsd:element name="serviceState" type="tns:ServiceStateType"/>
+					<xsd:element name="operationalState" type="tns:OperationalStateType"/>
+					<xsd:element name="serviceTemplateRef" type="nam:NamingAttributeType"/>
+					<xsd:element name="subscriberRef" type="nam:NamingAttributeType" minOccurs="0"/>
+					<xsd:element name="userRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
+					<xsd:element name="sapRefList" type="nam:NamingAttributeListType"/>					
+					<xsd:element name="describedByList" type="tns:ServiceCharacteristicValueType" minOccurs="0" maxOccurs="unbounded"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
 	<!-- ================= -->
-	<xsd:complexType name="customerFacingService" abstract="true">
+	<xsd:complexType name="CustomerFacingService">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A CFS (Customer Facing Service) represents the instantiation of a given service 
+				that is bound to a particular product. 
+				It is an abstraction that defines the characteristics and behavior of a particular service as seen by the customer.
+				</p>
+			</xsd:documentation>
+		</xsd:annotation>		
 		<xsd:complexContent>
-			<xsd:extension base="tns:service">
+			<xsd:extension base="tns:Service">
 				<xsd:sequence>
-					<xsd:element name="cfsStatus" type="xsd:int" minOccurs="0"/>
+					<xsd:element name="productRef" type="nam:NamingAttributeType" minOccurs="0"/>	
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
 	<!-- ================= -->
-	<xsd:complexType name="resourceFacingService" abstract="true">
+	<xsd:complexType name="ResourceFacingService">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A RFS (Resource Facing Service) is an abstraction that defines the characteristics 
+				and behavior of a service that is not directly seen or purchased by a customer. 
+				It is an “internal” service that is required to support one or more customer facing services.
+				</p>
+			</xsd:documentation>
+		</xsd:annotation>			
 		<xsd:complexContent>
-			<xsd:extension base="tns:service">
+			<xsd:extension base="tns:Service">
 				<xsd:sequence>
-					<xsd:element name="rfsStatus" type="xsd:int" minOccurs="0"/>
+					<xsd:element name="cfsRef" type="nam:NamingAttributeType" minOccurs="1"/>
+					<xsd:element name="resourceRef" type="nam:NamingAttributeType" minOccurs="0"/>				
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
 	<!-- ================= -->
-	<xsd:element name="serviceSpecification" type="tns:ServiceSpecificationType"/>
-	<xsd:complexType name="ServiceSpecificationType">
+	<xsd:complexType name="ServiceSpecCharacteristicType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A SSC (Service Spec Characteristic) object represents a characteristic quality 
+				or distinctive feature of a Service as represented in a ServiceSpecification 
+				(specialized as ServiceDefinition or ServiceTemplate). 
+				The ServiceSpecCharacteristic takes on ServiceSpecCharacteristicValues 
+				</p>
+			</xsd:documentation>
+		</xsd:annotation>
 		<xsd:complexContent>
-			<xsd:annotation>
-				<xsd:documentation>
-					<p>The service specification defines invarient characteristics of a service </p>
-				</xsd:documentation>
-			</xsd:annotation>
 			<xsd:extension base="csi:CommonServiceInfoType">
 				<xsd:sequence>
-					<xsd:element name="serviceSpecificationHas" type="tns:ServiceSpecificationType" minOccurs="0" maxOccurs="unbounded"/>
-					<xsd:element name="serviceSpecVersion" type="csi:ServiceSpecVersionType" minOccurs="0" maxOccurs="unbounded"/>
-					<xsd:element name="serviceSpecCharacteristic" type="csi:ServiceSpecCharType" minOccurs="0" maxOccurs="unbounded"/>
-					<xsd:element name="serviceSpecCharacteristicValue" type="csi:ServiceSpecCharValueType" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="valueType" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="minCardinality" type="xsd:int" minOccurs="0"/>
+					<xsd:element name="maxCardinality" type="xsd:int" minOccurs="0"/>
+					<xsd:element name="derivationFormula" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="validFor" type="tns:TimePeriodType" minOccurs="0"/>
+					<xsd:element name="containedBySscRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
+					<xsd:element name="containingSscRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
+					<xsd:element name="productScRef" type="nam:NamingAttributeType" minOccurs="0"/>
+					<xsd:element name="serviceCatalogRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
+					<xsd:element name="valueList" type="tns:ServiceSpecCharacteristicValueType" minOccurs="0" maxOccurs="unbounded"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
 	<!-- ================= -->
-	<xsd:element name="serviceTemplate" type="tns:ServiceTemplateType"/>
-	<xsd:complexType name="ServiceTemplateType">
+	<xsd:complexType name="ServiceSpecCharacteristicValueType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A Service Specification is characterized by Service Spec Characteristic Values </p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="valueType" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="default" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="value" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="unitOfMeasure" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="valueFrom" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="valueTo" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="rangeInterval" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="validFor" type="tns:TimePeriodType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->	
+	<xsd:complexType name="ServiceCharacteristicValueType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A Service is described by Service Characteristic Values </p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="value" type="xsd:string"/>
+			<xsd:element name="validFor" type="tns:TimePeriodType" minOccurs="0"/>
+			<xsd:element name="sscRef" type="nam:NamingAttributeType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="SAPSpecificationType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>The SAP Specification defines a set of attributes and (optionally) associated values. 
+				A SAP Spec may be applied to one or more SAPs
+				</p>
+			</xsd:documentation>
+		</xsd:annotation>
 		<xsd:complexContent>
-			<xsd:annotation>
-				<xsd:documentation>
-					<p>The service template is an extension to the service specification </p>
-				</xsd:documentation>
-			</xsd:annotation>
-			<xsd:extension base="tns:ServiceSpecificationType">
+			<xsd:extension base="csi:CommonServiceInfoType">	
 				<xsd:sequence>
-					<xsd:element name="source" type="xsd:string" minOccurs="0"/>
-					<xsd:element name="serviceLocation" type="xsd:string" minOccurs="0"/>
-					<xsd:element name="stStatus" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="type" type="xsd:string" minOccurs="0"/> 
+					<xsd:element name="applicableServiceList" type="tns:ServiceSpecificationTypeType" minOccurs="0" maxOccurs="unbounded"/>
+<!--					<xsd:element name="applicableStateValueList" type="??? ask Jessie"/> -->
+					<xsd:element name="applicableStateValueList" type="xsd:string"/>
+					<xsd:element name="supportedSdRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
 	<!-- ================= -->
-	<xsd:element name="serviceDefinition" type="tns:ServiceDefinitionType"/>
-	<xsd:complexType name="ServiceDefinitionType">
+	<xsd:complexType name="ServiceAccessPointType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A SAP (Service Access Point) represents a set of parameters associated (directly or indirectly) 
+				with a unique (logical and/or physical) resource where the single Service can be accessed.
+				A Service is often associated with a list of SAPs
+				</p>
+			</xsd:documentation>
+		</xsd:annotation>	
 		<xsd:complexContent>
-			<xsd:annotation>
-				<xsd:documentation>
-					<p>The service definition is an extension to the service specification </p>
-				</xsd:documentation>
-			</xsd:annotation>
-			<xsd:extension base="tns:ServiceSpecificationType">
+			<xsd:extension base="csi:CommonServiceInfoType">	
 				<xsd:sequence>
-					<xsd:element name="activationMode" type="xsd:string" minOccurs="0"/>
-					<xsd:element name="typeOfDefinition" type="xsd:string" minOccurs="0"/>
-					<xsd:element name="sdStatus" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="adminState" type="tns:AdminStateType" minOccurs="0"/>					
+					<xsd:element name="serviceState" type="tns:ServiceStateType" minOccurs="0"/>
+					<xsd:element name="operationalState" type="tns:OperationalStateType" minOccurs="0"/>
+					<xsd:element name="subscriberRef" type="nam:NamingAttributeType" minOccurs="0"/>
+					<xsd:element name="userRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
+					<xsd:element name="resourceRef" type="nam:NamingAttributeType" minOccurs="0"/>						
+                    <xsd:element name="sapSpecRef" type="nam:NamingAttributeType"/>					
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
+	<!-- ================= -->	
+	<xsd:complexType name="PartyRoleType">
+		<xsd:sequence>
+			<xsd:element name="partyRoleId" type="xsd:anyType" minOccurs="0"/>
+			<xsd:element name="status" type="xsd:anyType" minOccurs="0"/>
+			<xsd:element name="validFor" type="tns:TimePeriodType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="SubscriberType">
+		<xsd:complexContent>
+			<xsd:extension base="tns:PartyRoleType">
+				<xsd:sequence/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="UserType">
+		<xsd:complexContent>
+			<xsd:extension base="tns:PartyRoleType">
+				<xsd:sequence/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="TimePeriodType">
+		<xsd:sequence>
+			<xsd:element name="startDateTime" type="xsd:anyType" minOccurs="0"/>
+			<xsd:element name="endDateTime" type="xsd:anyType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:simpleType name="ServiceDefinitionStatusType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="DRAFT"/>
+			<xsd:enumeration value="STANDARD"/>
+			<xsd:enumeration value="PROPRIETARY"/>			
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!-- ================= -->	
+	<xsd:simpleType name="ServiceTemplateStatusType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="DRAFT"/>
+			<xsd:enumeration value="PILOT"/>
+			<xsd:enumeration value="COMMERCIAL"/>	
+			<xsd:enumeration value="RETIRED"/>						
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!-- ================= -->	
+	<xsd:simpleType name="StartModeType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="UNKNOWN"/>
+			<xsd:enumeration value="AUTOMATICALLY_BY_MANAGEMENT_ENVIRONMENT"/>
+			<xsd:enumeration value="AUTOMATICALLY_BY_OWNING_DEVICE"/>	
+			<xsd:enumeration value="MANUALLY_BY_SERVICE_PROVIDER"/>
+			<xsd:enumeration value="MANUALLY_BY_A_CUSTOMER"/>
+			<xsd:enumeration value="ANY"/>										
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!-- ================= -->			
+	<xsd:simpleType name="AdminStateType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="LOCKED"/>
+			<xsd:enumeration value="UNLOCKED"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!-- ================= -->
+	<xsd:simpleType name="OperationalStateType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="DISABLED"/>
+			<xsd:enumeration value="ENABLED"/>
+		</xsd:restriction>			
+	</xsd:simpleType>
+	<!-- ================= -->	
+	<xsd:simpleType name="ServiceStateType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This "service state" is used by the Service Management interfaces.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="PLANNING_FEASIBILITY_CHECK">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The initial phase of the service planning process.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PLANNING_DESIGNED">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The phase where a service order is designed and assembled for the CFS instance</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="RESERVED">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>A CFS/RFS has been reserved for activation at a later time</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PROVISIONED_INACTIVE">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The CFS/RFS has been provisioned yet has not been activated</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PROVISIONED_ACTIVE">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The CFS/RFS has been activated</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TERMINATED">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The CFS instance is deactivated and the supporting RFSs are deallocated from the CFS</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>	
+	
 </xsd:schema>
