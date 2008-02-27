@@ -32,12 +32,12 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     </xsd:annotation>
     <xsd:sequence>
       <xsd:element name="productName" type="nam:NamingAttributeType"/>
-      <xsd:element name="productSpecificationName" type="nam:NamingAttributeType" nillable="true"/>
-      <xsd:element name="productBundleName" type="nam:NamingAttributeType" nillable="true"/>
-      <!-- === List of (ProductSpecCharacteristicID, ProductCharacteristicValue) === -->
+      <xsd:element name="productSpecificationName" type="nam:NamingAttributeType" minOccurs="0"/>
+      <xsd:element name="productBundleName" type="nam:NamingAttributeType" minOccurs="0"/>
+      <!-- === List of (productSpecCharacteristicRef, ProductCharacteristicValue) === -->
       <xsd:sequence minOccurs="0" maxOccurs="unbounded">
-        <xsd:element name="productSpecCharacteristicID" type="nam:NamingAttributeType" nillable="true"/>
-        <xsd:element name="productCharacteristicValue" type="nam:NamingAttributeType" nillable="true"/>
+        <xsd:element name="productSpecCharacteristicRef" type="nam:NamingAttributeType" minOccurs="0"/>
+        <xsd:element name="productCharacteristicValue" type="xsd:string" minOccurs="0"/>
       </xsd:sequence>
     </xsd:sequence>
   </xsd:complexType>
@@ -55,8 +55,8 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
       <xsd:element name="start" type="xsd:dateTime"/>
       <xsd:element name="availabilityDuration" type="xsd:duration"/>
       <xsd:element name="recurrenceInterval" type="xsd:duration"/>
-      <xsd:element name="end" type="xsd:dateTime" nillable="true"/>
-      <xsd:element name="extensionTime" type="xsd:duration" nillable="true" maxOccurs="unbounded">
+      <xsd:element name="end" type="xsd:dateTime" minOccurs="0"/>
+      <xsd:element name="extensionTime" type="xsd:duration" minOccurs="0" maxOccurs="unbounded">
         <xsd:annotation>
           <xsd:documentation>
             <p>Overruns shall be supported where an overrun entails one or more extensions to an 
@@ -84,7 +84,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
         <xsd:element name="start" type="xsd:dateTime"/>
         <xsd:element name="availabilityDuration" type="xsd:duration"/>
       </xsd:sequence>
-      <xsd:element name="extensionTime" type="xsd:duration" nillable="true" maxOccurs="unbounded">
+      <xsd:element name="extensionTime" type="xsd:duration" minOccurs="0" maxOccurs="unbounded">
         <xsd:annotation>
           <xsd:documentation>
             <p>Overruns shall be supported where an overrun entails one or more extensions to an 
@@ -118,7 +118,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="vendorExtensions" type="gen:AnyListType" nillable="true" minOccurs="0">
+      <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>Containment for all vendor extensions in</p>
@@ -141,25 +141,25 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="subscriberList" type="nam:NamingAttributeType" minOccurs="0" maxOccurs="unbounded">
+          <xsd:element name="subscriberRefList" type="nam:NamingAttributeType" minOccurs="0" maxOccurs="unbounded">
             <xsd:annotation>
               <xsd:documentation>
                 <p>This parameter provides a list of the subscribers associated with the request.
-                        The subscriberList applies to the given product instance as opposed to being
+                        The subscriberRefList applies to the given product instance as opposed to being
                         applied to a subset of the CFSs associated with the product instance.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="userList" type="nam:NamingAttributeType" minOccurs="0" maxOccurs="unbounded">
+          <xsd:element name="userRefList" type="nam:NamingAttributeType" minOccurs="0" maxOccurs="unbounded">
             <xsd:annotation>
               <xsd:documentation>
                 <p>This parameter provides a list of the users associated with the request.
-                        It is assumed that all on the userList apply to the given product instance as
+                        It is assumed that all on the userRefList apply to the given product instance as
                         opposed to being applied to a subset of the CFSs associated with the product instance.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="sapList" type="nam:NamingAttributeType" minOccurs="0" maxOccurs="unbounded">
+          <xsd:element name="sapRefList" type="nam:NamingAttributeType" minOccurs="0" maxOccurs="unbounded">
             <xsd:annotation>
               <xsd:documentation>
                 <p>This parameter provides a list of the SAPs associated with the request.</p>
@@ -381,7 +381,7 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
     </xsd:complexType>
   </xsd:element>
   <!-- === Amend === -->
-  <xsd:element name="amend">
+  <xsd:element name="amendRequest">
     <xsd:annotation>
       <xsd:documentation>
         <p>This operation is used by the requesting OS to confirm that it wants to go ahead with the reservation. 
