@@ -586,7 +586,7 @@
               <layoutConstraint xmi:type="notation:Bounds" xmi:id="_RwST1N7tEdym2_8ToWs_iA" y="-186"/>
             </children>
             <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_RwST0d7tEdym2_8ToWs_iA" fontName="Arial" routing="Rectilinear" showStereotype="Text"/>
-            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_RwST0t7tEdym2_8ToWs_iA" points="[-2064, 979, 10239, -1958]$[-2064, 2461, 10239, -476]$[-7249, 2461, 5054, -476]"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_RwST0t7tEdym2_8ToWs_iA" points="[-3995, 979, 5107, -1032]$[-3995, 1985, 5107, -26]$[-7408, 1985, 1694, -26]"/>
             <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_Sgvq8N7uEdym2_8ToWs_iA" id="(0.83750623,0.013960703)"/>
           </edges>
           <edges xmi:id="_vaKQ0N7vEdym2_8ToWs_iA" element="_vaAf0N7vEdym2_8ToWs_iA" source="_5kW7UN7sEdym2_8ToWs_iA" target="_LOwhELq9EdyA7v53CjAzng">
@@ -701,7 +701,7 @@
               <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_BXCUCtypEdyY2qUBC6uXag"/>
             </children>
             <styles xmi:type="umlnotation:UMLClassifierStyle" xmi:id="_BXCUC9ypEdyY2qUBC6uXag" fontName="Arial" showListSignature="true" showParent="QualifiedName" showStereotype="Label" useClassifierShape="true"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_BXCUDNypEdyY2qUBC6uXag" x="7169" y="9286"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_BXCUDNypEdyY2qUBC6uXag" x="1722" y="9043"/>
           </children>
           <children xmi:id="_BXCUDdypEdyY2qUBC6uXag">
             <children xmi:id="_BXCUDtypEdyY2qUBC6uXag" type="ImageCompartment">
@@ -719,7 +719,7 @@
             </children>
             <styles xmi:type="umlnotation:UMLClassifierStyle" xmi:id="_BXCUGNypEdyY2qUBC6uXag" fontName="Arial" showListSignature="true" showParent="QualifiedName" showStereotype="Label" useClassifierShape="true"/>
             <element xmi:type="uml:Interface" href="../../Framework/IA/Framework.emx#_8KmqACVOEdyiv86aejkLcA?Framework/Interfaces/CommonObjectProvisioning?"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_BXCUGdypEdyY2qUBC6uXag" x="4629" y="4867"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_BXCUGdypEdyY2qUBC6uXag" x="1470" y="4624"/>
           </children>
           <children xmi:id="_BXCUGtypEdyY2qUBC6uXag">
             <children xmi:id="_BXCUG9ypEdyY2qUBC6uXag" type="ImageCompartment">
@@ -737,7 +737,7 @@
             </children>
             <styles xmi:type="umlnotation:UMLClassifierStyle" xmi:id="_BXCUJdypEdyY2qUBC6uXag" fontName="Arial" showListSignature="true" showParent="QualifiedName" showStereotype="Label" useClassifierShape="true"/>
             <element xmi:type="uml:Interface" href="../../Framework/IA/Framework.emx#_ccpu0JjvEdyuNMSCXkXoCg?Framework/Interfaces/Common?"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_BXCUJtypEdyY2qUBC6uXag" x="8016" y="978"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_BXCUJtypEdyY2qUBC6uXag" x="4830" y="735"/>
           </children>
           <children xmi:id="_BXMFANypEdyY2qUBC6uXag" element="_fSjG4Lq6EdyA7v53CjAzng">
             <children xmi:id="_BXMFAdypEdyY2qUBC6uXag" type="ImageCompartment">
@@ -1484,97 +1484,85 @@ Operation Exceptions:
       <packagedElement xmi:type="uml:Interface" xmi:id="_eE4qcNynEdyY2qUBC6uXag" name="ConnectionControlService">
         <ownedOperation xmi:id="_JG-mU9yqEdyY2qUBC6uXag" name="activateSubnetworkConnection" visibility="public" precondition="_JG-mVdyqEdyY2qUBC6uXag" postcondition="_JG-mV9yqEdyY2qUBC6uXag">
           <ownedComment xmi:id="_JG-mVNyqEdyY2qUBC6uXag" annotatedElement="_JG-mU9yqEdyY2qUBC6uXag">
-            <body>The operation is used to put an already created SNC into the ACTIVE state.&#xD;
+            <body>This operation is used to put an already existing Subnetwork Connection (SNC) into the ACTIVE state. It can also be applied to bundled SNCs.&#xD;
 More precisely, all the SNC routes, intended and backup, if any, are unlocked. The restoration process will take control of the unlocked routes and activate the proper one.&#xD;
-Note: The behavior of sncState is not dependend on the number of routes associated to the SNC.&#xD;
-The operation also applies to bundled SNCs.&#xD;
+Note: The behaviour of sncState is not dependent on the number of routes associated to the SNC.&#xD;
 &#xD;
-Operation Exceptions:&#xD;
-1. NOT_IMPLEMENTED - Raised when an EMS does not provide this operation; this is only allowed if the EMS does not&#xD;
-    support the PENDING state and if the PARTIAL state is unreachable.&#xD;
-2. INTERNAL_ERROR - Raised in case of non-specific EMS internal failure.&#xD;
-3. INVALID_INPUT - Raised when any input parameter is syntactically incorrect (e.g sncName does not refer to an SNC&#xD;
-    object, or any field in tpsToModify is invalid).&#xD;
-4. ENTITY_NOT_FOUND - Raised when sncName or tpsToModify reference an SNC/TP object that does not exist.&#xD;
-5. OBJECT_IN_USE - Raised when the SNC can not be activated because of CC or TP conflicts or conflicts between the&#xD;
-    active route (with equal or higher priority) of this and other SNCs or when CC creation would involve a TP that has an&#xD;
-    existing fixed CC that does not match that required for the SNC.&#xD;
-6. TIMESLOT_IN_USE (Obsolete - OBJECT_IN_USE should be used)&#xD;
-     - Raised when the SNC can not be activated because of timeslot conflicts with other SNCs.&#xD;
-7. NE_COMM_LOSS - Raised when communication to managed element is lost and this prevents any change to the SNC.&#xD;
-8. UNABLE_TO_COMPLY - Raised when the SNC is in PENDING state and is in conflict with another active or partial SNC.&#xD;
-    Raised when the EMS is unable to execute the request because at least one of the parameters although valid can not be&#xD;
-    set and that parameter is identified as &quot;not best effort&quot; in the supporting document LayeredParameters.pdf associated to&#xD;
-    the TransmissionParameters object; i.e. the whole operation will be rejected if one parameter fails that must be set. This is&#xD;
-    potentially usable for cases where a parameter must be set for the SNC to be valid.&#xD;
-    Raised when the SNC cannot be activated because the EMS cannot comply for a reason different than the ones above.&#xD;
-    If the EMS cannot determine the reason it could not comply, it is also allowed to throw UNABLE_TO_COMPLY.&#xD;
-9. NOT_IN_VALID_STATE - Raised where the SNC would involve a CTP that is not connectable due to the state of the&#xD;
-    server TP or in the case of inverse multiplexing where the SNC would involve a CTP that is not connectable due to the&#xD;
-    state of the client TP.&#xD;
-    (Obsolete usage - OBJECT_IN_USE should be used instead for the case where an exception is raised when the&#xD;
-    SNC is in conflict with another active or partial SNC and can not be created.)&#xD;
-</body>
+Traceability: R_TMF518_RP_II_0007, R_TMF518_RP_II_0008, UC_TMF518_RP_0002.</body>
           </ownedComment>
-          <ownedRule xmi:id="_JG-mVdyqEdyY2qUBC6uXag" constrainedElement="_JG-mU9yqEdyY2qUBC6uXag">
+          <ownedRule xmi:id="_JG-mVdyqEdyY2qUBC6uXag" name="" constrainedElement="_JG-mU9yqEdyY2qUBC6uXag">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_JG-mVtyqEdyY2qUBC6uXag">
-              <body>SNC to be activated has to exist.</body>
+              <body>See UC_TMF518_RP_0002.</body>
             </specification>
           </ownedRule>
           <ownedRule xmi:id="_JG-mV9yqEdyY2qUBC6uXag" constrainedElement="_JG-mU9yqEdyY2qUBC6uXag">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_JG-mWNyqEdyY2qUBC6uXag">
-              <body>Requested SNC has been activated.</body>
+              <body>See UC_TMF518_RP_0002.</body>
             </specification>
           </ownedRule>
           <ownedParameter xmi:id="_JG-mWdyqEdyY2qUBC6uXag" name="void" isUnique="false" direction="return"/>
-          <ownedParameter xmi:id="_JG-mW9yqEdyY2qUBC6uXag" name="sncName" direction="inout">
+          <ownedParameter xmi:id="_JG-mW9yqEdyY2qUBC6uXag" name="sncName">
             <ownedComment xmi:id="_JG-mXNyqEdyY2qUBC6uXag" annotatedElement="_JG-mW9yqEdyY2qUBC6uXag">
-              <body>/* in */ The name of an already created Subnetwork Connection.</body>
+              <body>This parameter indicates the name of the already created Subnetwork Connection to be activated.</body>
             </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_JG-mXdyqEdyY2qUBC6uXag">
               <body>NA</body>
             </defaultValue>
           </ownedParameter>
-          <ownedParameter xmi:id="_JG-mXtyqEdyY2qUBC6uXag" name="tolerableImpact" type="_TSosANyrEdyY2qUBC6uXag" direction="inout">
+          <ownedParameter xmi:id="_JG-mXtyqEdyY2qUBC6uXag" name="tolerableImpact" type="_TSosANyrEdyY2qUBC6uXag">
             <ownedComment xmi:id="_JG-mX9yqEdyY2qUBC6uXag" annotatedElement="_JG-mXtyqEdyY2qUBC6uXag">
-              <body>/* in */ The maximum tolerable impact allowed.</body>
+              <body>This parameter indicates the degree to which the activation of the SNC may impact the Multi Layer Subnetwork.</body>
             </ownedComment>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_JG-mYNyqEdyY2qUBC6uXag">
               <body>MINOR_IMPACT</body>
             </defaultValue>
           </ownedParameter>
-          <ownedParameter xmi:id="_JG-mYdyqEdyY2qUBC6uXag" name="emsFreedomLevel" type="_QESrQNysEdyY2qUBC6uXag" direction="inout">
+          <ownedParameter xmi:id="_JG-mYdyqEdyY2qUBC6uXag" name="osFreedomLevel" type="_QESrQNysEdyY2qUBC6uXag">
             <ownedComment xmi:id="_JG-mYtyqEdyY2qUBC6uXag" annotatedElement="_JG-mYdyqEdyY2qUBC6uXag">
-              <body>/* in */ The maximum level of freedom allowed to the EMS to perform the activation.</body>
+              <body>This parameter indicates the maximum level of freedom allowed to the target OS to perform the activation.</body>
             </ownedComment>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_JG-mY9yqEdyY2qUBC6uXag">
               <body>CREATE_CONNECTION_AT_SNC_LAYER</body>
             </defaultValue>
           </ownedParameter>
-          <ownedParameter xmi:id="_JG-mZNyqEdyY2qUBC6uXag" name="tpsToModify" direction="inout">
+          <ownedParameter xmi:id="_JG-mZNyqEdyY2qUBC6uXag" name="tpDataListToModify" type="_G7AjYOR_Edyd-_NSHGr2NQ" direction="inout">
             <ownedComment xmi:id="_JG-mZdyqEdyY2qUBC6uXag" annotatedElement="_JG-mZNyqEdyY2qUBC6uXag">
-              <body>/* inout */ A list of TPs on which to apply parameters. This also includes the result of the parameter application upon completion.</body>
+              <body>This parameter, when used in the request, identifies the list of TPs with associated parameters to be applied; when used in the return, it identifies the list of TPs with associated applied parameters.</body>
             </ownedComment>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_DLwYgeSBEdyd-_NSHGr2NQ" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_DLwYgOSBEdyd-_NSHGr2NQ"/>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_JG-mZtyqEdyY2qUBC6uXag">
               <body>empty list</body>
             </defaultValue>
           </ownedParameter>
-          <ownedParameter xmi:id="_JG-mZ9yqEdyY2qUBC6uXag" name="snc" direction="inout">
+          <ownedParameter xmi:id="_JG-mZ9yqEdyY2qUBC6uXag" name="snc" direction="out">
             <ownedComment xmi:id="_JG-maNyqEdyY2qUBC6uXag" annotatedElement="_JG-mZ9yqEdyY2qUBC6uXag">
-              <body>/* out */ The subnetwork connection after the operation.</body>
+              <body>This parameter contains the Subnetwork Connection after the operation.</body>
             </ownedComment>
+            <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#__PZCUEyuEdyMf41zLKMFmA?NetworkResourceFulfillment/Data%20Object%20Classes/SubNetworkConnection?"/>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_JG-madyqEdyY2qUBC6uXag">
               <body>NA</body>
             </defaultValue>
           </ownedParameter>
-          <ownedParameter xmi:id="_JG-matyqEdyY2qUBC6uXag" name="errorReason" direction="inout">
+          <ownedParameter xmi:id="_JG-matyqEdyY2qUBC6uXag" name="errorReason" direction="out">
             <ownedComment xmi:id="_JG-ma9yqEdyY2qUBC6uXag" annotatedElement="_JG-matyqEdyY2qUBC6uXag">
-              <body>/* out */ Specifies the activation error(s) if any.</body>
+              <body>This parameter specifies the activation error(s) if any.</body>
             </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_JG-mbNyqEdyY2qUBC6uXag">
               <body>empty string</body>
             </defaultValue>
           </ownedParameter>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_VvFWkCVfEdyiv86aejkLcA?Framework/Operation%20Exceptions/NOT_IN_VALID_STATE?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_jbWSQCVfEdyiv86aejkLcA?Framework/Operation%20Exceptions/TIMESLOT_IN_USE?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/COMM_LOSS?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UNABLE_TO_COMPLY?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_412MUCVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/OBJECT_IN_USE?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_TAYcACVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/ENTITY_NOT_FOUND?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/INVALID_INPUT?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/INTERNAL_ERROR?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NOT_IMPLEMENTED?"/>
         </ownedOperation>
         <ownedOperation xmi:id="_JG-l0tyqEdyY2qUBC6uXag" name="addRoute" visibility="public" precondition="_JG-l1NyqEdyY2qUBC6uXag" postcondition="_JG-l1tyqEdyY2qUBC6uXag">
           <ownedComment xmi:id="_yMlRINyqEdyY2qUBC6uXag" annotatedElement="_JG-l0tyqEdyY2qUBC6uXag">
@@ -5691,6 +5679,50 @@ requesting OS when performing the client launch.</body>
       <packagedElement xmi:type="uml:Dependency" xmi:id="_FHhmEN75Edym2_8ToWs_iA" client="__Rxq4N1cEdyrKNXnBMy96w">
         <supplier xmi:type="uml:DataType" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_37Bj8CPJEdypgfGA_0P3-g?NetworkResourceBasic/Type%20Definitions/TransmissionParameterList?"/>
       </packagedElement>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_G7AjYOR_Edyd-_NSHGr2NQ" name="TerminationPointDataList">
+        <ownedComment xmi:id="_XknkgOSAEdyd-_NSHGr2NQ" annotatedElement="_G7AjYOR_Edyd-_NSHGr2NQ">
+          <body>..\..\Framework\SD\SD1-16_LayeredParameters.doc</body>
+        </ownedComment>
+        <ownedComment xmi:id="_FyO2EOSCEdyd-_NSHGr2NQ" annotatedElement="_G7AjYOR_Edyd-_NSHGr2NQ">
+          <body>This data type contains a Termination Point with associated parameters and their values.</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_jsMPwuR_Edyd-_NSHGr2NQ" name="tpName" visibility="public">
+          <ownedComment xmi:id="_jsMPw-R_Edyd-_NSHGr2NQ" annotatedElement="_jsMPwuR_Edyd-_NSHGr2NQ">
+            <body>This attribute contains the Termination Point name to which the transmission parameters apply.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_jsMPxOR_Edyd-_NSHGr2NQ">
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <body>NA</body>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_jsMPzuR_Edyd-_NSHGr2NQ" name="tpMappingMode" visibility="public">
+          <ownedComment xmi:id="_jsMPz-R_Edyd-_NSHGr2NQ" annotatedElement="_jsMPzuR_Edyd-_NSHGr2NQ">
+            <body>This attribute indicates if the Termination Point is to be configured such that it is capable of supporting lower rate connections or is capable of supporting connections at the CTP's layer rate.</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_Br-Q0DqYEdyNgbQAJBaBgA?NetworkResourceFulfillment/Type%20Definitions/TerminationMode?"/>
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_jsMP0OR_Edyd-_NSHGr2NQ">
+            <type xmi:type="uml:Enumeration" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_Br-Q0DqYEdyNgbQAJBaBgA?NetworkResourceFulfillment/Type%20Definitions/TerminationMode?"/>
+            <body>CIS Null</body>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_pDsqgOSAEdyd-_NSHGr2NQ" name="transmissionParameters" visibility="public">
+          <ownedComment xmi:id="_pDsqgeSAEdyd-_NSHGr2NQ" annotatedElement="_pDsqgOSAEdyd-_NSHGr2NQ">
+            <body>This attribute contains the layered Transmission Parameters associated with the Termination Point.&#xD;
+Refer to the attached supporting document SD1-16_LayeredParameters for details of the currently defined Transmission Parameters.</body>
+          </ownedComment>
+          <ownedComment xmi:id="_pDsqguSAEdyd-_NSHGr2NQ" annotatedElement="_pDsqgOSAEdyd-_NSHGr2NQ">
+            <body>..\..\Framework\SD\SD1-16_LayeredParameters.doc</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_37Bj8CPJEdypgfGA_0P3-g?NetworkResourceBasic/Type%20Definitions/TransmissionParameterList?"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_pDsqg-SAEdyd-_NSHGr2NQ" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_pDsqhOSAEdyd-_NSHGr2NQ" value="1"/>
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_pDsqheSAEdyd-_NSHGr2NQ">
+            <type xmi:type="uml:DataType" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_37Bj8CPJEdypgfGA_0P3-g?NetworkResourceBasic/Type%20Definitions/TransmissionParameterList?"/>
+            <body>NA</body>
+          </defaultValue>
+        </ownedAttribute>
+      </packagedElement>
     </packagedElement>
     <profileApplication xmi:id="_EjUhNfpJEduVsYI7mfNDXQ">
       <eAnnotations xmi:id="_EjUhNvpJEduVsYI7mfNDXQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
@@ -6413,4 +6445,13 @@ requesting OS when performing the client launch.</body>
   <Default:Documentation xmi:id="_EhXU8OBtEdyzzoDua8-7tA" base_Comment="_EhNj8OBtEdyzzoDua8-7tA"/>
   <Default:Documentation xmi:id="_oSU24eBtEdyzzoDua8-7tA" base_Comment="_oSU24OBtEdyzzoDua8-7tA"/>
   <Default:Documentation xmi:id="_1f984-BtEdyzzoDua8-7tA" base_Comment="_1f984eBtEdyzzoDua8-7tA"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_jsMPxeR_Edyd-_NSHGr2NQ" base_StructuralFeature="_jsMPwuR_Edyd-_NSHGr2NQ"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_jsMP0eR_Edyd-_NSHGr2NQ" base_StructuralFeature="_jsMPzuR_Edyd-_NSHGr2NQ"/>
+  <Default:Documentation xmi:id="_jsWAweR_Edyd-_NSHGr2NQ" base_Comment="_jsMPw-R_Edyd-_NSHGr2NQ"/>
+  <Default:Documentation xmi:id="_jsWAxOR_Edyd-_NSHGr2NQ" base_Comment="_jsMPz-R_Edyd-_NSHGr2NQ"/>
+  <Default:URL xmi:id="_aOMO0OSAEdyd-_NSHGr2NQ" base_Comment="_XknkgOSAEdyd-_NSHGr2NQ"/>
+  <Default:Documentation xmi:id="_pDsqhuSAEdyd-_NSHGr2NQ" base_Comment="_pDsqgeSAEdyd-_NSHGr2NQ"/>
+  <Default:URL xmi:id="_pDsqh-SAEdyd-_NSHGr2NQ" base_Comment="_pDsqguSAEdyd-_NSHGr2NQ"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_pDsqiOSAEdyd-_NSHGr2NQ" base_StructuralFeature="_pDsqgOSAEdyd-_NSHGr2NQ" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
+  <Default:Documentation xmi:id="_FyO2EeSCEdyd-_NSHGr2NQ" base_Comment="_FyO2EOSCEdyd-_NSHGr2NQ"/>
 </xmi:XMI>
