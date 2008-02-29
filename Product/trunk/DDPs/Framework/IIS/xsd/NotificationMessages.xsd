@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2008 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/notmsg/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/notmsg/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/notmsg/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/notmsg/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Framework</p>
@@ -9,6 +9,7 @@
     </xsd:documentation>
   </xsd:annotation>
   <!-- ================ -->
+  <xsd:import schemaLocation="GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
   <xsd:import schemaLocation="MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
   <xsd:import schemaLocation="CommonEventInformation.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/cei/v1"/>
   <!--  ============== -->
@@ -35,10 +36,10 @@
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="selector" type="tns:QueryExpressionType" minOccurs="0">
+        <xsd:element name="selector" type="gen:QueryExpressionType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>it is the optional "filter" expression to restrict the flow of messages sent to the notification consumer. By default, an empty selector defines the desire to be notified of all events for the given topic.</p>
+              <p>It is the optional "filter" expression to restrict the flow of messages sent to the notification consumer. By default, an empty selector defines the desire to be notified of all events for the given topic.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -203,43 +204,4 @@
     </xsd:annotation>
     <xsd:restriction base="xsd:string"/>
   </xsd:simpleType>
-  <!--  ============== -->
-  <xsd:simpleType name="QueryDialectTypeType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>the enumeration of all the supported query dialect types.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:restriction base="xsd:string">
-      <xsd:enumeration value="ANSI-92"/>
-      <xsd:enumeration value="XPATH1"/>
-      <xsd:enumeration value="XPATH2"/>
-    </xsd:restriction>
-  </xsd:simpleType>
-  <!--  ============== -->
-  <xsd:complexType name="QueryExpressionType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>the notification filter</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element name="dialect" type="tns:QueryDialectTypeType">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>the dialect of the given query expression</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="query" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>the query expression in the language specified by the dialect attribute</p>
-          </xsd:documentation>
-        </xsd:annotation>
-        <xsd:complexType mixed="true">
-        </xsd:complexType>
-      </xsd:element>
-    </xsd:sequence>
-  </xsd:complexType>
 </xsd:schema>

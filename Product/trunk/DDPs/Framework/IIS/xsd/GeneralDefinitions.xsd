@@ -321,4 +321,45 @@
     <xsd:restriction base="xsd:string"/>
   </xsd:simpleType>
   <!-- ================= -->
+  <xsd:simpleType name="QueryDialectEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The enumeration of all the supported query dialect types.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:anyURI">
+      <xsd:enumeration value="ANSI-92"/>
+      <xsd:enumeration value="http://www.w3.org/TR/xpath"/>
+      <xsd:enumeration value="http://www.w3.org/TR/xpath20/"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="QueryDialectTypeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The loose definition of all the supported query dialect types.</p>
+        <p>Refer to QueryDialectEnumType definition to the enumeration of recommended query dialect types.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:anyURI"/>
+  </xsd:simpleType>
+  <!--  ============== -->
+  <xsd:complexType name="QueryExpressionType" mixed="true">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The generic schema datatype definition for the query expression used in most filters.</p>
+        <p>This definition is borrowed from WS-Notification v1.3.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:any minOccurs="0" maxOccurs="1" processContents="lax" />
+    </xsd:sequence>
+    <xsd:attribute name="Dialect" type="tns:QueryDialectTypeType" use="required">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The dialect of the given query expression</p>
+          </xsd:documentation>
+        </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
 </xsd:schema>

@@ -20,25 +20,15 @@ http://schemas.xmlsoap.org/soap/envelope/ http://schemas.xmlsoap.org/soap/envelo
   <soap:Body>
     <invr:getInventoryRequest>
       <invr:filter>
-      <!-- Retrieve All ME, PTP and CTP object attributes in West MD -->
+        <!-- Retrieve All ME object attributes with softwareVersion equal to 2.0 in West MD -->
         <invr:baseInstance>
           <nam:object>
             <nam:type>MD</nam:type>
             <nam:name>West</nam:name>
           </nam:object>
         </invr:baseInstance>
-        <invr:includedObjectType>
-          <invr:objectType>ME</invr:objectType>
-          <invr:granularity>ATTRS</invr:granularity>
-        </invr:includedObjectType>
-        <invr:includedObjectType>
-          <invr:objectType>PTP</invr:objectType>
-          <invr:granularity>ATTRS</invr:granularity>
-        </invr:includedObjectType>
-        <invr:includedObjectType>
-          <invr:objectType>CTP</invr:objectType>
-          <invr:granularity>ATTRS</invr:granularity>
-        </invr:includedObjectType>
+        <invr:queryExpression Dialect="http://www.w3.org/TR/xpath">//meAttrs[softwareVersion=`2.0`</invr:queryExpression>
+        <invr:granularity>ATTRS</invr:granularity>
       </invr:filter>
     </invr:getInventoryRequest>
   </soap:Body>

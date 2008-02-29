@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ResourceTroubleManagement - Copyright TeleManagement Forum 2008 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rtm/xsd/ar/v1" xmlns:tns="http://www.tmforum.org/mtop/rtm/xsd/ar/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:prc="http://www.tmforum.org/mtop/nra/xsd/prc/v1" xmlns:com="http://www.tmforum.org/mtop/nra/xsd/com/v1" xmlns:alm="http://www.tmforum.org/mtop/nra/xsd/alm/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rtm/xsd/ar/v1" xmlns:tns="http://www.tmforum.org/mtop/rtm/xsd/ar/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:prc="http://www.tmforum.org/mtop/nra/xsd/prc/v1" xmlns:com="http://www.tmforum.org/mtop/nra/xsd/com/v1" xmlns:alm="http://www.tmforum.org/mtop/nra/xsd/alm/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: ResourceTroubleManagement</p>
@@ -9,6 +9,7 @@
     </xsd:documentation>
   </xsd:annotation>
   <!-- ================ -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/com/v1"/>
@@ -176,36 +177,57 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="scope" type="nam:NamingAttributeListType" minOccurs="0">
+      <xsd:choice>
         <xsd:annotation>
           <xsd:documentation>
-            <p>This attribute filters the alarms based on a list of managed elements. The listed managed elements are in the scope. 
+            <p>Two options for the retrieval of active alarms:<ul>
+                <li>Match with typed list of alarm attributes</li>
+                <li>Match based on a generic query expresion</li>
+              </ul>
+            </p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="scope" type="nam:NamingAttributeListType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This attribute filters the alarms based on a list of managed elements. The listed managed elements are in the scope. 
 If no managed element is provided, alarms from all managed elements are in scope.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="perceivedSeverityList" type="com:PerceivedSeverityListType" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>This attribute filters the alarms based on a list of severities (see ITU-T X.733 definitions). The listed severities are in the scope. 
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="perceivedSeverityList" type="com:PerceivedSeverityListType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This attribute filters the alarms based on a list of severities (see ITU-T X.733 definitions). The listed severities are in the scope. 
 If no severity is provided, alarms with any severity are in scope.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="probableCauseList" type="prc:ProbableCauseListType" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>This attribute filters the alarms based on a list of probable causes (for details refer to the supporting document: ProbableCauses). The listed probable causes are in the scope. If no probable cause is provided, alarms with any probable cause are in scope.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="acknowledgeIndication" type="com:AcknowledgeIndicationType" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>This attribute filters the alarms based on its acknowledge indication. Possible values are EVENT_ACKNOWLEDGED, EVENT_UNACKNOWLEDGED, and NOT_APPLICABLE. The value NOT_APPLICABLE indicates that alarms with any acknowledge indication are in scope.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="probableCauseList" type="prc:ProbableCauseListType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This attribute filters the alarms based on a list of probable causes (for details refer to the supporting document: ProbableCauses). The listed probable causes are in the scope. If no probable cause is provided, alarms with any probable cause are in scope.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="acknowledgeIndication" type="com:AcknowledgeIndicationType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This attribute filters the alarms based on its acknowledge indication. Possible values are EVENT_ACKNOWLEDGED, EVENT_UNACKNOWLEDGED, and NOT_APPLICABLE. The value NOT_APPLICABLE indicates that alarms with any acknowledge indication are in scope.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <xsd:element name="queryExpression" type="gen:QueryExpressionType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Specify an alarm attribute matching query expression based on a standard specification query language (Xpath, ansi-92).</p>
+              <p>Refer to the Business Agrrement (BA) requirement description for details of the minimum set of supported query operations.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:choice>
     </xsd:sequence>
   </xsd:complexType>
 </xsd:schema>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:hdr="http://www.tmforum.org/mtop/fmw/xsd/hdr/v1"  xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:com="http://www.tmforum.org/mtop/nra/xsd/com/v1" xmlns:prc="http://www.tmforum.org/mtop/nra/xsd/prc/v1" xmlns:tns="http://www.tmforum.org/mtop/rtm/xsd/ar/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.tmforum.org/mtop/rtm/xsd/ar/v1 ../xsd/AlarmRetrievalMessages.xsd  
+http://schemas.xmlsoap.org/soap/envelope/ http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Header>
+    <hdr:header>
+      <hdr:activityName>getActiveAlarms</hdr:activityName>
+      <hdr:msgName>getActiveAlarmsRequest</hdr:msgName>
+      <hdr:msgType>REQUEST</hdr:msgType>
+      <hdr:senderURI>/MTOSI/InventoryOS</hdr:senderURI>
+      <hdr:destinationURI>/MTOSI/EMS01</hdr:destinationURI>
+      <hdr:communicationPattern>MultipleBatchResponse</hdr:communicationPattern>
+      <hdr:communicationStyle>RPC</hdr:communicationStyle>
+      <hdr:requestedBatchSize>500</hdr:requestedBatchSize>
+      <hdr:timestamp>2007-07-30T09:26:00</hdr:timestamp>
+    </hdr:header>
+  </soap:Header>
+  <soap:Body>
+<tns:getActiveAlarmsRequest>
+  <tns:filter>
+  <!-- Retrieve all active alarms with matching filter criteria:
+        MD=West;ME=W123, perceivedSeverity=PS_INDETERMINATE,
+        probableCause=AIS, acknowledgeIndication=AI_EVENT_ACKNOWLEDGED  -->
+    <tns:source>EXTERNAL</tns:source>
+    <tns:scope>
+      <nam:name>
+        <nam:object>
+          <nam:type>MD</nam:type>
+          <nam:name>West</nam:name>
+        </nam:object>
+        <nam:object>
+          <nam:type>ME</nam:type>
+          <nam:name>W123</nam:name>
+        </nam:object>
+      </nam:name>
+    </tns:scope>
+    <tns:perceivedSeverityList>
+      <com:perceivedSeverity>PS_INDETERMINATE</com:perceivedSeverity>
+    </tns:perceivedSeverityList>
+    <tns:probableCauseList>
+      <prc:prc>
+        <prc:ru>false</prc:ru>
+        <prc:contra>false</prc:contra>
+        <prc:probableCause>AIS</prc:probableCause>
+      </prc:prc>
+    </tns:probableCauseList>
+    <tns:acknowledgeIndication>AI_EVENT_ACKNOWLEDGED</tns:acknowledgeIndication>
+  </tns:filter>
+</tns:getActiveAlarmsRequest>
+</soap:Body></soap:Envelope>

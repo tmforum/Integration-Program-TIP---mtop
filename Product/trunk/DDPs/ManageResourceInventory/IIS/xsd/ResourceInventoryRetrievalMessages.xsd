@@ -170,8 +170,8 @@
           Attributes</p>
               </td>
               <td valign="top">
-                <p>BaseInstanceList: { (MD=md1;ME=ME123)}</p>
-                <p>IncludedObjectTypes: { (EH, ATTRS), (EQ, ATTRS) }</p>
+                <p>baseInstanceList: { (MD=md1;ME=ME123)}</p>
+                <p>includedObjectTypes: { (EH, ATTRS), (EQ, ATTRS) }</p>
               </td>
             </tr>
             <tr>
@@ -180,8 +180,8 @@
           (e.g., md1/ME123), get all the contained Ehs Attributes and the ME attibutes</p>
               </td>
               <td valign="top">
-                <p>BaseInstanceList: { (MD=md1;ME=ME123) }</p>
-                <p>IncludedObjectTypes: { (ME, ATTRS), (EH, ATTRS) }</p>
+                <p>baseInstanceList: { (MD=md1;ME=ME123) }</p>
+                <p>includedObjectTypes: { (ME, ATTRS), (EH, ATTRS) }</p>
               </td>
             </tr>
             <tr>
@@ -190,8 +190,8 @@
           associated attributes (within the entire inventory known to the target OS)</p>
               </td>
               <td valign="top">
-                <p>BaseInstanceList: { }</p>
-                <p>IncludedObjectTypes { (ME, ATTRS) }</p>
+                <p>baseInstanceList: { }</p>
+                <p>includedObjectTypes { (ME, ATTRS) }</p>
               </td>
             </tr>
             <tr>
@@ -200,8 +200,8 @@
           and MD names (within the entire inventory known to the target OS)</p>
               </td>
               <td valign="top">
-                <p>BaseInstanceList: { }</p>
-                <p>IncludedObjectTypes: { (ME, NAME), (MD, NAME), (OS, NAME) }</p>
+                <p>baseInstanceList: { }</p>
+                <p>includedObjectTypes: { (ME, NAME), (MD, NAME), (OS, NAME) }</p>
               </td>
             </tr>
             <tr>
@@ -211,8 +211,8 @@
           pointers)</p>
               </td>
               <td valign="top">
-                <p>BaseInstanceList: { (MD=md1;ME=ME123;EH=ACME7) }</p>
-                <p>IncludedObjectTypes: { (EQ,FULL)}</p>
+                <p>baseInstanceList: { (MD=md1;ME=ME123;EH=ACME7) }</p>
+                <p>includedObjectTypes: { (EQ,FULL)}</p>
               </td>
             </tr>
             <tr>
@@ -221,8 +221,26 @@
           (e.g., md1/ME123/PTPxyz), get the PTP Attributes</p>
               </td>
               <td valign="top">
-                <p>BaseInstanceList: { (MD=md1;ME=ME123;PTP=PTPxyz) }</p>
-                <p>IncludedObjectTypes: { (PTP, ATTRS) }</p>
+                <p>baseInstanceList: { (MD=md1;ME=ME123;PTP=PTPxyz) }</p>
+                <p>includedObjectTypes: { (PTP, ATTRS) }</p>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <p>Query attributes matching using Xpath 1.0 expresion. A consumer would like to query all ME versions equal to "2.0" in the "md1" MD and retrieve their name only.</p>
+              </td>
+              <td valign="top">
+                <p>baseInstanceList: { (MD=md1) }</p>
+                <p>queryExpression: { { {http://www.w3.org/TR/xpath}, {//meAttrs[version='2.0} }, {NAME} }</p>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <p>Query attributes matching using Xpath 1.0 expresion. A consumer would like to query all ME softwareVersion equal to "2.0" in the "md1" MD and retrieve their name only.</p>
+              </td>
+              <td valign="top">
+                <p>baseInstanceList: { (MD=md1) }</p>
+                <p>queryExpression: { { {http://www.w3.org/TR/xpath}, {//meAttrs[softwareVersion=`2.0`} }, {NAME} }</p>
               </td>
             </tr>
           </table>
@@ -237,45 +255,61 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="filterQuery" type="xsd:string" minOccurs="0">
+      <xsd:choice>
         <xsd:annotation>
-          <xsd:documentation>
-            <p>This attribute contains the query to be applied for this filter.</p>
+          <xsd:documentation>Two options to identify the scope of the objects to be retrieved:
           </xsd:documentation>
         </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="includedObjectType" minOccurs="0" maxOccurs="unbounded">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>This attribute identifies the type of objects contained under the selected base object instances that are to be included in the returned inventory file. The base object itself is included only if the type of the base instance appears in the IncludedObjectTypes list. If no included object types are listed, then the entire subtree under the base object instance is returned. For each included object type, one needs to indicate whether.
+        <xsd:sequence>
+          <xsd:element name="queryExpression" type="gen:QueryExpressionType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Specify an attribute matching query expression to be applied to the sub-tree of the inventory layout document targeted by the baseInstance. This expression is based on a standard specification query language (Xpath, ansi-92).</p>
+                <p>Refer to the Business Agrrement (BA) requirement description for details of the minimum set of supported query operations.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="granularity" type="tns:GranularityType">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Specify the granularity of the inventory report based.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <xsd:element name="includedObjectType" maxOccurs="unbounded">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This attribute identifies the type of objects contained under the selected base object instances that are to be included in the returned inventory file. The base object itself is included only if the type of the base instance appears in the IncludedObjectTypes list. If no included object types are listed, then the entire subtree under the base object instance is returned. For each included object type, one needs to indicate whether.
             <ul>
-                <li>just the name,</li>
-                <li>all the associated attributes (including the name), or</li>
-                <li>the associated attributes and relationship pointers are to be returned for each instance.</li>
-              </ul>
+                  <li>just the name,</li>
+                  <li>all the associated attributes (including the name), or</li>
+                  <li>the associated attributes and relationship pointers are to be returned for each instance.</li>
+                </ul>
             The IncludedObjectTypes need to be picked such that each selected base class has a single (connected) subtree below it. For example, if all the EHs under a given MD where needed, the requesting OS would need to list the given MD as a base instance and put ME and EH in the IncludedObjectTypes list. The requesting OS could just request the names of the MEs to reduce the size of the returned file.
             </p>
-          </xsd:documentation>
-        </xsd:annotation>
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element name="objectType" type="gen:ObjectTypeType">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>Specify the object type acronym.  The ";" is used as a separator, and "=" is used to associate a value with a type of object. For example, MD=md1;ME=ME123;EH=ACME7 identifies an equipment holder within managed element ME123 within management domain md1. The relative name of the equipment holder is ACME7.</p>
-                </xsd:documentation>
-              </xsd:annotation>
-            </xsd:element>
-            <xsd:element name="granularity" type="tns:GranularityType">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>Specify the granularity of the inventory report.</p>
-                </xsd:documentation>
-              </xsd:annotation>
-            </xsd:element>
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="objectType" type="gen:ObjectTypeType">
+                <xsd:annotation>
+                  <xsd:documentation>
+                    <p>Specify the object type acronym.</p>
+                  </xsd:documentation>
+                </xsd:annotation>
+              </xsd:element>
+              <xsd:element name="granularity" type="tns:GranularityType">
+                <xsd:annotation>
+                  <xsd:documentation>
+                    <p>Specify the granularity of the inventory report based.</p>
+                  </xsd:documentation>
+                </xsd:annotation>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:choice>
     </xsd:sequence>
   </xsd:complexType>
 </xsd:schema>
