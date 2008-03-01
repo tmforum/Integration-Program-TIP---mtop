@@ -9,6 +9,56 @@
     </xsd:documentation>
   </xsd:annotation>
   <!-- ================= -->
+  <xsd:complexType name="NameAndStringValueType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Specifies a generic name and value pair</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="name" type="xsd:string"/>
+      <xsd:element name="value" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:element name="nvsList" type="tns:NameAndValueStringListType"/>
+  <!-- ================= -->
+  <xsd:complexType name="NameAndValueStringListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A list of NameAndStringValue</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="nvs" type="tns:NameAndStringValueType" maxOccurs="unbounded" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="NameAndAnyValueType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Specifies a generic name and value pair</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="name" type="xsd:string"/>
+      <xsd:any namespace="##any" processContents="lax" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:element name="nvList" type="tns:NameAndAnyValueListType"/>
+  <!-- ================= -->
+  <xsd:complexType name="NameAndAnyValueListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A list of NameAndAnyValueType</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="nv" type="tns:NameAndAnyValueType" maxOccurs="unbounded" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
   <xsd:complexType name="AliasNameListType">
     <xsd:annotation>
       <xsd:documentation>
