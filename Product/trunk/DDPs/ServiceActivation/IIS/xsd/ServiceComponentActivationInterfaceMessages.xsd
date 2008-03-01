@@ -335,4 +335,68 @@ targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault=
 			</xsd:complexContent>
 		</xsd:complexType>
 	</xsd:element>
+	<!-- === Terminate === -->
+<!-- ===================== Terminate Request Message ========= -->
+<xsd:element name="terminateRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				 <p> This operation terminates an RFS. The RFS must be in a provisioned_inactive state to be terminated </p>
+				 <p> Input to the operation is the name of the RFS to be terminated</p>
+				<p>In case of success, choice of one of the following:</p>
+				<p> The  RFS is terminated. The name of the RFS terminated  is returned</p>
+				<p> Object Deletion Notification– this event indicates that the RFS has been deleted </p>
+				<p>In case of failure:</p>
+				<p>An exception is thrown. </p>
+				<p>If RFS can not be terminated,  it remains in a "provisioned_inactive" state </p>
+				</xsd:documentation>
+		 </xsd:annotation>
+		 <xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="rfsName" type="nam:NamingAttributeType">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The name of the RFS being terminated</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ===================== Terminate Response Messages ========= -->
+	<xsd:element name="terminateResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This type covers the various responses to the terminate RFS request.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:choice maxOccurs="unbounded">
+			    <xsd:element name="rfsName" type="nam:NamingAttributeType"/>
+			    <xsd:element name="rfsDeletion" type="sodel:serviceObjectDeletion"/>
+			</xsd:choice>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ===================== Terminate Exceptions ========= -->
+		<xsd:element name="terminateException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the terminate operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+					     <xsd:element ref="msg:entityNotFound"/>
+					     <xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:unableToComply"/>
+						<xsd:element ref="msg:communicationFailure"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:objectInUse"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
 </xsd:schema>
