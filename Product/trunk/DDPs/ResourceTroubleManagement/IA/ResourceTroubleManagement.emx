@@ -371,67 +371,56 @@ Operation Exceptions:&#xD;
       <packagedElement xmi:type="uml:Interface" xmi:id="_yvxHcCVzEdyiv86aejkLcA" name="AlarmSeverityAssignmentProfileControlService" clientDependency="_Kvf3ACV0Edyiv86aejkLcA _NeWAMKgIEdyBvu4QgH3iCw">
         <ownedOperation xmi:id="_Vx8vYN1hEdyrKNXnBMy96w" name="assignAlarmSeverityAssignmentProfile" visibility="public" precondition="_Vx8vYt1hEdyrKNXnBMy96w" postcondition="_Vx8vZN1hEdyrKNXnBMy96w">
           <ownedComment xmi:id="_Vx8vYd1hEdyrKNXnBMy96w" annotatedElement="_Vx8vYN1hEdyrKNXnBMy96w">
-            <body>This operation assigns the addressed ASAP to the addressed resource, i.e. the asapPointer is updated accordingly. The formerly referenced ASAP, if any, is deassigned. For TPs, it is necessary to indicate also the layer rate the ASAP will apply to. For a TP with multiple layers, the operation can be used repeatedly to assign an ASAP to each layer as appropriate.
-
-This operation causes an alarm re-evaluation of the already detected defects according to the following rules.
-
-If alarms are reportable (*):
-- if the severity changes from any of critical, major, minor, warning, to not alarmed, then an alarm notification with cleared
-  is sent and the alarm is no longer available for any alarm retrieval operation
-- if the severity changes from not alarmed to any of critical, major, minor, warning, then an alarm notification with the new
-  perceivedSeverity is sent (with the current EMS/NE time) and the alarm is available for any alarm retrieval operation
-- if the severity changes from any of critical, major, minor, warning, to any of critical, major, minor, warning, then the alarm
-  re-evaluation process is not performed.
-
-(*) Note that an alarm is reportable by NE/EMS:
-- when for PTP, CTP, FTP AlarmReporting = &quot;on&quot;
-- when for SNC, TopologicalLink, Equipment, EquipmentHolder, GTP alarmReportingIndicator = true
-- always for all other objects which do not have any alarm reporting attribute.
-
-Note that the clear notification is not send in case of transient events.
-
-If the addressed resource originates alarms from within the NE, then this operation could imply the &quot;activation&quot; of the ASAP instance and functionality over the proper NE. E.g. the EMS will download the ASAP to a given NE only once the ASAP is assigned for the first time to a resource of that NE.
-
-Operation Exceptions:
-1. NOT_IMPLEMENTED - Raised when EMS does not support assignment of ASAPs.
-2. INTERNAL_ERROR - Raised in case of non-specific EMS internal failure.
-3. INVALID_INPUT - Raised when asapName does not refer to an ASAP object, or  layerRate is invalid for the addressed
-    resource, i.e. it is not an encapsulated layerRate.
-4. ENTITY_NOT_FOUND - Raised when asapName or resourceName reference an object that does not exist.
-5. UNABLE_TO_COMPLY - Raised in case currently assigned ASAP object cannot be deassigned, or resourceName refers
-    to an object not supporting ASAP pointer feature.
-</body>
+            <body>This operation assigns the addressed ASAP to the addressed resource, i.e. the asapRef attribute is updated accordingly. The formerly referenced ASAP, if any, is deassigned. For TPs, it is necessary to indicate also the Layer Rate the ASAP will apply to. For a TP with multiple layers, the operation can be used repeatedly to assign an ASAP to each layer as appropriate.&#xD;
+This operation causes an Alarm re-evaluation of the already detected defects according to the following rules.&#xD;
+&#xD;
+If Alarms are reportable (*):&#xD;
+- if the severity changes from any of critical, major, minor, warning, to not alarmed, then an Alarm notification with cleared is sent and the Alarm is no longer available for any Alarm retrieval operation&#xD;
+- if the severity changes from not alarmed to any of critical, major, minor, warning, then an Alarm notification with the new perceivedSeverity is sent (with the current target OS/NE time) and the alarm is available for any Alarm retrieval operation&#xD;
+- if the severity changes from any of critical, major, minor, warning, to any of critical, major, minor, warning, then the Alarm re-evaluation process is not performed.&#xD;
+&#xD;
+(*) Note that an alarm is reportable by NE/target OS:&#xD;
+- when either the AlarmReporting layered parameter = &quot;on&quot;&#xD;
+- or the alarmReportingIndicator attribute = true&#xD;
+- or always for all other objects which do not have any Alarm reporting layered parameter or attribute.&#xD;
+&#xD;
+Note that the clear notification is not send in case of transient events.&#xD;
+If the addressed resource originates Alarms from within the NE, then this operation could imply the &quot;activation&quot; of the ASAP instance and functionality over the proper NE. E.g. the target OS will download the ASAP to a given NE only once the ASAP is assigned for the first time to a resource of that NE.&#xD;
+&#xD;
+Traceability: R_TMF518_RTM_II_0025, UC_TMF518_RTM_0003.</body>
           </ownedComment>
           <ownedRule xmi:id="_Vx8vYt1hEdyrKNXnBMy96w" constrainedElement="_Vx8vYN1hEdyrKNXnBMy96w">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_Vx8vY91hEdyrKNXnBMy96w">
-              <body>1. In case the resource is a TP: the provided layer rate is an encapsulated layer rate of the TP.&#xA;2. The identified ASAP has to exist.&#xA;3. The identified resource has to exist.&#xA;4. The identified resource has to support the ASAP pointer feature.&#xA;</body>
+              <body>None</body>
             </specification>
           </ownedRule>
           <ownedRule xmi:id="_Vx8vZN1hEdyrKNXnBMy96w" constrainedElement="_Vx8vYN1hEdyrKNXnBMy96w">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_Vx8vZd1hEdyrKNXnBMy96w">
-              <body>1. ASAP is assigned to the identified resource.&#xA;2. Alarms of the resource have been re-evaluated.&#xA;</body>
+              <body>1. ASAP is assigned to the identified resource.&#xD;&#xA;2. Alarms of the resource have been re-evaluated.</body>
             </specification>
           </ownedRule>
           <ownedParameter xmi:id="_Vx8vZt1hEdyrKNXnBMy96w" name="void" isUnique="false" direction="return"/>
-          <ownedParameter xmi:id="_Vx8vaN1hEdyrKNXnBMy96w" name="asapName" direction="inout">
+          <ownedParameter xmi:id="_Vx8vaN1hEdyrKNXnBMy96w" name="asapRef">
             <ownedComment xmi:id="_Vx8vad1hEdyrKNXnBMy96w" annotatedElement="_Vx8vaN1hEdyrKNXnBMy96w">
-              <body>/* in */ The name of the ASAP object to be assigned.</body>
+              <body>This parameter contains the name of the ASAP object to be assigned.</body>
             </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_Vx8vat1hEdyrKNXnBMy96w">
               <body>NA</body>
             </defaultValue>
           </ownedParameter>
-          <ownedParameter xmi:id="_Vx8va91hEdyrKNXnBMy96w" name="resourceName" direction="inout">
+          <ownedParameter xmi:id="_Vx8va91hEdyrKNXnBMy96w" name="resourceRef">
             <ownedComment xmi:id="_Vx8vbN1hEdyrKNXnBMy96w" annotatedElement="_Vx8va91hEdyrKNXnBMy96w">
-              <body>/* in */ The name of the resource to assign the ASAP to.</body>
+              <body>This parameter contains the name of the resource to assign the ASAP to.</body>
             </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_Vx8vbd1hEdyrKNXnBMy96w">
               <body>NA</body>
             </defaultValue>
           </ownedParameter>
-          <ownedParameter xmi:id="_Vx8vbt1hEdyrKNXnBMy96w" name="layerRate" direction="inout">
+          <ownedParameter xmi:id="_Vx8vbt1hEdyrKNXnBMy96w" name="layerRate">
             <ownedComment xmi:id="_Vx8vb91hEdyrKNXnBMy96w" annotatedElement="_Vx8vbt1hEdyrKNXnBMy96w">
-              <body>/* in */ The TP layer rate the ASAP object is assigned to. If the resource is not a TP, then the layerRate value shall be LR_Not_Applicable.</body>
+              <body>This parameter contains the TP Layer Rate the ASAP object is assigned to. If the resource is not a TP, then the Layer Rate value shall be LR_Not_Applicable.</body>
             </ownedComment>
             <type xmi:type="uml:DataType" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_eNqf0CPHEdypgfGA_0P3-g?NetworkResourceBasic/Type%20Definitions/LayerRate?"/>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_Vx8vcN1hEdyrKNXnBMy96w">
@@ -442,25 +431,29 @@ Operation Exceptions:
             <ownedComment xmi:id="_Vx8vct1hEdyrKNXnBMy96w" annotatedElement="_Vx8vcd1hEdyrKNXnBMy96w">
               <body>/* inout */ Allows the communication of additional information which is not explicitly modelled.</body>
             </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_8_P-sPo7EduVsYI7mfNDXQ?Framework/Type%20Definitions/AttributeValuePair?"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Tqe-8euLEdyNzpD_6a0mjg" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Tqe-8OuLEdyNzpD_6a0mjg"/>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_Vx8vc91hEdyrKNXnBMy96w">
               <body>empty list</body>
             </defaultValue>
           </ownedParameter>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/COMM_LOSS?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UNABLE_TO_COMPLY?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_TAYcACVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/ENTITY_NOT_FOUND?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/INVALID_INPUT?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/INTERNAL_ERROR?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NOT_IMPLEMENTED?"/>
         </ownedOperation>
         <ownedOperation xmi:id="_0i28wP_DEduKKLvC_EB00A" name="createAlarmSeverityAssignmentProfile" visibility="public" precondition="_0i28wv_DEduKKLvC_EB00A" postcondition="_0i28xP_DEduKKLvC_EB00A">
           <ownedComment xmi:id="_0i28wf_DEduKKLvC_EB00A" annotatedElement="_0i28wP_DEduKKLvC_EB00A">
             <body>This operation creates a new ASAP object, named by the target OS, with the values described by the input parameters. The operation fails if the maximum number of ASAPs for the target OS has been reached.&#xD;
 &#xD;
-Operation Exceptions:&#xD;
-1. NOT_IMPLEMENTED - Raised when the target OS does not support creation of ASAPs.&#xD;
-2. INTERNAL_ERROR - Raised in case of non-specific target OS internal failure.&#xD;
-3. INVALID_INPUT - Raised when the request contains an input parameter that is syntactically incorrect or identifies an object of the wrong type or is out of range.&#xD;
-4. USERLABEL_IN_USE - Raised when the userLabel uniqueness constraint is not met.&#xD;
-5. CAPACITY_EXCEEDED - Raised in case the maximum number of ASAP instances has been reached.</body>
+Traceability: R_TMF518_RTM_II_0022.</body>
           </ownedComment>
           <ownedRule xmi:id="_0i28wv_DEduKKLvC_EB00A" name="PreCondition" constrainedElement="_0i28wP_DEduKKLvC_EB00A">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_0i28w__DEduKKLvC_EB00A">
-              <body>Maximum number of ASAP instances allowed at the EMS has not been reached.</body>
+              <body>None</body>
             </specification>
           </ownedRule>
           <ownedRule xmi:id="_0i28xP_DEduKKLvC_EB00A" name="PostCondition" constrainedElement="_0i28wP_DEduKKLvC_EB00A">
@@ -469,7 +462,7 @@ Operation Exceptions:&#xD;
             </specification>
           </ownedRule>
           <ownedParameter xmi:id="_0i28xv_DEduKKLvC_EB00A" name="void" isUnique="false" direction="return"/>
-          <ownedParameter xmi:id="_0i28yP_DEduKKLvC_EB00A" name="newAsapCreateData" type="_SeNZYP_IEduKKLvC_EB00A">
+          <ownedParameter xmi:id="_0i28yP_DEduKKLvC_EB00A" name="asapCreateData" type="_SeNZYP_IEduKKLvC_EB00A">
             <ownedComment xmi:id="_0i28yf_DEduKKLvC_EB00A" annotatedElement="_0i28yP_DEduKKLvC_EB00A">
               <body>This parameter contains the data that describes the ASAP to be created.</body>
             </ownedComment>
@@ -477,62 +470,60 @@ Operation Exceptions:&#xD;
               <body>NA</body>
             </defaultValue>
           </ownedParameter>
-          <ownedParameter xmi:id="_0i28y__DEduKKLvC_EB00A" name="newASAP" direction="out">
-            <ownedComment xmi:id="_0i28zP_DEduKKLvC_EB00A" annotatedElement="_0i28y__DEduKKLvC_EB00A">
-              <body>This paremeter contains the complete information of the created ASAP.</body>
-            </ownedComment>
-            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_0i28zf_DEduKKLvC_EB00A">
-              <body>NA</body>
-            </defaultValue>
-          </ownedParameter>
           <ownedParameter xmi:id="_jIrIYP_EEduKKLvC_EB00A" name="targetOperationsSystem">
             <ownedComment xmi:id="_jIrIYf_EEduKKLvC_EB00A" annotatedElement="_jIrIYP_EEduKKLvC_EB00A">
-              <body>This parameter contains the name of the target OperationsSystem containing the new ASAP.</body>
+              <body>This parameter contains the name of the target OS containing the new ASAP.</body>
             </ownedComment>
             <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
             <defaultValue xmi:type="uml:LiteralString" xmi:id="_jIrIYv_EEduKKLvC_EB00A" name="NA" value="NA"/>
           </ownedParameter>
+          <ownedParameter xmi:id="_0i28y__DEduKKLvC_EB00A" name="newASAP" direction="out">
+            <ownedComment xmi:id="_0i28zP_DEduKKLvC_EB00A" annotatedElement="_0i28y__DEduKKLvC_EB00A">
+              <body>This parameter returns the complete information of the created ASAP.</body>
+            </ownedComment>
+            <type xmi:type="uml:Class" href="../../NetworkResourceAssurance/IA/NetworkResourceAssurance.emx#_rCh4AP-tEduKKLvC_EB00A?NetworkResourceAssurance/Data%20Object%20Classes/AlarmSeverityAssignmentProfile?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_0i28zf_DEduKKLvC_EB00A">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/COMM_LOSS?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_ExQ1cCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/CAPACITY_EXCEEDED?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_gSxfICVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/USERLABEL_IN_USE?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/INVALID_INPUT?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/INTERNAL_ERROR?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NOT_IMPLEMENTED?"/>
         </ownedOperation>
         <ownedOperation xmi:id="_VyF5UN1hEdyrKNXnBMy96w" name="deassignAlarmSeverityAssignmentProfile" visibility="public" precondition="_VyF5Ut1hEdyrKNXnBMy96w" postcondition="_VyF5VN1hEdyrKNXnBMy96w">
           <ownedComment xmi:id="_VyF5Ud1hEdyrKNXnBMy96w" annotatedElement="_VyF5UN1hEdyrKNXnBMy96w">
-            <body>This operation deassigns the ASAP from the addressed resource, i.e. the asapPointer is updated to no name. For TPs, it is necessary to indicate also the layer rate, in order to identify the ASAP to be deassigned.
-
-This operation causes an alarm re-evaluation of the already detected defects according to same rules as ASAP assignment, considering as &quot;newly assigned ASAP&quot; the default alarm severity assignment.
-
-If the addressed resource originates alarms from within the NE, then this operation could imply the &quot;deactivation&quot; of the ASAP instance and functionality over the proper NE. E.g. the EMS will remove the ASAP from a given NE only when the ASAP is no longer assigned to any resource of that NE.
-
-Operation Exceptions:
-1. NOT_IMPLEMENTED - Raised when EMS does not support deassignment of ASAPs.
-2. INTERNAL_ERROR - Raised in case of non-specific EMS internal failure.
-3. INVALID_INPUT - Raised when resourceName is an invalid reference, or layerRate is invalid for the addressed resource,
-    i.e. it is not an encapsulated layerRate.
-4. ENTITY_NOT_FOUND - Raised when resourceName references an object that does not exist.
-5. UNABLE_TO_COMPLY - Raised in case currently assigned ASAP object cannot be deassigned, or resourceName refers
-    to object not supporting ASAP pointer feature.
-</body>
+            <body>This operation deassigns the ASAP from the addressed resource, i.e. the asapRef attribute of the resource is updated to no name. For TPs, it is necessary to indicate also the Layer Rate, in order to identify the ASAP to be deassigned.&#xD;
+This operation causes an Alarm re-evaluation of the already detected defects according to the same rules as ASAP assignment, considering as &quot;newly assigned ASAP&quot; the default alarm severity assignment.&#xD;
+If the addressed resource originates Alarms from within the Network Element (NE), then this operation could imply the &quot;deactivation&quot; of the ASAP instance and functionality over the proper NE. E.g. the target OS will remove the ASAP from a given NE only when the ASAP is no longer assigned to any resource of that NE.&#xD;
+&#xD;
+Traceability: R_TMF518_RTM_II_0026.</body>
           </ownedComment>
-          <ownedRule xmi:id="_VyF5Ut1hEdyrKNXnBMy96w" constrainedElement="_VyF5UN1hEdyrKNXnBMy96w">
+          <ownedRule xmi:id="_VyF5Ut1hEdyrKNXnBMy96w" name="" constrainedElement="_VyF5UN1hEdyrKNXnBMy96w">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_VyF5U91hEdyrKNXnBMy96w">
-              <body>1. In case the resource is a TP: the provided layer rate is an encapsulated layer rate of the TP.&#xA;2. The identified resource has to exist.&#xA;3. The identified resource has to support the ASAP pointer feature.&#xA;</body>
+              <body>None</body>
             </specification>
           </ownedRule>
           <ownedRule xmi:id="_VyF5VN1hEdyrKNXnBMy96w" constrainedElement="_VyF5UN1hEdyrKNXnBMy96w">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_VyF5Vd1hEdyrKNXnBMy96w">
-              <body>1. ASAP is deassigned from the identified resource.&#xA;2. Alarms of the resource have been re-evaluated.&#xA;</body>
+              <body>1. The ASAP is deassigned from the identified resource.&#xD;&#xA;2. The Alarms of the resource have been re-evaluated.</body>
             </specification>
           </ownedRule>
           <ownedParameter xmi:id="_VyF5Vt1hEdyrKNXnBMy96w" name="void" isUnique="false" direction="return"/>
-          <ownedParameter xmi:id="_VyF5WN1hEdyrKNXnBMy96w" name="resourceName" direction="inout">
+          <ownedParameter xmi:id="_VyF5WN1hEdyrKNXnBMy96w" name="resourceRef">
             <ownedComment xmi:id="_VyF5Wd1hEdyrKNXnBMy96w" annotatedElement="_VyF5WN1hEdyrKNXnBMy96w">
-              <body>/* in */ The name of the resource to deassign the ASAP from.</body>
+              <body>This parameter contains the name of the resource to deassign the ASAP from.</body>
             </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_VyF5Wt1hEdyrKNXnBMy96w">
-              <body>CIS Null</body>
+              <body>NA</body>
             </defaultValue>
           </ownedParameter>
-          <ownedParameter xmi:id="_VyF5W91hEdyrKNXnBMy96w" name="layerRate" direction="inout">
+          <ownedParameter xmi:id="_VyF5W91hEdyrKNXnBMy96w" name="layerRate">
             <ownedComment xmi:id="_VyF5XN1hEdyrKNXnBMy96w" annotatedElement="_VyF5W91hEdyrKNXnBMy96w">
-              <body>/* in */ The layer rate of the TP from which the ASAP shall be deassigned. If the resource is not a TP, then the layerRate value shall be LR_Not_Applicable.</body>
+              <body>This parameter contains the TP Layer Rate from which the ASAP shall be deassigned. If the resource is not a TP, then the Layer Rate value shall be LR_Not_Applicable.</body>
             </ownedComment>
             <type xmi:type="uml:DataType" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_eNqf0CPHEdypgfGA_0P3-g?NetworkResourceBasic/Type%20Definitions/LayerRate?"/>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_VyF5Xd1hEdyrKNXnBMy96w">
@@ -541,25 +532,27 @@ Operation Exceptions:
           </ownedParameter>
           <ownedParameter xmi:id="_VyF5Xt1hEdyrKNXnBMy96w" name="additionalInfo" direction="inout">
             <ownedComment xmi:id="_VyF5X91hEdyrKNXnBMy96w" annotatedElement="_VyF5Xt1hEdyrKNXnBMy96w">
-              <body>/* inout */ Allows the communication of additional information which is not explicitly modelled.</body>
+              <body>This parameter allows the communication of additional information which is not explicitly modelled.</body>
             </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_8_P-sPo7EduVsYI7mfNDXQ?Framework/Type%20Definitions/AttributeValuePair?"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_d6GcQexJEdyl7e41LR3WJA" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_d6GcQOxJEdyl7e41LR3WJA"/>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_VyF5YN1hEdyrKNXnBMy96w">
               <body>empty list</body>
             </defaultValue>
           </ownedParameter>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/COMM_LOSS?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UNABLE_TO_COMPLY?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_TAYcACVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/ENTITY_NOT_FOUND?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/INVALID_INPUT?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/INTERNAL_ERROR?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NOT_IMPLEMENTED?"/>
         </ownedOperation>
         <ownedOperation xmi:id="_ptoasN1hEdyrKNXnBMy96w" name="deleteAlarmSeverityAssignmentProfile" visibility="public" precondition="_ptoast1hEdyrKNXnBMy96w" postcondition="_ptoatN1hEdyrKNXnBMy96w">
           <ownedComment xmi:id="_ptoasd1hEdyrKNXnBMy96w" annotatedElement="_ptoasN1hEdyrKNXnBMy96w">
-            <body>This operation deletes the addressed ASAP. The operation fails if at least one resource is pointing to this ASAP. Moreover the EMS could refuse this operation, in case the addressed ASAP is fixed.
-
-Operation Exceptions:
-1. NOT_IMPLEMENTED - Raised when EMS does not support deletion of ASAPs.
-2. INTERNAL_ERROR - Raised in case of non-specific EMS internal failure.
-3. INVALID_INPUT - Raised when asapName does not refer to an ASAP object.
-4. ENTITY_NOT_FOUND - Raised when asapName references an object that does not exist.
-5. OBJECT_IN_USE - Raised when at least one resource is pointing to this ASAP object.
-6. UNABLE_TO_COMPLY - Raised in case this ASAP object is fixed.
-</body>
+            <body>This operation deletes the addressed ASAP. The operation fails if at least one resource is pointing to this ASAP. Moreover the Target OS could refuse this operation, in case the addressed ASAP is fixed.&#xD;
+&#xD;
+Traceability: R_TMF518_RTM_II_0024.</body>
           </ownedComment>
           <ownedRule xmi:id="_ptoast1hEdyrKNXnBMy96w" constrainedElement="_ptoasN1hEdyrKNXnBMy96w">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_ptoas91hEdyrKNXnBMy96w">
@@ -572,22 +565,33 @@ Operation Exceptions:
             </specification>
           </ownedRule>
           <ownedParameter xmi:id="_ptoatt1hEdyrKNXnBMy96w" name="void" isUnique="false" direction="return"/>
-          <ownedParameter xmi:id="_ptoauN1hEdyrKNXnBMy96w" name="asapName" direction="inout">
+          <ownedParameter xmi:id="_ptoauN1hEdyrKNXnBMy96w" name="asapRef">
             <ownedComment xmi:id="_ptoaud1hEdyrKNXnBMy96w" annotatedElement="_ptoauN1hEdyrKNXnBMy96w">
-              <body>/* in */ The name of the ASAP object to be deleted.</body>
+              <body>This parameter contains the name of the ASAP object to be deleted.</body>
             </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_ptoaut1hEdyrKNXnBMy96w">
               <body>NA</body>
             </defaultValue>
           </ownedParameter>
           <ownedParameter xmi:id="_ptoau91hEdyrKNXnBMy96w" name="additionalInfo" direction="inout">
             <ownedComment xmi:id="_ptoavN1hEdyrKNXnBMy96w" annotatedElement="_ptoau91hEdyrKNXnBMy96w">
-              <body>/* inout */ Allows the communication of additional information which is not explicitly modelled.</body>
+              <body>This parameter allows the communication of additional information which is not explicitly modelled.</body>
             </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_8_P-sPo7EduVsYI7mfNDXQ?Framework/Type%20Definitions/AttributeValuePair?"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_-nAvoexPEdyl7e41LR3WJA" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_-nAvoOxPEdyl7e41LR3WJA"/>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_ptoavd1hEdyrKNXnBMy96w">
               <body>empty list</body>
             </defaultValue>
           </ownedParameter>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/COMM_LOSS?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UNABLE_TO_COMPLY?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_412MUCVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/OBJECT_IN_USE?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_TAYcACVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/ENTITY_NOT_FOUND?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/INVALID_INPUT?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/INTERNAL_ERROR?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NOT_IMPLEMENTED?"/>
         </ownedOperation>
         <ownedOperation xmi:id="_5twWgP_SEduS0Yg9UXWGJw" name="modifyAlarmSeverityAssignmentProfile" visibility="public" precondition="_5twWgv_SEduS0Yg9UXWGJw" postcondition="_5twWhP_SEduS0Yg9UXWGJw">
           <ownedComment xmi:id="_5twWgf_SEduS0Yg9UXWGJw" annotatedElement="_5twWgP_SEduS0Yg9UXWGJw">
@@ -645,108 +649,113 @@ Operation Exceptions:&#xD;
       </packagedElement>
       <packagedElement xmi:type="uml:Dependency" xmi:id="_Kvf3ACV0Edyiv86aejkLcA" name="modifies ASAP with" supplier="_SeNZYP_IEduKKLvC_EB00A" client="_yvxHcCVzEdyiv86aejkLcA"/>
       <packagedElement xmi:type="uml:Dependency" xmi:id="_NeWAMKgIEdyBvu4QgH3iCw" name="creates ASAP with" supplier="_ntYVYKgHEdyBvu4QgH3iCw" client="_yvxHcCVzEdyiv86aejkLcA"/>
-      <packagedElement xmi:type="uml:Interface" xmi:id="_PexogN1eEdyrKNXnBMy96w" name="AlarmHandlingService">
+      <packagedElement xmi:type="uml:Interface" xmi:id="_PexogN1eEdyrKNXnBMy96w" name="AlarmHandlingService" clientDependency="_puOS4OqOEdyuRYe8TzA8ug">
         <ownedOperation xmi:id="_KA9DAN1gEdyrKNXnBMy96w" name="acknowledgeAlarms" visibility="public" precondition="_KA9DAt1gEdyrKNXnBMy96w" postcondition="_KA9DBN1gEdyrKNXnBMy96w">
           <ownedComment xmi:id="_KA9DAd1gEdyrKNXnBMy96w" annotatedElement="_KA9DAN1gEdyrKNXnBMy96w">
-            <body>This operation allows an NMS user to acknowledge one or more active alarms in the EMS.
-
-Operation Exceptions:
-1. NOT_IMPLEMENTED - Raised when the EMS does not support this operation.
-2. INTERNAL_ERROR - Raised in case of non-specific EMS internal failure.
-3. INVALID_INPUT - Raised when input parameter are syntactical incorrect.
-</body>
+            <body>This operation allows to acknowledge one or more active Alarms and TCAs that are under the control of the target OS (both those raised by the Network Elements and those raised by the target OS itself). The operation is best effort.&#xD;
+Traceability: R_TMF518_RTM_II_0040, UC_TMF518_RTM_0017.</body>
           </ownedComment>
           <ownedRule xmi:id="_KA9DAt1gEdyrKNXnBMy96w" constrainedElement="_KA9DAN1gEdyrKNXnBMy96w">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_KA9DA91gEdyrKNXnBMy96w">
-              <body>The alarms to be acknowledged are active, unacknowledged, and the alarm bearing objects are managed by the EMS.</body>
+              <body>The Alarms to be acknowledged are active, unacknowledged, and the Alarm bearing objects are managed by the target OS.</body>
             </specification>
           </ownedRule>
           <ownedRule xmi:id="_KA9DBN1gEdyrKNXnBMy96w" constrainedElement="_KA9DAN1gEdyrKNXnBMy96w">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_KA9DBd1gEdyrKNXnBMy96w">
-              <body>All alarms not returned in the failed ID list are acknowledged in the EMS if no exception is thrown.&#xA;When the alarm is unacknowledged and re-acknowledged, it is implementation-defined whether the acknowledge-related additional info of the alarm is overwritten, deleted or is appended to the previously saved information.&#xA;</body>
+              <body>All Alarms not returned in the failedAlarmOrTcaIdList are acknowledged in the target OS if no exception is thrown.&#xD;&#xA;When the Alarm is unacknowledged and re-acknowledged, it is implementation-defined whether the acknowledge-related additional info of the Alarm is overwritten, deleted or is appended to the previously saved information.&#xD;&#xA;</body>
             </specification>
           </ownedRule>
           <ownedParameter xmi:id="_KA9DBt1gEdyrKNXnBMy96w" name="void" isUnique="false" direction="return"/>
-          <ownedParameter xmi:id="_KA9DCN1gEdyrKNXnBMy96w" name="alarmOrTCAIdList" direction="inout">
+          <ownedParameter xmi:id="_KA9DCN1gEdyrKNXnBMy96w" name="alarmOrTcaIdList" type="_v_AmYOqMEdyuRYe8TzA8ug">
             <ownedComment xmi:id="_KA9DCd1gEdyrKNXnBMy96w" annotatedElement="_KA9DCN1gEdyrKNXnBMy96w">
-              <body>/* in */ Contains the alarm identifiers of the active alarms (i.e. Structs::AlarmIdentifier) and/or TCAs (i.e. Structs::TCAIdentifier) that need to be acknowledged in the EMS.</body>
+              <body>This parameter contains the Alarm identifiers of the active Alarms and/or TCAs that need to be acknowledged in the target OS.</body>
             </ownedComment>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_bv1u4en-Edyngti4P8prhA" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_bv1u4On-Edyngti4P8prhA"/>
           </ownedParameter>
-          <ownedParameter xmi:id="_KA9DCt1gEdyrKNXnBMy96w" name="additionalInfo" direction="inout">
+          <ownedParameter xmi:id="_KA9DCt1gEdyrKNXnBMy96w" name="additionalInfo">
             <ownedComment xmi:id="_KA9DC91gEdyrKNXnBMy96w" annotatedElement="_KA9DCt1gEdyrKNXnBMy96w">
-              <body>/* in */ Suggested additional information may include a username, i.e. the EMS user that the NMS user is &quot;mapped&quot; to, and some textual information supplied by the user (notepad functionality).  Further information may include user info or any parameter defined in a bilateral agreement.
-</body>
+              <body>This parameter contains additional information which may include a username, i.e. the target OS user that the requesting OS user is &quot;mapped&quot; to, and some textual information supplied by the user (notepad functionality). Further information may include user info or any parameter defined in a bilateral agreement.</body>
             </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_8_P-sPo7EduVsYI7mfNDXQ?Framework/Type%20Definitions/AttributeValuePair?"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_cE2Vken-Edyngti4P8prhA" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_cE2VkOn-Edyngti4P8prhA"/>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_KA9DDN1gEdyrKNXnBMy96w">
               <body>empty list</body>
             </defaultValue>
           </ownedParameter>
-          <ownedParameter xmi:id="_KA9DDd1gEdyrKNXnBMy96w" name="failedAlarmOrTCAIdList" direction="inout">
+          <ownedParameter xmi:id="_KA9DDd1gEdyrKNXnBMy96w" name="failedAlarmOrTcaIdList" type="_v_AmYOqMEdyuRYe8TzA8ug" direction="out">
             <ownedComment xmi:id="_KA9DDt1gEdyrKNXnBMy96w" annotatedElement="_KA9DDd1gEdyrKNXnBMy96w">
               <body>/* out */ Contains the alarm identifiers of the alarms (i.e. Structs::AlarmIdentifier) and/or TCAs (i.e. Structs::TCAIdentifier) that could not be acknowledged.</body>
             </ownedComment>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ccic0en-Edyngti4P8prhA" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ccic0On-Edyngti4P8prhA"/>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_KA9DD91gEdyrKNXnBMy96w">
               <body>empty list</body>
             </defaultValue>
           </ownedParameter>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/COMM_LOSS?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/INVALID_INPUT?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/INTERNAL_ERROR?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NOT_IMPLEMENTED?"/>
         </ownedOperation>
         <ownedOperation xmi:id="_KA9DEd1gEdyrKNXnBMy96w" name="unacknowledgeAlarms" visibility="public" precondition="_KA9DE91gEdyrKNXnBMy96w" postcondition="_KA9DFd1gEdyrKNXnBMy96w">
           <ownedComment xmi:id="_KA9DEt1gEdyrKNXnBMy96w" annotatedElement="_KA9DEd1gEdyrKNXnBMy96w">
-            <body>This operation allows an NMS user to unacknowledge one or more active &amp; acknowledged alarms in the EMS.
-
-Operation Exceptions:
-1. NOT_IMPLEMENTED - Raised when the EMS does not support this operation.
-2. INTERNAL_ERROR - Raised in case of non-specific EMS internal failure.
-3. INVALID_INPUT - Raised when input parameter are syntactical incorrect.
-</body>
+            <body>This operation allows to unacknowledge one or more active &amp; acknowledged Alarms and TCAs that are under the control of the target OS (both those raised by the Network Elements and those raised by the target OS itself). The operation is best effort.&#xD;
+Traceability: R_TMF518_RTM_II_0041, UC_TMF518_RTM_0018.</body>
           </ownedComment>
           <ownedRule xmi:id="_KA9DE91gEdyrKNXnBMy96w" constrainedElement="_KA9DEd1gEdyrKNXnBMy96w">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_KA9DFN1gEdyrKNXnBMy96w">
-              <body>The alarms to be unacknowledged are active, acknowledged, and the alarm bearing objects are managed by the EMS.</body>
+              <body>The Alarms to be unacknowledged are active, acknowledged, and the Alarm bearing objects are managed by the target OS.</body>
             </specification>
           </ownedRule>
           <ownedRule xmi:id="_KA9DFd1gEdyrKNXnBMy96w" constrainedElement="_KA9DEd1gEdyrKNXnBMy96w">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_KA9DFt1gEdyrKNXnBMy96w">
-              <body>All alarms not returned in the failed ID list are unacknowledged in the EMS if no exception is thrown.&#xA;It is implementation-defined whether the acknowledge-related additional info of the alarm is overwritten, deleted or is maintained together with the unacknowledged additional info.&#xA;</body>
+              <body>All Alarms not returned in the failedAlarmOrTcaIdList are unacknowledged in the target OS if no exception is thrown.&#xD;&#xA;It is implementation-defined whether the acknowledge-related additional info of the Alarm is overwritten, deleted or is maintained together with the unacknowledged additional info.</body>
             </specification>
           </ownedRule>
           <ownedParameter xmi:id="_KA9DF91gEdyrKNXnBMy96w" name="void" isUnique="false" direction="return"/>
-          <ownedParameter xmi:id="_KA9DGd1gEdyrKNXnBMy96w" name="alarmOrTCAIdList" direction="inout">
+          <ownedParameter xmi:id="_KA9DGd1gEdyrKNXnBMy96w" name="alarmOrTcaIdList" type="_v_AmYOqMEdyuRYe8TzA8ug">
             <ownedComment xmi:id="_KA9DGt1gEdyrKNXnBMy96w" annotatedElement="_KA9DGd1gEdyrKNXnBMy96w">
-              <body>/* in */ Contains the alarm identifiers of the active alarms (i.e. Structs::AlarmIdentifier) and/or TCAs (i.e. Structs::TCAIdentifier) that need to be unacknowledged in the EMS.</body>
+              <body>This parameter contains the Alarm identifiers of the active Alarms and/or TCAs that need to be unacknowledged in the target OS.</body>
             </ownedComment>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_cKj1keq6EdyuRYe8TzA8ug" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_cKj1kOq6EdyuRYe8TzA8ug"/>
           </ownedParameter>
-          <ownedParameter xmi:id="_KA9DG91gEdyrKNXnBMy96w" name="additionalInfo" direction="inout">
+          <ownedParameter xmi:id="_KA9DG91gEdyrKNXnBMy96w" name="additionalInfo">
             <ownedComment xmi:id="_KA9DHN1gEdyrKNXnBMy96w" annotatedElement="_KA9DG91gEdyrKNXnBMy96w">
-              <body>/* in */ Suggested additional information may include a username, i.e. the EMS user that the NMS user is &quot;mapped&quot; to, and some textual information supplied by the user (notepad functionality).  Further information may include user info or any parameter defined in a bilateral agreement.
-</body>
+              <body>This parameter contains additional information which may include a username, i.e. the target OS user that the requesting OS user is &quot;mapped&quot; to, and some textual information supplied by the user (notepad functionality). Further information may include user info or any parameter defined in a bilateral agreement.</body>
             </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_8_P-sPo7EduVsYI7mfNDXQ?Framework/Type%20Definitions/AttributeValuePair?"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_cqTsoeq6EdyuRYe8TzA8ug" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_cqTsoOq6EdyuRYe8TzA8ug"/>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_KA9DHd1gEdyrKNXnBMy96w">
               <body>empty list</body>
             </defaultValue>
           </ownedParameter>
-          <ownedParameter xmi:id="_KA9DHt1gEdyrKNXnBMy96w" name="failedAlarmOrTCAIdList" direction="inout">
+          <ownedParameter xmi:id="_KA9DHt1gEdyrKNXnBMy96w" name="failedAlarmOrTcaIdList" type="_v_AmYOqMEdyuRYe8TzA8ug" direction="out">
             <ownedComment xmi:id="_KA9DH91gEdyrKNXnBMy96w" annotatedElement="_KA9DHt1gEdyrKNXnBMy96w">
-              <body>/* out */ Contains the alarm identifiers of the alarms (i.e. Structs::AlarmIdentifier) and/or TCAs (i.e. Structs::TCAIdentifier) that could not be unacknowledged.</body>
+              <body>This parameter contains the Alarm identifiers of the Alarms and/or TCAs that could not be unacknowledged.</body>
             </ownedComment>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_c8x8seq6EdyuRYe8TzA8ug" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_c8x8sOq6EdyuRYe8TzA8ug"/>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_KA9DIN1gEdyrKNXnBMy96w">
               <body>empty list</body>
             </defaultValue>
           </ownedParameter>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/COMM_LOSS?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/INVALID_INPUT?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/INTERNAL_ERROR?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NOT_IMPLEMENTED?"/>
         </ownedOperation>
       </packagedElement>
       <packagedElement xmi:type="uml:Interface" xmi:id="_SE7LYN1eEdyrKNXnBMy96w" name="AlarmRetrievalService">
         <ownedOperation xmi:id="_VMXLgN1gEdyrKNXnBMy96w" name="getActiveAlarmsCount" visibility="public" precondition="_VMXLgt1gEdyrKNXnBMy96w" postcondition="_VMXLhN1gEdyrKNXnBMy96w">
           <ownedComment xmi:id="_VMXLgd1gEdyrKNXnBMy96w" annotatedElement="_VMXLgN1gEdyrKNXnBMy96w">
-            <body>This operation asks the target top-level OS to count the number of active alarms as restricted by the provided filter. The target OS sends the result to the requesting OS.
-The operation can only be directed to a top-level OS and not to a subordinate OS.
-
-Operation Exceptions: 
-1. INTERNAL_ERROR - Raised in case of non-specific OS internal failure. 
-2. NOT_IMPLEMENTED - If the addressed OS is a subordinate OS; i.e., does not support this operation.
-3. INVALID_INPUT - Raised when an invalid input parameter is provided (e.g., invalid filter syntax).
-4. COMM_FAILURE - Raised when communication to an entity (needed to help fulfill the request) is lost.
-</body>
+            <body>This operation asks the target top-level OS to count the number of active Alarms as restricted by the provided filter. The target OS sends the result to the requesting OS.&#xD;
+The operation can only be directed to a top-level OS and not to a subordinate OS.&#xD;
+&#xD;
+Traceability: R_TMF518_RTM_II_0036, UC_TMF518_RTM_0009.</body>
           </ownedComment>
           <ownedRule xmi:id="_VMXLgt1gEdyrKNXnBMy96w" constrainedElement="_VMXLgN1gEdyrKNXnBMy96w">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_VMXLg91gEdyrKNXnBMy96w">
@@ -759,36 +768,36 @@ Operation Exceptions:
             </specification>
           </ownedRule>
           <ownedParameter xmi:id="_VMXLht1gEdyrKNXnBMy96w" name="void" isUnique="false" direction="return"/>
-          <ownedParameter xmi:id="_VMXLiN1gEdyrKNXnBMy96w" name="filter" type="_lIf4EN1gEdyrKNXnBMy96w" direction="inout">
+          <ownedParameter xmi:id="_VMXLiN1gEdyrKNXnBMy96w" name="filter" type="_lIf4EN1gEdyrKNXnBMy96w">
             <ownedComment xmi:id="_VMXLid1gEdyrKNXnBMy96w" annotatedElement="_VMXLiN1gEdyrKNXnBMy96w">
-              <body>/* in */ Defines the subset of the set of active alarms known to the target OS that are to be counted.</body>
+              <body>This parameter defines the subset of the set of active Alarms known to the target OS that are to be counted.</body>
             </ownedComment>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_VMXLit1gEdyrKNXnBMy96w">
               <body>CIS Null</body>
             </defaultValue>
           </ownedParameter>
-          <ownedParameter xmi:id="_VMXLi91gEdyrKNXnBMy96w" name="activeAlarmCount" direction="inout">
+          <ownedParameter xmi:id="_VMXLi91gEdyrKNXnBMy96w" name="activeAlarmCount" direction="out">
             <ownedComment xmi:id="_VMXLjN1gEdyrKNXnBMy96w" annotatedElement="_VMXLi91gEdyrKNXnBMy96w">
-              <body>/* out */ The number of active alarms that pass the filter conditions.</body>
+              <body>This parameter returns the number of active Alarms that pass the filter conditions.</body>
             </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_VMXLjd1gEdyrKNXnBMy96w">
               <body>NA</body>
             </defaultValue>
           </ownedParameter>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/COMM_LOSS?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/INVALID_INPUT?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/INTERNAL_ERROR?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NOT_IMPLEMENTED?"/>
         </ownedOperation>
         <ownedOperation xmi:id="_VMg8gN1gEdyrKNXnBMy96w" name="getActiveAlarms" visibility="public" precondition="_VMg8gt1gEdyrKNXnBMy96w" postcondition="_VMg8hN1gEdyrKNXnBMy96w">
           <ownedComment xmi:id="_VMg8gd1gEdyrKNXnBMy96w" annotatedElement="_VMg8gN1gEdyrKNXnBMy96w">
-            <body>This operation returns (to the requesting OS) a specified subset of the active alarms known to the target OS. The target OS returns all alarms satisfying the filter constraints of the requesting OS.
-This operation can only be directed to a top-level OS and not to a subordinate OS.
-
-Operation Exceptions: 
-1. INTERNAL_ERROR - Raised in case of non-specific OS internal failure. 
-2. NOT_IMPLEMENTED - Raised when the OS does not support this operation.
-3. INVALID_INPUT - Raised when an invalid input parameter is provided (e.g., invalid filter syntax).
-4. COMM_FAILURE - Raised when communication to an entity (needed to help fulfill the request) is lost.
-</body>
+            <body>This operation returns a specified subset of the active Alarms known to the target OS. The target OS returns all alarms satisfying the filter constraints provided by the requesting OS.&#xD;
+This operation can only be directed to a top-level OS and not to a subordinate OS.&#xD;
+&#xD;
+Traceability: R_TMF518_RTM_II_0037, UC_TMF518_RTM_0010.</body>
           </ownedComment>
-          <ownedRule xmi:id="_VMg8gt1gEdyrKNXnBMy96w" constrainedElement="_VMg8gN1gEdyrKNXnBMy96w">
+          <ownedRule xmi:id="_VMg8gt1gEdyrKNXnBMy96w" name="" constrainedElement="_VMg8gN1gEdyrKNXnBMy96w">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_VMg8g91gEdyrKNXnBMy96w">
               <body>None</body>
             </specification>
@@ -799,35 +808,40 @@ Operation Exceptions:
             </specification>
           </ownedRule>
           <ownedParameter xmi:id="_VMg8ht1gEdyrKNXnBMy96w" name="void" isUnique="false" direction="return"/>
-          <ownedParameter xmi:id="_VMg8iN1gEdyrKNXnBMy96w" name="filter" type="_lIf4EN1gEdyrKNXnBMy96w" direction="inout">
+          <ownedParameter xmi:id="_VMg8iN1gEdyrKNXnBMy96w" name="filter" type="_lIf4EN1gEdyrKNXnBMy96w">
             <ownedComment xmi:id="_VMg8id1gEdyrKNXnBMy96w" annotatedElement="_VMg8iN1gEdyrKNXnBMy96w">
-              <body>/* in */ Defines the subset of the set of active alarms known to the target OS that are to be returned to the requesting OS.</body>
+              <body>This parameter defines the subset of the set of active Alarms known to the target OS that are to be returned to the requesting OS.</body>
             </ownedComment>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_VMg8it1gEdyrKNXnBMy96w">
               <body>CIS Null</body>
             </defaultValue>
           </ownedParameter>
-          <ownedParameter xmi:id="_VMg8i91gEdyrKNXnBMy96w" name="whereAndHowToReply" direction="inout">
+          <ownedParameter xmi:id="_VMg8i91gEdyrKNXnBMy96w" name="whereAndHowToReply">
             <ownedComment xmi:id="_VMg8jN1gEdyrKNXnBMy96w" annotatedElement="_VMg8i91gEdyrKNXnBMy96w">
-              <body>/* in */ The parameter contains the necessary information (including where and how) the target OS needs to send the response. The information provided in this parameter depends on the scenario (i.e., type of communication style) used for retrieving the alarms. The individual information to be provided by the requesting OS is described in the following Use Cases of the MTOSI Business Agreement:
-- UC_MTOSI_22: Active Alarms Retrieval - Scenario 1
-- UC_MTOSI_23: Active Alarms Retrieval - Scenario 2
-- UC_MTOSI_24: Active Alarms Retrieval - Scenario 3.
+              <body>/* in */ The parameter contains the necessary information (including where and how) the target OS needs to send the response. The information provided in this parameter depends on the scenario (i.e., type of communication style) used for retrieving the alarms. The individual information to be provided by the requesting OS is described in the following Use Cases of the MTOSI Business Agreement:&#xD;
+- UC_MTOSI_22: Active Alarms Retrieval - Scenario 1&#xD;
+- UC_MTOSI_23: Active Alarms Retrieval - Scenario 2&#xD;
+- UC_MTOSI_24: Active Alarms Retrieval - Scenario 3.&#xD;
 </body>
             </ownedComment>
           </ownedParameter>
-          <ownedParameter xmi:id="_VMg8jd1gEdyrKNXnBMy96w" name="alarmReply" direction="inout">
+          <ownedParameter xmi:id="_VMg8jd1gEdyrKNXnBMy96w" name="alarmReply" type="_Lr-K4Ot4EdyNzpD_6a0mjg" direction="out">
             <ownedComment xmi:id="_VMg8jt1gEdyrKNXnBMy96w" annotatedElement="_VMg8jd1gEdyrKNXnBMy96w">
-              <body>/* out */ The parameter contains the reply information on a getActiveAlarms operation. The information is returned in one or more batches according to the scenario described in the following Use Cases of the MTOSI Business Agreement:
-- UC_MTOSI_22: Active Alarms Retrieval - Scenario 1
-- UC_MTOSI_23: Active Alarms Retrieval - Scenario 2
-- UC_MTOSI_24: Active Alarms Retrieval - Scenario 3.
-</body>
+              <body>This parameter contains the returned Alarm information. The information is returned in one or more batches according to the scenario described in the following Use Cases of the MTOSI Business Agreement:&#xD;
+- UC_MTOSI_22: Active Alarms Retrieval - Scenario 1&#xD;
+- UC_MTOSI_23: Active Alarms Retrieval - Scenario 2&#xD;
+- UC_MTOSI_24: Active Alarms Retrieval - Scenario 3.</body>
             </ownedComment>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_PiSVIet4EdyNzpD_6a0mjg" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_PiSVIOt4EdyNzpD_6a0mjg"/>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_VMg8j91gEdyrKNXnBMy96w">
               <body>NA</body>
             </defaultValue>
           </ownedParameter>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/COMM_LOSS?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/INVALID_INPUT?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/INTERNAL_ERROR?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NOT_IMPLEMENTED?"/>
         </ownedOperation>
       </packagedElement>
       <packagedElement xmi:type="uml:Interface" xmi:id="_jvK_kN1eEdyrKNXnBMy96w" name="MaintenanceControlService">
@@ -1296,83 +1310,26 @@ Operation Exceptions:
           </ownedParameter>
         </ownedOperation>
       </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_puOS4OqOEdyuRYe8TzA8ug" supplier="_v_AmYOqMEdyuRYe8TzA8ug" client="_PexogN1eEdyrKNXnBMy96w"/>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_DmvO0P_IEduKKLvC_EB00A" name="Type Definitions">
       <eAnnotations xmi:id="_Dm1VcP_IEduKKLvC_EB00A" source="uml2.diagrams"/>
-      <packagedElement xmi:type="uml:DataType" xmi:id="_SeNZYP_IEduKKLvC_EB00A" name="AsapModifyData">
+      <packagedElement xmi:type="uml:DataType" xmi:id="_SeNZYP_IEduKKLvC_EB00A" name="AlarmSeverityAssignmentProfileModifyData">
         <ownedComment xmi:id="_aJMIEP_IEduKKLvC_EB00A" annotatedElement="_SeNZYP_IEduKKLvC_EB00A">
           <body>This data type contains the additional parameters that are required in create and modify operations for ASAPs.</body>
         </ownedComment>
         <generalization xmi:id="_CnsaYP_NEduKKLvC_EB00A">
-          <general xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_MPswEP_FEduKKLvC_EB00A?Framework/Type%20Definitions/CommonObjectSetData?"/>
+          <general xmi:type="uml:DataType" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_ZbGqoKlcEdy39Z05qVqfpQ?NetworkResourceBasic/Type%20Definitions/CommonResourceModifyData?"/>
         </generalization>
-        <ownedAttribute xmi:id="_jxMkIP_IEduKKLvC_EB00A" name="alarmSeverityAssignmentList" visibility="public" type="_40Z4MP_IEduKKLvC_EB00A">
+        <ownedAttribute xmi:id="_jxMkIP_IEduKKLvC_EB00A" name="alarmSeverityAssignmentList" visibility="public">
           <ownedComment xmi:id="_jxMkIf_IEduKKLvC_EB00A" annotatedElement="_jxMkIP_IEduKKLvC_EB00A">
             <body>This data type specifies the probable cause (plus optionally the probableCauseQualifier and / or the nativeProbableCause) and the severities to be assigned.</body>
           </ownedComment>
           <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_7OpwQf_MEduKKLvC_EB00A" value="*"/>
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_7OpwQP_MEduKKLvC_EB00A"/>
-          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_jxMkIv_IEduKKLvC_EB00A" type="_40Z4MP_IEduKKLvC_EB00A">
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_jxMkIv_IEduKKLvC_EB00A">
             <body>empty list</body>
           </defaultValue>
-        </ownedAttribute>
-      </packagedElement>
-      <packagedElement xmi:type="uml:DataType" xmi:id="_40Z4MP_IEduKKLvC_EB00A" name="AlarmSeverityAssignment">
-        <ownedComment xmi:id="_D1VPAP_JEduKKLvC_EB00A" annotatedElement="_40Z4MP_IEduKKLvC_EB00A">
-          <body>This data type provides three values for severity to cover the three cases of service affecting conditions, non- service affecting conditions and conditions where the service impact is unknown. The structure identifies the specific case of alarm that it applies to using three probable cause identifiers in combination.&#xD;
-&#xD;
-See also attached supporting document for further details on the values of ther strings probableCause, probableCauseQualifier and nativeProbableCause.??</body>
-        </ownedComment>
-        <ownedAttribute xmi:id="_dTtt4P_JEduKKLvC_EB00A" name="probableCause" visibility="public">
-          <ownedComment xmi:id="_dTtt4f_JEduKKLvC_EB00A" annotatedElement="_dTtt4P_JEduKKLvC_EB00A">
-            <body>This attribute contains the probable cause of the alarm to which the severities should be applied.</body>
-          </ownedComment>
-          <ownedComment xmi:id="_CNLwAP_KEduKKLvC_EB00A">
-            <body>SupportingDocumentation\SD1-33_ProbableCauses.pdf</body>
-          </ownedComment>
-          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
-          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_dTtt4v_JEduKKLvC_EB00A">
-            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
-            <body>NA</body>
-          </defaultValue>
-        </ownedAttribute>
-        <ownedAttribute xmi:id="_dTtt4__JEduKKLvC_EB00A" name="probableCauseQualifier" visibility="public">
-          <ownedComment xmi:id="_dTtt5P_JEduKKLvC_EB00A" annotatedElement="_dTtt4__JEduKKLvC_EB00A">
-            <body>This attribute contains a qualifier of the probable cause that is used to achieve uniqueness in some cases where the probable cause is not sufficient.</body>
-          </ownedComment>
-          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
-          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_dTtt5f_JEduKKLvC_EB00A">
-            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
-            <body>empty string</body>
-          </defaultValue>
-        </ownedAttribute>
-        <ownedAttribute xmi:id="_dTtt5v_JEduKKLvC_EB00A" name="nativeProbableCause" visibility="public">
-          <ownedComment xmi:id="_dTtt5__JEduKKLvC_EB00A" annotatedElement="_dTtt5v_JEduKKLvC_EB00A">
-            <body>This attribute contains the probable cause used on the NE/EMS??. This may also be used to qualify the probable cause to achieve uniqueness in some cases where the probable cause is not sufficient.</body>
-          </ownedComment>
-          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
-          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_dTtt6P_JEduKKLvC_EB00A">
-            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
-            <body>empty string</body>
-          </defaultValue>
-        </ownedAttribute>
-        <ownedAttribute xmi:id="_dTz0gP_JEduKKLvC_EB00A" name="serviceAffecting" visibility="public" type="_o6OBgP_KEduKKLvC_EB00A">
-          <ownedComment xmi:id="_dTz0gf_JEduKKLvC_EB00A" annotatedElement="_dTz0gP_JEduKKLvC_EB00A">
-            <body>This attribute contains the severity assigned to the probable cause when the alarm is service affecting.</body>
-          </ownedComment>
-          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_NkRSIP_MEduKKLvC_EB00A" name="FreeChoice" type="_o6OBgP_KEduKKLvC_EB00A" instance="_qyswoP_LEduKKLvC_EB00A"/>
-        </ownedAttribute>
-        <ownedAttribute xmi:id="_dTz0g__JEduKKLvC_EB00A" name="serviceNonAffecting" visibility="public" type="_o6OBgP_KEduKKLvC_EB00A">
-          <ownedComment xmi:id="_dTz0hP_JEduKKLvC_EB00A" annotatedElement="_dTz0g__JEduKKLvC_EB00A">
-            <body>This attribute contains the severity assigned to the probable cause when the alarm is not service affecting.</body>
-          </ownedComment>
-          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_p_LMgP_MEduKKLvC_EB00A" name="FreeChoice" type="_o6OBgP_KEduKKLvC_EB00A" instance="_qyswoP_LEduKKLvC_EB00A"/>
-        </ownedAttribute>
-        <ownedAttribute xmi:id="_dTz0hv_JEduKKLvC_EB00A" name="serviceIndependentOrUnknown" visibility="public" type="_o6OBgP_KEduKKLvC_EB00A">
-          <ownedComment xmi:id="_dTz0h__JEduKKLvC_EB00A" annotatedElement="_dTz0hv_JEduKKLvC_EB00A">
-            <body>This attribute contains the severity assigned to the probable cause when the service impact of the alarm is not known.</body>
-          </ownedComment>
-          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_bbtjEP_MEduKKLvC_EB00A" name="FreeChoice" type="_o6OBgP_KEduKKLvC_EB00A" instance="_qyswoP_LEduKKLvC_EB00A"/>
         </ownedAttribute>
       </packagedElement>
       <packagedElement xmi:type="uml:Enumeration" xmi:id="_o6OBgP_KEduKKLvC_EB00A" name="AssignedSeverity">
@@ -1387,182 +1344,149 @@ See also attached supporting document for further details on the values of ther 
         <ownedLiteral xmi:id="_oj1FUP_LEduKKLvC_EB00A" name="NotAlarmed"/>
         <ownedLiteral xmi:id="_qyswoP_LEduKKLvC_EB00A" name="FreeChoice"/>
       </packagedElement>
-      <packagedElement xmi:type="uml:DataType" xmi:id="_ntYVYKgHEdyBvu4QgH3iCw" name="AsapCreateData">
+      <packagedElement xmi:type="uml:DataType" xmi:id="_ntYVYKgHEdyBvu4QgH3iCw" name="AlarmSeverityAssignmentProfileCreateData">
         <ownedComment xmi:id="_ntYVYagHEdyBvu4QgH3iCw" annotatedElement="_ntYVYKgHEdyBvu4QgH3iCw">
           <body>This data type contains the additional parameters that are required in create and modify operations for ASAPs.</body>
         </ownedComment>
         <generalization xmi:id="_ntYVYqgHEdyBvu4QgH3iCw">
-          <general xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_fJJBQKf4EdyBvu4QgH3iCw?Framework/Type%20Definitions/CommonObjectCreateData?"/>
+          <general xmi:type="uml:DataType" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_ZsO24KlcEdy39Z05qVqfpQ?NetworkResourceBasic/Type%20Definitions/CommonResourceCreateData?"/>
         </generalization>
-        <ownedAttribute xmi:id="_ntYVY6gHEdyBvu4QgH3iCw" name="alarmSeverityAssignmentList" visibility="public" type="_40Z4MP_IEduKKLvC_EB00A">
+        <ownedAttribute xmi:id="_ntYVY6gHEdyBvu4QgH3iCw" name="alarmSeverityAssignmentList" visibility="public">
           <ownedComment xmi:id="_ntYVZKgHEdyBvu4QgH3iCw" annotatedElement="_ntYVY6gHEdyBvu4QgH3iCw">
-            <body>This data type specifies the probable cause (plus optionally the probableCauseQualifier and / or the nativeProbableCause) and the severities to be assigned.</body>
+            <body>This data type specifies the Probable Cause (plus optionally the Probable Cause Qualifier and / or the native Probable Cause) and the severities (non service affecting, service affecting and service independent) to be assigned.</body>
           </ownedComment>
+          <type xmi:type="uml:DataType" href="../../NetworkResourceAssurance/IA/NetworkResourceAssurance.emx#_obM3QFYOEdys97lG39tcpw?NetworkResourceAssurance/Type%20Definitions/AlarmSeverityAssignment?"/>
           <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ntYVZagHEdyBvu4QgH3iCw" value="*"/>
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ntYVZqgHEdyBvu4QgH3iCw"/>
-          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_ntYVZ6gHEdyBvu4QgH3iCw" type="_40Z4MP_IEduKKLvC_EB00A">
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_ntYVZ6gHEdyBvu4QgH3iCw">
+            <type xmi:type="uml:DataType" href="../../NetworkResourceAssurance/IA/NetworkResourceAssurance.emx#_obM3QFYOEdys97lG39tcpw?NetworkResourceAssurance/Type%20Definitions/AlarmSeverityAssignment?"/>
             <body>empty list</body>
           </defaultValue>
         </ownedAttribute>
       </packagedElement>
       <packagedElement xmi:type="uml:DataType" xmi:id="_lIf4EN1gEdyrKNXnBMy96w" name="ActiveAlarmFilter">
-        <ownedComment xmi:id="_rzkB4N1gEdyrKNXnBMy96w">
-          <annotatedElement xmi:type="uml:Class" href="platform:/resource/TMF608/TMF608/TMF608v3.3_MTOSIPart_2006_06.emx#_3A6F1C080203427F7D99023E?MTOSI/MTOSI/Structs/ActiveAlarmFilter?"/>
-          <body>This filter is used in the active alarm retrieval operation.
-
-Object Lifecycle: NA
-
-Object Creation Notification Issued? No
-Object Deletion Notification Issued? No
-</body>
+        <ownedComment xmi:id="_OFHIQOnSEdy1lpWLf983Vw" annotatedElement="_lIf4EN1gEdyrKNXnBMy96w">
+          <body>This data type contains parameters for filtering Alarms. Default interpretation (filter criteria is missing or is an empty list) indicates that it is not relevant to the query; i.e., all Alarms are applicable.&#xD;
+Examples:&#xD;
+#1: All filter criteria missing -> Retrieves all Alarms associated with all Managed Elements and this OS.&#xD;
+#2: source = INTERNAL, all other criteria missing -> Retrieves all Alarms associated with this OS only.&#xD;
+#3: source = EXTERNAL, all other criteria missing -> Retrieves all Alarms associated with the Managed Elements only.</body>
         </ownedComment>
-        <ownedAttribute xmi:id="_rzkB4d1gEdyrKNXnBMy96w" name="source" visibility="private">
+        <ownedAttribute xmi:id="_rzkB4d1gEdyrKNXnBMy96w" name="source" visibility="public" type="_6ANaEOnSEdy1lpWLf983Vw">
           <ownedComment xmi:id="_rzkB4t1gEdyrKNXnBMy96w" annotatedElement="_rzkB4d1gEdyrKNXnBMy96w">
-            <body>This attribute filters the alarms based on their source (with respect to the OS receiving this request). Possible values are INTERNAL, EXTERNAL, NOT_APPLICABLE.
-The value NOT_APPLICABLE means there is no filtering on the alarm source; i.e., internal and external alarms are in the scope.
-
-Readable by Requesting OS? No
-Writeable by Requesting OS? Yes
-Invariant? Yes
-</body>
+            <body>This attribute filters the Alarms based on their source (with respect to the OS receiving this request). Possible values are INTERNAL, EXTERNAL, NOT_APPLICABLE.&#xD;
+The value NOT_APPLICABLE means there is no filtering on the Alarm source; i.e., internal and external alarms are in the scope.</body>
           </ownedComment>
-          <type xmi:type="uml:Class" href="platform:/resource/TMF608/TMF608/TMF608v3.3_MTOSIPart_2006_06.emx#_3A6F1C080203427F7E4F011D?MTOSI/MTOSI/Enums/Source?"/>
-          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_rzkB491gEdyrKNXnBMy96w">
-            <body>NOT_APPLICABLE</body>
-          </defaultValue>
+          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_D91g0OnTEdy1lpWLf983Vw" name="NOT_APPLICABLE" type="_6ANaEOnSEdy1lpWLf983Vw" instance="_-V95YOnSEdy1lpWLf983Vw"/>
         </ownedAttribute>
-        <ownedAttribute xmi:id="_rzkB5d1gEdyrKNXnBMy96w" name="scope" visibility="private">
-          <ownedComment xmi:id="_rzkB5t1gEdyrKNXnBMy96w" annotatedElement="_rzkB5d1gEdyrKNXnBMy96w">
-            <body>This attribute filters the alarms based on a list of managed elements. The listed managed elements are in the scope.
-If no managed element is provided, alarms from all managed elements are in scope.
-
-Readable by Requesting OS? No
-Writeable by Requesting OS? Yes
-Invariant? Yes
-</body>
+        <ownedAttribute xmi:id="_rzkB5d1gEdyrKNXnBMy96w" name="scope" visibility="public">
+          <ownedComment xmi:id="_kgPRgOnSEdy1lpWLf983Vw" annotatedElement="_rzkB5d1gEdyrKNXnBMy96w">
+            <body>This attribute filters the Alarms based on a list of Managed Elements. The listed Managed Elements are in the scope.&#xD;
+If no Managed Element is provided, Alarms from all Managed Elements are in scope.</body>
           </ownedComment>
+          <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_js55oOneEdyXaLXVYgag_Q" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_jnZHgOneEdyXaLXVYgag_Q"/>
           <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_rzkB591gEdyrKNXnBMy96w">
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
             <body>empty list</body>
           </defaultValue>
         </ownedAttribute>
-        <ownedAttribute xmi:id="_rzkB6d1gEdyrKNXnBMy96w" name="perceivedSeverityList" visibility="private">
+        <ownedAttribute xmi:id="_rzkB6d1gEdyrKNXnBMy96w" name="perceivedSeverityList" visibility="public">
           <ownedComment xmi:id="_rzkB6t1gEdyrKNXnBMy96w" annotatedElement="_rzkB6d1gEdyrKNXnBMy96w">
-            <body>This attribute filters the alarms based on a list of severities (see ITU-T X.733 definitions). The listed severities are in the scope.
-If no severity is provided, alarms with any severity are in scope.
-
-Readable by Requesting OS? No
-Writeable by Requesting OS? Yes
-Invariant? Yes
-</body>
+            <body>This attribute filters the alarms based on a list of severities (see ITU-T X.733 definitions). The listed severities are in the scope.&#xD;
+If no severity is provided, alarms with any severity are in scope.</body>
           </ownedComment>
+          <type xmi:type="uml:Enumeration" href="../../Framework/IA/Framework.emx#_CbVSEPybEduuuoHTWmKVyQ?Framework/Type%20Definitions/PerceivedSeverity?"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_u7cOoeneEdyXaLXVYgag_Q" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_u7cOoOneEdyXaLXVYgag_Q"/>
           <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_rzkB691gEdyrKNXnBMy96w">
+            <type xmi:type="uml:Enumeration" href="../../Framework/IA/Framework.emx#_CbVSEPybEduuuoHTWmKVyQ?Framework/Type%20Definitions/PerceivedSeverity?"/>
             <body>empty list</body>
           </defaultValue>
         </ownedAttribute>
-        <ownedAttribute xmi:id="_rzkB7d1gEdyrKNXnBMy96w" name="probableCauseList" visibility="private">
+        <ownedAttribute xmi:id="_rzkB7d1gEdyrKNXnBMy96w" name="probableCauseList" visibility="public">
           <ownedComment xmi:id="_rzkB7t1gEdyrKNXnBMy96w" annotatedElement="_rzkB7d1gEdyrKNXnBMy96w">
-            <body>This attribute filters the alarms based on a list of probable causes (for details refer to the supporting document: ProbableCauses). The listed probable causes are in the scope.
-If no probable cause is provided, alarms with any probable cause are in scope.
-
-Readable by Requesting OS? No
-Writeable by Requesting OS? Yes
-Invariant? Yes
-</body>
+            <body>This attribute filters the Alarms based on a list of Probable Causes (for details refer to the supporting document SD1-33_ProbableCauses). The listed Probable Causes are in the scope.&#xD;
+If no Probable Cause is provided, Alarms with any Probable Cause are in scope.</body>
           </ownedComment>
+          <ownedComment xmi:id="_ZNffAOnfEdyXaLXVYgag_Q" annotatedElement="_rzkB7d1gEdyrKNXnBMy96w">
+            <body>..\..\Framework\SD\SD1-33_ProbableCauses.doc</body>
+          </ownedComment>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_7Qm0geneEdyXaLXVYgag_Q" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_7Qm0gOneEdyXaLXVYgag_Q"/>
           <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_rzkB791gEdyrKNXnBMy96w">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
             <body>empty list</body>
           </defaultValue>
         </ownedAttribute>
-        <ownedAttribute xmi:id="_rzty4N1gEdyrKNXnBMy96w" name="acknowledgeIndication" visibility="private">
+        <ownedAttribute xmi:id="_rzty4N1gEdyrKNXnBMy96w" name="acknowledgeIndication" visibility="public" type="_jELtwOnTEdy1lpWLf983Vw">
           <ownedComment xmi:id="_rzty4d1gEdyrKNXnBMy96w" annotatedElement="_rzty4N1gEdyrKNXnBMy96w">
-            <body>This attribute filters the alarms based on its acknowledge indication. Possible values are EVENT_ACKNOWLEDGED, EVENT_UNACKNOWLEDGED, and NOT_APPLICABLE.
-The value NOT_APPLICABLE indicates that alarms with any acknowledge indication are in scope.
-
-Readable by Requesting OS? No
-Writeable by Requesting OS? Yes
-Invariant? Yes
-</body>
+            <body>This attribute filters the Alarms based on its acknowledge indication. Possible values are ACKNOWLEDGED, UNACKNOWLEDGED, and NOT_APPLICABLE.&#xD;
+The value NOT_APPLICABLE indicates that Alarms with any acknowledge indication are in scope.</body>
           </ownedComment>
-          <type xmi:type="uml:Class" href="platform:/resource/TMF608/TMF608/TMF608.emx#_3A6F1C0802033E8C20EB01E7?TMF608/Logical%20View/Enums/AcknowledgeIndication?"/>
-          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_rzty4t1gEdyrKNXnBMy96w">
-            <body>NOT_APPLICABLE</body>
-          </defaultValue>
+          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_kJghoOnUEdy1lpWLf983Vw" name="NOT_APPLICABLE" type="_jELtwOnTEdy1lpWLf983Vw" instance="_q2xgUOnTEdy1lpWLf983Vw"/>
         </ownedAttribute>
       </packagedElement>
       <packagedElement xmi:type="uml:DataType" xmi:id="_n2x74N1jEdyrKNXnBMy96w" name="CurrentMaintenanceOperation">
-        <ownedComment xmi:id="_9CfrsN1jEdyrKNXnBMy96w">
-          <annotatedElement xmi:type="uml:Class" href="platform:/resource/TMF608/TMF608/TMF608.emx#_3A6F1C0802033E1C42020002?TMF608/Logical%20View/Structs/CurrentMaintenanceOperation?"/>
-          <body>Describes the maintenance operation at a specific layer.
-
-Object Lifecycle: NA
-
-Object Creation Notification Issued? No
-Object Deletion Notification Issued? No
-</body>
+        <ownedComment xmi:id="_3-7z8OnUEdy1lpWLf983Vw" annotatedElement="_n2x74N1jEdyrKNXnBMy96w">
+          <body>This data type describes the maintenance operation at a specific layer.</body>
         </ownedComment>
-        <ownedComment xmi:id="_9Cfrsd1jEdyrKNXnBMy96w">
-          <body>SupportingDocumentation\SD1-20_MaintenanceCommands.pdf</body>
+        <ownedComment xmi:id="_mKcP4OnaEdyN58HQDvekEQ" annotatedElement="_n2x74N1jEdyrKNXnBMy96w">
+          <body>..\..\Framework\SD\SD1-20_MaintenanceCommands.doc</body>
         </ownedComment>
-        <ownedAttribute xmi:id="_9Cfrst1jEdyrKNXnBMy96w" name="maintenanceOperation" visibility="private">
+        <ownedAttribute xmi:id="_9Cfrst1jEdyrKNXnBMy96w" name="maintenanceOperation" visibility="public">
           <ownedComment xmi:id="_9Cfrs91jEdyrKNXnBMy96w" annotatedElement="_9Cfrst1jEdyrKNXnBMy96w">
-            <body>Valid values are:
-- &quot;FACILITY_LOOPBACK&quot;
-- &quot;TERMINAL_LOOPBACK&quot;
-- &quot;FACILITY_FORCED_AIS&quot;
-- &quot;TERMINAL_FORCED_AIS&quot;
-- &quot;FORCE_RDI&quot;
-- &quot;SET_AS_SEGMENT_END_POINT&quot; (ATM)
-- &quot;END_TO_END_LOOPBACK_OAM_CELL&quot; (ATM)
-- &quot;SEGMENT_LOOPBACK_OAM_CELL&quot; (ATM)
-- &quot;LOCAL_LOOP_QUALIFICATION&quot; (DSL)
-- &quot;DSL_LINE_SUPERVISION&quot; (DSL)
-- &quot;SINGLE_ENDED_LINE_TEST&quot; (DSL)
-- &quot;DUAL_ENDED_LINE_TEST&quot; (DSL)
-- &quot;PAYLOAD_LOOPBACK&quot; (PDH)
-- &quot;DUAL_LOOPBACK&quot; (PDH)
-
-
-Refer to associated supporting document maintenanceCommands for an explanation of the maintenance commands.
-
-Readable by NMS? Yes
-Writeable by NMS? No
-Invariant? Yes
-</body>
+            <body>This attribute identifies the maintenance operations as specified in the attached supporting document SD1-20_maintenanceCommands.&#xD;
+Valid values are:&#xD;
+- &quot;FACILITY_LOOPBACK&quot;&#xD;
+- &quot;TERMINAL_LOOPBACK&quot;&#xD;
+- &quot;FACILITY_FORCED_AIS&quot;&#xD;
+- &quot;TERMINAL_FORCED_AIS&quot;&#xD;
+- &quot;FORCE_RDI&quot;&#xD;
+- &quot;SET_AS_SEGMENT_END_POINT&quot; (ATM)&#xD;
+- &quot;END_TO_END_LOOPBACK_OAM_CELL&quot; (ATM)&#xD;
+- &quot;SEGMENT_LOOPBACK_OAM_CELL&quot; (ATM)&#xD;
+- &quot;LOCAL_LOOP_QUALIFICATION&quot; (DSL)&#xD;
+- &quot;DSL_LINE_SUPERVISION&quot; (DSL)&#xD;
+- &quot;SINGLE_ENDED_LINE_TEST&quot; (DSL)&#xD;
+- &quot;DUAL_ENDED_LINE_TEST&quot; (DSL)&#xD;
+- &quot;PAYLOAD_LOOPBACK&quot; (PDH)&#xD;
+- &quot;DUAL_LOOPBACK&quot; (PDH).</body>
           </ownedComment>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
           <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_9CfrtN1jEdyrKNXnBMy96w">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
             <body>NA</body>
           </defaultValue>
         </ownedAttribute>
-        <ownedAttribute xmi:id="_9Cfrtt1jEdyrKNXnBMy96w" name="layerRate" visibility="private">
+        <ownedAttribute xmi:id="_9Cfrtt1jEdyrKNXnBMy96w" name="layerRate" visibility="public">
           <ownedComment xmi:id="_9Cfrt91jEdyrKNXnBMy96w" annotatedElement="_9Cfrtt1jEdyrKNXnBMy96w">
-            <body>Layer rate to which the operation is applied to.
-
-Readable by NMS? Yes
-Writeable by NMS? No
-Invariant? Yes
-</body>
+            <body>This attribute defines the layer rate to which the operation is applied to.</body>
           </ownedComment>
-          <type xmi:type="uml:Class" href="platform:/resource/TMF608/TMF608/TMF608.emx#_3A6F1C0802033D9011E5036E?TMF608/Logical%20View/Enums/LayerRate?"/>
+          <type xmi:type="uml:DataType" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_eNqf0CPHEdypgfGA_0P3-g?NetworkResourceBasic/Type%20Definitions/LayerRate?"/>
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_lHFVcOnaEdyN58HQDvekEQ">
+            <type xmi:type="uml:DataType" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_eNqf0CPHEdypgfGA_0P3-g?NetworkResourceBasic/Type%20Definitions/LayerRate?"/>
+            <body>NA</body>
+          </defaultValue>
         </ownedAttribute>
-        <ownedAttribute xmi:id="_9Co1od1jEdyrKNXnBMy96w" name="additionalInfo" visibility="private">
+        <ownedAttribute xmi:id="_9Co1od1jEdyrKNXnBMy96w" name="additionalInfo" visibility="public">
           <ownedComment xmi:id="_9Co1ot1jEdyrKNXnBMy96w" annotatedElement="_9Co1od1jEdyrKNXnBMy96w">
-            <body>AdditionalInfo can be provided with pairwise agreement between NMS and EMS.</body>
+            <body>This attribute contains the additional information that can be provided with pairwise agreement between requesting OS and target OS.</body>
           </ownedComment>
+          <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_8_P-sPo7EduVsYI7mfNDXQ?Framework/Type%20Definitions/AttributeValuePair?"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_q5tzsengEdyXaLXVYgag_Q" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_q5tzsOngEdyXaLXVYgag_Q"/>
           <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_9Co1o91jEdyrKNXnBMy96w">
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_8_P-sPo7EduVsYI7mfNDXQ?Framework/Type%20Definitions/AttributeValuePair?"/>
             <body>empty list</body>
           </defaultValue>
         </ownedAttribute>
       </packagedElement>
       <packagedElement xmi:type="uml:Enumeration" xmi:id="_q1OC8N1jEdyrKNXnBMy96w" name="MaintenanceOperationMode">
-        <ownedComment xmi:id="_2bJkQN1jEdyrKNXnBMy96w">
-          <annotatedElement xmi:type="uml:Class" href="platform:/resource/TMF608/TMF608/TMF608.emx#_3A6F1C0802033E1C440E0345?TMF608/Logical%20View/Enums/MaintenanceOperationMode%20?"/>
-          <body>Indicates whether the maintenance operation should be operated or released.
-
-Object Lifecycle: NA
-
-Object Creation Notification Issued? No
-Object Deletion Notification Issued? No
-</body>
+        <ownedComment xmi:id="_AdE2MOnbEdyN58HQDvekEQ" annotatedElement="_q1OC8N1jEdyrKNXnBMy96w">
+          <body>This data type indicates whether the maintenance operation should be operated or released.</body>
         </ownedComment>
         <ownedLiteral xmi:id="_0-8PgN1kEdyrKNXnBMy96w" name="OPERATE"/>
         <ownedLiteral xmi:id="_2Eh-kN1kEdyrKNXnBMy96w" name="RELEASE"/>
@@ -1575,101 +1499,252 @@ Object Deletion Notification Issued? No
         <ownedLiteral xmi:id="_EoKAEN1lEdyrKNXnBMy96w" name="MANUAL_SWITCH"/>
       </packagedElement>
       <packagedElement xmi:type="uml:DataType" xmi:id="_yfWnoN1kEdyrKNXnBMy96w" name="SwitchData">
-        <ownedComment xmi:id="_iGfGUN1lEdyrKNXnBMy96w">
-          <annotatedElement xmi:type="uml:Class" href="platform:/resource/TMF608/TMF608/TMF608.emx#_3A6F1C080203E6870ACD0050?TMF608/Logical%20View/SwitchData?"/>
-          <body>This object identifies the current protection switch status of a protection group or a SNCP reliable CTP.
-The following object is used for retrieving the switch data. This object has relationships with the Protection Group object and the CTP object (that is involved in a SNCP).
-
-MTOSI Specific Documentation
-This class is applicable to MTOSI. The specific operations and relationships that apply to MTOSI are listed in SD2-11. 
-For MTOSI, references to &quot;NMS&quot; can be interpreted as &quot;Requesting OS&quot; and references to &quot;EMS&quot; can be interpreted as &quot;Target OS&quot;, i.e., the OS that fulfills requests from another OS. 
-The statements concerning Object Lifecycle, i.e., whether the object can be created by the NMS or EMS, are not particularly meaningful for MTOSI, since MTOSI does not define management systems with fixed roles such as the NMS and EMS entities in MTNM.
-
-Object Lifecycle: Created by EMS.
-
-Object Creation Notification Issued? No
-Object Deletion Notification Issued? No
-</body>
+        <ownedComment xmi:id="_QDdVMOnbEdyN58HQDvekEQ" annotatedElement="_yfWnoN1kEdyrKNXnBMy96w">
+          <body>This data type identifies the current protection switch status of a protection group or a SNCP reliable CTP.&#xD;
+The following object is used for retrieving the switch data. This object has relationships with the Protection Group object and the CTP object (that is involved in a SNCP).??</body>
         </ownedComment>
-        <ownedComment xmi:id="_iGfGUd1lEdyrKNXnBMy96w">
-          <body>SupportingDocumentation\SD2-11_IA-SS_Mapping.xls</body>
-        </ownedComment>
-        <ownedAttribute xmi:id="_iGfGUt1lEdyrKNXnBMy96w" name="protectionType" visibility="private">
+        <ownedAttribute xmi:id="_iGfGUt1lEdyrKNXnBMy96w" name="protectionType" visibility="public">
           <ownedComment xmi:id="_iGfGU91lEdyrKNXnBMy96w" annotatedElement="_iGfGUt1lEdyrKNXnBMy96w">
-            <body>This attribute identifies the type of the protection for which the switch has occurred.
-
-Readable by NMS? Yes
-Writeable by NMS? No
-Invariant? Yes
-</body>
+            <body>This attribute identifies the type of the protection for which the switch has occurred.</body>
           </ownedComment>
-          <type xmi:type="uml:Class" href="platform:/resource/TMF608/TMF608/TMF608.emx#_3A6F1C080203E5AFB64100EC?TMF608/Logical%20View/Enums/ProtectionType?"/>
+          <type xmi:type="uml:Enumeration" href="../../NetworkResourceAssurance/IA/NetworkResourceAssurance.emx#_E55t8FCoEdynybgludW5Lg?NetworkResourceAssurance/Type%20Definitions/ProtectionType?"/>
           <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_iGfGVN1lEdyrKNXnBMy96w">
+            <type xmi:type="uml:Enumeration" href="../../NetworkResourceAssurance/IA/NetworkResourceAssurance.emx#_E55t8FCoEdynybgludW5Lg?NetworkResourceAssurance/Type%20Definitions/ProtectionType?"/>
             <body>NA</body>
           </defaultValue>
         </ownedAttribute>
-        <ownedAttribute xmi:id="_iGfGVt1lEdyrKNXnBMy96w" name="switchReason" visibility="private">
+        <ownedAttribute xmi:id="_iGfGVt1lEdyrKNXnBMy96w" name="switchReason" visibility="public">
           <ownedComment xmi:id="_iGfGV91lEdyrKNXnBMy96w" annotatedElement="_iGfGVt1lEdyrKNXnBMy96w">
-            <body>The reason the last switch occurred. During a switch notification the switch reason is known. If it is not cached in the EMS for later retrieval, then a NA value is assigned.
--  The manual switch indicates that a manual operation caused this switch, including MANUAL, FORCED and LOCKOUT switches.
--  The AUTOMATIC_SWITCH is used when the switch reason for the automatic switch is not known.
--  SIGNAL_MISMATCH is used in the case the signal is ok, but is identified as coming from an incorrect source: TRAIL_TRACE_IDENTIFIER_MISMATCH, Signal Label Mismatch, etc.
--  NA is used upon retrieval of switch data for non-revertive groups, if a more precise value is not available.
--  RESTORED is used for revertive groups to indicate a return to the normal state.
-
-Readable by NMS? Yes
-Writeable by NMS? No
-Invariant? No
-</body>
+            <body>This attribute contains the reason of the last switch. During a switch notification the switch reason is known. If it is not cached in the target OS for later retrieval, then a NOT_APPLICABLE value is assigned.&#xD;
+-  The MANUAL switch indicates that a manual operation caused this switch, including MANUAL, FORCED and LOCKOUT switches.&#xD;
+-  The AUTOMATIC_SWITCH is used when the switch reason for the automatic switch is not known.&#xD;
+-  SIGNAL_MISMATCH is used in the case the signal is ok, but is identified as coming from an incorrect source: TRAIL_TRACE_IDENTIFIER_MISMATCH, Signal Label Mismatch, etc.&#xD;
+-  NOT_APPLICABLE is used upon retrieval of switch data for non-revertive groups, if a more precise value is not available.&#xD;
+-  RESTORED is used for revertive groups to indicate a return to the normal state.</body>
           </ownedComment>
-          <type xmi:type="uml:Class" href="platform:/resource/TMF608/TMF608/TMF608.emx#_3A6F1C080203E863482F0070?TMF608/Logical%20View/Enums/SwitchReason?"/>
+          <type xmi:type="uml:Enumeration" href="../../NetworkResourceAssurance/IA/NetworkResourceAssurance.emx#_p4A_gFCoEdynybgludW5Lg?NetworkResourceAssurance/Type%20Definitions/SwitchReason?"/>
           <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_iGfGWN1lEdyrKNXnBMy96w">
+            <type xmi:type="uml:Enumeration" href="../../NetworkResourceAssurance/IA/NetworkResourceAssurance.emx#_p4A_gFCoEdynybgludW5Lg?NetworkResourceAssurance/Type%20Definitions/SwitchReason?"/>
             <body>NA</body>
           </defaultValue>
         </ownedAttribute>
-        <ownedAttribute xmi:id="_iGfGWt1lEdyrKNXnBMy96w" name="layerRate" visibility="private">
+        <ownedAttribute xmi:id="_iGfGWt1lEdyrKNXnBMy96w" name="layerRate" visibility="public">
           <ownedComment xmi:id="_iGfGW91lEdyrKNXnBMy96w" annotatedElement="_iGfGWt1lEdyrKNXnBMy96w">
-            <body>This attribute identifies layer at which the switch has occurred. This layerRate can be used to filter the switch notification based on the layerRate.
-
-Readable by NMS? Yes
-Writeable by NMS? No
-Invariant? No
-</body>
+            <body>This attribute identifies the layer at which the switch has occurred. The layerRate can be used to filter the switch notification.</body>
           </ownedComment>
-          <type xmi:type="uml:Class" href="platform:/resource/TMF608/TMF608/TMF608.emx#_3A6F1C0802033D9011E5036E?TMF608/Logical%20View/Enums/LayerRate?"/>
+          <type xmi:type="uml:DataType" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_eNqf0CPHEdypgfGA_0P3-g?NetworkResourceBasic/Type%20Definitions/LayerRate?"/>
           <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_iGfGXN1lEdyrKNXnBMy96w">
+            <type xmi:type="uml:DataType" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_eNqf0CPHEdypgfGA_0P3-g?NetworkResourceBasic/Type%20Definitions/LayerRate?"/>
             <body>NA</body>
           </defaultValue>
         </ownedAttribute>
-        <ownedAttribute xmi:id="_iGfGXt1lEdyrKNXnBMy96w" name="additionalInfo" visibility="private">
+        <ownedAttribute xmi:id="_iGfGXt1lEdyrKNXnBMy96w" name="additionalInfo" visibility="public">
           <ownedComment xmi:id="_iGfGX91lEdyrKNXnBMy96w" annotatedElement="_iGfGXt1lEdyrKNXnBMy96w">
-            <body>This is a vendor specific attribute that contains additional specific information about the switch data.This list can be empty.
-
-Readable by NMS? Yes
-Writeable by NMS? No
-Invariant? Yes
-</body>
+            <body>This attribute is a vendor specific attribute that contains additional specific information about the switch data.</body>
           </ownedComment>
+          <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_8_P-sPo7EduVsYI7mfNDXQ?Framework/Type%20Definitions/AttributeValuePair?"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_mTmHsenhEdyXaLXVYgag_Q" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_mTmHsOnhEdyXaLXVYgag_Q"/>
           <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_iGfGYN1lEdyrKNXnBMy96w">
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_8_P-sPo7EduVsYI7mfNDXQ?Framework/Type%20Definitions/AttributeValuePair?"/>
             <body>empty list</body>
           </defaultValue>
         </ownedAttribute>
         <ownedAttribute xmi:id="_iGfGYt1lEdyrKNXnBMy96w" name="group" visibility="public" isUnique="false">
-          <type xmi:type="uml:Class" href="platform:/resource/TMF608/TMF608/TMF608.emx#_3A6F1C080203E6870A9400FB?TMF608/Logical%20View/ProtectionGroup?"/>
+          <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
           <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_iGfGY91lEdyrKNXnBMy96w" value="1"/>
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_iGfGZN1lEdyrKNXnBMy96w"/>
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_zwlRQOnhEdyXaLXVYgag_Q">
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <body>NA</body>
+          </defaultValue>
         </ownedAttribute>
         <ownedAttribute xmi:id="_iGfGZt1lEdyrKNXnBMy96w" name="protectedTP" visibility="public" isUnique="false">
-          <type xmi:type="uml:Class" href="platform:/resource/TMF608/TMF608/TMF608.emx#_3A6F1C080203E687071900B4?TMF608/Logical%20View/TerminationPoint?"/>
+          <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
           <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_iGfGZ91lEdyrKNXnBMy96w" value="1"/>
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_iGfGaN1lEdyrKNXnBMy96w"/>
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_1B8ygOnhEdyXaLXVYgag_Q">
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <body>NA</body>
+          </defaultValue>
         </ownedAttribute>
         <ownedAttribute xmi:id="_iGfGat1lEdyrKNXnBMy96w" name="switchToTP" visibility="public" isUnique="false">
-          <type xmi:type="uml:Class" href="platform:/resource/TMF608/TMF608/TMF608.emx#_3A6F1C080203E687071900B4?TMF608/Logical%20View/TerminationPoint?"/>
+          <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
           <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_iGfGa91lEdyrKNXnBMy96w" value="1"/>
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_iGfGbN1lEdyrKNXnBMy96w"/>
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_4p9bAOnhEdyXaLXVYgag_Q">
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <body>NA</body>
+          </defaultValue>
         </ownedAttribute>
       </packagedElement>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="_6ANaEOnSEdy1lpWLf983Vw" name="Source">
+        <ownedLiteral xmi:id="_8D8MYOnSEdy1lpWLf983Vw" name="INTERNAL"/>
+        <ownedLiteral xmi:id="_9SK6EOnSEdy1lpWLf983Vw" name="EXTERNAL"/>
+        <ownedLiteral xmi:id="_-V95YOnSEdy1lpWLf983Vw" name="NOT_APPLICABLE"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="_jELtwOnTEdy1lpWLf983Vw" name="AcknowledgeIndication">
+        <ownedComment xmi:id="_oc_lgOnTEdy1lpWLf983Vw" annotatedElement="_jELtwOnTEdy1lpWLf983Vw">
+          <body>This data type defines if the alarm has been acknowledged or not.</body>
+        </ownedComment>
+        <ownedLiteral xmi:id="_q2xgUOnTEdy1lpWLf983Vw" name="NOT_APPLICABLE">
+          <ownedComment xmi:id="_y9VXwOnTEdy1lpWLf983Vw" annotatedElement="_q2xgUOnTEdy1lpWLf983Vw">
+            <body>This value is used in case the target OS does not support acknowledgement for this event or does not support acknowledgement at all.</body>
+          </ownedComment>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_zbbpAOnTEdy1lpWLf983Vw" name="EVENT_ACKNOWLEDGED">
+          <ownedComment xmi:id="_Eq3wgOnUEdy1lpWLf983Vw" annotatedElement="_zbbpAOnTEdy1lpWLf983Vw">
+            <body>This value is used in case the alarm has been acknowledged in the target OS. All alarm fields other than osTime and acknowledgeIndication shall remain similar to the original alarm notification.&#xD;
+(The osTime is always provided as the time that the alarm acknowledgement notification has been reported by the target OS.)</body>
+          </ownedComment>
+        </ownedLiteral>
+        <ownedLiteral xmi:id="_KjH9UOnUEdy1lpWLf983Vw" name="EVENT_UNACKNOWLEDGED">
+          <ownedComment xmi:id="_X8-6YOnUEdy1lpWLf983Vw" annotatedElement="_KjH9UOnUEdy1lpWLf983Vw">
+            <body>This value is used in case the event has not been acknowledged but the target OS supports acknowledgement for this event , or in case that the alarm has been previously acknowledged and then unacknowledged. All alarm fields other than osTime shall remain in that case similar to the original alarm notification.&#xD;
+(The osTime is always provided as the time that the alarm acknowledgement notification has been reported by the targetOS.)</body>
+          </ownedComment>
+        </ownedLiteral>
+      </packagedElement>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_v_AmYOqMEdyuRYe8TzA8ug" name="AlarmOrTcaId">
+        <eAnnotations xmi:id="_0mfu4OqMEdyuRYe8TzA8ug" source="http://www.eclipse.org/uml2/2.0.0/UML">
+          <details xmi:id="_0mfu4eqMEdyuRYe8TzA8ug" key="choice"/>
+        </eAnnotations>
+        <ownedComment xmi:id="_3QZ68OqNEdyuRYe8TzA8ug" annotatedElement="_v_AmYOqMEdyuRYe8TzA8ug">
+          <body>This data type is used for component of a mixed list of Alarms and TCAs. The content is either an Alarm Id or a TCA Id.</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_VkFU0eqOEdyuRYe8TzA8ug" name="alarmId" visibility="public" type="_8zDEIOqNEdyuRYe8TzA8ug" aggregation="composite" association="_VkFU0OqOEdyuRYe8TzA8ug">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_VkPF0uqOEdyuRYe8TzA8ug" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_VkPF0eqOEdyuRYe8TzA8ug" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_WrUCoeqOEdyuRYe8TzA8ug" name="tcaId" visibility="public" type="_CNDOsOqOEdyuRYe8TzA8ug" aggregation="composite" association="_WrUCoOqOEdyuRYe8TzA8ug">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_WrUCpOqOEdyuRYe8TzA8ug" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_WrUCo-qOEdyuRYe8TzA8ug" value="1"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_8zDEIOqNEdyuRYe8TzA8ug" name="AlarmId">
+        <ownedComment xmi:id="_3jW2sOqOEdyuRYe8TzA8ug" annotatedElement="_8zDEIOqNEdyuRYe8TzA8ug">
+          <body>This data type is used as a unique identifier of an Alarm.</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_MbimgOqPEdyuRYe8TzA8ug" name="objectName" visibility="public">
+          <ownedComment xmi:id="_MbimgeqPEdyuRYe8TzA8ug" annotatedElement="_MbimgOqPEdyuRYe8TzA8ug">
+            <body>This attribute represents the name of the entity that gave rise to the Alarm.&#xD;
+See supporting document SD2-7_MTOSI_Object_Naming for further details on the name structure.</body>
+          </ownedComment>
+          <ownedComment xmi:id="_i5mF8OqlEdyuRYe8TzA8ug" annotatedElement="_MbimgOqPEdyuRYe8TzA8ug">
+            <body>..\..\Framework\SD\SD2-7_MTOSI_Object_Naming.doc</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_RR-iQOqVEdyuRYe8TzA8ug">
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <body>NA</body>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_4COukOqPEdyuRYe8TzA8ug" name="layerRate" visibility="public">
+          <ownedComment xmi:id="_4COukeqPEdyuRYe8TzA8ug" annotatedElement="_4COukOqPEdyuRYe8TzA8ug">
+            <body>This attribute identifies the layerRate of the object raising the Alarm. For objects where the layerRate is not applicable, such as EMS/OS, the value is set to LR_Not_Applicable. LayerRate is applicable in Alarms raised by objects such as PTPs.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_eNqf0CPHEdypgfGA_0P3-g?NetworkResourceBasic/Type%20Definitions/LayerRate?"/>
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_4COukuqPEdyuRYe8TzA8ug">
+            <type xmi:type="uml:DataType" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_eNqf0CPHEdypgfGA_0P3-g?NetworkResourceBasic/Type%20Definitions/LayerRate?"/>
+            <body>NA</body>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_gdrCoOqQEdyuRYe8TzA8ug" name="probableCause" visibility="public">
+          <ownedComment xmi:id="_gdrCoeqQEdyuRYe8TzA8ug" annotatedElement="_gdrCoOqQEdyuRYe8TzA8ug">
+            <body>This attribute identifies the type of Alarm raised against the object.&#xD;
+See supporting document SD1-33_ProbableCauses for a description of the probable cause strings.</body>
+          </ownedComment>
+          <ownedComment xmi:id="_E6PmAOqUEdyuRYe8TzA8ug" annotatedElement="_gdrCoOqQEdyuRYe8TzA8ug">
+            <body>..\..\Framework\SD\SD1-33_ProbableCauses.doc</body>
+          </ownedComment>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_gdrCouqQEdyuRYe8TzA8ug">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+            <body>NA</body>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_MNZDgOqUEdyuRYe8TzA8ug" name="probableCauseQualifier" visibility="public">
+          <ownedComment xmi:id="_MNZDgeqUEdyuRYe8TzA8ug" annotatedElement="_MNZDgOqUEdyuRYe8TzA8ug">
+            <body>This attribute is used as the final component of the unique identification of the Alarm and is left blank where the objectName, layerRate and probableCause alone provide a unique identification of the alarm.</body>
+          </ownedComment>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_MNZDg-qUEdyuRYe8TzA8ug">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+            <body>empty string</body>
+          </defaultValue>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_CNDOsOqOEdyuRYe8TzA8ug" name="TcaId">
+        <ownedComment xmi:id="_BKN0gOqVEdyuRYe8TzA8ug" annotatedElement="_CNDOsOqOEdyuRYe8TzA8ug">
+          <body>This data type is used as a unique identifier of a Threshold Crossing Alert.</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_FKOGQOqVEdyuRYe8TzA8ug" name="objectName" visibility="public">
+          <ownedComment xmi:id="_FKOGQeqVEdyuRYe8TzA8ug" annotatedElement="_FKOGQOqVEdyuRYe8TzA8ug">
+            <body>This attribute represents the name of the entity that gave rise to the TCA.&#xD;
+See supporting document SD2-7_MTOSI_Object_Naming for further details on the name structure.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_S1XAkOqVEdyuRYe8TzA8ug">
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <body>NA</body>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_FKOGQ-qVEdyuRYe8TzA8ug" name="layerRate" visibility="public">
+          <ownedComment xmi:id="_FKOGROqVEdyuRYe8TzA8ug" annotatedElement="_FKOGQ-qVEdyuRYe8TzA8ug">
+            <body>This attribute identifies the layerRate of the object raising the TCA. For objects where the layerRate is not applicable, such as EMS/OS, the value is set to LR_Not_Applicable. LayerRate is applicable in Alarms raised by objects such as PTPs.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_eNqf0CPHEdypgfGA_0P3-g?NetworkResourceBasic/Type%20Definitions/LayerRate?"/>
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_FKOGReqVEdyuRYe8TzA8ug">
+            <type xmi:type="uml:DataType" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_eNqf0CPHEdypgfGA_0P3-g?NetworkResourceBasic/Type%20Definitions/LayerRate?"/>
+            <body>NA</body>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_1G9okOqVEdyuRYe8TzA8ug" name="pmParameterName" visibility="public">
+          <ownedComment xmi:id="_1G9okeqVEdyuRYe8TzA8ug" annotatedElement="_1G9okOqVEdyuRYe8TzA8ug">
+            <body>This attribute holds the name of Performance Measurements. It has been defined as a string to accommodate proprietary extensions.&#xD;
+See attached SD1-28_PerformanceParameters supporting document for the list of defined Performance Measurements.</body>
+          </ownedComment>
+          <ownedComment xmi:id="_1G9okuqVEdyuRYe8TzA8ug" annotatedElement="_1G9okOqVEdyuRYe8TzA8ug">
+            <body>..\SD\SD1-28_PerformanceParameters.pdf</body>
+          </ownedComment>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_1G9ok-qVEdyuRYe8TzA8ug">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+            <body>NA</body>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_wpdigOqVEdyuRYe8TzA8ug" name="pmLocation" visibility="public" isReadOnly="true">
+          <ownedComment xmi:id="_wpdigeqVEdyuRYe8TzA8ug" annotatedElement="_wpdigOqVEdyuRYe8TzA8ug">
+            <body>This attribute identifies the location of the PM measurent.&#xD;
+See attached supporting document SD1-19_LocationIdentification.</body>
+          </ownedComment>
+          <ownedComment xmi:id="_wpdiguqVEdyuRYe8TzA8ug" annotatedElement="_wpdigOqVEdyuRYe8TzA8ug">
+            <body>..\SD\SD1-19_LocationIdentification.pdf</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="../../NetworkResourceAssurance/IA/NetworkResourceAssurance.emx#_1RMqkFYUEdys97lG39tcpw?NetworkResourceAssurance/Type%20Definitions/PmLocation?"/>
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_wpdig-qVEdyuRYe8TzA8ug">
+            <type xmi:type="uml:Enumeration" href="../../NetworkResourceAssurance/IA/NetworkResourceAssurance.emx#_1RMqkFYUEdys97lG39tcpw?NetworkResourceAssurance/Type%20Definitions/PmLocation?"/>
+            <body>NA</body>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_wpdihOqVEdyuRYe8TzA8ug" name="granularity" visibility="public" isReadOnly="true">
+          <ownedComment xmi:id="_wpdiheqVEdyuRYe8TzA8ug" annotatedElement="_wpdihOqVEdyuRYe8TzA8ug">
+            <body>This attribute identifies the granularity (count period of the measure) for which the Threshold Crossing Alert was raised.</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="../../NetworkResourceAssurance/IA/NetworkResourceAssurance.emx#_xqHkQFYWEdys97lG39tcpw?NetworkResourceAssurance/Type%20Definitions/Granularity?"/>
+          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_wpdihuqVEdyuRYe8TzA8ug" name="NOT_APPLICABLE">
+            <type xmi:type="uml:Enumeration" href="../../NetworkResourceAssurance/IA/NetworkResourceAssurance.emx#_xqHkQFYWEdys97lG39tcpw?NetworkResourceAssurance/Type%20Definitions/Granularity?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="../../NetworkResourceAssurance/IA/NetworkResourceAssurance.emx#_3cUzcFYWEdys97lG39tcpw?NetworkResourceAssurance/Type%20Definitions/Granularity/NOT_APPLICABLE?"/>
+          </defaultValue>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_VkFU0OqOEdyuRYe8TzA8ug" memberEnd="_VkFU0eqOEdyuRYe8TzA8ug _VkYPwOqOEdyuRYe8TzA8ug">
+        <ownedEnd xmi:id="_VkYPwOqOEdyuRYe8TzA8ug" name="" visibility="private" type="_v_AmYOqMEdyuRYe8TzA8ug" association="_VkFU0OqOEdyuRYe8TzA8ug"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_WrUCoOqOEdyuRYe8TzA8ug" memberEnd="_WrUCoeqOEdyuRYe8TzA8ug _WrUCpeqOEdyuRYe8TzA8ug">
+        <ownedEnd xmi:id="_WrUCpeqOEdyuRYe8TzA8ug" name="" visibility="private" type="_v_AmYOqMEdyuRYe8TzA8ug" association="_WrUCoOqOEdyuRYe8TzA8ug"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_Lr-K4Ot4EdyNzpD_6a0mjg" name="AlarmList"/>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="__W04QB8VEdybTc3BlJsa9Q" name="Class Diagrams">
       <eAnnotations xmi:id="__XfmoB8VEdybTc3BlJsa9Q" source="uml2.diagrams">
@@ -1683,7 +1758,7 @@ Invariant? Yes
             </children>
             <styles xmi:type="notation:ShapeStyle" xmi:id="_LcY9cf-9EduKKLvC_EB00A" fontName="Arial" description="in MTNM TP alarm reporting is set on/off by modifying the corresponding tranmission parameter" fillColor="13369343" lineColor="6737151"/>
             <element xsi:nil="true"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_LcY9cv-9EduKKLvC_EB00A" x="8718" y="14217" width="5660"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_LcY9cv-9EduKKLvC_EB00A" x="18570" y="7239" width="5660"/>
           </children>
           <children xmi:id="_OUUnUP_SEduS0Yg9UXWGJw" element="_SeNZYP_IEduKKLvC_EB00A">
             <children xmi:id="_OUg0kP_SEduS0Yg9UXWGJw" type="ImageCompartment">
@@ -1700,7 +1775,7 @@ Invariant? Yes
               <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_OUg0mf_SEduS0Yg9UXWGJw"/>
             </children>
             <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_OUat8P_SEduS0Yg9UXWGJw" fontName="Arial" showListSignature="true" showParent="QualifiedName" showStereotype="Label"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_OUat8f_SEduS0Yg9UXWGJw" x="1995" y="24885"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_OUat8f_SEduS0Yg9UXWGJw" x="5999" y="24675"/>
           </children>
           <children xmi:id="_izidh__SEduS0Yg9UXWGJw">
             <children xmi:id="_izidiv_SEduS0Yg9UXWGJw" type="ImageCompartment">
@@ -1718,7 +1793,7 @@ Invariant? Yes
             </children>
             <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_izidiP_SEduS0Yg9UXWGJw" fontName="Arial" showListSignature="true" showParent="QualifiedName" showStereotype="Label"/>
             <element xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_MPswEP_FEduKKLvC_EB00A?Framework/Type%20Definitions/CommonObjectSetData?"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_izidif_SEduS0Yg9UXWGJw" x="10796" y="16800"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_izidif_SEduS0Yg9UXWGJw" x="10778" y="14265"/>
           </children>
           <children xmi:id="_3rvusCVyEdyiv86aejkLcA" element="_0pYw8CVyEdyiv86aejkLcA">
             <children xmi:id="_3rvusyVyEdyiv86aejkLcA" type="ImageCompartment">
@@ -1735,7 +1810,7 @@ Invariant? Yes
               <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_3rvuvCVyEdyiv86aejkLcA"/>
             </children>
             <styles xmi:type="umlnotation:UMLClassifierStyle" xmi:id="_3rvusSVyEdyiv86aejkLcA" fontName="Arial" showListSignature="true" showParent="QualifiedName" showStereotype="Label" useClassifierShape="true"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_3rvusiVyEdyiv86aejkLcA" x="420" y="6300"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_3rvusiVyEdyiv86aejkLcA" x="317" y="634"/>
           </children>
           <children xmi:id="_cwxgkCVzEdyiv86aejkLcA" element="_S0_M4CVzEdyiv86aejkLcA">
             <children xmi:id="_cw3nMCVzEdyiv86aejkLcA" type="ImageCompartment">
@@ -1752,7 +1827,7 @@ Invariant? Yes
               <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_cw3nOSVzEdyiv86aejkLcA"/>
             </children>
             <styles xmi:type="umlnotation:UMLClassifierStyle" xmi:id="_cwxgkSVzEdyiv86aejkLcA" fontName="Arial" showListSignature="true" showParent="QualifiedName" showStereotype="Label" useClassifierShape="true"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_cwxgkiVzEdyiv86aejkLcA" x="420" y="10605"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_cwxgkiVzEdyiv86aejkLcA" x="317" y="5389"/>
           </children>
           <children xmi:id="_BEhmgCV0Edyiv86aejkLcA" element="_yvxHcCVzEdyiv86aejkLcA">
             <children xmi:id="_BEhmgyV0Edyiv86aejkLcA" type="ImageCompartment">
@@ -1769,7 +1844,7 @@ Invariant? Yes
               <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_BEhmjCV0Edyiv86aejkLcA"/>
             </children>
             <styles xmi:type="umlnotation:UMLClassifierStyle" xmi:id="_BEhmgSV0Edyiv86aejkLcA" fontName="Arial" showListSignature="true" showParent="QualifiedName" showStereotype="Label" useClassifierShape="true"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_BEhmgiV0Edyiv86aejkLcA" x="3255" y="28245"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_BEhmgiV0Edyiv86aejkLcA" x="420" y="28245"/>
           </children>
           <children xmi:id="_TLipAKgHEdyBvu4QgH3iCw">
             <children xmi:id="_TLipA6gHEdyBvu4QgH3iCw" type="ImageCompartment">
@@ -1785,9 +1860,9 @@ Invariant? Yes
             <children xmi:id="_TLipC6gHEdyBvu4QgH3iCw" visible="false" type="OperationCompartment">
               <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_TLipDKgHEdyBvu4QgH3iCw"/>
             </children>
-            <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_TLipAagHEdyBvu4QgH3iCw" showListSignature="true" showParent="QualifiedName" showStereotype="Label"/>
+            <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_TLipAagHEdyBvu4QgH3iCw" fontName="Arial" showListSignature="true" showParent="QualifiedName" showStereotype="Label"/>
             <element xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_fJJBQKf4EdyBvu4QgH3iCw?Framework/Type%20Definitions/CommonObjectCreateData?"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_TLipAqgHEdyBvu4QgH3iCw" x="18990" y="21661"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_TLipAqgHEdyBvu4QgH3iCw" x="19654" y="19020"/>
           </children>
           <children xmi:id="_oNkRUKgHEdyBvu4QgH3iCw" element="_ntYVYKgHEdyBvu4QgH3iCw">
             <children xmi:id="_oNkRU6gHEdyBvu4QgH3iCw" type="ImageCompartment">
@@ -1804,43 +1879,7 @@ Invariant? Yes
               <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_oNkRXKgHEdyBvu4QgH3iCw"/>
             </children>
             <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_oNkRUagHEdyBvu4QgH3iCw" fontName="Arial" showListSignature="true" showParent="QualifiedName" showStereotype="Label"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_oNkRUqgHEdyBvu4QgH3iCw" x="15855" y="24885"/>
-          </children>
-          <children xmi:id="_HgOdQMs5EdyEKaQ8AlfaaA">
-            <children xmi:id="_HgOdQ8s5EdyEKaQ8AlfaaA" type="ImageCompartment">
-              <layoutConstraint xmi:type="notation:Size" xmi:id="_HgOdRMs5EdyEKaQ8AlfaaA" width="530" height="530"/>
-            </children>
-            <children xmi:id="_HgOdRcs5EdyEKaQ8AlfaaA" type="Stereotype"/>
-            <children xmi:id="_HgOdRss5EdyEKaQ8AlfaaA" type="Kind"/>
-            <children xmi:id="_HgOdR8s5EdyEKaQ8AlfaaA" type="Name"/>
-            <children xmi:id="_HgOdSMs5EdyEKaQ8AlfaaA" type="Parent"/>
-            <children xmi:id="_HgOdScs5EdyEKaQ8AlfaaA" type="AttributeCompartment">
-              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_HgOdSss5EdyEKaQ8AlfaaA"/>
-            </children>
-            <children xmi:id="_HgOdS8s5EdyEKaQ8AlfaaA" type="OperationCompartment">
-              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_HgOdTMs5EdyEKaQ8AlfaaA"/>
-            </children>
-            <styles xmi:type="umlnotation:UMLClassifierStyle" xmi:id="_HgOdQcs5EdyEKaQ8AlfaaA" fontName="Arial" showStereotype="Label" useClassifierShape="true"/>
-            <element xmi:type="uml:Interface" href="../../Framework/IA/Framework.emx#_8KmqACVOEdyiv86aejkLcA?Framework/Interfaces/CommonObjectProvisioning?"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_HgOdQss5EdyEKaQ8AlfaaA" x="21525" y="2835"/>
-          </children>
-          <children xmi:id="_Iofs4Ms5EdyEKaQ8AlfaaA">
-            <children xmi:id="_Iopd4Ms5EdyEKaQ8AlfaaA" type="ImageCompartment">
-              <layoutConstraint xmi:type="notation:Size" xmi:id="_Iopd4cs5EdyEKaQ8AlfaaA" width="530" height="530"/>
-            </children>
-            <children xmi:id="_Iopd4ss5EdyEKaQ8AlfaaA" type="Stereotype"/>
-            <children xmi:id="_Iopd48s5EdyEKaQ8AlfaaA" type="Kind"/>
-            <children xmi:id="_Iopd5Ms5EdyEKaQ8AlfaaA" type="Name"/>
-            <children xmi:id="_Iopd5cs5EdyEKaQ8AlfaaA" type="Parent"/>
-            <children xmi:id="_Iopd5ss5EdyEKaQ8AlfaaA" type="AttributeCompartment">
-              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_Iopd58s5EdyEKaQ8AlfaaA"/>
-            </children>
-            <children xmi:id="_Iopd6Ms5EdyEKaQ8AlfaaA" type="OperationCompartment">
-              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_Iopd6cs5EdyEKaQ8AlfaaA"/>
-            </children>
-            <styles xmi:type="umlnotation:UMLClassifierStyle" xmi:id="_Iofs4cs5EdyEKaQ8AlfaaA" fontName="Arial" showStereotype="Label" useClassifierShape="true"/>
-            <element xmi:type="uml:Interface" href="../../Framework/IA/Framework.emx#_ccpu0JjvEdyuNMSCXkXoCg?Framework/Interfaces/Common?"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Iofs4ss5EdyEKaQ8AlfaaA" x="13020" y="210"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_oNkRUqgHEdyBvu4QgH3iCw" x="16484" y="24726"/>
           </children>
           <children xmi:id="_b_ULEeO4Edy4OORWlRTQxw" element="_PexogN1eEdyrKNXnBMy96w">
             <children xmi:id="_b_d8EOO4Edy4OORWlRTQxw" type="ImageCompartment">
@@ -1857,7 +1896,7 @@ Invariant? Yes
               <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_b_d8GeO4Edy4OORWlRTQxw"/>
             </children>
             <styles xmi:type="umlnotation:UMLClassifierStyle" xmi:id="_b_ULEuO4Edy4OORWlRTQxw" fontName="Arial" showListSignature="true" showParent="QualifiedName" showStereotype="Label" useClassifierShape="true"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_b_ULE-O4Edy4OORWlRTQxw" x="23310" y="13440"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_b_ULE-O4Edy4OORWlRTQxw" x="25360" y="8876"/>
           </children>
           <children xmi:id="_da9CoOO4Edy4OORWlRTQxw" element="_SE7LYN1eEdyrKNXnBMy96w">
             <children xmi:id="_da9Co-O4Edy4OORWlRTQxw" type="ImageCompartment">
@@ -1874,7 +1913,7 @@ Invariant? Yes
               <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_da9CrOO4Edy4OORWlRTQxw"/>
             </children>
             <styles xmi:type="umlnotation:UMLClassifierStyle" xmi:id="_da9CoeO4Edy4OORWlRTQxw" fontName="Arial" showListSignature="true" showParent="QualifiedName" showStereotype="Label" useClassifierShape="true"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_da9CouO4Edy4OORWlRTQxw" x="19950" y="10815"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_da9CouO4Edy4OORWlRTQxw" x="31700" y="23458"/>
           </children>
           <children xmi:id="_hOlsUOO4Edy4OORWlRTQxw" element="_jvK_kN1eEdyrKNXnBMy96w">
             <children xmi:id="_hOlsU-O4Edy4OORWlRTQxw" type="ImageCompartment">
@@ -1891,7 +1930,7 @@ Invariant? Yes
               <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_hOlsXOO4Edy4OORWlRTQxw"/>
             </children>
             <styles xmi:type="umlnotation:UMLClassifierStyle" xmi:id="_hOlsUeO4Edy4OORWlRTQxw" fontName="Arial" showListSignature="true" showParent="QualifiedName" showStereotype="Label" useClassifierShape="true"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_hOlsUuO4Edy4OORWlRTQxw" x="31710" y="16590"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_hOlsUuO4Edy4OORWlRTQxw" x="29164" y="634"/>
           </children>
           <children xmi:id="_hyDlwOO4Edy4OORWlRTQxw" element="_mC_cUN1eEdyrKNXnBMy96w">
             <children xmi:id="_hyNWwOO4Edy4OORWlRTQxw" type="ImageCompartment">
@@ -1908,7 +1947,7 @@ Invariant? Yes
               <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_hyNWyeO4Edy4OORWlRTQxw"/>
             </children>
             <styles xmi:type="umlnotation:UMLClassifierStyle" xmi:id="_hyDlweO4Edy4OORWlRTQxw" fontName="Arial" showListSignature="true" showParent="QualifiedName" showStereotype="Label" useClassifierShape="true"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_hyDlwuO4Edy4OORWlRTQxw" x="32130" y="19530"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_hyDlwuO4Edy4OORWlRTQxw" x="31066" y="3487"/>
           </children>
           <children xmi:id="_iTI5kOO4Edy4OORWlRTQxw" element="_oFPA4N1eEdyrKNXnBMy96w">
             <children xmi:id="_iTI5k-O4Edy4OORWlRTQxw" type="ImageCompartment">
@@ -1925,20 +1964,212 @@ Invariant? Yes
               <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_iTI5nOO4Edy4OORWlRTQxw"/>
             </children>
             <styles xmi:type="umlnotation:UMLClassifierStyle" xmi:id="_iTI5keO4Edy4OORWlRTQxw" fontName="Arial" showListSignature="true" showParent="QualifiedName" showStereotype="Label" useClassifierShape="true"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_iTI5kuO4Edy4OORWlRTQxw" x="32130" y="22785"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_iTI5kuO4Edy4OORWlRTQxw" x="24726" y="37406"/>
+          </children>
+          <children xmi:id="_dC-kwOqNEdyuRYe8TzA8ug" element="_v_AmYOqMEdyuRYe8TzA8ug">
+            <children xmi:id="_dDIVwOqNEdyuRYe8TzA8ug" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_dDIVweqNEdyuRYe8TzA8ug" width="1320" height="1320"/>
+            </children>
+            <children xmi:id="_dDIVwuqNEdyuRYe8TzA8ug" type="Stereotype"/>
+            <children xmi:id="_dDIVw-qNEdyuRYe8TzA8ug" type="Kind"/>
+            <children xmi:id="_dDIVxOqNEdyuRYe8TzA8ug" type="Name"/>
+            <children xmi:id="_dDIVxeqNEdyuRYe8TzA8ug" type="Parent"/>
+            <children xmi:id="_dDIVxuqNEdyuRYe8TzA8ug" type="AttributeCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_dDIVx-qNEdyuRYe8TzA8ug"/>
+            </children>
+            <children xmi:id="_dDIVyOqNEdyuRYe8TzA8ug" visible="false" type="OperationCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_dDIVyeqNEdyuRYe8TzA8ug"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_dC-kweqNEdyuRYe8TzA8ug" fontName="Arial" showListSignature="true" showParent="QualifiedName" showStereotype="Label"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_dC-kwuqNEdyuRYe8TzA8ug" x="35354" y="12873"/>
+          </children>
+          <children xmi:id="_Dw5AAOqOEdyuRYe8TzA8ug" element="_8zDEIOqNEdyuRYe8TzA8ug">
+            <children xmi:id="_DxCxAOqOEdyuRYe8TzA8ug" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_DxCxAeqOEdyuRYe8TzA8ug" width="1320" height="1320"/>
+            </children>
+            <children xmi:id="_DxCxAuqOEdyuRYe8TzA8ug" type="Stereotype"/>
+            <children xmi:id="_DxCxA-qOEdyuRYe8TzA8ug" type="Kind"/>
+            <children xmi:id="_DxCxBOqOEdyuRYe8TzA8ug" type="Name"/>
+            <children xmi:id="_DxCxBeqOEdyuRYe8TzA8ug" type="Parent"/>
+            <children xmi:id="_DxCxBuqOEdyuRYe8TzA8ug" type="AttributeCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_DxCxB-qOEdyuRYe8TzA8ug"/>
+            </children>
+            <children xmi:id="_DxCxCOqOEdyuRYe8TzA8ug" visible="false" type="OperationCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_DxCxCeqOEdyuRYe8TzA8ug"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_Dw5AAeqOEdyuRYe8TzA8ug" fontName="Arial" showListSignature="true" showParent="QualifiedName" showStereotype="Label"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Dw5AAuqOEdyuRYe8TzA8ug" x="28530" y="16801"/>
+          </children>
+          <children xmi:id="_ENp0gOqOEdyuRYe8TzA8ug" element="_CNDOsOqOEdyuRYe8TzA8ug">
+            <children xmi:id="_ENp0g-qOEdyuRYe8TzA8ug" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_ENp0hOqOEdyuRYe8TzA8ug" width="1320" height="1320"/>
+            </children>
+            <children xmi:id="_ENy-cOqOEdyuRYe8TzA8ug" type="Stereotype"/>
+            <children xmi:id="_ENy-ceqOEdyuRYe8TzA8ug" type="Kind"/>
+            <children xmi:id="_ENy-cuqOEdyuRYe8TzA8ug" type="Name"/>
+            <children xmi:id="_ENy-c-qOEdyuRYe8TzA8ug" type="Parent"/>
+            <children xmi:id="_ENy-dOqOEdyuRYe8TzA8ug" type="AttributeCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_ENy-deqOEdyuRYe8TzA8ug"/>
+            </children>
+            <children xmi:id="_ENy-duqOEdyuRYe8TzA8ug" visible="false" type="OperationCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_ENy-d-qOEdyuRYe8TzA8ug"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_ENp0geqOEdyuRYe8TzA8ug" fontName="Arial" showListSignature="true" showParent="QualifiedName" showStereotype="Label"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ENp0guqOEdyuRYe8TzA8ug" x="39625" y="16801"/>
+          </children>
+          <children xmi:id="_bXtrAOt4EdyNzpD_6a0mjg" element="_Lr-K4Ot4EdyNzpD_6a0mjg">
+            <children xmi:id="_bXtrA-t4EdyNzpD_6a0mjg" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_bXtrBOt4EdyNzpD_6a0mjg" width="1320" height="1320"/>
+            </children>
+            <children xmi:id="_bXtrBet4EdyNzpD_6a0mjg" type="Stereotype"/>
+            <children xmi:id="_bXtrBut4EdyNzpD_6a0mjg" type="Kind"/>
+            <children xmi:id="_bX3cAOt4EdyNzpD_6a0mjg" type="Name"/>
+            <children xmi:id="_bX3cAet4EdyNzpD_6a0mjg" type="Parent"/>
+            <children xmi:id="_bX3cAut4EdyNzpD_6a0mjg" type="AttributeCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_bX3cA-t4EdyNzpD_6a0mjg"/>
+            </children>
+            <children xmi:id="_bX3cBOt4EdyNzpD_6a0mjg" visible="false" type="OperationCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_bX3cBet4EdyNzpD_6a0mjg"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_bXtrAet4EdyNzpD_6a0mjg" showListSignature="true" showParent="QualifiedName" showStereotype="Label"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_bXtrAut4EdyNzpD_6a0mjg" x="34870" y="31700"/>
+          </children>
+          <children xmi:id="_msXPEOt4EdyNzpD_6a0mjg">
+            <children xmi:id="_msXPE-t4EdyNzpD_6a0mjg" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_msXPFOt4EdyNzpD_6a0mjg" width="1320" height="1320"/>
+            </children>
+            <children xmi:id="_msXPFet4EdyNzpD_6a0mjg" type="Stereotype"/>
+            <children xmi:id="_msXPFut4EdyNzpD_6a0mjg" type="Name"/>
+            <children xmi:id="_msXPF-t4EdyNzpD_6a0mjg" type="Parent"/>
+            <children xmi:id="_msXPGOt4EdyNzpD_6a0mjg" type="AttributeCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_msXPGet4EdyNzpD_6a0mjg"/>
+            </children>
+            <children xmi:id="_msXPGut4EdyNzpD_6a0mjg" visible="false" type="OperationCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_msXPG-t4EdyNzpD_6a0mjg"/>
+            </children>
+            <children xmi:id="_msXPHOt4EdyNzpD_6a0mjg" visible="false" type="SignalCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_msXPHet4EdyNzpD_6a0mjg"/>
+            </children>
+            <children xmi:id="_msXPHut4EdyNzpD_6a0mjg" visible="false" type="StructureCompartment">
+              <styles xmi:type="umlnotation:UMLShapeCompartmentStyle" xmi:id="_msXPH-t4EdyNzpD_6a0mjg"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_msXPEet4EdyNzpD_6a0mjg" showListSignature="true" showParent="QualifiedName" showStereotype="Label"/>
+            <element xmi:type="uml:Class" href="../../Framework/IA/Framework.emx#_zfXP8PpTEduVsYI7mfNDXQ?Framework/Notifications/EventInformation?"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_msXPEut4EdyNzpD_6a0mjg" x="47552" y="31039"/>
+          </children>
+          <children xmi:id="_n-6cEOt4EdyNzpD_6a0mjg">
+            <children xmi:id="_n-6cE-t4EdyNzpD_6a0mjg" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_n-6cFOt4EdyNzpD_6a0mjg" width="1320" height="1320"/>
+            </children>
+            <children xmi:id="_n-6cFet4EdyNzpD_6a0mjg" type="Stereotype"/>
+            <children xmi:id="_n-6cFut4EdyNzpD_6a0mjg" type="Name"/>
+            <children xmi:id="_n-6cF-t4EdyNzpD_6a0mjg" type="Parent"/>
+            <children xmi:id="_n-6cGOt4EdyNzpD_6a0mjg" type="AttributeCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_n-6cGet4EdyNzpD_6a0mjg"/>
+            </children>
+            <children xmi:id="_n-6cGut4EdyNzpD_6a0mjg" visible="false" type="OperationCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_n-6cG-t4EdyNzpD_6a0mjg"/>
+            </children>
+            <children xmi:id="_n-6cHOt4EdyNzpD_6a0mjg" visible="false" type="SignalCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_n-6cHet4EdyNzpD_6a0mjg"/>
+            </children>
+            <children xmi:id="_n-6cHut4EdyNzpD_6a0mjg" visible="false" type="StructureCompartment">
+              <styles xmi:type="umlnotation:UMLShapeCompartmentStyle" xmi:id="_n-6cH-t4EdyNzpD_6a0mjg"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_n-6cEet4EdyNzpD_6a0mjg" showListSignature="true" showParent="QualifiedName" showStereotype="Label"/>
+            <element xmi:type="uml:Class" href="../../Framework/IA/Framework.emx#_76bRYPpLEduVsYI7mfNDXQ?Framework/Notifications/CommonEventInformation?"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_n-6cEut4EdyNzpD_6a0mjg" x="46282" y="26470"/>
+          </children>
+          <children xmi:id="_yqTyUOt5EdyNzpD_6a0mjg">
+            <children xmi:id="_yqTyU-t5EdyNzpD_6a0mjg" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_yqTyVOt5EdyNzpD_6a0mjg" width="1320" height="1320"/>
+            </children>
+            <children xmi:id="_yqTyVet5EdyNzpD_6a0mjg" type="Stereotype"/>
+            <children xmi:id="_yqTyVut5EdyNzpD_6a0mjg" type="Name"/>
+            <children xmi:id="_yqTyV-t5EdyNzpD_6a0mjg" type="Parent"/>
+            <children xmi:id="_yqTyWOt5EdyNzpD_6a0mjg" type="AttributeCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_yqTyWet5EdyNzpD_6a0mjg"/>
+            </children>
+            <children xmi:id="_yqTyWut5EdyNzpD_6a0mjg" visible="false" type="OperationCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_yqTyW-t5EdyNzpD_6a0mjg"/>
+            </children>
+            <children xmi:id="_yqTyXOt5EdyNzpD_6a0mjg" visible="false" type="SignalCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_yqTyXet5EdyNzpD_6a0mjg"/>
+            </children>
+            <children xmi:id="_yqTyXut5EdyNzpD_6a0mjg" visible="false" type="StructureCompartment">
+              <styles xmi:type="umlnotation:UMLShapeCompartmentStyle" xmi:id="_yqTyX-t5EdyNzpD_6a0mjg"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_yqTyUet5EdyNzpD_6a0mjg" showListSignature="true" showParent="QualifiedName" showStereotype="Label"/>
+            <element xmi:type="uml:Class" href="../../NetworkResourceAssurance/IA/NetworkResourceAssurance.emx#_mAqRMFY_Edys97lG39tcpw?NetworkResourceAssurance/Notifications/AlarmNotification?"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_yqTyUut5EdyNzpD_6a0mjg" x="43675" y="35480"/>
+          </children>
+          <children xmi:id="_I0op8Ow_Edyl7e41LR3WJA">
+            <children xmi:id="_I0op8-w_Edyl7e41LR3WJA" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_I0op9Ow_Edyl7e41LR3WJA" width="1320" height="1320"/>
+            </children>
+            <children xmi:id="_I0op9ew_Edyl7e41LR3WJA" type="Stereotype"/>
+            <children xmi:id="_I0op9uw_Edyl7e41LR3WJA" type="Kind"/>
+            <children xmi:id="_I0op9-w_Edyl7e41LR3WJA" type="Name"/>
+            <children xmi:id="_I0op-Ow_Edyl7e41LR3WJA" type="Parent"/>
+            <children xmi:id="_I0ya8Ow_Edyl7e41LR3WJA" type="AttributeCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_I0ya8ew_Edyl7e41LR3WJA"/>
+            </children>
+            <children xmi:id="_I0ya8uw_Edyl7e41LR3WJA" visible="false" type="OperationCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_I0ya8-w_Edyl7e41LR3WJA"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_I0op8ew_Edyl7e41LR3WJA" fontName="Arial" showListSignature="true" showParent="QualifiedName" showStereotype="Label"/>
+            <element xmi:type="uml:DataType" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_ZsO24KlcEdy39Z05qVqfpQ?NetworkResourceBasic/Type%20Definitions/CommonResourceCreateData?"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_I0op8uw_Edyl7e41LR3WJA" x="18069" y="21873"/>
+          </children>
+          <children xmi:id="_17vb4Ow_Edyl7e41LR3WJA">
+            <children xmi:id="_174l0Ow_Edyl7e41LR3WJA" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_174l0ew_Edyl7e41LR3WJA" width="1320" height="1320"/>
+            </children>
+            <children xmi:id="_174l0uw_Edyl7e41LR3WJA" type="Stereotype"/>
+            <children xmi:id="_174l0-w_Edyl7e41LR3WJA" type="Kind"/>
+            <children xmi:id="_174l1Ow_Edyl7e41LR3WJA" type="Name"/>
+            <children xmi:id="_174l1ew_Edyl7e41LR3WJA" type="Parent"/>
+            <children xmi:id="_174l1uw_Edyl7e41LR3WJA" type="AttributeCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_174l1-w_Edyl7e41LR3WJA"/>
+            </children>
+            <children xmi:id="_174l2Ow_Edyl7e41LR3WJA" visible="false" type="OperationCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_174l2ew_Edyl7e41LR3WJA"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_17vb4ew_Edyl7e41LR3WJA" fontName="Arial" showListSignature="true" showParent="QualifiedName" showStereotype="Label"/>
+            <element xmi:type="uml:DataType" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_ZbGqoKlcEdy39Z05qVqfpQ?NetworkResourceBasic/Type%20Definitions/CommonResourceModifyData?"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_17vb4uw_Edyl7e41LR3WJA" x="5880" y="21840"/>
+          </children>
+          <children xmi:id="_45bVAOw_Edyl7e41LR3WJA">
+            <children xmi:id="_45bVA-w_Edyl7e41LR3WJA" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_45bVBOw_Edyl7e41LR3WJA" width="1320" height="1320"/>
+            </children>
+            <children xmi:id="_45bVBew_Edyl7e41LR3WJA" type="Stereotype"/>
+            <children xmi:id="_45bVBuw_Edyl7e41LR3WJA" type="Kind"/>
+            <children xmi:id="_45bVB-w_Edyl7e41LR3WJA" type="Name"/>
+            <children xmi:id="_45bVCOw_Edyl7e41LR3WJA" type="Parent"/>
+            <children xmi:id="_45bVCew_Edyl7e41LR3WJA" type="AttributeCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_45bVCuw_Edyl7e41LR3WJA"/>
+            </children>
+            <children xmi:id="_45bVC-w_Edyl7e41LR3WJA" visible="false" type="OperationCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_45bVDOw_Edyl7e41LR3WJA"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_45bVAew_Edyl7e41LR3WJA" fontName="Arial" showListSignature="true" showParent="QualifiedName" showStereotype="Label"/>
+            <element xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_QXAswbqbEdyA7v53CjAzng?Framework/Type%20Definitions/CommonObjectModifyData?"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_45bVAuw_Edyl7e41LR3WJA" x="8220" y="19110"/>
           </children>
           <styles xmi:type="umlnotation:UMLDiagramStyle" xmi:id="_nUpi8_-rEduKKLvC_EB00A"/>
-          <edges xmi:id="_izidl__SEduS0Yg9UXWGJw" element="_CnsaYP_NEduKKLvC_EB00A" source="_OUUnUP_SEduS0Yg9UXWGJw" target="_izidh__SEduS0Yg9UXWGJw">
+          <edges xmi:id="_izidl__SEduS0Yg9UXWGJw" element="_CnsaYP_NEduKKLvC_EB00A" source="_OUUnUP_SEduS0Yg9UXWGJw" target="_17vb4Ow_Edyl7e41LR3WJA">
             <children xmi:id="_izokIP_SEduS0Yg9UXWGJw" type="NameLabel">
               <children xmi:id="_izokIv_SEduS0Yg9UXWGJw" type="Stereotype"/>
               <children xmi:id="_izokI__SEduS0Yg9UXWGJw" type="Name"/>
               <layoutConstraint xmi:type="notation:Bounds" xmi:id="_izokIf_SEduS0Yg9UXWGJw" y="-186"/>
             </children>
             <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_izidmP_SEduS0Yg9UXWGJw" fontName="Arial" routing="Rectilinear" showStereotype="Text"/>
-            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_izidmf_SEduS0Yg9UXWGJw" points="[0, -794, -6628, 2262]$[6614, -2381, -14, 675]"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_izidmf_SEduS0Yg9UXWGJw" points="[79, -952, -3572, 1985]$[79, -1852, -3572, 1085]"/>
+            <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_AFIGsOxAEdyl7e41LR3WJA" id="(0.8673317,0.44570836)"/>
           </edges>
           <edges xmi:id="_uNhrUCVzEdyiv86aejkLcA" type="line" source="_LcY9cP-9EduKKLvC_EB00A" target="_cwxgkCVzEdyiv86aejkLcA">
-            <styles xmi:type="notation:ConnectorStyle" xmi:id="_uNhrUSVzEdyiv86aejkLcA" routing="Rectilinear"/>
+            <styles xmi:type="notation:ConnectorStyle" xmi:id="_uNhrUSVzEdyiv86aejkLcA"/>
             <element xsi:nil="true"/>
             <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_uNhrUiVzEdyiv86aejkLcA" points="[-4, -27, 95, 77]$[100, -43, 199, 61]"/>
             <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_uNnx8CVzEdyiv86aejkLcA" id="(0.22190812,0.3814935)"/>
@@ -1947,10 +2178,10 @@ Invariant? Yes
             <children xmi:id="_KwEewyV0Edyiv86aejkLcA" type="NameLabel">
               <children xmi:id="_KwKlYCV0Edyiv86aejkLcA" type="Stereotype"/>
               <children xmi:id="_KwKlYSV0Edyiv86aejkLcA" type="Name"/>
-              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KwEexCV0Edyiv86aejkLcA" y="-186"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KwEexCV0Edyiv86aejkLcA" x="-22" y="129"/>
             </children>
             <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_KwEewSV0Edyiv86aejkLcA" fontName="Arial" routing="Rectilinear" showStereotype="Text"/>
-            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_KwEewiV0Edyiv86aejkLcA" points="[-4604, -1164, 159, 2487]$[-4604, -2672, 159, 979]"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_KwEewiV0Edyiv86aejkLcA" points="[-6191, -1799, -26, 2620]$[-6191, -3440, -26, 979]"/>
           </edges>
           <edges xmi:id="_TLsaAKgHEdyBvu4QgH3iCw" source="_TLipAKgHEdyBvu4QgH3iCw" target="_izidh__SEduS0Yg9UXWGJw">
             <children xmi:id="_TLsaA6gHEdyBvu4QgH3iCw" type="NameLabel">
@@ -1962,14 +2193,15 @@ Invariant? Yes
             <element xmi:type="uml:Generalization" href="../../Framework/IA/Framework.emx#_qUGd0Kf4EdyBvu4QgH3iCw?Framework/Type%20Definitions/CommonObjectCreateData/%3CGeneralization%3E?"/>
             <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_TLsaAqgHEdyBvu4QgH3iCw" points="[0, 0, 0, 0]$[0, 0, 0, 0]"/>
           </edges>
-          <edges xmi:id="_oNuCUKgHEdyBvu4QgH3iCw" element="_ntYVYqgHEdyBvu4QgH3iCw" source="_oNkRUKgHEdyBvu4QgH3iCw" target="_TLipAKgHEdyBvu4QgH3iCw">
+          <edges xmi:id="_oNuCUKgHEdyBvu4QgH3iCw" element="_ntYVYqgHEdyBvu4QgH3iCw" source="_oNkRUKgHEdyBvu4QgH3iCw" target="_I0op8Ow_Edyl7e41LR3WJA">
             <children xmi:id="_oNuCU6gHEdyBvu4QgH3iCw" type="NameLabel">
               <children xmi:id="_oNuCVagHEdyBvu4QgH3iCw" type="Stereotype"/>
               <children xmi:id="_oNuCVqgHEdyBvu4QgH3iCw" type="Name"/>
               <layoutConstraint xmi:type="notation:Bounds" xmi:id="_oNuCVKgHEdyBvu4QgH3iCw" y="-186"/>
             </children>
             <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_oNuCUagHEdyBvu4QgH3iCw" routing="Rectilinear" showStereotype="Text"/>
-            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_oNuCUqgHEdyBvu4QgH3iCw" points="[-847, -926, 5212, 6298]$[-2752, -2964, 3307, 4260]$[-4630, -5371, 1429, 1853]"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_oNuCUqgHEdyBvu4QgH3iCw" points="[-27, -952, 238, 1905]$[-27, -1878, 238, 979]"/>
+            <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_ODnQQOw_Edyl7e41LR3WJA" id="(0.95831716,0.41201487)"/>
           </edges>
           <edges xmi:id="_NeWAMagIEdyBvu4QgH3iCw" element="_NeWAMKgIEdyBvu4QgH3iCw" source="_BEhmgCV0Edyiv86aejkLcA" target="_oNkRUKgHEdyBvu4QgH3iCw">
             <children xmi:id="_NeWANKgIEdyBvu4QgH3iCw" type="NameLabel">
@@ -1978,17 +2210,164 @@ Invariant? Yes
               <layoutConstraint xmi:type="notation:Bounds" xmi:id="_NeWANagIEdyBvu4QgH3iCw" y="-186"/>
             </children>
             <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_NeWAMqgIEdyBvu4QgH3iCw" fontName="Arial" routing="Rectilinear" showStereotype="Text"/>
-            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_NeWAM6gIEdyBvu4QgH3iCw" points="[6853, -1164, -397, 2487]$[6853, -2672, -397, 979]"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_NeWAM6gIEdyBvu4QgH3iCw" points="[6852, -1799, -27, 2567]$[6852, -3387, -27, 979]"/>
           </edges>
-          <edges xmi:id="_IozO4Ms5EdyEKaQ8AlfaaA" source="_HgOdQMs5EdyEKaQ8AlfaaA" target="_Iofs4Ms5EdyEKaQ8AlfaaA">
-            <children xmi:id="_Io8Y0Ms5EdyEKaQ8AlfaaA" type="NameLabel">
-              <children xmi:id="_Io8Y0ss5EdyEKaQ8AlfaaA" type="Stereotype"/>
-              <children xmi:id="_Io8Y08s5EdyEKaQ8AlfaaA" type="Name"/>
-              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Io8Y0cs5EdyEKaQ8AlfaaA" y="-186"/>
+          <edges xmi:id="_VkrxwOqOEdyuRYe8TzA8ug" element="_VkFU0OqOEdyuRYe8TzA8ug" source="_dC-kwOqNEdyuRYe8TzA8ug" target="_Dw5AAOqOEdyuRYe8TzA8ug">
+            <children xmi:id="_Vkrxw-qOEdyuRYe8TzA8ug" type="NameLabel">
+              <children xmi:id="_VkrxxeqOEdyuRYe8TzA8ug" type="Stereotype"/>
+              <children xmi:id="_VkrxxuqOEdyuRYe8TzA8ug" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_VkrxxOqOEdyuRYe8TzA8ug" y="-186"/>
             </children>
-            <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_IozO4cs5EdyEKaQ8AlfaaA" fontName="Arial" routing="Rectilinear" showStereotype="Text"/>
-            <element xmi:type="uml:Generalization" href="../../Framework/IA/Framework.emx#_L0mikKgFEdyBvu4QgH3iCw?Framework/Interfaces/CommonObjectProvisioning/%3CGeneralization%3E?"/>
-            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_IozO4ss5EdyEKaQ8AlfaaA" points="[0, 0, 0, 0]$[0, 0, 0, 0]"/>
+            <children xmi:id="_Vkrxx-qOEdyuRYe8TzA8ug" type="ToMultiplicityLabel" element="_VkYPwOqOEdyuRYe8TzA8ug">
+              <children xmi:id="_Vk07sOqOEdyuRYe8TzA8ug" type="ToMultiplicity"/>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_VkrxyOqOEdyuRYe8TzA8ug" x="-328" y="-529"/>
+            </children>
+            <children xmi:id="_Vk07seqOEdyuRYe8TzA8ug" type="ToRoleLabel" element="_VkYPwOqOEdyuRYe8TzA8ug">
+              <children xmi:id="_Vk07s-qOEdyuRYe8TzA8ug" type="ToRole"/>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_Vk07suqOEdyuRYe8TzA8ug" y="-397"/>
+            </children>
+            <children xmi:id="_Vk07tOqOEdyuRYe8TzA8ug" type="FromMultiplicityLabel" element="_VkFU0eqOEdyuRYe8TzA8ug">
+              <children xmi:id="_Vk07tuqOEdyuRYe8TzA8ug" type="FromMultiplicity"/>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_Vk07teqOEdyuRYe8TzA8ug" x="-470" y="-318"/>
+            </children>
+            <children xmi:id="_Vk07t-qOEdyuRYe8TzA8ug" type="FromRoleLabel" element="_VkFU0eqOEdyuRYe8TzA8ug">
+              <children xmi:id="_Vk07ueqOEdyuRYe8TzA8ug" type="FromRole"/>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_Vk07uOqOEdyuRYe8TzA8ug" x="692" y="773"/>
+            </children>
+            <children xmi:id="_Vk07uuqOEdyuRYe8TzA8ug" type="ToQualifierLabel" element="_VkYPwOqOEdyuRYe8TzA8ug">
+              <children xmi:id="_Vk07vOqOEdyuRYe8TzA8ug" type="QualifierCompartment">
+                <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_Vk07veqOEdyuRYe8TzA8ug"/>
+              </children>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_Vk07u-qOEdyuRYe8TzA8ug" y="-186"/>
+            </children>
+            <children xmi:id="_Vk07vuqOEdyuRYe8TzA8ug" type="FromQualifierLabel" element="_VkFU0eqOEdyuRYe8TzA8ug">
+              <children xmi:id="_Vk07wOqOEdyuRYe8TzA8ug" type="QualifierCompartment">
+                <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_Vk07weqOEdyuRYe8TzA8ug"/>
+              </children>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_Vk07v-qOEdyuRYe8TzA8ug" y="-186"/>
+            </children>
+            <children xmi:id="_Vk07wuqOEdyuRYe8TzA8ug" type="ToConstraintLabel" element="_VkYPwOqOEdyuRYe8TzA8ug">
+              <children xmi:id="_Vk07xOqOEdyuRYe8TzA8ug" type="ToConstraintCompartment">
+                <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_Vk07xeqOEdyuRYe8TzA8ug"/>
+              </children>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_Vk07w-qOEdyuRYe8TzA8ug" y="1058"/>
+            </children>
+            <children xmi:id="_Vk07xuqOEdyuRYe8TzA8ug" type="FromConstraintLabel" element="_VkFU0eqOEdyuRYe8TzA8ug">
+              <children xmi:id="_Vk07yOqOEdyuRYe8TzA8ug" type="FromConstraintCompartment">
+                <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_Vk07yeqOEdyuRYe8TzA8ug"/>
+              </children>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_Vk07x-qOEdyuRYe8TzA8ug" y="1058"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_VkrxweqOEdyuRYe8TzA8ug" showStereotype="Text"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_VkrxwuqOEdyuRYe8TzA8ug" points="[-26, 34, 124, -102]$[-31, 104, 119, -32]"/>
+          </edges>
+          <edges xmi:id="_WrdzoOqOEdyuRYe8TzA8ug" element="_WrUCoOqOEdyuRYe8TzA8ug" source="_dC-kwOqNEdyuRYe8TzA8ug" target="_ENp0gOqOEdyuRYe8TzA8ug">
+            <children xmi:id="_Wrdzo-qOEdyuRYe8TzA8ug" type="NameLabel">
+              <children xmi:id="_WrdzpeqOEdyuRYe8TzA8ug" type="Stereotype"/>
+              <children xmi:id="_WrdzpuqOEdyuRYe8TzA8ug" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_WrdzpOqOEdyuRYe8TzA8ug" y="-186"/>
+            </children>
+            <children xmi:id="_Wrdzp-qOEdyuRYe8TzA8ug" type="ToMultiplicityLabel" element="_WrUCpeqOEdyuRYe8TzA8ug">
+              <children xmi:id="_WrdzqeqOEdyuRYe8TzA8ug" type="ToMultiplicity"/>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_WrdzqOqOEdyuRYe8TzA8ug" x="-311" y="513"/>
+            </children>
+            <children xmi:id="_WrdzquqOEdyuRYe8TzA8ug" type="ToRoleLabel" element="_WrUCpeqOEdyuRYe8TzA8ug">
+              <children xmi:id="_WrdzrOqOEdyuRYe8TzA8ug" type="ToRole"/>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_Wrdzq-qOEdyuRYe8TzA8ug" y="-397"/>
+            </children>
+            <children xmi:id="_WrdzreqOEdyuRYe8TzA8ug" type="FromMultiplicityLabel" element="_WrUCoeqOEdyuRYe8TzA8ug">
+              <children xmi:id="_Wrdzr-qOEdyuRYe8TzA8ug" type="FromMultiplicity"/>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_WrdzruqOEdyuRYe8TzA8ug" x="-453" y="302"/>
+            </children>
+            <children xmi:id="_WrdzsOqOEdyuRYe8TzA8ug" type="FromRoleLabel" element="_WrUCoeqOEdyuRYe8TzA8ug">
+              <children xmi:id="_WrdzsuqOEdyuRYe8TzA8ug" type="FromRole"/>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_WrdzseqOEdyuRYe8TzA8ug" x="589" y="-671"/>
+            </children>
+            <children xmi:id="_Wrdzs-qOEdyuRYe8TzA8ug" type="ToQualifierLabel" element="_WrUCpeqOEdyuRYe8TzA8ug">
+              <children xmi:id="_WrdzteqOEdyuRYe8TzA8ug" type="QualifierCompartment">
+                <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_WrdztuqOEdyuRYe8TzA8ug"/>
+              </children>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_WrdztOqOEdyuRYe8TzA8ug" y="-186"/>
+            </children>
+            <children xmi:id="_Wrdzt-qOEdyuRYe8TzA8ug" type="FromQualifierLabel" element="_WrUCoeqOEdyuRYe8TzA8ug">
+              <children xmi:id="_WrdzueqOEdyuRYe8TzA8ug" type="QualifierCompartment">
+                <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_WrdzuuqOEdyuRYe8TzA8ug"/>
+              </children>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_WrdzuOqOEdyuRYe8TzA8ug" y="-186"/>
+            </children>
+            <children xmi:id="_Wrdzu-qOEdyuRYe8TzA8ug" type="ToConstraintLabel" element="_WrUCpeqOEdyuRYe8TzA8ug">
+              <children xmi:id="_WrdzveqOEdyuRYe8TzA8ug" type="ToConstraintCompartment">
+                <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_WrdzvuqOEdyuRYe8TzA8ug"/>
+              </children>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_WrdzvOqOEdyuRYe8TzA8ug" y="1058"/>
+            </children>
+            <children xmi:id="_Wrdzv-qOEdyuRYe8TzA8ug" type="FromConstraintLabel" element="_WrUCoeqOEdyuRYe8TzA8ug">
+              <children xmi:id="_WrdzweqOEdyuRYe8TzA8ug" type="FromConstraintCompartment">
+                <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_WrdzwuqOEdyuRYe8TzA8ug"/>
+              </children>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_WrdzwOqOEdyuRYe8TzA8ug" y="1058"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_WrdzoeqOEdyuRYe8TzA8ug" showStereotype="Text"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_WrdzouqOEdyuRYe8TzA8ug" points="[33, 34, -116, -102]$[93, 104, -56, -32]"/>
+          </edges>
+          <edges xmi:id="_puYD4OqOEdyuRYe8TzA8ug" element="_puOS4OqOEdyuRYe8TzA8ug" source="_b_ULEeO4Edy4OORWlRTQxw" target="_dC-kwOqNEdyuRYe8TzA8ug">
+            <children xmi:id="_puYD4-qOEdyuRYe8TzA8ug" type="NameLabel">
+              <children xmi:id="_puYD5eqOEdyuRYe8TzA8ug" type="Stereotype"/>
+              <children xmi:id="_puYD5uqOEdyuRYe8TzA8ug" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_puYD5OqOEdyuRYe8TzA8ug" y="-186"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_puYD4eqOEdyuRYe8TzA8ug" showStereotype="Text"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_puYD4uqOEdyuRYe8TzA8ug" points="[6, 45, 6, -94]$[41, 107, 41, -32]"/>
+          </edges>
+          <edges xmi:id="_n_NXAOt4EdyNzpD_6a0mjg" source="_msXPEOt4EdyNzpD_6a0mjg" target="_n-6cEOt4EdyNzpD_6a0mjg">
+            <children xmi:id="_n_NXA-t4EdyNzpD_6a0mjg" type="NameLabel">
+              <children xmi:id="_n_NXBet4EdyNzpD_6a0mjg" type="Stereotype"/>
+              <children xmi:id="_n_NXBut4EdyNzpD_6a0mjg" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_n_NXBOt4EdyNzpD_6a0mjg" y="-186"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_n_NXAet4EdyNzpD_6a0mjg" showStereotype="Text"/>
+            <element xmi:type="uml:Generalization" href="../../Framework/IA/Framework.emx#_6enhEPpTEduVsYI7mfNDXQ?Framework/Notifications/EventInformation/%3CGeneralization%3E?"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_n_NXAut4EdyNzpD_6a0mjg" points="[0, 0, 0, 0]$[0, 0, 0, 0]"/>
+          </edges>
+          <edges xmi:id="_yqweQOt5EdyNzpD_6a0mjg" source="_yqTyUOt5EdyNzpD_6a0mjg" target="_msXPEOt4EdyNzpD_6a0mjg">
+            <children xmi:id="_yqweQ-t5EdyNzpD_6a0mjg" type="NameLabel">
+              <children xmi:id="_yqweRet5EdyNzpD_6a0mjg" type="Stereotype"/>
+              <children xmi:id="_yqweRut5EdyNzpD_6a0mjg" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_yqweROt5EdyNzpD_6a0mjg" y="-186"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_yqweQet5EdyNzpD_6a0mjg" showStereotype="Text"/>
+            <element xmi:type="uml:Generalization" href="../../NetworkResourceAssurance/IA/NetworkResourceAssurance.emx#_pwxFwFY_Edys97lG39tcpw?NetworkResourceAssurance/Notifications/AlarmNotification/%3CGeneralization%3E?"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_yqweQut5EdyNzpD_6a0mjg" points="[0, 0, 0, 0]$[0, 0, 0, 0]"/>
+          </edges>
+          <edges xmi:id="_I08L8Ow_Edyl7e41LR3WJA" source="_I0op8Ow_Edyl7e41LR3WJA" target="_TLipAKgHEdyBvu4QgH3iCw">
+            <children xmi:id="_I08L8-w_Edyl7e41LR3WJA" type="NameLabel">
+              <children xmi:id="_I08L9ew_Edyl7e41LR3WJA" type="Stereotype"/>
+              <children xmi:id="_I08L9uw_Edyl7e41LR3WJA" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_I08L9Ow_Edyl7e41LR3WJA" y="-186"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_I08L8ew_Edyl7e41LR3WJA" showStereotype="Text"/>
+            <element xmi:type="uml:Generalization" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_R1WkwKldEdy39Z05qVqfpQ?NetworkResourceBasic/Type%20Definitions/CommonResourceCreateData/%3CGeneralization%3E?"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_I08L8uw_Edyl7e41LR3WJA" points="[0, 0, 0, 0]$[0, 0, 0, 0]"/>
+          </edges>
+          <edges xmi:id="_45lGAOw_Edyl7e41LR3WJA" source="_17vb4Ow_Edyl7e41LR3WJA" target="_45bVAOw_Edyl7e41LR3WJA">
+            <children xmi:id="_45lGA-w_Edyl7e41LR3WJA" type="NameLabel">
+              <children xmi:id="_45u3AOw_Edyl7e41LR3WJA" type="Stereotype"/>
+              <children xmi:id="_45u3Aew_Edyl7e41LR3WJA" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_45lGBOw_Edyl7e41LR3WJA" y="-186"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_45lGAew_Edyl7e41LR3WJA" fontName="Arial" showStereotype="Text"/>
+            <element xmi:type="uml:Generalization" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_T-5EIKldEdy39Z05qVqfpQ?NetworkResourceBasic/Type%20Definitions/CommonResourceModifyData/%3CGeneralization%3E?"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_45lGAuw_Edyl7e41LR3WJA" points="[0, 0, 0, 0]$[0, 0, 0, 0]"/>
+          </edges>
+          <edges xmi:id="_45u3Auw_Edyl7e41LR3WJA" source="_45bVAOw_Edyl7e41LR3WJA" target="_izidh__SEduS0Yg9UXWGJw">
+            <children xmi:id="_45u3Bew_Edyl7e41LR3WJA" type="NameLabel">
+              <children xmi:id="_45u3B-w_Edyl7e41LR3WJA" type="Stereotype"/>
+              <children xmi:id="_45u3COw_Edyl7e41LR3WJA" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_45u3Buw_Edyl7e41LR3WJA" y="-186"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_45u3A-w_Edyl7e41LR3WJA" fontName="Arial" routing="Rectilinear" showStereotype="Text"/>
+            <element xmi:type="uml:Generalization" href="../../Framework/IA/Framework.emx#_X-SAILqbEdyA7v53CjAzng?Framework/Type%20Definitions/CommonObjectModifyData/%3CGeneralization%3E?"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_45u3BOw_Edyl7e41LR3WJA" points="[1217, -874, -3942, 3042]$[1217, -2091, -3942, 1825]"/>
           </edges>
         </contents>
         <contents xmi:type="notation:Diagram" xmi:id="_HuWSAJETEdypurMa9DXJyw" type="Class" name="RTM DDP Relationship Diagram">
@@ -2103,7 +2482,7 @@ Invariant? Yes
               <styles xmi:type="umlnotation:UMLShapeCompartmentStyle" xmi:id="_PGztYai5EdyYadSXXmC-Pw"/>
             </children>
             <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_PGqjcai5EdyYadSXXmC-Pw" fontName="Arial" showListSignature="true" showParent="QualifiedName" showStereotype="Label"/>
-            <element xmi:type="uml:Class" href="../../Framework/IA/Framework.emx#_76bRYPpLEduVsYI7mfNDXQ?Framework/Notifications/CommonEventInfo?"/>
+            <element xmi:type="uml:Class" href="../../Framework/IA/Framework.emx#_76bRYPpLEduVsYI7mfNDXQ?Framework/Notifications/CommonEventInformation?"/>
             <layoutConstraint xmi:type="notation:Bounds" xmi:id="_PGqjcqi5EdyYadSXXmC-Pw" x="12075" y="2415"/>
           </children>
           <children xmi:id="_ddxL4Ki5EdyYadSXXmC-Pw">
@@ -2126,7 +2505,7 @@ Invariant? Yes
               <styles xmi:type="umlnotation:UMLShapeCompartmentStyle" xmi:id="_ddxL76i5EdyYadSXXmC-Pw"/>
             </children>
             <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_ddxL4ai5EdyYadSXXmC-Pw" fontName="Arial" showListSignature="true" showParent="QualifiedName" showStereotype="Label"/>
-            <element xmi:type="uml:Class" href="../../Framework/IA/Framework.emx#_zfXP8PpTEduVsYI7mfNDXQ?Framework/Notifications/EventInfo?"/>
+            <element xmi:type="uml:Class" href="../../Framework/IA/Framework.emx#_zfXP8PpTEduVsYI7mfNDXQ?Framework/Notifications/EventInformation?"/>
             <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ddxL4qi5EdyYadSXXmC-Pw" x="12075" y="6825"/>
           </children>
           <children xmi:id="_0QcScKi5EdyYadSXXmC-Pw" element="_E3TzgKi5EdyYadSXXmC-Pw">
@@ -2160,7 +2539,7 @@ Invariant? Yes
               <layoutConstraint xmi:type="notation:Bounds" xmi:id="_deEG1Ki5EdyYadSXXmC-Pw" y="-186"/>
             </children>
             <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_deEG0ai5EdyYadSXXmC-Pw" fontName="Arial" routing="Rectilinear" showStereotype="Text"/>
-            <element xmi:type="uml:Generalization" href="../../Framework/IA/Framework.emx#_6enhEPpTEduVsYI7mfNDXQ?Framework/Notifications/EventInfo/%3CGeneralization%3E?"/>
+            <element xmi:type="uml:Generalization" href="../../Framework/IA/Framework.emx#_6enhEPpTEduVsYI7mfNDXQ?Framework/Notifications/EventInformation/%3CGeneralization%3E?"/>
             <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_deEG0qi5EdyYadSXXmC-Pw" points="[0, 0, 0, 0]$[0, 0, 0, 0]"/>
           </edges>
           <edges xmi:id="_0QvNYKi5EdyYadSXXmC-Pw" element="_rrenwKi5EdyYadSXXmC-Pw" source="_0QcScKi5EdyYadSXXmC-Pw" target="_ddxL4Ki5EdyYadSXXmC-Pw">
@@ -2258,14 +2637,6 @@ Invariant? Yes
   <Default:Documentation xmi:id="_jIrIY__EEduKKLvC_EB00A" base_Comment="_jIrIYf_EEduKKLvC_EB00A"/>
   <Default:Documentation xmi:id="_aJSOsP_IEduKKLvC_EB00A" base_Comment="_aJMIEP_IEduKKLvC_EB00A"/>
   <Default:Documentation xmi:id="_jxMkI__IEduKKLvC_EB00A" base_Comment="_jxMkIf_IEduKKLvC_EB00A"/>
-  <Default:Documentation xmi:id="_D1bVoP_JEduKKLvC_EB00A" base_Comment="_D1VPAP_JEduKKLvC_EB00A"/>
-  <Default:Documentation xmi:id="_dTz0if_JEduKKLvC_EB00A" base_Comment="_dTtt4f_JEduKKLvC_EB00A"/>
-  <Default:Documentation xmi:id="_dTz0iv_JEduKKLvC_EB00A" base_Comment="_dTz0h__JEduKKLvC_EB00A"/>
-  <Default:Documentation xmi:id="_dTz0i__JEduKKLvC_EB00A" base_Comment="_dTz0gf_JEduKKLvC_EB00A"/>
-  <Default:Documentation xmi:id="_dTz0jP_JEduKKLvC_EB00A" base_Comment="_dTtt5__JEduKKLvC_EB00A"/>
-  <Default:Documentation xmi:id="_dTz0jf_JEduKKLvC_EB00A" base_Comment="_dTtt5P_JEduKKLvC_EB00A"/>
-  <Default:Documentation xmi:id="_dTz0jv_JEduKKLvC_EB00A" base_Comment="_dTz0hP_JEduKKLvC_EB00A"/>
-  <Default:URL xmi:id="_CNLwAf_KEduKKLvC_EB00A" base_Comment="_CNLwAP_KEduKKLvC_EB00A"/>
   <Default:Documentation xmi:id="_xdFacf_KEduKKLvC_EB00A" base_Comment="_xdFacP_KEduKKLvC_EB00A"/>
   <Default:Documentation xmi:id="_5t2dIP_SEduS0Yg9UXWGJw" base_Comment="_5twWj__SEduS0Yg9UXWGJw"/>
   <Default:Documentation xmi:id="_5t2dIf_SEduS0Yg9UXWGJw" base_Comment="_5twWjP_SEduS0Yg9UXWGJw"/>
@@ -2301,14 +2672,8 @@ Invariant? Yes
     <messageExchangePattern>SRR</messageExchangePattern>
     <messageExchangePattern>ARR</messageExchangePattern>
   </mTOPUMLProfile:mTOPOperation>
-  <mTOPUMLProfile:mTOPAttribute xmi:id="_wR7Ofqi5EdyYadSXXmC-Pw" base_StructuralFeature="_jxMkIP_IEduKKLvC_EB00A"/>
-  <mTOPUMLProfile:mTOPAttribute xmi:id="_wR7Of6i5EdyYadSXXmC-Pw" base_StructuralFeature="_dTtt4P_JEduKKLvC_EB00A"/>
-  <mTOPUMLProfile:mTOPAttribute xmi:id="_wR7OgKi5EdyYadSXXmC-Pw" base_StructuralFeature="_dTtt4__JEduKKLvC_EB00A"/>
-  <mTOPUMLProfile:mTOPAttribute xmi:id="_wR7Ogai5EdyYadSXXmC-Pw" base_StructuralFeature="_dTtt5v_JEduKKLvC_EB00A"/>
-  <mTOPUMLProfile:mTOPAttribute xmi:id="_wR7Ogqi5EdyYadSXXmC-Pw" base_StructuralFeature="_dTz0gP_JEduKKLvC_EB00A"/>
-  <mTOPUMLProfile:mTOPAttribute xmi:id="_wR7Og6i5EdyYadSXXmC-Pw" base_StructuralFeature="_dTz0g__JEduKKLvC_EB00A"/>
-  <mTOPUMLProfile:mTOPAttribute xmi:id="_wR7OhKi5EdyYadSXXmC-Pw" base_StructuralFeature="_dTz0hv_JEduKKLvC_EB00A"/>
-  <mTOPUMLProfile:mTOPAttribute xmi:id="_wR7Ohai5EdyYadSXXmC-Pw" base_StructuralFeature="_ntYVY6gHEdyBvu4QgH3iCw"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_wR7Ofqi5EdyYadSXXmC-Pw" base_StructuralFeature="_jxMkIP_IEduKKLvC_EB00A" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_wR7Ohai5EdyYadSXXmC-Pw" base_StructuralFeature="_ntYVY6gHEdyBvu4QgH3iCw" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
   <mTOPUMLProfile:mTOPClass xmi:id="_wR7Ohqi5EdyYadSXXmC-Pw" base_Class="_E3TzgKi5EdyYadSXXmC-Pw"/>
   <mTOPUMLProfile:mTOPAttribute xmi:id="_CuP_0ai6EdyYadSXXmC-Pw" base_StructuralFeature="_CuP_0Ki6EdyYadSXXmC-Pw"/>
   <mTOPUMLProfile:mTOPAttribute xmi:id="_NfIIcai6EdyYadSXXmC-Pw" base_StructuralFeature="_NfIIcKi6EdyYadSXXmC-Pw"/>
@@ -2357,15 +2722,13 @@ Invariant? Yes
   <Default:Documentation xmi:id="_VMg8ld1gEdyrKNXnBMy96w" base_Comment="_VMXLid1gEdyrKNXnBMy96w"/>
   <Default:Documentation xmi:id="_VMg8lt1gEdyrKNXnBMy96w" base_Comment="_VMXLgd1gEdyrKNXnBMy96w"/>
   <Default:Documentation xmi:id="_VMg8l91gEdyrKNXnBMy96w" base_Comment="_VMg8gd1gEdyrKNXnBMy96w"/>
-  <mTOPUMLProfile:mTOPAttribute xmi:id="_rzkB5N1gEdyrKNXnBMy96w" base_StructuralFeature="_rzkB4d1gEdyrKNXnBMy96w"/>
-  <mTOPUMLProfile:mTOPAttribute xmi:id="_rzkB6N1gEdyrKNXnBMy96w" base_StructuralFeature="_rzkB5d1gEdyrKNXnBMy96w"/>
-  <mTOPUMLProfile:mTOPAttribute xmi:id="_rzkB7N1gEdyrKNXnBMy96w" base_StructuralFeature="_rzkB6d1gEdyrKNXnBMy96w"/>
-  <mTOPUMLProfile:mTOPAttribute xmi:id="_rzkB8N1gEdyrKNXnBMy96w" base_StructuralFeature="_rzkB7d1gEdyrKNXnBMy96w"/>
-  <mTOPUMLProfile:mTOPAttribute xmi:id="_rzty491gEdyrKNXnBMy96w" base_StructuralFeature="_rzty4N1gEdyrKNXnBMy96w"/>
-  <Default:Documentation xmi:id="_rzty5N1gEdyrKNXnBMy96w" base_Comment="_rzkB5t1gEdyrKNXnBMy96w"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_rzkB5N1gEdyrKNXnBMy96w" base_StructuralFeature="_rzkB4d1gEdyrKNXnBMy96w" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_rzkB6N1gEdyrKNXnBMy96w" base_StructuralFeature="_rzkB5d1gEdyrKNXnBMy96w" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_rzkB7N1gEdyrKNXnBMy96w" base_StructuralFeature="_rzkB6d1gEdyrKNXnBMy96w" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_rzkB8N1gEdyrKNXnBMy96w" base_StructuralFeature="_rzkB7d1gEdyrKNXnBMy96w" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_rzty491gEdyrKNXnBMy96w" base_StructuralFeature="_rzty4N1gEdyrKNXnBMy96w" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
   <Default:Documentation xmi:id="_rzty5d1gEdyrKNXnBMy96w" base_Comment="_rzty4d1gEdyrKNXnBMy96w"/>
   <Default:Documentation xmi:id="_rzty5t1gEdyrKNXnBMy96w" base_Comment="_rzkB6t1gEdyrKNXnBMy96w"/>
-  <Default:Documentation xmi:id="_rzty591gEdyrKNXnBMy96w" base_Comment="_rzkB4N1gEdyrKNXnBMy96w"/>
   <Default:Documentation xmi:id="_rzty6N1gEdyrKNXnBMy96w" base_Comment="_rzkB4t1gEdyrKNXnBMy96w"/>
   <Default:Documentation xmi:id="_rzty6d1gEdyrKNXnBMy96w" base_Comment="_rzkB7t1gEdyrKNXnBMy96w"/>
   <mTOPUMLProfile:mTOPOperation xmi:id="_Vx8vdN1hEdyrKNXnBMy96w" base_Operation="_Vx8vYN1hEdyrKNXnBMy96w">
@@ -2404,13 +2767,10 @@ Invariant? Yes
   <Default:Documentation xmi:id="_bZIIb91jEdyrKNXnBMy96w" base_Comment="_bZIIad1jEdyrKNXnBMy96w"/>
   <Default:Documentation xmi:id="_bZRSUN1jEdyrKNXnBMy96w" base_Comment="_bZIIbN1jEdyrKNXnBMy96w"/>
   <Default:Documentation xmi:id="_bZRSUd1jEdyrKNXnBMy96w" base_Comment="_bZIIYd1jEdyrKNXnBMy96w"/>
-  <Default:Documentation xmi:id="_2bJkSd1jEdyrKNXnBMy96w" base_Comment="_2bJkQN1jEdyrKNXnBMy96w"/>
-  <mTOPUMLProfile:mTOPAttribute xmi:id="_9Cfrtd1jEdyrKNXnBMy96w" base_StructuralFeature="_9Cfrst1jEdyrKNXnBMy96w"/>
-  <mTOPUMLProfile:mTOPAttribute xmi:id="_9Co1oN1jEdyrKNXnBMy96w" base_StructuralFeature="_9Cfrtt1jEdyrKNXnBMy96w"/>
-  <mTOPUMLProfile:mTOPAttribute xmi:id="_9Co1pN1jEdyrKNXnBMy96w" base_StructuralFeature="_9Co1od1jEdyrKNXnBMy96w"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_9Cfrtd1jEdyrKNXnBMy96w" base_StructuralFeature="_9Cfrst1jEdyrKNXnBMy96w" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_9Co1oN1jEdyrKNXnBMy96w" base_StructuralFeature="_9Cfrtt1jEdyrKNXnBMy96w" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_9Co1pN1jEdyrKNXnBMy96w" base_StructuralFeature="_9Co1od1jEdyrKNXnBMy96w" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
   <Default:Documentation xmi:id="_9Co1pd1jEdyrKNXnBMy96w" base_Comment="_9Cfrs91jEdyrKNXnBMy96w"/>
-  <Default:URL xmi:id="_9Co1pt1jEdyrKNXnBMy96w" base_Comment="_9Cfrsd1jEdyrKNXnBMy96w"/>
-  <Default:Documentation xmi:id="_9Co1p91jEdyrKNXnBMy96w" base_Comment="_9CfrsN1jEdyrKNXnBMy96w"/>
   <Default:Documentation xmi:id="_9Co1qN1jEdyrKNXnBMy96w" base_Comment="_9Co1ot1jEdyrKNXnBMy96w"/>
   <Default:Documentation xmi:id="_9Co1qd1jEdyrKNXnBMy96w" base_Comment="_9Cfrt91jEdyrKNXnBMy96w"/>
   <mTOPUMLProfile:mTOPOperation xmi:id="_ProKEN1kEdyrKNXnBMy96w" base_Operation="_ProKAN1kEdyrKNXnBMy96w">
@@ -2422,19 +2782,17 @@ Invariant? Yes
   <Default:Documentation xmi:id="_Prx7AN1kEdyrKNXnBMy96w" base_Comment="_ProKC91kEdyrKNXnBMy96w"/>
   <Default:Documentation xmi:id="_Prx7Ad1kEdyrKNXnBMy96w" base_Comment="_ProKCd1kEdyrKNXnBMy96w"/>
   <Default:Documentation xmi:id="_Prx7At1kEdyrKNXnBMy96w" base_Comment="_ProKAd1kEdyrKNXnBMy96w"/>
-  <mTOPUMLProfile:mTOPAttribute xmi:id="_iGfGVd1lEdyrKNXnBMy96w" base_StructuralFeature="_iGfGUt1lEdyrKNXnBMy96w"/>
-  <mTOPUMLProfile:mTOPAttribute xmi:id="_iGfGWd1lEdyrKNXnBMy96w" base_StructuralFeature="_iGfGVt1lEdyrKNXnBMy96w"/>
-  <mTOPUMLProfile:mTOPAttribute xmi:id="_iGfGXd1lEdyrKNXnBMy96w" base_StructuralFeature="_iGfGWt1lEdyrKNXnBMy96w"/>
-  <mTOPUMLProfile:mTOPAttribute xmi:id="_iGfGYd1lEdyrKNXnBMy96w" base_StructuralFeature="_iGfGXt1lEdyrKNXnBMy96w"/>
-  <mTOPUMLProfile:mTOPAttribute xmi:id="_iGfGZd1lEdyrKNXnBMy96w" base_StructuralFeature="_iGfGYt1lEdyrKNXnBMy96w"/>
-  <mTOPUMLProfile:mTOPAttribute xmi:id="_iGfGad1lEdyrKNXnBMy96w" base_StructuralFeature="_iGfGZt1lEdyrKNXnBMy96w"/>
-  <mTOPUMLProfile:mTOPAttribute xmi:id="_iGfGbd1lEdyrKNXnBMy96w" base_StructuralFeature="_iGfGat1lEdyrKNXnBMy96w"/>
-  <Default:Documentation xmi:id="_iGo3UN1lEdyrKNXnBMy96w" base_Comment="_iGfGUN1lEdyrKNXnBMy96w"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_iGfGVd1lEdyrKNXnBMy96w" base_StructuralFeature="_iGfGUt1lEdyrKNXnBMy96w" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_iGfGWd1lEdyrKNXnBMy96w" base_StructuralFeature="_iGfGVt1lEdyrKNXnBMy96w" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_iGfGXd1lEdyrKNXnBMy96w" base_StructuralFeature="_iGfGWt1lEdyrKNXnBMy96w" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_iGfGYd1lEdyrKNXnBMy96w" base_StructuralFeature="_iGfGXt1lEdyrKNXnBMy96w" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_iGfGZd1lEdyrKNXnBMy96w" base_StructuralFeature="_iGfGYt1lEdyrKNXnBMy96w" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_iGfGad1lEdyrKNXnBMy96w" base_StructuralFeature="_iGfGZt1lEdyrKNXnBMy96w" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_iGfGbd1lEdyrKNXnBMy96w" base_StructuralFeature="_iGfGat1lEdyrKNXnBMy96w" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
   <Default:Documentation xmi:id="_iGo3Ud1lEdyrKNXnBMy96w" base_Comment="_iGfGW91lEdyrKNXnBMy96w"/>
   <Default:Documentation xmi:id="_iGo3Ut1lEdyrKNXnBMy96w" base_Comment="_iGfGX91lEdyrKNXnBMy96w"/>
   <Default:Documentation xmi:id="_iGo3U91lEdyrKNXnBMy96w" base_Comment="_iGfGU91lEdyrKNXnBMy96w"/>
   <Default:Documentation xmi:id="_iGo3VN1lEdyrKNXnBMy96w" base_Comment="_iGfGV91lEdyrKNXnBMy96w"/>
-  <Default:URL xmi:id="_iGo3Vd1lEdyrKNXnBMy96w" base_Comment="_iGfGUd1lEdyrKNXnBMy96w"/>
   <mTOPUMLProfile:mTOPOperation xmi:id="_tLOJq91mEdyrKNXnBMy96w" base_Operation="_tLOJoN1mEdyrKNXnBMy96w">
     <messageExchangePattern>SRR</messageExchangePattern>
     <messageExchangePattern>ARR</messageExchangePattern>
@@ -2502,4 +2860,44 @@ Invariant? Yes
     <messageExchangePattern>SRR</messageExchangePattern>
     <messageExchangePattern>ARR</messageExchangePattern>
   </mTOPUMLProfile:mTOPOperation>
+  <Default:Documentation xmi:id="_OFQSMOnSEdy1lpWLf983Vw" base_Comment="_OFHIQOnSEdy1lpWLf983Vw"/>
+  <Default:Documentation xmi:id="_kgZCgOnSEdy1lpWLf983Vw" base_Comment="_kgPRgOnSEdy1lpWLf983Vw"/>
+  <Default:Documentation xmi:id="_oc_lgenTEdy1lpWLf983Vw" base_Comment="_oc_lgOnTEdy1lpWLf983Vw"/>
+  <Default:Documentation xmi:id="_y9fIwOnTEdy1lpWLf983Vw" base_Comment="_y9VXwOnTEdy1lpWLf983Vw"/>
+  <Default:Documentation xmi:id="_ErA6cOnUEdy1lpWLf983Vw" base_Comment="_Eq3wgOnUEdy1lpWLf983Vw"/>
+  <Default:Documentation xmi:id="_X9IEUOnUEdy1lpWLf983Vw" base_Comment="_X8-6YOnUEdy1lpWLf983Vw"/>
+  <Default:Documentation xmi:id="_3_Fk8OnUEdy1lpWLf983Vw" base_Comment="_3-7z8OnUEdy1lpWLf983Vw"/>
+  <Default:URL xmi:id="_q1Dk4OnaEdyN58HQDvekEQ" base_Comment="_mKcP4OnaEdyN58HQDvekEQ"/>
+  <Default:Documentation xmi:id="_AdE2MenbEdyN58HQDvekEQ" base_Comment="_AdE2MOnbEdyN58HQDvekEQ"/>
+  <Default:Documentation xmi:id="_QDdVMenbEdyN58HQDvekEQ" base_Comment="_QDdVMOnbEdyN58HQDvekEQ"/>
+  <Default:URL xmi:id="_bt1U0OnfEdyXaLXVYgag_Q" base_Comment="_ZNffAOnfEdyXaLXVYgag_Q"/>
+  <Default:Documentation xmi:id="_3QZ68eqNEdyuRYe8TzA8ug" base_Comment="_3QZ68OqNEdyuRYe8TzA8ug"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_VkPF0OqOEdyuRYe8TzA8ug" base_StructuralFeature="_VkFU0eqOEdyuRYe8TzA8ug"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_VkYPweqOEdyuRYe8TzA8ug" base_StructuralFeature="_VkYPwOqOEdyuRYe8TzA8ug"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_WrUCouqOEdyuRYe8TzA8ug" base_StructuralFeature="_WrUCoeqOEdyuRYe8TzA8ug"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_WrUCpuqOEdyuRYe8TzA8ug" base_StructuralFeature="_WrUCpeqOEdyuRYe8TzA8ug"/>
+  <Default:Documentation xmi:id="_3jgnsOqOEdyuRYe8TzA8ug" base_Comment="_3jW2sOqOEdyuRYe8TzA8ug"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_Mbimg-qPEdyuRYe8TzA8ug" base_StructuralFeature="_MbimgOqPEdyuRYe8TzA8ug" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
+  <Default:Documentation xmi:id="_MbimhOqPEdyuRYe8TzA8ug" base_Comment="_MbimgeqPEdyuRYe8TzA8ug"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_4COuk-qPEdyuRYe8TzA8ug" base_StructuralFeature="_4COukOqPEdyuRYe8TzA8ug" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
+  <Default:Documentation xmi:id="_4COulOqPEdyuRYe8TzA8ug" base_Comment="_4COukeqPEdyuRYe8TzA8ug"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_gdrCo-qQEdyuRYe8TzA8ug" base_StructuralFeature="_gdrCoOqQEdyuRYe8TzA8ug" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
+  <Default:Documentation xmi:id="_gdrCpOqQEdyuRYe8TzA8ug" base_Comment="_gdrCoeqQEdyuRYe8TzA8ug"/>
+  <Default:URL xmi:id="_G4mwIOqUEdyuRYe8TzA8ug" base_Comment="_E6PmAOqUEdyuRYe8TzA8ug"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_MNZDheqUEdyuRYe8TzA8ug" base_StructuralFeature="_MNZDgOqUEdyuRYe8TzA8ug" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
+  <Default:Documentation xmi:id="_MNZDhuqUEdyuRYe8TzA8ug" base_Comment="_MNZDgeqUEdyuRYe8TzA8ug"/>
+  <Default:Documentation xmi:id="_BKN0geqVEdyuRYe8TzA8ug" base_Comment="_BKN0gOqVEdyuRYe8TzA8ug"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_FKOGRuqVEdyuRYe8TzA8ug" base_StructuralFeature="_FKOGQ-qVEdyuRYe8TzA8ug" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
+  <Default:Documentation xmi:id="_FKOGR-qVEdyuRYe8TzA8ug" base_Comment="_FKOGROqVEdyuRYe8TzA8ug"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_FKOGSOqVEdyuRYe8TzA8ug" base_StructuralFeature="_FKOGQOqVEdyuRYe8TzA8ug" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
+  <Default:Documentation xmi:id="_FKOGSeqVEdyuRYe8TzA8ug" base_Comment="_FKOGQeqVEdyuRYe8TzA8ug"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_wpdih-qVEdyuRYe8TzA8ug" base_StructuralFeature="_wpdigOqVEdyuRYe8TzA8ug" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
+  <Default:URL xmi:id="_wpdiiOqVEdyuRYe8TzA8ug" base_Comment="_wpdiguqVEdyuRYe8TzA8ug"/>
+  <Default:Documentation xmi:id="_wpdiieqVEdyuRYe8TzA8ug" base_Comment="_wpdigeqVEdyuRYe8TzA8ug"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_wpdiiuqVEdyuRYe8TzA8ug" base_StructuralFeature="_wpdihOqVEdyuRYe8TzA8ug" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
+  <Default:Documentation xmi:id="_wpdii-qVEdyuRYe8TzA8ug" base_Comment="_wpdiheqVEdyuRYe8TzA8ug"/>
+  <Default:URL xmi:id="_1G9olOqVEdyuRYe8TzA8ug" base_Comment="_1G9okuqVEdyuRYe8TzA8ug"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_1G9oleqVEdyuRYe8TzA8ug" base_StructuralFeature="_1G9okOqVEdyuRYe8TzA8ug" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
+  <Default:Documentation xmi:id="_1G9oluqVEdyuRYe8TzA8ug" base_Comment="_1G9okeqVEdyuRYe8TzA8ug"/>
+  <Default:URL xmi:id="_kWuyUOqlEdyuRYe8TzA8ug" base_Comment="_i5mF8OqlEdyuRYe8TzA8ug"/>
 </xmi:XMI>
