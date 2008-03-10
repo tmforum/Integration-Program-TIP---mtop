@@ -22,11 +22,11 @@
 			</xsd:annotation>
 			<xsd:extension base="csi:CommonServiceInfoType">
 				<xsd:sequence>
-					<xsd:element name="sst" type="tns:ServiceSpecificationTypeType"/>
+					<xsd:element name="serviceSpecType" type="tns:ServiceSpecificationTypeType"/>
 					<xsd:element name="version" type="xsd:string" minOccurs="0"/>
 					<xsd:element name="productSpecRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
 					<xsd:element name="serviceCatalogRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
-					<xsd:element name="describedByList" type="tns:UsedServiceSpecCharacteristicType" maxOccurs="unbounded"/>
+					<xsd:element name="describedByList" type="tns:ServiceSpecCharInUseType" maxOccurs="unbounded"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -42,11 +42,12 @@
 			<xsd:element name="name" type="xsd:string"/>
 			<xsd:element name="description" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="version" type="xsd:string" minOccurs="0"/>
+			<!-- ??? check with Shlomo -->
 		</xsd:sequence>
 	</xsd:complexType>
 	<!-- ================= -->
-	<xsd:element name="usedServiceSpecCharacteristicType" type="tns:UsedServiceSpecCharacteristicType"/>
-	<xsd:complexType name="UsedServiceSpecCharacteristicType">
+	<xsd:element name="serviceSpecCharInUseType" type="tns:ServiceSpecCharInUseType"/>
+	<xsd:complexType name="ServiceSpecCharInUseType">
 		<xsd:annotation>
 			<xsd:documentation>
 				<p>This aggregate indicates the usage characteristics of a given SSC</p>
@@ -54,7 +55,7 @@
 		</xsd:annotation>
 		<xsd:sequence>
 			<xsd:element name="sscRef" type="nam:NamingAttributeType"/>
-			<xsd:element name="sscUse" type="tns:ServiceSpecCharacteristicUseType"/>
+			<xsd:element name="sscUse" type="tns:ServiceSpecCharacteristicUseType" minOccurs="0"/>
 			<xsd:element name="valueList" type="tns:ServiceSpecCharacteristicValueType" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
