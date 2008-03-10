@@ -32,6 +32,48 @@ targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault=
 			<xsd:enumeration value="FAILED"/>
 		</xsd:restriction>
 	</xsd:simpleType>
+	<!-- =====================  Modify Service Action Values========= -->
+	<xsd:simpleType name="ModifyServiceActionEnumType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Specifies the possible actions that can be taken in a modify service request</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="MODIFY"/>
+			<xsd:enumeration value="ADD"/>
+			<xsd:enumeration value="DELETE"/>
+			<xsd:enumeration value="REPLACE"/>
+			<xsd:enumeration value="ACTIVATE"/>
+			<xsd:enumeration value="DEACTIVATE"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!-- =====================  Modify Service Data Values========= -->
+	<xsd:complexType name="ModifyServiceDataType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p/>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="csi:CommonServiceInfoType">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This element provides the service attributes that are modifiable.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="adminState" type="tns:AdminStateType" minOccurs="0"/>
+					<xsd:element name="serviceState" type="tns:ServiceStateType" minOccurs="0"/>
+					<xsd:element name="serviceTemplateRef" type="nam:NamingAttributeType" minOccurs="0"/>
+					<xsd:element name="subscriberRef" type="nam:NamingAttributeType" minOccurs="0"/>
+					<xsd:element name="userRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
+					<xsd:element name="sapRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
+					<xsd:element name="describedByList" type="tns:ServiceCharacteristicValueType" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
 	<!-- =====================  Feasibility Check Message ========= -->
 	<xsd:element name="feasibilityCheckRequest">
 	<xsd:complexType>
@@ -381,6 +423,94 @@ targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault=
 		<xsd:annotation>
 			<xsd:documentation>
 				<p>Exception message structure of the terminate operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+					     <xsd:element ref="msg:entityNotFound"/>
+					     <xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:unableToComply"/>
+						<xsd:element ref="msg:communicationFailure"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:objectInUse"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+<!-- ===================== Modify Request Message ========= -->
+<xsd:element name="modifyRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				 <p> This operation modifies an RFS. The RFS should be in a provisioned_inactive state to be modified </p>
+				 <p> Input to the operation is the Modify Service Data, the action, and the target service state</p>
+				 <p> The following modify actions are available: modify, add, delete, replace, activate, deactivate</p>
+				 <p> Case: modify -> Modification of general RFS service attributes or characteristics</p>
+				 <p> Case: add ->  Addition of users and/or SAPs to RFS</p>
+				 <p> Case: delete -> Delete users and/or SAPs from RFS</p>
+				 <p> Case: replace -> Replace users/and or SAPs from RFS</p>
+				 <p> Case: activate -> Activate a subscriber/user on a given SAP</p>
+				  <p> Case: deactivate -> Deactivate a subscriber/user on a given SAP</p>
+				 <p> The target service state indicates to what state the RFS should be transitioned if the modify request is successful</p>
+				<p>In case of successful service modification, choice of one of the following:</p>
+				<p> The name of the RFS that was modified is returned, and its new service state</p>
+				<p> Attribute Value Change Notification– this event indicates that the RFS has been modified </p>
+				<p>In case of failure:</p>
+				<p>An exception is thrown. </p>
+				<p>If RFS can not be modified,  it remains in its previous state </p>
+				</xsd:documentation>
+		 </xsd:annotation>
+		 <xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="rfsModifyData" type="tns:ModifyServiceDataType">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The modify service data structure contains data to be modified</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="action" type="tns:ModifyServiceActionEnumType">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The action enum specifies the action to be performed as part of the modification request</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="targetState" type="svc:ServiceStateType">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The target state enum specifies desired target state after the modification request. </p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ===================== Modify Response Messages ========= -->
+	<xsd:element name="modifyResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This type covers the various responses to the modify RFS request.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:choice maxOccurs="unbounded">
+			<xsd:sequence>
+			    <xsd:element name="rfsName" type="nam:NamingAttributeType"/>
+			    <xsd:element name="serviceState" type="svc:ServiceStateType"/>
+			 </xsd:sequence>
+			    <xsd:element name="rfsModification" type="savc:serviceAttributeValueChange"/>
+			</xsd:choice>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ===================== Modify Exceptions ========= -->
+		<xsd:element name="modifyException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the modify operation</p>
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:complexType>
