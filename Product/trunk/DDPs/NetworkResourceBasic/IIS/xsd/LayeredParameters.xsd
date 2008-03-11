@@ -14,6 +14,8 @@
   <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
   <xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" schemaLocation="LayerRates.xsd"/>
   <!-- ============== -->
+  <xsd:element name="transmissionParametersList" type="tns:LayeredParametersListType" nillable="true"/>
+  <!-- ============== -->
   <xsd:complexType name="LayeredParametersListType">
     <xsd:annotation>
       <xsd:documentation>
@@ -21,9 +23,11 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="layeredParameters" type="tns:LayeredParametersType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element ref="tns:transmissionParameters" minOccurs="0" maxOccurs="unbounded"/>
     </xsd:sequence>
   </xsd:complexType>
+  <!-- ============== -->
+  <xsd:element name="transmissionParameters" type="tns:LayeredParametersType" nillable="true"/>
   <!-- ============== -->
   <xsd:complexType name="LayeredParametersType">
     <xsd:annotation>
@@ -39,7 +43,12 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="transmissionParameterList" type="gen:NameAndValueStringListType" minOccurs="0">
+      <xsd:element name="parameterList" type="gen:NameAndValueStringListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The list of tranmission parameters as a generic pair of name and value strings.</p>
+          </xsd:documentation>
+        </xsd:annotation>
       </xsd:element>
       <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
         <xsd:annotation>
