@@ -137,44 +137,21 @@ attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:complexType name="CfsCreationEventType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>This event is an indication that one of the CFSs (supporting the requested product) has been
-        created and is in the Feasibility Checked state.</p>
-        <p>In the case of multiple CFSs corresponding to a single product instance, it may be necessary
-        to send several cfsCreationEvents. Also, it is possible to report on several CFSs in one event.</p>
+        <p>This event is an indication that one or CFSs (supporting the requested product) have been created.</p>   
+		<p>In the cases of multiple CFSs corresponding to a single product instance, it may be necessary 
+		to send several cfsCreationEvents. Also, it is possible to report on several CFSs in one event.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
       <xsd:extension base="tns:RootResponseType">
         <xsd:sequence>
-          <xsd:sequence minOccurs="1" maxOccurs="unbounded">
-            <xsd:element name="cfsCreationEvent" type="xsd:string">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>This is a creation event for a given CFS.</p>
-                </xsd:documentation>
-              </xsd:annotation>
-            </xsd:element>
-            <xsd:element name="feasibilityFlag" type="xsd:boolean">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>This is an indication of whether it is feasible to eventually put the CFS in the
-					Provisioned_Active state. This parameter is only used in conjunction with the 
-					feasibilityCheck operation.</p>
-                </xsd:documentation>
-              </xsd:annotation>
-            </xsd:element>
-            <xsd:element name="offeredActivationTime" type="xsd:duration" minOccurs="0" maxOccurs="1">
-              <xsd:annotation>
-                <xsd:documentation>
-                  <p>This is the estimated maximum time elapsed from the service ordering time until the 
-					time when the target OS activates the given CFS (assuming the requesting OS decides 
-					to go forward with the activation). For a given product instance, there could be a different
-					offeredActivationTime for each associated CFS. This parameter is only used in conjunction 
-					with the feasibilityCheck operation.</p>
-                </xsd:documentation>
-              </xsd:annotation>
-            </xsd:element>
-          </xsd:sequence>
+          <xsd:element name="cfsCreationEvents" type="soc:ServiceObjectCreationType" minOccurs="1" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p> This is a list of events concerning the CFSs that have been created.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
           <xsd:element name="last" type="xsd:boolean" minOccurs="0" maxOccurs="1">
             <xsd:annotation>
               <xsd:documentation>
