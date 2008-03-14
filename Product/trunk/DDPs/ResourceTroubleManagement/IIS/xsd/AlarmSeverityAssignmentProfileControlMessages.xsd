@@ -23,7 +23,7 @@
       <xsd:documentation>
         <p>Request message structure of the assignAlarmSeverityAssignmentProfile operation</p>
         <p>This operation assigns the addressed ASAP to the addressed resource, 
-       i.e. the aSAPpointer is updated accordingly. The formerly referenced ASAP, 
+       i.e. the asapRef is updated accordingly. The formerly referenced ASAP, 
        if any, is deassigned. For TPs, it is necessary to indicate also the layer 
        rate the ASAP will apply.</p>
         <p>This operation causes an alarm re-evaluation of the already detected 
@@ -34,14 +34,14 @@
        alarm is no longer available for any alarm retrieval operation.</li>
             <li>if the severity changes from not alarmed to any of critical, major, 
        minor, warning, then an alarm notification with the new 
-       <i>perceivedSeverity</i> is sent (with the current EMS/NE time) and the 
+       <i>perceivedSeverity</i> is sent (with the current OS/NE time) and the 
        alarm is available for any alarm retrieval operation.</li>
             <li>if the severity changes from any of critical, major, minor, warning, to 
        any of critical, major, minor, warning, then the alarm re-evaluation 
        process is not performed.</li>
           </ul>
         </p>
-        <p>Note that an alarm is reportable by ME/EMS:<ul>
+        <p>Note that an alarm is reportable by NE/OS:<ul>
             <li> when for PTP, CTP, FTP AlarmReporting = "on"</li>
             <li> when for SNC, TopologicalLink, Equipment, EquipmentHolder, GTP 
        alarmReportingIndicator = true</li>
@@ -51,39 +51,39 @@
         </p>.
        <p>Note that the clear notification is not send in case of transient 
        events.</p>
-        <p>If the addressed resource originates alarms from within the ME, then 
+        <p>If the addressed resource originates alarms from within the NE, then 
        this operation could imply the "activation" of the ASAP instance and 
-       functionality over the proper ME. E.g. the EMS will download the ASAP to a 
-       given ME only once the ASAP is assigned for the first time to a resource of 
-       that ME.</p>
+       functionality over the proper NE. E.g. the OS will download the ASAP to a 
+       given NE only once the ASAP is assigned for the first time to a resource of 
+       that NE.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="asapName" type="nam:NamingAttributeType" nillable="true" minOccurs="0">
+        <xsd:element name="asapRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>the name of the ASAP object to be assigned</p>
+              <p>The name of the ASAP object to be assigned.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="resourceName" type="nam:NamingAttributeType" nillable="true" minOccurs="0">
+        <xsd:element name="resourceRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>the name of the resource to assign the ASAP to</p>
+              <p>The name of the resource to assign the ASAP to.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="layerRate" type="lr:LayerRateType" nillable="true" minOccurs="0">
+        <xsd:element name="layerRate" type="lr:LayerRateType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>the TP layer rate the 
+              <p>The TP layer rate the 
                ASAP object is assigned to. If the resource is not a TP, then the layerRate 
                value shall be LR_Not_Applicable.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="vendorExtensions" type="gen:AnyListType" nillable="true" minOccurs="0">
+        <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>This is a container for all vendor extensions.</p>
@@ -101,7 +101,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="vendorExtensions" type="gen:AnyListType" nillable="true" minOccurs="0">
+        <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>This is a container for all vendor extensions.</p>
@@ -114,7 +114,7 @@
   <xsd:element name="assignAlarmSeverityAssignmentProfileException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the assignAlarmSeverityAssignmentProfile operation</p>
+        <p>Exception message structure of the assignAlarmSeverityAssignmentProfile operation.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -136,18 +136,18 @@
   <xsd:element name="createAlarmSeverityAssignmentProfileRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the createAlarmSeverityAssignmentProfile operation</p>
-        <p>This operation creates a new ASAP object, named by the EMS, with the 
+        <p>Request message structure of the createAlarmSeverityAssignmentProfile operation.</p>
+        <p>This operation creates a new ASAP object, named by the OS, with the 
          values described by the input parameters. The operation fails if the 
-         maximum number of ASAPs for EMS has been reached.</p>
+         maximum number of ASAPs for OS has been reached.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="asapCreateData" type="tns:AlarmSeverityAssignmentProfileCreateDataType" nillable="true" minOccurs="0">
+        <xsd:element name="asapCreateData" type="tns:AlarmSeverityAssignmentProfileCreateDataType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>information about the ASAP to be created.</p>
+              <p>Information about the ASAP to be created.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -157,22 +157,15 @@
   <xsd:element name="createAlarmSeverityAssignmentProfileResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the createAlarmSeverityAssignmentProfile operation</p>
+        <p>Response message structure of the createAlarmSeverityAssignmentProfile operation.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="newAsap" type="asap:AlarmSeverityAssignmentProfileType" nillable="true" minOccurs="0">
+        <xsd:element name="newAsap" type="asap:AlarmSeverityAssignmentProfileType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>result of the creation.</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-        <xsd:element name="vendorExtensions" type="gen:AnyListType" nillable="true" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>This is a container for all vendor extensions.</p>
+              <p>Result of the creation.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -206,37 +199,37 @@
       <xsd:documentation>
         <p>Request message structure of the deassignAlarmSeverityAssignmentProfile operation</p>
         <p>This operation deassigns the ASAP from the addressed resource, i.e. the 
-         aSAPpointer is updated to empty string. For TPs, it is necessary to 
+         asapRef is updated to empty string. For TPs, it is necessary to 
          indicate also the layer rate, in order to identify the ASAP to be 
          deassigned.</p>
         <p>This operation causes an alarm re-evaluation of the already detected 
          defects according to same rules as ASAP assignment, considering as "newly 
          assigned ASAP" the default alarm severity assignment.</p>
-        <p>If the addressed resource originates alarms from within the ME, then 
+        <p>If the addressed resource originates alarms from within the NE, then 
          this operation could imply the "deactivation" of the ASAP instance and 
-         functionality over the proper ME. E.g. the EMS will remove the ASAP from a 
-         given ME only when the ASAP is no longer assigned to any resource of that ME.</p>
+         functionality over the proper NE. E.g. the OS will remove the ASAP from a 
+         given NE only when the ASAP is no longer assigned to any resource of that NE.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="resourceName" type="nam:NamingAttributeType" nillable="true" minOccurs="0">
+        <xsd:element name="resourceRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>the name of the resource to deassign the ASAP from</p>
+              <p>The name of the resource to deassign the ASAP from.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="layerRate" type="lr:LayerRateType" nillable="true" minOccurs="0">
+        <xsd:element name="layerRate" type="lr:LayerRateType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>the TP layer rate is 
+              <p>The TP layer rate is 
              necessary to identify the ASAP instance to be deassigned. If the resource 
              is not a TP, then the layerRate value shall be LR_Not_Applicable.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="vendorExtensions" type="gen:AnyListType" nillable="true" minOccurs="0">
+        <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>This is a container for all vendor extensions.</p>
@@ -254,7 +247,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="vendorExtensions" type="gen:AnyListType" nillable="true" minOccurs="0">
+        <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>This is a container for all vendor extensions.</p>
@@ -291,20 +284,20 @@
       <xsd:documentation>
         <p>Request message structure of the deleteAlarmSeverityAssignmentProfile operation</p>
         <p>This operation deletes the addressed ASAP. The operation fails if at 
-         least one resource is pointing to this ASAP. Moreover the EMS could refuse 
+         least one resource is pointing to this ASAP. Moreover the OS could refuse 
          this operation, in case the addressed ASAP is <b>fixed</b>.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="asapName" type="nam:NamingAttributeType" nillable="true" minOccurs="0">
+        <xsd:element name="asapRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>the name of the ASAP object to be delete</p>
+              <p>The name of the ASAP object to be delete.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="vendorExtensions" type="gen:AnyListType" nillable="true" minOccurs="0">
+        <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>This is a container for all vendor extensions.</p>
@@ -322,7 +315,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="vendorExtensions" type="gen:AnyListType" nillable="true" minOccurs="0">
+        <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>This is a container for all vendor extensions.</p>
@@ -361,29 +354,29 @@
         <p>This operation modifies the addressed ASAP according to the input 
          parameters. This operation does not modify any current ASAP assignment. The 
          specified alarmSeverityAssignmentList will completely replace the current 
-         one. EMS could refuse this operation in case the addressed ASAP is 
+         one. OS could refuse this operation in case the addressed ASAP is 
         fixed.</p>
         <p>The modification of the ASAP does not trigger any alarm re-evaluation of 
         the already detected defects. This because such re-evaluation process may 
          involve a big number of managed resources across the network.</p>
-        <p>If the addressed resource originates alarms from within the ME, then 
+        <p>If the addressed resource originates alarms from within the NE, then 
          this operation could imply the modification of the ASAP instance and 
-         functionality over the proper ME.</p>
+         functionality over the proper NE.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="asapName" type="nam:NamingAttributeType" nillable="true" minOccurs="0">
+        <xsd:element name="asapRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>the name of the ASAP object to be modified</p>
+              <p>The name of the ASAP object to be modified.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="asapModifyData" type="tns:AlarmSeverityAssignmentProfileModifyDataType" nillable="true" minOccurs="0">
+        <xsd:element name="asapModifyData" type="tns:AlarmSeverityAssignmentProfileModifyDataType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>information about the ASAP to be modified.</p>
+              <p>Information about the ASAP to be modified.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -398,17 +391,10 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="newAsap" type="asap:AlarmSeverityAssignmentProfileType" nillable="true" minOccurs="0">
+        <xsd:element name="modifiedAsap" type="asap:AlarmSeverityAssignmentProfileType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>result of the modification.</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-        <xsd:element name="vendorExtensions" type="gen:AnyListType" nillable="true" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>This is a container for all vendor extensions.</p>
+              <p>Result of the modification.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -430,6 +416,7 @@
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
             <xsd:element ref="msg:unableToComply"/>
+            <xsd:element ref="msg:userlabelInUse"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
@@ -445,7 +432,7 @@
     <xsd:complexContent>
       <xsd:extension base="crcd:CommonResourceCreateDataType">
         <xsd:sequence>
-          <xsd:element name="asaList" type="asa:AlarmSeverityAssignmentListType" nillable="true" minOccurs="0">
+          <xsd:element name="asaList" type="asa:AlarmSeverityAssignmentListType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>Each element of this sequence specifies the probable cause (plus 
@@ -468,7 +455,7 @@
     <xsd:complexContent>
       <xsd:extension base="crmd:CommonResourceModifyDataType">
         <xsd:sequence>
-          <xsd:element name="asaList" type="asa:AlarmSeverityAssignmentListType" nillable="true" minOccurs="0">
+          <xsd:element name="asaList" type="asa:AlarmSeverityAssignmentListType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>Each element of this sequence specifies the probable cause (plus 
