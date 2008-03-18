@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - ResourceProvisioning - Copyright TeleManagement Forum 2008 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rp/xsd/crp/v1" xmlns:tns="http://www.tmforum.org/mtop/rp/xsd/crp/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:crmd="http://www.tmforum.org/mtop/nrb/xsd/crmd/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rp/xsd/crp/v1" xmlns:tns="http://www.tmforum.org/mtop/rp/xsd/crp/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:crmd="http://www.tmforum.org/mtop/nrb/xsd/crmd/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: ResourceProvisioning</p>
@@ -12,6 +12,7 @@
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceModifyDataType.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/crmd/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
   <!--  ============== -->
   <xsd:element name="setCommonAttributesRequest">
     <xsd:annotation>
@@ -48,6 +49,13 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
+        <xsd:element name="modifiedVendorExtensions" type="gen:AnyListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:appinfo>
+              <p>This is the containment used to provide the outcome for the setting of the object vendorExtensions. Because this operation is best effort, the policy is to return all the vendorExtensions structure(s) that were successfully modified.</p>
+            </xsd:appinfo>
+          </xsd:annotation>
+        </xsd:element>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
