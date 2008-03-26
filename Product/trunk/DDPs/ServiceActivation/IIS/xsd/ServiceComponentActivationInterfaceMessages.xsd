@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ServiceComponentActivationInterface - Copyright TeleManagement Forum 2008 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/sa/xsd/scai/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" 
-xmlns:soc="http://www.tmforum.org/mtop/sb/xsd/soc/v1" xmlns:savc="http://www.tmforum.org/mtop/sb/xsd/savc/v1" xmlns:sodel="http://www.tmforum.org/mtop/sb/xsd/sodel/v1" 
-xmlns:csi="http:/www.tmforum.org/mtop/sb/xsd/csi/v1" xmlns:svc="http:/www.tmforum.org/mtop/sb/xsd/svc/v1"  
-targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/sa/xsd/scai/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:soc="http://www.tmforum.org/mtop/sb/xsd/soc/v1" xmlns:savc="http://www.tmforum.org/mtop/sb/xsd/savc/v1" xmlns:sodel="http://www.tmforum.org/mtop/sb/xsd/sodel/v1" xmlns:csi="http://www.tmforum.org/mtop/sb/xsd/csi/v1" xmlns:svc="http://www.tmforum.org/mtop/sb/xsd/svc/v1" targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
 	<xsd:annotation>
 		<xsd:documentation>
 			<p>DDP: Service Component Activation Interface</p>
@@ -12,14 +9,14 @@ targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault=
 		</xsd:documentation>
 	</xsd:annotation>
 	<!-- ================ -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
 	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd"/>
 	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/sb/xsd/soc/v1" schemaLocation="../../../ServiceBasic/IIS/xsd/EventServiceObjectCreation.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/sb/xsd/sodel/v1" schemaLocation="../../../ServiceBasic/IIS/xsd/EventServiceObjectDeletion.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/sb/xsd/savc/v1" schemaLocation="../../../ServiceBasic/IIS/xsd/EventServiceAttributeValueChange.xsd"/>
 	<xsd:import namespace="http://www.tmforum.org/mtop/sb/xsd/csi/v1" schemaLocation="../../../ServiceBasic/IIS/xsd/CommonServiceInfo.xsd"/>
 	<xsd:import namespace="http://www.tmforum.org/mtop/sb/xsd/svc/v1" schemaLocation="../../../ServiceBasic/IIS/xsd/Service.xsd"/>
-	<xsd:import namespace="http://www.tmforum.org/mtop/sb/xsd/soc/v1" schemaLocation="../../../ServiceBasic/IIS/xsd/EventServiceObjectCreation.xsd"/>
-	 <xsd:import namespace="http://www.tmforum.org/mtop/sb/xsd/soc/v1" schemaLocation="../../../ServiceBasic/IIS/xsd/EventServiceObjectDeletion.xsd"/>
-	<xsd:import namespace="http://www.tmforum.org/mtop/sb/xsd/savc/v1" 
-	schemaLocation="../../../ServiceBasic/IIS/xsd/EventServiceAttributeValueChange.xsd"/>
 	<!-- =====================  Feasibility Check Response Values========= -->
 	<xsd:simpleType name="FeasibilityCheckEnumType">
 		<xsd:annotation>
@@ -63,45 +60,47 @@ targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault=
 					</xsd:documentation>
 				</xsd:annotation>
 				<xsd:sequence>
-					<xsd:element name="adminState" type="tns:AdminStateType" minOccurs="0"/>
-					<xsd:element name="serviceState" type="tns:ServiceStateType" minOccurs="0"/>
+					<xsd:element name="adminState" type="svc:AdminStateType" minOccurs="0"/>
+					<xsd:element name="serviceState" type="svc:ServiceStateType" minOccurs="0"/>
 					<xsd:element name="serviceTemplateRef" type="nam:NamingAttributeType" minOccurs="0"/>
 					<xsd:element name="subscriberRef" type="nam:NamingAttributeType" minOccurs="0"/>
 					<xsd:element name="userRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
 					<xsd:element name="sapRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
-					<xsd:element name="describedByList" type="tns:ServiceCharacteristicValueType" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="describedByList" type="svc:ServiceCharacteristicValueType" minOccurs="0" maxOccurs="unbounded"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
 	<!-- =====================  Feasibility Check Message ========= -->
 	<xsd:element name="feasibilityCheckRequest">
-	<xsd:complexType>
-		<xsd:annotation>
-			<xsd:documentation>
-				<p>This operation performs a feasibility check to determine whether an RFS could be created based upon information passed</p>
-				<p>When this request is complete, a response to the action if returned  </p>
-				<p>Preconditions: The RFS  does not exist</p>
-				<p>Post-condition(s):</p>
-				<p>PASSED or FAILED is returned</p>
-				<p> The  RFS is NOT created</p>
-				<p>In case of failure:</p>
-				<p>An exception is thrown. </p>
-			</xsd:documentation>
-			 <xsd:element name="rfsCheckData" type="svc:ResourceFacingServiceType"/>
-		</xsd:annotation>
-	 </xsd:complexType>
+		<xsd:complexType>
+			<xsd:annotation>
+				<xsd:documentation>
+					<p>This operation performs a feasibility check to determine whether an RFS could be created based upon information passed</p>
+					<p>When this request is complete, a response to the action if returned  </p>
+					<p>Preconditions: The RFS  does not exist</p>
+					<p>Post-condition(s):</p>
+					<p>PASSED or FAILED is returned</p>
+					<p> The  RFS is NOT created</p>
+					<p>In case of failure:</p>
+					<p>An exception is thrown. </p>
+				</xsd:documentation>
+			</xsd:annotation>
+			<xsd:sequence>
+				<xsd:element name="rfsCheckData" type="svc:ResourceFacingServiceType"/>
+			</xsd:sequence>
+		</xsd:complexType>
 	</xsd:element>
 	<!-- ===================== Feasibility Check Response Message ========= -->
-	<xsd:element name="feasibilityCheckResponse" type="tns:feasibilityCheckEnumType">
-			  	<xsd:annotation>
-						<xsd:documentation>
-							<p>The response to a feasbility check is "passed" or "failed" </p>
-						</xsd:documentation>
-				</xsd:annotation>
+	<xsd:element name="feasibilityCheckResponse" type="tns:FeasibilityCheckEnumType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>The response to a feasbility check is "passed" or "failed" </p>
+			</xsd:documentation>
+		</xsd:annotation>
 	</xsd:element>
 	<!-- ===================== Feasibility Check Exceptions ========= -->
-		<xsd:element name="feasibilityCheckException">
+	<xsd:element name="feasibilityCheckException">
 		<xsd:annotation>
 			<xsd:documentation>
 				<p>Exception message structure of the feasibility check operation</p>
@@ -111,22 +110,24 @@ targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault=
 			<xsd:complexContent>
 				<xsd:restriction base="msg:AllExceptionsType">
 					<xsd:choice>
-						<xsd:element ref="msg:invalidInput"/>
-						<xsd:element ref="msg:unableToComply"/>
 						<xsd:element ref="msg:communicationFailure"/>
 						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:unableToComply"/>
 					</xsd:choice>
 				</xsd:restriction>
 			</xsd:complexContent>
 		</xsd:complexType>
 	</xsd:element>
-<!-- === Provision === -->
+	<!-- === Provision === -->
 	<!-- ===================== Reserve Request Message ========= -->
 	<xsd:element name="reserveRequest">
 		<xsd:annotation>
 			<xsd:documentation>
 				<p>This operation allocates and reserves the necessary resources to support a given RFS for a given subscriber until  “expiring time” is met </p>
-				<p>If the requesting OS does not provision and activate the RFS before the “expiration time” is met, the target OS will delete the RFS and </p>				  <p> free all the associated resources. If the target OS does not support the specification of an “expiring time”, it may set an internal timer </p>   				<p> to ensure that un-provisioned RFS are cleaned up on a regular basis. </p>
+				<p>If the requesting OS does not provision and activate the RFS before the “expiration time” is met, the target OS will delete the RFS and </p>
+				<p> free all the associated resources. If the target OS does not support the specification of an “expiring time”, it may set an internal timer </p>
+				<p> to ensure that un-provisioned RFS are cleaned up on a regular basis. </p>
 				<p>Preconditions: The RFS does not exist </p>
 				<p>In case of success, choice of one of the following:</p>
 				<p> The  RFS is provisioned and placed in a reserved state. The name of the RFS, if created, is returned</p>
@@ -136,12 +137,12 @@ targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault=
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:complexType>
-			 <xsd:annotation>
-			   <xsd:documentation>
-				<p>The RFS data structure contains necessary information to actually reserve resources associated to instantiation of RFS </p>
-			 <xsd:element name="rfsCreateData" type="svc:ResourceFacingServiceType"/>
-			</xsd:documentation>
-		</xsd:annotation>
+			<xsd:annotation>
+				<xsd:documentation>
+					<p>The RFS data structure contains necessary information to actually reserve resources associated to instantiation of RFS </p>
+					<xsd:element name="rfsCreateData" type="svc:ResourceFacingServiceType"/>
+				</xsd:documentation>
+			</xsd:annotation>
 		</xsd:complexType>
 	</xsd:element>
 	<!-- ===================== Reserve Response Message ========= -->
@@ -153,13 +154,13 @@ targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault=
 		</xsd:annotation>
 		<xsd:complexType>
 			<xsd:choice maxOccurs="unbounded">
-			    <xsd:element name="rfsName" type="nam:NamingAttributeType"/>
-				<xsd:element name="rfsCreation" type="soc:serviceObjectCreation"/>
+				<xsd:element name="rfsName" type="nam:NamingAttributeType"/>
+				<xsd:element name="rfsCreation" type="soc:ServiceObjectCreationType"/>
 			</xsd:choice>
 		</xsd:complexType>
 	</xsd:element>
 	<!-- ===================== Reserve  Exceptions ========= -->
-		<xsd:element name="reserveException">
+	<xsd:element name="reserveException">
 		<xsd:annotation>
 			<xsd:documentation>
 				<p>Exception message structure of the reserve RFS operation</p>
@@ -169,11 +170,11 @@ targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault=
 			<xsd:complexContent>
 				<xsd:restriction base="msg:AllExceptionsType">
 					<xsd:choice>
-						<xsd:element ref="msg:invalidInput"/>
-						<xsd:element ref="msg:unableToComply"/>
 						<xsd:element ref="msg:communicationFailure"/>
 						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
 						<xsd:element ref="msg:objectInUse"/>
+						<xsd:element ref="msg:unableToComply"/>
 					</xsd:choice>
 				</xsd:restriction>
 			</xsd:complexContent>
@@ -183,28 +184,28 @@ targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault=
 	<xsd:element name="provisionRequest">
 		<xsd:annotation>
 			<xsd:documentation>
-				 <p> This operation provisions an  RFS in support of a CFS.  </p>
-				 <p> Input to the operation is either create data for the RFS, or the name of an RFS which was previously reserved.</p>
-				 <p> When this request is complete, the RFS shall be in the Provisioned_Inactive state  </p>
+				<p> This operation provisions an  RFS in support of a CFS.  </p>
+				<p> Input to the operation is either create data for the RFS, or the name of an RFS which was previously reserved.</p>
+				<p> When this request is complete, the RFS shall be in the Provisioned_Inactive state  </p>
 				<p>In case of success, choice of one of the following:</p>
 				<p> The  RFS is provisioned and placed in a provisioned_inactive state. The name of the RFS, if created, is returned</p>
 				<p> Object Creation Notification– this event is an indication that the service component activation OS instantiated, or “created” an RFS </p>
 				<p> State Change Notification– this event is an indication that the RFS changed from a "reserved" state to a "provisioned_inactive" state</p>
-			    <p> Object Deletion Notification– this event is an RFS that was previously "reserved" could not be provisioned, and thus was deleted</p>
+				<p> Object Deletion Notification– this event is an RFS that was previously "reserved" could not be provisioned, and thus was deleted</p>
 				<p>In case of failure:</p>
 				<p>An exception is thrown. </p>
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:complexType>
-			 <xsd:annotation>
-			   <xsd:documentation>
-				<p>The RFS data structure contains necessary information to actually reserve resources associated to instantiation of RFS </p>
+			<xsd:annotation>
+				<xsd:documentation>
+					<p>The RFS data structure contains necessary information to actually reserve resources associated to instantiation of RFS </p>
 				</xsd:documentation>
-		      </xsd:annotation>
+			</xsd:annotation>
 			<xsd:choice>
-			 <xsd:element name="rfsCreateData" type="svc:ResourceFacingServiceType"/>
-			 <xsd:element name="rfsName" type="nam:NamingAttributeType"/>
-			 </xsd:choice>
+				<xsd:element name="rfsCreateData" type="svc:ResourceFacingServiceType"/>
+				<xsd:element name="rfsName" type="nam:NamingAttributeType"/>
+			</xsd:choice>
 		</xsd:complexType>
 	</xsd:element>
 	<!-- ===================== Provision Response Messages ========= -->
@@ -216,15 +217,15 @@ targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault=
 		</xsd:annotation>
 		<xsd:complexType>
 			<xsd:choice maxOccurs="unbounded">
-			    <xsd:element name="rfsName" type="nam:NamingAttributeType"/>
-				<xsd:element name="rfsCreation" type="soc:serviceObjectCreation"/>
-				<xsd:element name="rfsStateChange" type="savc:serviceAttributeValueChange"/>
-				<xsd:element name="rfsDeletion" type="sodel:serviceObjectDeletion"/>
+				<xsd:element name="rfsName" type="nam:NamingAttributeType"/>
+				<xsd:element name="rfsCreation" type="soc:ServiceObjectCreationType"/>
+				<xsd:element name="rfsStateChange" type="savc:ServiceAttributeValueChangeType"/>
+				<xsd:element name="rfsDeletion" type="sodel:ServiceObjectDeletionType"/>
 			</xsd:choice>
 		</xsd:complexType>
 	</xsd:element>
 	<!-- ===================== Provision Exceptions ========= -->
-		<xsd:element name="provisionException">
+	<xsd:element name="provisionException">
 		<xsd:annotation>
 			<xsd:documentation>
 				<p>Exception message structure of the provision service operation</p>
@@ -234,13 +235,13 @@ targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault=
 			<xsd:complexContent>
 				<xsd:restriction base="msg:AllExceptionsType">
 					<xsd:choice>
-					     <xsd:element ref="msg:entityNotFound"/>
-					     <xsd:element ref="msg:notImplemented"/>
-						<xsd:element ref="msg:invalidInput"/>
-						<xsd:element ref="msg:unableToComply"/>
 						<xsd:element ref="msg:communicationFailure"/>
+						<xsd:element ref="msg:entityNotFound"/>
 						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
 						<xsd:element ref="msg:objectInUse"/>
+						<xsd:element ref="msg:unableToComply"/>
 					</xsd:choice>
 				</xsd:restriction>
 			</xsd:complexContent>
@@ -251,9 +252,9 @@ targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault=
 	<xsd:element name="activateRequest">
 		<xsd:annotation>
 			<xsd:documentation>
-				 <p> This operation activates RFS in support of a CFS.  </p>
-				 <p> Input to the operation is either create data for the RFS to be provisioned and activated   </p>
-				 <p>  or the name of an RFS which was previously provisioned.</p>
+				<p> This operation activates RFS in support of a CFS.  </p>
+				<p> Input to the operation is either create data for the RFS to be provisioned and activated   </p>
+				<p>  or the name of an RFS which was previously provisioned.</p>
 				<p>In case of success, choice of one of the following:</p>
 				<p> The  RFS is provisioned (if required) and placed in a provisioned_active state. The name of the RFS  is returned</p>
 				<p> Object Creation Notification– this event is an indication that the service component activation OS instantiated, or “created” an RFS </p>
@@ -264,15 +265,15 @@ targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault=
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:complexType>
-			 <xsd:annotation>
-			   <xsd:documentation>
-				<p>The RFS data structure contains necessary information to actually reserve resources associated to instantiation of RFS </p>
+			<xsd:annotation>
+				<xsd:documentation>
+					<p>The RFS data structure contains necessary information to actually reserve resources associated to instantiation of RFS </p>
 				</xsd:documentation>
-		      </xsd:annotation>
+			</xsd:annotation>
 			<xsd:choice>
-			 <xsd:element name="rfsCreateData" type="svc:ResourceFacingServiceType"/>
-			 <xsd:element name="rfsName" type="nam:NamingAttributeType"/>
-			 </xsd:choice>
+				<xsd:element name="rfsCreateData" type="svc:ResourceFacingServiceType"/>
+				<xsd:element name="rfsName" type="nam:NamingAttributeType"/>
+			</xsd:choice>
 		</xsd:complexType>
 	</xsd:element>
 	<!-- ===================== Activate Response Messages ========= -->
@@ -284,14 +285,14 @@ targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault=
 		</xsd:annotation>
 		<xsd:complexType>
 			<xsd:choice maxOccurs="unbounded">
-			    <xsd:element name="rfsName" type="nam:NamingAttributeType"/>
-				<xsd:element name="rfsCreation" type="soc:serviceObjectCreation"/>
-				<xsd:element name="rfsStateChange" type="savc:serviceAttributeValueChange"/>
+				<xsd:element name="rfsName" type="nam:NamingAttributeType"/>
+				<xsd:element name="rfsCreation" type="soc:ServiceObjectCreationType"/>
+				<xsd:element name="rfsStateChange" type="savc:ServiceAttributeValueChangeType"/>
 			</xsd:choice>
 		</xsd:complexType>
 	</xsd:element>
 	<!-- ===================== Activate Exceptions ========= -->
-		<xsd:element name="activateException">
+	<xsd:element name="activateException">
 		<xsd:annotation>
 			<xsd:documentation>
 				<p>Exception message structure of the activate service operation</p>
@@ -301,25 +302,25 @@ targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault=
 			<xsd:complexContent>
 				<xsd:restriction base="msg:AllExceptionsType">
 					<xsd:choice>
-					     <xsd:element ref="msg:entityNotFound"/>
-					     <xsd:element ref="msg:notImplemented"/>
-						<xsd:element ref="msg:invalidInput"/>
-						<xsd:element ref="msg:unableToComply"/>
 						<xsd:element ref="msg:communicationFailure"/>
+						<xsd:element ref="msg:entityNotFound"/>
 						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
 						<xsd:element ref="msg:objectInUse"/>
+						<xsd:element ref="msg:unableToComply"/>
 					</xsd:choice>
 				</xsd:restriction>
 			</xsd:complexContent>
 		</xsd:complexType>
 	</xsd:element>
-<!-- === Deactivate === -->
-<!-- ===================== Deactivate Request Message ========= -->
-<xsd:element name="deactivateRequest">
+	<!-- === Deactivate === -->
+	<!-- ===================== Deactivate Request Message ========= -->
+	<xsd:element name="deactivateRequest">
 		<xsd:annotation>
 			<xsd:documentation>
-				 <p> This operation deactivates an RFS. The RFS must be in a provisioned_active state to be deactived </p>
-				 <p> Input to the operation is the name of the RFS to be deactivated</p>
+				<p> This operation deactivates an RFS. The RFS must be in a provisioned_active state to be deactived </p>
+				<p> Input to the operation is the name of the RFS to be deactivated</p>
 				<p>In case of success, choice of one of the following:</p>
 				<p> The  RFS is deactivated and placed in a provisioned_inactive state. The name of the RFS  is returned</p>
 				<p> State Change Notification– this event indicates that the RFS changed from "provisioned_active" state to  "provisioned_inactive"state  </p>
@@ -329,15 +330,15 @@ targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault=
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:complexType>
-			 <xsd:annotation>
-			   <xsd:documentation>
-				<p>The RFS data structure contains necessary information to actually reserve resources associated to instantiation of RFS </p>
+			<xsd:annotation>
+				<xsd:documentation>
+					<p>The RFS data structure contains necessary information to actually reserve resources associated to instantiation of RFS </p>
 				</xsd:documentation>
-		      </xsd:annotation>
+			</xsd:annotation>
 			<xsd:choice>
-			 <xsd:element name="rfsCreateData" type="svc:ResourceFacingServiceType"/>
-			 <xsd:element name="rfsName" type="nam:NamingAttributeType"/>
-			 </xsd:choice>
+				<xsd:element name="rfsCreateData" type="svc:ResourceFacingServiceType"/>
+				<xsd:element name="rfsName" type="nam:NamingAttributeType"/>
+			</xsd:choice>
 		</xsd:complexType>
 	</xsd:element>
 	<!-- ===================== Deactivate Response Messages ========= -->
@@ -349,13 +350,13 @@ targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault=
 		</xsd:annotation>
 		<xsd:complexType>
 			<xsd:choice maxOccurs="unbounded">
-			    <xsd:element name="rfsName" type="nam:NamingAttributeType"/>
-				<xsd:element name="rfsStateChange" type="savc:serviceAttributeValueChange"/>
+				<xsd:element name="rfsName" type="nam:NamingAttributeType"/>
+				<xsd:element name="rfsStateChange" type="savc:ServiceAttributeValueChangeType"/>
 			</xsd:choice>
 		</xsd:complexType>
 	</xsd:element>
 	<!-- ===================== Deactivate Exceptions ========= -->
-		<xsd:element name="deactivateException">
+	<xsd:element name="deactivateException">
 		<xsd:annotation>
 			<xsd:documentation>
 				<p>Exception message structure of the deactive operation</p>
@@ -365,34 +366,34 @@ targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault=
 			<xsd:complexContent>
 				<xsd:restriction base="msg:AllExceptionsType">
 					<xsd:choice>
-					     <xsd:element ref="msg:entityNotFound"/>
-					     <xsd:element ref="msg:notImplemented"/>
-						<xsd:element ref="msg:invalidInput"/>
-						<xsd:element ref="msg:unableToComply"/>
 						<xsd:element ref="msg:communicationFailure"/>
+						<xsd:element ref="msg:entityNotFound"/>
 						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
 						<xsd:element ref="msg:objectInUse"/>
+						<xsd:element ref="msg:unableToComply"/>
 					</xsd:choice>
 				</xsd:restriction>
 			</xsd:complexContent>
 		</xsd:complexType>
 	</xsd:element>
 	<!-- === Terminate === -->
-<!-- ===================== Terminate Request Message ========= -->
-<xsd:element name="terminateRequest">
+	<!-- ===================== Terminate Request Message ========= -->
+	<xsd:element name="terminateRequest">
 		<xsd:annotation>
 			<xsd:documentation>
-				 <p> This operation terminates an RFS. The RFS must be in a provisioned_inactive state to be terminated </p>
-				 <p> Input to the operation is the name of the RFS to be terminated</p>
+				<p> This operation terminates an RFS. The RFS must be in a provisioned_inactive state to be terminated </p>
+				<p> Input to the operation is the name of the RFS to be terminated</p>
 				<p>In case of success, choice of one of the following:</p>
 				<p> The  RFS is terminated. The name of the RFS terminated  is returned</p>
 				<p> Object Deletion Notification– this event indicates that the RFS has been deleted </p>
 				<p>In case of failure:</p>
 				<p>An exception is thrown. </p>
 				<p>If RFS can not be terminated,  it remains in a "provisioned_inactive" state </p>
-				</xsd:documentation>
-		 </xsd:annotation>
-		 <xsd:complexType>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
 			<xsd:sequence>
 				<xsd:element name="rfsName" type="nam:NamingAttributeType">
 					<xsd:annotation>
@@ -413,13 +414,13 @@ targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault=
 		</xsd:annotation>
 		<xsd:complexType>
 			<xsd:choice maxOccurs="unbounded">
-			    <xsd:element name="rfsName" type="nam:NamingAttributeType"/>
-			    <xsd:element name="rfsDeletion" type="sodel:serviceObjectDeletion"/>
+				<xsd:element name="rfsName" type="nam:NamingAttributeType"/>
+				<xsd:element name="rfsDeletion" type="sodel:ServiceObjectDeletionType"/>
 			</xsd:choice>
 		</xsd:complexType>
 	</xsd:element>
 	<!-- ===================== Terminate Exceptions ========= -->
-		<xsd:element name="terminateException">
+	<xsd:element name="terminateException">
 		<xsd:annotation>
 			<xsd:documentation>
 				<p>Exception message structure of the terminate operation</p>
@@ -429,41 +430,41 @@ targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault=
 			<xsd:complexContent>
 				<xsd:restriction base="msg:AllExceptionsType">
 					<xsd:choice>
-					     <xsd:element ref="msg:entityNotFound"/>
-					     <xsd:element ref="msg:notImplemented"/>
-						<xsd:element ref="msg:invalidInput"/>
-						<xsd:element ref="msg:unableToComply"/>
 						<xsd:element ref="msg:communicationFailure"/>
+						<xsd:element ref="msg:entityNotFound"/>
 						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
 						<xsd:element ref="msg:objectInUse"/>
+						<xsd:element ref="msg:unableToComply"/>
 					</xsd:choice>
 				</xsd:restriction>
 			</xsd:complexContent>
 		</xsd:complexType>
 	</xsd:element>
-<!-- ===================== Modify Request Message ========= -->
-<xsd:element name="modifyRequest">
+	<!-- ===================== Modify Request Message ========= -->
+	<xsd:element name="modifyRequest">
 		<xsd:annotation>
 			<xsd:documentation>
-				 <p> This operation modifies an RFS. The RFS should be in a provisioned_inactive state to be modified </p>
-				 <p> Input to the operation is the Modify Service Data, the action, and the target service state</p>
-				 <p> The following modify actions are available: modify, add, delete, replace, activate, deactivate</p>
-				 <p> Case: modify -> Modification of general RFS service attributes or characteristics</p>
-				 <p> Case: add ->  Addition of users and/or SAPs to RFS</p>
-				 <p> Case: delete -> Delete users and/or SAPs from RFS</p>
-				 <p> Case: replace -> Replace users/and or SAPs from RFS</p>
-				 <p> Case: activate -> Activate a subscriber/user on a given SAP</p>
-				  <p> Case: deactivate -> Deactivate a subscriber/user on a given SAP</p>
-				 <p> The target service state indicates to what state the RFS should be transitioned if the modify request is successful</p>
+				<p> This operation modifies an RFS. The RFS should be in a provisioned_inactive state to be modified </p>
+				<p> Input to the operation is the Modify Service Data, the action, and the target service state</p>
+				<p> The following modify actions are available: modify, add, delete, replace, activate, deactivate</p>
+				<p> Case: modify -> Modification of general RFS service attributes or characteristics</p>
+				<p> Case: add ->  Addition of users and/or SAPs to RFS</p>
+				<p> Case: delete -> Delete users and/or SAPs from RFS</p>
+				<p> Case: replace -> Replace users/and or SAPs from RFS</p>
+				<p> Case: activate -> Activate a subscriber/user on a given SAP</p>
+				<p> Case: deactivate -> Deactivate a subscriber/user on a given SAP</p>
+				<p> The target service state indicates to what state the RFS should be transitioned if the modify request is successful</p>
 				<p>In case of successful service modification, choice of one of the following:</p>
 				<p> The name of the RFS that was modified is returned, and its new service state</p>
 				<p> Attribute Value Change Notification– this event indicates that the RFS has been modified </p>
 				<p>In case of failure:</p>
 				<p>An exception is thrown. </p>
 				<p>If RFS can not be modified,  it remains in its previous state </p>
-				</xsd:documentation>
-		 </xsd:annotation>
-		 <xsd:complexType>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
 			<xsd:sequence>
 				<xsd:element name="rfsModifyData" type="tns:ModifyServiceDataType">
 					<xsd:annotation>
@@ -498,16 +499,16 @@ targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault=
 		</xsd:annotation>
 		<xsd:complexType>
 			<xsd:choice maxOccurs="unbounded">
-			<xsd:sequence>
-			    <xsd:element name="rfsName" type="nam:NamingAttributeType"/>
-			    <xsd:element name="serviceState" type="svc:ServiceStateType"/>
-			 </xsd:sequence>
-			    <xsd:element name="rfsModification" type="savc:serviceAttributeValueChange"/>
+				<xsd:sequence>
+					<xsd:element name="rfsName" type="nam:NamingAttributeType"/>
+					<xsd:element name="serviceState" type="svc:ServiceStateType"/>
+				</xsd:sequence>
+				<xsd:element name="rfsModification" type="savc:ServiceAttributeValueChangeType"/>
 			</xsd:choice>
 		</xsd:complexType>
 	</xsd:element>
 	<!-- ===================== Modify Exceptions ========= -->
-		<xsd:element name="modifyException">
+	<xsd:element name="modifyException">
 		<xsd:annotation>
 			<xsd:documentation>
 				<p>Exception message structure of the modify operation</p>
@@ -517,13 +518,13 @@ targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault=
 			<xsd:complexContent>
 				<xsd:restriction base="msg:AllExceptionsType">
 					<xsd:choice>
-					     <xsd:element ref="msg:entityNotFound"/>
-					     <xsd:element ref="msg:notImplemented"/>
-						<xsd:element ref="msg:invalidInput"/>
-						<xsd:element ref="msg:unableToComply"/>
 						<xsd:element ref="msg:communicationFailure"/>
+						<xsd:element ref="msg:entityNotFound"/>
 						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
 						<xsd:element ref="msg:objectInUse"/>
+						<xsd:element ref="msg:unableToComply"/>
 					</xsd:choice>
 				</xsd:restriction>
 			</xsd:complexContent>
