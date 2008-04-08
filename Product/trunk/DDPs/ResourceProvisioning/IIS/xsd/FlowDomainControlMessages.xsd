@@ -16,25 +16,26 @@
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/ITU-T-Definitions.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/itu/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayeredParameters.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lp/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Fd.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/fd/v1"/>
-  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Fdfr.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/fdfr/v1"/>
-  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Mfd.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/mfd/v1"/>
-  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Mfdfr.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/mfdfr/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/FDFr.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/fdfr/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/MFD.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/mfd/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/MFDfr.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/mfdfr/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/TpData.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceCreateDataType.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/crcd/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceModifyDataType.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/crmd/v1"/>
   <!-- ================ -->
-  <xsd:element name="assignConnectionPortTerminationPointsToMfdRequest">
+  <xsd:element name="assignConnectionlessPortTerminationPointsToMfdRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the assignConnectionPortTerminationPointsToMfd operation</p>
-        <p>This operation allows an NMS to request from the EMS the assignment
-        of one or more "CPTP" TPs to a matrix flow domain.</p>
+        <p>Request message structure of the assignConnectionlessPortTerminationPointsToMFD operation</p>
+        <p>This operation assigns Connectionless Port Terminations Points (CPTPs) to ae Matrix Flow Domain (MFD).
+        The provided CPTPs must be potential CPTPs for this MFD (e.g. have to be on the same equipment or same rack
+        with backplane connectivity).</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="mfdName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="mfdRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the matrix flow domain to be modified.</p>
@@ -44,25 +45,26 @@
         <xsd:element name="cptpRefList" type="nam:NamingAttributeListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The names of the Cptps to be associated with the matrix flow domain. 
-            If the list is empty nothing is done on the EMS and the method returns success.</p>
+              <p>This parameter provides the names of the Connectionless Port Terminations Points (CPTPs)
+              to be assigned to the Matrix Flow Domain.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
         <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The list of TPs with associated parameters to be applied.</p>
+              <p>This parameter, when used in the request, identifies a list of TPs with associated parameters
+              to be applied; identifies the list of TPs with associated applied parameters.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="assignConnectionPortTerminationPointsToMfdResponse">
+  <xsd:element name="assignConnectionlessPortTerminationPointsToMfdResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the assignConnectionPortTerminationPointsToMfd operation</p>
+        <p>Response message structure of the assignConnectionlessPortTerminationPointsToMFD operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -70,24 +72,24 @@
         <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The list of TPs with associated parameters to be applied.</p>
+              <p>The list of TPs with associated parameters.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
         <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Specifies the fault reason if any.</p>
+              <p>This parameter returns the error(s) if any.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="assignConnectionPortTerminationPointsToMfdException">
+  <xsd:element name="assignConnectionlessPortTerminationPointsToMfdException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the assignConnectionPortTerminationPointsToMfd operation</p>
+        <p>Exception message structure of the assignConnectionlessPortTerminationPointsToMFD operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -108,17 +110,17 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="associateConnectionPortTerminationPointsWithFdRequest">
+  <xsd:element name="associateConnectionlessPortTerminationPointsWithFdRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the associateConnectionPortTerminationPointsWithFd operation</p>
-        <p>This operation allows an NMS to request from the EMS the association
-        of one or more ConnectionPortTerminationPoints with a flow domain as flow domain edge Cptps.</p>
+        <p>Request message structure of the associateConnectionlessPortTerminationPointsWithFd operation</p>
+        <p>This operation associates Connectionless Port Terminations Points (CPTPs) with the Flow Domain (FD).
+        The provided CPTPs must be already assigned to one of the Matrix Flow Domains that are associated to the FD.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="fdName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="fdRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the flow domain to be modified.</p>
@@ -128,25 +130,26 @@
         <xsd:element name="cptpRefList" type="nam:NamingAttributeListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The names of the Cptps to be associated with the flow domain. 
-            If the list is empty nothing is done on the EMS and the method returns success.</p>
+              <p>This parameter provides the names of the Connectionless Port Terminations Points (CPTPs)
+              to be associated with the Flow Domain.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
         <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The list of TPs with associated parameters to be applied.</p>
+              <p>This parameter, when used in the request, identifies a list of TPs with associated parameters
+              to be applied; identifies the list of TPs with associated applied parameters.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="associateConnectionPortTerminationPointsWithFdResponse">
+  <xsd:element name="associateConnectionlessPortTerminationPointsWithFdResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the associateConnectionPortTerminationPointsWithFd operation</p>
+        <p>Response message structure of the associateConnectionlessPortTerminationPointsWithFd operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -154,24 +157,24 @@
         <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The list of TPs with associated parameters to be applied.</p>
+              <p>The list of TPs with associated parameters.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
         <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Specifies the fault reason if any.</p>
+              <p>This parameter returns the error(s) if any.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="associateConnectionPortTerminationPointsWithFdException">
+  <xsd:element name="associateConnectionlessPortTerminationPointsWithFdException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the associateConnectionPortTerminationPointsWithFd operation</p>
+        <p>Exception message structure of the associateConnectionlessPortTerminationPointsWithFd operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -194,13 +197,13 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the associateMatrixFlowDomainsWithFd operation</p>
-        <p>This operation allows an NMS to request from the EMS the association
-        of one or more matrix flow domains with a flow domain.</p>
+        <p>This operation associates Matrix Flow Domains (MFDs) with a Flow Domain (FD).
+        The MFDs to be associated must not be associated to another FD.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="fdName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="fdRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the flow domain to be modified.</p>
@@ -210,16 +213,15 @@
         <xsd:element name="mfdRefList" type="nam:NamingAttributeListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The names of the matrix flow domains to be associated from the flow
-            domain. If the list is empty nothing is done on the EMS and the method returns
-            success.</p>
+              <p>This parameter provides the names of the Matrix Flow Domains to be associated with the Flow Domain.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
         <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The list of TPs with associated parameters to be applied.</p>
+              <p>This parameter, when used in the request, identifies a list of TPs with associated parameters
+              to be applied; identifies the list of TPs with associated applied parameters.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -237,14 +239,14 @@
         <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The list of TPs with associated parameters to be applied.</p>
+              <p>The list of TPs with associated parameters.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
         <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Specifies the fault reason if any.</p>
+              <p>This parameter returns the error(s) if any.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -278,8 +280,13 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the createAndActivateFlowDomainFragment operation</p>
-        <p>This operation allows an NMS invokes the createAndActivateFlowDomainFragment operation to request the EMS to create
-        and activate a flow domain fragment given the parameters passed in the method.</p>
+        <p>This operation creates a Flow Domain Fragment (FDFr) within the Flow Domain (FD).
+        The target OS creates all necessary Flow Points and Matrix Flow Domain Fragments comprising the FDFr.
+        The request is successful if at least two edge Flow Points can be created.
+        In case not all requested (edge) Flow Points can be connected when the FDFr is created, the target OS returns
+        the list of the not connectable Connectionless Port Termination Points (CPTPs) in the success reply.
+        If internal CPTPs are provided by the requesting OS and if it is not possible to include all provided internal CPTPs
+        to the route of the FDFr, the operation will be rejected.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -287,7 +294,7 @@
         <xsd:element name="createData" type="tns:FlowDomainFragmentCreateDataType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Structure describing the Fdfr structure to be created. Setting of
+              <p>Structure describing the FDFr structure to be created. Setting of
             connectionless parameters is best effort (except where specified otherwise 
             for a particular parameter).</p>
             </xsd:documentation>
@@ -296,27 +303,27 @@
         <xsd:element name="connectivityRequirement" type="fd:ConnectivityRequirementType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>For a "connectivity-aware" EMS, this parameter shall identify 
+              <p>For a "connectivity-aware" Target OS, this parameter shall identify 
             the requested operation mode in case not all FPs have potential connectivity 
-            to one another. If the EMS is not connectivity-aware, this parameter is ignored.</p>
+            to one another. If the Target OS is not connectivity-aware, this parameter is ignored.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
         <xsd:element name="aEndRefList" type="nam:NamingAttributeListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>A list of of CPTP names that delimit the Fdfr and characterize 
-            its edges (entrance and/or exit points). As a result of creating the Fdfr,
-            FPs are created as clients of the Fd Edge Cptps. 
+              <p>A list of of CPTP names that delimit the FDFr and characterize 
+            its edges (entrance and/or exit points). As a result of creating the FDFr,
+            FPs are created as clients of the Fd Edge CPTPs. 
             In case of a unidirectional 
-            Fdfr this attribute contains the list of source Fd Edge Cptps. 
+            FDFr this attribute contains the list of source Fd Edge CPTPs. 
             In case of a 
-            bidirectional Fdfr this attribute may be combined with the zEnd TPs 
-            attribute to obtain all the Fd Edge Cptps that are associated to the 
-            Fdfr. 
-            (N.B. For a bidirectional point to point Fdfr it is suggested, but not 
+            bidirectional FDFr this attribute may be combined with the zEnd TPs 
+            attribute to obtain all the Fd Edge CPTPs that are associated to the 
+            FDFr. 
+            (N.B. For a bidirectional point to point FDFr it is suggested, but not 
             mandatory, to put one TP in the aEnd and one in the zEnd, as with SNCs and 
-            TLs. For a multipoint Fdfr, or a point-to-point Fdfr that may be expanded 
+            TLs. For a multipoint FDFr, or a point-to-point FDFr that may be expanded 
             to multipoint, it is suggested to put all the TPs in the aEnd.) </p>
             </xsd:documentation>
           </xsd:annotation>
@@ -324,14 +331,14 @@
         <xsd:element name="zEndRefList" type="nam:NamingAttributeListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>In case of a unidirectional Fdfr this attribute contains the list of 
-            sink Fd Edge Cptps that delimit the Fdfr and characterize its edges
+              <p>In case of a unidirectional FDFr this attribute contains the list of 
+            sink Fd Edge CPTPs that delimit the FDFr and characterize its edges
             (exit points). 
-            As a result of creating the Fdfr, FPs are created as 
-            clients of the Fd Edge Cptps. 
-            In case of a bidirectional Fdfr this attribute 
-            may be combined with the aEnd TPs attribute to obtain all the Fd Edge Cptps 
-            that are associated to the Fdfr.</p>
+            As a result of creating the FDFr, FPs are created as 
+            clients of the Fd Edge CPTPs. 
+            In case of a bidirectional FDFr this attribute 
+            may be combined with the aEnd TPs attribute to obtain all the Fd Edge CPTPs 
+            that are associated to the FDFr.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -339,27 +346,26 @@
           <xsd:annotation>
             <xsd:documentation>
               <p>A (possibly empty) list of internal CPTP names that must be included 
-            in the route of the Fdfr. As a result of creating the Fdfr, 
-            FPs are created as clients of the internal Cptps.</p>
+            in the route of the FDFr. As a result of creating the FDFr, 
+            FPs are created as clients of the internal CPTPs.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
         <xsd:element name="mfdfrList" type="mfdfr:MatrixFlowDomainFragmentListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>An optional (possibly empty) list of MfdFrs that make up the route 
-            of the Fdfr. This attribute may be omitted if the Fdfr is routed by the network. 
-            As a result of creating the Fdfr, MfdFrs are created in the various Mfds.</p>
+              <p>An optional (possibly empty) list of MFDFrs that make up the route 
+            of the FDFr. This attribute may be omitted if the FDFr is routed by the network. 
+            As a result of creating the FDFr, MFDFrs are created in the various MFDs.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
         <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>A list of TPs and parameters to apply. On method return the list is 
-            updated to provide the resulting parameters. The list may refer to
-            flow points that are being created during the createAndActivateFdfr request
-            or to the containing Cptps.</p>
+              <p>A list of TPs and parameters to apply. The list may refer to
+            flow points that are being created during the createAndActivateFDFr request
+            or to the containing CPTPs.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -377,18 +383,18 @@
         <xsd:element name="aEndRefList" type="nam:NamingAttributeListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>A list of of CPTP names that delimit the Fdfr and characterize 
-            its edges (entrance and/or exit points). As a result of creating the Fdfr,
-            FPs are created as clients of the Fd Edge Cptps. 
+              <p>A list of of CPTP names that delimit the FDFr and characterize 
+            its edges (entrance and/or exit points). As a result of creating the FDFr,
+            FPs are created as clients of the Fd Edge CPTPs. 
             In case of a unidirectional 
-            Fdfr this attribute contains the list of source Fd Edge Cptps. 
+            FDFr this attribute contains the list of source Fd Edge CPTPs. 
             In case of a 
-            bidirectional Fdfr this attribute may be combined with the zEnd TPs 
-            attribute to obtain all the Fd Edge Cptps that are associated to the 
-            Fdfr. 
-            (N.B. For a bidirectional point to point Fdfr it is suggested, but not 
+            bidirectional FDFr this attribute may be combined with the zEnd TPs 
+            attribute to obtain all the Fd Edge CPTPs that are associated to the 
+            FDFr. 
+            (N.B. For a bidirectional point to point FDFr it is suggested, but not 
             mandatory, to put one TP in the aEnd and one in the zEnd, as with SNCs and 
-            TLs. For a multipoint Fdfr, or a point-to-point Fdfr that may be expanded 
+            TLs. For a multipoint FDFr, or a point-to-point FDFr that may be expanded 
             to multipoint, it is suggested to put all the TPs in the aEnd.) </p>
             </xsd:documentation>
           </xsd:annotation>
@@ -396,14 +402,14 @@
         <xsd:element name="zEndRefList" type="nam:NamingAttributeListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>In case of a unidirectional Fdfr this attribute contains the list of 
-            sink Fd Edge Cptps that delimit the Fdfr and characterize its edges
+              <p>In case of a unidirectional FDFr this attribute contains the list of 
+            sink Fd Edge CPTPs that delimit the FDFr and characterize its edges
             (exit points). 
-            As a result of creating the Fdfr, FPs are created as 
-            clients of the Fd Edge Cptps. 
-            In case of a bidirectional Fdfr this attribute 
-            may be combined with the aEnd TPs attribute to obtain all the Fd Edge Cptps 
-            that are associated to the Fdfr.</p>
+            As a result of creating the FDFr, FPs are created as 
+            clients of the Fd Edge CPTPs. 
+            In case of a bidirectional FDFr this attribute 
+            may be combined with the aEnd TPs attribute to obtain all the Fd Edge CPTPs 
+            that are associated to the FDFr.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -411,35 +417,31 @@
           <xsd:annotation>
             <xsd:documentation>
               <p>A (possibly empty) list of internal CPTP names that must be included 
-            in the route of the Fdfr. As a result of creating the Fdfr, 
-            FPs are created as clients of the internal Cptps.</p>
+            in the route of the FDFr. As a result of creating the FDFr, 
+            FPs are created as clients of the internal CPTPs.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
         <xsd:element name="mfdfrList" type="mfdfr:MatrixFlowDomainFragmentListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>An optional (possibly empty) list of MfdFrs that make up the route 
-            of the Fdfr. This attribute may be omitted if the Fdfr is routed by the network. 
-            As a result of creating the Fdfr, MfdFrs are created in the various Mfds.</p>
+              <p>An optional (possibly empty) list of MFDFrs that make up the route 
+            of the FDFr. This attribute may be omitted if the FDFr is routed by the network. 
+            As a result of creating the FDFr, MFDFrs are created in the various MFDs.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
         <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>A list of TPs and parameters to apply. On method return the list is 
-            updated to provide the resulting parameters. The list may refer to
-            flow points that are being created during the createAndActivateFdfr request
-            or to the containing Cptps.</p>
+              <p>The list of TPs with resulting parameters.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="theFdfr" type="fdfr:FlowDomainFragmentType" minOccurs="0">
+        <xsd:element name="createdFdfr" type="fdfr:FlowDomainFragmentType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The new created and activated flow domain fragment. The EMS is responsible
-            for guaranteeing uniqueness of the name of the flow domain fragment.</p>
+              <p>This parameter returns the newly created Flow Domain Fragment object.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -462,8 +464,7 @@
         <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>In case a "best effort" parameter could not be set or a flow point could not
-            be connected an indication of the fault reason is provided by the EMS.</p>
+              <p>This parameter returns the error(s) if any.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -498,10 +499,9 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the createFlowDomain operation</p>
-        <p>This operation allows the NMS to request from the EMS the creation of a
-        flow domain given the parameters passed in the method. The NMS may specify
-        matrix flow domains or flow domain edge Cptps to be associated with
-        the created flow domain.</p>
+        <p>This operation creates a Flow Domain (FD) within the target OS.
+        The operation allows also to associate Matrix Flow Domains and Connectionless Port Termination Points (CPTPs)
+        to the new FD.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -516,9 +516,10 @@
         <xsd:element name="assignedCptpRefList" type="nam:NamingAttributeListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Identifies the list of assigned Cptps to be associated as flow
-            domain edge Cptps to the flow domain. This may be an empty list.
-            Associating Cptps to the flow domain is done on a best effort basis.</p>
+              <p>This attribute identifies the list of Connectionless Port Termination Points (CPTPs) to be associated
+              to the new Flow Domain (FD).
+              The request is denied, if a CPTP (to be associated) is not already assigned to one of
+              the Matrix Flow Domains (MFDs) provided.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -540,10 +541,10 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="assignedCptpRefList" type="nam:NamingAttributeListType" minOccurs="0">
+        <xsd:element name="failedCptpRefList" type="nam:NamingAttributeListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The list contains the names of the Cptps that could
+              <p>The list contains the names of the CPTPs that could
             not be associated with the flow domain.</p>
             </xsd:documentation>
           </xsd:annotation>
@@ -551,14 +552,14 @@
         <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The list of TPs with associated parameters to be applied.</p>
+              <p>The list of TPs with associated parameters.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="theFd" type="fd:FlowDomainType" minOccurs="0">
+        <xsd:element name="createdFd" type="fd:FlowDomainType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The new created Fd. The EMS is responsible for guaranteeing
+              <p>The new created Fd. The Target OS is responsible for guaranteeing
             uniqueness of the name of the Fd. The name may be specified by the
             NMS in the createData.</p>
             </xsd:documentation>
@@ -567,9 +568,7 @@
         <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>In case a "best effort" parameter could not be set or a CPTP could
-            not be associated with the flow domain an indication of the fault reason
-            is provided by the EMS.</p>
+              <p>This parameter returns the error(s) if any.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -604,9 +603,8 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the createMatrixFlowDomain operation</p>
-        <p>This operation allows an NMS requests from the EMS the creation of a
-        matrix flow domain given the parameters passed in the method. The NMS
-        must specify Cptps to be associated with the created matrix flow domain.</p>
+        <p>This operation creates a Matrix Flow Domain (MFD) within a Managed Element.
+        The operation allows also assigning Connectionless Port Termination Points (CPTPs) to the new MFD.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -639,23 +637,21 @@
         <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The list of TPs with associated parameters to be applied.</p>
+              <p>The list of TPs with associated parameters.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="theMfd" type="mfd:MatrixFlowDomainType" minOccurs="0">
+        <xsd:element name="createdMfd" type="mfd:MatrixFlowDomainType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The new created matrix flow domain. The EMS is responsible for guaranteeing
-            uniqueness of the name of the matrix flow domain. The name may be specified
-            by the NMS in the createData.</p>
+              <p>This parameter returns the newly created Matrix Flow Domain object.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
         <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Specifies the creation error(s) if any.</p>
+              <p>This parameter returns the error(s) if any.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -690,13 +686,13 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the deactivateAndDeleteFlowDomainFragment operation</p>
-        <p>This operation allows an NMS to request the deactivation and deletion of a flow
-        domain fragment from a flow domain.</p>
+        <p>This operation deletes a Flow Domain Fragment (FDFr) from the Flow Domain.
+        The target OS deletes all associated Flow Points and Matrix Flow Domain Fragments comprising the FDFr.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="fdfrName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="fdfrRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the flow domain fragment to be deactivated and deleted.</p>
@@ -706,8 +702,7 @@
         <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>A list of TPs and parameters to apply. On method return the list is 
-            updated to provide the resulting parameters. The list may refer only to
+              <p>A list of TPs and parameters to apply. The list may refer only to
             TPs that take part in the flow domain fragment deletion process. </p>
             </xsd:documentation>
           </xsd:annotation>
@@ -726,13 +721,11 @@
         <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>A list of TPs and parameters to apply. On method return the list is 
-            updated to provide the resulting parameters. The list may refer only to
-            TPs that take part in the flow domain fragment deletion process. </p>
+              <p>A list of TPs with the resulting parameters.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="theFdfr" type="fdfr:FlowDomainFragmentType" minOccurs="0">
+        <xsd:element name="deletedFdfr" type="fdfr:FlowDomainFragmentType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The deleted flow domain fragment. </p>
@@ -742,7 +735,7 @@
         <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Specifies the fault reason if any.</p>
+              <p>This parameter returns the error(s) if any.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -772,17 +765,17 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="deAssociateConnectionPortTerminationPointsFromFdRequest">
+  <xsd:element name="deAssociateConnectionlessPortTerminationPointsFromFdRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the deAssociateConnectionPortTerminationPointsFromFd operation</p>
-        <p>This operation allows an NMS to request from the EMS the de-association
-        of one or more Cptps from a flow domain.</p>
+        <p>Request message structure of the deAssociateConnectionlessPortTerminationPointsFromFd operation</p>
+        <p>This operation de-associates Flow Domain Edge Connectionless Port Terminations Points (FD Edge CPTPs)
+        from a Flow Domain (FD).</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="fdName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="fdRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the flow domain to be modified.</p>
@@ -792,9 +785,8 @@
         <xsd:element name="cptpRefList" type="nam:NamingAttributeListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The names of the Cptps to be de-associated from the flow
-            domain. If the list is empty nothing is done on the EMS and the method returns
-            success.</p>
+              <p>This parameter provides the names of the Connectionless Port Terminations Points (CPTPs)
+              to be de-associated from the Flow Domain.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -808,10 +800,10 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="deAssociateConnectionPortTerminationPointsFromFdResponse">
+  <xsd:element name="deAssociateConnectionlessPortTerminationPointsFromFdResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the deAssociateConnectionPortTerminationPointsFromFd operation</p>
+        <p>Response message structure of the deAssociateConnectionlessPortTerminationPointsFromFd operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -819,24 +811,24 @@
         <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The list of TPs with associated parameters to be applied.</p>
+              <p>The list of TPs with associated parameters.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
         <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Specifies the fault reason if any.</p>
+              <p>This parameter returns the error(s) if any.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="deAssociateConnectionPortTerminationPointsFromFdException">
+  <xsd:element name="deAssociateConnectionlessPortTerminationPointsFromFdException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the deAssociateConnectionPortTerminationPointsFromFd operation</p>
+        <p>Exception message structure of the deAssociateConnectionlessPortTerminationPointsFromFd operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -848,7 +840,6 @@
             <xsd:element ref="msg:internalError"/>
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
-            <xsd:element ref="msg:notInValidState"/>
             <xsd:element ref="msg:unableToComply"/>
             <xsd:element ref="msg:userlabelInUse"/>
           </xsd:choice>
@@ -861,13 +852,12 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the deAssociateMatrixFlowDomainsFromFd operation</p>
-        <p>This operation allows an NMS to request from the EMS the de-association
-        of one or more matrix flow domains from a flow domain.</p>
+        <p>This operation de-associates Matrix Flow Domains (MFDs) from a Flow Domain (FD).</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="fdName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="fdRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the flow domain to be modified.</p>
@@ -877,9 +867,7 @@
         <xsd:element name="mfdRefList" type="nam:NamingAttributeListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The names of the matrix flow domains to be de-associated from the flow
-            domain. If the list is empty nothing is done on the EMS and the method returns
-            success.</p>
+              <p>This parameter provides the names of the Matrix Flow Domains to be de-associated from the Flow Domain.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -904,14 +892,14 @@
         <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The list of TPs with associated parameters to be applied.</p>
+              <p>The list of TPs with associated parameters.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
         <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Specifies the fault reason if any.</p>
+              <p>This parameter returns the error(s) if any.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -945,12 +933,14 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the deleteFlowDomain operation</p>
-        <p>This operation allows an NMS to request the deletion of a flow domain from the EMS.</p>
+        <p>This operation deletes a Flow Domain (FD) from the target OS.
+        The operation de-associates all Matrix Flow Domains and FD Edge Connectionless Port Termination Points (CPTPs)
+        from the FD and then deletes the FD.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="fdName" type="nam:NamingAttributeListType" minOccurs="0">
+        <xsd:element name="fdRef" type="nam:NamingAttributeListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the flow domain to be deleted.</p>
@@ -978,14 +968,14 @@
         <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The list of TPs with associated parameters to be applied.</p>
+              <p>The list of TPs with associated parameters.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
         <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Specifies the fault reason if any.</p>
+              <p>This parameter returns the error(s) if any.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -1019,12 +1009,13 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the deleteMatrixFlowDomain operation</p>
-        <p>This operation allows an NMS to request the deletion of a matrix flow domain from the EMS.</p>
+        <p>This operation deletes a Matrix Flow Domain (MFD) within a Managed Element.
+        The operation will be denied when the MFD to be deleted is still associated to a Flow Domain or when it is fixed.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="mfdName" type="nam:NamingAttributeListType" minOccurs="0">
+        <xsd:element name="mfdRef" type="nam:NamingAttributeListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the matrix flow domain to be deleted.</p>
@@ -1052,15 +1043,14 @@
         <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The list of TPs with associated parameters to be applied.</p>
+              <p>The list of TPs with associated parameters.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
         <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>In case a "best effort" parameter could not be set
-            an indication of the fault reason is provided by the EMS.</p>
+              <p>This parameter returns the error(s) if any.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -1094,21 +1084,29 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the modifyFlowDomainFragment operation</p>
-        <p>This operation allows the NMS invokes the modifyFlowDomainFragment operation to request the EMS to modify an 
-        existing flow domain fragment as specified by the parameters passed in the
-        method.</p>
+        <p>This operation modifies a Flow Domain Fragment (FDFr).</p>
+        <p>The operation is able to modify<ul>
+            <li>the attributes and parameters of the FDFr</li>
+            <li>the parameters of other involved Connectionless Port Termination Points (CPTPs) and Flow Points (FPs)</li>
+            <li>the FDFr by addition/removal of FPs</li>
+          </ul>
+        </p>
+        <p>FPs are added by designating the FD Edge CPTPs and FD Internal CPTPs to be added in two separate lists
+        (one for edge and one for internal). FPs are removed by designating their server CPTPs (edge and internal) in a third list.
+        The removal of CPTPs shall be rejected if less than two end Flow Points would remain after successful completion
+        of the operation.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="fdfrName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="fdfrRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the flow domain fragment to modify.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="fdfrModifyData" type="tns:FlowDomainFragmentModifyDataType" minOccurs="0">
+        <xsd:element name="modifyData" type="tns:FlowDomainFragmentModifyDataType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Structure describing how the flow domain fragment should be modified.
@@ -1120,20 +1118,19 @@
         <xsd:element name="connectivityRequirement" type="fd:ConnectivityRequirementType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>For a "connectivity-aware" EMS, this parameter shall identify 
+              <p>For a "connectivity-aware" Target OS, this parameter shall identify 
              the requested operation mode in case not all FPs have potential connectivity 
              to one another. This parameter is only significant if the fdfrModifyData parameter
              contains flow points to be added or removed, otherwise it shall be ignored
-             by the EMS. If the EMS is not connectivity-aware, this parameter is also ignored.</p>
+             by the Target OS. If the Target OS is not connectivity-aware, this parameter is also ignored.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
         <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>A list of TPs and parameters to apply. On method return the list is 
-            updated to provide the resulting parameters. The list may refer to
-            flow points or to the containing Cptps.</p>
+              <p>A list of TPs and parameters to apply. The list may refer to
+            flow points or to the containing CPTPs.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -1151,10 +1148,7 @@
         <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>A list of TPs and parameters to apply. On method return the list is 
-            updated to provide the resulting parameters. The list may refer to
-            flow points that are being created during the createAndActivateFlowDomainFragment request
-            or to the containing Cptps.</p>
+              <p>A list of TPs and parameters.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -1176,7 +1170,7 @@
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="newFdfr" type="fdfr:FlowDomainFragmentType" minOccurs="0">
+        <xsd:element name="modifiedFdfr" type="fdfr:FlowDomainFragmentType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The modified flow domain fragment.</p>
@@ -1186,8 +1180,7 @@
         <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>In case a "best effort" parameter could not be set an indication of the 
-            fault reason is provided by the EMS.</p>
+              <p>This parameter returns the error(s) if any.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -1222,13 +1215,13 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the modifyFlowDomain operation</p>
-        <p>This operation allows an NMS invoke the modifyFlowDomain service to request from the EMS to modify an 
-        existing flow domain as specified by the parameters passed in the method.</p>
+        <p>This operation modifies a Flow Domain (FD). The modification of the Flow Domain
+        is done on a best effort basis. All attributes that could not be modified shall be returned in the reply.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="fdName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="fdRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the flow domain to modify.</p>
@@ -1238,9 +1231,7 @@
         <xsd:element name="modifyData" type="tns:FlowDomainModifyDataType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Structure describing how the flow domain should be modified. If the
-            flow domain contains already the required information nothing is done on
-            the EMS and the method returns successfully.</p>
+              <p>This parameter provides the parameters that shall be modified in the Flow Domain.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -1272,7 +1263,7 @@
         <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Specifies the fault reason if any.</p>
+              <p>This parameter returns the error(s) if any.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -1294,7 +1285,6 @@
             <xsd:element ref="msg:internalError"/>
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
-            <xsd:element ref="msg:objectInUse"/>
             <xsd:element ref="msg:unableToComply"/>
             <xsd:element ref="msg:userlabelInUse"/>
           </xsd:choice>
@@ -1307,25 +1297,24 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the modifyMatrixFlowDomain operation</p>
-        <p>This operation allows an NMS invokes the modifyMatrixFlowDomain service to request from the EMS to modify an 
-        existing matrix flow domain as specified by the parameters passed in the method.</p>
+        <p>This operation modifies a Matrix Flow Domain (MFD).
+        The modification of the Matrix Flow Domain is done on a best effort basis.
+        All attributes that could not be modified shall be returned in the reply.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="mfdName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="mfdRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the matrix flow domain to modify.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="mfdModifyData" type="tns:MatrixFlowDomainModifyDataType" minOccurs="0">
+        <xsd:element name="modifyData" type="tns:MatrixFlowDomainModifyDataType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Structure describing how the matrix flow domain shall be modified. This
-            parameter contains the parameters that are not best effort. If the modification
-            of one of the parameters fails an exception will be thrown.</p>
+              <p>This parameter provides the parameters that shall be modified in the Matrix Flow Domain.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -1340,7 +1329,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="newMfd" type="mfd:MatrixFlowDomainType" minOccurs="0">
+        <xsd:element name="modifiedMfd" type="mfd:MatrixFlowDomainType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The modified matrix flow domain.</p>
@@ -1357,8 +1346,7 @@
         <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>In case a "best effort" parameter could not be set the fault reason
-            is provided by the EMS.</p>
+              <p>This parameter returns the error(s) if any.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -1381,23 +1369,25 @@
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
             <xsd:element ref="msg:unableToComply"/>
+            <xsd:element ref="msg:userlabelInUse"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="unassignConnectionPortTerminationPointsFromMfdRequest">
+  <xsd:element name="unassignConnectionlessPortTerminationPointsFromMfdRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the unassignConnectionPortTerminationPointsFromMfd operation</p>
-        <p>This operation allows an NMS to request from the EMS to unassign
-        one or more Cptps from a matrix flow domain.</p>
+        <p>Request message structure of the unassignConnectionlessPortTerminationPointsFromMFD operation</p>
+        <p>This operation un-assigns Connectionless Port Terminations Points (CPTPs) from the Matrix Flow Domain (MFD).
+        The provided CPTPs must be potential CPTPs for this MFD (e.g. have to be on the same equipment or same rack
+        with backplane connectivity).</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="mfdName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="mfdRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the matrix flow domain to be modified.</p>
@@ -1407,8 +1397,8 @@
         <xsd:element name="tpRefList" type="nam:NamingAttributeListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The names of the Cptps to be unassigned from the matrix flow domain.
-            If no CPTP has been specified, the method returns success.</p>
+              <p>This parameter provides the names of the Connectionless Port Terminations Points (CPTPs)
+              to be un-assigned from the Matrix Flow Domain.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -1422,10 +1412,10 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="unassignConnectionPortTerminationPointsFromMfdResponse">
+  <xsd:element name="unassignConnectionlessPortTerminationPointsFromMfdResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the unassignConnectionPortTerminationPointsFromMfd operation</p>
+        <p>Response message structure of the unassignConnectionlessPortTerminationPointsFromMFD operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -1433,31 +1423,30 @@
         <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The list of TPs with associated parameters to be applied.</p>
+              <p>The list of TPs with associated parameters.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
         <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Specifies the fault reason if any.</p>
+              <p>This parameter returns the error(s) if any.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="unassignConnectionPortTerminationPointsFromMfdException">
+  <xsd:element name="unassignConnectionlessPortTerminationPointsFromMfdException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the unassignConnectionPortTerminationPointsFromMfd operation</p>
+        <p>Exception message structure of the unassignConnectionlessPortTerminationPointsFromMFD operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:complexContent>
         <xsd:restriction base="msg:AllExceptionsType">
           <xsd:choice>
-            <xsd:element ref="msg:capacityExceeded"/>
             <xsd:element ref="msg:commLoss"/>
             <xsd:element ref="msg:entityNotFound"/>
             <xsd:element ref="msg:internalError"/>
@@ -1475,7 +1464,7 @@
   <xsd:complexType name="FlowDomainCreateDataType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>The read/write attributes required for the creation of an flow domain on the EMS are packed together in an FlowDomainCreateData structure which the NMS will pass to the EMS at flow domain creation time.</p>
+        <p>This data type represents the specific parameters that may be provided when creating a Flow Domain.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
@@ -1503,7 +1492,7 @@
   <xsd:complexType name="FlowDomainModifyDataType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>The read/write attributes required for the modification of a flow domain on the EMS are packed together in an FlowDomainModifyData structure which the NMS will pass to the EMS in a request to modify an existing flow domain.</p>
+        <p>This data type represents the specific parameters that may be provided to modify a Flow Domain.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
@@ -1524,7 +1513,7 @@
   <xsd:complexType name="FlowDomainFragmentCreateDataType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>The read/write attributes required for the creation of a flow domain fragment on the EMS are packed together in an FDFrCreateData structure which the NMS will pass to the EMS at flow domain fragment creation time.</p>
+        <p>This data type represents the parameters that may be provided when creating a Flow Domain Fragment (FDFr).</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
@@ -1547,18 +1536,18 @@
           <xsd:element ref="lp:transmissionParameters" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-                <p>The layer rate on which connectivity is established and a related set of connectionless parameters. Refer to chapter "Connectionless Technology Parameters" of the supporting document LayeredParameters.pdf for details of the currently defined connectionless parameters</p>
+                <p>The layer rate on which connectivity is established and a related set of connectionless parameters. Refer to chapter "Connectionless Technology Parameters" of the supporting document LayeredParameters.pdf for details of the currently defined connectionless parameters.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element name="isFullRoute" type="xsd:boolean" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-                <p>This parameter identifies if the internalTPs and mfdfrs parameters of the createAndActivateFDFr operation describe the full route of the Flow Domain Fragment (as opposed to only a partial constraint). When no routing constraints are specified, false must be used.</p>
+                <p>This parameter identifies if the internal TPs and mfdfrs parameters of the createAndActivateFdfr operation describe the full route of the Flow Domain Fragment (as opposed to only a partial constraint). When no routing constraints are specified, false must be used.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="fdfrType" type="com:FlowDomainFragmentTypeType" minOccurs="0">
+          <xsd:element name="type" type="com:FlowDomainFragmentTypeType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>Represents the type of the FDFr</p>
@@ -1573,7 +1562,7 @@
   <xsd:complexType name="FlowDomainFragmentModifyDataType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>The read/write attributes required for the modification of a flow domain fragment on the EMS are packed together in an FDFrModifyData structure which the NMS will pass to the EMS at flow domain fragment modification time.</p>
+        <p>This data type represents the specific parameters that may be provided to modify a Flow Domain Fragment.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
@@ -1589,7 +1578,7 @@
           <xsd:element ref="lp:transmissionParameters" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-                <p>The layer rate on which connectivity is established and a related set of connectionless parameters. Refer to chapter "Connectionless Technology Parameters" of the supporting document LayeredParameters.pdf for details of the currently defined connectionless parameters</p>
+                <p>The layer rate on which connectivity is established and a related set of connectionless parameters. Refer to chapter "Connectionless Technology Parameters" of the supporting document LayeredParameters.pdf for details of the currently defined connectionless parameters.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
@@ -1630,7 +1619,7 @@ As a result of modifying the FDFr, the client Flow Points are deleted.</p>
   <xsd:complexType name="MatrixFlowDomainCreateDataType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>The read/write attributes required for the creation of an flow domain on the EMS are packed together in an MFDCreateData structure which the NMS will pass to the EMS at matrix flow domain creation time.</p>
+        <p>This data type represents the parameters that may be provided when creating a Matrix Flow Domain.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
@@ -1639,7 +1628,9 @@ As a result of modifying the FDFr, the client Flow Points are deleted.</p>
           <xsd:element name="unassignedCptpRefList" type="nam:NamingAttributeListType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-                <p>A list of names of unassigned CPTPs that shall be assigned to the matrix flow domain.</p>
+                <p>This attribute identifies the list of Connectionless Port Termination Points (CPTPs)
+                to be associated to the new Flow Domain (FD). The request is denied, if a CPTP (to be associated) is not already
+                assigned to one of the Matrix Flow Domains (MFDs) provided.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
@@ -1658,7 +1649,7 @@ As a result of modifying the FDFr, the client Flow Points are deleted.</p>
   <xsd:complexType name="MatrixFlowDomainModifyDataType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>The read/write attributes required for the modification of a matrix flow domain on the EMS are packed together in an MFDModifyData structure which the NMS will pass to the EMSin a request to modify an existing matrix flow domain.</p>
+        <p>This data type represents the specific parameters that may be provided to modify a Matrix Flow Domain.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
