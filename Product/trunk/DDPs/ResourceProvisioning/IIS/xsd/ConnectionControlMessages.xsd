@@ -1402,7 +1402,7 @@
           </xsd:element>
           <xsd:element name="rerouteAllowed" type="com:RerouteType" minOccurs="0">
             <xsd:annotation>
-              <xsd:documentation>This attribute indicates if the Target OS/MEs are allowed and/or required to reroute this SNC if there is a failure on this SNC, periodically to optimize the routes, of for any other reason. It is an Target OS/ME implementation whether this is done using network routing protocols or if the Target OS/MEs detect the failure and take appropriate action to attempt to fix the SNC. There is no requirement for the reroutes to respect the constraints specified in the creation request (ccInclusions, neTpInclusions, fullRoute, neTpSubnetworkConnectionExclusions).</xsd:documentation>
+              <xsd:documentation>This attribute indicates if the Target OS/MEs are allowed and/or required to reroute this SNC if there is a failure on this SNC, periodically to optimize the routes, or for any other reason. It is an Target OS/ME implementation whether this is done using network routing protocols or if the Target OS/MEs detect the failure and take appropriate action to attempt to fix the SNC. There is no requirement for the reroutes to respect the constraints specified in the creation request (ccInclusions, neTpInclusions, fullRoute, neTpSubnetworkConnectionExclusions).</xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element name="networkRouted" type="com:NetworkRoutedType" minOccurs="0">
@@ -1410,7 +1410,7 @@
               <xsd:documentation>This attribute specifies if the network is allowed/required to route this SNC.</xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="sncType" type="com:SubnetworkConnectionTypeType" minOccurs="0">
+          <xsd:element name="type" type="com:SubnetworkConnectionTypeType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>The Requesting OS must specify the sncType as specified in SNC Types.</xsd:documentation>
             </xsd:annotation>
@@ -1422,12 +1422,12 @@
           </xsd:element>
           <xsd:element name="ccInclusionList" type="cc:CrossConnectListType" minOccurs="0">
             <xsd:annotation>
-              <xsd:documentation>Specifies a list of cross-connects that must be used by the SNC. The list must be empty if no cross-connect constraints are required. If the Target OS cannot fully satisfy the constraints, then the request will be rejected.</xsd:documentation>
+              <xsd:documentation>Specifies a list of cross-connects that must be used by the SNC. The list must be empty if no cross-connect constraints are required.</xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="inclusionRefList" type="nam:NamingAttributeListType" minOccurs="0">
+          <xsd:element name="inclusionResourceRefList" type="nam:NamingAttributeListType" minOccurs="0">
             <xsd:annotation>
-              <xsd:documentation>Specifies a list of MEs, TLs, PTPs, FTPs and/or CTPs that must be used by the SNC when carrying out a full reroute or adding a routing leg. The list must be empty if no ME/TL/PTP/CTP/FTP constraints are required.If the Target OScannot fully satisfy the constraints, then the request will be rejected.</xsd:documentation>
+              <xsd:documentation>Specifies a list of MEs, GTPs, TLs, PTPs, FTPs and/or CTPs that must be used by the SNC when carrying out a full reroute or adding a routing leg. The list must be empty if no ME/TL/PTP/CTP/FTP constraints are required. Specifying both inclusion and exclusion constraints is not supported, therefore this list must be empty if exclusionRefList is not empty.</xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element name="isFullRoute" type="xsd:boolean" minOccurs="0">
@@ -1435,9 +1435,9 @@
               <xsd:documentation>Specifies if the neTpInclusions constraints describe the full route of the SNC or routing leg (as opposed to only a partial constraint). When no inclusions constraints are specified, false must be used.</xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="exclusionRefList" type="nam:NamingAttributeListType" minOccurs="0">
+          <xsd:element name="exclusionResourceRefList" type="nam:NamingAttributeListType" minOccurs="0">
             <xsd:annotation>
-              <xsd:documentation>Specifies a list of MEs, TLs, PTPs, FTPs, CTPs, and/or SNCs to be excluded. This is applicable for adding the leg or doing a full reroute and the route must not use any of the NEs, TLs, PTPs, FTPs and CTPs specified, nor any resource used by the SNCs specified. Specifying both inclusion and exclusion constraints is not supported, therefore this list must be empty if neTpInclusions is not empty.</xsd:documentation>
+              <xsd:documentation>Specifies a list of MEs, TLs, PTPs, FTPs, CTPs, and/or SNCs to be excluded. This is applicable for adding the leg or doing a full reroute and the route must not use any of the NEs, TLs, PTPs, FTPs and CTPs specified, nor any resource used by the SNCs specified. Specifying both inclusion and exclusion constraints is not supported, therefore this list must be empty if inclusionResourceRefList or ccInclusionList is not empty.</xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element name="aEndRefList" type="nam:NamingAttributeListType" minOccurs="0">
@@ -1462,7 +1462,7 @@
               </xsd:sequence>
             </xsd:complexType>
           </xsd:element>
-          <xsd:element name="isReportingAlarm" type="xsd:boolean" minOccurs="0">
+          <xsd:element name="isReportingAlarms" type="xsd:boolean" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
 Provides an indication whether alarm reporting for this instance is active or not.
@@ -1472,7 +1472,7 @@ Provides an indication whether alarm reporting for this instance is active or no
           <xsd:element name="networkReroute" type="xsd:string" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-                <p>Indicates if the reroute of an SNC (if allowed) should be computed by the network, by the Target OS, or if it does not matter. Values are "Yes", "No", "NotSet"</p>
+                <p>Indicates if the reroute of an SNC (if allowed) should be computed by the network, by the Target OS, or if it does not matter. Values are "Yes", "No", "NotSet".</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
@@ -1514,7 +1514,7 @@ Provides an indication whether alarm reporting for this instance is active or no
           <xsd:element name="priority" type="xsd:unsignedInt" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-                <p>The SNC creation priority</p>
+                <p>The SNC creation priority.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
@@ -1533,7 +1533,7 @@ Provides an indication whether alarm reporting for this instance is active or no
           <xsd:element name="asapRef" type="xsd:string" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-                <p>Indicates the assignment of an ASAP to this SNC object. Value is of the ASAP name.</p>
+                <p>Indicates the assignment of an ASAP to this SNC object. Value is the ASAP name.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
@@ -1547,15 +1547,6 @@ E.g.:
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="aEndTnaNameOrGroupTnaName" type="xsd:string" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>Represent the TNA or Group-TNA of the Connection. A TNA Name List may have 3 value pairs.
-Format:
-\name=TNAName\value=TNANameValue\name=LogicalPortId\value=LogicalPortIdValue\name= Index\value=IndexValue.</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
           <xsd:element name="blsrDirection" type="xsd:string" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
@@ -1566,24 +1557,20 @@ Format:
           <xsd:element name="isBundledSnc" type="xsd:boolean" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-                <p>Indicates whether the SNC constitutes a Bundled SNC service (value “True”) or not..</p>
+                <p>Indicates whether the SNC constitutes a Bundled SNC service (value “True”) or not.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="maximumCost" type="xsd:string" minOccurs="0">
+          <xsd:element name="mustRemoveGtps" type="xsd:boolean" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-                <p>The maximum link/node cost allowed for routing.</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
-          <xsd:element name="mustRemoveGtpList" type="xsd:boolean" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>The parameter is only used for bundled SNCs.  
-If set to “True” the Target OS when removing the SNC must make a best-effort attempt to remove the interior GTPs that once belonged to the SNC, and if set to “False” the Requesting OS does not care whether the Target OS removes the interior GTPs or not.  
-Any behavior other than best-effort is likely to involve a complicated rollback procedure for the Target OS and NEs.  In the case that the parameter is set to “True” and the Target OS cannot remove all the interior GTPs, the Target OS should return a list of the GTPs that could not be removed in the errorReason field of the deactivateAndDeleteSNC() and deleteSnc() operations.  The errorReason would 
-be “not all interior GTPs could be deleted”;  this would be followed by the names of the GTPs that could not be deleted.</p>
+                <p>This attribute defines that the target OS has to delete all the interior Group Termination Points (GTPs) supporting the bundled Subnetwork Connection (SNC) when the SNC is deleted. The attribute is only used when creating bundled SNCs.</p>
+                <p>It can take on two possible values:<uL>
+                    <li>true (the target OS must make a best-effort attempt to remove the interior GTPs that once belonged to the SNC) and</li>
+                    <li>false (the requesting OS doesn't care if the target OS removes the interior GTPs or not).</li>
+                  </uL>
+                </p>
+                <p>In the case that mustRemoveGtps is set to "true" and the target OS cannot remove all the interior GTPs, the target OS should return a list of the GTPs that could not be removed in the errorReason field of the deactivateAndDeleteSnc and deleteSnc operations. The errorReason will be "not all interior GTPs could be deleted" - this will be followed by the names of the GTPs that could not be deleted.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
@@ -1597,13 +1584,6 @@ be “not all interior GTPs could be deleted”;  this would be followed by the 
                     <li>RSU_ANY_CONFIG</li>
                   </ul>
                 </p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
-          <xsd:element name="routeGroupLabel" type="xsd:string" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>This attribute shall represent the route group of the connection.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
@@ -1633,13 +1613,6 @@ be “not all interior GTPs could be deleted”;  this would be followed by the 
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="zEndTnaNameOrGroupTnaName" type="xsd:string" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>see aEndTNANameOrGroupTNAName.</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
         </xsd:sequence>
       </xsd:extension>
     </xsd:complexContent>
@@ -1664,7 +1637,7 @@ be “not all interior GTPs could be deleted”;  this would be followed by the 
               <xsd:documentation>Class of modification: "rerouting", "add_protection" or "remove_protection".</xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="retainOldSNC" type="xsd:boolean" minOccurs="0">
+          <xsd:element name="mustRetainOldSnc" type="xsd:boolean" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>Request for the Target OS to keep the old SNC in pending state.</xsd:documentation>
             </xsd:annotation>
@@ -1686,7 +1659,7 @@ be “not all interior GTPs could be deleted”;  this would be followed by the 
           </xsd:element>
           <xsd:element name="rerouteAllowed" type="com:RerouteType" minOccurs="0">
             <xsd:annotation>
-              <xsd:documentation>This attribute indicates if the Target OS/MEs are allowed and/or required to reroute this SNC if there is a failure on this SNC, periodically to optimize the routes, of for any other reason. It is an Target OS/ME implementation whether this is done using network routing protocols or if the Target OS/MEs detect the failure and take appropriate action to attempt to fix the SNC. There is no requirement for the reroutes to respect the constraints specified in the creation request (ccInclusions, neTpInclusions, fullRoute, neTpSubnetworkConnectionExclusions).</xsd:documentation>
+              <xsd:documentation>This attribute indicates if the Target OS/MEs are allowed and/or required to reroute this SNC if there is a failure on this SNC, periodically to optimize the routes, or for any other reason. It is an Target OS/ME implementation whether this is done using network routing protocols or if the Target OS/MEs detect the failure and take appropriate action to attempt to fix the SNC. There is no requirement for the reroutes to respect the constraints specified in the creation request (ccInclusions, inclusionResourceRefList, fullRoute, exclusionResourceRefList).</xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element name="networkRouted" type="com:NetworkRoutedType" minOccurs="0">
@@ -1694,7 +1667,7 @@ be “not all interior GTPs could be deleted”;  this would be followed by the 
               <xsd:documentation>This attribute specifies if the network is allowed/required to route this SNC.</xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="sncType" type="com:SubnetworkConnectionTypeType" minOccurs="0">
+          <xsd:element name="type" type="com:SubnetworkConnectionTypeType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>The Requesting OS must specify the sncType as specified in SNC Types.</xsd:documentation>
             </xsd:annotation>
@@ -1714,9 +1687,9 @@ be “not all interior GTPs could be deleted”;  this would be followed by the 
               <xsd:documentation>RemovedRoute describes dropping of a protection leg from the original SNC. Either the last cross-connects (that contain the SNCP) are specified by the Requesting OS or the full route may be specified. This parameter can be used in conjunction with addedOrNewRoute only to reroute a segment.</xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="inclusionRefList" type="nam:NamingAttributeListType" minOccurs="0">
+          <xsd:element name="inclusionResourceRefList" type="nam:NamingAttributeListType" minOccurs="0">
             <xsd:annotation>
-              <xsd:documentation>Specifies a list of MEs, TLs, PTPs, FTPs and/or CTPs that must be used by the SNC when carrying out a full reroute or adding a routing leg. The list must be empty if no ME/TL/PTP/CTP/FTP constraints are required.If the Target OScannot fully satisfy the constraints, then the request will be rejected.</xsd:documentation>
+              <xsd:documentation>Specifies a list of MEs, TLs, PTPs, FTPs and/or CTPs that must be used by the SNC when carrying out a full reroute or adding a routing leg. The list must be empty if no ME/TL/PTP/CTP/FTP constraints are required.If the Target OScannot fully satisfy the constraints, then the request will be rejected. Specifying both inclusion and exclusion constraints is not supported, therefore this list must be empty if exclusionResourceRefList is not empty.</xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element name="isFullRoute" type="xsd:boolean" minOccurs="0">
@@ -1724,9 +1697,9 @@ be “not all interior GTPs could be deleted”;  this would be followed by the 
               <xsd:documentation>Specifies if the neTpInclusions constraints describe the full route of the SNC or routing leg (as opposed to only a partial constraint). When no inclusions constraints are specified, false must be used.</xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="exclusionRefList" type="nam:NamingAttributeListType" minOccurs="0">
+          <xsd:element name="exclusionResourceRefList" type="nam:NamingAttributeListType" minOccurs="0">
             <xsd:annotation>
-              <xsd:documentation>Specifies a list of MEs, TLs, PTPs, FTPs, CTPs, and/or SNCs to be excluded. This is applicable for adding the leg or doing a full reroute and the route must not use any of the NEs, TLs, PTPs, FTPs and CTPs specified, nor any resource used by the SNCs specified. Specifying both inclusion and exclusion constraints is not supported, therefore this list must be empty if neTpInclusions is not empty.</xsd:documentation>
+              <xsd:documentation>Specifies a list of MEs, TLs, PTPs, FTPs, CTPs, and/or SNCs to be excluded. This is applicable for adding the leg or doing a full reroute and the route must not use any of the NEs, TLs, PTPs, FTPs and CTPs specified, nor any resource used by the SNCs specified. Specifying both inclusion and exclusion constraints is not supported, therefore this list must be empty if inclusionResourceRefList or ccInclusionList are not empty..</xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element name="aEndRefList" type="nam:NamingAttributeListType" minOccurs="0">
@@ -1736,10 +1709,10 @@ be “not all interior GTPs could be deleted”;  this would be followed by the 
           </xsd:element>
           <xsd:element name="zEndRefList" type="nam:NamingAttributeListType" minOccurs="0">
             <xsd:annotation>
-              <xsd:documentation>The Requesting OS must specify the zEnd (CTP/FTP) as specified in SNC Types. Is also used to indicate the Sink TP when adding a leg to an existing broadcast system. If the Requesting OS supplies an invalid combination of TPs in aEnd and zEnd, then the Target OS will throw an INVALID_INPUT exception. Aend and Zend TPs have to be on the same subnetwork If the TP is an FTP the Requesting OS is allowed to specify a generic end point within a ME, the Target OS will choose the appropriate TP instance. See Object Naming for further detail.</xsd:documentation>
+              <xsd:documentation>The Requesting OS must specify the zEnd (CTP/FTP) as specified in SNC Types. Is also used to indicate the Sink TP when adding a leg to an existing broadcast system. If the Requesting OS supplies an invalid combination of TPs in aEnd and zEnd, then the Target OS will throw an INVALID_INPUT exception. Aend and Zend TPs have to be on the same subnetwork. If the TP is an FTP the Requesting OS is allowed to specify a generic end point within a ME, the Target OS will choose the appropriate TP instance. See Object Naming for further detail.</xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="isReportingAlarm" type="xsd:boolean" minOccurs="0">
+          <xsd:element name="isReportingAlarms" type="xsd:boolean" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
 Provides an indication whether alarm reporting for this instance is active or not.
@@ -1755,7 +1728,7 @@ Provides an indication whether alarm reporting for this instance is active or no
           </xsd:element>
           <xsd:element name="isRevertive" type="xsd:boolean" minOccurs="0">
             <xsd:annotation>
-              <xsd:documentation>Takes value "True" when an SNC can be switched back to its original route..
+              <xsd:documentation>Takes value "True" when an SNC can be switched back to its original route.
           </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
@@ -1769,24 +1742,27 @@ Provides an indication whether alarm reporting for this instance is active or no
           <xsd:element name="asapRef" type="xsd:string" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-                <p>Indicates the assignment of an ASAP to this SNC object. Value is of the ASAP name.</p>
+                <p>Indicates the assignment of an ASAP to this SNC object. Value is the ASAP name.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="mustRemoveGtpList" type="xsd:boolean" minOccurs="0">
+          <xsd:element name="mustRemoveGtps" type="xsd:boolean" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-                <p>The parameter is only used for bundled SNCs.  
-If set to “True” the Target OS when removing the SNC must make a best-effort attempt to remove the interior GTPs that once belonged to the SNC, and if set to “False” the Requesting OS does not care whether the Target OS removes the interior GTPs or not.  
-Any behavior other than best-effort is likely to involve a complicated rollback procedure for the Target OS and NEs.  In the case that the parameter is set to “True” and the Target OS cannot remove all the interior GTPs, the Target OS should return a list of the GTPs that could not be removed in the errorReason field of the deactivateAndDeleteSNC() and deleteSnc() operations.  The errorReason would 
-be “not all interior GTPs could be deleted”;  this would be followed by the names of the GTPs that could not be deleted.</p>
+                <p>This attribute defines that the target OS has to delete all the interior Group Termination Points (GTPs) supporting the bundled Subnetwork Connection (SNC) when the SNC is deleted. The attribute is only used when creating bundled SNCs.</p>
+                <p>It can take on two possible values:<uL>
+                    <li>true (the target OS must make a best-effort attempt to remove the interior GTPs that once belonged to the SNC) and</li>
+                    <li>false (the requesting OS doesn't care if the target OS removes the interior GTPs or not).</li>
+                  </uL>
+                </p>
+                <p>In the case that mustRemoveGtps is set to "true" and the target OS cannot remove all the interior GTPs, the target OS should return a list of the GTPs that could not be removed in the errorReason field of the deactivateAndDeleteSnc and deleteSnc operations. The errorReason will be "not all interior GTPs could be deleted" - this will be followed by the names of the GTPs that could not be deleted.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element name="priority" type="xsd:unsignedInt" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-                <p>The SNC creation priority</p>
+                <p>The SNC creation priority.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
@@ -1798,38 +1774,34 @@ be “not all interior GTPs could be deleted”;  this would be followed by the 
   <xsd:complexType name="RouteCreateDataType">
     <xsd:annotation>
       <xsd:documentation>
-      structure is used by the Requesting OS to pass to the Target OS when a route is added to a SNC..
+      Structure is used by the Requesting OS to pass to the Target OS when a route is added to a SNC.
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="intended" type="xsd:string" minOccurs="0">
+      <xsd:element name="isIntendedRoute" type="xsd:boolean" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p/>
+            <p>This attribute defines the purpose of the Route to be created. Refer to description in the Route object class.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="exclusive" type="xsd:string" minOccurs="0">
+      <xsd:element name="isExclusiveRoute" type="xsd:boolean" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p/>
+            <p>This attribute defines that not any other Routes of other Subnetwork Connections can share any of the Routes Cross Connections or Connection Termination Points, even in pending state (true).</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
       <xsd:element name="ccInclusionList" type="cc:CrossConnectListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>Specifies a list of cross-connects that must be used by the route. The 
-   list must be empty if no cross-connect constraints are required. If the Target OS 
-   cannot fully satisfy the constraints, then the request will be 
-   rejected.</xsd:documentation>
+   list must be empty if no cross-connect constraints are required.</xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="inclusionRefList" type="nam:NamingAttributeListType" minOccurs="0">
+      <xsd:element name="inclusionResourceRefList" type="nam:NamingAttributeListType" minOccurs="0">
         <xsd:annotation>
-          <xsd:documentation>Specifies a list of MEs/TPs/GTPs that must be used by the 
-   route. The list must be empty if no ME/TP/GTP constraints are required. If 
-   the Target OS cannot fully satisfy the constraints, then the request will be 
-   rejected.</xsd:documentation>
+          <xsd:documentation>Specifies a list of MEs/TLs/TPs/GTPs that must be used by the 
+   route. The list must be empty if no ME/TLs/TP/GTP constraints are required. Specifying both inclusion and exclusion constraints is not supported, therefore this list must be empty if exclusionResourceRefList is not empty.</xsd:documentation>
         </xsd:annotation>
       </xsd:element>
       <xsd:element name="isFullRoute" type="xsd:boolean" minOccurs="0">
@@ -1839,13 +1811,13 @@ be “not all interior GTPs could be deleted”;  this would be followed by the 
    inclusions constraints are specified, false must be used.</xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="exclusionRefList" type="nam:NamingAttributeListType" minOccurs="0">
+      <xsd:element name="exclusionResourceRefList" type="nam:NamingAttributeListType" minOccurs="0">
         <xsd:annotation>
-          <xsd:documentation>Specifies a list of MEs/TPs/GTPs and/or "SNC + routes" to be 
-   excluded. The route to be created must not use any of the MEs/TPs/GTPs
+          <xsd:documentation>Specifies a list of MEs/TLs/TPs/GTPs and/or "SNC + routes" to be 
+   excluded. The route to be created must not use any of the MEs/TLs/TPs/GTPs
    specified, nor any resource used by the "SNC + routes" specified. 
    Specifying both inclusion and exclusion constraints is not supported, 
-   therefore this list must be empty if ccInclusions or neTpInclusions is non 
+   therefore this list must be empty if ccInclusions or inclusionResourceRefList are non 
    empty. "SNC + route" is described by the SNC name followed by the string 
    ("/routeId=") and the route id. If only the SNC name is specified, then its 
    intended route is considered.</xsd:documentation>
