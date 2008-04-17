@@ -14,60 +14,6 @@
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Mlsn.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/mlsn/v1"/>
   <!-- ================ -->
-  <xsd:element name="getAllMultiLayerSubnetworkNamesWrtOsRequest">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the getAllMultiLayerSubnetworkNamesWrtOs operation</p>
-        <p>This operation returns the data structure for each MultiLayerSubnetwork (MLSN) managed by a given subordinate OS AND contained by a specific Management Domain. Note that Wrt in the name of the operation stands for "with respect to".</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element name="osName" type="nam:NamingAttributeType" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>The name of the subordinate OS whose contained MEs are being requested.</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-        <xsd:element name="mdName" type="nam:NamingAttributeType" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>The name of the Management Domain whose contained MEs are being requested.</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="getAllMultiLayerSubnetworkNamesWrtOsResponse" type="tns:MultipleObjectNamesResponseType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Response message structure of the getAllMultiLayerSubnetworkNamesWrtOs operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <xsd:element name="getAllMultiLayerSubnetworkNamesWrtOsException">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Exception message structure of the getAllMultiLayerSubnetworkNamesWrtOs operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:complexContent>
-        <xsd:restriction base="msg:AllExceptionsType">
-          <xsd:choice>
-            <xsd:element ref="msg:commLoss"/>
-            <xsd:element ref="msg:entityNotFound"/>
-            <xsd:element ref="msg:internalError"/>
-            <xsd:element ref="msg:invalidInput"/>
-            <xsd:element ref="msg:notImplemented"/>
-            <xsd:element ref="msg:tooManyOpenIterators"/>
-          </xsd:choice>
-        </xsd:restriction>
-      </xsd:complexContent>
-    </xsd:complexType>
-  </xsd:element>
   <xsd:element name="getAllMultiLayerSubnetworksWrtOsRequest">
     <xsd:annotation>
       <xsd:documentation>
@@ -152,53 +98,6 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getAllTopLevelMultiLayerSubnetworks operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:complexContent>
-        <xsd:restriction base="msg:AllExceptionsType">
-          <xsd:choice>
-            <xsd:element ref="msg:commLoss"/>
-            <xsd:element ref="msg:entityNotFound"/>
-            <xsd:element ref="msg:internalError"/>
-            <xsd:element ref="msg:invalidInput"/>
-            <xsd:element ref="msg:notImplemented"/>
-            <xsd:element ref="msg:tooManyOpenIterators"/>
-          </xsd:choice>
-        </xsd:restriction>
-      </xsd:complexContent>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="getAllTopLevelMultiLayerSubnetworkNamesRequest">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the getAllTopLevelMultiLayerSubnetworkNames operation</p>
-        <p>This operation returns the MLSN names contained by the MD to which the operation is directed.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element name="mdName" type="nam:NamingAttributeType" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>The name of the Management Domain whose contained MLSNs are being requested</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="getAllTopLevelMultiLayerSubnetworkNamesResponse" type="tns:MultipleObjectNamesResponseType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Response message structure of the getAllTopLevelMultiLayerSubnetworkNames operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <xsd:element name="getAllTopLevelMultiLayerSubnetworkNamesException">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Exception message structure of the getAllTopLevelMultiLayerSubnetworkNames operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -334,31 +233,6 @@
     </xsd:annotation>
   </xsd:element>
   <!-- ================= -->
-  <xsd:element name="getMultiLayerSubnetworkNamesIteratorRequest" type="msg:GetAllDataIteratorRequestType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the getMultiLayerSubnetworkNamesIterator operation</p>
-        <p>This is the iterator request to return the next batch of MLSN names from the OS to which an MLSN names retrieval request was initially sent.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <!-- ================== -->
-  <xsd:element name="getMultiLayerSubnetworkNamesIteratorResponse" type="tns:MultipleObjectNamesResponseType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Response message structure of the getMultiLayerSubnetworkNamesIterator operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <!-- ================== -->
-  <xsd:element name="getMultiLayerSubnetworkNamesIteratorException" type="msg:GetAllDataIteratorExceptionType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Exception message structure of the getMultiLayerSubnetworkNamesIterator operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <!-- ================ -->
   <!-- == Local Data Types == -->
   <!-- ================ -->
   <xsd:complexType name="MultipleObjectNamesResponseType">
