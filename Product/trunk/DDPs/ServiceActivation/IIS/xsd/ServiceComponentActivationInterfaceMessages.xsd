@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿ <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ServiceComponentActivationInterface - Copyright TeleManagement Forum 2008 -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/sa/xsd/scai/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:soc="http://www.tmforum.org/mtop/sb/xsd/soc/v1" xmlns:savc="http://www.tmforum.org/mtop/sb/xsd/savc/v1" xmlns:sodel="http://www.tmforum.org/mtop/sb/xsd/sodel/v1" xmlns:csi="http://www.tmforum.org/mtop/sb/xsd/csi/v1" xmlns:svc="http://www.tmforum.org/mtop/sb/xsd/svc/v1" targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
 	<xsd:annotation>
@@ -124,14 +124,15 @@
 	<xsd:element name="reserveRequest">
 		<xsd:annotation>
 			<xsd:documentation>
-				<p>This operation allocates and reserves the necessary resources to support a given RFS for a given subscriber until  “expiring time” is met </p>
-				<p>If the requesting OS does not provision and activate the RFS before the “expiration time” is met, the target OS will delete the RFS and </p>
-				<p> free all the associated resources. If the target OS does not support the specification of an “expiring time”, it may set an internal timer </p>
+				<p>This operation allocates and reserves the necessary resources to support a given RFS for a given subscriber until  â€œexpiring timeâ€� is met </p>
+				<p>If the requesting OS does not provision and activate the RFS before the expiration time is met, the target OS will delete the RFS and </p>
+				<p> free all the associated resources. If the target OS does not support the specification of an expiring time, it may set an internal timer </p>
 				<p> to ensure that un-provisioned RFS are cleaned up on a regular basis. </p>
 				<p>Preconditions: The RFS does not exist </p>
 				<p>In case of success, choice of one of the following:</p>
-				<p> The  RFS is provisioned and placed in a reserved state. The name of the RFS, if created, is returned</p>
-				<p> Object Creation Notification– this event is an indication that the service component activation OS instantiated, or “created” an RFS </p>
+				<p> The  RFS is created and placed in a reserved state. The name of the RFS, if created, is returned</p>
+				<p> Object Creation Notification: an indication that the service component activation OS created an RFS </p>
+				<p> The resources supporting the RFS are reserved only, not provisioned</p>
 				<p>In case of failure:</p>
 				<p>An exception is thrown. </p>
 			</xsd:documentation>
@@ -192,9 +193,9 @@
 				<p> When this request is complete, the RFS shall be in the Provisioned_Inactive state  </p>
 				<p>In case of success, choice of one of the following:</p>
 				<p> The  RFS is provisioned and placed in a provisioned_inactive state. The name of the RFS, if created, is returned</p>
-				<p> Object Creation Notification– this event is an indication that the service component activation OS instantiated, or “created” an RFS </p>
-				<p> State Change Notification– this event is an indication that the RFS changed from a "reserved" state to a "provisioned_inactive" state</p>
-				<p> Object Deletion Notification– this event is an RFS that was previously "reserved" could not be provisioned, and thus was deleted</p>
+				<p> Object Creation Notification: an indication that the service component activation OS instantiated an RFS </p>
+				<p> State Change Notification: an indication that the RFS changed from a "reserved" state to a "provisioned_inactive" state</p>
+				<p> Object Deletion Notification:   an RFS that was previously "reserved" and could not be provisioned; thus it was deleted</p>
 				<p>In case of failure:</p>
 				<p>An exception is thrown. </p>
 			</xsd:documentation>
@@ -260,8 +261,8 @@
 				<p>  or the name of an RFS which was previously provisioned.</p>
 				<p>In case of success, choice of one of the following:</p>
 				<p> The  RFS is provisioned (if required) and placed in a provisioned_active state. The name of the RFS  is returned</p>
-				<p> Object Creation Notification– this event is an indication that the service component activation OS instantiated, or “created” an RFS </p>
-				<p> State Change Notification– this event indicates that the RFS changed from "provisioned_inactive" state to  "provisioned_active"state  </p>
+				<p> Object Creation Notification: an indication that the service component activation OS instantiated  an RFS </p>
+				<p> State Change Notification: an indication that the RFS changed from "provisioned_inactive" state to  "provisioned_active"state  </p>
 				<p>In case of failure:</p>
 				<p>An exception is thrown. </p>
 				<p>If RFS existed, but could not be activated, it remains in a "provisioned_inactive" state </p>
@@ -323,11 +324,11 @@
 	<xsd:complexType>
 		<xsd:annotation>
 			<xsd:documentation>
-				<p> This operation deactivates an RFS. The RFS must be in a provisioned_active state to be deactived </p>
+				<p> This operation deactivates an RFS. It is recommended the RFS be in a provisioned_active state to be deactived </p>
 				<p> Input to the operation is the name of the RFS to be deactivated</p>
 				<p>In case of success, choice of one of the following:</p>
 				<p> The  RFS is deactivated and placed in a provisioned_inactive state. The name of the RFS  is returned</p>
-				<p> State Change Notification– this event indicates that the RFS changed from "provisioned_active" state to  "provisioned_inactive"state  </p>
+				<p> State Change Notification: indicates that the RFS changed from "provisioned_active" state to  "provisioned_inactive"state  </p>
 				<p>In case of failure:</p>
 				<p>An exception is thrown. </p>
 				<p>If RFS can not be deactivated,  it remains in a "provisioned_active" state </p>
@@ -384,7 +385,7 @@
 				<p> Input to the operation is the name of the RFS to be terminated</p>
 				<p>In case of success, choice of one of the following:</p>
 				<p> The  RFS is terminated. The name of the RFS terminated  is returned</p>
-				<p> Object Deletion Notification– this event indicates that the RFS has been deleted </p>
+				<p> Object Deletion Notificationâ€“ this event indicates that the RFS has been deleted </p>
 				<p>In case of failure:</p>
 				<p>An exception is thrown. </p>
 				<p>If RFS can not be terminated,  it remains in the state it was in prior to the termination request </p>
@@ -455,7 +456,7 @@
 				<p> The target service state indicates to what state the RFS should be transitioned if the modify request is successful</p>
 				<p>In case of successful service modification, choice of one of the following:</p>
 				<p> The name of the RFS that was modified is returned, and its new service state</p>
-				<p> Attribute Value Change Notification– this event indicates that the RFS has been modified </p>
+				<p> Attribute Value Change:  an indication that the RFS has been modified </p>
 				<p>In case of failure:</p>
 				<p>An exception is thrown. </p>
 				<p>If RFS can not be modified,  it remains in its previous state </p>
