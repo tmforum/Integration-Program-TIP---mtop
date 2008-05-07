@@ -12,7 +12,7 @@
 ## Initialize build
 ##
 HTML_HOME=../html
-WSDL_HOME="../../../../../../../Apps/WSDLdoc"
+WSDL_HOME="../../../../../../../../Apps/WSDLdoc"
 
 rm -rf $HTML_HOME
 mkdir $HTML_HOME
@@ -27,18 +27,26 @@ java -DWSDL_HOME=$WSDL_HOME -Xmx256m -jar $WSDL_HOME/wsdldoc.jar -title "MTOSI R
 #
 perl -pi -e 's/\/xsd\/xsd/\/xsd/g' $HTML_HOME/overview.html
 
-perl -pi -e 's/href="file:\/.:\/GForge_mTOP\/Product\/trunk\/DDPs\/ServiceBasic\/IIS\//href="\.\.\//g' $HTML_HOME/overview.html
+perl -pi -e 's/href="file:\/.:\/TMF_GFORGE\/mTOP\/Product\/trunk\/DDPs\/ServiceBasic\/IIS\//href="\.\.\//g' $HTML_HOME/overview.html
 
-perl -pi -e 's/>file:\/.:\/GForge_mTOP\/Product\/trunk\/DDPs\/ServiceBasic\/IIS\//>file:\//g' $HTML_HOME/overview.html
+perl -pi -e 's/>file:\/.:\/TMF_GFORGE\/mTOP\/Product\/trunk\/DDPs\/ServiceBasic\/IIS\//>file:\//g' $HTML_HOME/overview.html
 
-find $HTML_HOME/ -name "*.html" | xargs perl -pi -e 's/href="file:\/.:\/GForge_mTOP\/Product\/trunk\/DDPs\/ServiceBasic\/IIS\//href="\.\.\/\.\.\/\.\.\/\.\.\//g'
+perl -pi -e 's/href="file:\/.:\/TMF_GFORGE\/mTOP\/Product\/trunk\/DDPs\//href="\.\.\/\.\.\/\.\.\//g' $HTML_HOME/overview.html
 
-find $HTML_HOME/ -name "*.html" | xargs perl -pi -e 's/>file:\/.:\/GForge_mTOP\/Product\/trunk\/DDPs\/ServiceBasic\/IIS\//>file:\//g'
+perl -pi -e 's/>file:\/.:\/TMF_GFORGE\/mTOP\/Product\/trunk\/DDPs\//>file:\//g' $HTML_HOME/overview.html
+
+find $HTML_HOME/ -name "*.html" | xargs perl -pi -e 's/href="file:\/.:\/TMF_GFORGE\/mTOP\/Product\/trunk\/DDPs\/ServiceBasic\/IIS\//href="\.\.\/\.\.\/\.\.\/\.\.\//g'
+
+find $HTML_HOME/ -name "*.html" | xargs perl -pi -e 's/>file:\/.:\/TMF_GFORGE\/mTOP\/Product\/trunk\/DDPs\/ServiceBasic\/IIS\//>file:\//g'
+
+find $HTML_HOME/ -name "*.html" | xargs perl -pi -e 's/href="file:\/.:\/TMF_GFORGE\/mTOP\/Product\/trunk\/DDPs\//href="\.\.\/\.\.\/\.\.\/\.\.\/\.\.\/\.\.\//g'
+
+find $HTML_HOME/ -name "*.html" | xargs perl -pi -e 's/>file:\/.:\/TMF_GFORGE\/mTOP\/Product\/trunk\/DDPs\//>file:\//g'
 
 find $HTML_HOME/ -name "*.html.bak" -delete
 
 cd ..
-jar -cvf ./derived/New_ServiceBasicHtml.zip ./html ./xsd ./wsdl
+jar -cvf ./ServiceBasicHtml.zip ./html
 cd tools
 
 exit 0
