@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM Service Inventory Retrieval Interface (SIR) - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/msi/xsd/sir/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:csi="http://www.tmforum.org/mtop/sb/xsd/csi/v1" xmlns:svc="http://www.tmforum.org/mtop/sb/xsd/svc/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" targetNamespace="http://www.tmforum.org/mtop/msi/xsd/sir/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: Manage Service Inventory</p>
+			<p>Module: Message XSD Module</p>
+			<p>Description: This module contains the XML Schema type definitions of all the mTOP Service Inventory Interface (SI) XML message structures.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ================ -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/sb/xsd/csi/v1" schemaLocation="../../../ServiceBasic/IIS/xsd/CommonServiceInfo.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/sb/xsd/svc/v1" schemaLocation="../../../ServiceBasic/IIS/xsd/Service.xsd"/>
+	<!-- === Service Inventory Retrieval === -->
+	<xsd:element name="getServiceInventoryRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getServiceInventory operation</p>
+				<p>This operation returns a specified portion of the inventory data from the Target OS. 
+				The target OS returns all objects satisfying the filter constraints of the requesting OS 
+				that have a modification/creation date equal to or later than the Diff Date and Time.</p>
+				<p>The operation can only be directed to a top-level OS and not to a subordinate OS.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="filter" type="tns:SimpleServiceFilterType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>defines the subset of the total inventory to be returned to the requesting OS.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="diffDateAndTime" type="xsd:dateTime" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>All objects with a modification date equal to or greater than this value are in scope of this operation.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getServiceInventoryResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getServiceInventory operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="inventoryData" type="tns:ServiceInventoryDataType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The inventory data which may vary based on the MEP.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getServiceInventoryException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getServiceInventory operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unsupportedCompressionFormat"/>
+						<xsd:element ref="msg:unsupportedPackingFormat"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================= -->
+	<xsd:element name="getServiceInventoryIteratorRequest" type="msg:GetAllDataIteratorRequestType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getServiceInventoryIterator operation</p>
+				<p>This is the iterator request to return the next batch of ServiceInventoryData from the target OS.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getServiceInventoryIteratorResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getServiceInventoryIterator operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="inventoryData" type="tns:ServiceInventoryDataType" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getServiceInventoryIteratorException" type="msg:GetAllDataIteratorExceptionType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getInventoryIterator operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================= -->
+	<!--         All local types       -->
+	<!-- ================= -->
+	<xsd:complexType name="ServiceInventoryDataType">
+		<xsd:sequence>
+			<xsd:element name="serviceDefinitionList" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="sd" type="svc:ServiceDefinitionType" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="serviceTemplateList" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="st" type="svc:ServiceTemplateType" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="serviceCatalogList" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="sc" type="svc:ServiceCatalogType" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="cfsList" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="cfs" type="svc:CustomerFacingServiceType" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="rfsList" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="rfs" type="svc:ResourceFacingServiceType" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="sscList" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="ssc" type="svc:ServiceSpecCharacteristicType" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="sapSpecList" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="sapSpec" type="svc:SapSpecificationType" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="sapList" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="sap" type="svc:ServiceAccessPointType" maxOccurs="unbounded"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================== -->
+	<xsd:simpleType name="GranularityType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Filter attribute used to select the granularity of the Inventory report.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="NAME">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Retrieve the name only.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="FULL">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Retrieve the name and the other object attributes including the reference attributes</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="DEREFERENCE_NOT_RECURSIVE">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Retrieve the name, the object attributes and the reference attributes</p>
+						<p>of the object instances in the scope AND</p>
+						<p>of all the objects in reference</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="DEREFERENCE_RECURSIVE">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Same as for DEREFERENCE_NOT_RECURSIVE except that for entities of the 3 classes CFS, RFS and ServiceSpecCharacteristic, </p>
+						<p>which are in the scope, the complete recursive structure must be returned:</p>
+						<p>- for ServiceSpecCharacteristic objects the “containsSSCReferenceList” attribute must be recursively dereferenced,</p>
+						<p>- for RFS objects the “containsRFSReferenceList” attribute must be recursively dereferenced,</p>
+						<p>- for CFS objects the attribute “containsCFSReferenceList”must be recursively dereferenced.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!-- ================= -->
+	<xsd:complexType name="SimpleServiceFilterType">
+		<xsd:sequence maxOccurs="unbounded">
+			<xsd:element name="scope">
+				<xsd:complexType>
+					<xsd:choice>
+						<xsd:element name="baseInstance" type="nam:NamingAttributeType" minOccurs="0" maxOccurs="unbounded"/>
+						<xsd:element name="serviceObjectType" type="tns:ServiceObjectTypeType"/>
+						<xsd:element name="queryExpression" type="gen:QueryExpressionType" minOccurs="0"/>
+					</xsd:choice>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="selection" type="tns:GranularityType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:simpleType name="ServiceObjectTypeType">
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<!-- ================= -->
+	<xsd:simpleType name="ServiceObjectEnumType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="CFS"/>
+			<xsd:enumeration value="RFS"/>
+			<xsd:enumeration value="SAP"/>
+			<xsd:enumeration value="SAP_SPECIFICATION"/>
+			<xsd:enumeration value="SERVICE_CATALOG"/>
+			<xsd:enumeration value="SERVICE_DEFINITION"/>
+			<xsd:enumeration value="SERVICE_TEMPLATE"/>
+			<xsd:enumeration value="SERVICE_SPEC_CHARACTERISTIC"/>
+			<xsd:enumeration value="SERVICE_ORDER"/>
+			<xsd:enumeration value="SERVICE_ORDER_ITEM"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>
