@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ResourceTroubleManagement - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rtm/xsd/mc/v1" xmlns:tns="http://www.tmforum.org/mtop/rtm/xsd/mc/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:cmo="http://www.tmforum.org/mtop/nra/xsd/cmo/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: ResourceTroubleManagement</p>
+      <p>Module:  Message XSD Module</p>
+      <p>Description: This module contains the XML Schema type definitions of all the mTOP MaintenanceControl SI XML message structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/CurrentMaintenanceOperation.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/cmo/v1"/>
+  <!-- ================ -->
+  <xsd:element name="getActiveMaintenanceOperationsRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getActiveMaintenanceOperations operation</p>
+        <p>This operation allows the retrieval of all persistent maintenance commands that are currently enabled on the provided resource.</p>
+        <p>The termination point name must be explicit (a generic endpoint
+         specification may not be used in this case). See 
+         SD2-7_ObjectNaming.pdf for further details on TP naming</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="tpOrMeName" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the TP or NE.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getActiveMaintenanceOperationsResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getActiveMaintenanceOperations operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="currentMaintenanceOperationList" type="cmo:CurrentMaintenanceOperationListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>First batch of maintenance operations.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getActiveMaintenanceOperationsException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getActiveMaintenanceOperations operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:notInValidState"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getActiveMaintenanceOperationsIteratorRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getActiveMaintenanceOperations operation</p>
+        <p>This operation allows the retieval of the other maintenance operations.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence/>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getActiveMaintenanceOperationsIteratorResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getActiveMaintenanceOperations operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="currentMaintenanceOperationList" type="cmo:CurrentMaintenanceOperationListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Next batch of maintenance operations.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getActiveMaintenanceOperationsIteratorException" type="msg:GetAllDataIteratorExceptionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getActiveMaintenanceOperations operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="performMaintenanceOperationRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the performMaintenanceOperation operation</p>
+        <p>This operation allows the OS to operate and release
+         the maintenance commands that are supported by a TP.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="maintenanceOperation" type="cmo:CurrentMaintenanceOperationType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Information on the maintenance operation to perform.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="maintenanceOperationMode" type="cmo:MaintenanceOperationModeEnumType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Indicates whether the maintenance operation should be
+               operated or released.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="performMaintenanceOperationResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the performMaintenanceOperation operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence/>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="performMaintenanceOperationException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the performMaintenanceOperation operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:notInValidState"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>
