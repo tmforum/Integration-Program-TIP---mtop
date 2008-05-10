@@ -1,0 +1,711 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - DM Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/com/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource Basic</p>
+      <p>Module: Dataset XSD Module</p>
+      <p>Description: This module contains the XML Schema common type definitions used in some the mTOP XML Resource objects.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================= -->
+  <xsd:simpleType name="CommunicationStateType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This state reflects a communication state between the EMS and its ManagedElement.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="CS_AVAILABLE"/>
+      <xsd:enumeration value="CS_UNAVAILABLE"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================ -->
+  <xsd:simpleType name="ConnectionDirectionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Direction of a subnetwork connection, cross-connects, or topological link.
+For a detailed description of the use of this attribute see SNC Types supporting document.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="CD_UNI">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>UNIdirectional, i.e. source TP to sink TP. Note: creation of unidirectional connections is supported even when CTPs/FTPs are modelled as bidirectional.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="CD_BI">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>BIdirectional, i.e. bidirectional TP to bidirectional TP, a.k.a. two-way.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="ConnectionlessPortTerminationPointRoleType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This parameter shall identify the role in the flow domain of
+        the requested CPTPs.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="CPTPR_FD_EDGE">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Return Flow Domain Edge CPTPs.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="CPTPR_FD_INTERNAL">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Return Flow Domain Internal CPTPs.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="CPTPR_ALL">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Return all CPTPs.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="DirectionalityType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Direction for a TerminationPoint:</p>
+        <p>The directionality of PTPs is defined from an external point of view, while the directionality of CTPs is defined from an internal point of view. Consequently, sink PTPs generate source CTPs, and sink CTPs form source PTPs. Refer to SNC Types and to layers for further information on termination point and connection directionality.</p>
+        <p>Note that ATM termination points (LR_ATM_NI, LR_ATM_VP and LR_ATM_VC) are always bi-directional even though the traffic may be asymmetric (and eventually null in one of the two directions).</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="D_NA">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Used when the directionality specification is not necessary.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="D_BIDIRECTIONAL">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>source and sink (transmit and receive).</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="D_SOURCE">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>source (transmit).</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="D_SINK">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>sink (receive).</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ============== -->
+  <xsd:simpleType name="FlowDomainFragmentTypeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This (read-only) attribute provides an indication of the type of the matrix flow domain fragment. It may have one of the following values: <ul>
+            <li>"FDFRT_POINT_TO_POINT": the FDFr is between exactly two points</li>
+            <li>"FDFRT_POINT_TO_MULTIPOINT": (E-tree)</li>
+            <li>"FDFRT_MULTIPOINT": the FDFr is between at least two points</li>
+          </ul>
+        </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="GradesOfImpactType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Grades of maximum tolerable disruption to traffic as a result of the operation that this parameter is describing.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="GOI_HITLESS"/>
+      <xsd:enumeration value="GOI_MINOR_IMPACT">
+        <xsd:annotation>
+          <xsd:documentation>Less or equal to 50ms</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="GOI_MAJOR_IMPACT">
+        <xsd:annotation>
+          <xsd:documentation>Greater than 50ms</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="HolderStateType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Holder State Type</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="EMPTY">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>no equipment is installed and no expected equipment has been identified</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="INSTALLED_AND_EXPECTED">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>expected and currently installed</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="EXPECTED_AND_NOT_INSTALLED">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>expected but not currently installed</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="INSTALLED_AND_NOT_EXPECTED">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>physically inserted in the ME but not expected</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="MISMATCH_OF_INSTALLED_AND_EXPECTED">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>there is an inconsistency between the expected equipment and the installed equipment</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="UNAVAILABLE">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>this holder cannot accept the installation or provisioning of equipment (this is typically caused by a double width card installed next to this slot)</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="UNKNOWN">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>the OS does not know the state of the equipment</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="EquipmentHolderTypeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The EquipmentHolder with MTOSI minor version extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:EquipmentHolderEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="EquipmentHolderEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Equipment holder type</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="rack"/>
+      <xsd:enumeration value="shelf"/>
+      <xsd:enumeration value="sub_shelf"/>
+      <xsd:enumeration value="slot"/>
+      <xsd:enumeration value="sub_slot"/>
+      <xsd:enumeration value="remote_unit"/>
+      <xsd:enumeration value="remote_slots"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="EquipmentObjectTypeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Type of equipment object in equipment holder. Values are vendor-specific.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="InstalledPartNumberType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the resource part number (PN) of the installed equipment. If not available (or there is no installed equipment), an empty string shall be used.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="InstalledSerialNumberType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Defines the serial number of the installed equipment. If not available (or there is no installed equipment), an empty string shall be used.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="InstalledVersionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Firmware version of the installed equipment. If not available (or there is no installed equipment), an empty string shall be used.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="NetworkRoutedType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Network routed, indicates if the route must be or is computed and implemented at the network level. NR_YES indicates that the route must be / is computed at the network. NR_NO indicates that the route must not be / is not computed at the network. NR_NA indicates that the route can be computed anywhere.</p>
+        <p>If rerouting is allowed, this attribute will indicate who last rerouted the SNC, the network (NR_YES) or the EMS (NR_NO).</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="NR_NA"/>
+      <xsd:enumeration value="NR_NO"/>
+      <xsd:enumeration value="NR_YES"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="NetworkRouteType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Indicates if the reroute of an SNC (if allowed) should be computed by the network, by the EMS, or if it does not matter.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="NOT_SET"/>
+      <xsd:enumeration value="NO"/>
+      <xsd:enumeration value="YES"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="FreedomLevelType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Describes the NMS-specified EMS level of freedom when performing SNC operations.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="EMSFL_CC_AT_SNC_LAYER"/>
+      <xsd:enumeration value="EMSFL_TERMINATE_AND_MAP"/>
+      <xsd:enumeration value="EMSFL_HIGHER_ORDER_SNCS"/>
+      <xsd:enumeration value="EMSFL_RECONFIGURATION"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="OwnerType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the definition of the object attribute that represents an identifier for the owner of the object.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="ProtectionEffortType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The protection effort is a statement of the requirement of the static protection level. For example if EFFORT_SAME_OR_WORSE is specified for a 3-ended FULLY_PROTECTED connection, a 3-ended PARTIALLY_PROTECTED connection is acceptable, but a 2-ended connection (ST_SIMPLE) is not acceptable i.e. ProtectionEffort does not have any bearing on the externaly visible shape of the SNC.
+EFFORT_WHATEVER indicates that the specified static protection level is preferred, but that any other level is acceptable.</p>
+        <p>For a detailed description of the use of this attribute see SNC Types.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="EFFORT_WHATEVER"/>
+      <xsd:enumeration value="EFFORT_SAME_OR_BETTER"/>
+      <xsd:enumeration value="EFFORT_SAME_OR_WORSE"/>
+      <xsd:enumeration value="EFFORT_SAME "/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="ProtectionRoleType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The ProtectionRole with MTOSI minor version extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:ProtectionRoleEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="ProtectionRoleEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Protection role type.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="NA"/>
+      <xsd:enumeration value="PRIMARY"/>
+      <xsd:enumeration value="BACKUP"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="RerouteType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The RerouteType type indicates if the EMS/MEs are allowed and/or required to reroute this SNC if there is a failure on this SNC, periodically to optimize the routes, of for any other reason.It is an EMS/ME implementation whether this is done using network routing protocols or if the EMS/MEs detect the failure and take appropriate action to attempt to fix the SNC.</p>
+
+T<p>he RR_NO value means that the EMS/MEs are not allowed to reroute the SNC. The RR_YES value means that the EMS/MEs are allowed to reroute the SNC and required to attempt to reroute it upon failure. The RR_NA value is used when the NMS does not want to specify the exact EMS behaviour. In this case it is left up to the EMS to decide whether rerouting will be provided. It is also used if the EMS/MEs are allowed to reroute the SNC but not required to attempt to reroute it upon failure.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="RR_NA"/>
+      <xsd:enumeration value="RR_NO"/>
+      <xsd:enumeration value="RR_YES"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="ResourceFulfillmentStateEnumType">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="IN_SERVICE">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The entity has been put into operation and is operating as provisioned (completely or partially).</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="OUT_OF_SERVICE">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The entity is entirely not capable of performing its provisioned functions and is not restricted by administrative actions.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="OUT_OF_SERVICE_BY_MAINTENANCE">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The entity has been taken intentionally out of service by a management action.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SERV_NA">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The service state is not applicable.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="ResourceFulfillmentStateType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This object attribute indicates basic administration state of equipment and OS objects.
+      Also, this object attribute accepts Qualifiable extension.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:ResourceFulfillmentStateEnumType">
+        <xsd:attribute name="qualifier" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="SubnetworkConnectionStateType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The SNCState enum is used to represent the various states that an SNC may take.</p>
+        <p>The following states may be supported by the EMS, depending on the SNC management mode of operation used by the EMS. See SNC Management Modes Of Operation for details.</p>
+        <p>SNCS_PENDING: the SNC has been created by an NMS and has not been activated by any NMS; or the SNC has been successfully deactivated by an NMS. That state has no relationship with the network state of the cross- connects of the SNC. It is allowable for an EMS to not support the SNCS_PENDING state and to reject any operation that attempts to put an SNC into SNCS_PENDING state. </p>
+        <p>SNCS_ACTIVE: the SNC is not in pending state, a route has been assigned to the SNC and all cross-connects for the SNC are active in the network. </p>
+        <p>SNCS_PARTIAL: the SNC is not in pending state, and either a route has not been assigned to the SNC, or not all of the cross-connects of the SNC are active in the network. This may or may not include activated SNCs for which there are currently no active cross- connects in the network, depending on the SNC management mode of operation.It is possible that, in some EMSes, this state be unreachable. </p>
+        <p>SNCS_NONEXISTENT: this is not an SNC state per se, as it applies to "non-existent SNCs". It is used in the interface to report SNCs that have been deleted. </p>
+        <p>See SNCState state diagram for details on valid transitions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="SNCS_NONEXISTENT"/>
+      <xsd:enumeration value="SNCS_PENDING"/>
+      <xsd:enumeration value="SNCS_ACTIVE"/>
+      <xsd:enumeration value="SNCS_PARTIAL"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="SubnetworkConnectionTypeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The SNC Type describes the connection based on the signal flows. 
+For a detailed description of the use of this attribute see SNC Types.
+In case of an ATM SNC (VP or VC), ST_SIMPLE is used to specify a 'plain' (hard or regular) PVC.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="ST_SIMPLE"/>
+      <xsd:enumeration value="ST_ADD_DROP_A"/>
+      <xsd:enumeration value="ST_ADD_DROP_Z"/>
+      <xsd:enumeration value="ST_INTERCONNECT"/>
+      <xsd:enumeration value="ST_DOUBLE_INTERCONNECT"/>
+      <xsd:enumeration value="ST_DOUBLE_ADD_DROP"/>
+      <xsd:enumeration value="ST_OPEN_ADD_DROP"/>
+      <xsd:enumeration value="ST_EXPLICIT"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="SoftwareVersionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The OS product software version</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="StaticProtectionLevelType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The StaticProtectionLevel with MTOSI minor version extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:StaticProtectionLevelEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="StaticProtectionLevelEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The static protection level is a statement of the internal resiliency of the SNC (internal to the subnetwork). The more resilient an SNC is, the more bandwidth it will consume.</p>
+        <p>The protection level does not have any bearing on the externally visible shape and traffic flows of the SNC (in non-failure cases).
+For a detailed description of the use of this attribute, see SNC Types.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="PREEMPTIBLE"/>
+      <xsd:enumeration value="UNPROTECTED"/>
+      <xsd:enumeration value="PARTIALLY_PROTECTED"/>
+      <xsd:enumeration value="FULLY_PROTECTED"/>
+      <xsd:enumeration value="HIGHLY_PROTECTED"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="TerminationModeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Within the facade definition, the CTP/FTP can act as an aggregate of associated G.805 TCPs, G.805 Termination Functions and G.805 CPs at one or more LayerRates. The CTP is contained within a PTP or FTP.</p>
+        <p>The TerminationMode attribute indicates and controls the connection of the named CP at a specified LayerRate to the dedicated G.805 TCP and associated G.805 Termination Function at the same LayerRate within the CTP/FTP.</p>
+        <p>The TerminationMode is used, for example, to control the Termination and mapping to VT1.5 of an STS1 Trail within an OC3 port. This capability could potentially be used to terminate an STS1 backbone Trail within a lower order mux that has the capability to alternatively cross-connect the STS1 unterminated. The same capability is used in SDH and is potentially applicable to any LayerRate.</p>
+        <p>TerminationMode has the following values</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="TM_NA">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>CTP: The CTP can not be mapped (i.e., it has no contained potential CTPs). This indicates that an SNC/crossconnect can be used to connect the G.805 TCP of the CTP to the connection point of another CTP/FTP. This only applies to CTPs that connect on their server side and are related to the containing PTP/FTP on their client side. </p>
+            <p>FTP: The FTP can not be mapped on the server side (i.e., it has no contained potential CTPs on the server side). This indicates that an SNC/crossconnect can be used to connect the G.805 TCP of the FTP to the connection point of another CTP/FTP. This only applies to FTPs that connect on their server side and do not support IM (Inverse Multiplexing). </p>
+            <p>PTP: This is the only legal value for a PTP</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="TM_NEITHER_TERMINATED_NOR_AVAILABLE_FOR_MAPPING">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>CTP: The CTP can be mapped and currently is (i.e., it has contained actual CTPs). This indicates that the G.805 CPs adapted from the corresponding G.805 Termination Function within the CTP aggregate are available to provide client layer capacity (e.g. STS1 terminated and mapped to VT1.5 i.e. channelized). In this state the TCP will be sourcing and sinking traffic. This is only a valid value for CTPs that support client adaptation. </p>
+            <p>FTP: The FTP can be mapped on the server side and currently is (i.e., it has contained actual CTPs on the server side). This indicates that the FTP supports IM (Inverse Multiplexing) and the server side contained CTPs (if any) are available for connection as the FTP is actively assembling the fragments of the IM. This value is not valid for an FTP that does not support IM. (see layering for more details). </p>
+            <p>PTP: This value is not valid for a PTP.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="TM_TERMINATED_AND_AVAILABLE_FOR_MAPPING">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>CTP: The CTP can be mapped but currently is not (i.e., it does have contained potential CTPs, but currently has no contained actual CTPs). This indicates that the G.805 CP aggregated in the CTP is not connected to a TCP (that would be aggregated in the same CTP) and therefore the CTP is available for SNC/crossconnect connectivity (e.g. STS1 not terminated and not mapped to VT1.5i.e. not channelized). </p>
+            <p>FTP: The FTP can be mapped on the server side but currently is not (i.e., it does have contained potential CTPs on the server side, but currently has no contained actual CTPs on the server side). This indicates that the FTP supports IM (Inverse Multiplexing) but the IM function is not active and the TCP within the FTP is available for external SNC/crossconnect connectivity.</p>
+            <p>PTP: This value is not valid for a PTP. </p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="TransmissionDescriptorStateType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Contains the state of consistency between a TP and its associated TransmissionDescriptor.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="TMD_MISSING"/>
+      <xsd:enumeration value="NOT_APPLICABLE"/>
+      <xsd:enumeration value="PENDING"/>
+      <xsd:enumeration value="APPLIED"/>
+      <xsd:enumeration value="MISMATCH"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="TopologyType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The Topology with MTOSI minor version extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:TopologyEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="TopologyEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>TopologyType is used to describe the subnetwork configuration. The EMS shall be capable of providing a SubNetwork Connection through any physical termination point of any managed element that belongs to the Subnetwork.</p>
+        <p>Composite subnetworks (i.e. containing other Subnetworks) are not supported in this release of the interface</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="TOPO_SINGLETON">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>TOPO_SINGLETON, which is used for a single NE (of any type) that is managed independently of its Topological Link connectivity to other NEs. It may for example be a member of a ring that is managed by a number of EMSes. It is acceptable for an EMS to represent all NEs as being in Singleton subnetworks regardless of the actual network configuration. A singleton subnetwork does not contain internal topological links.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="TOPO_CHAIN">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>TOPO_CHAIN, which is used to cover the case where two or more NEs are managed by the same EMS and are connected by Topological Links in a chain.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="TOPO_PSR">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>TOPO_PSR, which is used to cover the case where two or more NEs are managed by the same EMS and are connected by Topological Links in a ring that is capable of supporting subnetwork connection protection.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="TOPO_OPEN_PSR">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>TOPO_OPEN_PSR, which is used to cover the case where two or more NEs of a PS ring (but not the entire ring) are managed by the same EMS.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="TOPO_SPRING">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>TOPO_SPRING, which is used to cover the case where two or more NEs are managed by the same EMS and are connected by Topological Links in a complete ring that supports Shared Line Protection.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="TOPO_OPEN_SPRING">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>TOPO_OPEN_SPRING, which is used to cover cases where two or more NEs of an SP ring (but not the entire ring) are managed by one EMS.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="TOPO_MESH">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>TOPO_MESH, which is used to cover an arbitrary set of two or more NEs not covered by any other type.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="TerminationPointConnectionStateType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A CTP/FTP may be involved in zero, one, or many connections. The value TPConnectionState indicates the degree to which a CTP/FTP is used. The values TPCS_SOURCE_CONNECTED and TPCS_SINK_CONNECTED reflect the presence of a one way connection. The value TPCS_BI_CONNECTED means that the TP is both sink and source connected.</p>
+        <p>If an EMS cannot report whether the source of the TP is connected or the sink is connected, TPCS_BI_CONNECTED may be reported by that EMS.</p>
+        <p>The value TPCS_NA is used for PTPs and TPPools.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="TPCS_NA"/>
+      <xsd:enumeration value="TPCS_SOURCE_CONNECTED"/>
+      <xsd:enumeration value="TPCS_SINK_CONNECTED"/>
+      <xsd:enumeration value="TPCS_BI_CONNECTED"/>
+      <xsd:enumeration value="TPCS_NOT_CONNECTED"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="TerminationPointProtectionAssociationType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>tpProtectionAssociation expresses constraints on PTPs/CTPs/FTPs for PSR connection management.</p>
+        <p>In a multi-layer subnetwork, say 'a', 'b', 'c' are edge points. Suppose, for example, a three-ended connection is sought from 'a' to 'b', where 'b' is one of the endpoints. If 'c' is the constrained choice for 'b' as the other end of the three- ended connection,then 'b' and 'c' are said to be associated by a ] protectionAssociation. The tpProtectionAssociation is set to TPPA_PSR_RELATED in 'b' and 'c', and getAssociatedTP(b) returns c and getAssociatedTP(c) returns b.</p>
+        <p>In all other cases, tpProtectionAssociation is set to TPPA_NA.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="TPPA_NA"/>
+      <xsd:enumeration value="TPPA_PSR_RELATED"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ==================== -->
+  <xsd:simpleType name="TerminationPointRoleInSubnetworkConnectionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Defines the enumeration of all possible end point roles of a TP of an SNC.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="CM_END_POINT">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>At a connection matrix (CM) end point the span of the SNC starts at a G.805 CP with a fixed or flexible connection through the ME at the SNC layer, i.e. the connectable layer of the end point.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="LC_END_POINT">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>At a link connection (LC) end point connectivity is adapted from a server layer and the span of the SNC starts with a G.805 TCP with mapping mode set to TM_TERMINATED_ AND_AVAILABLE_FOR_MAPPING.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="VersionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The active software version of the ManagedElement</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+	</xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>
