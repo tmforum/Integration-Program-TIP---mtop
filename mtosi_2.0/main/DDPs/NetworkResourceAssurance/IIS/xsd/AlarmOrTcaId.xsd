@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/atcaid/v1" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/atcaid/v1" xmlns:aid="http://www.tmforum.org/mtop/nra/xsd/alarmid/v1" xmlns:tcaid="http://www.tmforum.org/mtop/nra/xsd/tcaid/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource Assurance</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP alarm or TCA Identifier XML structure.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:import schemaLocation="AlarmId.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/alarmid/v1"/>
+  <xsd:import schemaLocation="TcaId.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/tcaid/v1"/>
+  <!-- ================= -->
+  <xsd:element name="alarmOrTcaId" type="tns:AlarmOrTcaIdType"/>
+  <!-- ================= -->
+  <xsd:complexType name="AlarmOrTcaIdType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Structure used for component of a mixed list of Alarms and TCAs.
+         The structure is switched on AlarmTypeQualifier_T. The contents
+         is either an alarm id or a TCA id.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice>
+      <xsd:element name="alarmId" type="aid:AlarmIdType" minOccurs="0"/>
+      <xsd:element name="tcaId" type="tcaid:TcaIdType" minOccurs="0"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="AlarmOrTcaIdListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>List of AlarmOrTcaIdType.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element ref="tns:alarmOrTcaId" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>
