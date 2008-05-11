@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:hdr="http://www.tmforum.org/mtop/fmw/xsd/hdr/v1" xmlns:invr="http://www.tmforum.org/mtop/mri/xsd/rir/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.tmforum.org/mtop/mri/xsd/rir/v1 ../xsd/ResourceInventoryRetrievalMessages.xsd  
+http://schemas.xmlsoap.org/soap/envelope/ http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Header>
+    <hdr:header>
+      <hdr:activityName>getInventory</hdr:activityName>
+      <hdr:msgName>getInventoryRequest</hdr:msgName>
+      <hdr:msgType>REQUEST</hdr:msgType>
+      <hdr:senderURI>/MTOSI/InventoryOS</hdr:senderURI>
+      <hdr:destinationURI>/MTOSI/EMS01</hdr:destinationURI>
+      <hdr:communicationPattern>BulkResponse</hdr:communicationPattern>
+      <hdr:communicationStyle>RPC</hdr:communicationStyle>
+      <hdr:requestedBatchSize>500</hdr:requestedBatchSize>
+      <hdr:fileLocationURI>ftp://user;password@host:port/path/filename</hdr:fileLocationURI>
+      <hdr:compressionType>GZIP</hdr:compressionType>
+      <hdr:packingType>ZIP</hdr:packingType>
+      <hdr:timestamp>2007-07-30T09:26:00</hdr:timestamp>
+    </hdr:header>
+  </soap:Header>
+  <soap:Body>
+    <invr:getInventoryRequest>
+      <invr:filter>
+        <!-- Retrieve All ME object attributes with softwareVersion equal to 2.0 in West MD -->
+        <invr:baseInstance>
+          <nam:rdn>
+            <nam:type>MD</nam:type>
+            <nam:value>West</nam:value>
+          </nam:rdn>
+        </invr:baseInstance>
+        <invr:queryExpression Dialect="http://www.w3.org/TR/xpath">//meAttrs[softwareVersion=`2.0`</invr:queryExpression>
+        <invr:granularity>ATTRS</invr:granularity>
+      </invr:filter>
+    </invr:getInventoryRequest>
+  </soap:Body>
+</soap:Envelope>
