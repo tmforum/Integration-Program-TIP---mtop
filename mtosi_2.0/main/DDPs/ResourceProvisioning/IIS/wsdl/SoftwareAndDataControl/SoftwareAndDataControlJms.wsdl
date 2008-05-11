@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ResourceProvisioning - Copyright TeleManagement Forum 2008 -->
+<wsdl:definitions name="mTOP-SoftwareAndDataControlV1-0" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.tmforum.org/mtop/rp/wsdl/sdc/v1-0" targetNamespace="http://www.tmforum.org/mtop/rp/wsdl/sdc/v1-0">
+  <wsdl:documentation>
+    <p>DDP: ResourceProvisioning</p>
+    <p>Module: SoftwareAndDataControl Service Interface WSDL JMS Module</p>
+    <p>Description: This module contains all the mTOP SoftwareAndDataControl Service Interface WSDL definitions for the Web Service deployment profile with SOAP/JMS binding.</p>
+    <p>Version: 1.0</p>
+  </wsdl:documentation>
+  <wsdl:import namespace="http://www.tmforum.org/mtop/rp/wsdl/sdc/v1-0" location="SoftwareAndDataControlPortType.wsdl"/>
+  <wsdl:binding name="SoftwareAndDataControlSoapJmsBinding" type="tns:SoftwareAndDataControl">
+    <wsdl:documentation>
+      <p>SOAP JMS binding definitions of the operations of the SoftwareAndDataControl portType (interface)</p>
+    </wsdl:documentation>
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/jms"/>
+    <wsdl:operation name="abortManagedElementBackup">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:abortManagedElementBackupRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:abortManagedElementBackupResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="abortManagedElementBackupException">
+        <soap:fault name="abortManagedElementBackupException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="backupManagedElement">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:backupManagedElementRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:backupManagedElementResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="backupManagedElementException">
+        <soap:fault name="backupManagedElementException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getBackupList">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getBackupListRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getBackupListResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getBackupListException">
+        <soap:fault name="getBackupListException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getManagedElementBackupStatus">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getManagedElementBackupStatusRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getManagedElementBackupStatusResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getManagedElementBackupStatusException">
+        <soap:fault name="getManagedElementBackupStatusException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getBackupListIterator">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getBackupListIteratorRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getBackupListIteratorResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getBackupListIteratorException">
+        <soap:fault name="getBackupListIteratorException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SoftwareAndDataControlJms">
+    <wsdl:documentation>
+      <p>Example of the SoftwareAndDataControl WSDL Service definition as a deployment example of this mTOP Service Interface. It is expected to be modified to match the specific deployment configuration in a service provider's CCV.</p>
+    </wsdl:documentation>
+    <wsdl:port name="SoftwareAndDataControlSoapJms" binding="tns:SoftwareAndDataControlSoapJmsBinding">
+      <soap:address location="jms://aserver/mtosi/SoftwareAndDataControl"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

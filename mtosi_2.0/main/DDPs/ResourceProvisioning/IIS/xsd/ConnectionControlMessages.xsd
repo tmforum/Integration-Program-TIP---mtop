@@ -1,0 +1,1884 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ResourceProvisioning - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rp/xsd/conc/v1" xmlns:tns="http://www.tmforum.org/mtop/rp/xsd/conc/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:lr="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:snc="http://www.tmforum.org/mtop/nrf/xsd/snc/v1" xmlns:cc="http://www.tmforum.org/mtop/nrf/xsd/cc/v1" xmlns:route="http://www.tmforum.org/mtop/nrf/xsd/route/v1" xmlns:routedes="http://www.tmforum.org/mtop/nrf/xsd/routedes/v1" xmlns:tpdata="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" xmlns:crcd="http://www.tmforum.org/mtop/nrb/xsd/crcd/v1" xmlns:crmd="http://www.tmforum.org/mtop/nrb/xsd/crmd/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: ResourceProvisioning</p>
+      <p>Module:  Message XSD Module</p>
+      <p>Description: This module contains the XML Schema type definitions of all the mTOP ConnectionControl SI XML message structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Snc.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/snc/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Cc.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/cc/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Route.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/route/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/RouteDescriptor.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/routedes/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/TpData.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceCreateDataType.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/crcd/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceModifyDataType.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/crmd/v1"/>
+  <!-- ================ -->
+  <xsd:element name="activateSubnetworkConnectionRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the activateSubnetworkConnection operation</p>
+        <p>This operation is used to put an SNC into the ACTIVE state. This operation also applies to bundled SNCs.</p>
+        <p>Success: SNCState in the parameter theSNC is set to SNCS_ACTIVE. All cross-connects required for the SNC were activated successfully. The errorReason parameter is set to an empty string.</p>
+        <p>Failure: No exception thrown, except in the cases listed below. If the SNC or any of its network resources have changed as a result of this operation, then no exception can be thrown so that theSNC can be passed back to the Requesting OS. The SNCState in resulting theSNC will be either SNCS_PARTIAL or SNCS_PENDING. The state will be SNCS_PARTIAL if not all cross-connects on MEs have been successfully set up. The state will be SNCS_PENDING if the Target OS mode of operation prevents the activation of the SNC. The errorReason parameter is set accordingly</p>
+        <p>For more details on how this service affects the state of an SNC see SNC Management Modes of Operation and SNC state diagram.</p>
+        <p>During activation of an SNC, the TPs of the SNC are configured, and the necessary cross-connects are established for the SNC and appropriate changes are made to tpMappingMode such that TPs that are not TP_NA have their tpMappingMode set appropriately for the SNC configuration. See also createSnc() for an explanation of tpMappingMode behaviour. An SNC can be activated while in any state. When activated that additional information provided during the creation is also applied to the SNC in the network.</p>
+        <p>In case of an ATM SNC (VP or VC), multiple termination points (VP CTP or VC CTP) can be created as a result of an activateSnc operation. These CTPs are all created/adjusted in compliance with the egress and ingress traffic parameters provided in the tpDataListToModify structure. For example, a non terminated VP SNC created over 3 managed elements will result, upon activation, in the usage of 6 VP CTPs and 3 VP cross-connections.</p>
+        <p>Note that the activateSnc operation can be called repeatedly and eventually should succeed (except in conflict cases where the SNC remains in SNCS_PENDING or SNCS_PARTIAL). Should the missing cross-connects be activated in the MEs via a craft interface, for example, prior to communications to those MEs being re-established, the activateSnc command ultimately should succeed when communication to the MEs is re-established (even though all cross-connects already exist).</p>
+        <p>The Target OS will apply the transmissionParams specified in the tpDataListToModify parameter (same behaviour as ManagedElementMgr::setTPData(). They may be applied before or after the creation of the CCs, as appropriate. Existing TP transmission parameters for which no changes were requested in tpDataListToModify will be left unchanged. However, the alarm reporting on the TPs and the containing TPs may be turned on by the Target OS as part of this request, unless otherwise specified via the transmission parameter "AlarmReporting". A similar behaviour is also allowed for the serviceState parameter, which may be set to IN_SERVICE for the TPs and the containing TPs. See transmissionParameters.</p>
+        <p>If a given entry in the list of transmission parameters specified in the TPDataType can not be successfully applied to the TP, for any reason, then the errorReason field is appended with an appropriate reason text. Applying transmission parameters is best-effort (where not stated otherwise) and the resulting values of the transmission parameters are provided in the updated tpDataListToModify parameter. If the parameter is "not best effort" then the whole operation will be rejected and the appropriate exception thrown (see exceptions below).</p>
+        <p>An already active SNC can be activated again; the Target OS is allowed to not send the commands to the ME a second time for the cross connect establishment however the commands may be sent for the transmission parameters. While in SNCS_PARTIAL state, it is possible to activate an SNC again, this corresponds to a retry.</p>
+        <p>Note that all the SNC routes, intended and backup, if any, are unlocked. The restoration process will take control of the unlocked routes and activate the proper one. The behavior of sncState is the same in case there is only one route or more routes of the SNC.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="sncRef" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The name of the subnetwork connection to be activated</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tolerableImpact" type="com:GradesOfImpactType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The maximum tolerable impact allowed.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="osFreedomLevel" type="com:FreedomLevelType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The maximum level of freedom allowed to the Target OS to perform the activation.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>A list of TPs and parameters to apply.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="activateSubnetworkConnectionResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the activateSubnetworkConnection operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>A list of updated TPs to provide the resulting parameters.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="activatedSnc" type="snc:SubnetworkConnectionType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The subnetwork connection after the operation.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Specifies the activation error(s) if any.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="activateSubnetworkConnectionException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the activateSubnetworkConnection operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:notInValidState"/>
+            <xsd:element ref="msg:objectInUse"/>
+            <xsd:element ref="msg:timeslotInUse"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="addRouteRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the addRoute operation</p>
+        <p>This operation creates a new route (e.g. for restoration purposes) and 
+   associates it to the given SNC. The route is created in locked state.</p>
+        <p>A route belongs to only one SNC. However CCs/TPs can be shared by 
+   routes of different SNCs.</p>
+        <p>A route applies to CCs at the same layer of the SNC. The route id must 
+   be an unique identifier within the SNC name, with format up to Target OS.</p>
+        <p>It is possible to specify if the creating route is the INTENDED route or 
+   not; if intended, then the former intended route is updated to backup 
+   route. Only one intended route can be associated to a given SNC at a 
+   time.</p>
+        <p>It is possible to specify if the creating route is ECCLUSIVE or not; if 
+   ECCLUSIVE, then the Target OS must find a route that does not conflict or share 
+   CCs with any other existing SNC route, in any administrative state . Once 
+   an ECCLUSIVE route has been created by Target OS, any further creation operation 
+   which conflicts with the exclusive route shall be refused.</p>
+        <p>A route implicitly inherits from its SNC the following attributes:<ul>
+            <li>the endpoints</li>
+            <li>owner</li>
+            <li>direction</li>
+            <li>rerouteAllowed</li>
+            <li>networkRouted</li>
+            <li>connectionRate</li>
+            <li>type</li>
+            <li>protectionEffort is considered 
+   EFFORT_SAME, i.e. if Target OS can not create a route with same static protection 
+   level as the SNC, the operation is refused.</li>
+          </ul>
+        </p>
+        <p>Note: The relationship between Bundled SNC service and the SNC with Multiple Routes feature requires
+        further study and is not applicable for v3.0.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="sncRef" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>This parameter indicates the name of the already created Subnetwork Connection
+            to which the Route shall be added</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="routeCreateData" type="tns:RouteCreateDataType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>This parameter provides the structure describing the new Route
+            to be added to the Subnetwork Connection</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tolerableImpact" type="com:GradesOfImpactType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The maximum tolerable impact allowed.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="osFreedomLevel" type="com:FreedomLevelType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The maximum level of freedom allowed to the Target OS to perform the creation.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="addRouteResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the addRoute operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="addedRoute" type="routedes:RouteDescriptorType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>This parameter returns the created Route.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Specifies the activation error(s) if any.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="addRouteException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the addRoute operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:objectInUse"/>
+            <xsd:element ref="msg:protectionEffortNotMet"/>
+            <xsd:element ref="msg:unableToComply"/>
+            <xsd:element ref="msg:unsupportedRoutingConstraints"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="checkValidSubnetworkConnectionRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the checkValidSubnetworkConnection operation</p>
+        <p>The Requesting OS uses this operation to check if it is possible to create and maybe activate an SNC as specified in the input parameters. This operation also applies to bundled SNCs (see Bundled SNC overview for further details).</p>
+        <p>The test should check for the existence of hardware that will support the requested SNC. If the mustConsiderResources parameter is false, the check must be independent of the current specific resource usage in the subnetwork (as in createSnc). If the mustConsiderResources parameter is true, the check must consider the current specific resource usage in the subnetwork (as in activateSnc); in that case, the rules of the Target OS' mode of operation apply to the check (see SD1-23_ModesOfOperation).</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="createData" type="tns:SubnetworkConnectionCreateDataType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Data about the potential SNC.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>A list of TPs and parameters that would be applied to the potential SNC.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="mustConsiderResources" type="xsd:boolean" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Indicates whether or not resource allocation must be considered.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="checkValidSubnetworkConnectionResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the checkValidSubnetworkConnection operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="isValid" type="xsd:boolean" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Indicates if this is a valid SNC.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="checkValidSubnetworkConnectionException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the checkValidSubnetworkConnection operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+            <xsd:element ref="msg:unsupportedRoutingConstraints"/>
+            <xsd:element ref="msg:userlabelInUse"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="createAndActivateSubnetworkConnectionRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the createAndActivateSubnetworkConnection operation</p>
+        <p>This operation provides a way to create and activate a subnetwork connection in one command. As with the createSnc() operation and the activateSnc() operation, this operation also applies to bundled SNCs (see Bundled SNC overview for further details).</p>
+        <p>It conceptually behaves like a call to createSnc followed by a call to activateSnc. Therefore, if the pending state is supported, it is possible for the SNC to be created but activation to be rejected, and the resulting SNC will be in pending state. If the pending state is not supported, then this is not possible and the SNC will not be created if activation is rejected. All success/failure conditions that apply to the two base operations also apply to the combined operation.</p>
+        <p>If the SNC or any of its network resources have changed as a result of this operation, then no exception can be thrown so that theSNC can be passed back to the Requesting OS. Therefore, the exceptions that apply to activateSnc may not apply to the combined operation: if the creation was successful but the activation is rejected (only possible if the pending state is supported), no exception shall be thrown and the resulting SNC shall be provided in the out parameter createdSnc.</p>
+        <p>For more details on how this service affects the state of an SNC see SNC Management Modes of Operation and SNC state diagram.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="createData" type="tns:SubnetworkConnectionCreateDataType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Data about the potential SNC.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tolerableImpact" type="com:GradesOfImpactType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The maximum tolerable impact allowed.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="osFreedomLevel" type="com:FreedomLevelType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>This parameter indicates the maximum level of freedom allowed to the target OS
+            to perform the creation and activation.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>A list of TPs and parameters to apply.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="createAndActivateSubnetworkConnectionResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the createAndActivateSubnetworkConnection operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>A list of updated TPs to provide the resulting parameters.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="createdSnc" type="snc:SubnetworkConnectionType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The subnetwork connection after the operation.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Specifies the activation error(s) if any.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="createAndActivateSubnetworkConnectionException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the createAndActivateSubnetworkConnection operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:protectionEffortNotMet"/>
+            <xsd:element ref="msg:unableToComply"/>
+            <xsd:element ref="msg:unsupportedRoutingConstraints"/>
+            <xsd:element ref="msg:userlabelInUse"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="createModifiedSubnetworkConnectionRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the createModifiedSubnetworkConnection operation</p>
+        <p>The Requesting OS invokes the createModifiedSNC to request the Target OS to modify the addressed SNC route. If the Target OS does not preserve the SNC name, then the method will create a new pending SNC from an existing pending or active SNC. It is similar to createSnc() (which provides details of creation behaviour) but the created SNC is made from data provided by an existing SNC and may replace the existing SNC.</p>
+        <p>This operation does apply to bundled SNCs (see Bundled SNC overview for further details).</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="sncRef" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The name of the subnetwork connection to be modified.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="routeId" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The id of the route to be modifed. Empty string, indicates that the "intended" route is to be modified.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="modifyData" type="tns:SubnetworkConnectionModifyDataType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Structure describing the new/modified subnetwork connection. When the modify type is set to "rerouting", the Target OS should use the routing constraints (if any) to reroute the SNC from end to end. When the modify type is set to "add_protection" (leg) or "remove_protection" (leg), the Target OS should only try to modify the SNC by applying or removing the legs provided in the input parameters. When adding or removing a protection leg, the Target OS should compute the differencing of cross connect on NE.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tolerableImpact" type="com:GradesOfImpactType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>This parameter qualifies the tolerable conditions under which the SNC modification may be performed.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tolerableImpactEffort" type="com:ProtectionEffortType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Qualifies the conditions under which an SNC modification may be performed is a qualification of the requirement that the tolerableImpact as specified, is met.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="osFreedomLevel" type="com:FreedomLevelType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The maximum level of freedom allowed to the Target OS to perform the activation.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>A list of TPs and parameters to apply.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="createModifiedSubnetworkConnectionResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the createModifiedSubnetworkConnection operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>A list of updated TPs to provide the resulting parameters.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="newOrModifiedSnc" type="snc:SubnetworkConnectionType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The modified SNC. It will have sncState and name set. The Target OS selects the SNC names so that they are not reused (within a reasonable time frame) for different SNCs.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Specifies the activation error(s) if any.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="createModifiedSubnetworkConnectionException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the createModifiedSubnetworkConnection operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:objectInUse"/>
+            <xsd:element ref="msg:protectionEffortNotMet"/>
+            <xsd:element ref="msg:unableToComply"/>
+            <xsd:element ref="msg:unsupportedRoutingConstraints"/>
+            <xsd:element ref="msg:userlabelInUse"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="createSubnetworkConnectionRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the createSubnetworkConnection operation</p>
+        <p>The Requesting OS invokes the createSnc service to request the Target OS to create an SNC given the parameters passed in the method. This operation also applies to bundled SNCs (see Bundled SNC overview for further details).</p>
+        <p>Failure : This will throw an exception if it fails. No SNC object will be created on the Target OS.</p>
+        <p>Success : SNC is created in the Target OS and the SNCState is set to the appropriate state in the parameter theSNC. The parameter theSNC will contain the attributes of the created SNC.</p>
+        <p>For more details on how this service affects the state of an SNC see SNC Management Modes of Operation and SNC state diagram.</p>
+        <p>An SNC may be created between any TPs. At a "CM" end point (a G.805 CP) the span of the SNC starts with a fixed or flexible connection through the ME at the SNC layer, i.e. the connectable layer of the end point. At an "LC"end point the span of the SNC starts with a G.805 TCP with mapping mode set to TM_TERMINATED_AND_AVAILABLE_FOR_MAPPING.</p>
+        <p>This operation may be used to create subnetwork connections. There is some variety to the form that SNCs may take. Examples of these SNCs are provided in layering. The following list shows the essence of variety of SNCs. An SNC may be one:
+      <ul>
+            <li>in which CTPs are all cross-connected and their tpMappingMode is set to TM_NEITHER_TERMINATED_NOR_AVAILABLE_FOR_MAPPING. In this case G.805 trails could be created by the Requesting OS by using setTPData to terminate and map CTPs that are adjacent to the CTPat the end of subnetwork connections created by means of createSnc.</li>
+            <li>in which one or more end FTP/CTPs expose G.805 TCPs e.g. CTP type F referenced in layering. If all ends of the SNC terminate on this type of TP then the SNC provides the full route of a G.805 Trail.</li>
+            <li>in which one or more end CTP offer the capability to terminate and map and the SNC reaches the end CTP via the PTP/FTP containing the CTP. In this case the SNC creation also sets the tpMappingMode to TM_TERMINATED_AND_AVAILABLE_FOR_MAPPING as well as creating the crossconnects. If all ends of the SNC terminate on this type of TP or any combination of this type of TP and TPs that expose G.805 TCPs (see above) then the SNC provides the full route of a G.805 Trail.</li>
+            <li>in which an end TP is a PTP (which is effectively permanently "terminated and available for mapping". If all ends of the SNC terminate on this type of TP or any combination of this type of TP, CTPs offering the capability to terminate and map and TPs that expose G.805 TCPs (see above) then the SNC provides the full route of a G.805 Trail.</li>
+          </ul>
+        </p>
+        <p>CreateSNC allows for the creation of either point-to-point connections or legs of point-to-multipoint connections.</p>
+        <p>To add a leg to a broadcast system, the aEnd TP in SNCCreateData_T shall be populated with the common source TP of the broadcast system. Each leg of a broadcast system is a separate SNC and is managed individually, even though they may share cross-connects.</p>
+        <p>To create a broadcast system from a Point to Point SNC, the aEnd of the Point to Point SNC is used as the aEnd TP in tpdata:TerminationPointDataListType.</p>
+        <p>If an existing SNC respects all the conditions described in createData, then the Target OS is allowed to return that existing SNC. It is also allowed for the Target OS to attempt to create a different SNC as explained below. The rest of the description below applies to the cases where the Target OS decides to create a new SNC.</p>
+        <p>If the Requesting OS specifies a routing constraint in the request, then the Target OS must respect the specified constraint even if there are pending, partial, or active SNCs using the required parts of the route.</p>
+        <p>The SNC is created with its intended route, in locked state. By means of other operations it is possible to add (then remove) additional routes for restoration purposes. By means of additional info, it is possible to specify if the intended route is ECCLUSIVE or not; if ECCLUSIVE, then the Target OS must find a route that does not conflict or share CCs or TPs with any other existing SNC route, in any administrative state. Once an ECCLUSIVE (intended) route has been created by Target OS, any further creation operation which conflicts with the exclusive route shall be refused.</p>
+        <p>The Target OS tries to find a route for the request and if found returns the snc:SubnetworkConnectionType structure back to the Requesting OS with the members set to the appropriate values. The Target OS should attempt to find a route that does not conflict or share CCs with any other existing SNC, before it resorts to creating a conflicting SNC or an SNC that shares CCs.</p>
+        <p>If the TPs at the Aend and the Zend are already in use by another SNC, the Target OS may still create the SNC or ECCPT_OBJECT_IN_USE or ECCPT_TIMESLOT_IN_USE may be thrown, depending on its mode of operation.</p>
+        <p>If there already exists between the same termination points and with the same directionality and type, another SNC that is in the partial state, the Target OS will still attempt to create the new SNC. If no constraint is specified, the Target OS should attempt to find a different path. If constraints are specified, then the Target OS attempts to create the SNC with an appropriate route.</p>
+        <p>If a route cannot be found, the SNC is not created in the Target OS and the ECCPT_UNABLE_TO_COMPLY exception is thrown (unless a more precise exception applies), indicating the reason.</p>
+        <p>Depending on the SNC management mode of operation, it is acceptable for an Target OS to not implement this service in which case the ECCPT_NOT_IMPLEMENTED exception is thrown.</p>
+        <p>VC SNCs are normally created over a VP network. Therefore, the VPI numbers of the VC SNCs specified with createData should match existing terminated and mapped VP CTPs. If a VPI number does not match an existing VP CTP, then the Target OS may create the VP CTP as 'TERMINATED and MAPPED' if osFreedomLevel allows it. Such a VP CTP is created with no traffic parameters. Note that such automatic creation of resourceless terminated VP CTPs depends on the capability of the Target OS and/or the ATM NE to support VC connections directly on ATM links (i.e., with no VP overlay network).</p>
+        <p>An Requesting OS can request the Target OS to create an ATM network routed SNC (VP or VC layer rates); the Target OS will then manage the subnetwork connection as a soft PVC. The soft PVC may be completely or partially defined with regards to its source and destination TPs. The aEnd will, by definition, be the source of the Soft PVC (i.e., the originator of the call) and the zEnd will be the destination (i.e., being called). In order to allow the Requesting OS to manage Soft PVCs that may have only their source TPs in the subnetwork, the ctpName parameter from TPDataList zEnd will be used to either specify the VPI and/or VCI value of the destination CTP (including Target OS, managedElement, PTP/FTP and ATM_NI a.k.a., the full location in the physical ATM NE)or the address of the ATM interface on which the call will terminate and optionally the VPI/VCI values if they are specified/known by the Requesting OS (but not the complete physical location of the VP or VC TP).</p>
+        <p>Note that all SNC state transitions (including to/from PENDING and PARTIAL) are applicable to ATM VPCs and VCCs. However, the PARTIAL state should only apply to plain PVCs (intermediate CTPs of a Soft PVC are automatically created and deleted by the network elements and they do not usually notify the Target OS).</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="createData" type="tns:SubnetworkConnectionCreateDataType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Data about the potential SNC.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tolerableImpact" type="com:GradesOfImpactType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The maximum tolerable impact allowed.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="osFreedomLevel" type="com:FreedomLevelType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The maximum level of freedom allowed to the Target OS to perform the activation.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="createSubnetworkConnectionResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the createSubnetworkConnection operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="createdSnc" type="snc:SubnetworkConnectionType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The newly created SNC. It will have sncState and name set. The Target OS selects the SNC names so that they are not reused (within a reasonable time frame) for different SNCs.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Specifies the activation error(s) if any.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="createSubnetworkConnectionException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the createSubnetworkConnection operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:objectInUse"/>
+            <xsd:element ref="msg:protectionEffortNotMet"/>
+            <xsd:element ref="msg:unableToComply"/>
+            <xsd:element ref="msg:unsupportedRoutingConstraints"/>
+            <xsd:element ref="msg:userlabelInUse"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="deactivateAndDeleteSubnetworkConnectionRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the deactivateAndDeleteSubnetworkConnection operation</p>
+        <p>This operation provides a way to deactivate and then delete a subnetwork connection in one operation. As with the deactivateSnc(), operation and the deleteSnc() operation, this operation also applies to bundled SNCs (see Bundled SNC overview for further details).</p>
+        <p>It conceptually behaves like a call to deactivateSnc followed by a call to deleteSnc. All success/failure conditions that apply to the two base operations also apply to the combined operation. If the SNC or any of its network resources have changed as a result of this operation, then no exception can be thrown so that deletedSnc can be passed back to the Requesting OS. Therefore, the exceptions that apply to deleteSnc may not apply to the combined operation: if the deactivation changed the SNC but the deletion is rejected,no exception should be thrown and the resulting SNC should be provided in the out parameter theSNC.</p>
+        <p>The parameter deletedSnc will identify the SNC after the combined operation. If the operation is entirely successful, state will be SNCS_NONEXISTENT. In that case, this object does not exist on the Target OS and the Requesting OS should only look at state. This work around is so that the Requesting OS can have a combined operation.</p>
+        <p>For more details on how this operation affects the state of an SNC see SNC Management Modes of Operation and SNC state diagram.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="sncRef" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The name of the subnetwork connection to be deactivated and deleted.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tolerableImpact" type="com:GradesOfImpactType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Indicates the amount of traffic disruption that the Requesting OS user is willing to tolerate as a result of the deactivation and deletion request.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="osFreedomLevel" type="com:FreedomLevelType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The maximum level of freedom allowed to the Target OS to perform the deactivation and deletion.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>A list of TPs and parameters to apply.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="deactivateAndDeleteSubnetworkConnectionResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the deactivateAndDeleteSubnetworkConnection operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>A list of updated TPs to provide the resulting parameters.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="theSnc" type="snc:SubnetworkConnectionType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>This parameter returns the complete information of the deleted SubnetworkConnection object
+            (that it had before it was deleted)</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Specifies the deactivation and/or deletion error(s) if any.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="deactivateAndDeleteSubnetworkConnectionException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the deactivateAndDeleteSubnetworkConnection operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="deactivateSubnetworkConnectionRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the deactivateSubnetworkConnection operation</p>
+        <p>Deactivating an SNC implies deletion in the ME of all the non-shared cross-connects that belong to this SNC and makes appropriate changes to tpMappingMode such that TPs that are not TP_NA have their tpMappingMode set to TM_NEITHER_TERMINATED_NOR_AVAILABLE_FOR_MAPPING as a result of this operation. See also createSnc(), for an explanation of tpMappingMode behaviour. The ports are left in the same state and are not put out of service.</p>
+        <p>This operation applies to SNCs and bundled SNCs (see Bundled SNC overview for further details).</p>
+        <p>Failure - No exception thrown (except for cases described below). If the SNC or any of its network resources have changed as a result of this operation, then no exception can be thrown so that theSNC can be passed back to the Requesting OS. The SNCState will be either SNCS_PARTIAL if the command partially completed or SNCS_ACTIVE if no cross-connects were deleted. The errorReason will be detailed accordingly.</p>
+        <p>Success - SNC is deactivated in the Target OS and the SNCState is set to SNCS_PENDING in the out parameter theSNC. The parameter deactivatedSNC will contain the attributes of the deactivated SNC. The errorReason parameter may be set to an empty string.</p>
+        <p>For more details on how this service affects the state of an SNC see SNC Management Modes of Operation and SNC state diagram.</p>
+        <p>The Target OS will apply the transmissionParams specified in the tpDataListToModify parameter (same behaviour as setTpData()). They may be applied before or after the creation of the CCs, as appropriate. See transmissionParameters.</p>
+        <p>If a given entry in the list of transmission parameters specified in tpDataListToModify can not be successfully applied to the TP, for any reason, then the errorReason field is appended with an appropriate reason text. Applying transmission parameters is best-effort (where not stated otherwise) and the resulting values of the transmission parameters are provided in the updated tpDataListToModify parameter. If the parameter is "not best effort" then the whole operation will be rejected and the appropriate exception thrown (see exceptions below).</p>
+        <p>Existing TP transmission parameters for which no changes were requested in transmissionParams will be left unchanged. However, the alarm reporting on the TPs and the containing TPs may be turned off by the Target OS as part of this request, unless otherwise specified via the parameter "isAlarmReporting".</p>
+        <p>An already deactivated SNC can be deactivated again with success (the Target OS is allowed to not send the commands to the ME a second time however). While in SNCS_PARTIAL state, it is possible to deactivate an SNC again, this corresponds to a retry.</p>
+        <p>If the SNC has more alternative routes, then the operation locks all the SNC routes, intended and backup.</p>
+        <p>In case of a VP or VC SNC, this operation implies deletion in the ME of all the non-shared VP or VC CTPs and VP or VC cross-connections involved in the SNC. Note that in the case of a VC SNC deactivation, only the VC CTP and VC cross-connections are normally deleted. VP CTPs must be explicitly deleted using deactivateSnc on the VP SNC, except when osFreedomLevel allows it. In that case, the VP CTP can be deleted along with the VC SNC if the VP CTP no longer contains any VC CTPs.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="sncRef" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The name of the subnetwork connection to be deactivated.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tolerableImpact" type="com:GradesOfImpactType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The maximum tolerable impact allowed. Indicates the amount of traffic disruption that the Requesting OS user is willing to tolerate as a result of the deactivation request.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="osFreedomLevel" type="com:FreedomLevelType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The maximum level of freedom allowed to the Target OS to perform the deactivation.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>A list of TPs and parameters to apply</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="deactivateSubnetworkConnectionResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the deactivateSubnetworkConnection operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>A list of updated TPs to provide the resulting parameters.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="deactivatedSnc" type="snc:SubnetworkConnectionType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>the deactivated subnetwork connection</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Specifies the deactivation error(s) if any.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="deactivateSubnetworkConnectionException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the deactivateSubnetworkConnection operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="deleteSubnetworkConnectionRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the deleteSubnetworkConnection operation</p>
+        <p>An already deactivated SNC can be deactivated again with success (the Target OS is allowed to not send the commands to the ME a second time however). While in SNCS_PARTIAL state, it is possible to deactivate an SNC again, this corresponds to a retry.</p>
+        <p>If the SNC has more alternative routes, then the operation locks all the SNC routes, intended and backup.</p>
+        <p>In case of a VP or VC SNC, this operation implies deletion in the ME of all the non-shared VP or VC CTPs and VP or VC cross-connections involved in the SNC. Note that in the case of a VC SNC deactivation, only the VC CTP and VC cross-connections are normally deleted. VP CTPs must be explicitly deleted using deactivateSnc on the VP SNC, except when osFreedomLevel allows it. In that case, the VP CTP can be deleted along with the VC SNC if the VP CTP no longer contains any VC CTPs.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="sncRef" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The name of the subnetwork connection to be deleted.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="osFreedomLevel" type="com:FreedomLevelType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The maximum level of freedom allowed to the Target OS to perform the deletion.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="deleteSubnetworkConnectionResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the deleteSubnetworkConnection operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="deleteSubnetworkConnectionException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the deleteSubnetworkConnection operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:notInValidState"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="modifySubnetworkConnectionRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the modifySubnetworkConnection operation</p>
+        <p>The Requesting OS invokes the modifySnc to perform the combined function of createModifiedSnc() and swapSnc() in sequence. The signature of the operation is the same as that of createModifiedSNC().</p>
+        <p>This method will modify and activate the SNC on the network. If the Target OS does not preserve the SNC name, then output SNC will have a different name than formerly addressed SNC, which is deactivated and deleted.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="sncRef" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The name of the subnetwork connection to be modified.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="routeId" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The id of the route to be modifed. Empty string, indicates that the "intended" route is to be modified.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="modifyData" type="tns:SubnetworkConnectionModifyDataType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Structure describing the new/modified subnetwork connection.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tolerableImpact" type="com:GradesOfImpactType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The maximum tolerable impact allowed.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tolerableImpactEffort" type="com:ProtectionEffortType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>This parameter qualifies the tolerable conditions under which the SNC modification may be performed.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="osFreedomLevel" type="com:FreedomLevelType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The maximum level of freedom allowed to the Target OS to perform the modification.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>A list of TPs and parameters to apply</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="modifySubnetworkConnectionResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the modifySubnetworkConnection operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>A list of updated TPs to provide the resulting parameters.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="newOrModifiedSnc" type="snc:SubnetworkConnectionType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The modified SNC. It will have sncState and name set. The Target OS selects the SNC names so that they are not reused (within a reasonable time frame) for different SNCs.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Specifies the modification error(s) if any.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="modifySubnetworkConnectionException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the modifySubnetworkConnection operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:notInValidState"/>
+            <xsd:element ref="msg:objectInUse"/>
+            <xsd:element ref="msg:protectionEffortNotMet"/>
+            <xsd:element ref="msg:unableToComply"/>
+            <xsd:element ref="msg:unsupportedRoutingConstraints"/>
+            <xsd:element ref="msg:userlabelInUse"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="removeRouteRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the removeRoute operation</p>
+        <p>This operation allows an Requesting OS to request the deletion of a route of given 
+   SubnetworkConnection on a specified subnetwork.</p>
+        <p>The addressed route must not be in the unlocked  state, and must not be 
+   the intended route.</p>
+        <p>Of course it is possible to delete a locked backup route which is "in 
+   use" by other SNC route, because this operation has no side effect on 
+   routes of any other SNCs, even if sharing CCs/TPs.</p>
+        <p>Note: The relationship between Bundled SNC service and the SNC with Multiple Routes feature
+        requires further study and is not applicable for v3.0.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="sncRef" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The name of the subnetwork connection</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="routeId" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The id of the route.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="osFreedomLevel" type="com:FreedomLevelType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The maximum level of freedom allowed to the Target OS to perform the deletion.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This is a container for all operation request message vendor extensions.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="removeRouteResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the removeRoute operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This is a container for all operation response message vendor extensions.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="removeRouteException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the removeRoute operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:notInValidState"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="setIntendedRouteRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the setIntendedRoute operation</p>
+        <p>This operation allows an Requesting OS to request to set the addressed route as 
+   intended route. The formerly intended route (if different from addressed) 
+   is no longer the intended one, in order to respect the rule that an SNC 
+   must have one intended route, and only one. The addressed route can be in 
+   any administrative / actual state.</p>
+        <p>Note: The relationship between Bundled SNC service and the SNC with Multiple Routes feature
+        requires further study and is not applicable for v3.0.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="sncRef" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The name of the subnetwork connection.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="routeId" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The id of the route.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This is a container for all operation request message vendor extensions.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="setIntendedRouteResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the setIntendedRoute operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This is a container for all operation response message vendor extensions.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="setIntendedRouteException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the setIntendedRoute operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="setRoutesAdminStateRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the setRoutesAdminState operation</p>
+        <p>This operation allows an Requesting OS to specify a list of routes jointly with their 
+   provisioned administrative state. If all routes of a given SNC are 
+   successfully locked, then the SNC state transits to pending. If the SNC 
+   state was partial or pending, and at least one route is successfully 
+   unlocked, then the SNC state may transits to active.</p>
+        <p>If the SNC represents a Control Plane Connection, an exception is raised.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="sncRef" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The name of the subnetwork connection.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="routeNameAndAdminStateList" type="tns:RouteNameAndAdminStateListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>the list of route IDs plus their administrative state.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="setRoutesAdminStateResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the setRoutesAdminState operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="routeNameAndAdminStateList" type="tns:RouteNameAndAdminStateListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The list of route IDs plus their administrative state.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="sncState" type="com:SubnetworkConnectionStateType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The subnetwork connection state after the operation.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="setRoutesAdminStateException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the setRoutesAdminState operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="swapSubnetworkConnectionRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the swapSubnetworkConnection operation</p>
+        <p>The swapSNC operation will deactivate an identified active SNC (state changes to pending) and activate an identified pending SNC. The pending SNC may have been created by using a createSnc() or a createModifiedSnc().</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="sncToBeDeactivatedRef" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The name of the subnetwork connection to be deactivated.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="sncToBeActivatedRef" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The name of the subnetwork connection to be activated.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tolerableImpact" type="com:GradesOfImpactType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The maximum tolerable impact allowed.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="osFreedomLevel" type="com:FreedomLevelType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The maximum level of freedom allowed to the Target OS to perform the activation.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>A list of TPs and parameters to apply</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="swapSubnetworkConnectionResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the swapSubnetworkConnection operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>A list of updated TPs to provide the resulting parameters.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="stateOfActivatedSnc" type="com:SubnetworkConnectionStateType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The state of the activated subnetwork connection after the operation.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Specifies the error(s) if any.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="swapSubnetworkConnectionException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the swapSubnetworkConnection operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:notInValidState"/>
+            <xsd:element ref="msg:objectInUse"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="switchRouteRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the switchRoute operation</p>
+        <p>This operation is used to activate the input route and deactivate the 
+   current (or partial) route(s), if different from input route. The operation 
+   is rejected if performed on a pending SNC. The operation does not affect 
+   the administrativeState of any route. The restoration process may re-route 
+   again, e.g. in case of failures.</p>
+        <p>
+          <b>Success</b>: output parameter sncState is set to SNCS_ACTIVE. All 
+   cross-connects required for the given route were activated successfully, 
+   and if needed, all the cross-connects of former current (or partial) 
+   route(s) were deactivated successfully. The errorReason parameter is set to 
+   an empty string.</p>
+        <p>
+          <b>Failure</b>: No exception thrown, except in the cases listed below. 
+   If the SNC or any of its network resources have changed as a result of this 
+   operation, then no exception can be thrown so that the sncState can be 
+   passed back to the Requesting OS. The resulting SNCState will be either SNCS_PARTIAL 
+   or SNCS_ACTIVE.</p>
+        <p>The sncState will be SNCS_PARTIAL if not all cross-connects (of given 
+   input route) on MEs have been successfully set up, and there is not an 
+   active route. Moreover one or more of the cross-connects to be removed may 
+   be still active, this leads to two (or more) routes in partial state.</p>
+        <p>The sncState will be SNCS_ACTIVE if all cross-connects (of given input 
+   route) on MEs have been successfully set up, but one or more of the cross-
+   connects (of any of the other partial routes) to be removed are still 
+   active, this leads to one route in active state and another (or more) route 
+   in partial state. The errorReason parameter is set accordingly.</p>
+        <p>Recovery scenarios: this operation can be performed again addressing<ul>
+            <li>an already active route, in order to retry the deactivation of other 
+   route(s) in partial state.</li>
+            <li> a partial route, in order to retry its activation (and retry, if 
+   needed, the deactivation of other partial routes as well).</li>
+          </ul>
+        </p>
+        <p>The Target OS will apply the transmissionParams specified in the tpDataListToModify 
+   parameter (same behaviour as setTpData). They may be applied before or 
+   after the creation of the CCs, as appropriate. Existing TP transmission 
+   parameters for which no changes were requested in tpDataListToModify will be left 
+   unchanged. However, the alarm reporting on the connected TPs and the 
+   containing TPs may be turned on by the Target OS as part of this request, unless 
+   otherwise specified via the transmission parameter "AlarmReporting". A 
+   similar behaviour is also allowed for the serviceState parameter, which may 
+   be set to IN_SERVICE for the TPs. See SD1-16_LayeredParameters.pdf </p>
+        <p>If a given entry in the list of transmission parameters specified in the 
+   TpData can not be successfully applied to the TP, for any reason, then 
+   the errorReason field is appended with an appropriate reason text. Applying 
+   transmission parameters is best-effort (where not stated 
+   otherwise) and the resulting values of the 
+   transmission parameters are provided in the updated tpDataListToModify 
+   parameter.</p>
+        <p>An already active SNC route can be activated again; the Target OS is allowed 
+   to not send the commands to the ME a second time for the cross connect 
+   establishment however the commands may be sent for the transmission 
+   parameters.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="sncRef" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The name of the subnetwork connection.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="routeId" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The id of the route.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tolerableImpact" type="com:GradesOfImpactType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The maximum tolerable impact allowed.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="osFreedomLevel" type="com:FreedomLevelType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The maximum level of freedom allowed to the Target OS to perform the deletion.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>A list of TPs and parameters to apply.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This is a container for all operation request message vendor extensions .</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="switchRouteResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the switchRoute operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>A list of TPs and parameters to apply.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This is a container for all operation request message vendor extensions .</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="sncState" type="com:SubnetworkConnectionStateType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The subnetwork connection state after the operation.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Specifies the error(s) if any.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="switchRouteException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the switchRoute operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:notInValidState"/>
+            <xsd:element ref="msg:objectInUse"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:complexType name="SubnetworkConnectionCreateDataType">
+    <xsd:annotation>
+      <xsd:documentation>
+      The read-create attributes required for the creation of a subnetworkConnection on the Target OS are packaged together in an SNCCreateData structure which the Requesting OS will pass to the Target OS at SNC creation time. These are the read-create attributes of the SNC.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="crcd:CommonResourceCreateDataType">
+        <xsd:sequence>
+          <xsd:element name="direction" type="com:ConnectionDirectionType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>The connection directionality must be specified by the Requesting OS.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="staticProtectionLevel" type="com:StaticProtectionLevelType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>The Requesting OS must specify the requested staticProtectionLevel as specified in SNC Types.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="protectionEffort" type="com:ProtectionEffortType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>The Requesting OS must specify the protectionEffort as specified in SNC Types.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="rerouteAllowed" type="com:RerouteType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>This attribute indicates if the Target OS/MEs are allowed and/or required to reroute this SNC if there is a failure on this SNC, periodically to optimize the routes, or for any other reason. It is an Target OS/ME implementation whether this is done using network routing protocols or if the Target OS/MEs detect the failure and take appropriate action to attempt to fix the SNC. There is no requirement for the reroutes to respect the constraints specified in the creation request (ccInclusions, neTpInclusions, fullRoute, neTpSubnetworkConnectionExclusions).</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="networkRouted" type="com:NetworkRoutedType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>This attribute specifies if the network is allowed/required to route this SNC.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="type" type="com:SubnetworkConnectionTypeType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>The Requesting OS must specify the sncType as specified in SNC Types.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="layerRate" type="lr:LayerRateType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>Identifies the layer at which the SNC is to be made.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="ccInclusionList" type="cc:CrossConnectListType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>Specifies a list of cross-connects that must be used by the SNC. The list must be empty if no cross-connect constraints are required.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="inclusionResourceRefList" type="nam:NamingAttributeListType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>Specifies a list of MEs, GTPs, TLs, PTPs, FTPs and/or CTPs that must be used by the SNC when carrying out a full reroute or adding a routing leg. The list must be empty if no ME/TL/PTP/CTP/FTP constraints are required. Specifying both inclusion and exclusion constraints is not supported, therefore this list must be empty if exclusionRefList is not empty.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="isFullRoute" type="xsd:boolean" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>Specifies if the neTpInclusions constraints describe the full route of the SNC or routing leg (as opposed to only a partial constraint). When no inclusions constraints are specified, false must be used.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="exclusionResourceRefList" type="nam:NamingAttributeListType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>Specifies a list of MEs, TLs, PTPs, FTPs, CTPs, and/or SNCs to be excluded. This is applicable for adding the leg or doing a full reroute and the route must not use any of the NEs, TLs, PTPs, FTPs and CTPs specified, nor any resource used by the SNCs specified. Specifying both inclusion and exclusion constraints is not supported, therefore this list must be empty if inclusionResourceRefList or ccInclusionList is not empty.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="aEndRefList" type="nam:NamingAttributeListType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>The Requesting OS must specify the aEnd (CTP/FTP) as specified in SNC Types. Is also used to indicate the Source TP when adding a leg to an existing broadcast system. If the TP is an FTP the Requesting OS is allowed to specify a generic end point within a ME, the Target OS will choose the appropriate TP instance. See Object Naming for further detail.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="zEndRefList" type="nam:NamingAttributeListType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>The Requesting OS must specify the zEnd (CTP/FTP) as specified in SNC Types. Is also used to indicate the Sink TP when adding a leg to an existing broadcast system. If the Requesting OS supplies an invalid combination of TPs in aEnd and zEnd, then the Target OS will throw an INVALID_INPUT exception. Aend and Zend TPs have to be on the same subnetwork If the TP is an FTP the Requesting OS is allowed to specify a generic end point within a ME, the Target OS will choose the appropriate TP instance. See Object Naming for further detail.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="aRoleList" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+          Defines the element that defines the end point role of all aEnd TPs of an SNC. This is an ordered list indexed with the aEnd TP list of the SNC.
+          </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="role" type="com:TerminationPointRoleInSubnetworkConnectionType" minOccurs="0" maxOccurs="unbounded"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="isReportingAlarms" type="xsd:boolean" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+Provides an indication whether alarm reporting for this instance is active or not.
+          </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="networkReroute" type="xsd:string" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Indicates if the reroute of an SNC (if allowed) should be computed by the network, by the Target OS, or if it does not matter. Values are "Yes", "No", "NotSet".</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="isRevertive" type="xsd:boolean" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Takes value "True" when an SNC can be switched back to its original route.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="isRevertiveReroute" type="xsd:boolean" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Indicates whether the rerouting of an SNC is revertive or not.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="intendedRouteAEnds" type="xsd:string" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Must be specified when creating an SNC with multiple routes in case the end points of the intended route are a subset of SNC end points. Value is "aEnd-i-j-k-..." where i, j, k are the indexes of SNC aEnd points.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="isIntendedRouteExclusive" type="xsd:boolean" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Specifies when creating an SNC with multiple routes if the intended route is ECCLUSIVE or not; if ECCLUSIVE, then the Target OS must find a route that does not conflict or shared CCs or CTPs with any other existing SNC route, in any state (pending/partial/current). Once an ECCLUSIVE (intended) route has been created by the Target OS, any further creation operation which conflicts with the exclusive route shall be rejected.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="intendedRouteZEnds" type="xsd:string" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Must be specified when creating an SNC with multiple routes in case the end points of the intended route are a subset of SNC end points. Value is "zEnd-i-j-k-..." where i, j, k are the indexes of SNC zEnd points.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="priority" type="xsd:unsignedInt" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The SNC creation priority.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="zRoleList" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Defines the element that defines the end point role of all zEnd TPs of an SNC. This is an ordered list indexed with the zEnd TP list of the SNC.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="role" type="com:TerminationPointRoleInSubnetworkConnectionType" minOccurs="0" maxOccurs="unbounded"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="asapRef" type="xsd:string" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Indicates the assignment of an ASAP to this SNC object. Value is the ASAP name.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="aEndTpList" type="xsd:string" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>String representing a sequence of name-value pairs. The backslash (“\”) character is used as separator.</p>
+                <p>Format: \name=OS\value=CompanyName/OSname\name=ME\value=ManagedElementName\name=PTP\value=PTPName\name=CTP\value=CTPName
+E.g.: 
+\name=OS\value=BigCompany/SmallTarget OS\name=ME\value=YellowManagedElement\name=PTP\value=BluePTP\name=CTP\value=RedCTP</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="blsrDirection" type="xsd:string" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Used in conjunction with “Timeslot” when the Target OS cannot use the routing constraints for a BLSR case.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="isBundledSnc" type="xsd:boolean" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Indicates whether the SNC constitutes a Bundled SNC service (value “True”) or not.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="mustRemoveGtps" type="xsd:boolean" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This attribute defines that the target OS has to delete all the interior Group Termination Points (GTPs) supporting the bundled Subnetwork Connection (SNC) when the SNC is deleted. The attribute is only used when creating bundled SNCs.</p>
+                <p>It can take on two possible values:<uL>
+                    <li>true (the target OS must make a best-effort attempt to remove the interior GTPs that once belonged to the SNC) and</li>
+                    <li>false (the requesting OS doesn't care if the target OS removes the interior GTPs or not).</li>
+                  </uL>
+                </p>
+                <p>In the case that mustRemoveGtps is set to "true" and the target OS cannot remove all the interior GTPs, the target OS should return a list of the GTPs that could not be removed in the errorReason field of the deactivateAndDeleteSnc and deleteSnc operations. The errorReason will be "not all interior GTPs could be deleted" - this will be followed by the names of the GTPs that could not be deleted.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="potentialFutureSetupIndicator" type="xsd:string" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Refers to the aEnd and is used to convey the likely future (or current) configuration of the SNC (see SD1-16_layeredParameters.pdf).</p>
+                <p>Legal Values are: <ul>
+                    <li>RSU_POINT_TO_POINT</li>
+                    <li>RSU_BROADCAST</li>
+                    <li>RSU_ANY_CONFIG</li>
+                  </ul>
+                </p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="routingConstraintEffort" type="xsd:string" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The effort required for routing constraint application.</p>
+                <p>Legal Values are:<ul>
+                    <li>BEST_EFFORT</li>
+                    <li>EXACT_MATCH</li>
+                  </ul>
+                </p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="timeslot" type="xsd:integer" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Used in conjunction with “blsrDirection”.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="zEndTpList" type="xsd:string" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>see aEndTpList.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ==================== -->
+  <xsd:complexType name="SubnetworkConnectionModifyDataType">
+    <xsd:annotation>
+      <xsd:documentation>
+      The read-create attributes required for the modification of a subnetworkConnection on the Target OS are packaged together in an SNCModifyData structure which the Requesting OS will pass to the Target OS in a request to modify an existing SNC.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="crmd:CommonResourceModifyDataType">
+        <xsd:sequence>
+          <xsd:element name="direction" type="com:ConnectionDirectionType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>The connection directionality must be specified by the Requesting OS.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="modifyType" type="xsd:string" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>Class of modification: "rerouting", "add_protection" or "remove_protection".</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="mustRetainOldSnc" type="xsd:boolean" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>Request for the Target OS to keep the old SNC in pending state.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="modifyServersAllowed" type="xsd:boolean" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>Allow to modify the server layers to fulfil the protection constraint.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="staticProtectionLevel" type="com:StaticProtectionLevelType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>The Requesting OS must specify the requested staticProtectionLevel as specified in SNC Types.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="protectionEffort" type="com:ProtectionEffortType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>The Requesting OS must specify the protectionEffort as specified in SNC Types.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="rerouteAllowed" type="com:RerouteType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>This attribute indicates if the Target OS/MEs are allowed and/or required to reroute this SNC if there is a failure on this SNC, periodically to optimize the routes, or for any other reason. It is an Target OS/ME implementation whether this is done using network routing protocols or if the Target OS/MEs detect the failure and take appropriate action to attempt to fix the SNC. There is no requirement for the reroutes to respect the constraints specified in the creation request (ccInclusions, inclusionResourceRefList, fullRoute, exclusionResourceRefList).</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="networkRouted" type="com:NetworkRoutedType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>This attribute specifies if the network is allowed/required to route this SNC.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="type" type="com:SubnetworkConnectionTypeType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>The Requesting OS must specify the sncType as specified in SNC Types.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="layerRate" type="lr:LayerRateType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>Identifies the layer at which the SNC is to be made.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="addedOrNewRoute" type="route:RouteListType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>Depending on the modifyType, AddedOrNewRoute describes the route of a new protection leg or the whole SNC. When it describes a segment to be added, either the SNCP cross-connects or the switch TPs that will be changed in the segment may be specified by the Requesting OS. The Target OS then chooses the missing segments. Alternatively, the Requesting OS may specify the full route.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="removedRoute" type="route:RouteListType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>RemovedRoute describes dropping of a protection leg from the original SNC. Either the last cross-connects (that contain the SNCP) are specified by the Requesting OS or the full route may be specified. This parameter can be used in conjunction with addedOrNewRoute only to reroute a segment.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="inclusionResourceRefList" type="nam:NamingAttributeListType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>Specifies a list of MEs, TLs, PTPs, FTPs and/or CTPs that must be used by the SNC when carrying out a full reroute or adding a routing leg. The list must be empty if no ME/TL/PTP/CTP/FTP constraints are required.If the Target OScannot fully satisfy the constraints, then the request will be rejected. Specifying both inclusion and exclusion constraints is not supported, therefore this list must be empty if exclusionResourceRefList is not empty.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="isFullRoute" type="xsd:boolean" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>Specifies if the neTpInclusions constraints describe the full route of the SNC or routing leg (as opposed to only a partial constraint). When no inclusions constraints are specified, false must be used.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="exclusionResourceRefList" type="nam:NamingAttributeListType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>Specifies a list of MEs, TLs, PTPs, FTPs, CTPs, and/or SNCs to be excluded. This is applicable for adding the leg or doing a full reroute and the route must not use any of the NEs, TLs, PTPs, FTPs and CTPs specified, nor any resource used by the SNCs specified. Specifying both inclusion and exclusion constraints is not supported, therefore this list must be empty if inclusionResourceRefList or ccInclusionList are not empty..</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="aEndRefList" type="nam:NamingAttributeListType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>The Requesting OS must specify the aEnd (CTP/FTP) as specified in SNC Types. Is also used to indicate the Source TP when adding a leg to an existing broadcast system. If the TP is an FTP the Requesting OS is allowed to specify a generic end point within a ME, the Target OS will choose the appropriate TP instance. See Object Naming for further detail.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="zEndRefList" type="nam:NamingAttributeListType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>The Requesting OS must specify the zEnd (CTP/FTP) as specified in SNC Types. Is also used to indicate the Sink TP when adding a leg to an existing broadcast system. If the Requesting OS supplies an invalid combination of TPs in aEnd and zEnd, then the Target OS will throw an INVALID_INPUT exception. Aend and Zend TPs have to be on the same subnetwork. If the TP is an FTP the Requesting OS is allowed to specify a generic end point within a ME, the Target OS will choose the appropriate TP instance. See Object Naming for further detail.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="isReportingAlarms" type="xsd:boolean" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+Provides an indication whether alarm reporting for this instance is active or not.
+          </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="networkReroute" type="com:RerouteType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+          Indicates if the reroute of an SNC (if allowed) should be computed by the network, by the Target OS, or if it does not matter.
+          </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="isRevertive" type="xsd:boolean" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>Takes value "True" when an SNC can be switched back to its original route.
+          </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="isRevertiveReroute" type="xsd:boolean" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+          Indicates whether the rerouting of an SNC is revertive or not.
+          </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="asapRef" type="xsd:string" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Indicates the assignment of an ASAP to this SNC object. Value is the ASAP name.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="mustRemoveGtps" type="xsd:boolean" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This attribute defines that the target OS has to delete all the interior Group Termination Points (GTPs) supporting the bundled Subnetwork Connection (SNC) when the SNC is deleted. The attribute is only used when creating bundled SNCs.</p>
+                <p>It can take on two possible values:<uL>
+                    <li>true (the target OS must make a best-effort attempt to remove the interior GTPs that once belonged to the SNC) and</li>
+                    <li>false (the requesting OS doesn't care if the target OS removes the interior GTPs or not).</li>
+                  </uL>
+                </p>
+                <p>In the case that mustRemoveGtps is set to "true" and the target OS cannot remove all the interior GTPs, the target OS should return a list of the GTPs that could not be removed in the errorReason field of the deactivateAndDeleteSnc and deleteSnc operations. The errorReason will be "not all interior GTPs could be deleted" - this will be followed by the names of the GTPs that could not be deleted.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="priority" type="xsd:unsignedInt" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The SNC creation priority.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:complexType name="RouteCreateDataType">
+    <xsd:annotation>
+      <xsd:documentation>
+      Structure is used by the Requesting OS to pass to the Target OS when a route is added to a SNC.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="isIntendedRoute" type="xsd:boolean" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This attribute defines the purpose of the Route to be created. Refer to description in the Route object class.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="isExclusiveRoute" type="xsd:boolean" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This attribute defines that not any other Routes of other Subnetwork Connections can share any of the Routes Cross Connections or Connection Termination Points, even in pending state (true).</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="ccInclusionList" type="cc:CrossConnectListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Specifies a list of cross-connects that must be used by the route. The 
+   list must be empty if no cross-connect constraints are required.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="inclusionResourceRefList" type="nam:NamingAttributeListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Specifies a list of MEs/TLs/TPs/GTPs that must be used by the 
+   route. The list must be empty if no ME/TLs/TP/GTP constraints are required. Specifying both inclusion and exclusion constraints is not supported, therefore this list must be empty if exclusionResourceRefList is not empty.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="isFullRoute" type="xsd:boolean" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Specifies if the ccInclusions and neTpInclusions constraints describe 
+   the full route details (as opposed to only a partial constraint). When no 
+   inclusions constraints are specified, false must be used.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="exclusionResourceRefList" type="nam:NamingAttributeListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Specifies a list of MEs/TLs/TPs/GTPs and/or "SNC + routes" to be 
+   excluded. The route to be created must not use any of the MEs/TLs/TPs/GTPs
+   specified, nor any resource used by the "SNC + routes" specified. 
+   Specifying both inclusion and exclusion constraints is not supported, 
+   therefore this list must be empty if ccInclusions or inclusionResourceRefList are non 
+   empty. "SNC + route" is described by the SNC name followed by the string 
+   ("/routeId=") and the route id. If only the SNC name is specified, then its 
+   intended route is considered.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This is a container for all vendor extensions.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="RouteNameAndAdminStateType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This structure is used by the Requesting OS to lock or unlock the route of an SNC.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="id" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Unique identifier within the SNC name, with format up to Target OS.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="administrativeState" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This state refers to the belonging SNC, and has not any relationship 
+   with the actual state. It can assume only the following values:<ul>
+                <li>
+                  <b>locked</b>: the route is not allowed to be active.</li>
+                <li>
+                  <b>unlocked</b>: the route is allowed to be active.</li>
+              </ul>
+            </p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This is a container for all vendor extensions.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="RouteNameAndAdminStateListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The list of RouteNameAndAdminState structures.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="item" type="tns:RouteNameAndAdminStateType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

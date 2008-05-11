@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ResourceProvisioning - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rp/xsd/gctc/v1" xmlns:tns="http://www.tmforum.org/mtop/rp/xsd/gctc/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: ResourceProvisioning</p>
+      <p>Module:  Message XSD Module</p>
+      <p>Description: This module contains the XML Schema type definitions of all the mTOP GuiCutThroughControl SI XML message structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <!-- ================ -->
+  <xsd:element name="destroyGuiCutThroughRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the destroyGuiCutThrough operation</p>
+        <p>This operation closes all the GCT windows opened by launchGuiCutThrough() 
+         at the given displayAddress; it also removes all 
+         related records from the EMS/GCT window manager.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="displayAddress" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the IP address or hostname of the display
+               from which all GCT windows are to be closed</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="destroyGuiCutThroughResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the destroyGuiCutThrough operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="destroyGuiCutThroughException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the destroyGuiCutThrough operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getGuiCutThroughProfileInfoRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getGuiCutThroughProfileInfo operation</p>
+        <p>This operation allows an NMS to request the GUI Cut-Through
+         information from the EMS.</p>
+        <p>The interface will include two different operation modes, client 
+         launch and server launch.</p>
+        <p>EMS support of the client launch is mandatory and the client launch 
+         itself is handled outside this interface.
+         The EMS should, to the best of its abilities, provide sufficient 
+         information in the response to enable the NMS to launch a 
+         GUI Cut-Through.</p>
+        <p>EMS support for server launch is optional and the server launch is 
+         invoked through the interface.</p>
+        <p>Note that it is not required for the NMS to reobtain the GCT profile
+         before every launchGCT request and therefore the EMS cannot change the
+         GuiCutThroughProfileInfoType unless the session is closed.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getGuiCutThroughProfileInfoResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getGuiCutThroughProfileInfo operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="guiCutThroughProfileInfo" type="tns:GuiCutThroughProfileInfoType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The EMS will fill this list to 
+             contain data on all supported GCT window types</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getGuiCutThroughProfileInfoException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getGuiCutThroughProfileInfo operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:internalError"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="launchGuiCutThroughRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the launchGuiCutThrough operation</p>
+        <p>This operation invokes the EMS server launch of the GCT.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="objectName" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The object which should
+               be displayed, if possible, upon creation of the GCT window. If not
+               possible, the EMS will select the closest superior object available</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="guiCutThroughContext" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The window context (see GuiCutThroughDataType)</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="userInfo" type="gen:NameAndValueStringListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Identifies the GCT user. The
+               contents of this parameter is subject to bilateral agreements</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="displayAddress" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The IP address or hostname of the display for the window</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="additionalInputInfo" type="gen:NameAndValueStringListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Additional input info provided to the EMS. The contents of this
+               parameter is subject to bilateral agreements</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="launchGuiCutThroughResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the launchGuiCutThrough operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="isClosingEnabled" type="xsd:boolean" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Indicates to the NMS whether or not
+             destroyGuiCutThrough() will be supported for this window</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="additionalOutputInfo" type="gen:NameAndValueStringListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Additional output info provided by the EMS to the NMS. The contents of this
+               parameter is subject to bilateral agreements</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="launchGuiCutThroughException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the launchGuiCutThrough operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:capacityExceeded"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:complexType name="GuiCutThroughProfileInfoType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the launchGuiCutThrough operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="serverLaunchCapability" type="tns:ServerLaunchCapabilityType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Indicates whether the EMS supports the 
+             server launchGuiCutThrough operation. 
+             The default is to support client launch only</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="guiCutThroughHostname" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>IP address (or host name which is mapped to the appropriate
+             IP address) that allows the NMS to identify where to launch the
+             EMS GUI client (NMS display). This string can be empty only
+             in case the attribute emsGuiCutThroughPlatform is "local" or "web-based".
+             For Citrix commands, this is the TSE (Terminal Server Environment)
+             IP address</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="emsGuiCutThroughPlatform" type="tns:GuiCutThroughPlatformType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Indicates the platform supported for the GUI Cut-Through</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="guiCutThroughDataList" type="tns:GuiCutThroughDataListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Indicates the supported window types and how to lauch them</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:simpleType name="ServerLaunchCapabilityType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Describes the capability for server launch; either the EMS supports
+         only a client launch, or the EMS supports both a client launch and a
+         server launch</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="CLIENT_LAUNCH_ONLY">
+      </xsd:enumeration>
+      <xsd:enumeration value="SERVER_LAUNCH_CAPABLE">
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="GuiCutThroughPlatformType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Defines which platform is supported for the GUI Cut-Through.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:GuiCutThroughPlatformEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:simpleType name="GuiCutThroughPlatformEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Defines the enumeration of all platform supported for the GUI Cut-Through</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="VENDOR_EXT"/>
+      <xsd:enumeration value="UNIX">
+      </xsd:enumeration>
+      <xsd:enumeration value="WINDOWS_NT">
+      </xsd:enumeration>
+      <xsd:enumeration value="LOCAL">
+      </xsd:enumeration>
+      <xsd:enumeration value="WEB_BASED">
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================ -->
+  <xsd:complexType name="GuiCutThroughDataType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This struct is used to represent the GCT window data for one window.</p>
+        <p>It provides all the information needed by the
+         NMS to launch a specific GUI Cut-Through window outside of the EMS-NMS
+         interface. The information in the guiCutThroughDataList attribute of a
+         GCT profile information (see below) represents all the windows supported
+         by the EMS. This is a readonly attribute, i.e. the NMS cannot configure
+         GCT launch data but retrieve the GCT capabilities of the EMS</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="guiCutThroughScope" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Scope of the window: EMS, ME
+             Only support of the EMS scope is mandatory</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="guiCutThroughContext" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Context of the window</p>
+            <p>Valid values are: TOP_LEVEL, FAULT, CONFIGURATION_SOFTWARE,
+            CONFIGURATION_CONNECTION, ACCOUNTING, PERFORMANCE, SECURITY,
+           SYSTEMS_MANAGEMENT</p>
+            <p>Only support of the "TOP_LEVEL" context is mandatory</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="guiCutThroughCommand" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>contains the exact command needed by the EMS 
+             to launch its GUI so that the window for that EMS is launched. This 
+             string shall not be empty. Placeholders are used to indicate where 
+             values should be replaced by the NMS when performing the client launch.
+             For details of how this list is filled see SD1-13_guiCutThrough.pdf  for conventions
+             of the Client Launch</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This is a container for all vendor extensions.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:complexType name="GuiCutThroughDataListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The list of GuiCutThroughDataType instances</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="gctData" type="tns:GuiCutThroughDataType" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>GuiCutThroughDataType instance</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>
