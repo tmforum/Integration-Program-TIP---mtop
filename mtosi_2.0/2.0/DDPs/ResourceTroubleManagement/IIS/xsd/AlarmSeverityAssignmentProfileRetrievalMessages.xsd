@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ResourceTroubleManagement - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rtm/xsd/asapr/v1" xmlns:tns="http://www.tmforum.org/mtop/rtm/xsd/asapr/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lr="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:asap="http://www.tmforum.org/mtop/nra/xsd/asap/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: ResourceTroubleManagement</p>
+      <p>Module:  Message XSD Module</p>
+      <p>Description: This module contains the XML Schema type definitions of all the mTOP AsapRetrieval SI XML message structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/Asap.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/asap/v1"/>
+  <!-- ================ -->
+  <xsd:element name="getAllAlarmSeverityAssignmentProfilesWrtOsRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAllAlarmSeverityAssignmentProfilesWrtOs operation</p>
+        <p>This operation returns the data structure for each ASAP associated with a given subordinate OS. Note that Wrt in the name of the operation stands for "with respect to".</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="osRef" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the OS whose associated ASAP are being requested.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllAlarmSeverityAssignmentProfilesWrtOsResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllAlarmSeverityAssignmentProfilesWrtOs operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="asapList" type="asap:AlarmSeverityAssignmentProfileListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The list of ASAPs associated with the given OS.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllAlarmSeverityAssignmentProfilesWrtOsException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllAlarmSeverityAssignmentProfilesWrtOs operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getAlarmSeverityAssignmentProfileRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAlarmSeverityAssignmentProfile operation</p>
+        <p>This operation returns an ASAP instance given its name.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="asapRef" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the ASAP being requested.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAlarmSeverityAssignmentProfileResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAlarmSeverityAssignmentProfile operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="asap" type="asap:AlarmSeverityAssignmentProfileType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the ASAP.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAlarmSeverityAssignmentProfileException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAlarmSeverityAssignmentProfile operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getAsapAssociatedResourceNamesRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAsapAssociatedResourceNames operation</p>
+        <p>This operation retrieves the names of all the resources (could be TPs, SNCs, 
+         etc.) which point to the addressed ASAP instance.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="asapRef" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the ASAP.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAsapAssociatedResourceNamesResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAsapAssociatedResourceNames operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="asapRefList" type="nam:NamingAttributeListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The list of names</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAsapAssociatedResourceNamesException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAsapAssociatedResourceNames operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getAlarmSeverityAssignmentProfileByResourceRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAlarmSeverityAssignmentProfileByResource operation</p>
+        <p>This operation retrieves the ASAP(s) which are assigned to the addressed 
+         resource. The ASAP list can have zero or more elements, as all resources 
+         but TPs can refer to at most one ASAP. TPs can refer to more ASAPs, at most 
+         as many as the number of encapsulated layer rates.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="resourceRef" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the resource.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="layerRateList" type="lr:LayerRateListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>List of TP 
+             layer rates which assigned ASAPs are to be retrieved. If an empty list is 
+             specified, then all ASAPs assigned to the addressed resource will be 
+             replied. The list shall also be empty if the addressed resource is not a TP.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAlarmSeverityAssignmentProfileByResourceResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAlarmSeverityAssignmentProfileByResource operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="asapList" type="asap:AlarmSeverityAssignmentProfileListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The list of ASAP associated with the given resource at given layer rate.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAlarmSeverityAssignmentProfileByResourceException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAlarmSeverityAssignmentProfileByResource operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getAlarmSeverityAssignmentProfileIteratorRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAlarmSeverityAssignmentProfileByResource operation</p>
+        <p>This operation retrieves by iteration the next batch of ASAP(s).</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAlarmSeverityAssignmentProfileIteratorResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAlarmSeverityAssignmentProfileByResource operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="asapList" type="asap:AlarmSeverityAssignmentProfileListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The next batch list of ASAP.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAlarmSeverityAssignmentProfileIteratorException" type="msg:GetAllDataIteratorExceptionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAlarmSeverityAssignmentProfileByResource operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+</xsd:schema>

@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - DM Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/com/v1" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/com/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource Assurance</p>
+      <p>Module: Dataset XSD Module</p>
+      <p>Description: This module contains the XML Schema common type definitions used in some the mTOP XML Network Resource Assurance objects.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================= -->
+  <xsd:simpleType name="AcknowledgeIndicationType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>AcknowledgeIndicationType describes the event acknowledge state. </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="AI_EVENT_ACKNOWLEDGED">
+        <xsd:annotation>
+          <xsd:documentation>provided in case of manual or auto acknowledgement</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="AI_EVENT_UNACKNOWLEDGED">
+        <xsd:annotation>
+          <xsd:documentation>provided if the event has not been acknowledged but the OS supports acknowledgement for this event or in the case that the alarm has been previously acknowledged and then unacknowledged</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="AI_NA">
+        <xsd:annotation>
+          <xsd:documentation>provided in case the OS does not support acknowledgement for this event or does not support acknowledgement at all</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ===================== -->
+  <xsd:complexType name="AssignedSeverityType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The assigned severity is allocated to a probable cause using the alarm severity assignment profile. </p>
+        <p>The identified probable cause should be raised with the assigned severity. </p>
+        <p>The assignment of severities is extended beyond PerceivedSeverity to cover the case where: </p>
+        <p>- no alarm should be raised: "NOT_ALARMED"</p>
+        <p>- the EMS/NE is free to make a choice based upon its local criteria: "FREE_CHOICE"</p>
+        <p>All extensions are permitted (VENDOR_EXT and MINOR_EXT).</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:AssignedSeverityEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ===================== -->
+  <xsd:simpleType name="AssignedSeverityEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The enum values of a probable cause</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="INDETERMINATE"/>
+      <xsd:enumeration value="CRITICAL"/>
+      <xsd:enumeration value="MAJOR"/>
+      <xsd:enumeration value="MINOR"/>
+      <xsd:enumeration value="WARNING"/>
+      <xsd:enumeration value="NOT_ALARMED"/>
+      <xsd:enumeration value="FREE_CHOICE"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="EquipmentProtectionGroupTypeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The EquipmentProtectionGroupType with MTOSI minor version extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:EquipmentProtectionGroupTypeEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="EquipmentProtectionGroupTypeEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The equipment protection group type is a string that identifies the type of equipment protection. The string can take on the following value: "M_FOR_N." M:N equipment protection means that M pieces of equipment protect N pieces of equipment</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="M_FOR_N"/>
+      <xsd:enumeration value="M:N"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="EquipmentSwitchReasonType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The equipment switch reason reflects the reason why a
+         switch occurred.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:EquipmentSwitchReasonEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="EquipmentSwitchReasonEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>. EswitchReason is a string that can take 
+         the following values: </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="VENDOR_EXT"/>
+      <xsd:enumeration value="SR_NA">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>is used if a more precise value is not available</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SR_E_FAILURE">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>is used when an instance of equipment has failed</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SR_MANUAL">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>indicates a switch that was requested by the operator
+         and includes forced switches</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="NativeProbableCauseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Represents the native probable cause.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="PerceivedSeverityListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>List of PerceivedSeverityType elements.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="perceivedSeverity" type="tns:PerceivedSeverityType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="PerceivedSeverityType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The PerceivedSeverity values are consistent with ITU-T X.733 definitions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="PS_INDETERMINATE"/>
+      <xsd:enumeration value="PS_CRITICAL"/>
+      <xsd:enumeration value="PS_MAJOR"/>
+      <xsd:enumeration value="PS_MINOR"/>
+      <xsd:enumeration value="PS_WARNING"/>
+      <xsd:enumeration value="PS_CLEARED"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="ProbableCauseQualifierType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Represents the probable cause qualifier and shall be present if the probable cause </p>
+        <p>attribute is not sufficient to uniquely identify an alarm.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="ProposedRepairActionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Element of ProposedRepairActionListType.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="ProposedRepairActionListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>List of ProposedRepairActionType elements.</p>
+The optional "X.733::ProposedRepairActions" parameter uses this type.
+When present in an alarm notification, it indicates if the cause is known and the system being managed can suggest one or more solutions (such as switch in standby equipment, retry, replace media). This is consistent with the ITU-T X.733 definition.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="proposedRepairAction" type="tns:ProposedRepairActionType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="ProtectionCommandType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This type identifies the possible protection switch commands. See ITU-T Recommendation G.841 for definitions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="PC_CLEAR"/>
+      <xsd:enumeration value="PC_LOCKOUT"/>
+      <xsd:enumeration value="PC_FORCED_SWITCH"/>
+      <xsd:enumeration value="PC_MANUAL_SWITCH"/>
+      <xsd:enumeration value="PC_EXERCISER"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="ProtectionGroupTypeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The ProtectionGroupType with MTOSI minor version extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:ProtectionGroupTypeEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="ProtectionGroupTypeEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The protection group type identifies the type of the protection Group. </p>
+        <p>It should be noted that although the term MSP was chosen as the original specific protection scheme to which the related behaviour applied was Multiplex Section Protection, the label is now more generally applied to any 1+1 or 1:N Trail protection scheme</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="PGT_MSP_1_PLUS_1"/>
+      <xsd:enumeration value="PGT_MSP_1_FOR_N"/>
+      <xsd:enumeration value="PGT_2_FIBER_BLSR"/>
+      <xsd:enumeration value="PGT_4_FIBER_BLSR"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="ProtectionTypeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The ProtectionType with MTOSI minor version and vendor extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:ProtectionTypeEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="ProtectionTypeEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The protection type identifies whether a protection switch is an MS protection switch or an SNCP protection switch. 
+It should be noted that although the term MSP was chosen as the original specific protection scheme to which the related behaviour applied was Multiplex Section Protection, the label is now more generally applied to any 1+1 or 1:N Trail protection scheme.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="VENDOR_EXT"/>
+      <xsd:enumeration value="PT_MSP_APS"/>
+      <xsd:enumeration value="PT_SNCP"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="ReversionModeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Reversion mode is used to indicate whether, after repair of a failed resource, an additional switch should be made to revert to the preferred resource. Revertive modes may require a wait to restore (WTR) time setting.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="RM_UNKNOWN"/>
+      <xsd:enumeration value="RM_NON_REVERTIVE"/>
+      <xsd:enumeration value="RM_REVERTIVE"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="ServiceAffectingType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Describes the impact of a fault on monitored entities </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="SA_UNKNOWN">
+        <xsd:annotation>
+          <xsd:documentation>The OS cannot determine if the condition affects service or not</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SA_SERVICE_AFFECTING">
+        <xsd:annotation>
+          <xsd:documentation>The OS determines that the condition affects service</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SA_NON_SERVICE_AFFECTING">
+        <xsd:annotation>
+          <xsd:documentation>TheOS determines that the condition does not affect service</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="SpecificProblemListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>List of SpecificProblemType elements.
+The optional "X.733::SpecificProblems" parameter uses that type.
+When present in an alarm notification, it identifies further refinements to the probable cause of the alarm. This is consistent with the ITU-T X.733 definition.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="specificProblem" type="tns:SpecificProblemType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="SpecificProblemType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Element of SpecificProblemListType.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="SwitchReasonType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The switch reason reflects the reason why a switch occurred.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="SR_NA">
+        <xsd:annotation>
+          <xsd:documentation>Value used upon retrieval of switch data for non-revertive groups, if a more precise value is not available</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SR_RESTORED">
+        <xsd:annotation>
+          <xsd:documentation>used for revertive groups to indicate a return to the normal state</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SR_SIGNAL_FAIL">
+        <xsd:annotation>
+          <xsd:documentation/>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SR_SIGNAL_MISMATCH">
+        <xsd:annotation>
+          <xsd:documentation>Value used in the case the signal is ok, but is identified as coming from an incorrect source: TRAIL_TRACE_IDENTIFIER_MISMATCH, Signal Label Mismatch, etc</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SR_SIGNAL_DEGRADE">
+        <xsd:annotation>
+          <xsd:documentation/>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SR_AUTOMATIC_SWITCH">
+        <xsd:annotation>
+          <xsd:documentation>Value used when the exact switch reason is unknown, in retrievals of switch data if a protection switch is currently active or in protection switch notifications</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="SR_MANUAL">
+        <xsd:annotation>
+          <xsd:documentation>Value indicates a switch that was requested by the operator and includes forced switches</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="G_774_3_APSfunctionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The G_774_3_APSfunction with MTOSI minor version and vendor extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:G_774_3_APSfunctionEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="G_774_3_APSfunctionEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Indicates if the switching function is based on APS standardized protocol or on a proprietary protocol.  "G.783" is set in case of K1/K2 based APS, and "Legacy" is set in case of proprietary protocol, as for radio equipment for example.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="VENDOR_EXT"/>
+      <xsd:enumeration value="G.783"/>
+      <xsd:enumeration value="Legacy"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>

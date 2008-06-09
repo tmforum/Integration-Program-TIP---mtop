@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2007 -->
+<wsdl:definitions name="mTOP-ResourceInventoryUpdateV1-0" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.tmforum.org/mtop/mri/wsdl/riu/v1-0" targetNamespace="http://www.tmforum.org/mtop/mri/wsdl/riu/v1-0">
+  <wsdl:documentation>
+    <p>DDP: ManageResourceInventory</p>
+    <p>Module: ResourceInventoryUpdate Service Interface WSDL HTTP Module</p>
+    <p>Description: This module contains all the mTOP ResourceInventoryUpdate Service Interface WSDL definitions for the Web Service deployment profile with SOAP/HTTP binding.</p>
+    <p>Version: 1.0</p>
+  </wsdl:documentation>
+  <wsdl:import namespace="http://www.tmforum.org/mtop/mri/wsdl/riu/v1-0" location="ResourceInventoryUpdateMessages.wsdl"/>
+  <wsdl:portType name="ResourceInventoryUpdate_RPC">
+    <wsdl:documentation>
+      <p>The ResourceInventoryUpdate porttype (interface) for RPC (synchronous) based client/server communication patterns. All SIT operations use the specific get"ObjectType"Iterator operation to handle multiple responses.</p>
+    </wsdl:documentation>
+    <wsdl:operation name="updateInventory">
+      <wsdl:input message="tns:updateInventoryRequest"/>
+      <wsdl:output message="tns:updateInventoryResponse"/>
+      <wsdl:fault name="updateInventoryException" message="tns:updateInventoryException"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ResourceInventoryUpdateSoapHttpBinding" type="tns:ResourceInventoryUpdate_RPC">
+    <wsdl:documentation>
+      <p>SOAP HTTP binding definitions of the operations of the ResourceInventoryUpdate RPC portType (interface)</p>
+    </wsdl:documentation>
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="updateInventory">
+      <soap:operation soapAction="updateInventory" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:updateInventoryRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:updateInventoryResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="updateInventoryException">
+        <soap:fault name="updateInventoryException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ResourceInventoryUpdateHttp">
+    <wsdl:documentation>
+      <p>Example of the ResourceInventoryUpdate WSDL Service definition as a deployment example of this mTOP Service Interface. It is expected to be modified to match the specific deployment configuration in a service provider's CCV.</p>
+    </wsdl:documentation>
+    <wsdl:port name="ResourceInventoryUpdateSoapHttp" binding="tns:ResourceInventoryUpdateSoapHttpBinding">
+      <soap:address location="http://aserver/mtosi/ResourceInventoryUpdate"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

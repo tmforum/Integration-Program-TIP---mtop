@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/asap/v1" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/asap/v1" xmlns:asa="http://www.tmforum.org/mtop/nra/xsd/asa/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource Assurance</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP Asap XML structure.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/asa/v1" schemaLocation="Asa.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd"/>
+  <!-- ================= -->
+  <xsd:element name="asap" type="tns:AlarmSeverityAssignmentProfileType"/>
+  <!-- ================ -->
+  <xsd:complexType name="AlarmSeverityAssignmentProfileType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This aggregate defines all the AlarmSeverityAssignmentProfile mTOP network resource object attributes.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="cri:CommonResourceInfoType">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This element entails the attributes common to all mTOP network resource objects.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="isFixed" type="xsd:boolean" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This attribute indicates whether the ASAP is modifiable by an OS. If not, the ASAP can be neither modified nor deleted by an OS, but only assigned/de-assigned.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="alarmSeverityAssignmentList" type="asa:AlarmSeverityAssignmentListType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This attribute represents a list of Alarm Severity Assignments (ASA). Refer to requirement RTypeMF518_NRA_I_0003 for the details of an ASA.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:complexType name="AlarmSeverityAssignmentProfileListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The list of AlarmSeverityAssignmentProfiles.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element ref="tns:asap" minOccurs="0" maxOccurs="unbounded">
+      </xsd:element>
+    </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>

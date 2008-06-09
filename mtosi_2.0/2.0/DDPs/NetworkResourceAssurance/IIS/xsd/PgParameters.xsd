@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - DM Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/pgp/v1" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/pgp/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource FulFillment</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP PGParameters XML structure.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
+  <!-- ================= -->
+  <xsd:complexType name="SwitchModeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The SwitchMode with MTOSI minor version extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:SwitchModeEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ===================== -->
+  <xsd:simpleType name="SwitchModeEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The protection switch mode.</p>
+        <p>
+          <b>1+1 trail protection, 2-F MSSPRING, 4-F MSSPRING, 1:N trail protection</b>
+        </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="VENDOR_EXT"/>
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="SingleEnded"/>
+      <xsd:enumeration value="DualEnded"/>
+      <xsd:enumeration value="G841_NonStandard"/>
+      <xsd:enumeration value="Unknown"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="SpringProtocolType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The SpringProtocol with MTOSI minor version extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:SpringProtocolEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ===================== -->
+  <xsd:simpleType name="SpringProtocolEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The enumeration definition of the protection SPRING protocol.</p>
+        <p>
+          <b>2-F MSSPRING, 4-F MSSPRING</b>
+        </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="VENDOR_EXT"/>
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="Standard"/>
+      <xsd:enumeration value="TransOceanic"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="SpringNodeIdType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The protection SPRING node ID. The SPRINGNodeId is used to identify the managedElement during creation of SNCs. This is needed for BLSRs to identify the ingress and the egress nodes so that they know where to loop around in case of failure.
+      Value can be "0" to "15" (may be any other string that matches the SPRINGNodeId transmission parameter values) or "Unknown".</p>
+        <p>
+          <b>2-F MSSPRING, 4-F MSSPRING</b>
+        </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="SwitchPositionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This indicates whether the RING switch has occurred because of fault detection on this group or in a different group around the ring.</p>
+        <p>
+          <b>2-F MSSPRING, 4-F MSSPRING</b>
+        </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="IDLE"/>
+      <xsd:enumeration value="PASSTypeHROUGH"/>
+      <xsd:enumeration value="SWITCH"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="NonPreEmptibleTrafficType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This indicates whether the non-pre-emptible traffic is allowed within this group.</p>
+        <p>
+          <b> 1:N trail protection,2-F MSSPRING</b>
+        </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="ALLOWED"/>
+      <xsd:enumeration value="NOT_ALLOWED"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="WtrTimeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the time required to wait before the revertive switch can go back to the primary TP.
+      Values are in seconds or "-1" indicates an unknown value or that the parameter is not applicable.</p>
+        <p>
+          <b>For revertive switches. 1+1 trail protection,1:N trail protection,2-F MSSPRING, 4-F MSSPRING</b>
+        </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:integer">
+      <xsd:minInclusive value="-1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="HoldOffTimeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the time duration for which the alarm condition must persist before the switch takes place.
+      Values are in milliseconds.</p>
+        <p>
+          <b> All protection groups that support revertive switch. 1+1 trail protection,1:N trail protection,2-F MSSPRING, 4-F MSSPRING</b>
+        </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:union>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="Unknown"/>
+          <xsd:enumeration value="Infinite"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:unsignedLong">
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:union>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="LodNumSwitchesType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>LODNumSwitches and LODDuration are used together to specify when Lock Out should occur. If the specified number of switches occur within the specified duration, the result is Lock Out for that group.</p>
+        <p>
+          <b>For non-revertive switches. 1+1 trail protection,1:N trail protection,2-F MSSPRING, 4-F MSSPRING</b>
+        </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:unsignedInt">
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="LodDurationType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Refer to LODNumSwitchesType.
+      Values are in seconds.</p>
+        <p>
+          <b>For non-revertive switches. 1+1 trail protection,1:N trail protection,2-F MSSPRING, 4-F MSSPRING</b>
+        </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:unsignedLong">
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="TandemSwitchingType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This attribute specifies whether the switching capability of the protection group is independent of the switching of any other group (empty string) or if its operation is associated with, related to or synchronised to the operation of another identified group (PGPName).</p>
+        <p>Value is Empty string or "PGPName".
+      <b>1+1 trail protection</b>
+        </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="BundleSwitchingType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This attribute specifies whether the switching capability of the protection group is autonomous (empty string) or, if it must work accordingly with another one, the name of the associated PGP. PGPName: is the PGPName[2].value of the associated PG.</p>
+        <p>Value is Empty string or "PGPName".
+      <b>1+1 trail protection</b>
+        </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="HitlessType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This attribute specifies whether the hitless switching capability (i.e. a switch event between a working and a protection channel which does not add any errors to those already produced by the propagation medium during the switching procedure) is present or not. A value of "Yes" indicates that the hitless capability is present in the protection system. A value of "No" indicates that the hitless capability is not present and will as a consequence introduce errors on a switch operation. See G.774.08.</p>
+        <p>
+          <b>1+1 trail protection,1:N trail protection</b>
+        </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="Yes"/>
+      <xsd:enumeration value="No"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="ExerciseOnType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This attribute is used to indicate if an exercise procedure is in progress. Exercise is an optional request which may be used to test the RPS function by initiating an RPS process without actual switching. If the value is "True" the procedure is activated, otherwise it is deactivated. When the exerciseOn attribute is "True", possible malfunctioning of the exercise procedure shall be signaled setting the 'degraded' component in the AvailabilityStatus attribute. See G.774.08.</p>
+        <p>
+          <b>1+1 trail protection,1:N trail protection</b>
+        </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:boolean">
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="AvailabilityStatusType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The AvailabilityStatus with MTOSI minor version extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:AvailabilityStatusEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ===================== -->
+  <xsd:simpleType name="AvailabilityStatusEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This attribute is used to indicate the availability of a protection group, summarizing both operatively and usage (see X.731). Used values are:<ul>
+            <li>In Test: The switching function is undergoing a test procedure.</li>
+            <li>Failed: The switching function has an internal fault that prevents it from operating.</li>
+            <li>Degraded: The service available from the switching function is degraded with respect to its operating capacity.</li>
+          </ul>
+        </p>
+        <p>
+          <b>1+1 trail protection,1:N trail protection</b>
+        </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="Failed"/>
+      <xsd:enumeration value="InTest"/>
+      <xsd:enumeration value="Degraded"/>
+      <xsd:enumeration value="OK"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="SwitchCriteriaEnableType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The SwitchCriteriaEnable with MTOSI minor version extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:SwitchCriteriaEnableEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="SwitchCriteriaEnableEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This attribute restricts the severity of alarms for which switching criteria is enabled. See Enums::PerceivedSeverity in IA.</p>
+        <p>
+          <b>1:N trail protection</b>
+        </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="INDETERMINATE"/>
+      <xsd:enumeration value="CRITICAL"/>
+      <xsd:enumeration value="MAJOR"/>
+      <xsd:enumeration value="MINOR"/>
+      <xsd:enumeration value="WARNING"/>
+      <xsd:enumeration value="CLEARED"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="PrivilegedChannelType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>For a 1:N architecture, when no pre-emptible traffic is equipped, this attribute is used to indicate if the protected TP defined in the value of the attribute is permanently bridged in the TX side (in absence of any switching requests) to the protecting TP. An empty string value indicates that there is no bridge active. Note: For a 1+1 architecture, when no occasional traffic facility is foreseen, communication between the two corresponding RPS functions is not required, being the working tributary permanently bridged to both working and protection lines. "PTPName" is the TPName[2].value of the corresponding privileged PTP. See G.774.08.</p>
+        <p>Value is Empty string or "PTPName".</p>
+        <p>
+          <b>1:N trail protection</b>
+        </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ============== -->
+  <xsd:complexType name="ProtectionGroupParameterListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The definition of the list of PG parameters.
+      It should be noted that although the term MSP was chosen as the original specific protection scheme to which the related behaviour applied was Multiplex Section Protection, the label is now more generally applied to any 1+1 or 1:N Trail protection scheme.
+      <ul>
+            <li>PG type "1+1 trail protection" refers to ProtectionGroupType "MSP_1_PLUS_1"</li>
+            <li>PG type "1:N trail protection" refers to ProtectionGroupType "MSP_1_FOR_N"</li>
+            <li>PG type "2-F MSSPRING" refers to ProtectionGroupType "2_FIBER_BLSR"</li>
+            <li>PG type "2-F MSSPRING" refers to ProtectionGroupType "4_FIBER_BLSR"</li>
+          </ul>
+        </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="switchMode" type="tns:SwitchModeType" minOccurs="0"/>
+      <xsd:element name="springProtocol" type="tns:SpringProtocolType" minOccurs="0"/>
+      <xsd:element name="springNodeId" type="tns:SpringNodeIdType" minOccurs="0"/>
+      <xsd:element name="switchPosition" type="tns:SwitchPositionType" minOccurs="0"/>
+      <xsd:element name="nonPreEmptibleTraffic" type="tns:NonPreEmptibleTrafficType" minOccurs="0"/>
+      <xsd:element name="wtrTime" type="tns:WtrTimeType" minOccurs="0"/>
+      <xsd:element name="holdOffTime" type="tns:HoldOffTimeType" minOccurs="0"/>
+      <xsd:element name="lodNumSwitches" type="tns:LodNumSwitchesType" minOccurs="0"/>
+      <xsd:element name="lodDuration" type="tns:LodDurationType" minOccurs="0"/>
+      <xsd:element name="tandemSwitching" type="tns:TandemSwitchingType" minOccurs="0"/>
+      <xsd:element name="bundleSwitching" type="tns:BundleSwitchingType" minOccurs="0"/>
+      <xsd:element name="hitless" type="tns:HitlessType" minOccurs="0"/>
+      <xsd:element name="exerciseOn" type="tns:ExerciseOnType" minOccurs="0"/>
+      <xsd:element name="availabilityStatus" type="tns:AvailabilityStatusType" minOccurs="0"/>
+      <xsd:element name="switchCriteriaEnable" type="tns:SwitchCriteriaEnableType" minOccurs="0"/>
+      <xsd:element name="privilegedChannel" type="tns:PrivilegedChannelType" minOccurs="0"/>
+      <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

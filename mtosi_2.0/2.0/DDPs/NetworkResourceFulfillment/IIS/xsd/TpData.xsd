@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - DM Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lp="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource Fulfillment</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema definitions of the mTOP XML TpData structure.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================= -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayeredParameters.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lp/v1"/>
+  <xsd:import schemaLocation="CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1"/>
+  <!-- ================= -->
+  <xsd:complexType name="TerminationPointDataType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This aggregate defines a set of attributes associated with a TP.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="tpRef" type="nam:NamingAttributeType">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Specifies a termination point.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="tpMappingMode" type="com:TerminationModeType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The mapping mode to put the TP in.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="lp:transmissionParametersList" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This attribute contains the layered Transmission Parameters associated with the Termination Point.
+            Refer to the attached supporting document SD1-16_LayeredParameters for details of the currently defined Transmission Parameters.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="ingressTmdRef" type="nam:NamingAttributeType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>A connection termination point may have an optional reference to an ingress (incoming)Transmission Descriptor. The Descriptor name will be empty if there is no associated Descriptor.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="egressTmdRef" type="nam:NamingAttributeType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>A connection termination point may have an optional reference to an egress (outgoing)Transmission Descriptor. The Transmission Descriptor name will be empty if there is no associated Descriptor.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="TerminationPointDataListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>List of TerminationPointDataType elements.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="tpData" type="tns:TerminationPointDataType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>
