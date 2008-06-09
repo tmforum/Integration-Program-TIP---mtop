@@ -1,4 +1,4 @@
-README File for MTOSI release 2.0 (BA)
+README File for MTOSI release 2.0 (full release)
 
 ----------
 
@@ -7,11 +7,11 @@ of the MTOSI DDPs you need into the SAME directory.
 
 ----------
 
-This release is made of 10 Document Delivery Packages (DDPs).
+This release is made of 11 Document Delivery Packages (DDPs).
 Some of them may depend on artifacts defined in one or several other DDPs.
 For this reason you may have to download and extract the contents
 of more than one DDP.
-Here below is the dependency graph between those 10 DDPs:
+Here below is the dependency graph between those 11 DDPs:
 
                           FMW
                            |
@@ -23,10 +23,10 @@ Here below is the dependency graph between those 10 DDPs:
        |          |                      | 
       NRF         NRA                    |
        |          :                      |
-    --------------------                 |
-   |..............:.....|.               |
-   |:     |:     |:     |:               |
-  MRI     RP    RPM    RTM               SA
+    --------------------           ------------
+   |..............:.....|.         |          |
+   |:     |:     |:     |:         |          |
+  MRI     RP    RPM    RTM        MSI        SA
 
 Each of the MTOSI zipfiles contains the contents of one DDP
 at a specific release date and time.
@@ -37,16 +37,15 @@ specification PDF documents are cross-linked.
 
 All of the MTOSI zipfiles MUST be extracted using your favourite 
 unzip/extract file program into the SAME directory.
-
-On Windows XP the file browser's "Extract All" command will 
+(On Windows XP the file browser's "Extract All" command will 
 un-helpfully offer to extract the contents of this zipfile into
-a directory specific to this DDP.  Unforutnately this will break
-the specification PDF document cross-links.
+a directory specific to this DDP.  Do not work that way, 
+since this will break the PDF documents cross-links.)
 
-Each DDP contains its own Release notes contained in the 
+Each DDP contains a copy of release notes contained in the 
 ProductDescription directory. This set of release notes contains
 a detailed list of the documents contained in the whole of the
-MTOSI 2.0 (BA) release at the time and date that the DDP zipfile
+MTOSI 2.0 release at the time and date that the DDP zipfile
 was created. If you have downloaded and extracted DDPs from the
 same release date and time, it is highly likely that each of the 
 DDP specific release notes will be the same.
