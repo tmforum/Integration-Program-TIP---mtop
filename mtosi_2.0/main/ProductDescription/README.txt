@@ -42,13 +42,12 @@ un-helpfully offer to extract the contents of this zipfile into
 a directory specific to this DDP.  Do not work that way, 
 since this will break the PDF documents cross-links.)
 
-Each DDP contains a copy of release notes contained in the 
-ProductDescription directory. This set of release notes contains
-a detailed list of the documents contained in the whole of the
-MTOSI 2.0 release at the time and date that the DDP zipfile
-was created. If you have downloaded and extracted DDPs from the
-same release date and time, it is highly likely that each of the 
-DDP specific release notes will be the same.
+As opposed to this README.txt file, the Release Notes document 
+"RN306_MTOSI_Release2.0.pdf" is NOT present in any of the DDP packages.
+Instead, it is available as a standalone document in the TMF space.
+Please refer to this Release Notes for a complete and
+detailed list of the documents contained in the whole of the
+MTOSI 2.0 release.
 
 ----------
 
