@@ -35,7 +35,8 @@
    * SD1-45_ASONControlPlaneManagement-Primer</a> 
    * and 
    * <a href=../../../supportingDocumentation/SD1-46_ASONControlPlaneManagement-Scenarios.pdf >
-   * SD1-46_ASONControlPlaneManagement-Scenarios</a>
+   * SD1-46_ASONControlPlaneManagement-Scenarios</a>
+
    *
    * for further detail. In this module the term MLSN is used
    * to refer to both the subnetwork types, i.e. MLSN without Control Plane features,
@@ -146,7 +147,8 @@ module multiLayerSubnetwork
    *  SD1-45_ASONControlPlaneManagement-Primer</a> and 
    * <a href=../../../supportingDocumentation/SD1-46_ASONControlPlaneManagement-Scenarios.pdf >
    *  SD1-45_ASONControlPlaneManagement-Scenarios</a>
-   * </p>
+   * </p>
+
    *
    * <p>The NMS does not create or delete Subnetworks, they are
    * managed by the EMS/Control Plane. The NMS has a handle to the Subnetworks
@@ -337,7 +339,9 @@ module multiLayerSubnetwork
   {
   /** 
    * <p>This allows an NMS to request a list of the ManagedElements that
-   * are associated with a specified Subnetwork.</p>
+   * are associated with a specified Subnetwork.</p>
+
+
    * <p>For examples on how ManagedElements are associated with 
    * MultiLayerSubnetworks see
    * <a href=../../../supportingDocumentation/SD1-18_layers.pdfSD1-18_SD1-18_layers.pdf >
@@ -351,7 +355,8 @@ module multiLayerSubnetwork
    * <a href=../../../supportingDocumentation/SD1-18_layers.pdfSD1-18_SD1-18_layers.pdf >
    * SD1-18 layering</a> and
    * <a href=../../../supportingDocumentation/ SD1-45_ASONControlPlaneManagement-Primer.pdf> 
-   * SD1-45_ASONControlPlaneManagement-Primer</a>.</p> 
+   * SD1-45_ASONControlPlaneManagement-Primer</a>.</p> 
+
    * <p>In order to allow the NMS to deal with a large number of objects,
    * this operation uses an iterator. See
    * <a href=../../../supportingDocumentation/SD1-15_iterators.pdf >SD1-15 iterator overview</a>
@@ -363,8 +368,10 @@ module multiLayerSubnetwork
    * <br>managedElement::ManagedElementList_T meList: First batch of managed 
    * elements.
    * <br>managedElement::ManagedElementIterator_I meIt: Iterator to retrieve 
-   * the remaining managed elements.
+   * the remaining managed elements.
+
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service<br>
    * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
    *  failure<br>
    * EXCPT_INVALID_INPUT - Raised when subnetName does not reference a 
@@ -422,8 +429,12 @@ module multiLayerSubnetwork
    * retrieve.
    * <br>MultiLayerSubnetwork_T subnetwork: Subnetwork structure returned.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
    * EXCPT_INVALID_INPUT - Raised when subnetName does not reference a 
    *  multiLayerSubnetwork object<br>
    * EXCPT_ENTITY_NOT_FOUND - Raised when subnetName references a 
@@ -446,7 +457,8 @@ module multiLayerSubnetwork
    * Subnetwork whose name is passed as a parameter.  For singletons, no
    * topologicalLinks will be returned.  The EMS should report topological links
    * at the "lowest" layer (i.e. closest to physical) about which it has 
-   * accurate knowledge. If the MLSN represents a MLRA in the control plane,
+   * accurate knowledge. If the MLSN represents a MLRA in the control plane,
+
    * the operation is 
    * rejected and an exception is raised.</p> 
    *
@@ -504,7 +516,8 @@ module multiLayerSubnetwork
    * 
    * <br>globaldefs::NamingAttributes_T subnetName: The name of the 
    * Subnetwork.
-   * <br>unsigned long how_many: Maximum number of topological link names
+   * <br>unsigned long how_many: Maximum number of topological link names
+
    * to return in the first batch.
    * <br>globaldefs::NamingAttributesList_T nameList: First batch of 
    * topological link names.
@@ -535,6 +548,9 @@ module multiLayerSubnetwork
    *  subnetwork topologicallink object<br>
    * EXCPT_ENTITY_NOT_FOUND - Raised when topoLinkName references a subnetwork 
    *  topological link object that does not exist<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
    * <br>
    **/
    void getTopologicalLink(
@@ -574,6 +590,7 @@ module multiLayerSubnetwork
    * <br>terminationPoint::TerminationPointIterator_I tpIt: Iterator to 
    * retrieve the remaining edge points.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service<br>
    * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
    *  failure<br>
    * EXCPT_INVALID_INPUT - Raised when subnetName does not reference a 
@@ -635,7 +652,8 @@ module multiLayerSubnetwork
          in transmissionParameters::LayerRateList_T connectionLayerRateList,
          in unsigned long how_many,
          out globaldefs::NamingAttributesList_T nameList,
-         out globaldefs::NamingAttributesIterator_I nameIt)
+         out globaldefs::NamingAttributesIterator_I nameIt)
+
         raises(globaldefs::ProcessingFailureException);
 
 
@@ -676,7 +694,10 @@ module multiLayerSubnetwork
    *  object that does not exist<br>
    * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
    *  lost<br>
-   * <br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
+  * <br>
    **/
    void getAssociatedTP(
          in globaldefs::NamingAttributes_T tpName,
@@ -719,7 +740,8 @@ module multiLayerSubnetwork
    * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service<br>
    * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
    *  failure<br>
-   * EXCPT_INVALID_INPUT - Raised when tpName does not reference a TP, GTP or 
+   * EXCPT_INVALID_INPUT - Raised when tpName does not reference a TP, GTP or 
+
    *  TPPool object<br>
    * EXCPT_ENTITY_NOT_FOUND - Raised when tpName references a TP/GTP to TP pool 
    *  object that does not exist<br>
@@ -727,9 +749,11 @@ module multiLayerSubnetwork
    *  lost<br>
    * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
    *  that the EMS can support has been reached<br>
-   * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
-   *  that the EMS can support has been reached<br>
-   * <br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
+   * <br>
+
    **/
    void getTPGroupingRelationships(
          in globaldefs::NamingAttributes_T tpName,
@@ -766,6 +790,7 @@ module multiLayerSubnetwork
    * <br>subnetworkConnection::SNCIterator_I sncIt: Iterator to retrieve the
    * remaining SNCs.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service<br>
    * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
    *  failure<br>
    * EXCPT_INVALID_INPUT - Raised when subnetName does not reference an 
@@ -813,7 +838,8 @@ module multiLayerSubnetwork
    * As for getAllSubnetworkConnections().</a>.
    **/
    void getAllSubnetworkConnectionNames(
-         in globaldefs::NamingAttributes_T subnetName,
+         in globaldefs::NamingAttributes_T subnetName,
+
          in transmissionParameters::LayerRateList_T connectionRateList,
          in unsigned long how_many,
          out globaldefs::NamingAttributesList_T nameList,
@@ -830,7 +856,7 @@ module multiLayerSubnetwork
    * where the VC4 layer is controlled by the Control Plane and the VC12 layer 
    * is controlled by a traditional NMS then only VC12 SNCs will be returned 
    * regardless of the presence of VC4 connectivity. </p>
-   * <p>A snc is using the specified TP if any of its routes, intended and/or
+   * <p>An SNC is using the specified TP if any of its routes, intended and/or
    * backup, in any 
    * state, use this TP. A TP may be a PTP in which case a full list of SNCs 
    * using any of its contained CTPs is required. A TP may be:<ul>
@@ -873,11 +899,13 @@ module multiLayerSubnetwork
    * <br>unsigned long how_many: Maximum number of SNCs to report in the first 
    * batch.
    * <br>subnetworkConnection::SubnetworkConnectionList_T sncList:  First 
-   * batch of SNCs.An SNC is only reported if it respects both the tpName and 
-   * connectionRateList filters.
+   * batch of SNCs. An SNC is only reported if it respects both the tpName and 
+   * connectionRateList filters.
+
    * <br>subnetworkConnection::SNCIterator_I sncIt: Iterator to retrieve the 
    * remaining SNCs.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service<br>
    * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
    *  failure<br>
    * EXCPT_INVALID_INPUT - Raised if tpName does not reference a 
@@ -889,7 +917,10 @@ module multiLayerSubnetwork
    *  lost<br>
    * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
    *  that the EMS can support has been reached<br>
-   **/
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
+ **/
    void getAllSubnetworkConnectionsWithTP (
          in globaldefs::NamingAttributes_T tpName,
          in transmissionParameters::LayerRateList_T connectionRateList,
@@ -1044,7 +1075,9 @@ module multiLayerSubnetwork
    *
    * <p>In the additionalInfo field of first CrossConnect_T (first XC is the one 
    * involving <b>A1</b> end point of the SNC) record of the replied sequence 
-   * the following parameters may be present:<ul>
+   * the following parameters may be present:<ul>
+
+
    * <li>name="RouteId"; value="id"</li>
    * <li>name="RouteIntended "; value="y" | "n" </li>
    * <li>name="RouteActualState"; value="inactive" | "partial" | "active" </li>
@@ -1108,6 +1141,9 @@ from Control Plane. </p>
    *  does not exist including the case where the referenced SNC is not in the scope of the Control Plane components accessed via the addressed EMS <br>
    * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
    *  lost<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
    * <br>
    **/
    void getSNC(
@@ -1205,7 +1241,8 @@ from Control Plane. </p>
    * above) then the SNC provides the full route of a G.805 Trail.</li></ul></p>
    *
    * <p>CreateSNC allows for the creation of either point-to-point
-   * connections or legs of point-to-multipoint connections.</p>
+   * connections or legs of point-to-multipoint connections.</p>
+
    *
    * <p>To add a leg to a broadcast system, the aEnd TP in SNCCreateData_T shall
    * be populated with the common source TP of the broadcast system.
@@ -1231,7 +1268,9 @@ from Control Plane. </p>
    * restoration purposes. By means of additional info, it is possible to 
    * specify if the intended route is EXCLUSIVE or not; if EXCLUSIVE, then the 
    * EMS must find a route that does not conflict or share CCs or TPs with any 
-   * other existing SNC route, in any administrative state. Once an EXCLUSIVE 
+   * other existing SNC route, in any administrative state. Once an EXCLUSIVE 
+
+
    * (intended) route has been created by EMS, any further creation operation 
    * which conflicts with the exclusive route shall be refused.</p>
    *
@@ -1485,7 +1524,8 @@ from Control Plane. </p>
    void activateSNC(
          in    globaldefs::NamingAttributes_T sncName,
          in    subnetworkConnection::GradesOfImpact_T tolerableImpact,
-         in    EMSFreedomLevel_T emsFreedomLevel,
+         in    EMSFreedomLevel_T emsFreedomLevel,
+
          inout subnetworkConnection::TPDataList_T tpsToModify,
          out   subnetworkConnection::SubnetworkConnection_T theSNC,
          out   string errorReason)
@@ -1539,13 +1579,15 @@ from Control Plane. </p>
    * <br>string errorReason: Specifies the creation and/or activation error(s) 
    * if any.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
    * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
    *  failure<br>
    * EXCPT_INVALID_INPUT - Raised when any input parameter is syntactical 
    *  incorrect (e.g. a field of createData is invalid or any field in 
    *  tpsToModify is invalid). If an NMS requests a bundled SNC 
    *  service such that the GTP endpoints of the SNC do not match, i.e., the 
-   *  GTPs do not have the same number of CTPs and in a particular order with 
+   *  GTPs do not have the same number of CTPs and in a particular order with 
+
    *  respect to their layerRates or are not of the same layer rate, then the 
    *  EMS shall raise EXCPT_INVALID_INPUT.<br>. 
    * EXCPT_OBJECT_IN_USE - Raised if the SNC can not be created and activated 
@@ -1578,7 +1620,8 @@ from Control Plane. </p>
    *  and this prevents creation of the SNC<br>
    * EXCPT_UNSUPPORTED_ROUTING_CONSTRAINTS - Raised if the EMS does not support 
    *  the routing constraints specified<br>
-   * EXCPT_USERLABEL_IN_USE - Raised when the userLabel uniqueness constraint is 
+   * EXCPT_USERLABEL_IN_USE - Raised when the userLabel uniqueness constraint is 
+
    *  not met<br>
    * EXCPT_NOT_IN_VALID_STATE - Raised where the SNC would involve a CTP that is
    *  not connectable due to the state of the server TP or in the case of 
@@ -1615,7 +1658,9 @@ from Control Plane. </p>
    * rejected and an exception raised.</p>
    *
    * <p>Failure - No exception thrown (except for cases described below).
-   * If the SNC or any of its network resources have changed as a result of this 
+   * If the SNC or any of its network resources have changed as a result of this 
+
+
    * operation, then no exception can be
    * thrown so that theSNC can be passed back to the NMS.
    * The SNCState will be either SNCS_PARTIAL 
@@ -1738,7 +1783,8 @@ from Control Plane. </p>
    * exception will contain the reason for the failure.</p>
    *
    * <p>Success - The SNC object is deleted on the EMS.</p>
-   *
+   *
+
    * <p>For more details on how this service affects the state of an SNC see
    * <a href=../../../supportingDocumentation/SD1-23_ModesOfOperation.pdf >SD1-23 SNC Management Modes 
    * of Operation</a> and
@@ -1789,7 +1835,8 @@ from Control Plane. </p>
    * the deletion is rejected,no exception should be thrown and the resulting 
    * SNC should be provided in the out parameter theSNC.</p>
    *
-   * <p>The parameter theSNC
+   * <p>The parameter theSNC
+
    * will identify the SNC after the combined operation.
    * If the operation is entirely successful,
    * sncState will be SNCS_NONEXISTENT.
@@ -1817,6 +1864,7 @@ from Control Plane. </p>
    * <br>string errorReason: Specifies the deactivation and/or deletion 
    * error(s) if any.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
    * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
    *  failure<br>
    * EXCPT_INVALID_INPUT - Raised when any input parameter is syntactical 
@@ -1996,9 +2044,7 @@ from Control Plane. </p>
   /**
    * <p>This operation has exactly the same behaviour as 
    * getAllSubnetworkConnections(),
-   * but instead returns only fixed SNCs object structures. See
-   * <a href=../../../supportingDocumentation/SD1-36_SNCTypes.pdf >SD1-36 
-   * Subnetwork Connection Types</a> for an explanation of fixed SNCs. If the
+   * but instead returns only fixed SNCs object structures. A fixed SNC is an SNC all of whose cross connections are fixed, i.e., cannot be deleted by an NMS. If the
    * MLSN represents a MLRA, the operation is rejected and an exception is
    * raised.</p>
    *
@@ -2006,6 +2052,8 @@ from Control Plane. </p>
    * <a href=../../../supportingDocumentation/SD1-1_AdditionalInfoUsage.pdf >SD1-1 
    * Additional Information Usage</a> for detail on additional information
    * for SNCs, cross connections and TPs.</p>
+   *
+   * <p>The operation also returns bundled SNCs, if any. </p>
    *
    * <p>In order to allow the NMS to deal with a large number of objects,
    * this operation uses an iterator. See
@@ -2085,16 +2133,17 @@ from Control Plane. </p>
   /**
    * <p>This operation has exactly the same behaviour as 
    * getAllSubnetworkConnectionsWithTP(),
-   * but instead returns only fixed SNCs object structures. See
-   * <a href=../../../supportingDocumentation/SD1-36_SNCTypes.pdf >SD1-36 
-   * Subnetwork Connection Types</a> for an explanation of fixed SNCs.</p>
+   * but instead returns only fixed SNCs object structures. A fixed SNC is an SNC all of whose cross connections are fixed, i.e., cannot be deleted by an NMS.</p>
    *
    * <p>An SNC is identified as fixed using additional information. See
    * <a href=../../../supportingDocumentation/SD1-1_AdditionalInfoUsage.pdf >SD1-1 
-   * Additional Information Usage</a> for detail on additional information
+   * Additional Information Usage</a> for detail on additional information
+
+
    * for SNCs, cross connections and TPs.</p>
    *
-   * <p>In order to allow the NMS to deal with a large number of objects,
+   * <p>In order to allow the NMS to deal with a large number of objects,
+
    * this operation uses an iterator. See
    * <a href=../../../supportingDocumentation/SD1-15_iterators.pdf >SD1-15 iterator overview</a>
    * for information on how iterators are used in this interface.</p>
@@ -2112,7 +2161,7 @@ from Control Plane. </p>
    * <br>unsigned long how_many: Maximum number of SNCs to report in the first 
    * batch.
    * <br>subnetworkConnection::SubnetworkConnectionList_T sncList:  First 
-   * batch of SNCs.An SNC is only reported if it respects both the tpName and 
+   * batch of SNCs. An SNC is only reported if it respects both the tpName and 
    * connectionRateList filters.
    * <br>subnetworkConnection::SNCIterator_I sncIt: Iterator to retrieve the 
    * remaining SNCs.
@@ -2129,7 +2178,10 @@ from Control Plane. </p>
    *  lost<br>
    * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
    *  that the EMS can support has been reached<br>
-   **/
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
+  **/
    void getAllFixedSubnetworkConnectionsWithTP (
          in globaldefs::NamingAttributes_T tpName,
          in transmissionParameters::LayerRateList_T connectionRateList,
@@ -2161,7 +2213,8 @@ from Control Plane. </p>
    * reported.
    * <br>unsigned long how_many: Maximum number of SNCs to report in the first 
    * batch.
-   * <br>globaldefs::NamingAttributesList_T nameList: First batch of SNC 
+   * <br>globaldefs::NamingAttributesList_T nameList: First batch of SNC 
+
    * names.
    * <br>globaldefs::NamingAttributesIterator_I nameIt: Iterator to retrieve 
    * the remaining SNC names.
@@ -2204,14 +2257,14 @@ from Control Plane. </p>
    * <br>subnetworkConnection::GradesOfImpact_T tolerableImpact: the maximum 
    * tolerable impact allowed.
    * <br>subnetworkConnection::ProtectionEffort_T tolerableImpactEffort:
-   * qualifies the conditions under which an SNC modification may be performed 
-   * is a qualification of the requirement that the tolerableImpact as 
-   * specified, is met.
+   * qualifies the conditions under which an SNC modification may be performed.
    * <br>EMSFreedomLevel_T emsFreedomLevel: the maximum level of freedom 
    * allowed to the EMS to perform the creation.
    * <br>subnetworkConnection::TPDataList_T tpsToModify: a list of TPs and 
    * parameters to apply, updated to provide the resulting parameters.
-   * <br>subnetworkConnection::SubnetworkConnection_T theSNC:
+   * <br>subnetworkConnection::SubnetworkConnection_T theSNC:
+
+
    * The modified SNC.  It will have sncState and name set.  The EMS 
    * selects the SNC names so that they are not reused (within a reasonable time  
    * frame) for different SNCs.
@@ -2224,7 +2277,9 @@ from Control Plane. </p>
    * EXCPT_INVALID_INPUT - Raised when a field of an input parameter is 
    *  invalid.<br>
    * EXCPT_OBJECT_IN_USE - Raised if the SNC can not be created because of CC or 
-   *  TP conflicts with other SNCs (e.g. because of timeslot conflicts)<br>
+   *  TP conflicts with other SNCs (e.g. because of timeslot conflicts)<br>
+
+
    * EXCPT_ENTITY_NOT_FOUND - Raised when fields of input parameters (e.g. 
    *  SNCModifyData) refer to an object that does not exist<br>
    * EXCPT_PROTECTION_EFFORT_NOT_MET - Raised if the NMS requests an SNC
@@ -2320,7 +2375,9 @@ from Control Plane. </p>
    void swapSNC(
          in globaldefs::NamingAttributes_T nameOfSNCtoBeDeactivated,
          in globaldefs::NamingAttributes_T nameOfSNCtoBeActivated,
-         in EMSFreedomLevel_T emsFreedomLevel,
+         in EMSFreedomLevel_T emsFreedomLevel,
+
+
          in subnetworkConnection::GradesOfImpact_T tolerableImpact,
          inout subnetworkConnection::TPDataList_T tpsToModify,
          out subnetworkConnection::SNCState_T stateOfActivatedSNC,
@@ -2337,19 +2394,19 @@ from Control Plane. </p>
    * does not preserve the SNC name, then output SNC will have a different name 
    * than formerly addressed SNC, which is deactivated and deleted.</p>
    * <p> If the SNC name references a Control Plane Connection, the operation is rejected and
-   * an exception raised.</p>
+   * an exception raised.</p>
+
    * <br>globaldefs::NamingAttributes_T sncName: the name of the subnetwork 
    * connection to be modified.
    * <br>string routeId: The id of the route to be modifed. Empty string, 
    * indicates that the "intended" route is to be modified.
    * <br>subnetworkConnection::SNCModifyData_T SNCModifyData: structure 
-   * describing the new/modified subnetwork connection.
+   * describing the new/modified subnetwork connection.
+
    * <br>GradesOfImpact_T tolerableImpact: the maximum tolerable impact 
    * allowed.
    * <br>subnetworkConnection::ProtectionEffort_T tolerableImpactEffort:
-   * qualifies the conditions under which an SNC modification may be performed 
-   * is a qualification of the requirement that the tolerableImpact as  
-   * specified, is met.
+   * qualifies the conditions under which an SNC modification may be performed.
    * <br>EMSFreedomLevel_T emsFreedomLevel: the maximum level of freedom 
    * allowed to the EMS to perform the creation.
    * <br>TPDataList_T tpsToModify: a list of TPs and parameters to apply, 
@@ -2490,7 +2547,9 @@ from Control Plane. </p>
    * needed, the deactivation of other partial routes as well).</li></ul></p>
    *
    * <p>The EMS will apply the transmissionParams specified in the tpsToModify 
-   * parameter (same behaviour as setTPData). They may be applied before or 
+   * parameter (same behaviour as setTPData). They may be applied before or 
+
+
    * after the creation of the CCs, as appropriate. Existing TP transmission 
    * parameters for which no changes were requested in tpsToModify will be left 
    * unchanged. However, the alarm reporting on the connected TPs and the 
@@ -2524,7 +2583,8 @@ from Control Plane. </p>
    * <br>subnetworkConnection::TPDataList_T tpsToModify: a list of TPs and 
    * parameters to apply, updated to provide the resulting parameters. 
    * <br>globaldefs::NVSList_T additionalInfo: to allow the communication of 
-   * additional information which is not explicitly modelled.
+   * additional information which is not explicitly modelled.
+
    * <br>subnetworkConnection::SNCState_T sncState: The subnetwork connection 
    * state after the operation. 
    * <br>string errorReason: Specifies the activation error(s) if any. 
@@ -2548,7 +2608,8 @@ from Control Plane. </p>
    *  inverse multiplexing where the SNC would involve a CTP that is not 
    *  connectable due to the state of the client TP<br>
    * EXCPT_UNABLE_TO_COMPLY - Raised if the SNC Name references a Connection in
-   *  the control plane. Raised if the EMS can not meet the GradesOfImpact 
+   *  the control plane. Raised if the EMS can not meet the GradesOfImpact 
+
    *  requested by the NMS. Raised when the EMS is unable to execute the request 
    *  because at least one of the parameters although valid can not be set and 
    *  that parameter is identified as "not best effort" in the <a 
@@ -2698,7 +2759,9 @@ from Control Plane. </p>
    *  and this prevents the deletion of the route<br>
    * EXCPT_UNABLE_TO_COMPLY - Raised if the sncName references a Connection in
    *  the control plane. Raised when the EMS is unable to execute the 
-   *  request because at least one of the parameters although valid can not be 
+   *  request because at least one of the parameters although valid can not be 
+
+
    *  set and that parameter is identified as "not best effort" in the <a 
    *  href=../../../supportingDocumentation/SD1-1_AdditionalInfoUsage.pdf >SD1-1 
    *  Additional Information Usage</a> document. If the EMS cannot determine the 
@@ -2731,7 +2794,8 @@ from Control Plane. </p>
    * <p>If the SNC represents a Control Plane Connection, an exception is raised.</p>.
    *
    * <br>NamingAttributes_T sncName: the name of the subnetwork connection.
-   * <br>string routeId: The id of the route.
+   * <br>string routeId: The id of the route.
+
    * <br>globaldefs::NVSList_T additionalInfo: to allow the communication of 
    * additional information which is not explicitly modelled.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
@@ -2904,6 +2968,9 @@ from Control Plane. </p>
    *  incorrect<br>
    * EXCPT_OBJECT_IN_USE - Raised if one or more of the TPs or GTPs to be 
    *  removed are not idle<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
    * <br>
    **/
    void deleteTPPool(
@@ -2961,7 +3028,8 @@ from Control Plane. </p>
 
 
   /** 
-   * <p>This service returns the TPPool structure for the given TPPool name,
+   * <p>This service returns the TPPool structure for the given TPPool name,
+
    * and the additional attributes numberOfMembers, numberOfIdleMembers, and
    * descriptionOfUse.  The attribute containedMembers, i.e. the list of names
    * of contained TPs and GTPs, can be retrieved by means of the operation
@@ -2991,7 +3059,10 @@ from Control Plane. </p>
    *  that does not exist<br>
    * EXCPT_NE_COMM_LOSS - Raised when the communication to some ME is lost and 
    *  this prevents retrieving the TPPool<br>
-   * <br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
+  * <br>
    **/
    void getTPPool(
          in globaldefs::NamingAttributes_T tPPoolName,
@@ -3159,6 +3230,9 @@ from Control Plane. </p>
    * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
    *  lost or the EMS is unable to communicate with any Control Plane component 
    * and communications is required to complete the request.<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
    **/
    void getMLSNPPLink(
          in globaldefs::NamingAttributes_T mLSNPPLinkName,
@@ -3170,7 +3244,8 @@ from Control Plane. </p>
   /**   This operation shall reply all the MLSNPPLinks known to the EMS. 
    * For an explanation of the structure of the MLSNPPLink, 
    * see <a href=../../../supportingDocumentation/SD1-46_ASONControlPlaneManagement-Scenarios.pdf >
-   * SD1-46_ASONControlPlaneManagement-Scenarios</a>
+   * SD1-46_ASONControlPlaneManagement-Scenarios</a>
+
    * If a MLSN
    * which represents a MLRA, is introduced as an input parameter, the operation
    * retrieves only the MLSNPPLinks internal and external to the addressed MLSN 
@@ -3197,7 +3272,8 @@ from Control Plane. </p>
    * role with respect to level N-1 (superior), i.e. are internal links of
    * superior MLRA.
    * See <a href=../../../supportingDocumentation/SD1-46_ASONControlPlaneManagement-Scenarios.pdf >
-   * SD1-46_ASONControlPlaneManagement-Scenarios</a>
+   * SD1-46_ASONControlPlaneManagement-Scenarios</a>
+
    * </p>
 
 
@@ -3227,11 +3303,14 @@ from Control Plane. </p>
    * <p>In order to allow the NMS to deal with a large number of objects,
    * this operation uses an iterator. See
    * <a href=../../../supportingDocumentation/SD1-15_iterators.pdf >SD1-15 iterator overview</a>
-   * for information on how iterators are used in this interface.</p>
+   * for information on how iterators are used in this interface.</p>
+
+
    *
    * <br>globaldefs::NamingAttributes_T subnetName: The name of the MLSN which 
    * references a MLRA. This is an optional input parameter.<br>
-   * boolean <b>sNPListRequested</b>: It indicates whether the SNPs details
+   * boolean <b>sNPListRequested</b>: It indicates whether the SNPs details
+
    * should be included in the response or not.
    * <br>unsigned long how_many: Maximum number of MLSNPPLinks to report in the first 
    * batch.
@@ -3297,7 +3376,8 @@ from Control Plane. </p>
    * This operation shall reply all the MLSNPPs known to the EMS. 
    * For an explanation of the structure of the MLSNPPLink
    * see <a href=../../../supportingDocumentation/SD1-46_ASONControlPlaneManagement-Scenarios.pdf >
-   * SD1-46_ASONControlPlaneManagement-Scenarios</a>
+   * SD1-46_ASONControlPlaneManagement-Scenarios</a>
+
    * If a MLSN
    * which represents a MLRA, is introduced as an input parameter, the operation 
    * retrieves only MLSNPPs of the addressed MLSN (only MLSNPPs directly within the MLRA are replied). 
@@ -3361,6 +3441,9 @@ from Control Plane. </p>
    * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
    *  that the EMS can support has been reached<br>
    * <br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
    **/
    void getAllMLSNPPs(
          in globaldefs::NamingAttributes_T subnetName,
@@ -3393,9 +3476,11 @@ from Control Plane. </p>
    * to report in the first batch.
    * <br>callSNC::CallAndTopLevelConnectionsList_T callAndTopLevelConnections:
    * First batch of CallAndTopLevelConnections_T.
-   * <br>callSNC::CallAndTopLevelConnectionsIterator_I CallAndTopLevelConnectionsIt:
+   * <br>callSNC::CallAndTopLevelConnectionsIterator_I CallAndTopLevelConnectionsIt:
+
    * Iterator to retrieve the remaining CallAndConnections.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
    * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
    *  failure<br>
    * EXCPT_INVALID_INPUT - Raised if the subnetName entered as an input
@@ -3538,7 +3623,8 @@ from Control Plane. </p>
    * <p>This operation has exactly the same behaviour as 
    * getAllCallsAndTopLevelConnectionsAndSNCs(), except that the request returns 
    * only Calls (and all Top Level Connections with their supporting SNCs) 
-   * that have at least one Top Level connection supported by the specified TP 
+   * that have at least one Top Level connection supported by the specified TP 
+
    * (either directly or via a TP contained in this TP).</p>
    * <br>globaldefs::NamingAttributes_T subnetName: The name of the subnetwork 
    * that contains the calls. 
@@ -3611,6 +3697,9 @@ from Control Plane. </p>
    * EXCPT_NE_COMM_LOSS - Raised when the EMS is unable to communicate with
    *  the NE or the EMS is unable to communicate with any Control Plane component 
    *  and communications is required to complete the request.<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
    * 
    **/
    void getAllCallIdsWithTP(
@@ -3638,6 +3727,9 @@ from Control Plane. </p>
    * EXCPT_NE_COMM_LOSS - Raised when the EMS is unable to communicate with
    *  the NE or the EMS is unable to communicate with any Control Plane component 
    * and communications is required to complete the request.<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
    **/
    void getAllCallIdsWithSNPPOrTNAName(
          in globaldefs::NameAndStringValue_T sNPPOrTNAName,
@@ -3650,7 +3742,8 @@ from Control Plane. </p>
    * getAllCallsAndTopLevelConnectionsAndSNCs(), except that the request returns 
    * only the named call (and all Top Level Connections with their supporting SNCs).</p>
    * globaldefs::NamingAttributes_T callName: The call name provided by the NMS.<br>
-   * callSNC::CallAndTopLevelConnectionsAndSNCs_T callAndTopLevelConnectionsSNCs:
+   * callSNC::CallAndTopLevelConnectionsAndSNCs_T callAndTopLevelConnectionsSNCs:
+
    * It provides the Call and the supporting top level connections and SNCs.<br>
 
    * <br><b>Raises</b> globaldefs::ProcessingFailureException 
@@ -3688,7 +3781,8 @@ from Control Plane. </p>
    * EXCPT_UNABLE_TO_COMPLY - Raised if the specified Call is not defined in a Top Level MLRA. 
    *  Raised if the specified Top Level MLRA is not controlled by Control Plane.
    * EXCPT_NE_COMM_LOSS - Raised when the EMS is unable to communicate with
-   *  the NE or the EMS is unable to communicate with any Control Plane component 
+   *  the NE or the EMS is unable to communicate with any Control Plane component 
+
    * and communications is required to complete the request.<br>
    **/
 
@@ -3714,7 +3808,8 @@ from Control Plane. </p>
    * <a href=../../../supportingDocumentation/SD1-45_ASONControlPlaneManagement-Primer.pdf > 
    * SD1-45_ASONControlPlaneManagement-Primer</a> 
    * and <a href=../../../supportingDocumentation/SD1-46_ASONControlPlaneManagement-Scenarios > 
-   * SD1-46_ASONControlPlaneManagement-Scenarios</a>.</p>
+   * SD1-46_ASONControlPlaneManagement-Scenarios</a>.</p>
+
    *
    * <p>If the NMS specifies routing constraints in
    * the request the connection routes shall match the constraints to the degree mandated
@@ -3738,7 +3833,9 @@ from Control Plane. </p>
    * the errorReason field is appended with an appropriate reason text. Applying 
    * transmission parameters is best-effort and the resulting values of the 
    * transmission parameters are provided in the updated tpsToModify 
-   * parameter.<br>
+   * parameter.<br>
+
+
    *
    * <br>callSNC::CallAndTopLevelConnections_T callAndTopLevelConnections: 
    * Provides information on the call and list of connections that were created.
@@ -3830,13 +3927,17 @@ from Control Plane. </p>
    * EXCPT_NE_COMM_LOSS - Raised when the EMS is unable to communicate with
    *  the NE or the EMS is unable to communicate with any Control Plane component 
    * and communications is required to complete the request.<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
    * <br>
    **/
    void modifyCall(
          in globaldefs::NamingAttributes_T callName,
          in callSNC::CallModifyData_T callModifyData,
          out callSNC::Call_T modifiedCall)
-        raises (globaldefs::ProcessingFailureException);
+        raises (globaldefs::ProcessingFailureException);
+
 
 
   /** 
@@ -3846,7 +3947,8 @@ from Control Plane. </p>
    * objects, remove the call, delete the call object and send appropriate
    * notifications to the NMS. See
    * <a href=../../../supportingDocumentation/SD1-35_StateDiagrams.pdf > 
-   * SD1-35_StateDiagrams</a>. </p>
+   * SD1-35_StateDiagrams</a>. </p>
+
    * <p>In the non Control Plane case the EMS will return the list of SNCs which could not be deleted.</p>
    *
    * globaldefs::NamingAttributes_T callName: The call to be released.   
@@ -3906,6 +4008,9 @@ from Control Plane. </p>
    * EXCPT_NE_COMM_LOSS - Raised when the EMS is unable to communicate with
    *  the NE or the EMS is unable to communicate with any Control Plane component 
    * and communications is required to complete the request.<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
    **/
    void getCall(
          in globaldefs::NamingAttributes_T callName,

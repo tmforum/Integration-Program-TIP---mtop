@@ -84,7 +84,8 @@ module emsMgr
    * Additional Info Usage</a> for further information on usage. This 
    * may be an empty list.<br>
    **/
-   struct EMS_T
+   struct EMS_T
+
    {
       globaldefs::NamingAttributes_T name;
       string userLabel;
@@ -94,7 +95,8 @@ module emsMgr
       string type;
       globaldefs::NVSList_T additionalInfo;
    };
-
+
+
   /**
    * <p>The EMSMgr_I is used to gain access to operations
    * which deal with the EMS itself.</p>
@@ -111,13 +113,18 @@ module emsMgr
    * 
    * <br>EMS_T emsInfo : The EMS information.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
-   * failure<br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    **/
    void getEMS(
          out EMS_T emsInfo)
         raises(globaldefs::ProcessingFailureException);
-
+
+
   /** 
    * <p>This allows an NMS to request all MLRAs (including Routing Nodes).
    * </p>
@@ -132,8 +139,12 @@ module emsMgr
    * <br>multiLayerSubnetwork::SubnetworkIterator_I sIt: Iterator to retrieve 
    * the remaining subnetworks.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
    *  that the EMS can support has been reached<br>
    * EXCPT_NE_COMM_LOSS - The EMS is unable to communicate with the Control Plane
@@ -142,12 +153,14 @@ module emsMgr
    **/
    void getAllMLRAs (
          in unsigned long       how_many,
-         out multiLayerSubnetwork::SubnetworkList_T  mLRAList,
+         out multiLayerSubnetwork::SubnetworkList_T  mLRAList,
+
          out multiLayerSubnetwork::SubnetworkIterator_I  sIt)
 
         raises(globaldefs::ProcessingFailureException);
 
-
+
+
   /** 
    * <p>This allows an NMS to request all of the Subnetworks that
    * are under the control of this EMS including the top level MLRA.
@@ -165,8 +178,12 @@ module emsMgr
    * <br>multiLayerSubnetwork::SubnetworkIterator_I sIt: Iterator to retrieve 
    * the remaining subnetworks.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
    *  that the EMS can support has been reached<br>
    * EXCPT_NE_COMM_LOSS - The EMS is unable to communicate with the Control Plane
@@ -180,7 +197,8 @@ module emsMgr
          out multiLayerSubnetwork::SubnetworkIterator_I sIt) 
         raises(globaldefs::ProcessingFailureException);
 
- 
+ 
+
   /** 
    * <p>This operation has exactly the same behaviour as 
    * getAllTopLevelSubnetworks(),
@@ -200,13 +218,15 @@ module emsMgr
    * retrieve the remaining subnetwork names.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
    * As for getAllTopLevelSubnetworks().
-   **/
+   **/
+
    void getAllTopLevelSubnetworkNames(
          in  unsigned long how_many,
          out globaldefs::NamingAttributesList_T nameList,
          out globaldefs::NamingAttributesIterator_I nameIt)
         raises(globaldefs::ProcessingFailureException);
-
+
+
   /** 
 
    * <p>This operation provides the NMS with all the
@@ -225,11 +245,14 @@ module emsMgr
    * <br>mLSNPP::MLSNPPLinkIterator_I mLSNPPLinkIt: Iterator to retrieve 
    * the remaining MLSNPP Links.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_INVALID_INPUT - Raised when any input parameter is
    *  syntactically incorrect<br>
-   * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service<br>
    * EXCPT_ENTITY_NOT_FOUND - Raised when any of the input parameters references
    *  an object that does not exist<br>
    * EXCPT_NE_COMM_LOSS - The EMS is unable to communicate with the Control Plane
@@ -243,7 +266,8 @@ module emsMgr
          out mLSNPPLink::MLSNPPLinkIterator_I mLSNPPLinkIt) 
         raises(globaldefs::ProcessingFailureException);
 
-
+
+
   /** 
    * <p>This operation allows an NMS to request a list of the MLSNPP Links that
    * are totally or partially supported by the specified TP (PTP/CTP/FTP).</p>
@@ -264,9 +288,12 @@ module emsMgr
    * <br>mLSNPPLink::MLSNPPLinkIterator_I <b>mLSNPPLinkIt</b>: Iterator to
    * get the remaining MLSNPP Links.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service<br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_INVALID_INPUT - Raised when tpName does not reference a 
    *  TP object<br>
    * EXCPT_ENTITY_NOT_FOUND - Raised when tpName references a TP 
@@ -284,7 +311,8 @@ in boolean sNPListRequested,
          out mLSNPPLink::MLSNPPLinkIterator_I mLSNPPLinkIt) 
         raises(globaldefs::ProcessingFailureException);
 
-
+
+
   /**
    
    * <p>This operation returns all the MLSNPP Links that interconnect a pair of 
@@ -364,7 +392,12 @@ in boolean sNPListRequested,
    * <br>mLSNPPLink::MLSNPPLinkIterator_I <b>mLSNPPLinkIt</b>: Iterator to
    * get the remaining MLSNPP Links.   
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service<br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
    *  failure<br> 
    * EXCPT_NE_COMM_LOSS - The EMS is unable to communicate with the Control Plane
@@ -395,12 +428,14 @@ in boolean sNPListRequested,
    * <br>mLSNPP::MLSNPPIterator_I mLSNPPIt: Iterator to retrieve 
    * the remaining MLSNPP.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_INVALID_INPUT - Raised when any input parameter is
    *  syntactically incorrect<br>
-   * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service<br>
-   
    * EXCPT_NE_COMM_LOSS - The EMS is unable to communicate with the Control Plane
    * and communication is required to complete the request.
    * <br>
@@ -434,9 +469,12 @@ in boolean sNPListRequested,
    * <br>mLSNPP::MLSNPPIterator_I <b>mLSNPPIt</b>: Iterator to
    * get the remaining MLSNPP.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service<br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_INVALID_INPUT - Raised when tpName does not reference a 
    *  TP object<br>
    * EXCPT_ENTITY_NOT_FOUND - Raised when tpName references a TP 
@@ -473,9 +511,12 @@ in boolean sNPListRequested,
   * <br>mLSNPP::MLSNPPIterator_I <b>mLSNPPIt</b>: Iterator to
   * get the remaining MLSNPPs.
   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-  * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service<br>
-  * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+  * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+  * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
   *  failure<br>
+  * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+  * and cannot determine the reason it could not comply, 
+  * it may raise this exception. <br>
   * EXCPT_NE_COMM_LOSS - The EMS is unable to communicate with the Control Plane
   * and communication is required to complete the request.<br>
   **/
@@ -504,9 +545,12 @@ in boolean sNPListRequested,
    * <br>topologicalLink::TopologicalLinkIterator_I <b>topoIt</b>: Iterator to 
    * retrieve the remaining topological links.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service<br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
    *  that the EMS can support has been reached<br>
    * <br>
@@ -516,7 +560,8 @@ in boolean sNPListRequested,
          out topologicalLink::TopologicalLinkList_T topoList,
          out topologicalLink::TopologicalLinkIterator_I topoIt) 
         raises(globaldefs::ProcessingFailureException);
-
+
+
   /**
    * <p>This operation has exactly the same behaviour as 
    * getAllTopLevelTopologicalLinks, but instead of returning the entire object 
@@ -550,9 +595,12 @@ in boolean sNPListRequested,
    *  topological link to retrieve.
    * <br>TopologicalLink_T topoLink: Top level topological link returned.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service<br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_INVALID_INPUT - Raised when topoLinkName does not reference a top 
    *  level topological link object<br>
    * EXCPT_ENTITY_NOT_FOUND - Raised when topoLinkName references a top level 
@@ -592,8 +640,12 @@ in boolean sNPListRequested,
    * <br>notifications::EventIterator_I eventIt: Iterator to retrieve the 
    * remaining alarms and TCAs.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
    *  that the EMS can support has been reached<br>
    * <br>
@@ -630,8 +682,12 @@ in boolean sNPListRequested,
    * <br>notifications::EventIterator_I eventIt: Iterator to retrieve the 
    * remaining alarms and TCAs.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
    *  that the EMS can support has been reached<br>
    * <br>
@@ -643,7 +699,8 @@ in boolean sNPListRequested,
          out notifications::EventIterator_I eventIt) 
         raises(globaldefs::ProcessingFailureException);
 
-
+
+
   /**
    * <p>This operation can be used to create top-level topological links as well 
    * as intra-MLSN topological links.</p>
@@ -679,10 +736,12 @@ in boolean sNPListRequested,
          in  topologicalLink::TLCreateData_T    newTLCreateData,
          out topologicalLink::TopologicalLink_T newTopologicalLink)
         raises(globaldefs::ProcessingFailureException);
-
+
+
   /**
    * <p>This operation can be used to delete top-level topological links as well 
-   * as intra-MLSN topological links.</p>
+   * as intra-MLSN topological links.</p>
+
    * <p>The behaviour of this operation should be the same as if an EMS user 
    * were to attempt to delete a topological link (or equivalent operation) at 
    * the EMS user interface.  Therefore, the specific conditions under which the 
@@ -810,6 +869,9 @@ in boolean sNPListRequested,
    * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
    * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
    *  that the EMS can support has been reached<br>
    * <br>
@@ -848,6 +910,9 @@ in boolean sNPListRequested,
    * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
    * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
    *  that the EMS can support has been reached<br>
    * <br>
@@ -878,6 +943,9 @@ in boolean sNPListRequested,
    *  not met<br>
    * EXCPT_CAPACITY_EXCEEDED - Raised in case the maximum number of ASAP 
    *  instances has been reached<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
    void createASAP(
@@ -920,7 +988,8 @@ in boolean sNPListRequested,
    * i.e. the aSAPpointer is updated accordingly. The formerly referenced ASAP, 
    * if any, is deassigned. For TPs, it is necessary to indicate also the layer 
    * rate the ASAP will apply.</p>
-   *    * <p>This operation causes an alarm re-evaluation of the already detected 
+   * 
+   * <p>This operation causes an alarm re-evaluation of the already detected 
    * defects according to the following rules.</p>
    *
    * <p>If alarms are reportable:<ul>
@@ -1071,7 +1140,8 @@ in boolean sNPListRequested,
    **/
    void modifyASAP(
          in globaldefs::NamingAttributes_T aSAPName,
-         in aSAP::ASAPCreateModifyData_T aSAPModifyData,
+         in aSAP::ASAPCreateModifyData_T aSAPModifyData,
+
          out aSAP::ASAP_T newASAP,
          out globaldefs::NVSList_T additionalInfo)
        raises(globaldefs::ProcessingFailureException);
@@ -1090,13 +1160,17 @@ in boolean sNPListRequested,
    * first batch. 
    * <br>aSAP::ASAPList_T aSAPList: First batch of ASAPs. 
    * <br>aSAP::ASAPIterator_I asapIt: Iterator to retrieve the remaining 
-   * ASAPs. 
+   * ASAPs. 
+
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
    * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service<br>
    * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
    *  failure<br>
    * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
    *  that the EMS can support has been reached<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
    void getAllASAPs(
@@ -1145,6 +1219,9 @@ in boolean sNPListRequested,
    *  object<br>
    * EXCPT_ENTITY_NOT_FOUND - Raised when aSAPName references an ASAP object 
    *  that does not exist<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
       void getASAP(
@@ -1152,7 +1229,8 @@ in boolean sNPListRequested,
          out aSAP::ASAP_T anASAP)
         raises(globaldefs::ProcessingFailureException);
 
-  /**
+
+  /**
    * <p>This operation retrieves the ASAP(s) which are assigned to the addressed 
    * resource. The ASAP list can have zero or more elements, as all resources 
    * but TPs can refer to at most one ASAP. TPs can refer to more ASAPs, at most 
@@ -1191,7 +1269,8 @@ in boolean sNPListRequested,
          out aSAP::ASAPList_T aSAPList,
          out aSAP::ASAPIterator_I asapIt)
         raises(globaldefs::ProcessingFailureException);
-
+
+
   /**
    * <p> This operation retrieves all the resource names (could be TPs, SNCs, 
    * etc.) which point to the addressed ASAP instance. </p>
@@ -1218,6 +1297,9 @@ in boolean sNPListRequested,
    *  that does not exist<br>
    * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
    *  that the EMS can support has been reached<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
    void getASAPAssociatedResourceNames(

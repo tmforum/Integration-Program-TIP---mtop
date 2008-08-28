@@ -89,7 +89,8 @@ module transmissionDescriptor
    * globaldefs::NamingAttributes_T <b>name</b>:
    * <br>The name represents the name of the Transmission Descriptor
    * which is assigned by the EMS upon creation.  The EMS is responsible
-   * for guaranteeing the uniqueness of the name within the EMS context.
+   * for guaranteeing the uniqueness of the name within the EMS context.
+
    * It is a read-only attribute.<br>
    *
    * string <b>userLabel</b>:
@@ -156,7 +157,8 @@ module transmissionDescriptor
 
   /**
    * <p>The attributes required for the creation of a transmission descriptor
-   * on the EMS are packaged together in a TMDCreateData structure which the NMS
+   * on the EMS are packaged together in a TMDCreateData structure which the NMS
+
    * will pass to the EMS at TMD creation time. These are the read-create
    * attributes of the TMD.</p>
    *
@@ -197,7 +199,8 @@ module transmissionDescriptor
    *
    * globaldefs::NVSList_T <b>additionalCreationInfo</b>:
    * <br>Some additional creation information may be specified by the NMS.
-   * This information may or may not become a part of the TMD's additionalInfo
+   * This information may or may not become a part of the TMD's additionalInfo
+
    * attribute.  The list may be empty.<br>
    **/
    struct TMDCreateData_T {
@@ -279,7 +282,8 @@ module transmissionDescriptor
    {
     aTP,
     aMFD,
-    aFDFr
+    aFDFr
+
    };
 
   /**
@@ -329,7 +333,8 @@ module transmissionDescriptor
     {
 
   /**
-   * <p>This allows an NMS to request all of the transmissionDescriptors that
+   * <p>This allows an NMS to request all of the transmissionDescriptors that
+
    * are under the control of the transmissionDescriptorMgr_I.</p>
    * 
    * <p>In order to allow the NMS to deal with a large number of objects,
@@ -350,7 +355,10 @@ module transmissionDescriptor
    *  failure<br>
    * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators
    *  that the EMS can support has been reached<br>
-   * <br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
+  * <br>
    **/
    void getAllTransmissionDescriptors(
          in unsigned long how_many,
@@ -376,7 +384,8 @@ module transmissionDescriptor
    * <br>globaldefs::NamingAttributesIterator_I nameIt: the iterator used to 
    * retrieve the remaining iterator names.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   *  As for getAllTransmissionDescriptors.
+   *  As for getAllTransmissionDescriptors.
+
    **/
    void getAllTransmissionDescriptorNames(
          in unsigned long how_many,
@@ -401,6 +410,9 @@ module transmissionDescriptor
    *  trasmissionDescriptor object<br>
    * EXCPT_ENTITY_NOT_FOUND - Raised when tmdName references object which does 
    *  not exist<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
    * <br>
    **/
    void getTransmissionDescriptor(
@@ -412,7 +424,8 @@ module transmissionDescriptor
    * <p>This allows an NMS to request all of the TPs associated with the  
    * specified Transmission Descriptor. If there are no TPs which are 
    * associated with the specified Transmission Descriptor, then an empty list 
-   * is returned. </p>
+   * is returned. </p>
+
    * 
    * <p>In order to allow the NMS to deal with a large number of objects
    * this operation uses an iterator. See
@@ -428,8 +441,12 @@ module transmissionDescriptor
    * <br>terminationPoint::TerminationPointIterator_I tpIt: iterator to 
    * access the remaining TPs.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
    * EXCPT_INVALID_INPUT - Raised when transmissionDescriptrName does not 
    *  reference a Transmission Descriptor object<br>
    * EXCPT_ENTITY_NOT_FOUND - Raised when transmissionDescriptorName references
@@ -450,7 +467,7 @@ module transmissionDescriptor
   /**
    * <p>The createTransmissionDescriptor operation is used to create
    * a new Transmission Descriptor on the server. A Transmission Descriptor 
-   * create data representing the new Transmission Descriptor is 
+   * Create Data structure, representing the new Transmission Descriptor, is 
    * passed as input. The resulting Transmission Descriptor is 
    * returned as a result.</p>
    *
@@ -468,6 +485,9 @@ module transmissionDescriptor
    *  not met<br>
    * EXCPT_CAPACITY_EXCEEDED - Raised when maximum number of Transmission 
    *  Descriptors has been reached<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
    * <br>
    **/
    void createTransmissionDescriptor(
@@ -494,6 +514,9 @@ module transmissionDescriptor
    * EXCPT_INVALID_INPUT - Raised when input parameter is syntactical incorrect.
    * EXCPT_ENTITY_NOT_FOUND - Raised when the Transmission Descriptor to be 
    *  deleted does not exist.
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
    * <br>
   **/
    void deleteTransmissionDescriptor(
@@ -539,7 +562,8 @@ module transmissionDescriptor
    *
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
    * EXCPT_NOT_IMPLEMENTED - Raised if EMS does not support modification of TMDs via 
-   *  this interface<br>
+   *  this interface<br>
+
    * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
    *  failure<br>
    * EXCPT_INVALID_INPUT - Raised if tmdModifyData contains invalid data<br>
@@ -549,6 +573,9 @@ module transmissionDescriptor
    *  not exist<br>
    * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
    *  lost<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
    * <br>
    **/
    void modifyTransmissionDescriptor(
@@ -565,7 +592,8 @@ module transmissionDescriptor
    * <p>This service validates the TMD state
    * of the specified TP, MFD or FDFr object identified by ObjectName.</p>
    *
-   * <p>It first verifies the existence of the assigned TMD
+   * <p>It first verifies the existence of the assigned TMD
+
    * and then compares the transmission parameters of the TMD and object,
    * and the "additional TP info" parameters of the TMD with the additional
    * info parameters of the object.</p>
@@ -589,14 +617,17 @@ module transmissionDescriptor
    * Layered Transmission Parameters</a> for more details.
    *
    * <br>globaldefs::NVSList_T additionalTPInfo: a "delta" list
-   * of mismatched "additional TP info" parameters, or empty
-   *
+   * of mismatched "additional TP info" parameters, or empty
+
+   *
+
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
    * EXCPT_NOT_IMPLEMENTED - Raised if the entire request is not supported 
    * by the EMS or the request with the specified input parameters 
    * is not supported. <br>
    * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal
-   *  failure (see errorReason attribute of ProcessingFailureException())<br>
+   *  failure (see errorReason attribute of ProcessingFailureException())<br>
+
    * EXCPT_INVALID_INPUT - Raised when objectName is incorrectly formed <br>
    * EXCPT_ENTITY_NOT_FOUND - Raised when objectName references an object
    *  that does not exist<br>
@@ -624,7 +655,7 @@ module transmissionDescriptor
    * parameters of the object by the additional TP info parameters of the TMD. 
    * 
    * <br> When parameters of the TMD are already present as parameters of the 
-   * object,the current object parameter values are overwritten by the TMD 
+   * object, the current object parameter values are overwritten by the TMD 
    * parameter values. When current parameters of the object are not present as 
    * parameters of the TMD, the current parameters are left unchanged. 
    * 

@@ -133,7 +133,8 @@ module mLSNPPLink
    * <a href=../../../supportingDocumentation/ SD1-45_ASONControlPlaneManagement-Primer.pdf > SD1-45_ASONControlPlaneManagement-Primer</a> </p>
    *
    * string <b>userLabel</b>:
-   * <br>The userLabel is provisionable by NMS. This attribute can be set by NMS
+   * <br>The userLabel is provisionable by NMS. This attribute can be set by NMS
+
    * through the Common_I interface service
    * common::Common_I::setUserLabel(). It is a read/write attribute.<br>
    * 
@@ -283,21 +284,25 @@ module mLSNPPLink
 
   /** 
    * <p>This service returns a MLSNPPLink capacity in terms of a count of
-   * connections available on a per layer basis. If a layer rate is not
+   * connections available on a per layer basis. If a layer rate is not
+
    * specified then the EMS returns the available capacity for each rate that
    * is supported by the entity.</p>
    *
    * <br>globaldefs::NamingAttributes_T <b>mLSNPPLinkName</b>: The name of the MLSNPP
-   * Link for which to retrieve the available capacity.
+   * Link for which to retrieve the available capacity.
+
    * <br>transmissionParameters::LayerRate_T <b>layerRate</b>: The layer 
    * rates for which to retrieve the MLSNPP Link capacity.
    * <br>mLSNPPLink::AvailableCapacity_T <b>availableCapacity</b>: The capacity
    * which is available in the link.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * UNABLE_TO_COMPLY - Raised if the layer rate specified is not supported
-   *  by the MLSNPP Link.<br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
    * EXCPT_INVALID_INPUT - Raised when mLSNPPLinkName does not reference a 
    *  mLSNPP object or any of the input parameters is not valid<br>
    * EXCPT_ENTITY_NOT_FOUND - Raised when mLSNPPLinkName references a MLSNPPLink
@@ -356,7 +361,8 @@ module mLSNPPLink
   /** 
    * <p>This operation allows the NMS requests the EMS to deassign a MLSNPP  
    * Link from a signaling controller.</p>
-   * As a consequence of this operation the signalling controller identifier    * in the MLSNPP Link is set to an empty string.
+   * As a consequence of this operation the signalling controller identifier 
+   * in the MLSNPP Link is set to an empty string.
    * 
    * <br>globaldefs::NamingAttributes_T MLSNPPLinkName: 
    * Name of the MLSNPP Link to be deassigned from the Signalling Controller.
@@ -409,7 +415,8 @@ module mLSNPPLink
    *  <li>The MLSNPP is not a UNI. </li>
    *  <li>The signalling is enabled. <li></ul>
    * <br> 
-   **/
+   **/
+
   void setSignallingProtocolAndParameters(
          in globaldefs::NamingAttributes_T mLSNPPLinkName,
          in SignallingProtocol_T signallingProtocol,
@@ -434,9 +441,12 @@ module mLSNPPLink
    * <br> MLSNPPLink_T <b>mLSNPPLink</b>: The MLSNPPLink with TNAs set.
    *
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service<br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
    * EXCPT_INVALID_INPUT - Raised when any input parameter is syntactical 
    *  incorrect (e.g. mLSNPPLinkName does not refer to an MLSNPPLink object,
    *  or TNA is not valid).<br>

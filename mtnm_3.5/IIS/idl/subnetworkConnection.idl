@@ -6,7 +6,9 @@
 // * subnetworkConnection.idl     *
 // *                              *
 // ********************************
-
+
+
+
 
 //Include list
 #include "globaldefs.idl"
@@ -117,7 +119,8 @@ module subnetworkConnection
    *
    * <p>See 
    * <a href=../../../supportingDocumentation/SD1-35_StateDiagrams.pdf >
-   * SD1-35_StateDiagrams </a> for details on valid transitions.</p>
+   * SD1-35_StateDiagrams 
+</a> for details on valid transitions.</p>
    * If the SNC represents a Connection in the Control Plane, this attribute
    * is set to "SNCS_ACTIVE".
    * <br>
@@ -155,12 +158,15 @@ module subnetworkConnection
    * <br>The name of the termination point to which this data applies. The 
    * termination point name must be explicit (a generic endpoint specification 
    * may not be used in this case). The tpname provides the name of the CTP/FTP/GTP
-   * in a non-control plane SNC. In a control plane connection the TPName provides
+   * in a non-control plane SNC. In a control plane connection the TPName provides
+
    * the name of the SNP. In the later case, the optional TNA/FTP/CTP values are
    * provided by additional info.
    * See <a href=../../../supportingDocumentation/SD1-25_objectNaming.pdf >SD1-25 
    * Object Naming</a> for further detail on FTP naming.<br>
-   *
+   *
+
+
    * TerminationMode_T <b>tpMappingMode</b>:
    * <br>The mapping mode to put the TP in. In the context of a control plane
    * connection, the value of this attribute shall be ignored.
@@ -208,7 +214,9 @@ module subnetworkConnection
    **/
    struct TPData_T
    {
-    globaldefs::NamingAttributes_T tpName;
+    globaldefs::NamingAttributes_T tpName;
+
+
     terminationPoint::TerminationMode_T tpMappingMode;
     transmissionParameters::LayeredParameterList_T transmissionParams;
     globaldefs::NamingAttributes_T ingressTrafficDescriptorName;
@@ -238,7 +246,8 @@ module subnetworkConnection
     ST_ADD_DROP_A,
     ST_ADD_DROP_Z,
     ST_INTERCONNECT,
-    ST_DOUBLE_INTERCONNECT,
+    ST_DOUBLE_INTERCONNECT,
+
     ST_DOUBLE_ADD_DROP,
     ST_OPEN_ADD_DROP,
     ST_EXPLICIT
@@ -332,12 +341,14 @@ module subnetworkConnection
    * The EMS is responsible for guaranteeing the uniqueness of the name
    * within the context of the MultiLayerSubnetworkMgr_I regardless the name was
    * originally assigned by EMS or NMS.
-   * It is a readonly attribute.<br>
+   * It is a readonly attribute.<br>
+
    *
    * string <b>userLabel</b>:
    * <br>The user label of the subnetwork connection is NMS data
    * (typically end-to-end trail data). This could be used by the EMS 
-   * to display to the user (to associate SNCs/cross-connects to the NMS data),
+   * to display to the user (to associate SNCs/cross-connects to the NMS data),
+
    * but this is not a requirement on the EMS to display on its GUI.
    * This attribute can be set
    * by the NMS through the Common_I interface service
@@ -525,7 +536,8 @@ module subnetworkConnection
    * <br>Directionality of the cross connection.<br>
    *
    * SNCType_T <b>ccType</b>:
-   * <br>Type of connection as specified in
+   * <br>Type of connection as specified in
+
    * <a href=../../../supportingDocumentation/SD1-36_SNCTypes.pdf >SD1-36 SNC Types</a>.<br>
    *
    * globaldefs::NamingAttributesList_T <b>aEndNameList</b>:
@@ -618,7 +630,8 @@ module subnetworkConnection
    */
    typedef sequence<Resource_T> ResourceList_T;
 
- /**   * <p>A route is a partially ordered list of cross connections. A SNC always  
+ /**
+   * <p>A route is a partially ordered list of cross connections. A SNC always  
    * has one route and may have more than one: <ul>
    * <li>always 1 intended route, i.e. the preferred, or default route</li>
    * <li>0..n backup / alternative route(s)</li>
@@ -698,7 +711,8 @@ module subnetworkConnection
    * modifies and unlocks the addressed route</li>
    * <li>multiLayerSubnetwork::MultiLayerSubnetworkMgr_I::deleteSNC()
    * fails if at least one route is unlocked</li></ul></li> </ul><br>
-   *
+   *
+
    * string <b>inUseBy</b>:
    * <br>With value "y" if at least one of its XCs or CTPs is carrying traffic 
    * of another SNC, "n" otherwise.<br>
@@ -737,7 +751,8 @@ module subnetworkConnection
 
 
   /**
-   * <p>RouteCreateData_T structure is used by the NMS to pass to the EMS when a 
+   * <p>RouteCreateData_T structure is used by the NMS to pass to the EMS when a 
+
    * route is added to a SNC.<p>
    *
    * string <b>intended</b>:
@@ -749,16 +764,12 @@ module subnetworkConnection
    *
    * CrossConnectList_T <b>ccInclusions</b>: 
    * <br>Specifies a list of cross-connects that must be used by the route. The 
-   * list must be empty if no cross-connect constraints are required. If the EMS 
-   * cannot fully satisfy the constraints, then the request will be 
-   * rejected.<br>
+   * list must be empty if no cross-connect constraints are required. <br>
    *
    * ResourceList_T <b>neTpInclusions</b>: 
    * <br>Specifies a list of MLRAs/MEs/TLs/MLSNPPLinks/MLSNPP/TPs/GTPs
    * that must be used by the route. The list must be empty if no
-   * MLRAs/MEs/TLs/MLSNPPLinks/MLSNPP/TPs/GTPs constraints are required.
-   * If the EMS cannot fully satisfy the constraints, then the request will be 
-   * rejected.<br>
+   * MLRAs/MEs/TLs/MLSNPPLinks/MLSNPP/TPs/GTPs constraints are required. <br>
    *
    * boolean <b>fullRoute</b>: 
    * <br>Specifies if the ccInclusions and neTpInclusions constraints describe 
@@ -766,16 +777,12 @@ module subnetworkConnection
    * inclusions constraints are specified, false must be used.<br>
    *
    * ResourceList_T <b>neTpSncExclusions</b>: 
-   * <br>Specifies a list of MLRAs/MEs/TLs/MLSNPPLinks/MLSNPP/TPs/GTPs
-   * and/or "SNC + routes" to be 
-   * excluded. The route to be created must not use any of the
-   * MLRAs/MEs/TLs/MLSNPPLinks/MLSNPP/TPs/GTPs
-   * specified, nor any resource used by the "SNC + routes" specified. 
-   * Specifying both inclusion and exclusion constraints is not supported, 
-   * therefore this list must be empty if ccInclusions or neTpInclusions is non 
-   * empty. "SNC + route" is described by the SNC name followed by the string 
-   * ("/routeId=") and the route id. If only the SNC name is specified, then its 
-   * intended route is considered.<br>
+   * <br> This attribute specifies a list of Termination Points, Subnetwork
+   * Connections, Managed Elements, Topological Links and Group Termination 
+   * Points that must not be used by the Route. The list must be empty if no 
+   * exclusion constraints are required. Specifying both inclusion and exclusion 
+   * constraints is not supported, therefore this list must be empty if 
+   * ccInclusions or neTpInclusions are not empty. <br>
    *
    * globaldefs::NVSList_T <b>additionalCreationInfo</b>: 
    * <br>This attribute allows the communication from the EMS to the NMS of 
@@ -848,10 +855,10 @@ module subnetworkConnection
 
 
   /**
-   * <p>The read-create attributes required for the creation of a
+   * <p>The attributes required for the creation of a
    * subnetworkConnection on the EMS are packaged together in an 
    * SNCCreateData structure which the NMS will pass to the EMS at SNC
-   * creation time.  These are the read-create attributes of the SNC.</p>
+   * creation time. </p>
    *
    * string <b>userLabel</b>:
    * <br>userLabel may be specified by the NMS. May be empty.<br>
@@ -877,15 +884,15 @@ module subnetworkConnection
    * <br>The NMS must specify the protectionEffort as specified in
    * <a href=../../../supportingDocumentation/SD1-36_SNCTypes.pdf >SD1-36 SNC Types</a>.<br>
    *
-   * Reroute_T <b>rerouteAllowed</b>:
+   * Reroute_T <b>rerouteAllowed</b>:
+
+
    * <br>This attribute indicates if the EMS/MEs are allowed and/or required
    * to reroute this SNC if there 
    * is a failure on this SNC, periodically to optimize the routes, of for any 
    * other reason. It is an EMS/ME implementation whether this is done using 
    * network routing protocols or if the EMS/MEs detect the failure and take 
-   * appropriate action to attempt to fix the SNC. There is no requirement for 
-   * the reroutes to respect the constraints specified in the creation request
-   * (ccInclusions, neTpInclusions, fullRoute, neTpSncExclusions).<br>
+   * appropriate action to attempt to fix the SNC. <br>
    *
    * NetworkRouted_T <b>networkRouted</b>:
    * <br>This attribute specifies if the network is allowed/required to route 
@@ -912,7 +919,7 @@ module subnetworkConnection
    * ResourceList_T <b>neTpInclusions</b>
    * <br>Specifies a list of MLRAs/MEs/TLs/MLSNPPLinks/MLSNPP/TPs/GTPs
    * that must be used 
-   * by the SNC. The list must be empty if no constraints are  
+   * by the SNC when carrying out a full reroute or adding a routing leg[BZ1]. The list must be empty if no constraints are  
    * required. If the EMS cannot fully satisfy the constraints, then the request 
    * will be rejected.<br>
    *
@@ -962,7 +969,8 @@ module subnetworkConnection
    * <ul><li>"BLSRDirection" taking values "EAST", "WEST" and "NA"</li>
    * <li>"Timeslot" taking values "1".."nnnnn".</li></ul></li>
    * <li>this could be used to carry the "PotentialFutureSetupIndicator" of the 
-   * aEnd in the case where it has an impact on the creation of the SNC.</li>
+   * aEnd in the case where it has an impact on the creation of the SNC.</li>
+
    * <li>this could be used to indicate the intended role of one or more aEnd 
    * or zEnd TPs by using the name conventions name = "A<n>Role" or "Z<n>Role", 
    * and value = "CMEndPoint" or "LCEndPoint", where <n> refers to the index 
@@ -995,7 +1003,8 @@ module subnetworkConnection
     globaldefs::NamingAttributesList_T zEnd;
     globaldefs::NVSList_T additionalCreationInfo;
    };
-
+
+
    /**
    * <p>A sequence of data for the creation of a set of SNCs</p>
    **/
@@ -1003,7 +1012,7 @@ module subnetworkConnection
 
 
   /**
-   * <p>The read-create attributes required for the modification of a
+   * <p>The attributes required for the modification of a
    * subnetworkConnection on the EMS are packaged together in an SNCModifyData
    * structure which the NMS will pass to the EMS in a request to modify an 
    * existing SNC.</p>
@@ -1018,7 +1027,8 @@ module subnetworkConnection
    * string <b>owner</b>:
    * <br>owner may be specified by the NMS. May be empty.<br>
    *
-   * globaldefs::ConnectionDirection_T <b>direction</b>:
+   * globaldefs::ConnectionDirection_T <b>direction</b>:
+
    * <br>The connection directionality must be specified by the NMS.<br>
    *
    * string <b>modifyType</b>:
@@ -1046,10 +1056,7 @@ module subnetworkConnection
    * is a failure on this SNC, periodically to optimize the routes, of for any 
    * other reason. It is an EMS/ME implementation whether this is done using 
    * network routing protocols or if the EMS/MEs detect the failure and take 
-   * appropriate action to attempt to fix the SNC. There is no requirement for 
-   * the reroutes to respect the constraints specified in the creation request
-
-   * (ccInclusions, neTpInclusions, fullRoute, neTpSncExclusions).<br>
+   * appropriate action to attempt to fix the SNC. <br>
    *
    * NetworkRouted_T <b>networkRouted</b>:
    * <br>This attribute specifies if the network is allowed/required to route 
@@ -1077,8 +1084,8 @@ module subnetworkConnection
    * in conjunction with addedOrNewRoute only to reroute a segment.<br>
    *
    * ResourceList_T <b>neTpInclusions</b>
-   * <br>Specifies a list of MEs, TLs, PTPs, FTPs and/or CTPs that must be used 
-   * by the SNC when carrying out a full reroute or adding a routing leg. The 
+   * <br>Specifies a list of MEs, TLs, GTPs, PTPs, FTPs and/or CTPs that must be used 
+   * by the SNC. The 
    * list must be empty if no ME/TL/PTP/CTP/FTP constraints are required.If the 
    * EMScannot fully satisfy the constraints, then the request will be 
    * rejected.<br>
@@ -1090,9 +1097,7 @@ module subnetworkConnection
    *
    * ResourceList_T <b>neTpSncExclusions</b>
    * <br>Specifies a list of MEs, TLs, PTPs, FTPs, CTPs, and/or SNCs to be 
-   * excluded. This is applicable for adding the leg or doing a full reroute and 
-   * the route must not use any of the NEs, TLs, PTPs, 
-   * FTPs and CTPs specified, nor any resource used by the SNCs specified.
+   * excluded.  
    * Specifying both inclusion and exclusion constraints is not supported,
    * therefore this list must be empty if neTpInclusions is not empty.
    * <br>

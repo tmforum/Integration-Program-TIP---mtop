@@ -60,8 +60,12 @@ module managedElementManager
    * <br>managedElement::ManagedElementIterator_I meIt: Iterator to retrieve 
    * the remaining MEs.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
    *  that the EMS can support has been reached.<br>
    * <br>
@@ -107,8 +111,12 @@ module managedElementManager
    * <br>globaldefs::NamingAttributesList_T subnetNames: The names of the 
    * subnetworks this NE belongs to.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_INVALID_INPUT - Raised when managedElementName does not reference a 
    *  managed element object<br>
    * EXCPT_ENTITY_NOT_FOUND - Raised when managedElementName references an ME 
@@ -161,8 +169,12 @@ module managedElementManager
    * <br>terminationPoint::TerminationPointIterator_I tpIt: Iterator to 
    * retrieve remaining PTPs/FTPs.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_INVALID_INPUT - Raised when managedElementName does not reference a 
    *  managed element object, or tpLayerRateList or connectionLayerRateList 
    *  contain undefined rates<br>
@@ -387,8 +399,12 @@ module managedElementManager
    * <br>globaldefs::NamingAttributes tpName: Name of the TP to retrieve.
    * <br>terminationPoint::TerminationPoint_T tp: The retrieved TP.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_INVALID_INPUT - Raised when tpName does not reference a termination 
    *  point object<br>
    * EXCPT_ENTITY_NOT_FOUND - Raised when tpName references a TP object that 
@@ -410,6 +426,7 @@ module managedElementManager
    *  retrieve.
    * <br>managedElement::ManagedElement_T me: The retrieved ME.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service<br>
    * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
    *  failure<br>
    * EXCPT_INVALID_INPUT - Raised when managedElementName does not reference a
@@ -418,6 +435,9 @@ module managedElementManager
    *  object that does not exist<br>
    * EXCPT_NE_COMM_LOSS - Raised when communications to the managed element is 
    *  lost<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
    void getManagedElement(
@@ -527,7 +547,10 @@ module managedElementManager
    *  lost<br>
    * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
    *  that the EMS can support has been reached<br>
-   * <br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
+  * <br>
    **/
    void getContainedPotentialTPs(
          in globaldefs::NamingAttributes_T tpName,
@@ -643,8 +666,12 @@ module managedElementManager
    * <br>TerminationPointIterator_I tpIt: Iterator to retrieve the remaining
    * contained in use CTPs.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_INVALID_INPUT - Raised when tpName does not reference a PTP, FTP or 
    *  CTP object or layerRateList contains undefined rates<br>
    * EXCPT_ENTITY_NOT_FOUND - Raised when tpName references a PTP, FTP or CTP 
@@ -741,6 +768,9 @@ module managedElementManager
    *  lost<br>
    * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
    *  that the EMS can support has been reached<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
    void getContainedCurrentTPs(
@@ -823,6 +853,9 @@ module managedElementManager
    *  does not exist<br>
    * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
    *  lost<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
    void getContainingTPs(
@@ -874,8 +907,12 @@ module managedElementManager
    * <br>notifications::EventIterator_I eventIt: Iterator to retrieve the 
    * remaining events.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_INVALID_INPUT - Raised when meName does not reference a managed 
    *  element object or excludeProbCauseList or excludeSeverityList contains 
    *  undefined values<br>
@@ -933,6 +970,9 @@ module managedElementManager
    *  lost<br>
    * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
    *  that the EMS can support has been reached<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
    void getAllUnacknowledgedActiveAlarms(
@@ -968,7 +1008,7 @@ module managedElementManager
    * only on the ingress and egress CTPs of an ATM SNC since they are the only
    * ones which may not be cross-connected.</p>
    *
-   * <p>No change to tpMappingMode or trafficDescriptors will take place if
+   * <p>No change to tpMappingMode or TransmissionDescriptors will take place if
    * there is any active cross connect (NE cross connect)
    * using the CTP passed in parameter.</p>
    *
@@ -990,6 +1030,7 @@ module managedElementManager
    * <br>terminationPoint::TerminationPoint_T modifiedTP: Result of 
    * modification.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
    * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
    *  failure<br>
    * EXCPT_ENTITY_NOT_FOUND - Raised if the TP referred to in tpInfo does not 
@@ -1038,6 +1079,7 @@ module managedElementManager
    * <br>subnetworkConnection::CCIterator_I ccIt: Iterator to retrieve 
    * remaining CCs.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support GTPs<br>
    * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
    *  failure<br>
    * EXCPT_INVALID_INPUT - Raised if connectionRateList is empty or contains
@@ -1049,6 +1091,9 @@ module managedElementManager
    *  lost<br>
    * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
    *  that the EMS can support has been reached<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
    void getAllCrossConnections(
@@ -1115,6 +1160,9 @@ module managedElementManager
    *  used in an SNC, or is already in another GTP. <br>
    * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is lost 
    *  and this prevents creating the GTP<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
    void createGTP(
@@ -1149,6 +1197,9 @@ module managedElementManager
    * EXCPT_ENTITY_NOT_FOUND - Raised when the GTP to be deleted does not 
    *  exist<br>
    * EXCPT_OBJECT_IN_USE - Raised if the GTP is used in a cross connection<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
    void deleteGTP(
@@ -1219,7 +1270,10 @@ module managedElementManager
    *  does not exist<br>
    * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
    *  lost<br>
-   * <br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
+  * <br>
    **/
    void getGTP(
 	   in globaldefs::NamingAttributes_T gtpName,
@@ -1265,6 +1319,9 @@ module managedElementManager
    *  lost<br>
    * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
    *  that the EMS can support has been reached<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
    void getAllGTPs (
@@ -1313,8 +1370,12 @@ module managedElementManager
    * the NMS wants to know the containing GTP.
    * <br>terminationPoint::GTP_T gtp: The name of the GTP containing the CTP. 
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_INVALID_INPUT - Raised if ctpName does not reference a 
    *  terminationPoint object <br>
    * EXCPT_ENTITY_NOT_FOUND - Raised when ctpName references an object that does 
@@ -1448,8 +1509,7 @@ module managedElementManager
   /**
    * <p>This operation has exactly the same behaviour as 
    * getAllCrossConnections(), but instead returns only fixed Cross Connection 
-   * object structures. See <a href=../../../supportingDocumentation/SD1-36_SNCTypes.pdf >SD1-36 
-   * Subnetwork Connection Types</a> for an explanation of fixed SNCs.</p>
+   * object structures. Fixed cross connections are cross connections which cannot be deleted by an NMS.</p>
    *
    * <p>A cross connection is identified as fixed using additional information. 
    * See <a href=../../../supportingDocumentation/SD1-1_additionalInfoUsage.pdf >SD1-1 
@@ -1484,6 +1544,9 @@ module managedElementManager
    *  lost<br>
    * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
    *  that the EMS can support has been reached<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
    void getAllFixedCrossConnections(
@@ -1497,8 +1560,7 @@ module managedElementManager
   /**
    * <p> The operation is used to retrieve fixed connection schemes related to 
    * normal and inverse multiplexing. 
-   * See <a href=../../../supportingDocumentation/SD1-36_SNCTypes.pdf >SD1-36 
-   * Subnetwork Connection Types</a> for an explanation of fixed SNCs.</p>
+   * Fixed cross connections are cross connections which cannot be deleted by an NMS.</p>
    *
    * <p>A cross connection is identified as fixed using additional information. 
    * See <a href=../../../supportingDocumentation/SD1-1_additionalInfoUsage.pdf >SD1-1 

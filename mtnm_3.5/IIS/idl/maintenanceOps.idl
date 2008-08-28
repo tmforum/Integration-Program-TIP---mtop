@@ -152,7 +152,10 @@ module maintenanceOps
    * EXCPT_ENTITY_NOT_FOUND - Raised when tpName references TP object which does
    *  not exist<br>
    * EXCPT_UNABLE_TO_COMPLY - Raised when the operation is denied by the managed 
-   *  element (e.g. because of the current state of the object)<br>
+   *  element (e.g. because of the current state of the object).
+   * If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
    *  lost<br>
    * EXCPT_NOT_IN_VALID_STATE - Raised when the operation cannot be performed 
@@ -195,12 +198,15 @@ module maintenanceOps
    *  due to state of TP/ME object<br>
    * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when the maximum number of iterators 
    *  that the EMS can support has been reached<br>.
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
    void getActiveMaintenanceOperations(
          in globaldefs::NamingAttributes_T tpOrMeName,
          in unsigned long how_many,
-         out CurrentMaintenanceOperationList_T currentMaintenanceOpeationList,
+         out CurrentMaintenanceOperationList_T currentMaintenanceOperationList,
          out CurrentMaintenanceOperationIterator_I cmoIt)
         raises (globaldefs::ProcessingFailureException);
 

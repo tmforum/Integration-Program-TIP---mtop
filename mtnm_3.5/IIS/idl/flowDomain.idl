@@ -28,7 +28,8 @@
    * 
    * $Id$
    **/
-
+
+
 module flowDomain
 {
   /**
@@ -43,7 +44,8 @@ module flowDomain
    **/
    enum ConnectivityState_T
    {
-     CS_UNKNOWN,
+     CS_UNKNOWN,
+
      CS_FULLY_CONNECTED,
      CS_NOT_FULLY_CONNECTED
    };
@@ -97,7 +99,8 @@ typedef string FDType_T;
 
   /**
    * <p>A flow domain is associated with a set of flow domain edge CPTPs and
-   * matrix flow domains. Connectivity can be created between flow points 
+   * matrix flow domains. Connectivity can be created between flow points 
+
    * contained by flow domain edge CPTPs through flow domain fragments.<br>
    * The read/write attributes can be set by the NMS by either the common methods 
    * of the common::Common_I interface or by the createFlowDomain(), 
@@ -156,7 +159,8 @@ typedef string FDType_T;
    * parameters. <br>
    * <br>
    **/
-   struct FlowDomain_T
+   struct FlowDomain_T
+
    {
      globaldefs::NamingAttributes_T name;
      string userLabel;
@@ -244,7 +248,8 @@ typedef string FDType_T;
      string owner;
      string networkAccessDomain;
      globaldefs::NamingAttributesList_T mfds;
-     transmissionParameters::LayeredParameterList_T transmissionParams;
+     transmissionParameters::LayeredParameterList_T transmissionParams;
+
      globaldefs::NVSList_T additionalCreationInfo;
    };
 
@@ -289,7 +294,8 @@ typedef string FDType_T;
      string networkAccessDomain;
      transmissionParameters::LayeredParameterList_T transmissionParams;
      globaldefs::NVSList_T additionalModificationInfo;
-   };
+   };
+
 
   /**
    * <p>A matrix flow domain is associated with a set of CPTPs. It reflects
@@ -354,7 +360,8 @@ typedef string FDType_T;
 
   /**
    * <p>Sequence of MatrixFlowDomain_T objects.</p>
-   **/
+   **/
+
    typedef sequence<MatrixFlowDomain_T> MFDList_T;
 
   /**
@@ -391,14 +398,16 @@ typedef string FDType_T;
    * ingress (incoming) Transmission Descriptor. <br>
    *
    * globaldefs::NamingAttributes_T <b>egressTransmissionDescriptorName</b>:
-   * <br>The FTP may have an optional reference to an 
+   * <br>The FTP may have an optional reference to an 
+
    * egress (outgoing) Transmission Descriptor.  <br>
    *
    *
    * TerminationMode_T <b>tpMappingMode</b>:
    * <br>Within the façade definition, the FTP can act as an 
    * aggregate of associated G.805 TCPs, G.805 Termination Functions and G.805 
-   * CPs at one or more LayerRates. 
+   * CPs at one or more LayerRates. 
+
    *
    * The tpMappingMode attribute indicates and controls the connection of
    * the named CP at a specified LayerRate to the dedicated G.805 TCP and 
@@ -432,7 +441,8 @@ typedef string FDType_T;
    * TPType_T <b>type</b>:
    * <br> Fixed value TPT_PTP (FTPs use the same 
    * type as PTPs for compatibility reasons.)
-   * <br>
+   * <br>
+
    *
    * <p>The following TP attributes will have their value determined by the EMS
    * at FTP creation time, and therefore do not appear in the structure:</p>
@@ -456,7 +466,8 @@ typedef string FDType_T;
      globaldefs::NamingAttributes_T ingressTransmissionDescriptorName;
      globaldefs::NamingAttributes_T egressTransmissionDescriptorName;
      terminationPoint::TerminationMode_T tpMappingMode;
-     terminationPoint::Directionality_T direction;
+     terminationPoint::Directionality_T direction;
+
      transmissionParameters::LayeredParameterList_T transmissionParams;
      globaldefs::NVSList_T additionalCreationInfo;
    };
@@ -468,13 +479,15 @@ typedef string FDType_T;
 
    interface MFDIterator_I
    {
-      boolean next_n(in  unsigned long    how_many,
+      boolean next_n(in  unsigned long    how_many,
+
                      out MFDList_T mfdList)
         raises (globaldefs::ProcessingFailureException);
 
       unsigned long getLength()
         raises (globaldefs::ProcessingFailureException);
-
+
+
       void destroy()
         raises (globaldefs::ProcessingFailureException);
    };
@@ -494,7 +507,8 @@ typedef string FDType_T;
    * string <b>userLabel</b>:
    * <br>An userLabel may be specified by the NMS. May be empty.<br>
    *
-   * boolean <b>forceUniqueness</b>:
+   * boolean <b>forceUniqueness</b>:
+
    * <br>Specifies whether uniqueness of the userLabel is required amongst
    * matrix flow domains of the EMS. In case of uniqueness, the operation will
    * fail if userLabel is already in use.<br>
@@ -508,7 +522,8 @@ typedef string FDType_T;
    *
    * globaldefs::NamingAttributesList_T <b>unassignedCPTPs</b>:
    * <br>A list of names of unassigned CPTPs that shall be assigned to the
-   * matrix flow domain.<br>
+   * matrix flow domain.<br>
+
    *
    * transmissionParameters::LayeredParameterList_T <b>transmissionParams</b>:
    * <br>A list of connectionless technology-specific parameters associated 
@@ -537,7 +552,8 @@ typedef string FDType_T;
   /**
    * <p>The read/write attributes required for the modification of a 
    * matrix flow domain on the EMS are packed together in an MFDModifyData
-   * structure which the NMS will pass to the EMS in a request to modify an 
+   * structure which the NMS will pass to the EMS in a request to modify an 
+
    * existing matrix flow domain.</p>
    *
    * string <b>userLabel</b>:
@@ -584,7 +600,8 @@ typedef string FDType_T;
   /**
    * <p>The FlowDomainMgr_I is used to gain access to flow domains,
    * matrix flow domains, flow domain fragments and their operations.</p>
-   *
+   *
+
    * <p>A handle to an instance of this interface is gained via the
    * emsSession::EmsSession_I::getManager() operation.</p>
    **/
@@ -613,6 +630,9 @@ typedef string FDType_T;
    * is not supported. <br>
    * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
    *  that the EMS can support has been reached<br>
    * EXCPT_NE_COMM_LOSS - Raised when communication is lost to a managed element
@@ -621,7 +641,8 @@ typedef string FDType_T;
    **/
    void getAllFlowDomains(
          in unsigned long how_many,
-         out FDList_T flowDomains,          out FDIterator_I fdIt)
+         out FDList_T flowDomains,
+         out FDIterator_I fdIt)
 	  raises(globaldefs::ProcessingFailureException);
 
   /**
@@ -643,6 +664,9 @@ typedef string FDType_T;
    * is not supported. <br>
    * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_NE_COMM_LOSS - Raised when communication is lost to a managed element
    *  involved in this operation<br>
    * <br>
@@ -672,13 +696,18 @@ typedef string FDType_T;
    * EXCPT_ENTITY_NOT_FOUND - Raised when fdName references a 
    *  flow domain object that does not exist<br>
    * EXCPT_NE_COMM_LOSS - Raised when communication is lost to a managed element
-   *  involved in this operation<br>
+   *  involved in this operation<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
+
    * <br>
    **/
    void getFlowDomain(
          in globaldefs::NamingAttributes_T fdName,
          out FlowDomain_T flowDomain)
-      raises(globaldefs::ProcessingFailureException);
+      raises(globaldefs::ProcessingFailureException);
+
 
   /**
    * <p>This operation returns the flow domain structure for the (single) flow domain
@@ -699,10 +728,15 @@ typedef string FDType_T;
    *  failure<br>
    * EXCPT_INVALID_INPUT - Raised when mfdName does not reference a 
    *  matrix flow domain object<br>
-   * EXCPT_ENTITY_NOT_FOUND - Raised when mfdName references a 
-   *  matrix flow domain object that does not exist<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when mfdName references a 
+
+   *  matrix flow domain object that does not exist<br>
+
    * EXCPT_NE_COMM_LOSS - Raised when communcation is lost to a managed element
    *  involved in this operation<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
    void getAssociatingFD(
@@ -727,7 +761,8 @@ typedef string FDType_T;
    * parameters and their groupings. If an empty list is specified, all transmission
    * parameters are returned.<br>
    *
-   * transmissionParameters::LayeredParameterList_T <b>transmissionParams</b>:
+   * transmissionParameters::LayeredParameterList_T <b>transmissionParams</b>:
+
    * <br>A list or requested transmission parameters. For a flow domain fragment
    * only one layer is contained by the list.<br>
    *
@@ -743,6 +778,9 @@ typedef string FDType_T;
    *  object that does not exist<br>
    * EXCPT_NE_COMM_LOSS - Raised when communication is lost to a managed element
    *  involved in this operation<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
    void getTransmissionParams(          in globaldefs::NamingAttributes_T name,
@@ -762,7 +800,8 @@ typedef string FDType_T;
    * globaldefs::NamingAttributesList_T <b>assignedCPTPs</b>:
    * <br>Identifies the list of assigned CPTPs to be associated as flow
    * domain edge CPTPs to the flow domain. This may be an empty list.
-   * Associating CPTPs to the flow domain is done on a best effort basis. 
+   * Associating CPTPs to the flow domain is done on a best effort basis. 
+
    * On method return the list contains the names of the CPTPs that could
    * not be associated with the flow domain. <br>
    *
@@ -776,8 +815,10 @@ typedef string FDType_T;
    * NMS in the createData. <br>
    *
    * string <b>errorReason</b>:
-   * <br>In case a "best effort" parameter could not be set or a CPTP could   * not be associated with the flow domain an indication of the fault reason
-   * is provided by the EMS.<br>   *
+   * <br>In case a "best effort" parameter could not be set or a CPTP could
+   * not be associated with the flow domain an indication of the fault reason
+   * is provided by the EMS.<br>
+   *
    * <b>Raises</b> globaldefs::ProcessingFailureException <br>
    * EXCPT_NOT_IMPLEMENTED - Raised if the entire request is not supported 
    * by the EMS or the request with the specified input parameters 
@@ -820,10 +861,12 @@ typedef string FDType_T;
    *
    * TPDataList_T <b>tpsToModify</b>: in: The list of TPs with associated 
    * parameters to be applied. out: The list of TPs with associated 
-   * applied parameters. <br>
+   * applied parameters. <br>
+
    *
    * string <b>errorReason</b>:
-   * <br>Specifies the fault reason if any.<br>   *
+   * <br>Specifies the fault reason if any.<br>
+   *
    * <b>Raises</b> globaldefs::ProcessingFailureException <br>
    * EXCPT_NOT_IMPLEMENTED - Raised if the entire request is not supported 
    * by the EMS or the request with the specified input parameters 
@@ -834,7 +877,8 @@ typedef string FDType_T;
    *  incorrect, i.e. fdName does not refer to a flow domain object <br>
    * EXCPT_OBJECT_IN_USE - Raised when the flow domain contains at least one
    *  flow domain fragment <br>
-   * EXCPT_ENTITY_NOT_FOUND - Raised when fdName references an object that does 
+   * EXCPT_ENTITY_NOT_FOUND - Raised when fdName references an object that does 
+
    *  not exist <br>
    * EXCPT_UNABLE_TO_COMPLY - Raised if an associated flow domain edge CPTP
    *  or matrix flow domain could not be de-associated<br> 
@@ -851,8 +895,10 @@ typedef string FDType_T;
   /**
    * <p>The NMS invokes the modifyFlowDomain service to request from the EMS to modify an 
    * existing flow domain as specified by the parameters passed in the method.</p>
-   *
-   * globaldefs::NamingAttributes_T <b>fdName</b>:
+   *
+
+   * globaldefs::NamingAttributes_T <b>fdName</b>:
+
    * <br>The name of the flow domain to modify.<br>
    *
    * FDModifyData_T <b>fdModifyData</b>:
@@ -913,7 +959,8 @@ typedef string FDType_T;
    * applied parameters. <br>
    *
    * string <b>errorReason</b>:
-   * <br>Specifies the fault reason if any.<br>   *
+   * <br>Specifies the fault reason if any.<br>
+   *
    * <b>Raises</b> globaldefs::ProcessingFailureException <br>
    * EXCPT_NOT_IMPLEMENTED - Raised if the entire request is not supported 
    * by the EMS or the request with the specified input parameters 
@@ -956,10 +1003,12 @@ typedef string FDType_T;
    * applied parameters. <br>
    *
    * string <b>errorReason</b>:
-   * <br>Specifies the fault reason if any.<br>   *
+   * <br>Specifies the fault reason if any.<br>
+   *
    * <b>Raises</b> globaldefs::ProcessingFailureException <br>
    * EXCPT_NOT_IMPLEMENTED - Raised if the entire request is not supported 
-   * by the EMS or the request with the specified input parameters 
+   * by the EMS or the request with the specified input parameters 
+
    * is not supported. <br>
    * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
    *  failure<br>
@@ -1001,8 +1050,10 @@ typedef string FDType_T;
    * applied parameters. <br>
    *
    * string <b>errorReason</b>:
-   * <br>In case a "best effort" parameter could not be set or a CPTP could   * not be associated with the flow domain an indication of the fault reason
-   * is provided by the EMS.<br>   *
+   * <br>In case a "best effort" parameter could not be set or a CPTP could
+   * not be associated with the flow domain an indication of the fault reason
+   * is provided by the EMS.<br>
+   *
    * <b>Raises</b> globaldefs::ProcessingFailureException <br>
    * EXCPT_NOT_IMPLEMENTED - Raised if the entire request is not supported 
    * by the EMS or the request with the specified input parameters 
@@ -1044,8 +1095,10 @@ typedef string FDType_T;
    * applied parameters. <br>
    *
    * string <b>errorReason</b>:
-   * <br>In case a "best effort" parameter could not be set or a CPTP could   * not be associated with the flow domain an indication of the fault reason
-   * is provided by the EMS.<br>   *
+   * <br>In case a "best effort" parameter could not be set or a CPTP could
+   * not be associated with the flow domain an indication of the fault reason
+   * is provided by the EMS.<br>
+   *
    * <b>Raises</b> globaldefs::ProcessingFailureException <br>
    * EXCPT_NOT_IMPLEMENTED - Raised if the entire request is not supported 
    * by the EMS or the request with the specified input parameters 
@@ -1089,7 +1142,8 @@ typedef string FDType_T;
    * MFDList_T <b>mfds</b>:
    * <br>First batch of matrix flow domains.<br>
    *
-   * MFDIterator_I <b>mfdIt</b>:
+   * MFDIterator_I <b>mfdIt</b>:
+
    * <br>Iterator to retrieve the remaining matrix flow domains.<br>
    *
    * <b>Raises</b> globaldefs::ProcessingFailureException <br>
@@ -1106,6 +1160,9 @@ typedef string FDType_T;
    *  involved in this operation<br>
    * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when the maximum number of iterators 
    *  that the EMS can support has been reached<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
    void getAllAssociatedMFDs(
@@ -1118,7 +1175,7 @@ typedef string FDType_T;
 
    /**
    * <p>This service allows an NMS to request a list of matrix flow domains
-   * that are contained by a specified managed element or supported
+   * that are supported by a specified managed element or supported
    * with a specified equipment.</p>
    * 
    * <p>In order to allow the NMS to deal with a large number of objects,
@@ -1144,15 +1201,21 @@ typedef string FDType_T;
    *  failure<br>
    * EXCPT_INVALID_INPUT - Raised when holderName does not reference a 
    *  managed element or equipment object<br>
-   * EXCPT_ENTITY_NOT_FOUND - Raised when holderName references an object that 
+   * EXCPT_ENTITY_NOT_FOUND - Raised when holderName references an object that 
+
    *  does not exist<br>
    * EXCPT_NE_COMM_LOSS - Raised when communcation is lost to a managed element
    *  involved in this operation<br>
    * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when the maximum number of iterators 
    *  that the EMS can support has been reached<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
-   void getAllSupportedMFDs(
+   void getAllSupportedMFDs(
+
+
          in globaldefs::NamingAttributes_T holderName,
          in unsigned long how_many,
          out MFDList_T mfds,
@@ -1181,6 +1244,9 @@ typedef string FDType_T;
    *  matrix flow domain object that does not exist<br>
    * EXCPT_NE_COMM_LOSS - Raised when communication is lost to a managed element
    *  involved in this operation<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
    void getMFD(
@@ -1204,25 +1270,32 @@ typedef string FDType_T;
    * is not supported. <br>
    * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
    *  failure<br>
-   * EXCPT_INVALID_INPUT - Raised when cptpName does not reference a 
+   * EXCPT_INVALID_INPUT - Raised when cptpName does not reference a 
+
    *  "CPTP" termination point <br>
    * EXCPT_ENTITY_NOT_FOUND - Raised when mfdName references a 
    *  termination point object that does not exist<br>
    * EXCPT_NE_COMM_LOSS - Raised when communcation is lost to a managed element
    *  involved in this operation<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
    void getAssigningMFD(
          in globaldefs::NamingAttributes_T cptpName,
          out MatrixFlowDomain_T mfd)
         raises(globaldefs::ProcessingFailureException);
-
-  /**
+
+
+  /**
+
    * <p>Using this service the NMS requests from the EMS the creation of a
    * matrix flow domain given the parameters passed in the method. The NMS
    * must specify CPTPs to be associated with the created matrix flow domain.
    * </p>
-   *
+   *
+
    * MFDCreateData_T <b>createData</b>:
    * <br>Structure describing the matrix flow domain structure to be created.<br>
    *
@@ -1236,7 +1309,8 @@ typedef string FDType_T;
    * by the NMS in the createData. <br>
    *
    * string <b>errorReason</b>:
-   * <br> Specifies the creation error(s) if any. <br>   *
+   * <br> Specifies the creation error(s) if any. <br>
+   *
    * <b>Raises</b> globaldefs::ProcessingFailureException <br>
    * EXCPT_NOT_IMPLEMENTED - Raised if the entire request is not supported 
    * by the EMS or the request with the specified input parameters 
@@ -1276,13 +1350,17 @@ typedef string FDType_T;
    * TPDataList_T <b>tpsToModify</b>: in: The list of TPs with associated 
    * parameters to be applied. out: The list of TPs with associated 
    * applied parameters. <br>
-   *
+   *
+
    * string <b>errorReason</b>:
-   * <br>In case a "best effort" parameter could not be set    * an indication of the fault reason
-   * is provided by the EMS.<br>   *
+   * <br>In case a "best effort" parameter could not be set 
+   * an indication of the fault reason
+   * is provided by the EMS.<br>
+   *
    * <b>Raises</b> globaldefs::ProcessingFailureException <br>
    * EXCPT_NOT_IMPLEMENTED - Raised if the entire request is not supported 
-   * by the EMS or the request with the specified input parameters 
+   * by the EMS or the request with the specified input parameters 
+
    * is not supported. <br>
    * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
    *  failure<br>
@@ -1294,6 +1372,9 @@ typedef string FDType_T;
    * EXCPT_ACCESS_DENIED - Raised if the matrix flow domain is fixed<br>
    * EXCPT_NE_COMM_LOSS - Raised when communcation is lost to the managed element
    *  containing the MFD<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
    void deleteMFD(
@@ -1319,7 +1400,8 @@ typedef string FDType_T;
    *
    * MatrixFlowDomain_T <b>newMFD</b>:
    * <br>The modified matrix flow domain.<br>
-   *   * string <b>errorReason</b>:
+   *
+   * string <b>errorReason</b>:
    * <br>In case a "best effort" parameter could not be set the fault reason
    * is provided by the EMS.<br>
    *
@@ -1337,6 +1419,9 @@ typedef string FDType_T;
    *  not met<br>
    * EXCPT_NE_COMM_LOSS - Raised when communcation is lost to a managed element
    *  involved in this operation.<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
    void modifyMFD(
@@ -1352,7 +1437,8 @@ typedef string FDType_T;
    * of one or more "CPTP" TPs to a matrix flow domain.</p>
    *
    * globaldefs::NamingAttributes_T <b>mfdName</b>:
-   * <br>The name of the matrix flow domain to be modified.<br>
+   * <br>The name of the matrix flow domain to be modified.<br>
+
    *
    * globaldefs::NamingAttributesList_T <b>tpNames</b>:
    * <br>The names of the CPTPs to be assigned to the matrix flow domain.
@@ -1364,7 +1450,8 @@ typedef string FDType_T;
    * applied parameters. <br>
    *
    * string <b>errorReason</b>:
-   * <br>Specifies the fault reason if any.<br>   *
+   * <br>Specifies the fault reason if any.<br>
+   *
    * <b>Raises</b> globaldefs::ProcessingFailureException <br>
    * EXCPT_NOT_IMPLEMENTED - Raised if the entire request is not supported 
    * by the EMS or the request with the specified input parameters 
@@ -1406,7 +1493,8 @@ typedef string FDType_T;
    * applied parameters. <br>
    *
    * string <b>errorReason</b>:
-   * <br>Specifies the fault reason if any.<br>   *
+   * <br>Specifies the fault reason if any.<br>
+   *
    * <b>Raises</b> globaldefs::ProcessingFailureException <br>
    * EXCPT_NOT_IMPLEMENTED - Raised if the entire request is not supported 
    * by the EMS or the request with the specified input parameters 
@@ -1440,7 +1528,7 @@ typedef string FDType_T;
    * </p>
    *
    * FTPCreateData_T <b>createData</b>:
-   * <br>Structure describing the floating termination point structure to be created.<br>
+   * <br>Structure describing the floating termination point to be created.<br>
    *
    * TPDataList_T <b>tpsToModify</b>: A list of TPs and parameters to apply, 
    * updated to provide the resulting parameters. 
@@ -1453,7 +1541,8 @@ typedef string FDType_T;
    *
    * <br> This parameter may be used by the NMS to determine
    * the number of server layer CTPs to create for the specified FTP.
-   * An empty list means that the number of server layer CTPs 
+   * An empty list means that the number of server layer CTPs 
+
    * is determined by the EMS. <br>
    * 
    *
@@ -1470,7 +1559,8 @@ typedef string FDType_T;
    * is not supported. <br>
    * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
    *  failure<br>
-   * EXCPT_INVALID_INPUT - Raised when any input parameter is syntactically 
+   * EXCPT_INVALID_INPUT - Raised when any input parameter is syntactically 
+
    *  incorrect (e.g. field of createData is invalid).<br>
    * EXCPT_UNABLE_TO_COMPLY - Raised when the EMS (or NE) does not support explicit creation 
    * of CPTPs. <br>
@@ -1494,8 +1584,7 @@ typedef string FDType_T;
         raises (globaldefs::ProcessingFailureException);
 
   /**
-   * <p>This service allows an NMS to request the deletion of a floating termination point from
-   * the EMS. The service may be used to delete "CPTP" FTPs. </p>
+   * <p>This service allows an NMS to request the deletion of a floating termination point.</p>
    *
    * NamingAttributes_T <b>tpName</b>:
    * <br>The name of the termination point to be deleted.<br>
@@ -1505,8 +1594,11 @@ typedef string FDType_T;
    * applied parameters. <br>
    *
    * string <b>errorReason</b>:
-   * <br>In case a "best effort" parameter could not be set    * an indication of the fault reason
-   * is provided by the EMS.<br>   * <b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * <br>In case the operation completes without exception, 
+   * but some error occurred or part of the request could not be filled,
+   * an indication of the fault reason
+   * is provided by the EMS.<br>
+   * <b>Raises</b> globaldefs::ProcessingFailureException <br>
    * EXCPT_NOT_IMPLEMENTED - Raised if the entire request is not supported 
    * by the EMS or the request with the specified input parameters 
    * is not supported. <br>
@@ -1547,7 +1639,8 @@ typedef string FDType_T;
    *
    * terminationPoint::TerminationPointList_T <b>cptpList</b>:
    * <br>First batch of CPTPs.<br>
-   *
+   *
+
    * terminationPoint::TerminationPointIterator_I <b>cptpIt</b>:
    * <br>Iterator to retrieve the remaining CPTPs.<br>
    *
@@ -1562,9 +1655,15 @@ typedef string FDType_T;
    * EXCPT_ENTITY_NOT_FOUND - Raised when fdName references an object that 
    *  does not exist<br>
    * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
-   *  that the EMS can support has been reached<br>   * EXCPT_NE_COMM_LOSS - Raised when communication is lost to a managed element
-   *  involved in this operation<br>   * <br>
-   **/
+   *  that the EMS can support has been reached<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communication is lost to a managed element
+   *  involved in this operation<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
+   * <br>
+   **/
+
    void getAllCPTPs(
          in globaldefs::NamingAttributes_T  fdName,
          in CPTP_Role_T	cptpRole,
@@ -1603,6 +1702,9 @@ typedef string FDType_T;
    *  that the EMS can support has been reached<br>
    * EXCPT_NE_COMM_LOSS - Raised when communication is lost to a managed element
    *  involved in this operation<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
    void getAllAssignedCPTPs(
@@ -1611,9 +1713,10 @@ typedef string FDType_T;
          out terminationPoint::TerminationPointList_T  cptpList,  
          out terminationPoint::TerminationPointIterator_I  cptpIt)
       raises(globaldefs::ProcessingFailureException);
-
+
+
 /**
-   * <p>This service returns the structures of all "CPTP" TPs that which are potentially 
+   * <p>This service returns the structures of all "CPTP" TPs that are potentially 
    * able to be assigned to a matrix flow domain </p>
    * 
    * <p> Potentially means: The CPTPs are on the same equipment or same rack with 
@@ -1635,26 +1738,33 @@ typedef string FDType_T;
    * <b>Raises</b> globaldefs::ProcessingFailureException <br>
    * EXCPT_NOT_IMPLEMENTED - Raised if the entire request is not supported 
    * by the EMS or the request with the specified input parameters 
-   * is not supported. <br>
+   * is not supported. <br>
+
    * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
    *  failure<br>
    * EXCPT_INVALID_INPUT - Raised when mfdName does not reference a
    *  matrix flow domain object<br>
    * EXCPT_ENTITY_NOT_FOUND - Raised when mfdName references an object that 
    *  does not exist<br>
-   * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
+   * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
+
    *  that the EMS can support has been reached<br>
    * EXCPT_NE_COMM_LOSS - Raised when communication is lost to a managed element
    *  involved in this operation<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
    void getAllAssignableCPTPs(
          in globaldefs::NamingAttributes_T  mfdName,
          in unsigned long  how_many,  
-         out terminationPoint::TerminationPointList_T  cptpList,  
+         out terminationPoint::TerminationPointList_T  cptpList,  
+
          out terminationPoint::TerminationPointIterator_I  cptpIt)
       raises(globaldefs::ProcessingFailureException);
-
+
+
   /**
    * <p>This allows an NMS to request a list of flow domain fragments for the
    * specified flow domain at the specified connectivityRates.
@@ -1696,6 +1806,9 @@ typedef string FDType_T;
    *  that the EMS can support has been reached<br>
    * EXCPT_NE_COMM_LOSS - Raised when communcation is lost to a managed element
    *  involved in this operation<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
    void getAllFDFrs(
@@ -1710,11 +1823,12 @@ typedef string FDType_T;
   /**
    * <p>This service allows the NMS to request from the EMS the flow domain
    * fragments that are connected to a specified flow point or CPTP. In case
-   * of a flow point as input parameter not more then one flow domain fragment
+   * of a flow point as input parameter not more than one flow domain fragment
    * will be returned.</p>
    *
    * globaldefs::NamingAttributes_T <b>tpName</b>:
-   * <br>The name of the flow point or CPTP for which the connected flow
+   * <br>The name of the flow point or CPTP for which the connected flow
+
    * domain fragments shall be returned.<br>
    *
    * unsigned long <b>how_many</b>:
@@ -1734,12 +1848,17 @@ typedef string FDType_T;
    *  failure<br>
    * EXCPT_INVALID_INPUT - Raised when tpName does not reference a flow point
    *  or CPTP<br>
-   * EXCPT_ENTITY_NOT_FOUND - Raised tpName references an object that does not
+   * EXCPT_ENTITY_NOT_FOUND - Raised tpName references an object that does not
+
    *  exist<br>
    * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
-   *  that the EMS can support has been reached<br>
+   *  that the EMS can support has been reached<br>
+
    * EXCPT_NE_COMM_LOSS - Raised when communication is lost to a managed element
    *  involved in this operation<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
    void getFDFrsWithTP(
@@ -1751,8 +1870,10 @@ typedef string FDType_T;
 
   /**
    * <p>This operation returns the flow domain fragment structures for the
-   * flow domain fragments whose userLabel is supplied as a parameter.<br>
-   * The operation does not use an iterator, since the number of flow domain    * fragments returned is usually expected to be 1.
+   * flow domain fragments whose userLabel is supplied as a parameter.<br>
+
+   * The operation does not use an iterator, since the number of flow domain    * fragments returned is usually expected to be 1.
+
    * </p>
    *
    * in string <b>userLabel</b>:
@@ -1769,7 +1890,10 @@ typedef string FDType_T;
    *  failure<br>
    * EXCPT_NE_COMM_LOSS - Raised when communication is lost to a managed element
    *  involved in this operation<br>
-   * <br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
+  * <br>
    **/
    void getFDFrsByUserLabel(
          in string  userLabel,
@@ -1798,12 +1922,16 @@ typedef string FDType_T;
    *  fragment object that does not exist<br>
    * EXCPT_NE_COMM_LOSS - Raised when communication is lost to a managed element
    *  involved in this operation<br>
-   * <br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
+  * <br>
    **/
    void getFDFr(
          in globaldefs::NamingAttributes_T fdfrName,
          out flowDomainFragment::FlowDomainFragment_T fdfr)
-        raises (globaldefs::ProcessingFailureException);
+        raises (globaldefs::ProcessingFailureException);
+
 
   /**
    * <p>The NMS invokes the createAndActivateFDFr service to request the EMS to create
@@ -1866,7 +1994,8 @@ typedef string FDType_T;
    * or to the containing CPTPs. <br>
    * 
    * flowDomainFragment::FlowDomainFragment_T <b>theFDFr</b>:
-   * <br>The new created and activated flow domain fragment. The EMS is responsible
+   * <br>The new created and activated flow domain fragment. The EMS is responsible
+
    * for guaranteeing uniqueness of the name of the flow domain fragment. <br>
    *
    * globaldefs::NamingAttributesList_T <b>notConnectableCPTPList</b>:
@@ -1877,7 +2006,8 @@ typedef string FDType_T;
    * <br>The list of Connectionless Port Termination Points and Flow Points FPs
    * for which only best-effort transmission parameters could not be set. <br>
    *
-   * string <b>errorReason</b>:
+   * string <b>errorReason</b>:
+
    * <br>In case a "best effort" parameter could not be set or a flow point could not
    * be connected an indication of the fault reason is provided by the EMS.<br>
    *
@@ -1900,16 +2030,19 @@ typedef string FDType_T;
    *  "not best effort"; </li>
    *  <li> the name specified by the NMS exists already in the EMS;</li>
    *  <li> The FP total connectivity constraint is not met;</li>
-   * <li> Unrecognized mapping criteria;</li>
+   * <li> Unrecognized mapping criteria;</li>
+
    * <li> Frames map to more than one FDFr;</li>
    * <li> The FDFr would have less than two FPs.</li>
    * </ul>  <br>
-   * EXCPT_NE_COMM_LOSS - Raised in case of Communications failure between the EMS 
+   * EXCPT_NE_COMM_LOSS - Raised in case of Communications failure between the EMS 
+
    * and the ME(s). 
    * <br>
    * EXCPT_NOT_IN_VALID_STATE - Raised when the state of the specified object is such 
    * that the EMS cannot perform the request.. 
-   * <br>   * EXCPT_TP_INVALID_ENDPOINT - Raised when the specified TP does not exist or cannot be created. <br>
+   * <br>
+   * EXCPT_TP_INVALID_ENDPOINT - Raised when the specified TP does not exist or cannot be created. <br>
    * <br>
    **/
    void createAndActivateFDFr(
@@ -1919,7 +2052,8 @@ typedef string FDType_T;
          in globaldefs::NamingAttributesList_T zEnd,
          inout globaldefs::NamingAttributesList_T internalTPs,
          inout flowDomainFragment::MatrixFlowDomainFragmentList_T mfdfrs,
-         inout subnetworkConnection::TPDataList_T tpsToModify,
+         inout subnetworkConnection::TPDataList_T tpsToModify,
+
          out flowDomainFragment::FlowDomainFragment_T theFDFr, 
          out globaldefs::NamingAttributesList_T notConnectableCPTPList,
          out globaldefs::NamingAttributesList_T parameterProblemsTPList,
@@ -1929,10 +2063,12 @@ typedef string FDType_T;
   /**
    *<p>This service allows an NMS to request the deactivation and deletion of a flow
    * domain fragment from a flow domain.</p>
-   *
+   *
+
    * <br>globaldefs::NamingAttributes_T <b>fdfrName</b>:
    * <br>The name of the flow domain fragment to be deactivated and deleted.<br>
-   *
+   *
+
    * <br>subnetworkConnection::TPDataList_T <b>tpsToModify</b>: 
    * <br>A list of TPs and parameters to apply. On method return the list is 
    * updated to provide the resulting parameters. The list may refer only to
@@ -1943,7 +2079,8 @@ typedef string FDType_T;
    * <br>The deactivated and deleted flow domain fragment.<br>
    * 
    * string <b>errorReason</b>:
-   * <br>Specifies the fault reason if any.<br>   
+   * <br>Specifies the fault reason if any.<br>
+   
    *
    * <b>Raises</b> globaldefs::ProcessingFailureException <br>
    * EXCPT_NOT_IMPLEMENTED - Raised if the entire request is not supported 
@@ -1959,19 +2096,24 @@ typedef string FDType_T;
    *  flow domain fragment, e.g. if the flow domain fragment is fixed <br>
    * EXCPT_NE_COMM_LOSS - Raised when communcation is lost to a managed element
    *  involved in this operation<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
    void deactivateAndDeleteFDFr(
          in globaldefs::NamingAttributes_T fdfrName,
          inout subnetworkConnection::TPDataList_T tpsToModify,
          out flowDomainFragment::FlowDomainFragment_T theFDFr,
-         out string errorReason)
+         out string errorReason)
+
         raises (globaldefs::ProcessingFailureException);
 
   /**
    * <p>The NMS invokes the modifyFDFr service to request the EMS to modify an 
    * existing flow domain fragment as specified by the parameters passed in the
-   * method.</p>   *
+   * method.</p>
+   *
    * globaldefs::NamingAttributes_T <b>fdfrName</b>:
    * <br>The name of the flow domain fragment to modify.<br>
    *
@@ -1995,7 +2137,7 @@ typedef string FDType_T;
    * flow points or to the containing CPTPs. <br>
    *
    * globaldefs::NamingAttributesList_T <b>failedTPList</b>:
-   * <br> The list of Connectionless Port Termination Points 
+   * <br> The list of Connectionless Port Termination Points or Flow Points
    * (requested in the fdfrModifyData parameter) 
    * that could not be added or could not be removed, 
    * whichever was requested.<br>
@@ -2013,8 +2155,10 @@ typedef string FDType_T;
    *
    * <b>Raises</b> globaldefs::ProcessingFailureException <br>
    * EXCPT_NOT_IMPLEMENTED - Raised if the entire request is not supported 
-   * by the EMS or the request with the specified input parameters    * is not supported. <br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal    *  failure<br>
+   * by the EMS or the request with the specified input parameters 
+   * is not supported. <br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
    * EXCPT_INVALID_INPUT - Raised when any input parameter is syntactically 
    *  incorrect (e.g. field of fdfrModifyData is invalid).<br>
    * EXCPT_ENTITY_NOT_FOUND - Raised when fdfrName references an object that does 
@@ -2082,12 +2226,16 @@ typedef string FDType_T;
    *  failure<br>
    * EXCPT_INVALID_INPUT - Raised when flowDomainName does not reference a 
    *  FlowDomain object<br>
-   * EXCPT_ENTITY_NOT_FOUND - Raised when flowDomainName references an object that 
+   * EXCPT_ENTITY_NOT_FOUND - Raised when flowDomainName references an object that 
+
    *  does not exist<br>
    * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
    *  lost<br>
    * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
    *  that the EMS can support has been reached<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
    void getAllTopologicalLinksOfFD(
@@ -2121,6 +2269,9 @@ typedef string FDType_T;
    *  does not exist<br>
    * EXCPT_NE_COMM_LOSS - Raised when communication is lost to a managed element
    *  involved in this operation<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * <br>
    **/
    void getFDFrRoute(

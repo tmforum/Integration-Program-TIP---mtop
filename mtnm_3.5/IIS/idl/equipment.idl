@@ -147,7 +147,8 @@ module equipment
    * string <b>installedVersion</b>: 
    * <br>Firmware version of the installed equipment.
    * If not available (or there is no installed equipment), an empty string 
-   * shall be used. It is a read-only attribute.<br>
+   * shall be used. It is a read-only attribute.<br>
+
    *
    * string <b>installedSerialNumber</b>: 
    * <br>Defines the serial number of the installed equipment. 
@@ -408,7 +409,7 @@ module equipment
   /**
    * <p> This operation allows the NMS to permanently unprovision an equipment
    * from the Managed Element. The successful result of this operation is the 
-   * potential deletion of the equipment object and the deletion of all its 
+   * deletion of the equipment object and the deletion of all its 
    * related objects such as Termination Points.</p>
    *
    * <p>The EMS should attempt to set the equipment to 
@@ -455,7 +456,8 @@ module equipment
    * EXCPT_ENTITY_NOT_FOUND - Raised when equipmentOrHolderName references an 
    *  object that does not exist<br>
    * EXCPT_UNABLE_TO_COMPLY -  Raised when alarm reporting can not be enabled 
-   *  for the equipment or holder<br>
+   *  for the equipment or holder<br>
+
    * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
    *  lost<br>
    * <br>
@@ -506,8 +508,12 @@ module equipment
    * <br>EquipmentOrHolderList_T equipmentOrHolderList: the directly 
    * contained equipments and equipment holders.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_INVALID_INPUT - Raised when equipmentHolderName does not reference an 
    *  equipment holder object<br>
    * EXCPT_ENTITY_NOT_FOUND - Raised when equipmentHolderName references an 
@@ -531,8 +537,12 @@ module equipment
    * <br>EquipmentOrHolder_T equip: the returned equipment or equipment 
    * holder.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_INVALID_INPUT - Raised when equipmentOrHolderName does not reference 
    *  an equipment nor an equipment holder<br>
    * EXCPT_ENTITY_NOT_FOUND - Raised when equipmentOrHolderName references an 
@@ -560,8 +570,12 @@ module equipment
    * <br>EquipmentOrHolderIterator_I eqIt: the iterator used to retrieve the 
    * remaining EquipmentOrHolder_T s.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_INVALID_INPUT - Raised when managedElementOrEquipmentName does not 
    *  reference a managed element or an equipment holder<br>
    * EXCPT_ENTITY_NOT_FOUND - Raised when managedElementOrEquipmentName 
@@ -585,11 +599,13 @@ module equipment
    * getAllEquipment(), but 
    * returns the object names instead of returning the 
    * entire objects.</p> 
-   * 
+   * 
+
    * <br>globaldefs::NamingAttributes_T meOrHolderName: the name of the ME or 
    * equipment holder for which to retrieve contained equipment and equipment 
    * holder names.
-   * <br>unsigned long how_many: maximum number of names to return in the 
+   * <br>unsigned long how_many: maximum number of names to return in the 
+
    * first batch.
    * <br>globaldefs::NamingAttributesList_T nameList: the first batch of 
    * names.
@@ -631,8 +647,12 @@ module equipment
    * <br>terminationPoint::TerminationPointIterator_I tpIt: the iterator to 
    * retrieve the remaining PTPs/FTPs.
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_INVALID_INPUT - Raised when equipmentName does not reference an 
    *  equipment object<br>
    * EXCPT_ENTITY_NOT_FOUND - Raised when equipmentName references object that 
@@ -703,14 +723,19 @@ module equipment
    * must be explicit (a generic endpoint specification may not be used in this 
    * case). See <a href=../../../supportingDocumentation/SD1-25_objectNaming.pdf >SD1-25 SD1-25 
    * Object Naming</a> for further detail on FTP naming.
-   *
+   *
+
    * <br>EquipmentOrHolderList_T eqList: The list of equipments (not 
    *  equipment holders) directly implementing the PTP/FTP or matrix flow domain.
-   *
+   *
+
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service<br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_INVALID_INPUT - Raised when ptpOrMfdName does not reference a PTP/FTP 
    *  or matrix flow domain object<br>
    * EXCPT_ENTITY_NOT_FOUND - Raised when ptpOrMfdName references a PTP/FTP object 
@@ -737,10 +762,12 @@ module equipment
    * must be explicit (a generic endpoint specification may not be used in this 
    * case). See <a href=../../../supportingDocumentation/SD1-25_objectNaming.pdf >SD1-25 SD1-25 
    * Object Naming</a> for further detail on FTP naming.
-   *
+   *
+
    * <br>globaldefs::NamingAttributesList_T nameList: The list of equipment 
    *  names (not equipment holder names) directly implementing the PTP/FTP.
-   *
+   *
+
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br> 
    * As for getAllSupportingEquipment().
    * <br>
@@ -760,9 +787,12 @@ module equipment
    * <br>EquipmentOrHolderList_T eqList: the list of equipment (not equipment 
    * holders) that support the given equipment. 
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service<br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_INVALID_INPUT - Raised when equipmentName does not reference an 
    *  equipment object<br>
    * EXCPT_ENTITY_NOT_FOUND - Raised when equipmentName references an equipment 
@@ -781,11 +811,13 @@ module equipment
    * but returns the object names instead of returning the entire objects</p>
    *
    * <br>globaldefs::NamingAttributes_T equipmentName: the name of the 
-   * equipment for which to retrieve the supporting equipments.
+   * equipment for which to retrieve the supporting equipments.
+
    * <br>globaldefs::NamingAttributesList_T nameList: the list of equipment
    * names (not equipment holders) that support the given equipment.. 
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * As for getSupportingEquipment().
+   * As for getSupportingEquipment().
+
    * <br>
    **/
    void getSupportingEquipmentNames(
@@ -803,9 +835,12 @@ module equipment
    * <br>EquipmentOrHolderList_T eqList: the list of equipment (not equipment 
    * holders) supported by the given piece of equipment. 
    * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service<br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
    *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
    * EXCPT_INVALID_INPUT - Raised when equipmentName does not reference an 
    *  equipment object<br>
    * EXCPT_ENTITY_NOT_FOUND - Raised when equipmentName references an equipment 
@@ -836,7 +871,8 @@ module equipment
    void getSupportedEquipmentNames(
          in globaldefs::NamingAttributes_T equipmentName,
          out globaldefs::NamingAttributesList_T nameList)
-        raises(globaldefs::ProcessingFailureException);
+        raises(globaldefs::ProcessingFailureException);
+
 
    };      // END EquipmentMgr_I
 
