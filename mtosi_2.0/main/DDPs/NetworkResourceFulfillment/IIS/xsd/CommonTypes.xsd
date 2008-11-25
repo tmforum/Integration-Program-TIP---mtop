@@ -321,6 +321,18 @@ For a detailed description of the use of this attribute see SNC Types supporting
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
+  <xsd:simpleType name="ModifyType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This attribute specifies the class of SNC modification; i.e. rerouting or add/remove protection.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="ADD_REMOVE_PROTECTION"/>
+      <xsd:enumeration value="REROUTING"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
   <xsd:simpleType name="OwnerType">
     <xsd:annotation>
       <xsd:documentation>
@@ -328,6 +340,19 @@ For a detailed description of the use of this attribute see SNC Types supporting
       </xsd:documentation>
     </xsd:annotation>
     <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="PotentialFutureSetupIndicatorType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Refers to the aEnd and is used to convey the likely future (or current) configuration of the SNC (see SD1-16_layeredParameters.pdf).</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="RSU_POINT_TO_POINT"/>
+      <xsd:enumeration value="RSU_BROADCAST"/>
+      <xsd:enumeration value="RSU_ANY_CONFIG"/>
+    </xsd:restriction>
   </xsd:simpleType>
   <!-- ================= -->
   <xsd:simpleType name="ProtectionEffortType">
@@ -675,7 +700,7 @@ For a detailed description of the use of this attribute, see SNC Types.</p>
     </xsd:restriction>
   </xsd:simpleType>
   <!-- ==================== -->
-  <xsd:simpleType name="TerminationPointRoleInSubnetworkConnectionType">
+  <xsd:simpleType name="TerminationPointRole">
     <xsd:annotation>
       <xsd:documentation>
         <p>Defines the enumeration of all possible end point roles of a TP of an SNC.</p>
@@ -698,6 +723,43 @@ For a detailed description of the use of this attribute, see SNC Types.</p>
       </xsd:enumeration>
     </xsd:restriction>
   </xsd:simpleType>
+  <!-- ==================== -->
+  <xsd:complexType name="EndPointRoleListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The list of EndPointRoles.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="role" type="tns:EndPointRoleType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ==================== -->
+  <xsd:complexType name="EndPointRoleType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This data type indicates the end point role of an end TP.
+See R_TMF518_NRF_I_0026.
+</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="role" type="tns:TerminationPointRole" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This attribute indicates the role of the end TP specified by the tpIndex.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="tpIndex" type="xsd:unsignedInt" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This attribute indicates the index of the end TP within the end list.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
   <!-- ================= -->
   <xsd:simpleType name="VersionType">
     <xsd:annotation>
