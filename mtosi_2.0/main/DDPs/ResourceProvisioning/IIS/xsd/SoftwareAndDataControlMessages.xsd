@@ -24,10 +24,10 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="meName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="meRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The name of the ME for which an existing backup process is to be aborted</p>
+              <p>The name of the ME for which an existing backup process is to be aborted.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -72,24 +72,17 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the backupManagedElement operation</p>
-        <p>This operation will initiate a backup request on the specified ME. This is 
-         an asynchronous operation. The EMS will send the results of the backup 
-         operation for the Managed Element as notifications to the provided NotificationConsumer end-point.</p>
+        <p>This operation will initiate a backup request on the specified ME.
+        The Target OS will send the results of the backup 
+         operation for the Managed Element as notifications to the Notification Service.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="meName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="meRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The name of the ME for which a backup of configuration data is required</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-        <xsd:element name="consumerEpr" type="not:EndPointReferenceType">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>the notification consumer endpoint (callback handler) that the broker will call to send the notification event; backupStatus</p>
+              <p>The name of the ME for which a backup of configuration data is required.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -134,19 +127,19 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getBackupList operation</p>
-        <p>The NMS will invoke this method to determine what configuration data 
-         backups exist in the EMS for a specified list of MEs.</p>
+        <p>The Requesting OS will invoke this operation to determine what configuration data 
+         backups exist in the Target OS for a specified list of MEs.</p>
         <p>This operation will return the list of the ids of all configuration data 
          backups for specified MEs. If the list of MEs in the request is empty, the 
-         ids of all configuration data backups will be returned for all MEs</p>
+         ids of all configuration data backups will be returned for all MEs.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="meNameList" type="nam:NamingAttributeListType" minOccurs="0">
+        <xsd:element name="meRefList" type="nam:NamingAttributeListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The name of the ME for which a backup of configuration data is required</p>
+              <p>The name of the ME for which a backup of configuration data is required.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -157,15 +150,15 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Response message structure of the getBackupList operation</p>
-        <p>Use the getBackupListIterator operation to retrieve all potential other batches of configuration data backup ids</p>
+        <p>Use the getBackupListIterator operation to retrieve all potential other batches of configuration data backup ids.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="backupList" type="tns:BackupIdListType" minOccurs="0">
+        <xsd:element name="backupList" type="tns:BackupIdentifierListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>First batch of configuration data backup ids</p>
+              <p>First batch of configuration data backup ids.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -199,13 +192,13 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getManagedElementBackupStatus operation</p>
-        <p>This operation can be used by the NMS to get the current backup status of 
+        <p>This operation can be used by the Requesting OS to get the current backup status of 
          an individual ME.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="meName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="meRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the ME for which a status of the backup of configuration data is required</p>
@@ -275,7 +268,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="backupList" type="tns:BackupIdListType" minOccurs="0">
+        <xsd:element name="backupList" type="tns:BackupIdentifierListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Next batch of configuration data backup ids</p>
@@ -293,46 +286,46 @@
     </xsd:annotation>
   </xsd:element>
   <!-- ================ -->
-  <xsd:complexType name="BackupIdType">
+  <xsd:complexType name="BackupIdentifierType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>This data structure provides an identifier for a backup on an EMS. The 
+        <p>This data structure provides an identifier for a backup on an Target OS. The 
          ME name and the time when the backup was taken uniquely identifies the 
-         backup. The EMS may decide to ignore the seconds/sub-seconds field in the 
-         Time parameter. The EMS is expected to administer time adjustments and ME 
+         backup. The Target OS may decide to ignore the seconds/sub-seconds field in the 
+         Time parameter. The Target OS is expected to administer time adjustments and ME 
          name changes in such a way as to ensure that no two backups have the same 
-         identifier</p>
+         identifier.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="meName" type="nam:NamingAttributeType" minOccurs="0">
+      <xsd:element name="meRef" type="nam:NamingAttributeType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>The name of the Managed Element from which the backup was taken</p>
+            <p>The name of the Managed Element from which the backup was taken.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
       <xsd:element name="backupTime" type="xsd:dateTime" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>The time at which the backup was taken</p>
+            <p>The time at which the backup was taken.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================ -->
-  <xsd:complexType name="BackupIdListType">
+  <xsd:complexType name="BackupIdentifierListType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>The list of </p>
+        <p>The list of backup IDs.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="backupId" type="tns:BackupIdType" minOccurs="0">
+      <xsd:element name="backupId" type="tns:BackupIdentifierType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>A backup ID</p>
+            <p>A backup ID.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
@@ -344,14 +337,14 @@
       <xsd:documentation>
         <p>This data structure identifies the status of backup operation for a  
          managed element. The failure reason should be present if the operation 
-         status indicates a failure i.e. in Abort state</p>
+         status indicates a failure i.e. in Abort state.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
       <xsd:element name="operationStatus" type="tns:CurrentOperationStatusType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>Indicates the current operational status of the backup</p>
+            <p>Indicates the current operational status of the backup.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
@@ -359,7 +352,7 @@
         <xsd:annotation>
           <xsd:documentation>
             <p>A free form text string provided if the opStatus value is COS_Aborted 
-           to explain the reason for the abort (e.g. "Comms loss with NE")</p>
+           to explain the reason for the abort (e.g. "Comms loss with NE").</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
@@ -371,31 +364,31 @@
       <xsd:documentation>
         <p>This enum identifies the status of a managed element with respect to 
          current database backup operation.</p>
-        <p>Initially when the EMS is started the Operational status will be set to 
-         COS_IDLE</p>
+        <p>Initially when the Target OS is started the Operational status will be set to 
+         COS_IDLE.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:restriction base="xsd:string">
       <xsd:enumeration value="IDLE">
         <xsd:annotation>
           <xsd:documentation>
-            <p>no database backup operation has been performed since EMS 
-         last (re)started (boot)</p>
+            <p>No database backup operation has been performed since Target OS 
+         last (re)started (boot).</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:enumeration>
       <xsd:enumeration value="PENDING">
         <xsd:annotation>
           <xsd:documentation>
-            <p>a backup operation has been requested but has not yet 
-         started</p>
+            <p>A backup operation has been requested but has not yet 
+         started.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:enumeration>
       <xsd:enumeration value="IN_PROGRESS">
         <xsd:annotation>
           <xsd:documentation>
-            <p>a backup operation is being performed</p>
+            <p>A backup operation is being performed.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:enumeration>
@@ -409,7 +402,7 @@
       <xsd:enumeration value="ABORTED">
         <xsd:annotation>
           <xsd:documentation>
-            <p>last backup operation failed</p>
+            <p>Last backup operation failed.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:enumeration>

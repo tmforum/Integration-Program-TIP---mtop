@@ -20,19 +20,15 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the createTrafficConditioningProfile operation</p>
-        <p>This operation is used to create
-           a new Traffic Conditioning Profile on the server. A Traffic Conditioning Profile 
-           create data representing the new Traffic Conditioning Profile is 
-           passed as input. The resulting Traffic Conditioning Profile is 
-           returned as a result.</p>
+        <p>This operation creates a Traffic Conditioning (TC) Profile in the target OS.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="newTcProfileCreateData" type="tns:TrafficConditioningProfileCreateDataType" minOccurs="0">
+        <xsd:element name="createData" type="tns:TrafficConditioningProfileCreateDataType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>information about the TC Profile to be created</p>
+              <p>This parameter provides the attributes describing the Traffic Conditioning Profile to be established.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -47,10 +43,10 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="newTcProfile" type="tcp:TrafficConditioningProfileType" minOccurs="0">
+        <xsd:element name="createdTcProfile" type="tcp:TrafficConditioningProfileType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The resulting TC Profile</p>
+              <p>This parameter returns the newly created Traffic Conditioning Profile object.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -84,18 +80,15 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the deleteTrafficConditioningProfile operation</p>
-        <p>This operation is used to 
-           delete a Traffic Conditioning Profile on the server. This operation is
-           idempotent. If the service is called with the
-           name of a non-existent Traffic Conditioning Profile, it will succeed.</p>
+        <p>This operation deletes a Traffic Conditioning (TC) Profile.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tcProfileName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="tcProfileRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The name of the Traffic Conditioning profile to be deleted</p>
+              <p>The name of the Traffic Conditioning profile to be deleted.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -139,34 +132,30 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the modifyTrafficConditioningProfile operation</p>
-        <p>This operation is used to request from the EMS to modify an 
-         existing Traffic Conditioning Profile as specified by the parameters passed in the method.
-         A Traffic Conditioning Profile 
-         modify data representing the data to be changed is 
-         passed as input. The resulting Traffic Conditioning Profile is 
-         returned as a result.</p>
+        <p>This operation modifies a Traffic Conditioning (TC) Profile.</p>
+        <p>When Traffic Conditioning parameters are modified, this will automatically modify the Traffic Conditioning in all associated TPs.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tcProfileName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="tcProfileRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The name of the Traffic Conditioning profile to be deleted</p>
+              <p>The name of the Traffic Conditioning profile to be modified.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="tcProfileModifyData" type="tns:TrafficConditioningProfileCreateDataType" minOccurs="0">
+        <xsd:element name="modifyData" type="tns:TrafficConditioningProfileModifyDataType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>TC Profile data to be changed</p>
+              <p>TC Profile data to be changed.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
         <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The TPs to be modified</p>
+              <p>The TPs to be modified.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -184,22 +173,21 @@
         <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The modified TPs are returned</p>
+              <p>The modified TPs are returned.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="modifiedTCProfile" type="tcp:TrafficConditioningProfileType" minOccurs="0">
+        <xsd:element name="modifiedTcProfile" type="tcp:TrafficConditioningProfileType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The modified TC Profile</p>
+              <p>The modified TC Profile.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
         <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>In case a "best effort" parameter could not be set   
-               an indication of the fault reason is provided by the EMS</p>
+              <p>This parameter returns the error(s) if any.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -232,7 +220,32 @@
   <xsd:complexType name="TrafficConditioningProfileCreateDataType">
     <xsd:annotation>
       <xsd:documentation>
-        <p/>
+        <p>This data type represents the parameters that may be provided when creating a Traffic Conditioning Profile.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="crcd:CommonResourceCreateDataType">
+        <xsd:sequence>
+          <xsd:element ref="lp:transmissionParametersList" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>A list of traffic conditioning parameters which can be set and/or 
+             retrieved at a specified connectionless layer on a Termination Point (TP) 
+             having this TC Profile associated. Refer to chapter "Traffic Conditioning 
+             Parameters" of the supporting document SD1-16_LayeredParameters.pdf
+             for details of the currently defined connectionless parameters</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:complexType name="TrafficConditioningProfileModifyDataType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This data type represents the parameters that may be provided when modifying a Traffic Conditioning Profile.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>

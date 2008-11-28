@@ -21,7 +21,7 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the provisionEquipment operation</p>
-        <p>This operation allows the NMS to permanently provision an equipment in
+        <p>This operation allows the Requesting OS to permanently provision an equipment in
          an equipment holder in a Managed Element. 
          The successful result of this operation is the creation or update of the 
          equipment object and the creation of all its related objects such as 
@@ -34,6 +34,13 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
+        <xsd:element name="equipmentHolderRef" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Represents the name of equipment holder that will contain the equipment.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
         <xsd:element name="equipmentCreateData" type="tns:EquipmentCreateDataType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
@@ -90,11 +97,11 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the unprovisionEquipment operation</p>
-        <p>This operation allows the NMS to permanently unprovision an equipment
+        <p>This operation allows the Requesting OS to permanently unprovision an equipment
          from the Managed Element. The successful result of this operation is the 
-         potential deletion of the equipment object and the deletion of all its 
+         deletion of the equipment object and the deletion of all its 
          related objects such as Termination Points.</p>
-        <p>The EMS should attempt to set the equipment to 
+        <p>The Target OS should attempt to set the equipment to 
          OUT_OF_SERVICE_BY_MAINTENANCE before it unprovisions it.</p>
       </xsd:documentation>
     </xsd:annotation>
@@ -158,14 +165,15 @@
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="equipmentHolderName" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:element name="isReportingAlarms" type="xsd:boolean" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-                <p>Represents the name of equipment holder that will contain the equipment.</p>
+                <p>This attribute indicates whether alarm reporting for the Equipment is administratively activated or de-activated.
+True = alarm reporting is activated; False = alarm reporting is de-activated.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="asapRef" type="xsd:string" minOccurs="0">
+          <xsd:element name="asapRef" type="nam:NamingAttributeType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>Indicates the assignment of an ASAP to the managed object.</p>

@@ -27,19 +27,15 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the createTransmissionDescriptor operation</p>
-        <p>This operation is used to create
-         a new Transmission Descriptor on the server. A Transmission Descriptor 
-         create data representing the new Transmission Descriptor is 
-         passed as input. The resulting Transmission Descriptor is 
-         returned as a result.</p>
+        <p>The operation creates a new Transmission Descriptor.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="newTmdCreateData" type="tns:TransmissionDescriptorCreateDataType" minOccurs="0">
+        <xsd:element name="createData" type="tns:TransmissionDescriptorCreateDataType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>information about the TMD to be created</p>
+              <p>This parameter provides the attributes describing the Transmission Descriptor to be created.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -54,10 +50,10 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="newTmd" type="tmd:TransmissionDescriptorType" minOccurs="0">
+        <xsd:element name="createdTmd" type="tmd:TransmissionDescriptorType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The resulting TMD</p>
+              <p>The resulting TMD.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -91,18 +87,15 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the deleteTransmissionDescriptor operation</p>
-        <p>This operation is used to 
-         delete a Transmission Descriptor on the server. This operation is
-         idempotent. If the service is called with the
-         name of a non-existent Transmission Descriptor, it will succeed.</p>
+        <p>This operation deletes a Transmission Descriptor (TMD).</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tmdName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="tmdRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The name of the TMD to be deleted</p>
+              <p>The name of the TMD to be deleted.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -146,39 +139,31 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the modifyTransmissionDescriptor operation</p>
-        <p>This operation is used to modify a
-         Transmission Descriptor (TMD) in the EMS.
-         The resulting Transmission Descriptor is 
-         returned as a result.</p>
-        <p> When transmission parameters are modified, this will automatically 
-         modify the corresponding parameters in all associated TPs/MFDs on a best 
-         effort basis. TPs/MFDs whose parameters could not be modified shall be 
-         returned by the EMS. </p>
-        <p> Note: Only the modified parameters will be updated in the TPs/MFDs;
-         i.e., the TMD parameter/value list may be inconsistent with the corresponding 
-         parameter/value list of the associated TPs/MFDs.</p>
+        <p>This operation modifies a Transmission Descriptor (TMD).</p>
+        <p>When transmission parameters are modified, this will automatically modify the corresponding parameters in all associated TPs/MFDs on a best effort basis. TPs/MFDs whose parameters could not be modified shall be returned by the target OS.</p>
+        <p>Note: Only the modified parameters will be updated in the TPs/MFDs; i.e., the TMD parameter/value list may be inconsistent with the corresponding parameter/value list of the associated TPs/MFDs.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tmdName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="tmdRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The name of the TMD to be modified</p>
+              <p>This parameter provides the name of the TransmissionDescriptor to be modified.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="tmdModifyData" type="tns:TransmissionDescriptorModifyDataType" minOccurs="0">
+        <xsd:element name="modifyData" type="tns:TransmissionDescriptorModifyDataType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>information about the TMD to be modified</p>
+              <p>This parameter provides the new values of the attributes/parameters that shall be modified in the Transmission Descriptor.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
         <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The list of TPs with associated parameters to be applied</p>
+              <p>The list of TPs with associated parameters to be applied.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -196,39 +181,35 @@
         <xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The list of TPs with associated applied parameters</p>
+              <p>The list of TPs with associated applied parameters.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
         <xsd:element name="modifiedTmd" type="tmd:TransmissionDescriptorType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>result of the modification</p>
+              <p>Result of the modification.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
         <xsd:element name="failedMeRefList" type="nam:NamingAttributeListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>the names of all
-             TMD associated MEs that could not be reached by the EMS</p>
+              <p>This parameter returns the names of all TMD associated Managed Eelements which could not be reached by the target OS.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="failedRefList" type="nam:NamingAttributeListType" minOccurs="0">
+        <xsd:element name="failedTpMfdRefList" type="nam:NamingAttributeListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>the names of all
-             TPs and MFDs that could not be changed to the new parameter values due to
-             some error reasons</p>
+              <p>This parameter returns the names of all TPs and MFDs that could not be changed to the new attribute/parameter values due to some error reasons.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
         <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>In case a "best effort" parameter could not be set   
-               an indication of the fault reason is provided by the EMS</p>
+              <p>This parameter returns the error(s) if any.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -264,13 +245,13 @@
         <p>Request message structure of the setTransmissionDescriptorAssociation operation</p>
         <p>This operation associates/un-associates a TransmissionDescriptor (TMD) 
          to/from a TP or MFD object.</p>
-        <p>The association of a TMD to an an object
+        <p>The association of a TMD to an object
          by this operation amounts to a forced overwriting of the layered 
          transmission parameters of the object by the layered transmission 
          parameters of the TMD and to a forced overwriting of the additional info 
          parameters of the object by the additional TP info parameters of the TMD.</p>
         <p> When parameters of the TMD are already present as parameters of the 
-         object,the current object parameter values are overwritten by the TMD 
+         object, the current object parameter values are overwritten by the TMD 
          parameter values. When current parameters of the object are not present as 
          parameters of the TMD, the current parameters are left unchanged.</p>
         <p> An associated TMD is 
@@ -282,7 +263,7 @@
         <p> Consistency rules:<ol>
             <li> When a TMD is assigned to an object this assignment is called
          consistent if whenever a TMD transmission parameter is also present as an 
-         object transmission parameter or a TMD additional TP info parameter is also 
+         object transmission parameter or a TMD additional info parameter is also 
          present as an object additional info parameter, the common parameters 
          of the TMD and object have the same values. </li>
             <li> The degree of consistency of a TMD assignment to an object 
@@ -292,28 +273,27 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tmdName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="resourceRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The name of the TransmissionDescriptor to associate to the object. 
-               NULL means that an associated TransmissionDescriptor has to be 
-               un-associated from the object</p>
+              <p>This parameter provides the name of the resource whose TMD assignment has to be modified.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:choice>
+        <xsd:element name="tmdRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The TP, MFD or FDFr object</p>
+              <p>The name of the TransmissionDescriptor to associate to the object. NULL means that an associated TransmissionDescriptor has to be un-associated from the object.</p>
             </xsd:documentation>
           </xsd:annotation>
-          <xsd:element name="tp" type="tp:TerminationPointType" minOccurs="0">
-          </xsd:element>
-          <xsd:element name="mfd" type="mfd:MatrixFlowDomainType" minOccurs="0">
-          </xsd:element>
-          <xsd:element name="fdfr" type="fdfr:FlowDomainFragmentType" minOccurs="0">
-          </xsd:element>
-        </xsd:choice>
+        </xsd:element>
+        <xsd:element name="tmdDirection" type="tns:TransmissionDescriptorDirectionType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This parameter identifies the "direction" of the Transmission Descriptor that has to be assigned/de-assigned.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
@@ -324,19 +304,6 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
-      <xsd:choice>
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>The TP, MFD or FDFr object</p>
-          </xsd:documentation>
-        </xsd:annotation>
-        <xsd:element name="tp" type="tp:TerminationPointType" minOccurs="0">
-          </xsd:element>
-        <xsd:element name="mfd" type="mfd:MatrixFlowDomainType" minOccurs="0">
-          </xsd:element>
-        <xsd:element name="fdfr" type="fdfr:FlowDomainFragmentType" minOccurs="0">
-          </xsd:element>
-      </xsd:choice>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="setTransmissionDescriptorAssociationException">
@@ -361,197 +328,10 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="validateTransmissionDescriptorAssignmentToObjectRequest">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the validateTransmissionDescriptorAssignmentToObject operation</p>
-        <p>This operation validates the TMD state
-         of the specified TP, MFD or FDFr object identified by ObjectName.</p>
-        <p>It first verifies the existence of the assigned TMD
-         and then compares the transmission parameters of the TMD and object,
-         and the "additional TP info" parameters of the TMD with the additional
-         info parameters of the object.</p>
-        <p>If a TMD parameter is not present as an object parameter or is present 
-         but with a different value, this is called a "parameter mismatch", and the 
-         TMD state will take the value "mismatch".  The service returns the current
-         TMD state and all mismatched transmission or "additional TP info"
-         parameters of the TMD (which should mostly be none) as its output.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element name="objectName" type="nam:NamingAttributeType" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>the TP, MFD or FDFr object whose TMD assignment shall be verified</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="validateTransmissionDescriptorAssignmentToObjectResponse">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Response message structure of the validateTransmissionDescriptorAssignmentToObject operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element name="tmdAssignmentState" type="xsd:string" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>the TMD state (s) of the object as determined by the verification procedure</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-        <xsd:element ref="lp:transmissionParametersList" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p> a "delta" list of mismatched TMD transmission parameters, or empty.
-              See SD1-16_LayeredParameters.pdf  for more details</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-        <xsd:element name="additionalTpInfo" type="gen:NameAndValueStringListType" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>a "delta" list of mismatched "additional TP info" parameters, or empty</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="validateTransmissionDescriptorAssignmentToObjectException">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Exception message structure of the validateTransmissionDescriptorAssignmentToObject operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:complexContent>
-        <xsd:restriction base="msg:AllExceptionsType">
-          <xsd:choice>
-            <xsd:element ref="msg:commLoss"/>
-            <xsd:element ref="msg:entityNotFound"/>
-            <xsd:element ref="msg:internalError"/>
-            <xsd:element ref="msg:invalidInput"/>
-            <xsd:element ref="msg:notImplemented"/>
-            <xsd:element ref="msg:unableToComply"/>
-          </xsd:choice>
-        </xsd:restriction>
-      </xsd:complexContent>
-    </xsd:complexType>
-  </xsd:element>
-  <!-- ================ -->
-  <xsd:element name="verifyTransmissionDescriptorAssignmentRequest">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the verifyTransmissionDescriptorAssignment operation</p>
-        <p>This operation verifies the egress and/or ingress TMD state
-         of the specified TP identified by tpName.</p>
-        <p>According to the requested transmission direction it checks
-         whether a TMD is assigned as egress and/or ingress TMD to the TP.
-         If this is true it first verifies the existence of the assigned TMD(s)
-         and then compares the transmission parameters of the TMD and TP,
-         and the additional TP info parameters of the TMD with the additional
-         info parameters of the TP.</p>
-        <p>If a TMD parameter is not present as a TP parameter or is present but
-         with a different value, this is called a "parameter mismatch", and the TMD
-         state will take the value "mismatch".  The service returns the current
-         TMD state and all mismatched transmission or additional TP info
-         parameters of the TMD (which should mostly be none) as its output.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element name="tpName" type="nam:NamingAttributeType" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>the TP whose TMD assignment(s) shall be verified</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-        <xsd:element name="direction" type="com:DirectionalityType" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>the direction for which the TMD assignment(s) of the TP shall be verified
-             D_SOURCE refers to the egress TMD state, D_SINK refers to the ingress
-             TMD state, D_BIDRECTIONAL refers to the egress and ingress TMD states,
-             and D_NA is not allowed</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="verifyTransmissionDescriptorAssignmentResponse">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Response message structure of the verifyTransmissionDescriptorAssignment operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element name="tmdAssignmentState" type="xsd:string" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>the TMD state (s) of the TP
-             as determined by the verification procedure;
-             if both the egress and ingress TMD states are requested and their
-             values are different, the concatenation of the egress TMD state
-             with the ingress TMD state is returned, separated by a semicolon</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-        <xsd:element ref="lp:transmissionParametersList" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p> a "delta" list of mismatched TMD transmission parameters, or empty.
-              See SD1-16_LayeredParameters.pdf  for more details</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-        <xsd:element name="additionalTpInfo" type="gen:NameAndValueStringListType" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>a "delta" list of mismatched "additional TP info" parameters, or empty</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="verifyTransmissionDescriptorAssignmentException">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Exception message structure of the verifyTransmissionDescriptorAssignment operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:complexContent>
-        <xsd:restriction base="msg:AllExceptionsType">
-          <xsd:choice>
-            <xsd:element ref="msg:commLoss"/>
-            <xsd:element ref="msg:entityNotFound"/>
-            <xsd:element ref="msg:internalError"/>
-            <xsd:element ref="msg:invalidInput"/>
-            <xsd:element ref="msg:notImplemented"/>
-            <xsd:element ref="msg:unableToComply"/>
-          </xsd:choice>
-        </xsd:restriction>
-      </xsd:complexContent>
-    </xsd:complexType>
-  </xsd:element>
-  <!-- ================ -->
   <xsd:complexType name="TransmissionDescriptorCreateDataType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>The attributes required for the creation of a transmission descriptor
-           on the EMS are packaged together in a TMDCreateData structure which the NMS
-           will pass to the EMS at TMD creation time. These are the read-create
-           attributes of the TMD</p>
+        <p>This data type represents the parameters that may be provided when creating a Transmission Descriptor.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
@@ -560,11 +340,8 @@
           <xsd:element ref="lp:transmissionParametersList" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-                <p>A list of traffic conditioning parameters which can be set and/or 
-             retrieved at a specified connectionless layer on a Termination Point (TP) 
-             having this TC Profile associated. Refer to chapter "Traffic Conditioning 
-             Parameters" of the supporting document SD1-16_LayeredParameters.pdf
-             for details of the currently defined connectionless parameters</p>
+                <p>This attribute contains the requested layered Transmission Parameters associated with the different layers that are encapsulated within the Transmission Descriptor.
+Refer to the attached supporting document SD1-16_LayeredParameters for details of the currently defined Transmission Parameters.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
@@ -572,26 +349,22 @@
             <xsd:annotation>
               <xsd:documentation>
                 <p>Additional info parameters which can be set 
-                 on a TP or MFD by associating this TMD</p>
+                 on a TP or MFD by associating this TMD.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element name="containingTmdName" type="nam:NamingAttributeType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-                <p>The name of another TMD which is considered to contain this TMD.
-               The semantics of the containment is that the TMD to be created shall
-               inherit the layered transmission parameters and additional TP
-               information from the containing TMD</p>
+                <p>This attribute contains the name of another Transmission Descriptor (TMD) which is considered to contain this TMD.
+The semantics of the containment is that the TMD shall inherit the layered Transmission Parameters and additional Object information from the containing TMD.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element name="externalRepresentationReference" type="xsd:string" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-                <p>A means to store at the EMS a reference to the external representation
-                 of the TMD (e.g., an XML file name).  The contents of this
-                 attribute is opaque at the NML-EML interface and not utilized</p>
+                <p>This attribute provides a means to store at the target OS a reference to the external representation of the Transmission Descriptor (e.g., an XML file name). The content of this attribute is opaque at the interface and is not utilized.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
@@ -603,9 +376,7 @@
   <xsd:complexType name="TransmissionDescriptorModifyDataType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>The attributes required for the modification of a transmission descriptor
-         on the EMS are packaged together in a TMDModifyData structure which the NMS
-         will pass to the EMS</p>
+        <p>This data type represents the parameters that may be provided when modifying a Transmission Descriptor.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
@@ -614,38 +385,30 @@
           <xsd:element ref="lp:transmissionParametersList" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-                <p>A list of traffic conditioning parameters which can be set and/or 
-             retrieved at a specified connectionless layer on a Termination Point (TP) 
-             having this TC Profile associated. Refer to chapter "Traffic Conditioning 
-             Parameters" of the supporting document SD1-16_LayeredParameters.pdf
-             for details of the currently defined connectionless parameters</p>
+                <p>This attribute contains the requested layered Transmission Parameters associated with the different layers that are encapsulated within the Transmission Descriptor.
+Refer to the attached supporting document SD1-16_LayeredParameters for details of the currently defined Transmission Parameters.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element name="additionalObjectInfo" type="gen:NameAndValueStringListType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-                <p>Additional info parameters which can be set 
-                 on a TP or MFD by associating this TMD</p>
+                <p>This attribute contains additional information which can be set on a Termination Point (TP) or on a Matrix Flow Domain (MFD) by associating this Transmission Descriptor (TMD).</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element name="containingTmdName" type="nam:NamingAttributeType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-                <p>The name of another TMD which is considered to contain this TMD.
-               The semantics of the containment is that the TMD to be created shall
-               inherit the layered transmission parameters and additional TP
-               information from the containing TMD</p>
+                <p>This attribute contains the name of another Transmission Descriptor (TMD) which is considered to contain this TMD.
+The semantics of the containment is that the TMD shall inherit the layered Transmission Parameters and additional Object information from the containing TMD.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element name="externalRepresentationReference" type="xsd:string" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-                <p>A means to store at the EMS a reference to the external representation
-                 of the TMD (e.g., an XML file name).  The contents of this
-                 attribute is opaque at the NML-EML interface and not utilized</p>
+                <p>This attribute provides a means to store at the target OS a reference to the external representation of the Transmission Descriptor (e.g., an XML file name). The content of this attribute is opaque at the interface and is not utilized.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
@@ -653,4 +416,12 @@
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
+  <!-- ================ -->
+  <xsd:simpleType name="TransmissionDescriptorDirectionType">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="EGRESS"/>
+      <xsd:enumeration value="INGRESS"/>
+      <xsd:enumeration value="NEUTRAL"/>
+    </xsd:restriction>
+  </xsd:simpleType>
 </xsd:schema>

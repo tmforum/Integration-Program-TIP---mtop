@@ -21,20 +21,18 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the createTopologicalLink operation</p>
-        <p>This operation can be used to create top-level topological links as well 
-         as intra-MLSN topological links.</p>
-        <p>The behaviour of this operation should be the same as if an EMS user 
-         were to attempt to create a topological link (or equivalent operation) at 
-         the EMS user interface.  Therefore, the specific conditions under which the 
-         creation is rejected are left to the EMS implementation.</p>
+        <p>This operation creates a Topological Link; top-level as well as intra-MLSN.
+The behaviour of the operation should be the same as if a target OS user were to attempt to create a Topological Link (or equivalent operation) at the target OS user interface.</p>
+        <p>Therefore, the specific conditions under which the creation is rejected are left to the target OS implementation.</p>
+        <p>Note: It is at the discretion of the target OS to delete Topological Links created by the requesting OS, as the owner of the Topological Link is the target OS, not the requesting OS.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="newTlCreateData" type="tns:TopologicalLinkCreateDataType" minOccurs="0">
+        <xsd:element name="createData" type="tns:TopologicalLinkCreateDataType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Structure describing the topological link to be created</p>
+              <p>Structure describing the topological link to be created.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -49,10 +47,10 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="newTl" type="tl:TopologicalLinkType" minOccurs="0">
+        <xsd:element name="createdTl" type="tl:TopologicalLinkType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>the newly created topological link reflecting the input data</p>
+              <p>The newly created topological link reflecting the input data.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -87,23 +85,17 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the deleteTopologicalLink operation</p>
-        <p>This operation can be used to delete top-level topological links as well 
-         as intra-MLSN topological links.</p>
-        <p>The behaviour of this operation should be the same as if an EMS user 
-         were to attempt to delete a topological link (or equivalent operation) at 
-         the EMS user interface.  Therefore, the specific conditions under which the 
-         deletion is rejected are left to the EMS implementation.</p>
-        <p>It is at the discretion of the EMS to delete topological links created 
-         by the NMS, as the owner of the topological link is the EMS, not 
-         the NMS.</p>
+        <p>This operation deletes a Topological Link; top-level as well as intra-MLSN.</p>
+        <p>The behaviour of this operation should be the same as if a target OS user were to attempt to delete a Topological Link (or equivalent operation) at the target OS user interface.</p>
+        <p>Therefore, the specific conditions under which the deletion is rejected are left to the target OS implementation.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tlName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="tlRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The name of the topological link to be deleted</p>
+              <p>The name of the topological link to be deleted.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -145,53 +137,55 @@
   <xsd:complexType name="TopologicalLinkCreateDataType">
     <xsd:annotation>
       <xsd:documentation>
-        <p/>
+        <p>This data type represents the parameters that may be provided when creating a Topological Link.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
       <xsd:extension base="crcd:CommonResourceCreateDataType">
         <xsd:sequence>
-          <xsd:element name="direction" type="com:ConnectionDirectionType">
+          <xsd:element name="direction" type="com:ConnectionDirectionType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>Direction of the topological link.  A topological link can be 
-         unidirectional even if both its ends are bidirectional TPs</p>
+         unidirectional even if both its ends are bidirectional TPs.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="layerRate" type="lr:LayerRateType">
+          <xsd:element name="layerRate" type="lr:LayerRateType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-                <p>The layer of the topological link</p>
+                <p>The layer of the topological link.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="aEndRefList" type="nam:NamingAttributeListType">
+          <xsd:element name="aEndTpRef" type="nam:NamingAttributeType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-                <p>Name of A end TP. The 
-             termination point name must be explicit (a generic endpoint specification 
-             may not be used in this case). See Framework DDP SD2-7_ObjectNaming  
-             for further detail on FTP naming</p>
+                <p>This attribute contains the requested A end Termination Point of the new Topological Link.
+The Termination Point name must be explicit; i.e., a generic endpoint specification may not be used in this case.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="zEndRefList" type="nam:NamingAttributeListType">
+          <xsd:element name="zEndTpRef" type="nam:NamingAttributeType" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-                <p>Name of Z end TP. The 
-             termination point name must be explicit (a generic endpoint specification 
-             may not be used in this case). See Framework DDP SD2-7_ObjectNaming  
-             for further detail on FTP naming</p>
+                <p>This attribute contains the requested Z end Termination Point of the new Topological Link.
+The Termination Point name must be explicit; i.e., a generic endpoint specification may not be used in this case.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="isReportingAlarm" type="xsd:boolean">
-          </xsd:element>
-          <xsd:element name="asapRef" type="xsd:string" minOccurs="0">
+          <xsd:element name="isReportingAlarms" type="xsd:boolean" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
-                <p>Indicates the assignment of an ASAP to this TL object. Value is of the ASAP name.</p>
+                <p>This attribute indicates whether alarm reporting for the Topological Link is administratively activated or de-activated.
+True = alarm reporting is activated; False = alarm reporting is de-activated.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="asapRef" type="nam:NamingAttributeType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This attribute indicates the required assignment of an Alarm Severity Assignement Profile (ASAP) to the Topological Link.</p>
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
