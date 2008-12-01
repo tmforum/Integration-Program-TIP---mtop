@@ -15,35 +15,41 @@
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Me.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/me/v1"/>
   <!-- ================ -->
-  <xsd:complexType name="MeFilterType">
+  <xsd:complexType name="FilterType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Me Filter</p>
+        <p>Definition of the ME Filter data type.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="location" type="gen:LocationType" minOccurs="0">
+      <xsd:element name="location" type="xsd:string" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The location is the geographical location of the Managed Element.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="manufacturer" type="gen:ManufacturerType" minOccurs="0">
+      <xsd:element name="manufacturer" type="xsd:string" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The manufacturer attribute identifies the managed element manufacturer name.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="productName" type="gen:ProductNameType" minOccurs="0">
+      <xsd:element name="productName" type="xsd:string" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The productName identifies the managed element product/type name.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="resourceState" type="cri:ResourceStateType" minOccurs="0"/>
+      <xsd:element name="resourceState" type="cri:ResourceStateType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>See SD2-17_MTOSI_EnhancedResourceStates supporting document.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================== -->
@@ -51,15 +57,15 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAllManagedElements operation</p>
-        <p>This operation allows an NMS to request a list of all the known ManagedElements in the given MD.</p>
+        <p>This operation returns all the Managed Elements contained by a provided Management Domain or Multi Layer Subnetwork.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="mdName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="mdOrMlsnRef " type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>the name of the Management Domain whose contained MEs are being requested</p>
+              <p>This parameter provides the name of the Management Domain or Multi Layer Subnetwork for which to retrieve the contained Managed Elements.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -107,17 +113,17 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="mdName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="mdRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The name of the Management Domain whose contained MEs are being requested</p>
+              <p>The name of the Management Domain whose contained MEs are being requested.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="filter" type="tns:MeFilterType" minOccurs="0">
+        <xsd:element name="filter" type="tns:FilterType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>A list of any combination of a location, manufacturer, productName and resourceState. The matching is based on "AND", i.e., all the supplied filter conditions must be met</p>
+              <p>A list of any combination of a location, manufacturer, productName and resourceState. The matching is based on "AND", i.e., all the supplied filter conditions must be met.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -156,56 +162,6 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================== -->
-  <xsd:element name="getAllManagedElementsWrtMlsnRequest">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the getAllManagedElementsWrtMlsn operation</p>
-        <p>This allows an NMS to request a list of the ManagedElements that are associated with the specified Subnetwork</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element name="mlsnName" type="nam:NamingAttributeType" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>Name of the MLSN</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
-  <!-- ================== -->
-  <xsd:element name="getAllManagedElementsWrtMlsnResponse" type="tns:MultipleMeObjectsResponseType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Response message structure of the getAllManagedElementsWrtMlsn operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <!-- ================== -->
-  <xsd:element name="getAllManagedElementsWrtMlsnException">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Exception message structure of the getAllManagedElementsWrtMlsn operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:complexContent>
-        <xsd:restriction base="msg:AllExceptionsType">
-          <xsd:choice>
-            <xsd:element ref="msg:commLoss"/>
-            <xsd:element ref="msg:entityNotFound"/>
-            <xsd:element ref="msg:internalError"/>
-            <xsd:element ref="msg:invalidInput"/>
-            <xsd:element ref="msg:tooManyOpenIterators"/>
-            <xsd:element ref="msg:unableToComply"/>
-          </xsd:choice>
-        </xsd:restriction>
-      </xsd:complexContent>
-    </xsd:complexType>
-  </xsd:element>
-  <!-- ================== -->
   <xsd:element name="getAllManagedElementsWrtOsRequest">
     <xsd:annotation>
       <xsd:documentation>
@@ -215,14 +171,14 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="osName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="osRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the subordinate OS whose contained MEs are being requested.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="mdName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="mdRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the Management Domain whose contained MEs are being requested.</p>
@@ -273,7 +229,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="meName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="meRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the Managed Element requested.</p>
