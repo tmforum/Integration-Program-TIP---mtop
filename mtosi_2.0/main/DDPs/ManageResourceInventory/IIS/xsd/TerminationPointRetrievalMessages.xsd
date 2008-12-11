@@ -22,15 +22,17 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAllAssignableConnectionlessPortTerminationPoints operation</p>
-        <p>This operation returns the structures of all "CPTP" TPs that which are potentially able to be assigned to a matrix flow domain Potentially means: The CPTPs are on the same equipment or same rack with backplane connectivity as the NMS specified Mfd. It is irrelevant whether the CPTPs are already assigned to an Mfd or not.</p>
+        <p>This operation retrieves the details of all Connectionless Port Termination Points (CPTPs) which are potentially able to be assigned to the provided Matrix Flow Domain (MFD).</p>
+        <p>
+Potentially means: The CPTPs are on the same Equipment or same Rack with backplane connectivity as the MFD. It is irrelevant whether the CPTPs are already assigned to an MFD or not.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="mfdName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="mfdRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Name of the matrix flow domain whose potential CPTPs shall be returned.</p>
+              <p>This parameter provides name of the Matrix Flow Domain whose potential CPTPs shall be returned.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -48,7 +50,7 @@
         <xsd:element name="cptpList" type="tp:TerminationPointListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Retrieved CPTPs with the name as specified in input.</p>
+              <p>This parameter returns the list of Connectionless Port Termination Point objects (i.e., Physical Termination Points and Floating Termination Points) assignable to the provided Matrix Flow Domain.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -82,15 +84,15 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAllAssignedConnectionlessPortTerminationPoints operation</p>
-        <p>This operation returns the structures of all CPTPs assigned to a matrix flow domain..</p>
+        <p>This operation retrieves the details of all Connectionless Port Termination Points assigned to the provided Matrix Flow Domain.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="mfdName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="mfdRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Name of the matrix flow domain whose assigned CPTPs shall be returned.</p>
+              <p>This parameter provides name of the Matrix Flow Domain whose assigned CPTPs shall be returned.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -108,7 +110,7 @@
         <xsd:element name="cptpList" type="tp:TerminationPointListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Retrieved CPTPs with the name as specified in input.</p>
+              <p>This parameter returns the list of Connectionless Port Termination Point objects (i.e., Physical Termination Points and Floating Termination Points) assigned to the provided Matrix Flow Domain.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -142,23 +144,22 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAllConnectionlessPortTerminationPoints operation</p>
-        <p>This operation returns the structures of all CPTPs, or all flow domain edge CPTPs, or all flow domain internal CPTPs, associated with a flow domain.</p>
+        <p>This operation retrieves the details of all Connectionless Port Termination Points (CPTPs) associated to the provided Flow Domain. It is possible to filter the request to retrieve only fdEdge (UNI and E-NNI sides), only fdInternal or all CPTPs.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="fdName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="fdRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Name of the flow domain whose associated edge CPTPs shall be returned    
-            or name of the matrix flow domain whose assigned CPTPs shall be returned</p>
+              <p>This parameter provides name of the Flow Domain whose associated CPTPs are in scope.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
         <xsd:element name="cptpRole" type="com:ConnectionlessPortTerminationPointRoleType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Which CPTPs to return : flow domain edge, flow domain internal, or all CPTPs.</p>
+              <p>This parameter provides the kind of CPTPs to be returned (only fdEdge, only fdInternal, or all).</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -176,7 +177,7 @@
         <xsd:element name="cptpList" type="tp:TerminationPointListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Retrieved CPTPs with the name as specified in input.</p>
+              <p>This parameter returns the filtered list of Connectionless Port Termination Point objects (i.e., Physical Termination Points and Floating Termination Points) associated to the provided Flow Domain.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -210,7 +211,12 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAllEdgePoints operation</p>
-        <p>This operation allows an NMS to request a list of the edge termination points (PTPs/FTPs) for the specified subnetwork, at one or more of the NMS- specified layers, and that are capable of containing CTPs that can be connected at one or more of the NMS-specified connection layer rates. This operation considers the capability/flexibility of the TPs, not their current states.</p>
+        <p>This operation retrieves a filtered list of all Termination Points (TPs) that are at the edge of the provided Multi Layer Subnetwork (MLSN) which<ul>
+            <li>contain one or more of the provided TP Layer Rates and</li>
+            <li>are capable of containing CTPs that can be connected at one or more of the also provided connection Layer Rates.
+The operation considers the capability/flexibility of the PTPs, not their current states.</li>
+          </ul>
+        </p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
@@ -324,7 +330,7 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAllPhysicalTerminationPoints operation</p>
-        <p>This operation an OS to request all of the PTPs and FTPs on the specified Managed Element, that contain one or more of the OS-specified PTP/FTP layer rates, and that are capable of supporting one or more of the OS-specified connection layer rates. If there are no PTPs/FTPs that match the layer constraints, an empty list is returned. A PTP/FTP will be returned regardless of connectivity to other managed elements and regardless of position in the subnetwork (both edgepoints of the subnetwork and the PTPs/FTPs that are internal to the subnetwork are reported).</p>
+        <p>This operation allows an OS to request all of the PTPs and FTPs on the specified Managed Element, that contain one or more of the OS-specified PTP/FTP layer rates, and that are capable of supporting one or more of the OS-specified connection layer rates. If there are no PTPs/FTPs that match the layer constraints, an empty list is returned. A PTP/FTP will be returned regardless of connectivity to other managed elements and regardless of position in the subnetwork (both edgepoints of the subnetwork and the PTPs/FTPs that are internal to the subnetwork are reported).</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
@@ -362,7 +368,11 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAllPhysicalTerminationPointsWithoutFtps operation</p>
-        <p>This operation .</p>
+        <p>This operation retrieves a filtered list of all Physical Termination Points (PTPs) (no Floating Termination Point (FTP) subclasses) within a provided Managed Element (ME) which<ul>
+            <li>contain one or more of the provided TP Layer Rates and</li>
+            <li>are capable of containing CTPs that can be connected at one or more of the provided connection Layer Rates.</li>
+          </ul>
+This operation considers the capability/flexibility of the PTPs, not their current states.</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
@@ -1138,7 +1148,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
   </xsd:complexType>
   <xsd:complexType name="GetAllGroupTerminationPointsType">
     <xsd:sequence>
-      <xsd:element name="meName" type="nam:NamingAttributeType" minOccurs="0">
+      <xsd:element name="meRef" type="nam:NamingAttributeType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The name of the Managed Element for which to retrieve the GTPs</p>
@@ -1148,7 +1158,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
       <xsd:element name="tpLayerRateList" type="lr:LayerRateListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>List of GTP layer rates for which the GTPs are to be fetched. A GTP must contain at least one of the layer rates specified to be reported. If the list is empty then all GTPs (of all rates) are returned.</p>
+            <p>The GTPs to be returned must contain CTPs that have at least one of the Layer Rates identified by this parameter. If the list is empty then all GTPs supported by the ME are returned.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
@@ -1156,7 +1166,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
   </xsd:complexType>
   <xsd:complexType name="RequestProfile1Type">
     <xsd:sequence>
-      <xsd:element name="subnetName" type="nam:NamingAttributeType" minOccurs="0">
+      <xsd:element name="mlsnRef" type="nam:NamingAttributeType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>Name of the subnetwork</p>
@@ -1167,7 +1177,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
   </xsd:complexType>
   <xsd:complexType name="RequestProfile2Type">
     <xsd:sequence>
-      <xsd:element name="tpName" type="nam:NamingAttributeType" minOccurs="0">
+      <xsd:element name="tpRef" type="nam:NamingAttributeType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>Name of the TP</p>
@@ -1178,7 +1188,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
   </xsd:complexType>
   <xsd:complexType name="RequestProfile3Type">
     <xsd:sequence>
-      <xsd:element name="equipmentName" type="nam:NamingAttributeType" minOccurs="0">
+      <xsd:element name="equipmentRef" type="nam:NamingAttributeType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>Name of the equipment for which to retrieve supported PTPs/FTPs</p>
@@ -1189,7 +1199,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
   </xsd:complexType>
   <xsd:complexType name="RequestProfile4Type">
     <xsd:sequence>
-      <xsd:element name="ctpName" type="nam:NamingAttributeType" minOccurs="0">
+      <xsd:element name="ctpRef" type="nam:NamingAttributeType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>Name of the contained CTP</p>
@@ -1256,7 +1266,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
       <xsd:element name="gtpList" type="gtp:GroupTerminationPointListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>The GTP object</p>
+            <p>This parameter returns the list of GTP objects.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
@@ -1272,7 +1282,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
       <xsd:element name="tpPoolList" type="tpp:TerminationPointPoolListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>The list of TerminationPointPool objects</p>
+            <p>The list of TerminationPointPool objects.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
@@ -1288,7 +1298,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
       <xsd:element name="tpPool" type="tpp:TerminationPointPoolType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>The TerminationPointPool</p>
+            <p>The TerminationPointPool.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
@@ -1305,7 +1315,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
       <xsd:element name="nameList" type="nam:NamingAttributeListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>The list of object names</p>
+            <p>The list of object names.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
