@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2008 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/tmdr/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/tmdr/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:tmd="http://www.tmforum.org/mtop/nrf/xsd/tmd/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/tmdr/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/tmdr/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:tmd="http://www.tmforum.org/mtop/nrf/xsd/tmd/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:lp="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Manage Resource Inventory</p>
@@ -12,6 +12,8 @@
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Tmd.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/tmd/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayeredParameters.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lp/v1"/>
   <!-- ================== -->
   <xsd:element name="getAllTransmissionDescriptorsRequest">
     <xsd:annotation>
@@ -60,7 +62,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="osName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="osRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the OS whose associated TMDs are being requested.</p>
@@ -109,10 +111,10 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="name" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="tmdRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Name of the managed element, equipment, transmission descriptor or flow domain.</p>
+              <p>This parameter provides the name of the Transmission Descriptor to be retrieved.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -149,11 +151,92 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================== -->
+  <xsd:element name="getTransmissionParametersRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getTransmissionParameters operation</p>
+        <p>This operation retrieves the layered Transmission Parameters of a<ul>
+            <li>Termination Point (TP)</li>
+            <li>Matrix Flow Domain (MFD)</li>
+            <li>Flow Domain (FD)</li>
+            <li>Flow Domain Fragment (FDFr) or</li>
+            <li>Transmission Descriptor (TMD)</li>
+          </ul>given the name of the object and providing a filter that is based on the Layer Rates and the groupings (i.e., headings) defined in the attached supporting document SD1-16_LayeredParameters.
+It is also possible to retrieve all layered Transmission Parameters defined in the Resource.
+For a list of the currently defined set of supported Transmission Parameters refer also to the attached supporting document SD1-16_LayeredParameters.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="resourceRef" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This parameter provides the name of the Resource whose Transmission Parameters are to be retrieved.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="layerRateList" type="lay:LayerRateListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This parameter provides the Layer Rates of the Transmission Parameters that have to be returned.
+If no Layer Rate is provided, all Layer Rates supported by the Resource are in scope.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="transmissionParameterGroupFilterList" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This parameter provides the Transmission Parameter Groups that have to be returned by providing a list of headings (1st and 2nd level) that are used to structure the Transmission Parameters defined in supporting document SD1-16_LayeredParameters. If no Group is provided, all Transmission Parameters supported by the Resource are in scope.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getTransmissionParametersResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getTransmissionParameters operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="lp:transmissionParametersList" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This parameter returns the requested Transmission Parameters of the provided Resource.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getTransmissionParametersException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getTransmissionParameters operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================== -->
   <xsd:element name="getTransmissionDescriptorsIteratorRequest" type="msg:GetAllDataIteratorRequestType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getTransmissionDescriptorsIterator operation</p>
-        <p>This operation .</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
@@ -175,14 +258,14 @@
   <xsd:complexType name="SingleTmdObjectResponseType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure for a single ManagedElement object</p>
+        <p>Response message structure for a single TMD object</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
       <xsd:element name="tmd" type="tmd:TransmissionDescriptorType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>The retrieved TMD</p>
+            <p>The retrieved TMD.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
@@ -192,7 +275,7 @@
   <xsd:complexType name="MultipleTmdObjectsResponseType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure for a set of ManagedElement objects</p>
+        <p>Response message structure for a set of TMD objects</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>

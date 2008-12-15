@@ -27,6 +27,11 @@
       <wsdl:output message="tns:getTransmissionDescriptorResponse"/>
       <wsdl:fault name="getTransmissionDescriptorException" message="tns:getTransmissionDescriptorException"/>
     </wsdl:operation>
+    <wsdl:operation name="getTransmissionParameters">
+      <wsdl:input message="tns:getTransmissionParametersRequest"/>
+      <wsdl:output message="tns:getTransmissionParametersResponse"/>
+      <wsdl:fault name="getTransmissionParametersException" message="tns:getTransmissionParametersException"/>
+    </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="TransmissionDescriptorRetrievalSoapJmsBinding" type="tns:TransmissionDescriptorRetrieval_MSG">
     <wsdl:documentation>
@@ -73,6 +78,20 @@
       </wsdl:output>
       <wsdl:fault name="getTransmissionDescriptorException">
         <soap:fault name="getTransmissionDescriptorException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getTransmissionParameters">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getTransmissionParametersRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getTransmissionParametersResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getTransmissionParametersException">
+        <soap:fault name="getTransmissionParametersException" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
   </wsdl:binding>

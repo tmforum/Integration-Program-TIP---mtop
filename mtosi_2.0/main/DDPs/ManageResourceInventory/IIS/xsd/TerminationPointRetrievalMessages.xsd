@@ -449,7 +449,7 @@ This operation considers the capability/flexibility of the PTPs, not their curre
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAllTerminationPointPools operation</p>
-        <p>This operation .</p>
+        <p>This operation retrieves all Termination Point Pools (TP Pools) contained by a provided Multi Layer Subnetwork (MLSN).</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
@@ -522,6 +522,65 @@ When this service is invoked with a TP that is not an edge point, the returned T
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
+  <xsd:element name="getAssociatedGroupTerminationPointRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAssociatedGroupTerminationPoint operation</p>
+        <p>This operation retrieves the details of the Group Termination Point (GTP) containing the provided Connection Termination Point (CTP).</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="ctpRef" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This parameter provides the name of the Connection Termination Point whose containing GTP is to be returned.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAssociatedGroupTerminationPointResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAssociatedGroupTerminationPoint operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="gtp" type="gtp:GroupTerminationPointType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This parameter returns the GTP object containing the provided CTP.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAssociatedGroupTerminationPointException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAssociatedGroupTerminationPoint operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
   <xsd:element name="getAssociatedTerminationPointsWrtTmdRequest">
     <xsd:annotation>
       <xsd:documentation>
@@ -532,10 +591,10 @@ When this service is invoked with a TP that is not an edge point, the returned T
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tmdName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="tmdRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>the name of the TMD</p>
+              <p>The name of the TMD.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -783,15 +842,15 @@ Operation getContainedInUseTPs then returns three CTPs:<ul>
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getGroupTerminationPoint operation</p>
-        <p>This operation returns the GTP structure for the given GTP name SD1-3 Bundled SNC overview.</p>
+        <p>This operation returns the GTP structure for the given GTP name.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="gtpName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="gtpRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Name of the GTP</p>
+              <p>Name of the GTP.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -831,17 +890,15 @@ Operation getContainedInUseTPs then returns three CTPs:<ul>
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getTrafficConditioningProfileAssociatedTps operation</p>
-        <p>This operation allows an NMS to request all of the TPs associated with the  
-              specified TC Profile. If there are no TPs which are 
-              associated with the specified TC Profile, then an empty list is returned.</p>
+        <p>The operation retrieves the details of all Termination Points (TPs) that are associated with the provided Traffic Conditioning Profile (TC Profile).</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tcProfileName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="tcProfileRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>the name of the TC Profile</p>
+              <p>The name of the TC Profile.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -963,15 +1020,15 @@ If a TP name is supplied, the method will return the names of any associated TPP
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getTerminationPointPool operation</p>
-        <p>This operation returns the TPPool structure for the given TPPool name, and the additional attributes numberOfMembers, numberOfIdleMembers, and descriptionOfUse. The attribute containedMembers, i.e. the list of names of contained TPs, can be retrieved by means of the operation getTPGroupingRelationships() with input tpPoolName.</p>
+        <p>This operation retrieves the details of a Termination Point Pool (TP Pool) given its name.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tpPoolName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="tpPoolRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The name of the TP pool or TP for which to retrieve the association.</p>
+              <p>This parameter provides the name of the Termination Point Pool to be retrieved.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -1011,7 +1068,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getTerminationPointsIterator operation</p>
-        <p>This operation is the iterator request to return the next batch of TPs from the OS to which a TP retrieval request was initially sent..</p>
+        <p>This operation is the iterator request to return the next batch of TPs from the OS to which a TP retrieval request was initially sent.</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
@@ -1080,10 +1137,10 @@ If a TP name is supplied, the method will return the names of any associated TPP
   <!-- ================ -->
   <xsd:complexType name="GetAllEdgePointsType">
     <xsd:sequence>
-      <xsd:element name="subnetName" type="nam:NamingAttributeType" minOccurs="0">
+      <xsd:element name="mlsnRef" type="nam:NamingAttributeType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>Name of the subnetwork</p>
+            <p>Name of the subnetwork.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
@@ -1105,10 +1162,10 @@ If a TP name is supplied, the method will return the names of any associated TPP
   </xsd:complexType>
   <xsd:complexType name="GetAllTerminationPointsType">
     <xsd:sequence>
-      <xsd:element name="meName" type="nam:NamingAttributeType" minOccurs="0">
+      <xsd:element name="meRef" type="nam:NamingAttributeType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>The name of the Managed Element</p>
+            <p>The name of the Managed Element.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
@@ -1130,10 +1187,10 @@ If a TP name is supplied, the method will return the names of any associated TPP
   </xsd:complexType>
   <xsd:complexType name="GetAllConnectionTerminationPointsType">
     <xsd:sequence>
-      <xsd:element name="tpName" type="nam:NamingAttributeType" minOccurs="0">
+      <xsd:element name="tpRef" type="nam:NamingAttributeType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>The name  of the PTP, FTP or CTP for which to get CTPs. The termination point name must be explicit (a generic endpoint specification may not be used in this case). See Object Naming for further detail on FTP naming</p>
+            <p>The name of the PTP, FTP or CTP for which to get CTPs. The termination point name must be explicit (a generic endpoint specification may not be used in this case). See Object Naming for further detail on FTP naming.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
@@ -1151,7 +1208,7 @@ If a TP name is supplied, the method will return the names of any associated TPP
       <xsd:element name="meRef" type="nam:NamingAttributeType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>The name of the Managed Element for which to retrieve the GTPs</p>
+            <p>The name of the Managed Element for which to retrieve the GTPs.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
