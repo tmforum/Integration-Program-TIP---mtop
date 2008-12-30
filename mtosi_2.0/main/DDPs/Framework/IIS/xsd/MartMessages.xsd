@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2008 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/mart/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/mart/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/mart/v1" 
+xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" 
+xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"
+targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/mart/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Framework</p>
@@ -10,6 +13,7 @@
   </xsd:annotation>
   <!-- ================ -->
   <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" schemaLocation="MessageDefinitions.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="GeneralDefinitions.xsd"/>  
   <!--  ============== -->
   <xsd:element name="doProcessRequest">
     <xsd:annotation>
@@ -26,6 +30,7 @@
         <xsd:element name="order" type="tns:OrderType" minOccurs="0"/>
         <xsd:element name="templateList" type="tns:TemplateListType" minOccurs="0"/>
         <xsd:element name="operationSet" type="tns:OperationSetType" maxOccurs="unbounded"/>
+		<xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0"/>        
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
@@ -40,6 +45,7 @@
         <xsd:element name="errorReason" type="xsd:string" nillable="true" minOccurs="0"/>
         <xsd:element name="templateList" type="tns:TemplateListType" minOccurs="0"/>
         <xsd:element name="operationSetResult" type="tns:OperationSetResultType" minOccurs="0" maxOccurs="unbounded"/>
+		<xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0"/>        
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
@@ -243,6 +249,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
+      <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0"/>      
     </xsd:sequence>
   </xsd:complexType>
   <!--  ============== -->
@@ -314,6 +321,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
+      <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0"/>      
     </xsd:sequence>
   </xsd:complexType>
   <!--  ============== -->
