@@ -43,7 +43,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="failedTPSelectList" type="pmtgt:PerformanceMonitoringObjectSelectListType" minOccurs="0">
+        <xsd:element name="failedTpSelectList" type="pmtgt:PerformanceMonitoringObjectSelectListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>List of points for which PM registers were not completely cleared. An empty list indicates that the total request was successful.</p>
@@ -64,6 +64,7 @@
         <xsd:restriction base="msg:AllExceptionsType">
           <xsd:choice>
             <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
             <xsd:element ref="msg:internalError"/>
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
@@ -78,9 +79,9 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the disablePerformanceMonitoringData operation</p>
-        <p>This operation instructs the EMS to turn off PM data collection for a list of measurement points. Within the request for each measurement point, one may specify the granularity (15min, 24h, NA, etc.) and location (nearEnd and/or farEnd and/or bidirectional) for the PM parameters that are to be deactivated.</p>
-        <p>Disabling is done on a best-effort basis. If PM could not be disabled for a subset of cases in the PMTPSelectList a list identifying this subset is returned.</p>
-        <p>PM collection stops immediately, i.e., before the completion of the current 15 minute or 24 hour monitoring period. This may lead to incomplete collection periods. If PM collection was never started for this TP, the operation is considered successful.</p>
+        <p>This operation disables (turns off) the PM data collection for a list of measurement points.</p>
+        <p>PM collection stops immediately, i.e., before the completion of the current monitoring period.
+        This may lead to incomplete collection periods. If PM collection was never started for an object, the operation is considered successful.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -125,6 +126,7 @@
           <xsd:choice>
             <xsd:element ref="msg:capacityExceeded"/>
             <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
             <xsd:element ref="msg:internalError"/>
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
@@ -139,9 +141,8 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the enablePerformanceMonitoringData operation</p>
-        <p>This operation instructs the EMS to enable (turn on) PM data collection for a list of measurement points. Within the request for each measurement point, one may specify the granularity (15min, 24h, NA, etc.) and location (nearEnd and/or farEnd and/or bidirectional) for the PM parameters that are to be activated.</p>
-        <p>Enabling is done on best-effort basis. If PM could not be enabled for a subset of cases in the pmTPSelectList, a list identifying this subset is returned.</p>
-        <p>PM data collection starts immediately, i.e., before the completion of the current 15 minute or 24 hour monitoring period. This may lead to incomplete collection periods. If PM collection was already on for a TP, the operation is considered successful.</p>
+        <p>This operation enables (turns on) the PM data collection for a list of measurement points.</p>
+        <p>PM collection starts immediately, i.e., before the completion of the current monitoring period. This may lead to incomplete collection periods. If PM collection was already on for an object, the operation is considered successful.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -185,6 +186,7 @@
         <xsd:restriction base="msg:AllExceptionsType">
           <xsd:choice>
             <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
             <xsd:element ref="msg:internalError"/>
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>

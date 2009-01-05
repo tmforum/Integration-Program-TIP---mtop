@@ -14,19 +14,19 @@
   <xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/pm/v1" schemaLocation="PmDefinitions.xsd"/>
   <xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/pmmsrt/v1" schemaLocation="PmMeasurement.xsd"/>
   <!-- ================= -->
-  <xsd:element name="pmData" type="tns:PmDataType"/>
+  <xsd:element name="pmData" type="tns:PerformanceMonitoringDataType"/>
   <!-- ================= -->
-  <xsd:complexType name="PmDataType">
+  <xsd:complexType name="PerformanceMonitoringDataType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>This struct is used to pass current PM data for one collection bin from the EMS to the NMS. It is also used to pass historic PM data across the NML-EML interface when the file transfer capability via FTP is not preferred.</p>
+        <p>This data type contains TP related performance measurements and some service related data.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
       <xsd:element name="tpName" type="nam:NamingAttributeType" nillable="true" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>Represents the name of the PM Measure.</p>
+            <p>This attribute contains the name of the object to which the performance measurements belong to.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
@@ -37,7 +37,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="granularity" type="pm:PmGranularityType" nillable="true" minOccurs="0">
+      <xsd:element name="granularity" type="pm:PerformanceMonitoringGranularityType" nillable="true" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>This attribute identifies the granularity of the data.</p>
@@ -51,7 +51,7 @@
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="pmMeasurementList" type="pmmsrt:PmMeasurementListType" nillable="true" minOccurs="0">
+      <xsd:element name="pmMeasurementList" type="pmmsrt:PerformanceMonitoringMeasurementListType" nillable="true" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>This attribute identifies the PM measurement values.</p>
@@ -61,14 +61,14 @@
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================ -->
-  <xsd:complexType name="PmDataListType">
+  <xsd:complexType name="PerformanceMonitoringDataListType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>A list of PmData</p>
+        <p>A list of PerformanceMonitoringData</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="pmData" type="tns:PmDataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="pmData" type="tns:PerformanceMonitoringDataType" minOccurs="0" maxOccurs="unbounded"/>
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================ -->
