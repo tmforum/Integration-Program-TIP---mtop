@@ -21,6 +21,9 @@
         This operation can only be directed to a top-level OS and not to a subordinate OS.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence/>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="getAllManagementDomainsResponse" type="tns:MultipleObjectsResponseType">
     <xsd:annotation>
@@ -41,6 +44,8 @@
           <xsd:choice>
             <xsd:element ref="msg:commLoss"/>
             <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
@@ -50,10 +55,20 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getManagementDomain operation</p>
-        <p>This operation returns the data structure associated with a given Management Domain (MD) identified by the provided mdName.
-        This operation can only be directed to a top-level OS and not to a subordinate OS.</p>
+        <p>This operation returns the data structure associated with a given Management Domain (MD) identified by the provided mdName. This operation can only be directed to a top-level OS and not to a subordinate OS.</p>
       </xsd:documentation>
     </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="mdRef" type="nam:NamingAttributeType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This parameter provides the name of the Management Domain to be retrieved.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
   </xsd:element>
   <xsd:element name="getManagementDomainResponse" type="tns:SingeObjectResponseType">
     <xsd:annotation>
@@ -76,6 +91,8 @@
             <xsd:element ref="msg:entityNotFound"/>
             <xsd:element ref="msg:internalError"/>
             <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
@@ -94,7 +111,7 @@
       <xsd:element name="md" type="md:ManagementDomainType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>The MD object</p>
+            <p>The MD object.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
@@ -111,7 +128,7 @@
       <xsd:element name="mdList" type="md:ManagementDomainListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>The list of MD objects</p>
+            <p>The list of MD objects.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>

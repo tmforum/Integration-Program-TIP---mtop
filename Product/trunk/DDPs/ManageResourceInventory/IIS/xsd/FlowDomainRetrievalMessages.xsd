@@ -31,10 +31,10 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="holderName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="fdOrTmdRef " type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Name of the managed element, equipment, transmission descriptor or flow domain.</p>
+              <p>This parameter provides the name of the Flow Domain or Transmission Descriptor for which to retrieve the associated Matrix Flow Domains.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -52,7 +52,7 @@
         <xsd:element name="mfdList" type="mfd:MatrixFlowDomainListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Retrieved MatrixFlowDomains with the name as specified in input.</p>
+              <p>This parameter returns the list of all Matrix Flow Domain objects associated with the provided Flow Domain or Transmission Descriptor.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -75,6 +75,7 @@
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
             <xsd:element ref="msg:tooManyOpenIterators"/>
+            <xsd:element ref="msg:unableToComply"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
@@ -85,22 +86,22 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAllFlowDomainFragments operation</p>
-        <p>This operation an OS to request a list of flow domain fragments for the specified flow domain at the specified connectivityRates.</p>
+        <p>This operation retrieves the details of all the Flow Domain Fragments (FDFrs) contained in the provide Flow Domain (FD) by using a filter that is based on the Connectivity Rates.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="fdName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="fdRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Name of the flow domain</p>
+              <p>This parameter provides the name of the Flow Domain whose Flow Domain Fragments are in scope.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
         <xsd:element name="connectivityRateList" type="lay:LayerRateListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>List of rates of the flow domain fragments to be reported. If an empty list is specified, then all flow domain fragments of all rates are to be reported</p>
+              <p>List of rates of the flow domain fragments to be reported. If an empty list is specified, then all flow domain fragments of all rates are to be reported.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -118,7 +119,7 @@
         <xsd:element name="fdfrList" type="fdfr:FlowDomainFragmentListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Retrieved FdFrList with the name as specified in input.</p>
+              <p>This parameter returns the list of Flow Domain Fragment objects contained in the Flow Domain selected by the given Connectivity Rates.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -141,6 +142,7 @@
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
             <xsd:element ref="msg:tooManyOpenIterators"/>
+            <xsd:element ref="msg:unableToComply"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
@@ -151,15 +153,15 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAllFlowDomains operation</p>
-        <p>This operation allows an OS to request a list of the flow domains that exist under the given MD..</p>
+        <p>This operation allows an OS to request a list of the flow domains that exist under the given MD.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="mdName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="mdRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The name of the Management Domain whose contained FDs are being requested</p>
+              <p>The name of the Management Domain whose contained FDs are being requested.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -174,10 +176,10 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="fdList" type="fd:FdListType" minOccurs="0">
+        <xsd:element name="fdList" type="fd:FlowDomainListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>List of flowDomains.</p>
+              <p>List of FlowDomains.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -200,6 +202,7 @@
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
             <xsd:element ref="msg:tooManyOpenIterators"/>
+            <xsd:element ref="msg:unableToComply"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
@@ -210,15 +213,15 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAllSupportedMatrixFlowDomains operation</p>
-        <p>This operation allows an OS to request a list of matrix flow domains that are contained by a specified managed element or supported with a specified equipment.</p>
+        <p>This operation retrieves the details of all Matrix Flow Domains (MFDs) that are supported by the provided Managed Element or Equipment.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="holderName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="meOrEquipmentRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Name of the managed element, equipment, transmission descriptor or flow domain.</p>
+              <p>This parameter provides the name of the Managed Element or Equipment for which to retrieve the supported Matrix Flow Domains.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -236,7 +239,7 @@
         <xsd:element name="mfdList" type="mfd:MatrixFlowDomainListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Retrieved MatrixFlowDomains with the name as specified in input.</p>
+              <p>This parameter returns the list of all Matrix Flow Domain objects supported by the provided Managed Element or Equipment.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -259,6 +262,7 @@
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
             <xsd:element ref="msg:tooManyOpenIterators"/>
+            <xsd:element ref="msg:unableToComply"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
@@ -274,7 +278,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="cptpName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="cptpRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Name of the CPTP termination point to which the MatrixFlowDomain is assigned.</p>
@@ -317,6 +321,7 @@
             <xsd:element ref="msg:internalError"/>
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
@@ -332,10 +337,10 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="mfdName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="mfdRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Name of the MatrixFlowDomain</p>
+              <p>Name of the MatrixFlowDomain.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -375,6 +380,7 @@
             <xsd:element ref="msg:internalError"/>
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
@@ -390,10 +396,10 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="fdfrName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="fdfrRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Name of the FdFr to retrieve.</p>
+              <p>Name of the FDFr to retrieve.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -411,7 +417,7 @@
         <xsd:element name="fdfr" type="fdfr:FlowDomainFragmentType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Retrieved FdFr with the name as specified in input.</p>
+              <p>Retrieved FDFr with the name as specified in input.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -433,6 +439,7 @@
             <xsd:element ref="msg:internalError"/>
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
@@ -443,15 +450,15 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getFlowDomainFragmentRoute operation</p>
-        <p>This operation returns the route for the FdFr whose name is specified as a parameter. It is only used for systems where the route is provisioned by the OS (e.g., it is not useful for Ethernet networks using GVRP)..</p>
+        <p>This operation returns the route for the FDFr whose name is specified as a parameter. It is only used for systems where the route is provisioned by the OS (e.g., it is not useful for Ethernet networks using GVRP).</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="fdfrName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="fdfrRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The name of the FdFr.</p>
+              <p>The name of the FDFr.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -469,7 +476,7 @@
         <xsd:element name="route" type="fdfrr:FlowDomainFragmentRouteType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>The route of the FdFr.</p>
+              <p>The route of the FDFr.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -491,6 +498,7 @@
             <xsd:element ref="msg:internalError"/>
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
@@ -506,7 +514,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="userLabel" type="gen:UserLabelType" minOccurs="0">
+        <xsd:element name="userLabel" type="xsd:string" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The user label of the flow domain fragments to retrieve.</p>
@@ -527,7 +535,7 @@
         <xsd:element name="fdfrList" type="fdfr:FlowDomainFragmentListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Retrieved FdFrList with the userLabel as specified in input.</p>
+              <p>Retrieved FdfrList with the userLabel as specified in input.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -546,7 +554,9 @@
           <xsd:choice>
             <xsd:element ref="msg:commLoss"/>
             <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
@@ -557,12 +567,19 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getFlowDomainFragmentsWithTp operation</p>
-        <p>This operation allows the OS to request from the EMS the flow domain fragments that are connected to a specified flow point or CPTP. In case of a flow point as input parameter not more then one flow domain fragment will be returned.</p>
+        <p>This operation retrieves the details of all the Flow Domain Fragments (FDFrs) that connects or passes through
+<ul>
+            <li>client Flow Points of the provided Connectionless Port Termination Point (CPTP) or</li>
+            <li>the provided Flow Point.</li>
+          </ul>
+        </p>
+        <p>In case a Flow Point is provided, not more than one FDFr will be returned.
+</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tpName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="tpRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the flow point or CPTP for which the connected flow domain fragments shall be returned.</p>
@@ -583,7 +600,7 @@
         <xsd:element name="fdfrList" type="fdfr:FlowDomainFragmentListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Retrieved FdFrList with the termination point name as specified in input.</p>
+              <p>This parameter returns the list of Flow Domain Fragment objects that connects or passes through the provided Flow Point or client Flow Points of the provided CPTP.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -606,6 +623,7 @@
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
             <xsd:element ref="msg:tooManyOpenIterators"/>
+            <xsd:element ref="msg:unableToComply"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
@@ -621,10 +639,10 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="fdName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="fdRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Name of the FlowDomain</p>
+              <p>Name of the FlowDomain.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -664,6 +682,7 @@
             <xsd:element ref="msg:internalError"/>
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
@@ -674,15 +693,15 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getFlowDomainsByUserLabel operation</p>
-        <p>This operation allows an NMS to request a list of the flow domains for a specified userLabel.</p>
+        <p>This operation retrieves the details of all Flow Domains which have the provided User Label.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="userLabel" type="gen:UserLabelType" minOccurs="0">
+        <xsd:element name="userLabel" type="xsd:string" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>UserLabel of the FlowDomain</p>
+              <p>UserLabel of the FlowDomain.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -697,10 +716,10 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="fdList" type="fd:FdListType" minOccurs="0">
+        <xsd:element name="fdList" type="fd:FlowDomainListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>List of flowDomains.</p>
+              <p>List of FlowDomains.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -719,7 +738,9 @@
           <xsd:choice>
             <xsd:element ref="msg:commLoss"/>
             <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
@@ -735,7 +756,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="mfdName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="mfdRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Name of the matrix flow domain to retrieve.</p>
@@ -778,6 +799,7 @@
             <xsd:element ref="msg:internalError"/>
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
@@ -834,7 +856,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="fdList" type="fd:FdListType" minOccurs="0">
+        <xsd:element name="fdList" type="fd:FlowDomainListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>List of flowDomains.</p>
