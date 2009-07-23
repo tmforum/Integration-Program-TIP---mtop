@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/me/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/me/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/me/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/me/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: Data Model Network Resource FulFillment</p>
@@ -10,6 +10,7 @@
   </xsd:annotation>
   <!-- ============== -->
   <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1"/>
   <!-- ================= -->
@@ -29,15 +30,15 @@
           </xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
-          <xsd:element name="location" type="gen:LocationType" nillable="true" minOccurs="0">
+          <xsd:element name="location" type="xsd:string" nillable="true" minOccurs="0">
           </xsd:element>
-          <xsd:element name="manufacturer" type="gen:ManufacturerType" nillable="true" minOccurs="0">
+          <xsd:element name="manufacturer" type="xsd:string" nillable="true" minOccurs="0">
           </xsd:element>
           <xsd:element name="manufactureDate" type="gen:ManufactureDateType" nillable="true" minOccurs="0">
           </xsd:element>
-          <xsd:element name="productName" type="gen:ProductNameType" nillable="true" minOccurs="0">
+          <xsd:element name="productName" type="xsd:string" nillable="true" minOccurs="0">
           </xsd:element>
-          <xsd:element name="softwareVersion" type="tns:VersionType" nillable="true" minOccurs="0">
+          <xsd:element name="softwareVersion" type="xsd:string" nillable="true" minOccurs="0">
           </xsd:element>
           <xsd:element name="isInSyncState" type="xsd:boolean" nillable="true" minOccurs="0">
             <xsd:annotation>
@@ -56,7 +57,7 @@
           </xsd:element>
           <xsd:element name="communicationState" type="tns:CommunicationStateType" nillable="true" minOccurs="0">
           </xsd:element>
-          <xsd:element name="asapRef" type="xsd:string" nillable="true" minOccurs="0">
+          <xsd:element name="asapRef" type="nam:NamingAttributeType" nillable="true" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>Indicates the assignment of an ASAP to this ME object. Value is of the ASAP name.</p>
@@ -83,22 +84,11 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>This state reflects a communication state between the EMS and its ManagedElement.</p>
-        @TODO: Should we make this basic definition?
       </xsd:documentation>
     </xsd:annotation>
     <xsd:restriction base="xsd:string">
       <xsd:enumeration value="CS_AVAILABLE"/>
       <xsd:enumeration value="CS_UNAVAILABLE"/>
     </xsd:restriction>
-  </xsd:simpleType>
-  <!-- ================= -->
-  <xsd:simpleType name="VersionType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>The active software version of the ManagedElement</p>
-        @TODO: Should we make this basic definition and consolidate with SoftwareVersionType, InstalledVersionType?
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:restriction base="xsd:string"/>
   </xsd:simpleType>
 </xsd:schema>

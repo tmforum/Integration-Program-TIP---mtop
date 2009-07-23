@@ -40,7 +40,7 @@
           </xsd:element>
           <xsd:element name="direction" type="com:ConnectionDirectionType" nillable="true" minOccurs="0">
           </xsd:element>
-          <xsd:element name="rate" type="lay:LayerRateType" nillable="true" minOccurs="0">
+          <xsd:element name="layerRate" type="lay:LayerRateType" nillable="true" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>The rate of the SubnetworkConnection is obtained by reading this attribute.</p>
@@ -69,7 +69,7 @@
           </xsd:element>
           <xsd:element name="networkRouted" type="com:NetworkRoutedType" nillable="true" minOccurs="0">
           </xsd:element>
-          <xsd:element name="isReportingAlarm" type="xsd:boolean" nillable="true" minOccurs="0">
+          <xsd:element name="isReportingAlarms" type="xsd:boolean" nillable="true" minOccurs="0">
           </xsd:element>
           <xsd:element name="isFixed" type="xsd:boolean" nillable="true" minOccurs="0">
             <xsd:annotation>
@@ -85,7 +85,7 @@
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="correlationId" type="xsd:string" nillable="true" minOccurs="0">
+          <xsd:element name="correlationIdentifier" type="xsd:string" nillable="true" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
                 <p>Used to contain information about relationships that this SNC may have to other managed objects.</p>
@@ -113,7 +113,7 @@
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="aRoles" minOccurs="0" nillable="true">
+          <xsd:element name="aEndPointsRole" minOccurs="0" nillable="true">
             <xsd:annotation>
               <xsd:documentation>
           Defines the element that defines the end point role of all aEnd TPs of an SNC. This is an ordered list indexed with the aEnd TP list of the SNC.
@@ -121,28 +121,9 @@
             </xsd:annotation>
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="role" type="com:TerminationPointRoleInSubnetworkConnectionType" minOccurs="0" maxOccurs="unbounded"/>
+                <xsd:element name="role" type="com:EndPointRoleType" minOccurs="0" maxOccurs="unbounded"/>
               </xsd:sequence>
             </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="aEndTpList" type="xsd:string" nillable="true" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>String representing a sequence of name-value pairs. The backslash (“\”) character is used as separator.</p>
-                <p>Format: \name=OS\value=CompanyName/OSname\name=ME\value=ManagedElementName\name=PTP\value=PTPName\name=CTP\value=CTPName
-E.g.: 
-\name=OS\value=BigCompany/SmallEMS\name=ME\value=YellowManagedElement\name=PTP\value=BluePTP\name=CTP\value=RedCTP</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
-          <xsd:element name="aEndTnaNameOrGroupTnaName" type="xsd:string" nillable="true" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>Represent the TNA or Group-TNA of the Connection. A TNA Name List may have 3 value pairs.
-Format:
-\name=TNAName\value=TNANameValue\name=LogicalPortId\value=LogicalPortIdValue\name= Index\value=IndexValue.</p>
-              </xsd:documentation>
-            </xsd:annotation>
           </xsd:element>
           <xsd:element name="isBundledSnc" type="xsd:boolean" nillable="true" minOccurs="0">
             <xsd:annotation>
@@ -238,14 +219,6 @@ be “not all interior GTPs could be deleted”;  this would be followed by the 
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="srg" type="xsd:string" nillable="true" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>E.g.:/bridge=123,456/duct=12,34 or /block=123/room=56,78,99.</p>
-                <p>Complex string, slash is used as separator.</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
           <xsd:element name="supportedConnectionName" type="xsd:string" nillable="true" minOccurs="0">
             <xsd:annotation>
               <xsd:documentation>
@@ -264,14 +237,7 @@ Format:
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="isUsingHomeRoute" type="xsd:boolean" nillable="true" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>Indicates whether the connection is using the home route or not.</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
-          <xsd:element name="zRoles" minOccurs="0" nillable="true">
+          <xsd:element name="zEndPointsRole" minOccurs="0" nillable="true">
             <xsd:annotation>
               <xsd:documentation>
                 <p>Defines the element that defines the end point role of all zEnd TPs of an SNC. This is an ordered list indexed with the zEnd TP list of the SNC</p>
@@ -279,23 +245,9 @@ Format:
             </xsd:annotation>
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="role" type="com:TerminationPointRoleInSubnetworkConnectionType" minOccurs="0" maxOccurs="unbounded"/>
+                <xsd:element name="role" type="com:EndPointRoleType" minOccurs="0" maxOccurs="unbounded"/>
               </xsd:sequence>
             </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="zEndTpList" type="xsd:string" nillable="true" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>see aEndTpList.</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
-          <xsd:element name="zEndTnaNameOrGroupTnaName" type="xsd:string" nillable="true" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>see aEndTNANameOrGroupTNAName.</p>
-              </xsd:documentation>
-            </xsd:annotation>
           </xsd:element>
         </xsd:sequence>
       </xsd:extension>
