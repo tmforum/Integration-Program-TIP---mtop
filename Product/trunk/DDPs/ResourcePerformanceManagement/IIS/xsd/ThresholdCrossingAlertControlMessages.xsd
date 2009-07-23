@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ResourcePerformanceManagement - Copyright TeleManagement Forum 2008 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/rpm/xsd/tcac/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:tcapar="http://www.tmforum.org/mtop/nra/xsd/tcapar/v1" xmlns:tcapp="http://www.tmforum.org/mtop/nra/xsd/tcapp/v1" xmlns:pmtgt="http://www.tmforum.org/mtop/nra/xsd/pmtgt/v1" xmlns:pm="http://www.tmforum.org/mtop/nra/xsd/pm/v1" xmlns:tcapars="http://www.tmforum.org/mtop/nra/xsd/tcapars/v1" targetNamespace="http://www.tmforum.org/mtop/rpm/xsd/tcac/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/rpm/xsd/tcac/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:tcapar="http://www.tmforum.org/mtop/nra/xsd/tcapar/v1" xmlns:tcapp="http://www.tmforum.org/mtop/nra/xsd/tcapp/v1" xmlns:pmtgt="http://www.tmforum.org/mtop/nra/xsd/pmtgt/v1" xmlns:pm="http://www.tmforum.org/mtop/nra/xsd/pm/v1" xmlns:tcapars="http://www.tmforum.org/mtop/nra/xsd/tcapars/v1" xmlns:crcd="http://www.tmforum.org/mtop/nrb/xsd/crcd/v1" xmlns:crmd="http://www.tmforum.org/mtop/nrb/xsd/crmd/v1" targetNamespace="http://www.tmforum.org/mtop/rpm/xsd/tcac/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
   <xsd:annotation>
     <xsd:documentation>
       <p>DDP: ResourcePerformanceManagement</p>
@@ -18,6 +18,7 @@
   <xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/pmtgt/v1" schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/PmObjectSelect.xsd"/>
   <xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/pm/v1" schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/PmDefinitions.xsd"/>
   <xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/tcapars/v1" schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/TcaParameters.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/crcd/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceCreateDataType.xsd"/>
   <!-- ================ -->
   <xsd:element name="createTcaParameterProfileRequest">
     <xsd:annotation>
@@ -28,52 +29,10 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="meName" type="nam:NamingAttributeType"  minOccurs="0">
+        <xsd:element name="createData" type="tns:TcaParameterProfileCreateDataType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Contains the name of the managed element</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-        <xsd:element name="layer" type="lay:LayerRateType" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>The specified layer for which to gather PM parameters.</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-        <xsd:element name="userLabel" type="xsd:string" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>This contains the NMS defined name of the profile to be created.</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-        <xsd:element name="forceUniqueness" type="xsd:string" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>If set to TRUE the EMS has to check if the provided user label is unique in the network element domain.</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-        <xsd:element name="owner" type="xsd:string" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>A label of the owner of the Profile. This is an optional parameter.</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-        <xsd:element name="vendorExtensions" type="gen:AnyListType" nillable="true" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>Some additional information which may be specified by the OSS</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-        <xsd:element name="listOfTCAParameter" type="tcapar:TcaParameterListType" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>Contains sets of threshold values.</p>
+              <p>Contains the name of the managed element.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -88,10 +47,10 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tcaParameterProfile" type="tcapp:TcaParameterProfileType" minOccurs="0">
+        <xsd:element name="createdTcaParameterProfile" type="tcapp:ThresholdCrossingAlertParameterProfileType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Contains the new profile to be returned to the OSS.</p>
+              <p>This parameter returns the created TCA Parameter Profile.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -113,6 +72,7 @@
             <xsd:element ref="msg:internalError"/>
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
             <xsd:element ref="msg:userlabelInUse"/>
           </xsd:choice>
         </xsd:restriction>
@@ -129,7 +89,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tcaParameterProfileName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="tcaParameterProfileRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Name of the profile to be deleted.</p>
@@ -163,22 +123,23 @@
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
             <xsd:element ref="msg:objectInUse"/>
+            <xsd:element ref="msg:unableToComply"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="disableTcaRequest">
+  <xsd:element name="disableThresholdCrossingAlertRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the disableTca operation</p>
+        <p>Request message structure of the disableThresholdCrossingAlert operation</p>
         <p>This operation will disable TCA generation on a list of TPs and/or MEs at the ME level.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="pmTpSelectList" type="pmtgt:PmObjectSelectListType" minOccurs="0">
+        <xsd:element name="pmTpSelectList" type="pmtgt:PerformanceMonitoringObjectSelectListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>This struct contains the relevant data for the disablePmDataRequest. It must not be empty.</p>
@@ -188,28 +149,28 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="disableTcaResponse">
+  <xsd:element name="disableThresholdCrossingAlertResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the disableTca operation</p>
+        <p>Response message structure of the disableThresholdCrossingAlert operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="failedTPSelectList" type="pmtgt:PmObjectSelectListType" minOccurs="0">
+        <xsd:element name="failedTpSelectList" type="pmtgt:PerformanceMonitoringObjectSelectListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>List of points which were not completely disabled.An empty list indicates that the total request was successful. </p>
+              <p>List of points which were not completely disabled. An empty list indicates that the total request was successful. </p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="disableTcaException">
+  <xsd:element name="disableThresholdCrossingAlertException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the disableTca operation</p>
+        <p>Exception message structure of the disableThresholdCrossingAlert operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -227,47 +188,47 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="enableTcaRequest">
+  <xsd:element name="enableThresholdCrossingAlertRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the enableTca operation</p>
+        <p>Request message structure of the enableThresholdCrossingAlert operation</p>
         <p>This operation will enable TCA generation on a list of TPs and/or MEs at the ME level.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="pmTpSelectList" type="pmtgt:PmObjectSelectListType" minOccurs="0">
+        <xsd:element name="pmTpSelectList" type="pmtgt:PerformanceMonitoringObjectSelectListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>This attribute contains the relevant data for the enableTcaRequest. This must not be empty.</p>
+              <p>This attribute contains the relevant data for the enableThresholdCrossingAlertRequest. This must not be empty.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="enableTcaResponse">
+  <xsd:element name="enableThresholdCrossingAlertResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the enableTca operation</p>
+        <p>Response message structure of the enableThresholdCrossingAlert operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="failedTPSelectList" type="pmtgt:PmObjectSelectListType" minOccurs="0">
+        <xsd:element name="failedTpSelectList" type="pmtgt:PerformanceMonitoringObjectSelectListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>List of points which were not completely enabled.An empty list indicates that the total request was successful. </p>
+              <p>List of points which were not completely enabled. An empty list indicates that the total request was successful. </p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="enableTcaException">
+  <xsd:element name="enableThresholdCrossingAlertException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the enableTca operation</p>
+        <p>Exception message structure of the enableThresholdCrossingAlert operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -294,7 +255,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="meName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="meRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Name of the managed element containing the TCA parameter profiles.</p>
@@ -327,6 +288,7 @@
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
             <xsd:element ref="msg:tooManyOpenIterators"/>
+            <xsd:element ref="msg:unableToComply"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
@@ -337,12 +299,12 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getAllTcaParameterProfiles operation</p>
-        <p>allows an NMS to request all the TCA parameter profiles associated with the specified managed element. In order to allow the NMS to deal with a large number of objects, this operation uses an iterator. See Framework DDP SD2-5_Communication_Styles for information on how iterators are used in this interface.</p>
+        <p>This operation retrieves all TCA Parameter Profiles that are being managed by the specified Managed Element.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tcaParameterProfileName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="tcaParameterProfileRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Name of the managed element containing the TCA parameter profiles.</p>
@@ -375,6 +337,7 @@
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
             <xsd:element ref="msg:tooManyOpenIterators"/>
+            <xsd:element ref="msg:unableToComply"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
@@ -390,7 +353,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tcaParameterProfileName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="tcaParameterProfileRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Name of the Tca parameter profile to be retrieved.</p>
@@ -408,7 +371,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tcaParameterProfile" type="tcapp:TcaParameterProfileType" minOccurs="0">
+        <xsd:element name="tcaParameterProfile" type="tcapp:ThresholdCrossingAlertParameterProfileType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Contains the sets of returned threshold values.</p>
@@ -433,6 +396,7 @@
             <xsd:element ref="msg:internalError"/>
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
@@ -448,21 +412,21 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tpElementName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="tpElementRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Identification of the TerminationPoint for which the values of the TCA parameters are to be retrieved. The termination point name must be explicit (a generic endpoint specification may not be used in this case). See Framework DDP SD2-7_ObjectNaming for further details on TerminationPoint naming.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="layer" type="lay:LayerRateType" minOccurs="0">
+        <xsd:element name="layerRate" type="lay:LayerRateType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>LayerRate for which the values of the TCA parameters are to be retrieved.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="granularity" type="pm:PmGranularityType" minOccurs="0">
+        <xsd:element name="granularity" type="pm:PerformanceMonitoringGranularityType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Granularity for which the TCA parameters are to be retrieved.</p>
@@ -480,7 +444,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tcaParameter" type="tcapars:TcaParametersType" minOccurs="0">
+        <xsd:element name="tcaParameter" type="tcapars:ThresholdCrossingAlertParametersType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Result of the operation.</p>
@@ -504,6 +468,8 @@
             <xsd:element ref="msg:entityNotFound"/>
             <xsd:element ref="msg:internalError"/>
             <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
@@ -514,19 +480,20 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the setTcaParameterProfile operation</p>
-        <p>This operation configures all threshold values of a TCA Parameter Profile and overwrites all the existing threshold values of the profile with the new provided threshold values. All threshold values of all TPs associated to this Profile will be changed according to the new values. Note: This includes also deletion of thresholds if the threshold is no longer contained in the provided list of TCA Parameters. The OSS has to return all TPs that could not be changed to the new threshold values due to some error reasons.</p>
+        <p>This operation configures all threshold values of a TCA Parameter Profile and overwrites all the existing threshold values of the profile with the new provided threshold values. All threshold values of all TPs associated to this Profile will be changed according to the new values.</p>
+        <p>Note: This includes also the deletion of thresholds if the threshold is no longer contained in the provided list of TCA Parameters. The target OS has to return all TPs that could not be changed to the new threshold values due to some error reasons.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tcaParameterProfileName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="tcaParameterProfileRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Name of the profile to be configured.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="listOfTcaParameter" type="tcapar:TcaParameterListType" minOccurs="0">
+        <xsd:element name="tcaParameterList" type="tcapar:ThresholdCrossingAlertParameterListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Contains sets of threshold values to change the profile completely.</p>
@@ -544,7 +511,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="failedTpSelectList" type="pmtgt:PmObjectSelectListType" minOccurs="0">
+        <xsd:element name="failedTpSelectList" type="pmtgt:PerformanceMonitoringObjectSelectListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Set of TerminationPoints that could not be changed to the new threshold values.</p>
@@ -569,6 +536,7 @@
             <xsd:element ref="msg:internalError"/>
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
@@ -589,21 +557,21 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tpName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="tpRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the TerminationPoint to which to assign the pointer to the Tca Parameter Profile.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="addTcaParameterProfile" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="addTcaParameterProfileRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the TcaParameterProfile to be added to this TerminationPoint.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="removeTcaParameterProfile" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="removeTcaParameterProfileRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The name of the TcaParameterProfile to be removed from this TerminationPoint.</p>
@@ -648,19 +616,19 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the setTcaTpParameter operation</p>
-        <p>The purpose of this operation is to modify the values of TCA thresholds on a TP-layerRate measurement point. It can be applied to a PTP, an FTP or CTP. For a threshold, a low and high mark may be specified. The NMS specifies the TP and layerRate, the granularity, and the value(s) of one or more TCA threshold(s) to be modified.The operation mode is best-effort. If no TCA value is set, a default value will be active.</p>
+        <p>The purpose of this operation is to modify the values of TCA thresholds on a TP-layerRate measurement point. It can be applied to a PTP, an FTP or CTP. For a threshold, a low and high mark may be specified. Specified are the TP and layerRate, the granularity, and the value(s) of one or more TCA threshold(s) to be modified.The operation mode is best-effort. If no TCA value is set, a default value will be active.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tpName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="tpRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Identification of the TP for which the values of one or more TCA parameters are set. The termination point name must be explicit (a generic endpoint specification may not be used in this case). See Framework DDP SD2-7_ObjectNaming for further detail on FTP naming.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="tcaParameters" type="tcapars:TcaParametersType" minOccurs="0">
+        <xsd:element name="tcaParameterList" type="tcapars:ThresholdCrossingAlertParametersType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The list of TCA ids and corresponding values to be applied to a specific layer rate are specified by this parameter.</p>
@@ -678,7 +646,7 @@
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="tcaParameters" type="tcapars:TcaParametersType" minOccurs="0">
+        <xsd:element name="tcaParameterList" type="tcapars:ThresholdCrossingAlertParametersType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The settings that are actually applied are returned in this parameter.</p>
@@ -703,6 +671,7 @@
             <xsd:element ref="msg:internalError"/>
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
@@ -785,7 +754,7 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="pmDataList" type="tcapp:TcaParameterProfileType" minOccurs="0">
+      <xsd:element name="pmDataList" type="tcapp:ThresholdCrossingAlertParameterProfileType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>The list of TcaParameterProfile objects</p>
@@ -795,4 +764,38 @@
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================== -->
+  <xsd:complexType name="TcaParameterProfileCreateDataType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This datatype provides the configuration data for the creation of a new TCA Parameter Profile.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="crcd:CommonResourceCreateDataType">
+        <xsd:sequence>
+          <xsd:element name="meRef" type="nam:NamingAttributeType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Contains the name of the managed element.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="layerRate" type="lay:LayerRateType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The specified layer for which to gather PM parameters.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="tcaParameterList" type="tcapar:ThresholdCrossingAlertParameterListType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Contains sets of threshold values.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
 </xsd:schema>

@@ -18,29 +18,29 @@
   <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1"/>
   <xsd:import schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/PmParameter.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/pmpar/v1"/>
   <!-- ================ -->
-  <xsd:element name="getAllCurrentPmDataRequest">
+  <xsd:element name="getAllCurrentPerformanceMonitoringDataRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the getAllCurrentPmData operation</p>
-        <p>This allows an NMS to request a filtered set (scoped by the input parameter pmParameters) of the current PM data for a list of TP measurement points. Within the request for each measurement point, granularity (15min, 24h, NA, etc.) and location (nearEnd and/or farEnd and/or bidirectional) may be specified.</p>
+        <p>Request message structure of the getAllCurrentPerformanceMonitoringData operation</p>
+        <p>This operation allows requesting a filtered set (scoped by the input parameter pmParameters) of the current PM data for a list of TP measurement points. Within the request for each measurement point, granularity (15min, 24h, NA, etc.) and location (nearEnd and/or farEnd and/or bidirectional) may be specified.</p>
         <p>The operation mode is best effort. Current data will generally be marked as incomplete, as the current bin is not completed. If no PM data are available as specified, an empty list is returned.</p>
-        <p>Depending on the MEP used, this operation instructs the Performance Management OSS to either return all current PM data in one or more getAllCurrentPmData responses (using an iterator), or to the store current PM data into a file, and to send that file by FTP (File Transfer Protocol) to the location specified in the appropriate request header attribute.</p>
-        <p>Performance Monitoring Data transfer normally involves huge amounts of data. The capability to send PM data to a controlled destination other than the NMS allows for flexibility in the choice of the PM data file format, the particular file transfer protocol (including the possibility to apply data compression techniques) and the destination machine so as to make optimal use of the available data network capacity. The file transfer protocol to transfer PM data is the FTP protocol.</p>
-        <p>This operation is asynchrounous and is not required to wait until the PM data is extracted or until the FTP transfer is over before it returns. Notifications can be generated to inform the NMS of the progress of the transfer. See Framework DDP SD2-5_Communication_Styles for details.</p>
+        <p>Depending on the MEP used, this operation instructs the Performance Management OSS to either return all current PM data in one or more getAllCurrentPerformanceMonitoringData responses (using an iterator), or to the store current PM data into a file, and to send that file by FTP (File Transfer Protocol) to the location specified in the appropriate request header attribute.</p>
+        <p>Performance Monitoring Data transfer normally involves huge amounts of data. The capability to send PM data to a controlled destination allows for flexibility in the choice of the PM data file format, the particular file transfer protocol (including the possibility to apply data compression techniques) and the destination machine so as to make optimal use of the available data network capacity. The file transfer protocol to transfer PM data is the FTP protocol.</p>
+        <p>This operation is asynchrounous and is not required to wait until the PM data is extracted or until the FTP transfer is over before it returns. Notifications can be generated to inform of the progress of the transfer. See Framework DDP SD2-5_Communication_Styles for details.</p>
         <p>Performance monitoring data on multiple TPs of multiple MEs is transferred in one data file. This PM data file has the following format: SD1-30 PM File Format Definition.</p>
         <p>NOTE: The required FTP location of the PM data file must be specified in the MTOSI Header in the attribute: LocationURI</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="pmObjectSelectList" type="pmtgt:PmObjectSelectListType" minOccurs="0">
+        <xsd:element name="pmObjectSelectList" type="pmtgt:PerformanceMonitoringObjectSelectListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>This attribute contains a list of measurement points for which to get the PM data.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="pmParameters" type="pm:PmParameterNameListType" minOccurs="0">
+        <xsd:element name="pmParameterList" type="pm:PerformanceMonitoringParameterNameListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>This attribute specifies which PM parameters within the scope of the pmTPSelectList shall be returned. An empty list means to return all supported parameters. The returned parameters are best effort, i.e. among the parameters specified only the subset of supported parameters will be returned.</p>
@@ -50,17 +50,17 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getAllCurrentPmDataResponse" type="tns:MultiplePmDataObjectsResponseType">
+  <xsd:element name="getAllCurrentPerformanceMonitoringDataResponse" type="tns:MultiplePerformanceMonitoringDataObjectsResponseType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the getAllCurrentPmData operation. In the case where the request indicated that the data is to be returned via FTP, no list will be present in this reponse.</p>
+        <p>Response message structure of the getAllCurrentPerformanceMonitoringData operation. In the case where the request indicated that the data is to be returned via FTP, no list will be present in this reponse.</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getAllCurrentPmDataException">
+  <xsd:element name="getAllCurrentPerformanceMonitoringDataException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the getAllCurrentPmData operation</p>
+        <p>Exception message structure of the getAllCurrentPerformanceMonitoringData operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -68,10 +68,12 @@
         <xsd:restriction base="msg:AllExceptionsType">
           <xsd:choice>
             <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
             <xsd:element ref="msg:internalError"/>
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
             <xsd:element ref="msg:tooManyOpenIterators"/>
+            <xsd:element ref="msg:unableToComply"/>
             <xsd:element ref="msg:unsupportedCompressionFormat"/>
             <xsd:element ref="msg:unsupportedPackingFormat"/>
           </xsd:choice>
@@ -80,11 +82,11 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getAllPmpNamesRequest">
+  <xsd:element name="getAllPerformanceMonitoringPointNamesRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the getAllPmpNames operation</p>
-        <p>This operation has exactly the same behaviour as getAllPmpsRequest, but instead of returning the entire object structures, this operation returns their names.</p>
+        <p>Request message structure of the getAllPerformanceMonitoringPointNames operation</p>
+        <p>This operation has exactly the same behaviour as getAllPerformanceMonitoringPointsRequest, but instead of returning the entire object structures, this operation returns their names.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -103,17 +105,17 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getAllPmpNamesResponse" type="tns:MultiplePmpObjectNamesResponseType">
+  <xsd:element name="getAllPerformanceMonitoringPointNamesResponse" type="tns:MultiplePerformanceMonitoringPointObjectNamesResponseType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the getAllPmpNames operation</p>
+        <p>Response message structure of the getAllPerformanceMonitoringPointNames operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getAllPmpNamesException">
+  <xsd:element name="getAllPerformanceMonitoringPointNamesException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the getAllPmpNames operation</p>
+        <p>Exception message structure of the getAllPerformanceMonitoringPointNames operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -121,17 +123,19 @@
         <xsd:restriction base="msg:AllExceptionsType">
           <xsd:choice>
             <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
             <xsd:element ref="msg:internalError"/>
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
             <xsd:element ref="msg:tooManyOpenIterators"/>
+            <xsd:element ref="msg:unableToComply"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getAllPmpsRequest">
+  <xsd:element name="getAllPerformanceMonitoringPointsRequest">
     <xsd:annotation>
       <xsd:documentation>
         <p>This operation allows an OSS to retrieve all PMPs contained in a specified TP or ME.</p>
@@ -145,7 +149,7 @@
               <p>The name of the object to which this selection applies. This may be:</p>
               <p>
                 <br>ManagedElement: The selection applies to all termination points contained within the ManagedElement.</br>
-                <br>TerminationPoint: The selection applies only to the named termination point which will be a PTP, an FTP or a CTP. Unlike the case for ManagedElement, the operation will not apply to any "contained" TPs when a PTP, an FTP or CTP is specified.</br>
+                <br>TerminationPoint: The selection applies only to the named TP. Unlike the case for Managed Element, the operation will not apply to any contained TPs.</br>
               </p>
             </xsd:documentation>
           </xsd:annotation>
@@ -153,17 +157,17 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getAllPmpsResponse" type="tns:MultiplePmpObjectsResponseType">
+  <xsd:element name="getAllPerformanceMonitoringPointsResponse" type="tns:MultiplePerformanceMonitoringPointObjectsResponseType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the getAllPmps operation</p>
+        <p>Response message structure of the getAllPerformanceMonitoringPoints operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getAllPmpsException">
+  <xsd:element name="getAllPerformanceMonitoringPointsException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the getAllPmps operation</p>
+        <p>Exception message structure of the getAllPerformanceMonitoringPoints operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -171,46 +175,48 @@
         <xsd:restriction base="msg:AllExceptionsType">
           <xsd:choice>
             <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
             <xsd:element ref="msg:internalError"/>
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
             <xsd:element ref="msg:tooManyOpenIterators"/>
+            <xsd:element ref="msg:unableToComply"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getHistoryPmDataRequest">
+  <xsd:element name="getHistoryPerformanceMonitoringDataRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the getHistoryPmData operation</p>
+        <p>Request message structure of the getHistoryPerformanceMonitoringData operation</p>
         <p>This operation returns the PM history data on a specified list of TPs.</p>
-        <p>Depending on the MEP used, this operation instructs the Performance Management OSS to either return history PM data in one or more getHistoryPmData responses (using an iterator), or to the store history PM data into a file, and to send that file by FTP (File Transfer Protocol) to the location specified in the appropriate request header attribute.</p>
+        <p>Depending on the MEP used, this operation instructs the Performance Management OSS to either return history PM data in one or more getHistoryPerformanceMonitoringData responses (using an iterator), or to the store history PM data into a file, and to send that file by FTP (File Transfer Protocol) to the location specified in the appropriate request header attribute.</p>
         <p>Within the request a list of TP/layerRate measurement points and a time frame are specified. For each measurement point, the granularity (15min, 24h, NA, etc) and location (nearEnd and/or farEnd and/or bidirectional) may be specified. A filtered set (scoped by the input parameter pmParameters) of PM parameters collected for a particular TP/layerRate measurement point for the granularity, location and time window specified is made available.</p>
         <p>Measurement intervals and the given time frame are considered as half open intervals to the right, i.e. startTime &lt;= t &lt; endTime.</p>
         <p>A particular historic measurement interval (of duration 15 min resp. 24 h) is defined to be covered by the specified time frame if there is a non empty intersection between the measurement interval and the given time frame, i.e. endTime[PM record] &gt; startTime[request parameter] AND startTime[PM record] &lt; endTime[request parameter] PM data are returned for all covered measurement intervals.</p>
         <p>For records partly included in the time frame specified, PM data will be returned. In case a history bin has incomplete PM measurement data (for instance because PM data collection was disabled for some time period(s) within the bin's time span), the particular measurement period will be marked as incomplete.</p>
-        <p>If the forceUpload parameter is true, the OSS is to upload the data for all the specified collection periods (provided they do exist in the MEs) and provide the entire PM data requested. If the forceUpload parameter is false, measurement intervals within the specified time frame for which PM data has been collected in the ME but not yet uploaded to the EMS will be included in the PM file with status "Unavailable", however without valid PM data.</p>
-        <p>Performance Monitoring Data transfer normally involves huge amounts of data. The capability to send PM data to a controlled destination other than the NMS allows for flexibility in the choice of the PM data file format, the particular file transfer protocol (including the possibility to apply data compression techniques) and the destination machine so as to make optimal use of the available data network capacity. The file transfer protocol to transfer PM data is the FTP protocol.</p>
-        <p>This operation is asynchrounous and is not required to wait until the PM data is extracted or until the FTP transfer is over before it returns. Notifications can be generated to inform the NMS of the progress of the transfer. See Framework DDP SD2-5_Communication_Styles for details.</p>
+        <p>If the forceUpload parameter is true, the OSS is to upload the data for all the specified collection periods (provided they do exist in the MEs) and provide the entire PM data requested. If the forceUpload parameter is false, measurement intervals within the specified time frame for which PM data has been collected in the ME but not yet uploaded will be included in the PM file with status "Unavailable", however without valid PM data.</p>
+        <p>Performance Monitoring Data transfer normally involves huge amounts of data. The capability to send PM data to a controlled destination allows for flexibility in the choice of the PM data file format, the particular file transfer protocol (including the possibility to apply data compression techniques) and the destination machine so as to make optimal use of the available data network capacity. The file transfer protocol to transfer PM data is the FTP protocol.</p>
+        <p>This operation is asynchrounous and is not required to wait until the PM data is extracted or until the FTP transfer is over before it returns. Notifications can be generated to inform of the progress of the transfer. See Framework DDP SD2-5_Communication_Styles for details.</p>
         <p>Performance monitoring data on multiple TPs of multiple MEs is transferred in one data file. This PM data file has the following format: SD1-30 PM File Format Definition.</p>
         <p>NOTE: The required FTP location of the PM data file must be specified in the MTOSI Header in the attribute: LocationURI</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="pmObjectSelectList" type="pmtgt:PmObjectSelectListType" minOccurs="0">
+        <xsd:element name="pmObjectSelectList" type="pmtgt:PerformanceMonitoringObjectSelectListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>This parameter specifies which history PM data to return. If pmTPSelectList is empty, PM data for all monitored TPs of all MEs managed by the EMS (all layer rates, all granularities) are stored in the file.</p>
+              <p>This parameter identifies the objects which are in scope of the operation. If no objects are provided, PM history data for all monitored TPs of all Managed Elements managed by the target OS (all layer rates, all granularities) are returned in the file.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="pmParameters" type="pm:PmParameterNameListType" minOccurs="0">
+        <xsd:element name="pmParameterList" type="pm:PerformanceMonitoringParameterNameListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>This parameter specifies which PM parameters within the scope of the pmTPSelectList shall be contained in the file. An empty list means to store all supported parameters. The returned parameters are best effort, i.e. among the parameters specified only the subset of supported parameters will be stored.</p>
+              <p>This parameter specifies which PM parameters within the scope of the pmTpSelectList shall be contained in the file. An empty list means to store all supported parameters. The returned parameters are best effort, i.e. among the parameters specified only the subset of supported parameters will be stored.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
@@ -228,7 +234,7 @@
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="forceUpload" type="xsd:boolean" minOccurs="0">
+        <xsd:element name="mustForceUpload" type="xsd:boolean" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Specifies if the Performance Management OSS must upload all available PM data requested from the MEs.</p>
@@ -239,17 +245,17 @@
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getHistoryPmDataResponse" type="tns:MultiplePmDataObjectsResponseType">
+  <xsd:element name="getHistoryPerformanceMonitoringDataResponse" type="tns:MultiplePerformanceMonitoringDataObjectsResponseType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the getHistoryPmData operation. In the case where the request indicated that the data is to be returned via FTP, no list will be present in this reponse.</p>
+        <p>Response message structure of the getHistoryPerformanceMonitoringData operation. In the case where the request indicated that the data is to be returned via FTP, no list will be present in this reponse.</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getHistoryPmDataException">
+  <xsd:element name="getHistoryPerformanceMonitoringDataException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the getHistoryPmData operation</p>
+        <p>Exception message structure of the getHistoryPerformanceMonitoringData operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -275,7 +281,7 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Request message structure of the getHoldingTime operation</p>
-        <p>The EMS is requested to inform the NMS about how many hours PM data records (24h/15min) are held in the EMS. This is the minimum time. If EMS does not store PM data it is the time supported in the NE (minimum time of all managed NEs).</p>
+        <p>This operation returns how many hours PM data records are held in the target OS (worst case time). If the target OS does not store PM data it is the time supported in the NE (minimum time of all managed NEs).</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
@@ -310,29 +316,30 @@
             <xsd:element ref="msg:commLoss"/>
             <xsd:element ref="msg:internalError"/>
             <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getMePmCapabilitiesRequest">
+  <xsd:element name="getMePerformanceMonitoringCapabilitiesRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the getMePmCapabilities operation</p>
-        <p>This operation allows the NMS to request, from the performance management OSS, the set of PM parameters supported by a particular ME at a specific layer.</p>
+        <p>Request message structure of the getMePerformanceMonitoringCapabilities operation</p>
+        <p>This operation allows requesting the set of PM parameters supported by a particular Managed Element at a specific layer.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="meName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="meRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              <p>Contains the name of the managed element</p>
+              <p>Contains the name of the managed element.</p>
             </xsd:documentation>
           </xsd:annotation>
         </xsd:element>
-        <xsd:element name="layer" type="lay:LayerRateType" minOccurs="0">
+        <xsd:element name="layerRate" type="lay:LayerRateType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>The specified layer for which to gather PM parameters.</p>
@@ -342,15 +349,15 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getMePmCapabilitiesResponse">
+  <xsd:element name="getMePerformanceMonitoringCapabilitiesResponse">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the getMePmCapabilities operation</p>
+        <p>Response message structure of the getMePerformanceMonitoringCapabilities operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="pmParameterList" type="pmpar:PmParameterListType" minOccurs="0">
+        <xsd:element name="pmParameterList" type="pmpar:PerformanceMonitoringParameterListType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Contains the set of PM parameters that are supported by the ME referred to.</p>
@@ -360,10 +367,10 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getMePmCapabilitiesException">
+  <xsd:element name="getMePerformanceMonitoringCapabilitiesException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the getMePmCapabilities operation</p>
+        <p>Exception message structure of the getMePerformanceMonitoringCapabilities operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -375,22 +382,23 @@
             <xsd:element ref="msg:internalError"/>
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
     </xsd:complexType>
   </xsd:element>
   <!-- ================ -->
-  <xsd:element name="getProfileAssociatedTpsRequest">
+  <xsd:element name="getProfileAssociatedTerminationPointsRequest">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the getProfileAssociatedTps operation</p>
+        <p>Request message structure of the getProfileAssociatedTerminationPoints operation</p>
         <p>This operation gets the set of TPs that are associated with a TCA parameter profile.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
       <xsd:sequence>
-        <xsd:element name="profileName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:element name="profileRef" type="nam:NamingAttributeType" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
               <p>Contains the name gives the name of the TCA parameter profile.</p>
@@ -400,17 +408,17 @@
       </xsd:sequence>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="getProfileAssociatedTpsResponse" type="tns:MultipleProfileAssociatedTpObjectNamesResponseType">
+  <xsd:element name="getProfileAssociatedTerminationPointsResponse" type="tns:MultipleProfileAssociatedTerminationPointObjectNamesResponseType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the getProfileAssociatedTps operation</p>
+        <p>Response message structure of the getProfileAssociatedTerminationPoints operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getProfileAssociatedTpsException">
+  <xsd:element name="getProfileAssociatedTerminationPointsException">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the getProfileAssociatedTps operation</p>
+        <p>Exception message structure of the getProfileAssociatedTerminationPoints operation</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -423,6 +431,7 @@
             <xsd:element ref="msg:invalidInput"/>
             <xsd:element ref="msg:notImplemented"/>
             <xsd:element ref="msg:tooManyOpenIterators"/>
+            <xsd:element ref="msg:unableToComply"/>
           </xsd:choice>
         </xsd:restriction>
       </xsd:complexContent>
@@ -431,22 +440,22 @@
   <!-- ================= -->
   <!-- Definitions of Iterator messages for Object and Object Name retrievals  -->
   <!-- ================= -->
-  <xsd:element name="getPmDataIteratorRequest" type="msg:GetAllDataIteratorRequestType">
+  <xsd:element name="getPerformanceMonitoringDataIteratorRequest" type="msg:GetAllDataIteratorRequestType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the getPmDataIterator operation</p>
+        <p>Request message structure of the getPerformanceMonitoringDataIterator operation</p>
         <p>This is the iterator request to return the next batch of PM data from the OS to which an PM data retrieval request was initially sent.</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getPmDataIteratorResponse" type="tns:MultiplePmDataObjectsResponseType">
+  <xsd:element name="getPerformanceMonitoringDataIteratorResponse" type="tns:MultiplePerformanceMonitoringDataObjectsResponseType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the getPmDataIteratorRequest operation</p>
+        <p>Response message structure of the getPerformanceMonitoringDataIteratorRequest operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getPmDataIteratorException" type="msg:GetAllDataIteratorExceptionType">
+  <xsd:element name="getPerformanceMonitoringDataIteratorException" type="msg:GetAllDataIteratorExceptionType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getManagedElementsIterator operation</p>
@@ -454,62 +463,62 @@
     </xsd:annotation>
   </xsd:element>
   <!-- ================= -->
-  <xsd:element name="getPmpsIteratorRequest" type="msg:GetAllDataIteratorRequestType">
+  <xsd:element name="getPerformanceMonitoringPointsIteratorRequest" type="msg:GetAllDataIteratorRequestType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the getPmpsIterator operation</p>
+        <p>Request message structure of the getPerformanceMonitoringPointsIterator operation</p>
         <p>This is the iterator request to return the next batch of PMP objects from the OS to which a PMP retrieval request was initially sent.</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getPmpsIteratorResponse" type="tns:MultiplePmpObjectsResponseType">
+  <xsd:element name="getPerformanceMonitoringPointsIteratorResponse" type="tns:MultiplePerformanceMonitoringPointObjectsResponseType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the getPmpsIterator operation</p>
+        <p>Response message structure of the getPerformanceMonitoringPointsIterator operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getPmpsIteratorException" type="msg:GetAllDataIteratorExceptionType">
+  <xsd:element name="getPerformanceMonitoringPointsIteratorException" type="msg:GetAllDataIteratorExceptionType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the getPmpsIterator operation</p>
+        <p>Exception message structure of the getPerformanceMonitoringPointsIterator operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <!-- ================= -->
-  <xsd:element name="getPmpNamesIteratorRequest" type="msg:GetAllDataIteratorRequestType">
+  <xsd:element name="getPerformanceMonitoringPointNamesIteratorRequest" type="msg:GetAllDataIteratorRequestType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Request message structure of the getPmpElementNamesIterator operation</p>
+        <p>Request message structure of the getPerformanceMonitoringPointElementNamesIterator operation</p>
         <p>This is the iterator request to return the next batch of PMP names from the OS to which a PMP names retrieval request was initially sent.</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getPmpNamesIteratorResponse" type="tns:MultiplePmpObjectNamesResponseType">
+  <xsd:element name="getPerformanceMonitoringPointNamesIteratorResponse" type="tns:MultiplePerformanceMonitoringPointObjectNamesResponseType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure of the getPmpNamesIterator operation</p>
+        <p>Response message structure of the getPerformanceMonitoringPointNamesIterator operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
-  <xsd:element name="getPmpNamesIteratorException" type="msg:GetAllDataIteratorExceptionType">
+  <xsd:element name="getPerformanceMonitoringPointNamesIteratorException" type="msg:GetAllDataIteratorExceptionType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Exception message structure of the getPmpNamesIterator operation</p>
+        <p>Exception message structure of the getPerformanceMonitoringPointNamesIterator operation</p>
       </xsd:documentation>
     </xsd:annotation>
   </xsd:element>
   <!-- ================= -->
   <!-- Local Data Type Definitions of various messages  -->
   <!-- ================== -->
-  <xsd:complexType name="MultiplePmDataObjectsResponseType">
+  <xsd:complexType name="MultiplePerformanceMonitoringDataObjectsResponseType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure for a set of PmData objects</p>
+        <p>Response message structure for a set of PerformanceMonitoringData objects</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
-      <xsd:element name="pmDataList" type="pmdata:PmDataListType" minOccurs="0">
+      <xsd:element name="pmDataList" type="pmdata:PerformanceMonitoringDataListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
             <p>List of pmData objects</p>
@@ -519,34 +528,34 @@
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================== -->
-  <xsd:complexType name="MultiplePmpObjectNamesResponseType">
+  <xsd:complexType name="MultiplePerformanceMonitoringPointObjectNamesResponseType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure for a set of Pmp object names</p>
+        <p>Response message structure for a set of PerformanceMonitoringPoint object names</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
       <xsd:element name="nameList" type="nam:NamingAttributeListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>The list of Pmp names</p>
+            <p>The list of PerformanceMonitoringPoint names</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
     </xsd:sequence>
   </xsd:complexType>
   <!-- ================== -->
-  <xsd:complexType name="MultiplePmpObjectsResponseType">
+  <xsd:complexType name="MultiplePerformanceMonitoringPointObjectsResponseType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Response message structure for a set of Pmp objects</p>
+        <p>Response message structure for a set of PerformanceMonitoringPoint objects</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
       <xsd:element name="pmpList" type="pmp:PerformanceMonitoringPointListType" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>The list of Pmp objects</p>
+            <p>The list of PerformanceMonitoringPoint objects</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
@@ -554,7 +563,7 @@
   </xsd:complexType>
   <!-- ================== -->
   <!-- TODO Check should this be imported from TerminationPointRetrieval? -->
-  <xsd:complexType name="MultipleProfileAssociatedTpObjectNamesResponseType">
+  <xsd:complexType name="MultipleProfileAssociatedTerminationPointObjectNamesResponseType">
     <xsd:annotation>
       <xsd:documentation>
         <p>Response to GetProfileAssociatedTPsRequestType.</p>
