@@ -6,7 +6,7 @@
   <uml:Model xmi:id="_Ny2mQA6qEdyd7PUNb-IYCQ" name="NetworkResourceFulfillment">
     <eAnnotations xmi:id="_Ny2mQQ6qEdyd7PUNb-IYCQ" source="uml2.diagrams"/>
     <ownedComment xmi:id="_ziQxAKACEd2SOvAGIMvWfg" annotatedElement="_Ny2mQA6qEdyd7PUNb-IYCQ">
-      <body>Changes done between Release 2.0 and 3.0:&#xD;
+      <body>Changes done between Release 2.0 and 2.1:&#xD;
 - Data Object Classes::Associations::HasSubordinate: Made the subordinateOS side of the relationship navigable.&#xD;
 - Data Object Classes::Associations::SncHasZEndGtps: Made the GroupTerminationPoint (zEndTpList) side of the relationship navigable.&#xD;
 - Associations::RouteChangeNotificationHasRoute: Relationship moved to Notifications::Associations and missing Route object class added.&#xD;
@@ -21,7 +21,15 @@
 - Data Object Classes::OperationsSystem::ituArcStateAndStatusList: multiplicity changed from [*] to [0..1]; default value deleted.&#xD;
 - Data Object Classes::ManagedElement::ituArcStateAndStatusList: multiplicity changed from [*] to [0..1]; default value deleted.&#xD;
 - Data Object Classes::MatrixFlowDomain::ituArcStateAndStatusList: multiplicity changed from [*] to [0..1]; default value deleted.&#xD;
-- Data Object Classes::TerminationPoint::ituArcStateAndStatusList: multiplicity changed from [*] to [0..1]; default value deleted.</body>
+- Data Object Classes::TerminationPoint::ituArcStateAndStatusList: multiplicity changed from [*] to [0..1]; default value deleted.&#xD;
+- Associations::CcHasZEndGtps: relationship added.&#xD;
+- Data Object Classes::SubNetworkConnection::correlationIdentifier: text &quot;Changes in the value of this attribute lead to an AVC notification.&quot; deleted from documentation.&#xD;
+- Data Object Classes::Associations::GtpContainsCtps: made listOfTps public, renamed listOfTps to &quot;containedTpRefList&quot; and made relationship non-abstract.&#xD;
+- Data Object Classes::Associations::GtpIsMemberOfTpPool: made relationship name compliant to upper camel case and made tpPoolRef non-navigable and removed the role name.&#xD;
+- Data Object Classes::TrafficConditioningProfile: inheritance relationship added between TrafficConditioningProfile and CommonResourceInfo.&#xD;
+- Type Definitions::CrossConnect::connectionId::Documentation: current documentation &quot;This attribute represents the identifier of the associated Connection.&quot; replaced by &quot;This attribute represents the control plane identifier. It corresponds to the Connection Name attribute in G.7713. Note that also the Cross Connection points to its superior Connection.&quot; To align it with the IIS description.&#xD;
+- Data Object Classes::FlowDomainFragment::a/zEndTpDataList: TerminationPointData associated as type to aEndTpDataList and zEndTpDataList.&#xD;
+- Data Object Classes::SubNetworkConnection::a/zEndTpDataList: TerminationPointData associated as type to aEndTpDataList and zEndTpDataList.</body>
     </ownedComment>
     <packageImport xmi:id="_Ny2mRA6qEdyd7PUNb-IYCQ">
       <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
@@ -32,6 +40,12 @@
     <packageImport xmi:id="_w2X0APsmEdybz6jVd6YVeQ">
       <importedPackage xmi:type="uml:Model" href="../../NetworkResourceAssurance/IA/NetworkResourceAssurance.emx#_TIGMoA6qEdyd7PUNb-IYCQ?NetworkResourceAssurance?"/>
     </packageImport>
+    <packagedElement xmi:type="uml:Association" xmi:id="_7sWtAAOuEeCwTukfWGgcSg" name="CcHasZEndGtps" memberEnd="_7spn8AOuEeCwTukfWGgcSg _7s8i4AOuEeCwTukfWGgcSg">
+      <ownedEnd xmi:id="_7s8i4AOuEeCwTukfWGgcSg" name="" visibility="private" type="_Q8ncQDqLEdyNgbQAJBaBgA" association="_7sWtAAOuEeCwTukfWGgcSg">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_7s8i4wOuEeCwTukfWGgcSg" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_7s8i4gOuEeCwTukfWGgcSg"/>
+      </ownedEnd>
+    </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_SzKJoB5cEdyjX65vzeWaBA" name="Class Diagrams">
       <eAnnotations xmi:id="_SzKJoR5cEdyjX65vzeWaBA" source="uml2.diagrams">
         <contents xmi:type="notation:Diagram" xmi:id="_EDu0USovEdyCdsNZpl-pzA" type="Class" name="NRF connection-oriented Class Diagram">
@@ -532,7 +546,7 @@
             <children xmi:id="_2jQocDXgEdy6cfT6nDQmxw" type="NameLabel">
               <children xmi:id="_2jQocjXgEdy6cfT6nDQmxw" type="Stereotype"/>
               <children xmi:id="_2jWvEDXgEdy6cfT6nDQmxw" type="Name"/>
-              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_2jQocTXgEdy6cfT6nDQmxw" x="-1963" y="54"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_2jQocTXgEdy6cfT6nDQmxw" x="12" y="-2513"/>
             </children>
             <children xmi:id="_2jWvETXgEdy6cfT6nDQmxw" type="ToMultiplicityLabel" element="_2hcDgDXgEdy6cfT6nDQmxw">
               <children xmi:id="_2jc1sDXgEdy6cfT6nDQmxw" type="ToMultiplicity"/>
@@ -695,7 +709,7 @@
             </children>
             <children xmi:id="_ZwVHRjXuEdyrJ415rv42FA" type="FromRoleLabel" element="_ZvL3wDXuEdyrJ415rv42FA">
               <children xmi:id="_ZwVHSDXuEdyrJ415rv42FA" type="FromRole"/>
-              <layoutConstraint xmi:type="notation:Location" xmi:id="_ZwVHRzXuEdyrJ415rv42FA" x="1140" y="1123"/>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_ZwVHRzXuEdyrJ415rv42FA" x="409" y="923"/>
             </children>
             <children xmi:id="_ZwVHSTXuEdyrJ415rv42FA" type="ToQualifierLabel" element="_ZvYFAjXuEdyrJ415rv42FA">
               <children xmi:id="_ZwVHSzXuEdyrJ415rv42FA" type="QualifierCompartment">
@@ -1826,7 +1840,7 @@
             </children>
             <children xmi:id="_YjffZ6yMEdy5jPtk6dKg_g" type="ToMultiplicityLabel" element="_YjCzcqyMEdy5jPtk6dKg_g">
               <children xmi:id="_YjopUKyMEdy5jPtk6dKg_g" type="ToMultiplicity"/>
-              <layoutConstraint xmi:type="notation:Location" xmi:id="_YjffaKyMEdy5jPtk6dKg_g" x="-2115" y="283"/>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_YjffaKyMEdy5jPtk6dKg_g" x="-1913" y="272"/>
             </children>
             <children xmi:id="_YjopUayMEdy5jPtk6dKg_g" type="ToRoleLabel" element="_YjCzcqyMEdy5jPtk6dKg_g">
               <children xmi:id="_YjopU6yMEdy5jPtk6dKg_g" type="ToRole"/>
@@ -1940,7 +1954,7 @@
               </children>
               <layoutConstraint xmi:type="notation:Location" xmi:id="_W0134ID1Ed6_EMV-kYy7Jw" y="1058"/>
             </children>
-            <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_W013wYD1Ed6_EMV-kYy7Jw" routing="Rectilinear" lineWidth="1" showStereotype="Text"/>
+            <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_W013wYD1Ed6_EMV-kYy7Jw" fontName="Arial" routing="Rectilinear" lineWidth="1" showStereotype="Text"/>
             <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_W013woD1Ed6_EMV-kYy7Jw" points="[-2519, -1322, -5039, 11380]$[-2519, -10956, -5039, 1746]"/>
           </edges>
           <edges xmi:id="_W01344D1Ed6_EMV-kYy7Jw" element="_PLLNoB21Ed2dXe5cOHb-ug" source="_s2Jm0Dn6EdyamdmRIB0MZw" target="_CgAbQDnnEdyamdmRIB0MZw">
@@ -1989,8 +2003,57 @@
               </children>
               <layoutConstraint xmi:type="notation:Location" xmi:id="_W014A4D1Ed6_EMV-kYy7Jw" y="1058"/>
             </children>
-            <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_W0135ID1Ed6_EMV-kYy7Jw" routing="Rectilinear" lineWidth="1" showStereotype="Text"/>
+            <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_W0135ID1Ed6_EMV-kYy7Jw" fontName="Arial" routing="Rectilinear" lineWidth="1" showStereotype="Text"/>
             <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_W0135YD1Ed6_EMV-kYy7Jw" points="[0, 0, 0, 0]$[0, 0, 0, 0]"/>
+          </edges>
+          <edges xmi:id="_7vL-kAOuEeCwTukfWGgcSg" element="_7sWtAAOuEeCwTukfWGgcSg" source="_cAL3YDqLEdyNgbQAJBaBgA" target="_dIxicDUtEdyaRqaRCLKmVQ">
+            <children xmi:id="_7vL-kwOuEeCwTukfWGgcSg" type="NameLabel">
+              <children xmi:id="_7vL-lQOuEeCwTukfWGgcSg" type="Stereotype"/>
+              <children xmi:id="_7vL-lgOuEeCwTukfWGgcSg" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_7vL-lAOuEeCwTukfWGgcSg" x="-86" y="199"/>
+            </children>
+            <children xmi:id="_7vVIgAOuEeCwTukfWGgcSg" type="ToMultiplicityLabel" element="_7s8i4AOuEeCwTukfWGgcSg">
+              <children xmi:id="_7vVIggOuEeCwTukfWGgcSg" type="ToMultiplicity"/>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_7vVIgQOuEeCwTukfWGgcSg" x="155" y="2311"/>
+            </children>
+            <children xmi:id="_7vVIgwOuEeCwTukfWGgcSg" type="ToRoleLabel" element="_7s8i4AOuEeCwTukfWGgcSg">
+              <children xmi:id="_7vVIhQOuEeCwTukfWGgcSg" type="ToRole"/>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_7vVIhAOuEeCwTukfWGgcSg" y="-397"/>
+            </children>
+            <children xmi:id="_7vVIhgOuEeCwTukfWGgcSg" type="FromMultiplicityLabel" element="_7spn8AOuEeCwTukfWGgcSg">
+              <children xmi:id="_7vVIiAOuEeCwTukfWGgcSg" type="FromMultiplicity"/>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_7vVIhwOuEeCwTukfWGgcSg" x="2255" y="411"/>
+            </children>
+            <children xmi:id="_7vVIiQOuEeCwTukfWGgcSg" type="FromRoleLabel" element="_7spn8AOuEeCwTukfWGgcSg">
+              <children xmi:id="_7vVIiwOuEeCwTukfWGgcSg" type="FromRole"/>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_7vVIigOuEeCwTukfWGgcSg" x="2255" y="-1541"/>
+            </children>
+            <children xmi:id="_7vVIjAOuEeCwTukfWGgcSg" type="ToQualifierLabel" element="_7s8i4AOuEeCwTukfWGgcSg">
+              <children xmi:id="_7vVIjgOuEeCwTukfWGgcSg" type="QualifierCompartment">
+                <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_7vVIjwOuEeCwTukfWGgcSg"/>
+              </children>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_7vVIjQOuEeCwTukfWGgcSg" y="-186"/>
+            </children>
+            <children xmi:id="_7vVIkAOuEeCwTukfWGgcSg" type="FromQualifierLabel" element="_7spn8AOuEeCwTukfWGgcSg">
+              <children xmi:id="_7vVIkgOuEeCwTukfWGgcSg" type="QualifierCompartment">
+                <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_7vVIkwOuEeCwTukfWGgcSg"/>
+              </children>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_7vVIkQOuEeCwTukfWGgcSg" y="-186"/>
+            </children>
+            <children xmi:id="_7vVIlAOuEeCwTukfWGgcSg" type="ToConstraintLabel" element="_7s8i4AOuEeCwTukfWGgcSg">
+              <children xmi:id="_7vVIlgOuEeCwTukfWGgcSg" type="ToConstraintCompartment">
+                <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_7vVIlwOuEeCwTukfWGgcSg"/>
+              </children>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_7vVIlQOuEeCwTukfWGgcSg" y="1058"/>
+            </children>
+            <children xmi:id="_7vVImAOuEeCwTukfWGgcSg" type="FromConstraintLabel" element="_7spn8AOuEeCwTukfWGgcSg">
+              <children xmi:id="_7vVImgOuEeCwTukfWGgcSg" type="FromConstraintCompartment">
+                <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_7vVImwOuEeCwTukfWGgcSg"/>
+              </children>
+              <layoutConstraint xmi:type="notation:Location" xmi:id="_7vVImQOuEeCwTukfWGgcSg" x="1726" y="-1343"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_7vL-kQOuEeCwTukfWGgcSg" fontName="Arial" routing="Rectilinear" lineWidth="1" showStereotype="Text"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_7vL-kgOuEeCwTukfWGgcSg" points="[40, 1970, 12494, 1679]$[40, 4559, 12494, 4268]$[-12415, 4559, 39, 4268]$[-12415, 1838, 39, 1547]"/>
           </edges>
         </contents>
         <contents xmi:type="notation:Diagram" xmi:id="_cb9S4E8PEdyfLry44XcUuw" type="Class" name="NRF connection-oriented Inheritance Class Diagram">
@@ -3938,7 +4001,7 @@
               <styles xmi:type="umlnotation:UMLShapeCompartmentStyle" xmi:id="_yDGB-q4bEdyvN402f4-UpA"/>
             </children>
             <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_yC8Q8a4bEdyvN402f4-UpA" fontName="Arial" showListSignature="true" showParent="QualifiedName" showStereotype="Label"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_yC8Q8q4bEdyvN402f4-UpA" x="18165" y="11550"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_yC8Q8q4bEdyvN402f4-UpA" x="19140" y="11616"/>
           </children>
           <children xmi:id="_zbBE4K4gEdyvN402f4-UpA" element="_7hqt0K4eEdyvN402f4-UpA">
             <children xmi:id="_zbBE464gEdyvN402f4-UpA" type="ImageCompartment">
@@ -3960,7 +4023,7 @@
               <styles xmi:type="umlnotation:UMLShapeCompartmentStyle" xmi:id="_zbBE764gEdyvN402f4-UpA"/>
             </children>
             <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_zbBE4a4gEdyvN402f4-UpA" fontName="Arial" showListSignature="true" showParent="QualifiedName" showStereotype="Label"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_zbBE4q4gEdyvN402f4-UpA" x="4021" y="11613"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_zbBE4q4gEdyvN402f4-UpA" x="3432" y="11616"/>
           </children>
           <children xmi:id="_yzDwMK4kEdyvN402f4-UpA" element="_wp98wK4kEdyvN402f4-UpA">
             <children xmi:id="_yzDwM64kEdyvN402f4-UpA" type="ImageCompartment">
@@ -3982,7 +4045,29 @@
               <styles xmi:type="umlnotation:UMLShapeCompartmentStyle" xmi:id="_yzDwP64kEdyvN402f4-UpA"/>
             </children>
             <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_yzDwMa4kEdyvN402f4-UpA" fontName="Arial" showListSignature="true" showParent="QualifiedName" showStereotype="Label"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_yzDwMq4kEdyvN402f4-UpA" x="11479" y="15396"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_yzDwMq4kEdyvN402f4-UpA" x="19140" y="16368"/>
+          </children>
+          <children xmi:id="_1HwoEAQxEeC-l6U8aOqMIw" element="_JJVtwLnuEdy4-6KrVwKgCQ">
+            <children xmi:id="_1H6ZEAQxEeC-l6U8aOqMIw" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_1H6ZEQQxEeC-l6U8aOqMIw" width="1320" height="1320"/>
+            </children>
+            <children xmi:id="_1H6ZEgQxEeC-l6U8aOqMIw" type="Stereotype"/>
+            <children xmi:id="_1H6ZEwQxEeC-l6U8aOqMIw" type="Name"/>
+            <children xmi:id="_1H6ZFAQxEeC-l6U8aOqMIw" type="Parent"/>
+            <children xmi:id="_1H6ZFQQxEeC-l6U8aOqMIw" type="AttributeCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_1H6ZFgQxEeC-l6U8aOqMIw"/>
+            </children>
+            <children xmi:id="_1H6ZFwQxEeC-l6U8aOqMIw" type="OperationCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_1H6ZGAQxEeC-l6U8aOqMIw"/>
+            </children>
+            <children xmi:id="_1H6ZGQQxEeC-l6U8aOqMIw" visible="false" type="SignalCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_1H6ZGgQxEeC-l6U8aOqMIw"/>
+            </children>
+            <children xmi:id="_1H6ZGwQxEeC-l6U8aOqMIw" visible="false" type="StructureCompartment">
+              <styles xmi:type="umlnotation:UMLShapeCompartmentStyle" xmi:id="_1H6ZHAQxEeC-l6U8aOqMIw"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_1HwoEQQxEeC-l6U8aOqMIw" showParent="QualifiedName" showStereotype="Label"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_1HwoEgQxEeC-l6U8aOqMIw" x="3432" y="16368"/>
           </children>
           <styles xmi:type="umlnotation:UMLDiagramStyle" xmi:id="_krBNka4bEdyvN402f4-UpA"/>
           <element xsi:nil="true"/>
@@ -4020,8 +4105,17 @@
               <children xmi:id="_0XVmZ64kEdyvN402f4-UpA" type="Name"/>
               <layoutConstraint xmi:type="notation:Bounds" xmi:id="_0XVmZa4kEdyvN402f4-UpA" y="-186"/>
             </children>
-            <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_0XVmYq4kEdyvN402f4-UpA" fontName="Arial" routing="Rectilinear" showStereotype="Text"/>
-            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_0XVmY64kEdyvN402f4-UpA" points="[3, -32, 12, 275]$[8, -246, 17, 61]"/>
+            <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_0XVmYq4kEdyvN402f4-UpA" fontName="Arial" routing="Tree" showStereotype="Text"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_0XVmY64kEdyvN402f4-UpA" points="[0, -2604, 7436, 8470]$[0, -3441, 7436, 7633]$[-7397, -3441, 39, 7633]$[-7397, -9527, 39, 1547]"/>
+          </edges>
+          <edges xmi:id="_7tipQQQxEeC-l6U8aOqMIw" element="_7tipQAQxEeC-l6U8aOqMIw" source="_1HwoEAQxEeC-l6U8aOqMIw" target="_sCfxcK4bEdyvN402f4-UpA">
+            <children xmi:id="_7tipRAQxEeC-l6U8aOqMIw" type="NameLabel">
+              <children xmi:id="_7tipRgQxEeC-l6U8aOqMIw" type="Stereotype"/>
+              <children xmi:id="_7tipRwQxEeC-l6U8aOqMIw" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_7tipRQQxEeC-l6U8aOqMIw" y="-186"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_7tipQgQxEeC-l6U8aOqMIw" routing="Tree" lineWidth="1" showStereotype="Text"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_7tipQwQxEeC-l6U8aOqMIw" points="[0, -1255, -7875, 8470]$[0, -2092, -7875, 7633]$[7914, -2092, 39, 7633]$[7914, -8178, 39, 1547]"/>
           </edges>
         </contents>
         <contents xmi:type="notation:Diagram" xmi:id="_l_6K8BgpEd2kdP--T2z0Zg" type="Class" name="NRF Equipment Model Class Diagram">
@@ -5759,7 +5853,7 @@
         <ownedComment xmi:id="_bYcUISozEdyCdsNZpl-pzA" annotatedElement="_bYcUICozEdyCdsNZpl-pzA">
           <body>This object class represents the Operations System (OS) itself (an EMS, NMS or SMS).&#xD;
 In the context of the MTOSI product, there are top-level OSs which are attached to the CCV and subordinate OSs which are known to a given top-level OS but not attached to the CCV.&#xD;
-See R_TMF518_NRF_I_0001.</body>
+Traceability: R_TMF518_NRF_I_0001.</body>
         </ownedComment>
         <generalization xmi:id="_BAalkCo1EdyCdsNZpl-pzA">
           <general xmi:type="uml:Class" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_xd-pIA6uEdyd7PUNb-IYCQ?NetworkResourceBasic/Data%20Object%20Classes/CommonResourceInfo?"/>
@@ -5823,7 +5917,7 @@ See R_TMF518_NRF_I_0001.</body>
         </ownedAttribute>
         <ownedAttribute xmi:id="_PQ8DkPsoEdybz6jVd6YVeQ" name="ituArcStateAndStatusList" visibility="public">
           <ownedComment xmi:id="_PQ8DkfsoEdybz6jVd6YVeQ" annotatedElement="_PQ8DkPsoEdybz6jVd6YVeQ">
-            <body>See R_TMF518_NRB_I_0001 and R_TMF518_NRB_I_0004.&#xD;
+            <body>Traceability: R_TMF518_NRB_I_0001 and R_TMF518_NRB_I_0004.&#xD;
 See supporting document SD1-8_encodingX731M3100.</body>
           </ownedComment>
           <ownedComment xmi:id="_PQ8DkvsoEdybz6jVd6YVeQ" annotatedElement="_PQ8DkPsoEdybz6jVd6YVeQ">
@@ -5848,7 +5942,7 @@ See supporting document SD1-8_encodingX731M3100.</body>
       <packagedElement xmi:type="uml:Class" xmi:id="_lSltMCrwEdyxqrDz5j4e5g" name="ManagedElement">
         <ownedComment xmi:id="_lSltMSrwEdyxqrDz5j4e5g" annotatedElement="_lSltMCrwEdyxqrDz5j4e5g">
           <body>This object class represents an abstraction of a set of co-located physical resources managed as a single entity.&#xD;
-See R_TMF518_NRF_I_0004.</body>
+Traceability: R_TMF518_NRF_I_0004.</body>
         </ownedComment>
         <generalization xmi:id="_bI8uQCrxEdyxqrDz5j4e5g">
           <general xmi:type="uml:Class" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_xd-pIA6uEdyd7PUNb-IYCQ?NetworkResourceBasic/Data%20Object%20Classes/CommonResourceInfo?"/>
@@ -5945,7 +6039,7 @@ There is a standardised list of LayerRates (see attached Supporting Document SD1
         </ownedAttribute>
         <ownedAttribute xmi:id="_MA7EUPsoEdybz6jVd6YVeQ" name="ituArcStateAndStatusList" visibility="public">
           <ownedComment xmi:id="_MA7EUfsoEdybz6jVd6YVeQ" annotatedElement="_MA7EUPsoEdybz6jVd6YVeQ">
-            <body>See R_TMF518_NRB_I_0001 and R_TMF518_NRB_I_0004.&#xD;
+            <body>Traceability: R_TMF518_NRB_I_0001 and R_TMF518_NRB_I_0004.&#xD;
 See supporting document SD1-8_encodingX731M3100.</body>
           </ownedComment>
           <ownedComment xmi:id="_MA7EUvsoEdybz6jVd6YVeQ" annotatedElement="_MA7EUPsoEdybz6jVd6YVeQ">
@@ -5961,8 +6055,8 @@ See supporting document SD1-8_encodingX731M3100.</body>
           <body>This object class is the superclass of the CTP (ConnectionTerminationPoint) and PTP (PhysicalTerminationPoint) object classes.&#xD;
 TP encapsulates object characteristics common to both CTPs and PTPs (i.e., common to end points (actual or potential) of Subnetwork Connections, Topological Links and Flow Domain Fragments).&#xD;
 The layer rate of the TP is expressed in terms of the Transmission Parameters list attribute.&#xD;
-See R_TMF518_NRF_I_0005 and R_TMF518_NRF_I_0006.&#xD;
-For Connectionless Port Termination Points (CPTP) in connectionless network see R_TMF518_NRF_I_0016.</body>
+Traceability: R_TMF518_NRF_I_0005 and R_TMF518_NRF_I_0006.&#xD;
+For Connectionless Port Termination Points (CPTP) in connectionless network Traceability: R_TMF518_NRF_I_0016.</body>
         </ownedComment>
         <ownedRule xmi:id="_aFZ-ADqREdyNgbQAJBaBgA" constrainedElement="_B0eJsDqREdyNgbQAJBaBgA">
           <specification xmi:type="uml:OpaqueExpression" xmi:id="_aFZ-ATqREdyNgbQAJBaBgA">
@@ -5994,7 +6088,7 @@ For Connectionless Port Termination Points (CPTP) in connectionless network see 
         <ownedAttribute xmi:id="_v0h8yisCEdyxqrDz5j4e5g" name="isEdgePoint" visibility="public" isReadOnly="true">
           <ownedComment xmi:id="_v0h8yysCEdyxqrDz5j4e5g" annotatedElement="_v0h8yisCEdyxqrDz5j4e5g">
             <body>This attribute indicates if the TP is an edge point of at least one Subnetwork or Flow Domain, i.e. if it is an end point of a potential inter-Subnetwork/inter-FlowDomain Topological Link.&#xD;
-See R_TMF518_NRF_I_0008.</body>
+Traceability: R_TMF518_NRF_I_0008.</body>
           </ownedComment>
           <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
           <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_v0h8zCsCEdyxqrDz5j4e5g">
@@ -6064,7 +6158,7 @@ Refer to attached supporting document SD1-16_LayeredParameters for details of th
         </ownedAttribute>
         <ownedAttribute xmi:id="_SZqIAPsoEdybz6jVd6YVeQ" name="ituArcStateAndStatusList" visibility="public">
           <ownedComment xmi:id="_SZqIAfsoEdybz6jVd6YVeQ" annotatedElement="_SZqIAPsoEdybz6jVd6YVeQ">
-            <body>See R_TMF518_NRB_I_0001 and R_TMF518_NRB_I_0004.&#xD;
+            <body>Traceability: R_TMF518_NRB_I_0001 and R_TMF518_NRB_I_0004.&#xD;
 See supporting document SD1-8_encodingX731M3100.</body>
           </ownedComment>
           <ownedComment xmi:id="_SZqIAvsoEdybz6jVd6YVeQ" annotatedElement="_SZqIAPsoEdybz6jVd6YVeQ">
@@ -6084,7 +6178,7 @@ See supporting document SD1-8_encodingX731M3100.</body>
       <packagedElement xmi:type="uml:Class" xmi:id="_nBlWgDRwEdy6rs29o9v9cA" name="TerminationPointPool" clientDependency="__lnWcKyUEdy5jPtk6dKg_g">
         <ownedComment xmi:id="_nBlWgTRwEdy6rs29o9v9cA" annotatedElement="_nBlWgDRwEdy6rs29o9v9cA">
           <body>This object class represents a set of Termination Points or Group Termination Points that are grouped. Properties that are common for all the TPs/GTPs in the TPPool are identified in the multiple associated commonTransmissionParameters.&#xD;
-See R_TMF518_NRF_I_0014 and R_TMF518_NRF_I_0015.</body>
+Traceability: R_TMF518_NRF_I_0014 and R_TMF518_NRF_I_0015.</body>
         </ownedComment>
         <generalization xmi:id="_23l1kDUjEdyaRqaRCLKmVQ">
           <general xmi:type="uml:Class" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_xd-pIA6uEdyd7PUNb-IYCQ?NetworkResourceBasic/Data%20Object%20Classes/CommonResourceInfo?"/>
@@ -6170,7 +6264,7 @@ The description of use of an ATM VP TPPool would be &quot;VirtualUNI&quot;, if a
         <ownedComment xmi:id="_ZELroTUtEdyaRqaRCLKmVQ" annotatedElement="_ZELroDUtEdyaRqaRCLKmVQ">
           <body>This object class represents simply a list of CTPs in the same Managed Element. GroupTerminationPoints (GTPs) can be cross connected. All CTPs in a GTP are either bidirectional or unidirectional. A GTP can serve as an end point as well as an interior point of an SNC. However, a GTP is not a CTP.&#xD;
 For further information refer to attached supporting document SD1-3_BundledSNC.&#xD;
-See R_TMF518_NRF_I_0012 and R_TMF518_NRF_I_0013.</body>
+Traceability: R_TMF518_NRF_I_0012 and R_TMF518_NRF_I_0013.</body>
         </ownedComment>
         <ownedComment xmi:id="_44oT4BhqEd2kdP--T2z0Zg" annotatedElement="_ZELroDUtEdyaRqaRCLKmVQ">
           <body>..\SD\SD1-3_BundledSNC.pdf</body>
@@ -6181,7 +6275,7 @@ See R_TMF518_NRF_I_0012 and R_TMF518_NRF_I_0013.</body>
         <ownedAttribute xmi:id="_ZELrpzUtEdyaRqaRCLKmVQ" name="connectionState" visibility="public" type="_UNJNUDqVEdyNgbQAJBaBgA" isReadOnly="true">
           <ownedComment xmi:id="_ZELrqDUtEdyaRqaRCLKmVQ" annotatedElement="_ZELrpzUtEdyaRqaRCLKmVQ">
             <body>This attribute indicates the connectionState of the associated CTPs. All CTPs associated to a GTP shall have the same connectionState.&#xD;
-See R_TMF518_NRF_I_0037.</body>
+Traceability: R_TMF518_NRF_I_0037.</body>
           </ownedComment>
           <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_ZELrqTUtEdyaRqaRCLKmVQ" type="_UNJNUDqVEdyNgbQAJBaBgA">
             <body>NA</body>
@@ -6197,7 +6291,7 @@ True = alarm reporting is activated; False = alarm reporting is de-activated.</b
             <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
           </defaultValue>
         </ownedAttribute>
-        <ownedAttribute xmi:id="_ZvL3wDXuEdyrJ415rv42FA" name="listOfTps" visibility="private" type="_YKKw0DXlEdy6cfT6nDQmxw" aggregation="shared" association="_ZvFxIDXuEdyrJ415rv42FA">
+        <ownedAttribute xmi:id="_ZvL3wDXuEdyrJ415rv42FA" name="containedTpRefList" visibility="public" type="_YKKw0DXlEdy6cfT6nDQmxw" aggregation="shared" association="_ZvFxIDXuEdyrJ415rv42FA">
           <ownedComment xmi:id="_yjllgDXuEdyrJ415rv42FA" annotatedElement="_ZvL3wDXuEdyrJ415rv42FA">
             <body>This attribute bears the list of contained (C)TPs. The order of the CTPs is important.</body>
           </ownedComment>
@@ -6206,13 +6300,6 @@ True = alarm reporting is activated; False = alarm reporting is de-activated.</b
           <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_0i5K0DXuEdyrJ415rv42FA" type="_YKKw0DXlEdy6cfT6nDQmxw">
             <body>NA</body>
           </defaultValue>
-        </ownedAttribute>
-        <ownedAttribute xmi:id="_Yi5CcayMEdy5jPtk6dKg_g" name="tpPoolRef" visibility="private" type="_nBlWgDRwEdy6rs29o9v9cA" association="_Yi5CcKyMEdy5jPtk6dKg_g">
-          <ownedComment xmi:id="_wIp2AKyQEdy5jPtk6dKg_g" annotatedElement="_Yi5CcayMEdy5jPtk6dKg_g">
-            <body>This attribute identifies the name of the Termination Point Pool (TP Pool) of which this GTP is a member.</body>
-          </ownedComment>
-          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_YjCzcayMEdy5jPtk6dKg_g" value="1"/>
-          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_YjCzcKyMEdy5jPtk6dKg_g"/>
         </ownedAttribute>
         <ownedAttribute xmi:id="_YlmgsMNgEdydiYAu_Q32IQ" name="asapRef" visibility="public">
           <ownedComment xmi:id="_YlmgscNgEdydiYAu_Q32IQ" annotatedElement="_YlmgsMNgEdydiYAu_Q32IQ">
@@ -6223,7 +6310,7 @@ True = alarm reporting is activated; False = alarm reporting is de-activated.</b
         </ownedAttribute>
         <ownedAttribute xmi:id="_HjaXMPsoEdybz6jVd6YVeQ" name="ituArcStateAndStatusList" visibility="public">
           <ownedComment xmi:id="_HjaXMfsoEdybz6jVd6YVeQ" annotatedElement="_HjaXMPsoEdybz6jVd6YVeQ">
-            <body>See R_TMF518_NRB_I_0001 and R_TMF518_NRB_I_0004.&#xD;
+            <body>Traceability: R_TMF518_NRB_I_0001 and R_TMF518_NRB_I_0004.&#xD;
 See supporting document SD1-8_encodingX731M3100.</body>
           </ownedComment>
           <ownedComment xmi:id="_HjaXMvsoEdybz6jVd6YVeQ" annotatedElement="_HjaXMPsoEdybz6jVd6YVeQ">
@@ -6243,7 +6330,7 @@ See supporting document SD1-8_encodingX731M3100.</body>
 Note regarding naming:&#xD;
 Wherever multiple layers are applicable to a particular CTP, the connectable layer is used as a basis for the name.&#xD;
 When the CTP has no connectable layer, any layer that ensures name unicity can be used.&#xD;
-See R_TMF518_NRF_I_0009 and R_TMF518_NRF_I_0010.&#xD;
+Traceability: R_TMF518_NRF_I_0009 and R_TMF518_NRF_I_0010.&#xD;
 For Flow Points in connectionless networks see R_TMF518_NRF_I_0018.</body>
         </ownedComment>
         <ownedRule xmi:id="_1e1ToDqZEdyNgbQAJBaBgA">
@@ -6260,7 +6347,7 @@ For Flow Points in connectionless networks see R_TMF518_NRF_I_0018.</body>
         <ownedAttribute xmi:id="_YKKw1DXlEdy6cfT6nDQmxw" name="connectionState" visibility="public" type="_UNJNUDqVEdyNgbQAJBaBgA" isReadOnly="true">
           <ownedComment xmi:id="_YKKw1TXlEdy6cfT6nDQmxw" annotatedElement="_YKKw1DXlEdy6cfT6nDQmxw">
             <body>The values that this attribute may take are constrained by the value of the &quot;direction&quot; attribute of the CTP. There is also a dependency on the value of the &quot;tpMappingMode&quot; attribute of the CTP.&#xD;
-See R_TMF518_NRF_I_0037.</body>
+Traceability: R_TMF518_NRF_I_0037.</body>
           </ownedComment>
           <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_YKKw1jXlEdy6cfT6nDQmxw" type="_UNJNUDqVEdyNgbQAJBaBgA">
             <body>NA</body>
@@ -6278,7 +6365,7 @@ See R_TMF518_NRF_I_0037.</body>
           <body>This object class represents a TP without a physical layer that behaves both like a PTP and a CTP.&#xD;
 Floating Termination Points (FTPs) are contained in managed elements as PTPs.&#xD;
 Note: The value of tpMappingMode for FTPs considers exclusively mapping on the server side.&#xD;
-See R_TMF518_NRF_I_0011.</body>
+Traceability: R_TMF518_NRF_I_0011.</body>
         </ownedComment>
         <generalization xmi:id="_aKTnIDXmEdy6cfT6nDQmxw" general="_YKKw0DXlEdy6cfT6nDQmxw"/>
         <generalization xmi:id="_wtPL4MNcEdydiYAu_Q32IQ" general="_GQv_YMNXEdydiYAu_Q32IQ"/>
@@ -6306,7 +6393,7 @@ See R_TMF518_NRF_I_0011.</body>
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_YKKw3zXlEdy6cfT6nDQmxw"/>
         </ownedEnd>
       </packagedElement>
-      <packagedElement xmi:type="uml:Association" xmi:id="_ZvFxIDXuEdyrJ415rv42FA" name="GtpContainsCtps" isAbstract="true" memberEnd="_ZvL3wDXuEdyrJ415rv42FA _ZvYFAjXuEdyrJ415rv42FA">
+      <packagedElement xmi:type="uml:Association" xmi:id="_ZvFxIDXuEdyrJ415rv42FA" name="GtpContainsCtps" memberEnd="_ZvL3wDXuEdyrJ415rv42FA _ZvYFAjXuEdyrJ415rv42FA">
         <ownedEnd xmi:id="_ZvYFAjXuEdyrJ415rv42FA" name="" visibility="private" type="_ZELroDUtEdyaRqaRCLKmVQ" association="_ZvFxIDXuEdyrJ415rv42FA"/>
       </packagedElement>
       <packagedElement xmi:type="uml:Association" xmi:id="_TOJXMDXvEdyrJ415rv42FA" memberEnd="_TOPd0DXvEdyrJ415rv42FA _TOPd1DXvEdyrJ415rv42FA">
@@ -6327,7 +6414,7 @@ See R_TMF518_NRF_I_0011.</body>
           <body>This object class represents a physical link between two or more (usual case two; more than two e.g., for representing RPR transport connectivity) PTPs or a trail between two TPs.&#xD;
 A Topological Link (TL) may traverse through DWDM equipment and optical transport networks managed by another target OS. The TL reported by the first target OS in that case could correspond to a (regenerator) section under its management domain. It is up to the requesting OS user to put together the exact topology of the network in such cases, based on the reported Managed Elements and TLs.&#xD;
 For unidirectional TLs the aEndTP marks the traffic source whereas the zEndTP marks the traffic sink.&#xD;
-See R_TMF518_NRF_I_0019 and R_TMF518_NRF_I_0020.</body>
+Traceability: R_TMF518_NRF_I_0019 and R_TMF518_NRF_I_0020.</body>
         </ownedComment>
         <ownedRule xmi:id="__l5AQDn2EdyamdmRIB0MZw" constrainedElement="_OQTKwDntEdyamdmRIB0MZw">
           <specification xmi:type="uml:OpaqueExpression" xmi:id="__l5AQTn2EdyamdmRIB0MZw">
@@ -6394,7 +6481,7 @@ True = alarm reporting is activated; False = alarm reporting is de-activated.</b
         </ownedAttribute>
         <ownedAttribute xmi:id="_Uf6p4PsoEdybz6jVd6YVeQ" name="ituArcStateAndStatusList" visibility="public">
           <ownedComment xmi:id="_Uf6p4fsoEdybz6jVd6YVeQ" annotatedElement="_Uf6p4PsoEdybz6jVd6YVeQ">
-            <body>See R_TMF518_NRB_I_0001 and R_TMF518_NRB_I_0004.&#xD;
+            <body>Traceability: R_TMF518_NRB_I_0001 and R_TMF518_NRB_I_0004.&#xD;
 See supporting document SD1-8_encodingX731M3100.</body>
           </ownedComment>
           <ownedComment xmi:id="_Uf6p4vsoEdybz6jVd6YVeQ" annotatedElement="_Uf6p4PsoEdybz6jVd6YVeQ">
@@ -6445,7 +6532,7 @@ See supporting document SD1-8_encodingX731M3100.</body>
       <packagedElement xmi:type="uml:Class" xmi:id="_E3-o4DqPEdyNgbQAJBaBgA" name="TransmissionDescriptor" clientDependency="_BNTWMLnsEdy4-6KrVwKgCQ">
         <ownedComment xmi:id="_JUHdATqPEdyNgbQAJBaBgA" annotatedElement="_E3-o4DqPEdyNgbQAJBaBgA">
           <body>This object class is a collection of attributes which are used to define multi-layered transmission parameters and additional info parameters on a resource; e.g., a TP.&#xD;
-See R_TMF518_NRF_I_0042 and R_TMF518_NRF_I_0043.</body>
+Traceability: R_TMF518_NRF_I_0042 and R_TMF518_NRF_I_0043.</body>
         </ownedComment>
         <generalization xmi:id="_wGWxME8gEdyfLry44XcUuw">
           <general xmi:type="uml:Class" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_xd-pIA6uEdyd7PUNb-IYCQ?NetworkResourceBasic/Data%20Object%20Classes/CommonResourceInfo?"/>
@@ -6535,8 +6622,8 @@ Refer to attached supporting document SD1-16_LayeredParameters for details of th
 All end point TPs related by an Subnetwork Connection (SNC) must support the same or an equivalent layer rate which is also the SNC's layer rate.&#xD;
 In pending state, generic Connection Termination Point(s) of the SNC could be replied.&#xD;
 Refer to the associated supporting document SD1-36_SNCTypes for explanation of SNC Properties, SNC Parameters, unidirectional SNCs,  Point-to-Multipoint SNC, Routing Constraints and Route Discovery.&#xD;
-See R_TMF518_NRF_I_0024 and R_TMF518_NRF_I_0025.&#xD;
-For bundled SNCs see R_TMF518_NRF_I_0032.</body>
+Traceability: R_TMF518_NRF_I_0024 and R_TMF518_NRF_I_0025.&#xD;
+For bundled SNCs Traceability: R_TMF518_NRF_I_0032.</body>
         </ownedComment>
         <ownedRule xmi:id="_7di-oE7uEdyfLry44XcUuw" constrainedElement="_Txe5EE7uEdyfLry44XcUuw">
           <specification xmi:type="uml:OpaqueExpression" xmi:id="_7dpFQE7uEdyfLry44XcUuw">
@@ -6554,7 +6641,7 @@ For bundled SNCs see R_TMF518_NRF_I_0032.</body>
         <ownedAttribute xmi:id="_cnpVxEyvEdyMf41zLKMFmA" name="state" visibility="public" type="_D_0kEEyyEdyMf41zLKMFmA" isReadOnly="true">
           <ownedComment xmi:id="_39zHMEyyEdyMf41zLKMFmA" annotatedElement="_cnpVxEyvEdyMf41zLKMFmA">
             <body>This attribute identifies the SNC connection state.&#xD;
-See R_TMF518_NRF_I_0028.</body>
+Traceability: R_TMF518_NRF_I_0028.</body>
           </ownedComment>
           <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_cnpVxkyvEdyMf41zLKMFmA" type="_D_0kEEyyEdyMf41zLKMFmA">
             <body>NA</body>
@@ -6591,29 +6678,29 @@ Note: In case of a bundled SNC the value LR_Not_Applicable is used. The requesti
         <ownedAttribute xmi:id="_cnjPSEyvEdyMf41zLKMFmA" name="type" visibility="public" type="_1QXCgDqIEdyNgbQAJBaBgA" isReadOnly="true">
           <ownedComment xmi:id="_MRuPMEy6EdyMf41zLKMFmA" annotatedElement="_cnjPSEyvEdyMf41zLKMFmA">
             <body>This attribute indicates the external traffic flow through the SNC.&#xD;
-See R_TMF518_NRF_I_0029.</body>
+Traceability: R_TMF518_NRF_I_0029.</body>
           </ownedComment>
           <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_cnjPSkyvEdyMf41zLKMFmA" type="_1QXCgDqIEdyNgbQAJBaBgA">
             <body>NA</body>
           </defaultValue>
         </ownedAttribute>
-        <ownedAttribute xmi:id="_ilXCkKywEdy5jPtk6dKg_g" name="aEndTpDataList" visibility="public">
+        <ownedAttribute xmi:id="_ilXCkKywEdy5jPtk6dKg_g" name="aEndTpDataList" visibility="public" type="_G7AjYOR_Edyd-_NSHGr2NQ">
           <ownedComment xmi:id="_qWA7cKywEdy5jPtk6dKg_g" annotatedElement="_ilXCkKywEdy5jPtk6dKg_g">
             <body>This attribute lists all A End TP names together with their TP data (TP Mapping Mode, Transmission Parameters).</body>
           </ownedComment>
           <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_hhShAayxEdy5jPtk6dKg_g" value="*"/>
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_hhShAKyxEdy5jPtk6dKg_g"/>
-          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_E1nmwKyxEdy5jPtk6dKg_g">
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_E1nmwKyxEdy5jPtk6dKg_g" type="_G7AjYOR_Edyd-_NSHGr2NQ">
             <body>NA</body>
           </defaultValue>
         </ownedAttribute>
-        <ownedAttribute xmi:id="_I8LMcKyxEdy5jPtk6dKg_g" name="zEndTpDataList" visibility="public">
+        <ownedAttribute xmi:id="_I8LMcKyxEdy5jPtk6dKg_g" name="zEndTpDataList" visibility="public" type="_G7AjYOR_Edyd-_NSHGr2NQ">
           <ownedComment xmi:id="_I8LMcayxEdy5jPtk6dKg_g" annotatedElement="_I8LMcKyxEdy5jPtk6dKg_g">
             <body>This attribute lists all Z End TP names together with their TP data (TP Mapping Mode, Transmission Parameters).</body>
           </ownedComment>
           <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_i5XHMayxEdy5jPtk6dKg_g" value="*"/>
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_i5XHMKyxEdy5jPtk6dKg_g"/>
-          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_I8LMcqyxEdy5jPtk6dKg_g">
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_I8LMcqyxEdy5jPtk6dKg_g" type="_G7AjYOR_Edyd-_NSHGr2NQ">
             <body>NA</body>
           </defaultValue>
         </ownedAttribute>
@@ -6665,8 +6752,7 @@ True = alarm reporting is activated; False = alarm reporting is de-activated.</b
         </ownedAttribute>
         <ownedAttribute xmi:id="_cnjPJEyvEdyMf41zLKMFmA" name="correlationIdentifier" visibility="public" isReadOnly="true">
           <ownedComment xmi:id="_idoecEy_EdyMf41zLKMFmA" annotatedElement="_cnjPJEyvEdyMf41zLKMFmA">
-            <body>This attribute contains information about relationships that this subnetwork connection may have to other objects.&#xD;
-Changes in the value of this attribute lead to an AVC notification.</body>
+            <body>This attribute contains information about relationships that this subnetwork connection may have to other objects.</body>
           </ownedComment>
           <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
           <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_cnjPJkyvEdyMf41zLKMFmA">
@@ -6735,7 +6821,7 @@ Changes in the value of this attribute lead to an AVC notification.</body>
           <ownedComment xmi:id="_GkOJwEzOEdyMf41zLKMFmA" annotatedElement="_cndIgEyvEdyMf41zLKMFmA">
             <body>This attribute indicates the end point role of the aEndTPs of the SNC.&#xD;
 At a connection matrix (CM) end point the span of the SNC starts at a G.805 CP with a fixed or flexible connection through the ME at the SNC layer, i.e. the connectable layer of the end point.  At a link connection (LC) end point connectivity is adapted from a server layer and the span of the SNC starts with a G.805 TCP.&#xD;
-See R_TMF518_NRF_I_0026.</body>
+Traceability: R_TMF518_NRF_I_0026.</body>
           </ownedComment>
           <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_8MpR8UzNEdyMf41zLKMFmA" value="*"/>
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_8MpR8EzNEdyMf41zLKMFmA"/>
@@ -6747,7 +6833,7 @@ See R_TMF518_NRF_I_0026.</body>
           <ownedComment xmi:id="_iM4u4EzOEdyMf41zLKMFmA" annotatedElement="_cnjPREyvEdyMf41zLKMFmA">
             <body>This attribute indicates the end point role of the zEndTPs of the SNC.&#xD;
 At a connection matrix (CM) end point the span of the SNC starts at a G.805 CP with a fixed or flexible connection through the ME at the SNC layer, i.e. the connectable layer of the end point.  At a link connection (LC) end point connectivity is adapted from a server layer and the span of the SNC starts with a G.805 TCP.&#xD;
-See R_TMF518_NRF_I_0026.</body>
+Traceability: R_TMF518_NRF_I_0026.</body>
           </ownedComment>
           <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_XfD6QEzOEdyMf41zLKMFmA" value="*"/>
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Xe9zoEzOEdyMf41zLKMFmA"/>
@@ -6782,7 +6868,7 @@ See R_TMF518_NRF_I_0026.</body>
         </ownedAttribute>
         <ownedAttribute xmi:id="_RTxeAPsoEdybz6jVd6YVeQ" name="ituArcStateAndStatusList" visibility="public">
           <ownedComment xmi:id="_RTxeAfsoEdybz6jVd6YVeQ" annotatedElement="_RTxeAPsoEdybz6jVd6YVeQ">
-            <body>See R_TMF518_NRB_I_0001 and R_TMF518_NRB_I_0004.&#xD;
+            <body>Traceability: R_TMF518_NRB_I_0001 and R_TMF518_NRB_I_0004.&#xD;
 See supporting document SD1-8_encodingX731M3100.</body>
           </ownedComment>
           <ownedComment xmi:id="_RTxeAvsoEdybz6jVd6YVeQ" annotatedElement="_RTxeAPsoEdybz6jVd6YVeQ">
@@ -9691,10 +9777,17 @@ See supporting document SD1-8_encodingX731M3100.</body>
       <packagedElement xmi:type="uml:Dependency" xmi:id="_ltikYKpTEdyNZ9aBDggO2A" client="_v0h8wCsCEdyxqrDz5j4e5g">
         <supplier xmi:type="uml:DataType" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_37Bj8CPJEdypgfGA_0P3-g?NetworkResourceBasic/Type%20Definitions/TransmissionParameterList?"/>
       </packagedElement>
-      <packagedElement xmi:type="uml:Association" xmi:id="_Yi5CcKyMEdy5jPtk6dKg_g" name="GTPIsMemberOfTPPool" isAbstract="true" memberEnd="_Yi5CcayMEdy5jPtk6dKg_g _YjCzcqyMEdy5jPtk6dKg_g">
+      <packagedElement xmi:type="uml:Association" xmi:id="_Yi5CcKyMEdy5jPtk6dKg_g" name="GtpIsMemberOfTpPool" isAbstract="true" memberEnd="_Yi5CcayMEdy5jPtk6dKg_g _YjCzcqyMEdy5jPtk6dKg_g">
         <ownedEnd xmi:id="_YjCzcqyMEdy5jPtk6dKg_g" name="" visibility="private" type="_ZELroDUtEdyaRqaRCLKmVQ" association="_Yi5CcKyMEdy5jPtk6dKg_g">
           <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_YjCzdayMEdy5jPtk6dKg_g" value="*"/>
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_YjCzdKyMEdy5jPtk6dKg_g"/>
+        </ownedEnd>
+        <ownedEnd xmi:id="_Yi5CcayMEdy5jPtk6dKg_g" name="" visibility="private" type="_nBlWgDRwEdy6rs29o9v9cA" association="_Yi5CcKyMEdy5jPtk6dKg_g">
+          <ownedComment xmi:id="_wIp2AKyQEdy5jPtk6dKg_g" annotatedElement="_Yi5CcayMEdy5jPtk6dKg_g">
+            <body>This attribute identifies the name of the Termination Point Pool (TP Pool) of which this GTP is a member.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_YjCzcayMEdy5jPtk6dKg_g" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_YjCzcKyMEdy5jPtk6dKg_g"/>
         </ownedEnd>
       </packagedElement>
       <packagedElement xmi:type="uml:Dependency" xmi:id="__lnWcKyUEdy5jPtk6dKg_g" client="_nBlWgDRwEdy6rs29o9v9cA">
@@ -9703,7 +9796,7 @@ See supporting document SD1-8_encodingX731M3100.</body>
       <packagedElement xmi:type="uml:Class" xmi:id="_vaHNgK4bEdyvN402f4-UpA" name="MatrixFlowDomain" clientDependency="_9cPPAK4cEdyvN402f4-UpA">
         <ownedComment xmi:id="_G7kssK4cEdyvN402f4-UpA" annotatedElement="_vaHNgK4bEdyvN402f4-UpA">
           <body>This object class is contained within a Managed Element (ME) and represents a grouping of assigned Connectionless Port Termination Points (CPTPs).&#xD;
-See R_TMF518_NRF_I_0047 and R_TMF518_NRF_I_0048.</body>
+Traceability: R_TMF518_NRF_I_0047 and R_TMF518_NRF_I_0048.</body>
         </ownedComment>
         <generalization xmi:id="_ynwOMK4bEdyvN402f4-UpA">
           <general xmi:type="uml:Class" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_xd-pIA6uEdyd7PUNb-IYCQ?NetworkResourceBasic/Data%20Object%20Classes/CommonResourceInfo?"/>
@@ -9742,7 +9835,7 @@ Refer to to chapter “Connectionless Technology Parameters” of the attached s
         </ownedAttribute>
         <ownedAttribute xmi:id="_NFxMgPsoEdybz6jVd6YVeQ" name="ituArcStateAndStatusList" visibility="public">
           <ownedComment xmi:id="_NFxMgfsoEdybz6jVd6YVeQ" annotatedElement="_NFxMgPsoEdybz6jVd6YVeQ">
-            <body>See R_TMF518_NRB_I_0001 and R_TMF518_NRB_I_0004.&#xD;
+            <body>Traceability: R_TMF518_NRB_I_0001 and R_TMF518_NRB_I_0004.&#xD;
 See supporting document SD1-8_encodingX731M3100.</body>
           </ownedComment>
           <ownedComment xmi:id="_NFxMgvsoEdybz6jVd6YVeQ" annotatedElement="_NFxMgPsoEdybz6jVd6YVeQ">
@@ -9759,7 +9852,7 @@ See supporting document SD1-8_encodingX731M3100.</body>
       <packagedElement xmi:type="uml:Class" xmi:id="_7hqt0K4eEdyvN402f4-UpA" name="FlowDomain" clientDependency="_QE52cK4hEdyvN402f4-UpA">
         <ownedComment xmi:id="_EZdjAK4hEdyvN402f4-UpA" annotatedElement="_7hqt0K4eEdyvN402f4-UpA">
           <body>This object class represents a network grouping of zero or more Matrix Flow Domains (MFDs) and zero or more Connectionless Port Termination Points (CPTPs) that are assigned to these MFDs.&#xD;
-See R_TMF518_NRF_I_0049 and R_TMF518_NRF_I_0050.</body>
+Traceability: R_TMF518_NRF_I_0049 and R_TMF518_NRF_I_0050.</body>
         </ownedComment>
         <generalization xmi:id="_3bw9gK4gEdyvN402f4-UpA">
           <general xmi:type="uml:Class" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_xd-pIA6uEdyd7PUNb-IYCQ?NetworkResourceBasic/Data%20Object%20Classes/CommonResourceInfo?"/>
@@ -9796,7 +9889,7 @@ Refer to to chapter “Connectionless Technology Parameters” of the attached s
         </ownedAttribute>
         <ownedAttribute xmi:id="_EajI0PsoEdybz6jVd6YVeQ" name="ituArcStateAndStatusList" visibility="public">
           <ownedComment xmi:id="_EajI0fsoEdybz6jVd6YVeQ" annotatedElement="_EajI0PsoEdybz6jVd6YVeQ">
-            <body>See R_TMF518_NRB_I_0001 and R_TMF518_NRB_I_0004.&#xD;
+            <body>Traceability: R_TMF518_NRB_I_0001 and R_TMF518_NRB_I_0004.&#xD;
 See supporting document SD1-8_encodingX731M3100.</body>
           </ownedComment>
           <ownedComment xmi:id="_EajI0vsoEdybz6jVd6YVeQ" annotatedElement="_EajI0PsoEdybz6jVd6YVeQ">
@@ -9871,23 +9964,23 @@ Refer to to chapter “Connectionless Technology Parameters” of the attached s
             <body>NA</body>
           </defaultValue>
         </ownedAttribute>
-        <ownedAttribute xmi:id="_1qaF4K4mEdyvN402f4-UpA" name="aEndTpDataList" visibility="public">
+        <ownedAttribute xmi:id="_1qaF4K4mEdyvN402f4-UpA" name="aEndTpDataList" visibility="public" type="_G7AjYOR_Edyd-_NSHGr2NQ">
           <ownedComment xmi:id="_1qaF4a4mEdyvN402f4-UpA" annotatedElement="_1qaF4K4mEdyvN402f4-UpA">
             <body>This attribute lists all A End Flow Point names together with their TP data (TP Mapping Mode, Transmission Parameters).</body>
           </ownedComment>
           <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1qaF4q4mEdyvN402f4-UpA" value="*"/>
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1qaF464mEdyvN402f4-UpA"/>
-          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_1qaF5K4mEdyvN402f4-UpA">
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_1qaF5K4mEdyvN402f4-UpA" type="_G7AjYOR_Edyd-_NSHGr2NQ">
             <body>NA</body>
           </defaultValue>
         </ownedAttribute>
-        <ownedAttribute xmi:id="_A1W7YK4nEdyvN402f4-UpA" name="zEndTpDataList" visibility="public">
+        <ownedAttribute xmi:id="_A1W7YK4nEdyvN402f4-UpA" name="zEndTpDataList" visibility="public" type="_G7AjYOR_Edyd-_NSHGr2NQ">
           <ownedComment xmi:id="_A1W7Ya4nEdyvN402f4-UpA" annotatedElement="_A1W7YK4nEdyvN402f4-UpA">
             <body>This attribute lists all Z End Flow Point names together with their TP data (TP Mapping Mode, Transmission Parameters).</body>
           </ownedComment>
           <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_A1W7Yq4nEdyvN402f4-UpA" value="*"/>
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_A1W7Y64nEdyvN402f4-UpA"/>
-          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_A1W7ZK4nEdyvN402f4-UpA">
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_A1W7ZK4nEdyvN402f4-UpA" type="_G7AjYOR_Edyd-_NSHGr2NQ">
             <body>NA</body>
           </defaultValue>
         </ownedAttribute>
@@ -9934,7 +10027,7 @@ This attribute indicates whether the FDFr is locked (i.e., traffic units cannot 
         </ownedAttribute>
         <ownedAttribute xmi:id="_GTsbwPsoEdybz6jVd6YVeQ" name="ituArcStateAndStatusList" visibility="public">
           <ownedComment xmi:id="_GTsbwfsoEdybz6jVd6YVeQ" annotatedElement="_GTsbwPsoEdybz6jVd6YVeQ">
-            <body>See R_TMF518_NRB_I_0001 and R_TMF518_NRB_I_0004.&#xD;
+            <body>Traceability: R_TMF518_NRB_I_0001 and R_TMF518_NRB_I_0004.&#xD;
 See supporting document SD1-8_encodingX731M3100.</body>
           </ownedComment>
           <ownedComment xmi:id="_GTsbwvsoEdybz6jVd6YVeQ" annotatedElement="_GTsbwPsoEdybz6jVd6YVeQ">
@@ -9994,8 +10087,11 @@ See supporting document SD1-8_encodingX731M3100.</body>
       <packagedElement xmi:type="uml:Class" xmi:id="_JJVtwLnuEdy4-6KrVwKgCQ" name="TrafficConditioningProfile" clientDependency="_dwyLgLnxEdy4-6KrVwKgCQ">
         <ownedComment xmi:id="_EkTKYLnwEdy4-6KrVwKgCQ" annotatedElement="_JJVtwLnuEdy4-6KrVwKgCQ">
           <body>This object class represents a collection of attributes, which are used to define the traffic conditioning parameters (e.g., bandwidth characteristics) on a Termination Point (TP).&#xD;
-See R_TMF518_NRF_I_0052, R_TMF518_NRF_I_0053 and R_TMF518_NRF_I_0054.</body>
+Traceability: R_TMF518_NRF_I_0052, R_TMF518_NRF_I_0053 and R_TMF518_NRF_I_0054.</body>
         </ownedComment>
+        <generalization xmi:id="_7tipQAQxEeC-l6U8aOqMIw">
+          <general xmi:type="uml:Class" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_xd-pIA6uEdyd7PUNb-IYCQ?NetworkResourceBasic/Data%20Object%20Classes/CommonResourceInfo?"/>
+        </generalization>
         <ownedAttribute xmi:id="_vtzxwLnxEdy4-6KrVwKgCQ" name="isDefaultProfile" visibility="public">
           <ownedComment xmi:id="_N9n_ULnyEdy4-6KrVwKgCQ" annotatedElement="_vtzxwLnxEdy4-6KrVwKgCQ">
             <body>This attribute defines the TC Profile as a non-deleteable profile.</body>
@@ -10037,7 +10133,7 @@ See R_TMF518_NRF_I_0052, R_TMF518_NRF_I_0053 and R_TMF518_NRF_I_0054.</body>
       <packagedElement xmi:type="uml:Class" xmi:id="_b6baYMNTEdydiYAu_Q32IQ" name="MultiLayerSubNetwork">
         <ownedComment xmi:id="_rivzEMNTEdydiYAu_Q32IQ" annotatedElement="_b6baYMNTEdydiYAu_Q32IQ">
           <body>This object class is an abstraction of the topology provided by the target OS which describes the potential for SubNetwork Connections. Top-level Multi Layer Subnetworks are subnetworks contained directly under either the target OS or a Management Domain.&#xD;
-See R_TMF518_NRF_I_0021 and R_TMF518_NRF_I_0021.</body>
+Traceability: R_TMF518_NRF_I_0021 and R_TMF518_NRF_I_0021.</body>
         </ownedComment>
         <generalization xmi:id="_QAepgMNWEdydiYAu_Q32IQ">
           <general xmi:type="uml:Class" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_xd-pIA6uEdyd7PUNb-IYCQ?NetworkResourceBasic/Data%20Object%20Classes/CommonResourceInfo?"/>
@@ -10045,7 +10141,7 @@ See R_TMF518_NRF_I_0021 and R_TMF518_NRF_I_0021.</body>
         <ownedAttribute xmi:id="_3YLI8MNTEdydiYAu_Q32IQ" name="type" visibility="public" type="_n7iwEEyoEdyMf41zLKMFmA" isReadOnly="true">
           <ownedComment xmi:id="_3YLI8cNTEdydiYAu_Q32IQ" annotatedElement="_3YLI8MNTEdydiYAu_Q32IQ">
             <body>This attribute identifies the type of the Subnetwork.&#xD;
-See R_TMF518_NRF_I_0023.</body>
+Traceability: R_TMF518_NRF_I_0023.</body>
           </ownedComment>
           <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3YLI8sNTEdydiYAu_Q32IQ" type="_n7iwEEyoEdyMf41zLKMFmA">
             <body>NA</body>
@@ -10065,7 +10161,7 @@ See R_TMF518_NRF_I_0023.</body>
         </ownedAttribute>
         <ownedAttribute xmi:id="_OPOu8PsoEdybz6jVd6YVeQ" name="ituArcStateAndStatusList" visibility="public">
           <ownedComment xmi:id="_OPOu8fsoEdybz6jVd6YVeQ" annotatedElement="_OPOu8PsoEdybz6jVd6YVeQ">
-            <body>See R_TMF518_NRB_I_0001 and R_TMF518_NRB_I_0004.&#xD;
+            <body>Traceability: R_TMF518_NRB_I_0001 and R_TMF518_NRB_I_0004.&#xD;
 See supporting document SD1-8_encodingX731M3100.</body>
           </ownedComment>
           <ownedComment xmi:id="_OPOu8vsoEdybz6jVd6YVeQ" annotatedElement="_OPOu8PsoEdybz6jVd6YVeQ">
@@ -10079,7 +10175,7 @@ See supporting document SD1-8_encodingX731M3100.</body>
       <packagedElement xmi:type="uml:Class" xmi:id="_dPZz0MNUEdydiYAu_Q32IQ" name="Route" clientDependency="_98HhoMNUEdydiYAu_Q32IQ">
         <ownedComment xmi:id="_pvl98MNUEdydiYAu_Q32IQ" annotatedElement="_dPZz0MNUEdydiYAu_Q32IQ">
           <body>This object class represents a partially ordered list of Cross-Connects defining the route for a Subnetwork Connection.&#xD;
-See R_TMF518_NRF_I_0035 and R_TMF518_NRF_I_0036.</body>
+Traceability: R_TMF518_NRF_I_0035 and R_TMF518_NRF_I_0036.</body>
         </ownedComment>
         <ownedAttribute xmi:id="_uq5aUMNUEdydiYAu_Q32IQ" name="routeIdentifier" visibility="public" isReadOnly="true">
           <ownedComment xmi:id="_uq5aUcNUEdydiYAu_Q32IQ" annotatedElement="_uq5aUMNUEdydiYAu_Q32IQ">
@@ -10169,7 +10265,7 @@ It can have the following values:&#xD;
       <packagedElement xmi:type="uml:Class" xmi:id="_MLLBUMNVEdydiYAu_Q32IQ" name="Equipment">
         <ownedComment xmi:id="_TpzWEMNVEdydiYAu_Q32IQ" annotatedElement="_MLLBUMNVEdydiYAu_Q32IQ">
           <body>This object class represents the manageable physical components of a network element.&#xD;
-See R_TMF518_NRF_I_0038 and R_TMF518_NRF_I_0039.</body>
+Traceability: R_TMF518_NRF_I_0038 and R_TMF518_NRF_I_0039.</body>
         </ownedComment>
         <ownedComment xmi:id="_dQBpcMNVEdydiYAu_Q32IQ" annotatedElement="_MLLBUMNVEdydiYAu_Q32IQ">
           <body>..\SD\SD2-20_EquipmentModel.pdf</body>
@@ -10291,7 +10387,7 @@ See R_TMF518_NRF_I_0038 and R_TMF518_NRF_I_0039.</body>
         </ownedAttribute>
         <ownedAttribute xmi:id="_B3ytoPsnEdybz6jVd6YVeQ" name="ituArcStateAndStatusList" visibility="public">
           <ownedComment xmi:id="_B3ytofsnEdybz6jVd6YVeQ" annotatedElement="_B3ytoPsnEdybz6jVd6YVeQ">
-            <body>See R_TMF518_NRB_I_0001 and R_TMF518_NRB_I_0004.&#xD;
+            <body>Traceability: R_TMF518_NRB_I_0001 and R_TMF518_NRB_I_0004.&#xD;
 See supporting document SD1-8_encodingX731M3100.</body>
           </ownedComment>
           <ownedComment xmi:id="_jZQ5MPsnEdybz6jVd6YVeQ" annotatedElement="_B3ytoPsnEdybz6jVd6YVeQ">
@@ -10313,7 +10409,7 @@ See supporting document SD1-8_encodingX731M3100.</body>
       <packagedElement xmi:type="uml:Class" xmi:id="_A38HoMNXEdydiYAu_Q32IQ" name="EquipmentHolder">
         <ownedComment xmi:id="_PNZxUMNXEdydiYAu_Q32IQ" annotatedElement="_A38HoMNXEdydiYAu_Q32IQ">
           <body>This object class represents resources of the NE that are capable of holding other physical components.&#xD;
-See R_TMF518_NRF_I_0040 and R_TMF518_NRF_I_0041.</body>
+Traceability: R_TMF518_NRF_I_0040 and R_TMF518_NRF_I_0041.</body>
         </ownedComment>
         <ownedComment xmi:id="_lte2kMNYEdydiYAu_Q32IQ" annotatedElement="_A38HoMNXEdydiYAu_Q32IQ">
           <body>..\SD\SD2-20_EquipmentModel.pdf</body>
@@ -10402,7 +10498,7 @@ See R_TMF518_NRF_I_0040 and R_TMF518_NRF_I_0041.</body>
         </ownedAttribute>
         <ownedAttribute xmi:id="_BZkrIPsoEdybz6jVd6YVeQ" name="ituArcStateAndStatusList" visibility="public">
           <ownedComment xmi:id="_BZkrIfsoEdybz6jVd6YVeQ" annotatedElement="_BZkrIPsoEdybz6jVd6YVeQ">
-            <body>See R_TMF518_NRB_I_0001 and R_TMF518_NRB_I_0004.&#xD;
+            <body>Traceability: R_TMF518_NRB_I_0001 and R_TMF518_NRB_I_0004.&#xD;
 See supporting document SD1-8_encodingX731M3100.</body>
           </ownedComment>
           <ownedComment xmi:id="_BZkrIvsoEdybz6jVd6YVeQ" annotatedElement="_BZkrIPsoEdybz6jVd6YVeQ">
@@ -10852,7 +10948,7 @@ See supporting document SD1-8_encodingX731M3100.</body>
       <packagedElement xmi:type="uml:Class" xmi:id="_GQv_YMNXEdydiYAu_Q32IQ" name="PhysicalTerminationPoint">
         <ownedComment xmi:id="_7lJGYMNYEdydiYAu_Q32IQ" annotatedElement="_GQv_YMNXEdydiYAu_Q32IQ">
           <body>This object class is an actual or potential end point of a Topological (physical) Link. The PTP does participate in associations unique to the PTP class (i.e., associations which do not apply to CTPs and therefore cannot be captured via the TP superclass).&#xD;
-See R_TMF518_NRF_I_0007.</body>
+Traceability: R_TMF518_NRF_I_0007.</body>
         </ownedComment>
         <generalization xmi:id="_wE29QMNcEdydiYAu_Q32IQ" general="_v0h8wCsCEdyxqrDz5j4e5g"/>
         <ownedBehavior xmi:type="uml:StateMachine" xmi:id="_j5R4kMNZEdydiYAu_Q32IQ" name="portTpRoleState">
@@ -11399,7 +11495,7 @@ May be empty if the CTP is involved in a uni-directional connection.</body>
           <body>..\SD\SD1-36_SNCTypes.pdf</body>
         </ownedComment>
         <ownedComment xmi:id="_nizL8Ky7Edy5jPtk6dKg_g" annotatedElement="_1QXCgDqIEdyNgbQAJBaBgA">
-          <body>See R_TMF518_NRF_I_0029.</body>
+          <body>Traceability: R_TMF518_NRF_I_0029.</body>
         </ownedComment>
         <ownedLiteral xmi:id="_6DYFkDqIEdyNgbQAJBaBgA" name="ADD_DROP_A"/>
         <ownedLiteral xmi:id="_8Oui0DqIEdyNgbQAJBaBgA" name="ADD_DROP_Z"/>
@@ -11413,7 +11509,7 @@ May be empty if the CTP is involved in a uni-directional connection.</body>
       <packagedElement xmi:type="uml:DataType" xmi:id="_Q8ncQDqLEdyNgbQAJBaBgA" name="CrossConnect">
         <ownedComment xmi:id="_ceHfkSovEdyCdsNZpl-pzA" annotatedElement="_Q8ncQDqLEdyNgbQAJBaBgA">
           <body>This data type represents a physical connection within a Managed Element. That is, a Cross-Connect is identified in this interface by its A end(s) and Z end(s), its &quot;SNC&quot; type, and its directionality. Other characteristics of SNCs do not apply to Cross-Connections. In particular, the static protection level does not apply to Cross-Connections, as reliability of Cross-Connections is not directly impacted by equipment protection at the interface. As well, the SNC state does not apply to Cross-Connections as a Cross-Connect represents a physical connection and not a logical, potential, or reserved set of connections. As such, a Cross-Connection may only be &quot;active&quot; or &quot;inactive&quot;. A &quot;partial Cross-Connection&quot; actually corresponds to a different Cross-Connection in this interface as it has a different external shape (e.g., a &quot;half&quot; bidirectional simple Cross-Connect is not modelled as a partial Cross-Connect, but rather as a &quot;complete&quot; unidirectional simple Cross-Connection).&#xD;
-See R_TMF518_NRF_I_0033 and R_TMF518_NRF_I_0034.</body>
+Traceability: R_TMF518_NRF_I_0033 and R_TMF518_NRF_I_0034.</body>
         </ownedComment>
         <ownedRule xmi:id="_yyJ2oE8AEdyfLry44XcUuw" constrainedElement="_juId0U8AEdyfLry44XcUuw">
           <specification xmi:type="uml:OpaqueExpression" xmi:id="_yyJ2oU8AEdyfLry44XcUuw">
@@ -11422,6 +11518,12 @@ See R_TMF518_NRF_I_0033 and R_TMF518_NRF_I_0034.</body>
         </ownedRule>
         <ownedRule xmi:id="_Vn3RQE8BEdyfLry44XcUuw">
           <specification xmi:type="uml:OpaqueExpression" xmi:id="_Vn9X4E8BEdyfLry44XcUuw">
+            <body>for bundled CCs</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_hZ7soAOvEeCwTukfWGgcSg" constrainedElement="_7spn8AOuEeCwTukfWGgcSg">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_hZ7soQOvEeCwTukfWGgcSg">
+            <language></language>
             <body>for bundled CCs</body>
           </specification>
         </ownedRule>
@@ -11463,7 +11565,8 @@ See R_TMF518_NRF_I_0033 and R_TMF518_NRF_I_0034.</body>
         </ownedAttribute>
         <ownedAttribute xmi:id="_ceHfnyovEdyCdsNZpl-pzA" name="connectionId" visibility="public">
           <ownedComment xmi:id="_ceHfoCovEdyCdsNZpl-pzA" annotatedElement="_ceHfnyovEdyCdsNZpl-pzA">
-            <body>This attribute represents the identifier of the associated Connection.</body>
+            <body>This attribute represents the control plane identifier. It corresponds to the Connection Name attribute in G.7713.&#xD;
+Note that also the Cross Connection points to its superior Connection.</body>
           </ownedComment>
           <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
           <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_ceHfoSovEdyCdsNZpl-pzA">
@@ -11503,6 +11606,10 @@ See R_TMF518_NRF_I_0033 and R_TMF518_NRF_I_0034.</body>
           </ownedComment>
           <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_juId1E8AEdyfLry44XcUuw" value="*"/>
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_juId008AEdyfLry44XcUuw" value="1"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_7spn8AOuEeCwTukfWGgcSg" name="zEndGtpRefList" visibility="public" type="_ZELroDUtEdyaRqaRCLKmVQ" association="_7sWtAAOuEeCwTukfWGgcSg">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_7szY8QOuEeCwTukfWGgcSg" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_7szY8AOuEeCwTukfWGgcSg" value="1"/>
         </ownedAttribute>
       </packagedElement>
       <packagedElement xmi:type="uml:Enumeration" xmi:id="_UNJNUDqVEdyNgbQAJBaBgA" name="TerminationPointConnectionState">
@@ -11555,7 +11662,7 @@ For ATM VP or VC CTP this value is used to model a VPC or a VCC terminating with
       </packagedElement>
       <packagedElement xmi:type="uml:Enumeration" xmi:id="_D_0kEEyyEdyMf41zLKMFmA" name="SubnetworkConnectionState">
         <ownedComment xmi:id="_ezjj4Ky7Edy5jPtk6dKg_g" annotatedElement="_D_0kEEyyEdyMf41zLKMFmA">
-          <body>See R_TMF518_NRF_I_0028.</body>
+          <body>Traceability: R_TMF518_NRF_I_0028.</body>
         </ownedComment>
         <ownedLiteral xmi:id="_bsl7YEyyEdyMf41zLKMFmA" name="ACTIVE">
           <ownedComment xmi:id="__2Vi8KyoEdy5jPtk6dKg_g" annotatedElement="_bsl7YEyyEdyMf41zLKMFmA">
@@ -11586,7 +11693,7 @@ For ATM VP or VC CTP this value is used to model a VPC or a VCC terminating with
       <packagedElement xmi:type="uml:DataType" xmi:id="_CRrzAEzNEdyMf41zLKMFmA" name="EndPointRole">
         <ownedComment xmi:id="_AznSgUzNEdyMf41zLKMFmA" annotatedElement="_CRrzAEzNEdyMf41zLKMFmA">
           <body>This data type indicates the end point role of an end TP.&#xD;
-See R_TMF518_NRF_I_0026.</body>
+Traceability: R_TMF518_NRF_I_0026.</body>
         </ownedComment>
         <ownedAttribute xmi:id="_AznShUzNEdyMf41zLKMFmA" name="role" visibility="public" type="_bg4mYEzNEdyMf41zLKMFmA">
           <ownedComment xmi:id="_AznShkzNEdyMf41zLKMFmA" annotatedElement="_AznShUzNEdyMf41zLKMFmA">
@@ -11671,7 +11778,7 @@ See R_TMF518_NRF_I_0026.</body>
       <packagedElement xmi:type="uml:DataType" xmi:id="_tfWtAK5HEdyvN402f4-UpA" name="MatrixFlowDomainFragment" clientDependency="_GlrUYK5MEdyvN402f4-UpA">
         <ownedComment xmi:id="_-ztJsK5HEdyvN402f4-UpA" annotatedElement="_tfWtAK5HEdyvN402f4-UpA">
           <body>This data type represents the portion of a Flow Domain Fragment within a Matrix Flow Domain (MFD).&#xD;
-See R_TMF518_NRF_I_0059 and R_TMF518_NRF_I_0060.</body>
+Traceability: R_TMF518_NRF_I_0059 and R_TMF518_NRF_I_0060.</body>
         </ownedComment>
         <ownedAttribute xmi:id="_VXoCkK5IEdyvN402f4-UpA" name="direction" visibility="public" type="_VbdtwDnpEdyamdmRIB0MZw">
           <ownedComment xmi:id="_VXoCka5IEdyvN402f4-UpA" annotatedElement="_VXoCkK5IEdyvN402f4-UpA">
@@ -11758,7 +11865,7 @@ Refer to to chapter “Connectionless Technology Parameters” of the attached s
       <packagedElement xmi:type="uml:DataType" xmi:id="_2HcSwblAEdyGh6xRfvr7Kg" name="FlowDomainFragmentRoute">
         <ownedComment xmi:id="_XF4pwLlBEdyGh6xRfvr7Kg" annotatedElement="_2HcSwblAEdyGh6xRfvr7Kg">
           <body>This data type represent the route of a Flow Domain Fragment (FDFr).&#xD;
-See R_TMF518_NRF_I_0057.</body>
+Traceability: R_TMF518_NRF_I_0057.</body>
         </ownedComment>
         <ownedAttribute xmi:id="_81N84LlBEdyGh6xRfvr7Kg" name="containedMfdfrList" visibility="public" type="_tfWtAK5HEdyvN402f4-UpA" isReadOnly="true">
           <ownedComment xmi:id="_81N84blBEdyGh6xRfvr7Kg" annotatedElement="_81N84LlBEdyGh6xRfvr7Kg">
@@ -12712,4 +12819,6 @@ Invariant? Yes
   <mTOPUMLProfile:mTOPAttribute xmi:id="_XAB2ZKsVEd2Qb5aCkE6sMw" base_StructuralFeature="_JoM2U_pgEdy3oJyJgWjfdA"/>
   <mTOPUMLProfile:mTOPAttribute xmi:id="_9CeKEYDtEd6_EMV-kYy7Jw" base_StructuralFeature="_9CeKEIDtEd6_EMV-kYy7Jw"/>
   <mTOPUMLProfile:mTOPAttribute xmi:id="_9Cn7E4DtEd6_EMV-kYy7Jw" base_StructuralFeature="_9Cn7EoDtEd6_EMV-kYy7Jw"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_7spn8QOuEeCwTukfWGgcSg" base_StructuralFeature="_7spn8AOuEeCwTukfWGgcSg"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_7s8i4QOuEeCwTukfWGgcSg" base_StructuralFeature="_7s8i4AOuEeCwTukfWGgcSg"/>
 </xmi:XMI>
