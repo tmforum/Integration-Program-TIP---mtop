@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 sp1 (http://www.altova.com) by Jessie Jewitt (Ciena) -->
 <!-- mTOP DDP - DM Service Basic - Copyright TeleManagement Forum 2008 -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/sb/xsd/svc/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:csi="http://www.tmforum.org/mtop/sb/xsd/csi/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" targetNamespace="http://www.tmforum.org/mtop/sb/xsd/svc/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
 	<xsd:annotation>
@@ -22,10 +23,12 @@
 			<xsd:extension base="csi:CommonServiceInfoType">
 				<xsd:sequence>
 					<xsd:element name="serviceSpecType" type="tns:ServiceSpecificationTypeType"/>
-					<xsd:element name="version" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="serviceSpecVersion" type="tns:ServiceSpecificationVersionType" minOccurs="0"/>
 					<xsd:element name="productSpecRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
 					<xsd:element name="serviceCatalogRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
 					<xsd:element name="describedByList" type="tns:ServiceSpecCharInUseType" maxOccurs="unbounded"/>
+					<xsd:element name="containedByServiceSpecRef" type="tns:ServiceSpecRelationshipType" minOccurs="0" maxOccurs="1"/>
+					<xsd:element name="containsServiceSpecRefList" type="tns:ServiceSpecRelationshipType" minOccurs="0" maxOccurs="unbounded"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -44,6 +47,19 @@
 		</xsd:sequence>
 	</xsd:complexType>
 	<!-- ================= -->
+	<xsd:complexType name="ServiceSpecificationVersionType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This is used to identify the version of the service specification</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="svcSpecRevisionName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="svcSpecRevisionNumber" type="xsd:string"/>
+			<xsd:element name="svcSpecRevisionReason" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
 	<xsd:element name="serviceSpecCharInUseType" type="tns:ServiceSpecCharInUseType"/>
 	<xsd:complexType name="ServiceSpecCharInUseType">
 		<xsd:annotation>
@@ -55,6 +71,20 @@
 			<xsd:element name="sscRef" type="nam:NamingAttributeType"/>
 			<xsd:element name="sscUse" type="tns:ServiceSpecCharacteristicUseType" minOccurs="0"/>
 			<xsd:element name="valueList" type="tns:ServiceSpecCharacteristicValueType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:element name="serviceSpecRelationshipType" type="tns:ServiceSpecRelationshipType"/>
+	<xsd:complexType name="ServiceSpecRelationshipType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>  Indicates relationship of a Service Spec to another Service Spec </p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="serviceSpecRef" type="nam:NamingAttributeType"/>
+			<xsd:element name="type" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="validFor" type="tns:TimePeriodType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<!-- ================= -->
@@ -72,6 +102,7 @@
 			<!-- mandatory for Service Defnition, not applicable for Service Template -->
 			<xsd:element name="canBeOveridden" type="xsd:boolean" minOccurs="0"/>
 			<!-- mandatory for Service Template, not applicable for Service Definition -->
+			<xsd:element name="charRole" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="minCardinality" type="xsd:int" minOccurs="0"/>
 			<xsd:element name="maxCardinality" type="xsd:int" minOccurs="0"/>
 			<xsd:element name="extensible" type="xsd:boolean" minOccurs="0"/>
@@ -95,6 +126,7 @@
 					<xsd:element name="sdStatus" type="tns:ServiceDefinitionStatusType" minOccurs="0"/>
 					<xsd:element name="sapSpecificationRefList" type="nam:NamingAttributeListType"/>
 					<xsd:element name="dependencyRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
+					<xsd:element name="containedRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
 					<xsd:element name="validatesRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
 				</xsd:sequence>
 			</xsd:extension>
@@ -107,7 +139,7 @@
 			<xsd:annotation>
 				<xsd:documentation>
 					<p>The service template is an extension to the Service Specification abstract type.
-					It defines specific ServiceSpecCharacteristicValues for the globally set ServiceSpecCharacteristics that can be 
+					It defines specific ServiceSpecCharacteristics for the globally set ServiceSpecCharacteristics that can be 
 					dynamically referenced by multiple Service instances during their lifecycle span
 					</p>
 				</xsd:documentation>
@@ -117,6 +149,7 @@
 					<xsd:element name="source" type="xsd:string" minOccurs="0"/>
 					<xsd:element name="serviceLocation" type="xsd:string" minOccurs="0"/>
 					<xsd:element name="stStatus" type="tns:ServiceTemplateStatusType" minOccurs="0"/>
+					<xsd:element name="containedRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
 					<xsd:element name="validatedByRef" type="nam:NamingAttributeType"/>
 				</xsd:sequence>
 			</xsd:extension>
@@ -165,7 +198,7 @@
 					<xsd:element name="serviceTemplateRef" type="nam:NamingAttributeType"/>
 					<xsd:element name="subscriberRef" type="nam:NamingAttributeType" minOccurs="0"/>
 					<xsd:element name="userRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
-					<xsd:element name="sapRefList" type="nam:NamingAttributeListType"/>
+					<xsd:element name="sapList" type="tns:ServiceAccessPointType" maxOccurs="unbounded"/>
 					<xsd:element name="describedByList" type="tns:ServiceCharacteristicValueType" minOccurs="0" maxOccurs="unbounded"/>
 				</xsd:sequence>
 			</xsd:extension>
@@ -184,9 +217,6 @@
 		<xsd:complexContent>
 			<xsd:extension base="tns:ServiceType">
 				<xsd:sequence>
-					<xsd:element name="containedByCfsRef" type="nam:NamingAttributeType" minOccurs="0"/>
-					<xsd:element name="containsCfsRefList" type="nam:NamingAttributeListType" minOccurs="0"/>		
-					<xsd:element name="rfsRefList" type="nam:NamingAttributeListType" minOccurs="0"/>								
 					<xsd:element name="productRef" type="nam:NamingAttributeType" minOccurs="0"/>
 				</xsd:sequence>
 			</xsd:extension>
@@ -205,8 +235,6 @@
 		<xsd:complexContent>
 			<xsd:extension base="tns:ServiceType">
 				<xsd:sequence>
-					<xsd:element name="containedByRfsRef" type="nam:NamingAttributeType" minOccurs="0"/>
-					<xsd:element name="containsRfsRefList" type="nam:NamingAttributeListType" minOccurs="0"/>		
 					<xsd:element name="cfsRef" type="nam:NamingAttributeType"/>
 				</xsd:sequence>
 			</xsd:extension>
@@ -226,9 +254,12 @@
 		<xsd:complexContent>
 			<xsd:extension base="csi:CommonServiceInfoType">
 				<xsd:sequence>
+					<xsd:element name="id" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="unique" type="xsd:string" minOccurs="0"/>
 					<xsd:element name="valueType" type="xsd:string" minOccurs="0"/>
 					<xsd:element name="minCardinality" type="xsd:int" minOccurs="0"/>
 					<xsd:element name="maxCardinality" type="xsd:int" minOccurs="0"/>
+					<xsd:element name="extensible" type="xsd:boolean" minOccurs="0"/>
 					<xsd:element name="derivationFormula" type="xsd:string" minOccurs="0"/>
 					<xsd:element name="validFor" type="tns:TimePeriodType" minOccurs="0"/>
 					<xsd:element name="containedBySscRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
@@ -256,6 +287,7 @@
 			<xsd:element name="valueTo" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="rangeInterval" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="validFor" type="tns:TimePeriodType" minOccurs="0"/>
+			<xsd:element name="containsSscvList" type="tns:ServiceSpecCharacteristicValueType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<!-- ================= -->
@@ -287,6 +319,7 @@
 					<xsd:element name="applicableServiceList" type="tns:ServiceSpecificationTypeType" minOccurs="0" maxOccurs="unbounded"/>
 					<xsd:element name="applicableStateValueList" type="xsd:string"/>
 					<xsd:element name="supportedSdRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
+					<xsd:element name="describedByList" type="tns:ServiceSpecCharInUseType" maxOccurs="unbounded"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -311,6 +344,7 @@
 					<xsd:element name="userRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
 					<xsd:element name="resourceRef" type="nam:NamingAttributeType" minOccurs="0"/>
 					<xsd:element name="sapSpecRef" type="nam:NamingAttributeType" minOccurs="0"/>
+					<xsd:element name="describedByList" type="tns:ServiceCharacteristicValueType" minOccurs="0" maxOccurs="unbounded"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
