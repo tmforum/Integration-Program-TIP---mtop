@@ -8,7 +8,12 @@
     <ownedComment xmi:id="_t70tYARTEeC-l6U8aOqMIw" annotatedElement="_nUpi8P-rEduKKLvC_EB00A">
       <body>Changes done between Release 2.0 and 2.1:&#xD;
 - Documentation deleted from DDP.&#xD;
-- Interfaces::AlarmControlService::setResourceAlarmReportingOff: exceptions deleted from the documentation.</body>
+- Interfaces::AlarmControlService::setResourceAlarmReportingOff: exceptions deleted from the documentation.&#xD;
+- Interfaces::AlarmControlService::setAlarmReporting: Input parameter layerRate added and specification completed.&#xD;
+- Interfaces::ProtectionRetrievalService: Operation getContainingProtectionGroupNames() added.&#xD;
+- Interfaces::AlarmRetrievalService::getActiveAlarms: Exceptions UNSUPPORTED_COMPRESSION_FORMAT and UNSUPPORTED_PACKING_FORMAT added.&#xD;
+- Interfaces::MaintenanceControlService::getActiveMaintenanceOperations: Exception NOT_IN_VALID_STATE added.&#xD;
+- Interfaces::MaintenanceControlService::performMaintenanceOperation: Exception NOT_IN_VALID_STATE added.</body>
     </ownedComment>
     <packageImport xmi:id="_nUpi9P-rEduKKLvC_EB00A">
       <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
@@ -397,6 +402,29 @@ Operation Exceptions:&#xD;
           <eAnnotations xmi:id="_JffQYCNLEd2rRa5mQZhDZw" source="http://www.eclipse.org/uml2/2.0.0/UML">
             <details xmi:id="_PEqwMCNLEd2rRa5mQZhDZw" key="profile=xml"/>
           </eAnnotations>
+          <ownedComment xmi:id="_1nVSYDrLEeCod6Pp3ORnEw" annotatedElement="_9D5CMeRbEdyd-_NSHGr2NQ">
+            <body>This operation allows a requesting OS to activate and deactivate (allow/not allow, or turn on/off) alarm reporting for all object classes which are able to issue alarms.&#xD;
+Alarm reporting for multi layer object classes can be activated/deactivated at a specific layerRate provided by the requesting OS.&#xD;
+&#xD;
+The following object classes are able to issue alarms:&#xD;
+- Equipment&#xD;
+- Equipment Holder&#xD;
+- Equipment Protection Group&#xD;
+- Flow Domain&#xD;
+- Flow Domain Fragment&#xD;
+- Group Termination Point&#xD;
+- Managed Element&#xD;
+- Management Domain&#xD;
+- Matrix Flow Domain&#xD;
+- Multi-Layer Subnetwork&#xD;
+- Operations System&#xD;
+- Protection Group&#xD;
+- Subnetwork Connection&#xD;
+- Termination Point (and subclasses)&#xD;
+- Topological Link.&#xD;
+&#xD;
+Traceability: R_TMF518_RTM_II_0012, R_TMF518_RTM_II_0013, R_TMF518_RTM_II_0014, R_TMF518_RTM_II_0015, UC_TMF518_RTM_0001, UC_TMF518_RTM_0002, UC_TMF518_RTM_0026.</body>
+          </ownedComment>
           <ownedRule xmi:id="_IdDtkCNMEd2rRa5mQZhDZw" constrainedElement="_9D5CMeRbEdyd-_NSHGr2NQ">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_IdDtkSNMEd2rRa5mQZhDZw">
               <body>Alarm reporting for the addressed resource is set.</body>
@@ -408,7 +436,7 @@ Operation Exceptions:&#xD;
             </specification>
           </ownedRule>
           <ownedParameter xmi:id="_E1MPACNMEd2rRa5mQZhDZw" name="void" isUnique="false" direction="return"/>
-          <ownedParameter xmi:id="_ru2csCNLEd2rRa5mQZhDZw" name="resourceName">
+          <ownedParameter xmi:id="_ru2csCNLEd2rRa5mQZhDZw" name="resourceRef">
             <ownedComment xmi:id="_ru2csSNLEd2rRa5mQZhDZw" annotatedElement="_ru2csCNLEd2rRa5mQZhDZw">
               <body>This parameter contains the name of the resource who's alarm reporting shall be set.</body>
             </ownedComment>
@@ -423,6 +451,19 @@ Operation Exceptions:&#xD;
             </ownedComment>
             <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_yl1ioiNLEd2rRa5mQZhDZw">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_Eu8nMDrLEeCod6Pp3ORnEw" name="layerRate">
+            <ownedComment xmi:id="_Eu8nMTrLEeCod6Pp3ORnEw" annotatedElement="_Eu8nMDrLEeCod6Pp3ORnEw">
+              <body>This parameter defines the layer rate of the object class who's alarm reporting shall be set.&#xD;
+Default value &quot;1&quot; indicates for a multi layered Object class that all supported layers are in scope of the operation.</body>
+            </ownedComment>
+            <ownedComment xmi:id="_Eu8nMjrLEeCod6Pp3ORnEw">
+              <body>SupportingDocumentation\SD1-17_LayerRates.pdf</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_Eu8nMzrLEeCod6Pp3ORnEw">
               <body>NA</body>
             </defaultValue>
           </ownedParameter>
@@ -914,6 +955,8 @@ Traceability: R_TMF518_RTM_II_0037, UC_TMF518_RTM_0010.</body>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UNABLE_TO_COMPLY?"/>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/INTERNAL_ERROR?"/>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NOT_IMPLEMENTED?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_ToUp8FUcEeC8pY-bmVQw4w?Framework/Operation%20Exceptions/UNSUPPORTED_COMPRESSION_FORMAT?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_L-GJMFUcEeC8pY-bmVQw4w?Framework/Operation%20Exceptions/UNSUPPORTED_PACKING_FORMAT?"/>
         </ownedOperation>
       </packagedElement>
       <packagedElement xmi:type="uml:Interface" xmi:id="_jvK_kN1eEdyrKNXnBMy96w" name="MaintenanceControlService">
@@ -959,6 +1002,7 @@ Traceability: R_TMF518_RTM_II_0063.</body>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UNABLE_TO_COMPLY?"/>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/INTERNAL_ERROR?"/>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NOT_IMPLEMENTED?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_VvFWkCVfEdyiv86aejkLcA?Framework/Operation%20Exceptions/NOT_IN_VALID_STATE?"/>
         </ownedOperation>
         <ownedOperation xmi:id="_bZIIYN1jEdyrKNXnBMy96w" name="performMaintenanceOperation" visibility="public" precondition="_bZIIYt1jEdyrKNXnBMy96w" postcondition="_bZIIZN1jEdyrKNXnBMy96w">
           <ownedComment xmi:id="_bZIIYd1jEdyrKNXnBMy96w" annotatedElement="_bZIIYN1jEdyrKNXnBMy96w">
@@ -1008,6 +1052,7 @@ Traceability: R_TMF518_RTM_II_0062.</body>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/INVALID_INPUT?"/>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/INTERNAL_ERROR?"/>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NOT_IMPLEMENTED?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_VvFWkCVfEdyiv86aejkLcA?Framework/Operation%20Exceptions/NOT_IN_VALID_STATE?"/>
         </ownedOperation>
       </packagedElement>
       <packagedElement xmi:type="uml:Interface" xmi:id="_mC_cUN1eEdyrKNXnBMy96w" name="ProtectionControlService">
@@ -1461,6 +1506,50 @@ Traceability: R_TMF518_RTM_II_0056, R_TMF518_RTM_II_0059.</body>
             <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_RC9pIO9nEdymm-1bIGvQpw"/>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_tLOJqt1mEdyrKNXnBMy96w">
               <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/COMM_LOSS?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_TAYcACVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/ENTITY_NOT_FOUND?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/INVALID_INPUT?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UNABLE_TO_COMPLY?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/INTERNAL_ERROR?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NOT_IMPLEMENTED?"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_ljm8QDzdEeCzc5LWmdQYVA" name="getContainingProtectionGroupNames" visibility="public" precondition="_ljm8QjzdEeCzc5LWmdQYVA" postcondition="_ljm8RDzdEeCzc5LWmdQYVA">
+          <ownedComment xmi:id="_ljm8QTzdEeCzc5LWmdQYVA" annotatedElement="_ljm8QDzdEeCzc5LWmdQYVA">
+            <body>This operation allows the requesting OS to retrieve the names of the Protection Groups containing a given Physical Termination Point.&#xD;
+&#xD;
+Traceability: R_TMF518_RTM_II_0069.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_ljm8QjzdEeCzc5LWmdQYVA" constrainedElement="_ljm8QDzdEeCzc5LWmdQYVA">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_ljm8QzzdEeCzc5LWmdQYVA">
+              <body>None</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_ljm8RDzdEeCzc5LWmdQYVA" constrainedElement="_ljm8QDzdEeCzc5LWmdQYVA">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_ljm8RTzdEeCzc5LWmdQYVA">
+              <body>No change in the system.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_ljm8RjzdEeCzc5LWmdQYVA" name="void" isUnique="false" direction="return"/>
+          <ownedParameter xmi:id="_ljm8RzzdEeCzc5LWmdQYVA" name="ptpRef">
+            <ownedComment xmi:id="_ljm8SDzdEeCzc5LWmdQYVA" annotatedElement="_ljm8RzzdEeCzc5LWmdQYVA">
+              <body>This parameter provides the name of the Physical Termination Point.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_ljm8STzdEeCzc5LWmdQYVA">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_ljm8SjzdEeCzc5LWmdQYVA" name="pgRefList" direction="out">
+            <ownedComment xmi:id="_ljm8SzzdEeCzc5LWmdQYVA" annotatedElement="_ljm8SjzdEeCzc5LWmdQYVA">
+              <body>This parameter returns the names of the containing Protection Groups.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ljm8TDzdEeCzc5LWmdQYVA" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ljm8TTzdEeCzc5LWmdQYVA"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_ljm8TjzdEeCzc5LWmdQYVA">
+              <body>empty list</body>
             </defaultValue>
           </ownedParameter>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/COMM_LOSS?"/>
@@ -1994,7 +2083,7 @@ In case of an M:N equipment protection type, protectedEquipmentRef always identi
             </children>
             <styles xmi:type="notation:ShapeStyle" xmi:id="_LcY9cf-9EduKKLvC_EB00A" fontName="Arial" description="in MTNM TP alarm reporting is set on/off by modifying the corresponding tranmission parameter" fillColor="13369343" lineColor="6737151"/>
             <element xsi:nil="true"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_LcY9cv-9EduKKLvC_EB00A" x="20370" y="4935" width="5660"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_LcY9cv-9EduKKLvC_EB00A" x="23892" y="5940" width="5660"/>
           </children>
           <children xmi:id="_OUUnUP_SEduS0Yg9UXWGJw" element="_SeNZYP_IEduKKLvC_EB00A">
             <children xmi:id="_OUg0kP_SEduS0Yg9UXWGJw" type="ImageCompartment">
@@ -2882,7 +2971,8 @@ In case of an M:N equipment protection type, protectedEquipmentRef always identi
   <Default:Documentation xmi:id="_VNfskN1jEdyrKNXnBMy96w" base_Comment="_VNWiqd1jEdyrKNXnBMy96w"/>
   <Default:Documentation xmi:id="_VNfskd1jEdyrKNXnBMy96w" base_Comment="_VNWiod1jEdyrKNXnBMy96w"/>
   <mTOPUMLProfile:mTOPOperation xmi:id="_bZIIbt1jEdyrKNXnBMy96w" base_Operation="_bZIIYN1jEdyrKNXnBMy96w">
-    <messageExchangePattern>SIT</messageExchangePattern>
+    <messageExchangePattern>SRR</messageExchangePattern>
+    <messageExchangePattern>ARR</messageExchangePattern>
   </mTOPUMLProfile:mTOPOperation>
   <Default:Documentation xmi:id="_bZIIb91jEdyrKNXnBMy96w" base_Comment="_bZIIad1jEdyrKNXnBMy96w"/>
   <Default:Documentation xmi:id="_bZRSUN1jEdyrKNXnBMy96w" base_Comment="_bZIIbN1jEdyrKNXnBMy96w"/>
@@ -3047,4 +3137,14 @@ In case of an M:N equipment protection type, protectedEquipmentRef always identi
   <Default:Documentation xmi:id="_ru2csyNLEd2rRa5mQZhDZw" base_Comment="_ru2csSNLEd2rRa5mQZhDZw"/>
   <Default:Documentation xmi:id="_yl1ioyNLEd2rRa5mQZhDZw" base_Comment="_yl1ioSNLEd2rRa5mQZhDZw"/>
   <Default:Documentation xmi:id="_t70tYQRTEeC-l6U8aOqMIw" base_Comment="_t70tYARTEeC-l6U8aOqMIw"/>
+  <Default:Documentation xmi:id="_Eu8nNDrLEeCod6Pp3ORnEw" base_Comment="_Eu8nMTrLEeCod6Pp3ORnEw"/>
+  <Default:URL xmi:id="_Eu8nNTrLEeCod6Pp3ORnEw" base_Comment="_Eu8nMjrLEeCod6Pp3ORnEw"/>
+  <Default:Documentation xmi:id="_1nVSYTrLEeCod6Pp3ORnEw" base_Comment="_1nVSYDrLEeCod6Pp3ORnEw"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_lkNZMDzdEeCzc5LWmdQYVA" base_Operation="_ljm8QDzdEeCzc5LWmdQYVA">
+    <messageExchangePattern>SRR</messageExchangePattern>
+    <messageExchangePattern>ARR</messageExchangePattern>
+  </mTOPUMLProfile:mTOPOperation>
+  <Default:Documentation xmi:id="_lkNZMTzdEeCzc5LWmdQYVA" base_Comment="_ljm8QTzdEeCzc5LWmdQYVA"/>
+  <Default:Documentation xmi:id="_lkNZMjzdEeCzc5LWmdQYVA" base_Comment="_ljm8SDzdEeCzc5LWmdQYVA"/>
+  <Default:Documentation xmi:id="_lkNZMzzdEeCzc5LWmdQYVA" base_Comment="_ljm8SzzdEeCzc5LWmdQYVA"/>
 </xmi:XMI>
