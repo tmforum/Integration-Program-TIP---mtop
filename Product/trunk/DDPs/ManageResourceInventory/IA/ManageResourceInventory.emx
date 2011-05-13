@@ -27,7 +27,9 @@
 - Interfaces::TerminationPointRetrievalService::getContainedPotentialConnectionTerminationPoints: ctpList replaced by tpList.&#xD;
 - Interfaces::TrafficConditioningProfileRetrievalService::getAllTrafficConditioningProfiles: mdRef added as input parameter.&#xD;
 - Interfaces::ResourceInventoryUpdateService::updateInventory: Exception InvalidInput replaced by InvalidInputObjectDoesNotExist, InvalidInputUnsupportedObjectTypes and InvalidInputUnsupportAttributesOrValues.&#xD;
-- Interfaces::ResourceInventoryUpdateService::updateInventory: Exception PolicyViolation added.</body>
+- Interfaces::ResourceInventoryUpdateService::updateInventory: Exception PolicyViolation added.&#xD;
+- Interfaces::TopologicalLinkRetrievalService::getAllTopologicalLinksOfFd: Documentation updated.&#xD;
+- Type Definitions::InventoryData: moved to NRF DDP.</body>
     </ownedComment>
     <packageImport xmi:id="_YcGc5A6qEdyd7PUNb-IYCQ">
       <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
@@ -2253,13 +2255,15 @@ Traceability: R_TMF518_MRI_II_0004.</body>
               <body>..\..\Framework\SD\SD2-5_Communication_Styles.pdf</body>
             </ownedComment>
           </ownedParameter>
-          <ownedParameter xmi:id="_V2rGMNyXEdyY2qUBC6uXag" name="inventoryData" type="_GKwocBKxEd2nAd4VxqP70w" direction="out">
+          <ownedParameter xmi:id="_V2rGMNyXEdyY2qUBC6uXag" name="inventoryData" direction="out">
             <ownedComment xmi:id="_V2rGMdyXEdyY2qUBC6uXag" annotatedElement="_V2rGMNyXEdyY2qUBC6uXag">
-              <body>This parameter returns the the requested inventory data.&#xD;
-&#xD;
-The inventory data which may vary based on the MEP. Refer to SD2-5 in the Framework DDP. Also, note that the atomic elements of the inventory data XML representation are all the following top-level objects: MD, ME, MLSN, OS, TL, and TMD. It means that all top-level object instances must be fully encapsulated in one batch when the MEP involves multiple responses.&lt;/p>&#xD;
-            &lt;/xs</body>
+              <body>This parameter returns the requested inventory data.&#xD;
+The inventory data may vary based on the MEP. Refer to the attached supporting document SD2-5_Communication_Styles.</body>
             </ownedComment>
+            <ownedComment xmi:id="_EfhkkHyJEeCQpcxxWRGsXA" annotatedElement="_V2rGMNyXEdyY2qUBC6uXag">
+              <body>..\..\Framework\SD\SD2-5_Communication_Styles.pdf</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_GKwocBKxEd2nAd4VxqP70w?NetworkResourceFulfillment/Type%20Definitions/InventoryData?"/>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_V2rGMtyXEdyY2qUBC6uXag">
               <body>NA</body>
             </defaultValue>
@@ -2296,11 +2300,12 @@ Traceability: R_TMF518_MRI_II_0005, R_TMF518_MRI_III_0146, UC_TMF518_MRI_0015.</
               <body>The inventory of the target OS has been updated as requested.</body>
             </specification>
           </ownedRule>
-          <ownedParameter xmi:id="_f4fHgBT5Ed2iK4kbHbyS2g" name="inventoryUpdate" type="_GKwocBKxEd2nAd4VxqP70w">
+          <ownedParameter xmi:id="_f4fHgBT5Ed2iK4kbHbyS2g" name="inventoryUpdate">
             <ownedComment xmi:id="_7v23ABT5Ed2iK4kbHbyS2g" annotatedElement="_f4fHgBT5Ed2iK4kbHbyS2g">
               <body>This parameter defines the requested inventory update.&#xD;
 Note that the same data structure is used as in the response to the getInventory operation.</body>
             </ownedComment>
+            <type xmi:type="uml:DataType" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_GKwocBKxEd2nAd4VxqP70w?NetworkResourceFulfillment/Type%20Definitions/InventoryData?"/>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_QXiQMBT7Ed2iK4kbHbyS2g">
               <body>NA</body>
             </defaultValue>
@@ -3597,7 +3602,7 @@ Traceability: R_TMF518_MRI_II_00xx.</body>
         </ownedOperation>
         <ownedOperation xmi:id="_GBBloNyjEdyY2qUBC6uXag" name="getAllTopologicalLinksOfFd" visibility="public" precondition="_GBBlotyjEdyY2qUBC6uXag" postcondition="_GBBlpNyjEdyY2qUBC6uXag">
           <ownedComment xmi:id="_GBBlodyjEdyY2qUBC6uXag" annotatedElement="_GBBloNyjEdyY2qUBC6uXag">
-            <body>This operation retrieves the details of all the Topological Links (including also the internal Topological Links) that are terminated at the provided Flow Domain (FD).&#xD;
+            <body>This operation retrieves the details of all the Topological Links that are terminated at the provided Flow Domain (FD). This includes also the Topological Links contained by the FD.&#xD;
 &#xD;
 Traceability: R_TMF518_MRI_II_00xx.</body>
           </ownedComment>
@@ -4876,15 +4881,6 @@ Traceability: R_TMF518_NRB_I_0001.</body>
           </defaultValue>
         </ownedAttribute>
       </packagedElement>
-      <packagedElement xmi:type="uml:DataType" xmi:id="_GKwocBKxEd2nAd4VxqP70w" name="InventoryData">
-        <ownedComment xmi:id="_LNErwBKxEd2nAd4VxqP70w" annotatedElement="_GKwocBKxEd2nAd4VxqP70w">
-          <body>This data type contains the reply information on a getInventory operation.&#xD;
-The inventory layout structure is described in figure 3 of the attached supporting document SD2-12_Inventory_Layout.</body>
-        </ownedComment>
-        <ownedComment xmi:id="_QgE2cBKxEd2nAd4VxqP70w" annotatedElement="_GKwocBKxEd2nAd4VxqP70w">
-          <body>..\..\NetworkResourceFulfillment\SD\SD2-12_Inventory_Layout.pdf</body>
-        </ownedComment>
-      </packagedElement>
       <packagedElement xmi:type="uml:DataType" xmi:id="_7P7q4BK2Ed2nAd4VxqP70w" name="InventoryFilter">
         <ownedComment xmi:id="_ESi64BK3Ed2nAd4VxqP70w" annotatedElement="_7P7q4BK2Ed2nAd4VxqP70w">
           <body>This data type contains the Inventory Filter structure used for the getInventory() operation.&#xD;
@@ -5660,8 +5656,6 @@ Traceability: R_TMF518_MRI_II_0005.</body>
   <Default:Documentation xmi:id="_mUG94BEZEd22C4fNvkcGXQ" base_Comment="_mT9M4BEZEd22C4fNvkcGXQ"/>
   <Default:Documentation xmi:id="_k-45kxEoEd22C4fNvkcGXQ" base_Comment="_k-45kREoEd22C4fNvkcGXQ"/>
   <Default:Documentation xmi:id="_oW0FYxEtEd22C4fNvkcGXQ" base_Comment="_oW0FYREtEd22C4fNvkcGXQ"/>
-  <Default:Documentation xmi:id="_LNOcwBKxEd2nAd4VxqP70w" base_Comment="_LNErwBKxEd2nAd4VxqP70w"/>
-  <Default:URL xmi:id="_Xz0w4BKxEd2nAd4VxqP70w" base_Comment="_QgE2cBKxEd2nAd4VxqP70w"/>
   <Default:Documentation xmi:id="_ESi64RK3Ed2nAd4VxqP70w" base_Comment="_ESi64BK3Ed2nAd4VxqP70w"/>
   <mTOPUMLProfile:mTOPAttribute xmi:id="_HkNf8xK3Ed2nAd4VxqP70w" base_StructuralFeature="_HkNf8BK3Ed2nAd4VxqP70w" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
   <Default:Documentation xmi:id="_HkNf9BK3Ed2nAd4VxqP70w" base_Comment="_HkNf8RK3Ed2nAd4VxqP70w"/>
@@ -5755,12 +5749,18 @@ Traceability: R_TMF518_MRI_II_0005.</body>
   <Default:URL xmi:id="_oqQkYBaUEd2_1KbirMALrA" base_Comment="_nCZOsBaUEd2_1KbirMALrA"/>
   <Default:Documentation xmi:id="_QMCFgBaVEd2_1KbirMALrA" base_Comment="_QL4UgRaVEd2_1KbirMALrA"/>
   <Default:Documentation xmi:id="_CazU1RaWEd2_1KbirMALrA" base_Comment="_CazU0RaWEd2_1KbirMALrA"/>
-  <mTOPUMLProfile:mTOPOperation xmi:id="__LsdYKynEd2M54_OOitiDw" base_Operation="__LisYKynEd2M54_OOitiDw" isOperationIdempotent="true"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="__LsdYKynEd2M54_OOitiDw" base_Operation="__LisYKynEd2M54_OOitiDw" isOperationIdempotent="true">
+    <messageExchangePattern>SRR</messageExchangePattern>
+    <messageExchangePattern>ARR</messageExchangePattern>
+  </mTOPUMLProfile:mTOPOperation>
   <Default:Documentation xmi:id="__LsdYaynEd2M54_OOitiDw" base_Comment="__LisY6ynEd2M54_OOitiDw"/>
   <Default:Documentation xmi:id="__LsdYqynEd2M54_OOitiDw" base_Comment="__LisaaynEd2M54_OOitiDw"/>
   <Default:URL xmi:id="_asmYMKypEd2M54_OOitiDw" base_Comment="_PwPYUKypEd2M54_OOitiDw"/>
   <Default:Documentation xmi:id="_0d4vgKyqEd2M54_OOitiDw" base_Comment="_0dvlkKyqEd2M54_OOitiDw"/>
-  <mTOPUMLProfile:mTOPOperation xmi:id="_SBJm36ywEd2M54_OOitiDw" base_Operation="_SBJm0KywEd2M54_OOitiDw" isOperationIdempotent="true"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_SBJm36ywEd2M54_OOitiDw" base_Operation="_SBJm0KywEd2M54_OOitiDw" isOperationIdempotent="true">
+    <messageExchangePattern>SRR</messageExchangePattern>
+    <messageExchangePattern>ARR</messageExchangePattern>
+  </mTOPUMLProfile:mTOPOperation>
   <Default:Documentation xmi:id="_SBJm4aywEd2M54_OOitiDw" base_Comment="_SBJm06ywEd2M54_OOitiDw"/>
   <Default:Documentation xmi:id="_SBJm4qywEd2M54_OOitiDw" base_Comment="_SBJm2qywEd2M54_OOitiDw"/>
   <Default:Documentation xmi:id="_AtyCcARSEeC-l6U8aOqMIw" base_Comment="_AtoRcARSEeC-l6U8aOqMIw"/>
@@ -5768,4 +5768,5 @@ Traceability: R_TMF518_MRI_II_0005.</body>
   <Default:URL xmi:id="_hV7yQT6bEeCcQOj3PJoaFA" base_Comment="_hV7yQD6bEeCcQOj3PJoaFA"/>
   <Default:Documentation xmi:id="_jPC4QFnfEeCMhuuj9iM8Hg" base_Comment="_jO5HQVnfEeCMhuuj9iM8Hg"/>
   <Default:Documentation xmi:id="_-PX681nzEeCMhuuj9iM8Hg" base_Comment="_-PX68VnzEeCMhuuj9iM8Hg"/>
+  <Default:URL xmi:id="_UHZ4YHyJEeCQpcxxWRGsXA" base_Comment="_EfhkkHyJEeCQpcxxWRGsXA"/>
 </xmi:XMI>

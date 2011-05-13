@@ -18,7 +18,14 @@
 - Operation Exceptions: InvalidInputObjectDoesNotExist added.&#xD;
 - Operation Exceptions: InvalidInputUnsupportAttributesOrValues added.&#xD;
 - Operation Exceptions: InvalidInputUnsupportedObjectTypes added.&#xD;
-- Operation Exceptions: PolicyViolation added.</body>
+- Operation Exceptions: PolicyViolation added.&#xD;
+- Interfaces::NotificationBrokerService: Parameters completed.&#xD;
+- Interfaces::NotificationConsumerService: Parameters completed.&#xD;
+- Interfaces::NotificationProducerService: Parameters completed.&#xD;
+- FMW Notification Handling Class Diagram added.&#xD;
+- Type Definitions::MultiEventInventoryAttributes: added.&#xD;
+- Data Object Classes::CommonObjectInfo::additionalInfo: Note &quot;In the IIS this attribute is defined as vendorExtensions.&quot; added.&#xD;
+- Type Definitions::CommonObjectSetData::additionalInfo: Note &quot;In the IIS this attribute is defined as vendorExtensions.&quot; added.</body>
     </ownedComment>
     <packageImport xmi:id="_vtw3xO2IEduD1d0J9j2p4g">
       <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
@@ -278,7 +285,8 @@ Traceability: R_TMF518_RP_II_0078.</body>
         </ownedAttribute>
         <ownedAttribute xmi:id="__DKn6f_FEduKKLvC_EB00A" name="additionalInfo" visibility="public" type="_8_P-sPo7EduVsYI7mfNDXQ">
           <ownedComment xmi:id="__DKn6v_FEduKKLvC_EB00A" annotatedElement="__DKn6f_FEduKKLvC_EB00A">
-            <body>This Parameter allows the communication from the requesting OS to the target OS of additional information which is not explicitly modelled.</body>
+            <body>This Parameter allows the communication from the requesting OS to the target OS of additional information which is not explicitly modelled.&#xD;
+Note: In the IIS this attribute is defined as vendorExtensions.</body>
           </ownedComment>
           <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_isnzof_GEduKKLvC_EB00A" value="*"/>
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_isnzoP_GEduKKLvC_EB00A"/>
@@ -770,6 +778,28 @@ Traceability: R_TMF518_FMW_II_0031.</body>
           </value>
         </slot>
       </packagedElement>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_LU0VsHpKEeCBW5cXQg0v1Q" name="MultiEventInventoryAttributes">
+        <ownedComment xmi:id="_QcfaIHpKEeCBW5cXQg0v1Q" annotatedElement="_LU0VsHpKEeCBW5cXQg0v1Q">
+          <body>This data type is used when an object instance is embedded in the inventory layout payload of a Multi-Event Inventory (MEI) notification.</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_cm7WsHpKEeCBW5cXQg0v1Q" name="neTime" visibility="public" type="_2KarIPx7EduuuoHTWmKVyQ" isReadOnly="true">
+          <ownedComment xmi:id="_cm7WsXpKEeCBW5cXQg0v1Q" annotatedElement="_cm7WsHpKEeCBW5cXQg0v1Q">
+            <body>This attribute represents the time at which the network element (NE) detected the inventory change.</body>
+          </ownedComment>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_w2SzAHpKEeCBW5cXQg0v1Q" name="eventIndication" visibility="public" isReadOnly="true">
+          <ownedComment xmi:id="_w2SzAXpKEeCBW5cXQg0v1Q" annotatedElement="_w2SzAHpKEeCBW5cXQg0v1Q">
+            <body>This attribute represents an indication of the type of inventory update.&#xD;
+Possible values are Object Creation (OC), Object Discovery (ODsc), Object Deletion (OD), Attribute Value Change (AVC), State Change (SC) and AVC_SC_and_Children.&#xD;
+Only the acronym (e.g., OC) is used in the actual attribute value.&#xD;
+The following conventions apply:&#xD;
+- If an object creation or object discovery indicator is applied to a parent object, it implicitly applies to all the children, i.e., the OS sending the notification only needs to set the indicator attribute in the parent object.&#xD;
+- If an object deletion is applied to a parent object, it is assumed that all the children are also deleted. The childern should not be listed.&#xD;
+- The AVC_SC_and_Children indication may be applied to a parent object to imply that there may be AVC or SC changes to the parent and some or all of the children.</body>
+          </ownedComment>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedAttribute>
+      </packagedElement>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_iTiR0O2JEduD1d0J9j2p4g" name="Data Object Classes">
       <eAnnotations xmi:id="_iTiR0e2JEduD1d0J9j2p4g" source="uml2.diagrams"/>
@@ -905,12 +935,10 @@ Traceability: R_TMF518_FMW_I_0001.</body>
             <body>This attribute is a vendor specific attribute that contains additional specific information about the object. This list can be empty.&#xD;
 The attribute, when present, can be used to convey information from the target OS to the requesting OS, and vice versa, of additional information that isn't explicitly modelled, except that some parameter names and values may be predefined.&#xD;
 Any information encoded in the additionalInfo is optional: target OS need not fill out this information and the requesting OS need not interpret this information.&#xD;
-Traceability: R_TMF518_FMW_I_0001.</body>
-          </ownedComment>
-          <ownedComment xmi:id="_nk0nQCMpEdy7GrfAi1CTwQ" annotatedElement="_xd-pQQ6uEdyd7PUNb-IYCQ">
-            <body>This is a vendor specific attribute that contains additional specific information about the object. This list can be empty.&#xD;
-The attribute, when present, can be used to convey information from the target OS to the requesting OS, and vice versa, of additional information that isn't explicitly modelled, except that some parameter names and values may be predefined.&#xD;
-Any information encoded in the additionalInfo is optional: the target OS need not fill out this information and the requesting OS need not interpret this information.</body>
+Note: In the IIS this attribute is defined as vendorExtensions.&#xD;
+Traceability: R_TMF518_FMW_I_0001.&#xD;
+&#xD;
+</body>
           </ownedComment>
           <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_xd-pQw6uEdyd7PUNb-IYCQ" value="*"/>
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_xd-pRA6uEdyd7PUNb-IYCQ"/>
@@ -1334,7 +1362,7 @@ Any information encoded in the additionalInfo is optional: the target OS need no
               <layoutConstraint xmi:type="notation:Bounds" xmi:id="_njHUdfyEEduuuoHTWmKVyQ" y="-186"/>
             </children>
             <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_njHUcvyEEduuuoHTWmKVyQ" fontName="Arial" routing="Rectilinear" showStereotype="Text"/>
-            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_njHUc_yEEduuuoHTWmKVyQ" points="[-106, -846, 4657, 1561]$[-106, -1189, 4657, 1218]$[-2434, -1189, 2329, 1218]$[-2434, -2355, 2329, 52]"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_njHUc_yEEduuuoHTWmKVyQ" points="[-2273, -845, 2533, 1548]$[-2273, -2375, 2533, 18]"/>
             <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_iiCKwPyFEduuuoHTWmKVyQ" id="(0.65662575,0.9935252)"/>
           </edges>
           <edges xmi:id="_yKVx0PyEEduuuoHTWmKVyQ" element="_yKPrMPyEEduuuoHTWmKVyQ" source="_tV3WMPyEEduuuoHTWmKVyQ" target="_nEIhIPx-EduuuoHTWmKVyQ">
@@ -1354,7 +1382,7 @@ Any information encoded in the additionalInfo is optional: the target OS need no
               <layoutConstraint xmi:type="notation:Bounds" xmi:id="_GwmEJfyFEduuuoHTWmKVyQ" y="-186"/>
             </children>
             <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_GwmEIvyFEduuuoHTWmKVyQ" fontName="Arial" routing="Rectilinear" showStereotype="Text"/>
-            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_GwmEI_yFEduuuoHTWmKVyQ" points="[27, -900, -3889, 4180]$[27, -1376, -3889, 3704]$[3149, -1376, -767, 3704]$[3149, -5028, -767, 52]"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_GwmEI_yFEduuuoHTWmKVyQ" points="[3152, -912, -768, 4173]$[3152, -5067, -768, 18]"/>
             <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_gyxMkPyFEduuuoHTWmKVyQ" id="(0.24990703,0.9935252)"/>
           </edges>
           <edges xmi:id="_M3HWcfyFEduuuoHTWmKVyQ" element="_M3HWcPyFEduuuoHTWmKVyQ" source="_L-kk4PyFEduuuoHTWmKVyQ" target="_mYMBIPx-EduuuoHTWmKVyQ">
@@ -1383,7 +1411,7 @@ Any information encoded in the additionalInfo is optional: the target OS need no
               <layoutConstraint xmi:type="notation:Bounds" xmi:id="_HeD7NPySEduuuoHTWmKVyQ" y="-186"/>
             </children>
             <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_HeD7MfySEduuuoHTWmKVyQ" fontName="Arial" routing="Rectilinear" showStereotype="Text"/>
-            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_HeD7MvySEduuuoHTWmKVyQ" points="[4074, -767, -2488, 79]$[5979, -767, -583, 79]"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_HeD7MvySEduuuoHTWmKVyQ" points="[1979, -845, -201, 3479]$[1979, -2375, -201, 1949]"/>
             <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_iB5iMMqWEdy5wPz5J8hAmw" id="(0.07276559,0.2701439)"/>
           </edges>
           <edges xmi:id="_WpOZoPyZEduuuoHTWmKVyQ" element="_WpITAPyZEduuuoHTWmKVyQ" source="_PB9GQPyZEduuuoHTWmKVyQ" target="_mYMBIPx-EduuuoHTWmKVyQ">
@@ -4282,6 +4310,70 @@ Any information encoded in the additionalInfo is optional: the target OS need no
             <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_qCKEYuJIEd2qHNwdlV5t3Q" points="[1808, 1112, -5888, -3619]$[1808, 4860, -5888, 129]$[4919, 4860, -2777, 129]"/>
           </edges>
         </contents>
+        <contents xmi:type="notation:Diagram" xmi:id="_KdnbAHoVEeCBW5cXQg0v1Q" type="Class" name="FMW Notification Handling Class Diagram">
+          <children xmi:id="_jwxhUHoVEeCBW5cXQg0v1Q" element="_BpUBcN-3EdyFkaOT6BXRgg">
+            <children xmi:id="_jwxhU3oVEeCBW5cXQg0v1Q" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_jwxhVHoVEeCBW5cXQg0v1Q" width="530" height="530"/>
+            </children>
+            <children xmi:id="_jw6rQHoVEeCBW5cXQg0v1Q" type="Stereotype"/>
+            <children xmi:id="_jw6rQXoVEeCBW5cXQg0v1Q" type="Kind"/>
+            <children xmi:id="_jw6rQnoVEeCBW5cXQg0v1Q" type="Name"/>
+            <children xmi:id="_jw6rQ3oVEeCBW5cXQg0v1Q" type="Parent"/>
+            <children xmi:id="_jw6rRHoVEeCBW5cXQg0v1Q" type="AttributeCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_jw6rRXoVEeCBW5cXQg0v1Q"/>
+            </children>
+            <children xmi:id="_jw6rRnoVEeCBW5cXQg0v1Q" type="OperationCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_jw6rR3oVEeCBW5cXQg0v1Q"/>
+            </children>
+            <children xmi:id="_jw6rSHoVEeCBW5cXQg0v1Q" visible="false" type="SignalCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_jw6rSXoVEeCBW5cXQg0v1Q"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLClassifierStyle" xmi:id="_jwxhUXoVEeCBW5cXQg0v1Q" showListSignature="true" showParent="QualifiedName" showStereotype="Label" useClassifierShape="true"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_jwxhUnoVEeCBW5cXQg0v1Q" x="5808" y="1320"/>
+          </children>
+          <children xmi:id="_xaSrAHoVEeCBW5cXQg0v1Q" element="_D-UxAN-3EdyFkaOT6BXRgg">
+            <children xmi:id="_xaSrA3oVEeCBW5cXQg0v1Q" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_xaSrBHoVEeCBW5cXQg0v1Q" width="530" height="530"/>
+            </children>
+            <children xmi:id="_xaSrBXoVEeCBW5cXQg0v1Q" type="Stereotype"/>
+            <children xmi:id="_xaSrBnoVEeCBW5cXQg0v1Q" type="Kind"/>
+            <children xmi:id="_xaSrB3oVEeCBW5cXQg0v1Q" type="Name"/>
+            <children xmi:id="_xaSrCHoVEeCBW5cXQg0v1Q" type="Parent"/>
+            <children xmi:id="_xaSrCXoVEeCBW5cXQg0v1Q" type="AttributeCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_xaSrCnoVEeCBW5cXQg0v1Q"/>
+            </children>
+            <children xmi:id="_xaSrC3oVEeCBW5cXQg0v1Q" type="OperationCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_xaSrDHoVEeCBW5cXQg0v1Q"/>
+            </children>
+            <children xmi:id="_xaSrDXoVEeCBW5cXQg0v1Q" visible="false" type="SignalCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_xaSrDnoVEeCBW5cXQg0v1Q"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLClassifierStyle" xmi:id="_xaSrAXoVEeCBW5cXQg0v1Q" showListSignature="true" showParent="QualifiedName" showStereotype="Label" useClassifierShape="true"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_xaSrAnoVEeCBW5cXQg0v1Q" x="9896" y="5148"/>
+          </children>
+          <children xmi:id="_x4itQHoVEeCBW5cXQg0v1Q" element="_GapCcN-3EdyFkaOT6BXRgg">
+            <children xmi:id="_x4itQ3oVEeCBW5cXQg0v1Q" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_x4itRHoVEeCBW5cXQg0v1Q" width="530" height="530"/>
+            </children>
+            <children xmi:id="_x4itRXoVEeCBW5cXQg0v1Q" type="Stereotype"/>
+            <children xmi:id="_x4itRnoVEeCBW5cXQg0v1Q" type="Kind"/>
+            <children xmi:id="_x4itR3oVEeCBW5cXQg0v1Q" type="Name"/>
+            <children xmi:id="_x4itSHoVEeCBW5cXQg0v1Q" type="Parent"/>
+            <children xmi:id="_x4itSXoVEeCBW5cXQg0v1Q" type="AttributeCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_x4itSnoVEeCBW5cXQg0v1Q"/>
+            </children>
+            <children xmi:id="_x4itS3oVEeCBW5cXQg0v1Q" type="OperationCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_x4itTHoVEeCBW5cXQg0v1Q"/>
+            </children>
+            <children xmi:id="_x4itTXoVEeCBW5cXQg0v1Q" visible="false" type="SignalCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_x4itTnoVEeCBW5cXQg0v1Q"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLClassifierStyle" xmi:id="_x4itQXoVEeCBW5cXQg0v1Q" showListSignature="true" showParent="QualifiedName" showStereotype="Label" useClassifierShape="true"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_x4itQnoVEeCBW5cXQg0v1Q" x="5808" y="8184"/>
+          </children>
+          <styles xmi:type="umlnotation:UMLDiagramStyle" xmi:id="_KdnbAXoVEeCBW5cXQg0v1Q"/>
+          <element xsi:nil="true"/>
+        </contents>
       </eAnnotations>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_-nGYoO2KEduD1d0J9j2p4g" name="Interfaces">
@@ -4549,7 +4641,7 @@ Traceability: R_TMF518_FMW_II_0028, R_TMF518_FMW_II_0030, R_TMF518_FMW_II_0031, 
               <body>NA</body>
             </defaultValue>
           </ownedParameter>
-          <ownedParameter xmi:id="_8UyicC5HEd26CMlLpyBM3Q" name="requestList" type="_Y16WYC5EEd26CMlLpyBM3Q">
+          <ownedParameter xmi:id="_8UyicC5HEd26CMlLpyBM3Q" name="requestList" type="_iVmugC5FEd26CMlLpyBM3Q">
             <ownedComment xmi:id="_8UyicS5HEd26CMlLpyBM3Q" annotatedElement="_8UyicC5HEd26CMlLpyBM3Q">
               <body>This parameter contains the request message structure of the doProcess compound operation.</body>
             </ownedComment>
@@ -4634,16 +4726,134 @@ Traceability: R_TMF518_FMW_II_0028, R_TMF518_FMW_II_0030, R_TMF518_FMW_II_0031, 
         </ownedOperation>
       </packagedElement>
       <packagedElement xmi:type="uml:Interface" xmi:id="_BpUBcN-3EdyFkaOT6BXRgg" name="NotificationBrokerService">
-        <ownedOperation xmi:id="_UvNUQN-3EdyFkaOT6BXRgg" name="notify" visibility="public"/>
-        <ownedOperation xmi:id="_V_YisN-3EdyFkaOT6BXRgg" name="subscribe" visibility="public" raisedException="_c9oFECVYEdyiv86aejkLcA _KvzCEJEZEdypurMa9DXJyw _rYlggCVdEdyiv86aejkLcA _RoIsICVbEdyiv86aejkLcA _NfKv0FUbEeC8pY-bmVQw4w _uArPACVbEdyiv86aejkLcA _oeuGgFUbEeC8pY-bmVQw4w _3PqLQFUbEeC8pY-bmVQw4w"/>
-        <ownedOperation xmi:id="_XLhlsN-3EdyFkaOT6BXRgg" name="unsubscribe" visibility="public" raisedException="_rYlggCVdEdyiv86aejkLcA _KvzCEJEZEdypurMa9DXJyw _c9oFECVYEdyiv86aejkLcA _RoIsICVbEdyiv86aejkLcA _uArPACVbEdyiv86aejkLcA _3PqLQFUbEeC8pY-bmVQw4w"/>
+        <ownedOperation xmi:id="_UvNUQN-3EdyFkaOT6BXRgg" name="notify" visibility="public">
+          <ownedComment xmi:id="_d4LywHoUEeCBW5cXQg0v1Q" annotatedElement="_UvNUQN-3EdyFkaOT6BXRgg">
+            <body>This operation allows event notification to a client OS.</body>
+          </ownedComment>
+          <ownedParameter xmi:id="_guR2IHoUEeCBW5cXQg0v1Q" name="topic">
+            <ownedComment xmi:id="_vPXhAHoUEeCBW5cXQg0v1Q" annotatedElement="_guR2IHoUEeCBW5cXQg0v1Q">
+              <body>This parameter contains the unique name of the topic on which the notification &quot;message&quot; was published. The topic is based on a TopicExpression, which is associated as a unique JNDI entry. In MTOSI Release 1, it represents the address of a JMS topic instance created at deployment.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_FMAL4HofEeCBW5cXQg0v1Q" name="message">
+            <ownedComment xmi:id="_RVklwHofEeCBW5cXQg0v1Q" annotatedElement="_FMAL4HofEeCBW5cXQg0v1Q">
+              <body>This parameter contains the notification payload.</body>
+            </ownedComment>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_V_YisN-3EdyFkaOT6BXRgg" name="subscribe" visibility="public" raisedException="_c9oFECVYEdyiv86aejkLcA _KvzCEJEZEdypurMa9DXJyw _rYlggCVdEdyiv86aejkLcA _RoIsICVbEdyiv86aejkLcA _NfKv0FUbEeC8pY-bmVQw4w _uArPACVbEdyiv86aejkLcA _oeuGgFUbEeC8pY-bmVQw4w _3PqLQFUbEeC8pY-bmVQw4w">
+          <ownedComment xmi:id="_mUDLAHpEEeCBW5cXQg0v1Q" annotatedElement="_V_YisN-3EdyFkaOT6BXRgg">
+            <body>This operation allows the requesting OS to subscribe for notifications.</body>
+          </ownedComment>
+          <ownedParameter xmi:id="_XMI7QHpFEeCBW5cXQg0v1Q" name="consumerEpr">
+            <ownedComment xmi:id="_cjL4cHpFEeCBW5cXQg0v1Q" annotatedElement="_XMI7QHpFEeCBW5cXQg0v1Q">
+              <body>This parameter contains the notification consumer endpoint (callback handler) that the broker will call to send the notification.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_o9CxEHpFEeCBW5cXQg0v1Q" name="topic">
+            <ownedComment xmi:id="_o9CxEXpFEeCBW5cXQg0v1Q" annotatedElement="_o9CxEHpFEeCBW5cXQg0v1Q">
+              <body>This parameter contains the unique name of the topic object of the subscription.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_ziMx4HpFEeCBW5cXQg0v1Q" name="selector">
+            <ownedComment xmi:id="_74KXQHpFEeCBW5cXQg0v1Q" annotatedElement="_ziMx4HpFEeCBW5cXQg0v1Q">
+              <body>This parameter contains the optional &quot;filter&quot; expression to restrict the flow of messages sent to the notification consumer. By default, an empty selector defines the desire to be notified of all events for the given topic.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_ZvJ1IHpGEeCBW5cXQg0v1Q" name="subscriptionId" direction="out">
+            <ownedComment xmi:id="_scDZIHpGEeCBW5cXQg0v1Q" annotatedElement="_ZvJ1IHpGEeCBW5cXQg0v1Q">
+              <body>This parameter contains a unique subscription identifier that is returned to the requesting OS to be used when invoking the unsubscribe() for the given topic. Note that it must uniquely identify the request signature by its three elements; consumerEpr, topic, and selector.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_XLhlsN-3EdyFkaOT6BXRgg" name="unsubscribe" visibility="public" raisedException="_rYlggCVdEdyiv86aejkLcA _KvzCEJEZEdypurMa9DXJyw _c9oFECVYEdyiv86aejkLcA _RoIsICVbEdyiv86aejkLcA _uArPACVbEdyiv86aejkLcA _3PqLQFUbEeC8pY-bmVQw4w">
+          <ownedComment xmi:id="_7u6fMHpGEeCBW5cXQg0v1Q" annotatedElement="_XLhlsN-3EdyFkaOT6BXRgg">
+            <body>This operation allows the requesting OS to unsubscribe from a previously subscribed notification channel.</body>
+          </ownedComment>
+          <ownedParameter xmi:id="_3unSgHpGEeCBW5cXQg0v1Q" name="subscriptionId">
+            <ownedComment xmi:id="_3unSgXpGEeCBW5cXQg0v1Q" annotatedElement="_3unSgHpGEeCBW5cXQg0v1Q">
+              <body>This parameter contains a unique subscription identifier. It is the same subscription identifier that was returned on successful subscription of the requesting OS.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_FMM5AHpHEeCBW5cXQg0v1Q" name="topic">
+            <ownedComment xmi:id="_FMM5AXpHEeCBW5cXQg0v1Q" annotatedElement="_FMM5AHpHEeCBW5cXQg0v1Q">
+              <body>This parameter contains the unique name of the topic object of the unsubscription.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+          </ownedParameter>
+        </ownedOperation>
       </packagedElement>
       <packagedElement xmi:type="uml:Interface" xmi:id="_D-UxAN-3EdyFkaOT6BXRgg" name="NotificationConsumerService">
-        <ownedOperation xmi:id="_Z4OcgN-3EdyFkaOT6BXRgg" name="notify" visibility="public"/>
+        <ownedOperation xmi:id="_XahqoHpHEeCBW5cXQg0v1Q" name="notify" visibility="public">
+          <ownedComment xmi:id="_XahqoXpHEeCBW5cXQg0v1Q" annotatedElement="_XahqoHpHEeCBW5cXQg0v1Q">
+            <body>This operation allows event notification to a client OS.</body>
+          </ownedComment>
+          <ownedParameter xmi:id="_XahqonpHEeCBW5cXQg0v1Q" name="topic">
+            <ownedComment xmi:id="_Xahqo3pHEeCBW5cXQg0v1Q" annotatedElement="_XahqonpHEeCBW5cXQg0v1Q">
+              <body>This parameter contains the unique name of the topic on which the notification &quot;message&quot; was published. The topic is based on a TopicExpression, which is associated as a unique JNDI entry. In MTOSI Release 1, it represents the address of a JMS topic instance created at deployment.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_XahqpHpHEeCBW5cXQg0v1Q" name="message">
+            <ownedComment xmi:id="_XahqpXpHEeCBW5cXQg0v1Q" annotatedElement="_XahqpHpHEeCBW5cXQg0v1Q">
+              <body>This parameter contains the notification payload.</body>
+            </ownedComment>
+          </ownedParameter>
+        </ownedOperation>
       </packagedElement>
       <packagedElement xmi:type="uml:Interface" xmi:id="_GapCcN-3EdyFkaOT6BXRgg" name="NotificationProducerService">
-        <ownedOperation xmi:id="_cMzHMN-3EdyFkaOT6BXRgg" name="subscribe" visibility="public" raisedException="_rYlggCVdEdyiv86aejkLcA _KvzCEJEZEdypurMa9DXJyw _c9oFECVYEdyiv86aejkLcA _RoIsICVbEdyiv86aejkLcA _NfKv0FUbEeC8pY-bmVQw4w _uArPACVbEdyiv86aejkLcA _oeuGgFUbEeC8pY-bmVQw4w _3PqLQFUbEeC8pY-bmVQw4w"/>
-        <ownedOperation xmi:id="_dhu50N-3EdyFkaOT6BXRgg" name="unsubscribe" visibility="public" raisedException="_rYlggCVdEdyiv86aejkLcA _KvzCEJEZEdypurMa9DXJyw _c9oFECVYEdyiv86aejkLcA _RoIsICVbEdyiv86aejkLcA _uArPACVbEdyiv86aejkLcA _3PqLQFUbEeC8pY-bmVQw4w"/>
+        <ownedOperation xmi:id="_eT5WMHpHEeCBW5cXQg0v1Q" name="subscribe" visibility="public" raisedException="_c9oFECVYEdyiv86aejkLcA _KvzCEJEZEdypurMa9DXJyw _rYlggCVdEdyiv86aejkLcA _RoIsICVbEdyiv86aejkLcA _NfKv0FUbEeC8pY-bmVQw4w _uArPACVbEdyiv86aejkLcA _oeuGgFUbEeC8pY-bmVQw4w _3PqLQFUbEeC8pY-bmVQw4w">
+          <ownedComment xmi:id="_eT5WMXpHEeCBW5cXQg0v1Q" annotatedElement="_eT5WMHpHEeCBW5cXQg0v1Q">
+            <body>This operation allows the requesting OS to subscribe for notifications.</body>
+          </ownedComment>
+          <ownedParameter xmi:id="_eT5WMnpHEeCBW5cXQg0v1Q" name="consumerEpr">
+            <ownedComment xmi:id="_eT5WM3pHEeCBW5cXQg0v1Q" annotatedElement="_eT5WMnpHEeCBW5cXQg0v1Q">
+              <body>This parameter contains the notification consumer endpoint (callback handler) that the broker will call to send the notification.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_eT5WNHpHEeCBW5cXQg0v1Q" name="topic">
+            <ownedComment xmi:id="_eT5WNXpHEeCBW5cXQg0v1Q" annotatedElement="_eT5WNHpHEeCBW5cXQg0v1Q">
+              <body>This parameter contains the unique name of the topic object of the subscription.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_eT5WNnpHEeCBW5cXQg0v1Q" name="selector">
+            <ownedComment xmi:id="_eT5WN3pHEeCBW5cXQg0v1Q" annotatedElement="_eT5WNnpHEeCBW5cXQg0v1Q">
+              <body>This parameter contains the optional &quot;filter&quot; expression to restrict the flow of messages sent to the notification consumer. By default, an empty selector defines the desire to be notified of all events for the given topic.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_eT5WOHpHEeCBW5cXQg0v1Q" name="subscriptionId" direction="out">
+            <ownedComment xmi:id="_eT5WOXpHEeCBW5cXQg0v1Q" annotatedElement="_eT5WOHpHEeCBW5cXQg0v1Q">
+              <body>This parameter contains a unique subscription identifier that is returned to the requesting OS to be used when invoking the unsubscribe() for the given topic. Note that it must uniquely identify the request signature by its three elements; consumerEpr, topic, and selector.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_eT5WO3pHEeCBW5cXQg0v1Q" name="unsubscribe" visibility="public" raisedException="_rYlggCVdEdyiv86aejkLcA _KvzCEJEZEdypurMa9DXJyw _c9oFECVYEdyiv86aejkLcA _RoIsICVbEdyiv86aejkLcA _uArPACVbEdyiv86aejkLcA _3PqLQFUbEeC8pY-bmVQw4w">
+          <ownedComment xmi:id="_eT5WPHpHEeCBW5cXQg0v1Q" annotatedElement="_eT5WO3pHEeCBW5cXQg0v1Q">
+            <body>This operation allows the requesting OS to unsubscribe from a previously subscribed notification channel.</body>
+          </ownedComment>
+          <ownedParameter xmi:id="_eT5WPXpHEeCBW5cXQg0v1Q" name="subscriptionId">
+            <ownedComment xmi:id="_eT5WPnpHEeCBW5cXQg0v1Q" annotatedElement="_eT5WPXpHEeCBW5cXQg0v1Q">
+              <body>This parameter contains a unique subscription identifier. It is the same subscription identifier that was returned on successful subscription of the requesting OS.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_eT5WP3pHEeCBW5cXQg0v1Q" name="topic">
+            <ownedComment xmi:id="_eT5WQHpHEeCBW5cXQg0v1Q" annotatedElement="_eT5WP3pHEeCBW5cXQg0v1Q">
+              <body>This parameter contains the unique name of the topic object of the unsubscription.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+          </ownedParameter>
+        </ownedOperation>
       </packagedElement>
       <packagedElement xmi:type="uml:Dependency" xmi:id="_ZxS4QOI4Ed2qHNwdlV5t3Q" name="uses" supplier="_iVmugC5FEd26CMlLpyBM3Q" client="__X4KUd-2EdyFkaOT6BXRgg"/>
       <packagedElement xmi:type="uml:Dependency" xmi:id="_n8jdEOI4Ed2qHNwdlV5t3Q" name="uses" supplier="_Y16WYC5EEd26CMlLpyBM3Q" client="__X4KUd-2EdyFkaOT6BXRgg"/>
@@ -5579,7 +5789,6 @@ Traceability: R_TMF518_FMW_I_0012.</body>
   <Default:Documentation xmi:id="_uQSEkCMnEdy7GrfAi1CTwQ" base_Comment="_uQL98CMnEdy7GrfAi1CTwQ"/>
   <Default:Documentation xmi:id="_GwxX0CMoEdy7GrfAi1CTwQ" base_Comment="_GwrRMCMoEdy7GrfAi1CTwQ"/>
   <Default:Documentation xmi:id="_yecRoSMoEdy7GrfAi1CTwQ" base_Comment="_yecRoCMoEdy7GrfAi1CTwQ"/>
-  <Default:Documentation xmi:id="_nk6t4CMpEdy7GrfAi1CTwQ" base_Comment="_nk0nQCMpEdy7GrfAi1CTwQ"/>
   <Default:Documentation xmi:id="_9knlcCSUEdyqcomT-DTtQQ" base_Comment="_9kbYMCSUEdyqcomT-DTtQQ"/>
   <Default:Documentation xmi:id="_VWqjxiSoEdyqcomT-DTtQQ" base_Comment="_VWkdGySoEdyqcomT-DTtQQ"/>
   <Default:Documentation xmi:id="_VWqjxySoEdyqcomT-DTtQQ" base_Comment="_VWkdESSoEdyqcomT-DTtQQ"/>
@@ -5779,9 +5988,6 @@ Traceability: R_TMF518_FMW_I_0012.</body>
   <mTOPUMLProfile_1:mTOPOperation xmi:id="_UvXFQN-3EdyFkaOT6BXRgg" base_Operation="_UvNUQN-3EdyFkaOT6BXRgg"/>
   <mTOPUMLProfile_1:mTOPOperation xmi:id="_V_Yisd-3EdyFkaOT6BXRgg" base_Operation="_V_YisN-3EdyFkaOT6BXRgg"/>
   <mTOPUMLProfile_1:mTOPOperation xmi:id="_XLhlsd-3EdyFkaOT6BXRgg" base_Operation="_XLhlsN-3EdyFkaOT6BXRgg"/>
-  <mTOPUMLProfile_1:mTOPOperation xmi:id="_Z4Ocgd-3EdyFkaOT6BXRgg" base_Operation="_Z4OcgN-3EdyFkaOT6BXRgg"/>
-  <mTOPUMLProfile_1:mTOPOperation xmi:id="_cMzHMd-3EdyFkaOT6BXRgg" base_Operation="_cMzHMN-3EdyFkaOT6BXRgg"/>
-  <mTOPUMLProfile_1:mTOPOperation xmi:id="_dhu50d-3EdyFkaOT6BXRgg" base_Operation="_dhu50N-3EdyFkaOT6BXRgg"/>
   <Default:Documentation xmi:id="_a1ApgQb2Ed2_ftADVU4G6w" base_Comment="_a1ApgAb2Ed2_ftADVU4G6w"/>
   <Default:Documentation xmi:id="_ugCheBt1Ed29JJr_hKMpfA" base_Comment="_ugChdBt1Ed29JJr_hKMpfA"/>
   <Default:Documentation xmi:id="_ugCheRt1Ed29JJr_hKMpfA" base_Comment="_ugChcxt1Ed29JJr_hKMpfA"/>
@@ -5906,4 +6112,34 @@ Traceability: R_TMF518_FMW_I_0012.</body>
   <Default:Documentation xmi:id="_tHNeAFuREeCM-bFo2n-6BA" base_Comment="_tHEUE1uREeCM-bFo2n-6BA"/>
   <mTOPUMLProfile_1:mTOPAttribute xmi:id="_tHNeAVuREeCM-bFo2n-6BA" base_StructuralFeature="_tHEUFFuREeCM-bFo2n-6BA"/>
   <Default:Documentation xmi:id="_tHNeAluREeCM-bFo2n-6BA" base_Comment="_tHEUFVuREeCM-bFo2n-6BA"/>
+  <Default:Documentation xmi:id="_d4U8sHoUEeCBW5cXQg0v1Q" base_Comment="_d4LywHoUEeCBW5cXQg0v1Q"/>
+  <Default:Documentation xmi:id="_vPXhAXoUEeCBW5cXQg0v1Q" base_Comment="_vPXhAHoUEeCBW5cXQg0v1Q"/>
+  <Default:Documentation xmi:id="_RVtvsHofEeCBW5cXQg0v1Q" base_Comment="_RVklwHofEeCBW5cXQg0v1Q"/>
+  <Default:Documentation xmi:id="_mUM8AHpEEeCBW5cXQg0v1Q" base_Comment="_mUDLAHpEEeCBW5cXQg0v1Q"/>
+  <Default:Documentation xmi:id="_cjVpcHpFEeCBW5cXQg0v1Q" base_Comment="_cjL4cHpFEeCBW5cXQg0v1Q"/>
+  <Default:Documentation xmi:id="_o9CxEnpFEeCBW5cXQg0v1Q" base_Comment="_o9CxEXpFEeCBW5cXQg0v1Q"/>
+  <Default:Documentation xmi:id="_74ThMHpFEeCBW5cXQg0v1Q" base_Comment="_74KXQHpFEeCBW5cXQg0v1Q"/>
+  <Default:Documentation xmi:id="_scDZIXpGEeCBW5cXQg0v1Q" base_Comment="_scDZIHpGEeCBW5cXQg0v1Q"/>
+  <Default:Documentation xmi:id="_3unSgnpGEeCBW5cXQg0v1Q" base_Comment="_3unSgXpGEeCBW5cXQg0v1Q"/>
+  <Default:Documentation xmi:id="_7u6fMXpGEeCBW5cXQg0v1Q" base_Comment="_7u6fMHpGEeCBW5cXQg0v1Q"/>
+  <Default:Documentation xmi:id="_FMM5AnpHEeCBW5cXQg0v1Q" base_Comment="_FMM5AXpHEeCBW5cXQg0v1Q"/>
+  <mTOPUMLProfile_1:mTOPOperation xmi:id="_Xaq0kHpHEeCBW5cXQg0v1Q" base_Operation="_XahqoHpHEeCBW5cXQg0v1Q"/>
+  <Default:Documentation xmi:id="_Xaq0kXpHEeCBW5cXQg0v1Q" base_Comment="_XahqoXpHEeCBW5cXQg0v1Q"/>
+  <Default:Documentation xmi:id="_Xaq0knpHEeCBW5cXQg0v1Q" base_Comment="_Xahqo3pHEeCBW5cXQg0v1Q"/>
+  <Default:Documentation xmi:id="_Xaq0k3pHEeCBW5cXQg0v1Q" base_Comment="_XahqpXpHEeCBW5cXQg0v1Q"/>
+  <mTOPUMLProfile_1:mTOPOperation xmi:id="_eT5WQnpHEeCBW5cXQg0v1Q" base_Operation="_eT5WMHpHEeCBW5cXQg0v1Q"/>
+  <Default:Documentation xmi:id="_eT5WQ3pHEeCBW5cXQg0v1Q" base_Comment="_eT5WMXpHEeCBW5cXQg0v1Q"/>
+  <Default:Documentation xmi:id="_eT5WRHpHEeCBW5cXQg0v1Q" base_Comment="_eT5WM3pHEeCBW5cXQg0v1Q"/>
+  <Default:Documentation xmi:id="_eT5WRXpHEeCBW5cXQg0v1Q" base_Comment="_eT5WNXpHEeCBW5cXQg0v1Q"/>
+  <Default:Documentation xmi:id="_eT5WRnpHEeCBW5cXQg0v1Q" base_Comment="_eT5WN3pHEeCBW5cXQg0v1Q"/>
+  <Default:Documentation xmi:id="_eT5WR3pHEeCBW5cXQg0v1Q" base_Comment="_eT5WOXpHEeCBW5cXQg0v1Q"/>
+  <mTOPUMLProfile_1:mTOPOperation xmi:id="_eT5WSHpHEeCBW5cXQg0v1Q" base_Operation="_eT5WO3pHEeCBW5cXQg0v1Q"/>
+  <Default:Documentation xmi:id="_eT5WSXpHEeCBW5cXQg0v1Q" base_Comment="_eT5WPHpHEeCBW5cXQg0v1Q"/>
+  <Default:Documentation xmi:id="_eT5WSnpHEeCBW5cXQg0v1Q" base_Comment="_eT5WPnpHEeCBW5cXQg0v1Q"/>
+  <Default:Documentation xmi:id="_eT5WS3pHEeCBW5cXQg0v1Q" base_Comment="_eT5WQHpHEeCBW5cXQg0v1Q"/>
+  <Default:Documentation xmi:id="_QcpLIHpKEeCBW5cXQg0v1Q" base_Comment="_QcfaIHpKEeCBW5cXQg0v1Q"/>
+  <mTOPUMLProfile_1:mTOPAttribute xmi:id="_cnFHsHpKEeCBW5cXQg0v1Q" base_StructuralFeature="_cm7WsHpKEeCBW5cXQg0v1Q" writeable="TARGET_OS_ONLY" isInvariant="true"/>
+  <Default:Documentation xmi:id="_cnFHsXpKEeCBW5cXQg0v1Q" base_Comment="_cm7WsXpKEeCBW5cXQg0v1Q"/>
+  <mTOPUMLProfile_1:mTOPAttribute xmi:id="_w2b88HpKEeCBW5cXQg0v1Q" base_StructuralFeature="_w2SzAHpKEeCBW5cXQg0v1Q" writeable="TARGET_OS_ONLY" isInvariant="true"/>
+  <Default:Documentation xmi:id="_w2b88XpKEeCBW5cXQg0v1Q" base_Comment="_w2SzAXpKEeCBW5cXQg0v1Q"/>
 </xmi:XMI>
