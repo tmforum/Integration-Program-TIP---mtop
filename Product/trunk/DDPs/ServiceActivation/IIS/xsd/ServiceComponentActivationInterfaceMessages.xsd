@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ServiceComponentActivationInterface - Copyright TeleManagement Forum 2008 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/sa/xsd/scai/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:soc="http://www.tmforum.org/mtop/sb/xsd/soc/v1" xmlns:savc="http://www.tmforum.org/mtop/sb/xsd/savc/v1" xmlns:sodel="http://www.tmforum.org/mtop/sb/xsd/sodel/v1" xmlns:csi="http://www.tmforum.org/mtop/sb/xsd/csi/v1" xmlns:svc="http://www.tmforum.org/mtop/sb/xsd/svc/v1" targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/sa/xsd/scai/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:scaiexcpt="http://www.tmforum.org/mtop/sa/xsd/saiexcpt/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:soc="http://www.tmforum.org/mtop/sb/xsd/soc/v1" xmlns:savc="http://www.tmforum.org/mtop/sb/xsd/savc/v1" xmlns:sodel="http://www.tmforum.org/mtop/sb/xsd/sodel/v1" xmlns:csi="http://www.tmforum.org/mtop/sb/xsd/csi/v1" xmlns:svc="http://www.tmforum.org/mtop/sb/xsd/svc/v1" targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
 	<xsd:annotation>
 		<xsd:documentation>
 			<p>DDP: Service Component Activation Interface</p>
@@ -10,6 +10,7 @@
 	</xsd:annotation>
 	<!-- ================ -->
 	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/sa/xsd/saiexcpt/v1" schemaLocation="SaExceptions.xsd"/>
 	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd"/>
 	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
 	<xsd:import namespace="http://www.tmforum.org/mtop/sb/xsd/soc/v1" schemaLocation="../../../ServiceBasic/IIS/xsd/EventServiceObjectCreation.xsd"/>
@@ -65,7 +66,7 @@
 					<xsd:element name="serviceTemplateRef" type="nam:NamingAttributeType" minOccurs="0"/>
 					<xsd:element name="subscriberRef" type="nam:NamingAttributeType" minOccurs="0"/>
 					<xsd:element name="userRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
-					<xsd:element name="sapList" type="svc:ServiceAccessPointType"  maxOccurs="unbounded"/>
+					<xsd:element name="sapList" type="svc:ServiceAccessPointType" maxOccurs="unbounded"/>
 					<xsd:element name="describedByList" type="svc:ServiceCharacteristicValueType" minOccurs="0" maxOccurs="unbounded"/>
 				</xsd:sequence>
 			</xsd:extension>
@@ -107,16 +108,9 @@
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:complexType>
-			<xsd:complexContent>
-				<xsd:restriction base="msg:AllExceptionsType">
-					<xsd:choice>
-						<xsd:element ref="msg:commLoss"/>
-						<xsd:element ref="msg:internalError"/>
-						<xsd:element ref="msg:invalidInput"/>
-						<xsd:element ref="msg:unableToComply"/>
-					</xsd:choice>
-				</xsd:restriction>
-			</xsd:complexContent>
+			<xsd:choice>
+				<xsd:element name="basicFailureEvent" type="scaiexcpt:BasicFailureEventType"/>
+			</xsd:choice>
 		</xsd:complexType>
 	</xsd:element>
 	<!-- === Provision === -->
@@ -138,15 +132,15 @@
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:complexType>
-		<xsd:sequence>
-			<xsd:annotation>
-				<xsd:documentation>
-					<p>The RFS data structure contains necessary information to actually reserve resources associated to instantiation of RFS </p>
-					<xsd:element name="rfsCreateData" type="svc:ResourceFacingServiceType"/>
-					<xsd:element name="expiringTime" type="xsd:dateTime"/>
-				</xsd:documentation>
-			</xsd:annotation>
-		   </xsd:sequence>
+			<xsd:sequence>
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The RFS data structure contains necessary information to actually reserve resources associated to instantiation of RFS </p>
+						<xsd:element name="rfsCreateData" type="svc:ResourceFacingServiceType"/>
+						<xsd:element name="expiringTime" type="xsd:dateTime"/>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:sequence>
 		</xsd:complexType>
 	</xsd:element>
 	<!-- ===================== Reserve Response Message ========= -->
@@ -171,17 +165,9 @@
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:complexType>
-			<xsd:complexContent>
-				<xsd:restriction base="msg:AllExceptionsType">
-					<xsd:choice>
-						<xsd:element ref="msg:commLoss"/>
-						<xsd:element ref="msg:internalError"/>
-						<xsd:element ref="msg:invalidInput"/>
-						<xsd:element ref="msg:objectInUse"/>
-						<xsd:element ref="msg:unableToComply"/>
-					</xsd:choice>
-				</xsd:restriction>
-			</xsd:complexContent>
+			<xsd:choice>
+				<xsd:element name="basicFailureEvent" type="scaiexcpt:BasicFailureEventType"/>
+			</xsd:choice>
 		</xsd:complexType>
 	</xsd:element>
 	<!-- ===================== Provision Request Message ========= -->
@@ -236,19 +222,9 @@
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:complexType>
-			<xsd:complexContent>
-				<xsd:restriction base="msg:AllExceptionsType">
-					<xsd:choice>
-						<xsd:element ref="msg:commLoss"/>
-						<xsd:element ref="msg:entityNotFound"/>
-						<xsd:element ref="msg:internalError"/>
-						<xsd:element ref="msg:invalidInput"/>
-						<xsd:element ref="msg:notImplemented"/>
-						<xsd:element ref="msg:objectInUse"/>
-						<xsd:element ref="msg:unableToComply"/>
-					</xsd:choice>
-				</xsd:restriction>
-			</xsd:complexContent>
+			<xsd:choice>
+				<xsd:element name="basicFailureEvent" type="scaiexcpt:BasicFailureEventType"/>
+			</xsd:choice>
 		</xsd:complexType>
 	</xsd:element>
 	<!-- === Activate === -->
@@ -303,41 +279,31 @@
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:complexType>
-			<xsd:complexContent>
-				<xsd:restriction base="msg:AllExceptionsType">
-					<xsd:choice>
-						<xsd:element ref="msg:commLoss"/>
-						<xsd:element ref="msg:entityNotFound"/>
-						<xsd:element ref="msg:internalError"/>
-						<xsd:element ref="msg:invalidInput"/>
-						<xsd:element ref="msg:notImplemented"/>
-						<xsd:element ref="msg:objectInUse"/>
-						<xsd:element ref="msg:unableToComply"/>
-					</xsd:choice>
-				</xsd:restriction>
-			</xsd:complexContent>
+			<xsd:choice>
+				<xsd:element name="basicFailureEvent" type="scaiexcpt:BasicFailureEventType"/>
+			</xsd:choice>
 		</xsd:complexType>
 	</xsd:element>
 	<!-- === Deactivate === -->
 	<!-- ===================== Deactivate Request Message ========= -->
 	<xsd:element name="deactivateRequest">
-	<xsd:complexType>
-		<xsd:annotation>
-			<xsd:documentation>
-				<p> This operation deactivates an RFS. It is recommended the RFS be in a provisioned_active state to be deactived </p>
-				<p> Input to the operation is the name of the RFS to be deactivated</p>
-				<p>In case of success, choice of one of the following:</p>
-				<p> The  RFS is deactivated and placed in a provisioned_inactive state. The name of the RFS  is returned</p>
-				<p> State Change Notification: indicates that the RFS changed from "provisioned_active" state to  "provisioned_inactive"state  </p>
-				<p>In case of failure:</p>
-				<p>An exception is thrown. </p>
-				<p>If RFS can not be deactivated,  it remains in a "provisioned_active" state </p>
-			</xsd:documentation>
+		<xsd:complexType>
+			<xsd:annotation>
+				<xsd:documentation>
+					<p> This operation deactivates an RFS. It is recommended the RFS be in a provisioned_active state to be deactived </p>
+					<p> Input to the operation is the name of the RFS to be deactivated</p>
+					<p>In case of success, choice of one of the following:</p>
+					<p> The  RFS is deactivated and placed in a provisioned_inactive state. The name of the RFS  is returned</p>
+					<p> State Change Notification: indicates that the RFS changed from "provisioned_active" state to  "provisioned_inactive"state  </p>
+					<p>In case of failure:</p>
+					<p>An exception is thrown. </p>
+					<p>If RFS can not be deactivated,  it remains in a "provisioned_active" state </p>
+				</xsd:documentation>
 			</xsd:annotation>
-			<xsd:sequence> 
-			<xsd:element name="rfsName" type="nam:NamingAttributeType"/>
+			<xsd:sequence>
+				<xsd:element name="rfsName" type="nam:NamingAttributeType"/>
 			</xsd:sequence>
-			</xsd:complexType>
+		</xsd:complexType>
 	</xsd:element>
 	<!-- ===================== Deactivate Response Messages ========= -->
 	<xsd:element name="deactivateResponse">
@@ -361,19 +327,9 @@
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:complexType>
-			<xsd:complexContent>
-				<xsd:restriction base="msg:AllExceptionsType">
-					<xsd:choice>
-						<xsd:element ref="msg:commLoss"/>
-						<xsd:element ref="msg:entityNotFound"/>
-						<xsd:element ref="msg:internalError"/>
-						<xsd:element ref="msg:invalidInput"/>
-						<xsd:element ref="msg:notImplemented"/>
-						<xsd:element ref="msg:objectInUse"/>
-						<xsd:element ref="msg:unableToComply"/>
-					</xsd:choice>
-				</xsd:restriction>
-			</xsd:complexContent>
+			<xsd:choice>
+				<xsd:element name="basicFailureEvent" type="scaiexcpt:BasicFailureEventType"/>
+			</xsd:choice>
 		</xsd:complexType>
 	</xsd:element>
 	<!-- === Terminate === -->
@@ -425,19 +381,9 @@
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:complexType>
-			<xsd:complexContent>
-				<xsd:restriction base="msg:AllExceptionsType">
-					<xsd:choice>
-						<xsd:element ref="msg:commLoss"/>
-						<xsd:element ref="msg:entityNotFound"/>
-						<xsd:element ref="msg:internalError"/>
-						<xsd:element ref="msg:invalidInput"/>
-						<xsd:element ref="msg:notImplemented"/>
-						<xsd:element ref="msg:objectInUse"/>
-						<xsd:element ref="msg:unableToComply"/>
-					</xsd:choice>
-				</xsd:restriction>
-			</xsd:complexContent>
+			<xsd:choice>
+				<xsd:element name="basicFailureEvent" type="scaiexcpt:BasicFailureEventType"/>
+			</xsd:choice>
 		</xsd:complexType>
 	</xsd:element>
 	<!-- ===================== Modify Request Message ========= -->
@@ -513,19 +459,9 @@
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:complexType>
-			<xsd:complexContent>
-				<xsd:restriction base="msg:AllExceptionsType">
-					<xsd:choice>
-						<xsd:element ref="msg:commLoss"/>
-						<xsd:element ref="msg:entityNotFound"/>
-						<xsd:element ref="msg:internalError"/>
-						<xsd:element ref="msg:invalidInput"/>
-						<xsd:element ref="msg:notImplemented"/>
-						<xsd:element ref="msg:objectInUse"/>
-						<xsd:element ref="msg:unableToComply"/>
-					</xsd:choice>
-				</xsd:restriction>
-			</xsd:complexContent>
+			<xsd:choice>
+				<xsd:element name="basicFailureEvent" type="scaiexcpt:BasicFailureEventType"/>
+			</xsd:choice>
 		</xsd:complexType>
 	</xsd:element>
 </xsd:schema>
