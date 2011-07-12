@@ -1,185 +1,181 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ResourceProvisioning - Copyright TeleManagement Forum 2008 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rp/xsd/ep/v1" xmlns:tns="http://www.tmforum.org/mtop/rp/xsd/ep/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:eq="http://www.tmforum.org/mtop/nrf/xsd/eq/v1" xmlns:crcd="http://www.tmforum.org/mtop/nrb/xsd/crcd/v1" xmlns:nrb.com="http://www.tmforum.org/mtop/nrb/xsd/com/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
-  <xsd:annotation>
-    <xsd:documentation>
-      <p>DDP: ResourceProvisioning</p>
-      <p>Module:  Message XSD Module</p>
-      <p>Description: This module contains the XML Schema type definitions of all the mTOP EquipmentProvisioning SI XML message structures.</p>
-    </xsd:documentation>
-  </xsd:annotation>
-  <!-- ================ -->
-  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
-  <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
-  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
-  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/com/v1"/>
-  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Eq.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/eq/v1"/>
-  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1"/>
-  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceCreateDataType.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/crcd/v1"/>
-  <!-- ================ -->
-  <xsd:element name="provisionEquipmentRequest">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the provisionEquipment operation</p>
-        <p>This operation allows the NMS to permanently provision an equipment in
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/rp/xsd/ep/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:eq="http://www.tmforum.org/mtop/nrf/xsd/eq/v1" xmlns:crcd="http://www.tmforum.org/mtop/nrb/xsd/crcd/v1" xmlns:nrb.com="http://www.tmforum.org/mtop/nrb/xsd/com/v1" targetNamespace="http://www.tmforum.org/mtop/rp/xsd/ep/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: ResourceProvisioning</p>
+			<p>Module:  Message XSD Module</p>
+			<p>Description: This module contains the XML Schema type definitions of all the mTOP EquipmentProvisioning SI XML message structures.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ================ -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/com/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonTypes.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/eq/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Eq.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/CommonTypes.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/crcd/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceCreateDataType.xsd"/>
+	<!-- ================ -->
+	<xsd:element name="provisionEquipmentRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the provisionEquipment operation</p>
+				<p>This operation allows the NMS to permanently provision an equipment in
          an equipment holder in a Managed Element. 
          The successful result of this operation is the creation or update of the 
          equipment object and the creation of all its related objects such as 
          Termination Points. The resulting object will be returned. </p>
-        <p>The equipment holder that will contain the equipment must exist.
+				<p>The equipment holder that will contain the equipment must exist.
          The equipment object may already exist, but the equipment holder must not 
          have an expected equipment already provisioned.
          See SD1-10_EquipmentModel.pdf .</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element name="equipmentCreateData" type="tns:EquipmentCreateDataType" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>The data that describes the equipment to create.</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="provisionEquipmentResponse">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Response message structure of the provisionEquipment operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element name="createdEquipment" type="eq:EquipmentType" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>The resulting created equipment.</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="provisionEquipmentException">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Exception message structure of the provisionEquipment operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:complexContent>
-        <xsd:restriction base="msg:AllExceptionsType">
-          <xsd:choice>
-            <xsd:element ref="msg:commLoss"/>
-            <xsd:element ref="msg:entityNotFound"/>
-            <xsd:element ref="msg:internalError"/>
-            <xsd:element ref="msg:invalidInput"/>
-            <xsd:element ref="msg:notImplemented"/>
-            <xsd:element ref="msg:objectInUse"/>
-            <xsd:element ref="msg:unableToComply"/>
-            <xsd:element ref="msg:userlabelInUse"/>
-          </xsd:choice>
-        </xsd:restriction>
-      </xsd:complexContent>
-    </xsd:complexType>
-  </xsd:element>
-  <!-- ================ -->
-  <xsd:element name="unprovisionEquipmentRequest">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the unprovisionEquipment operation</p>
-        <p>This operation allows the NMS to permanently unprovision an equipment
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="equipmentCreateData" type="tns:EquipmentCreateDataType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The data that describes the equipment to create.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="provisionEquipmentResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the provisionEquipment operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="createdEquipment" type="eq:EquipmentType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The resulting created equipment.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="provisionEquipmentException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the provisionEquipment operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:objectInUse"/>
+						<xsd:element ref="msg:unableToComply"/>
+						<xsd:element ref="msg:userlabelInUse"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="unprovisionEquipmentRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the unprovisionEquipment operation</p>
+				<p>This operation allows the NMS to permanently unprovision an equipment
          from the Managed Element. The successful result of this operation is the 
          potential deletion of the equipment object and the deletion of all its 
          related objects such as Termination Points.</p>
-        <p>The EMS should attempt to set the equipment to 
+				<p>The EMS should attempt to set the equipment to 
          OUT_OF_SERVICE_BY_MAINTENANCE before it unprovisions it.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element name="equipmentName" type="nam:NamingAttributeListType" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>The name of equipment to be unprovisioned.</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="unprovisionEquipmentResponse">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Response message structure of the unprovisionEquipment operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="unprovisionEquipmentException">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Exception message structure of the unprovisionEquipment operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:complexContent>
-        <xsd:restriction base="msg:AllExceptionsType">
-          <xsd:choice>
-            <xsd:element ref="msg:commLoss"/>
-            <xsd:element ref="msg:entityNotFound"/>
-            <xsd:element ref="msg:internalError"/>
-            <xsd:element ref="msg:invalidInput"/>
-            <xsd:element ref="msg:notImplemented"/>
-            <xsd:element ref="msg:objectInUse"/>
-            <xsd:element ref="msg:unableToComply"/>
-          </xsd:choice>
-        </xsd:restriction>
-      </xsd:complexContent>
-    </xsd:complexType>
-  </xsd:element>
-  <!-- ================ -->
-  <xsd:complexType name="EquipmentCreateDataType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>The data structure for provisioning an equipment.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexContent>
-      <xsd:extension base="crcd:CommonResourceCreateDataType">
-        <xsd:sequence>
-          <xsd:element name="expectedEquipmentObjectType" type="com:EquipmentObjectTypeType" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>Defines the type of expected equipment.</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
-          <xsd:element name="equipmentHolderName" type="nam:NamingAttributeType" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>Represents the name of equipment holder that will contain the equipment.</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
-          <xsd:element name="asapRef" type="xsd:string" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>Indicates the assignment of an ASAP to the managed object.</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
-          <xsd:element name="manufacturer" type="gen:ManufacturerType" minOccurs="0">
-          </xsd:element>
-          <xsd:element name="protectionRole" type="com:ProtectionRoleType" minOccurs="0">
-          </xsd:element>
-          <xsd:element name="protectionSchemeState" type="nrb.com:ProtectionSchemeStateType" minOccurs="0">
-          </xsd:element>
-        </xsd:sequence>
-      </xsd:extension>
-    </xsd:complexContent>
-  </xsd:complexType>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="equipmentName" type="nam:NamingAttributeListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The name of equipment to be unprovisioned.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="unprovisionEquipmentResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the unprovisionEquipment operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType/>
+	</xsd:element>
+	<xsd:element name="unprovisionEquipmentException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the unprovisionEquipment operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:objectInUse"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:complexType name="EquipmentCreateDataType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>The data structure for provisioning an equipment.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="crcd:CommonResourceCreateDataType">
+				<xsd:sequence>
+					<xsd:element name="expectedEquipmentObjectType" type="com:EquipmentObjectTypeType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Defines the type of expected equipment.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="equipmentHolderName" type="nam:NamingAttributeType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Represents the name of equipment holder that will contain the equipment.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="asapRef" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Indicates the assignment of an ASAP to the managed object.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="manufacturer" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="protectionRole" type="com:ProtectionRoleType" minOccurs="0"/>
+					<xsd:element name="protectionSchemeState" type="nrb.com:ProtectionSchemeStateType" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
 </xsd:schema>
