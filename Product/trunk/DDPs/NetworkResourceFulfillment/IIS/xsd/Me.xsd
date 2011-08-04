@@ -1,94 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/me/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/me/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
-  <xsd:annotation>
-    <xsd:documentation>
-      <p>DDP: Data Model Network Resource FulFillment</p>
-      <p>Module: Aggregate XSD Module</p>
-      <p>Description: This module contains the XML Schema type definition of the mTOP ME XML structure.</p>
-    </xsd:documentation>
-  </xsd:annotation>
-  <!-- ============== -->
-  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
-  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
-  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1"/>
-  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1"/>
-  <!-- ================= -->
-  <xsd:element name="me" type="tns:ManagedElementType"/>
-  <!-- ================= -->
-  <xsd:complexType name="ManagedElementType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>This aggregate defines all the Managed Element mTOP network resource object attributes.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexContent>
-      <xsd:extension base="cri:CommonResourceInfoType">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>This element entails the attributes common to all mTOP network resource objects.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-        <xsd:sequence>
-          <xsd:element name="location" type="xsd:string" nillable="true" minOccurs="0">
-          </xsd:element>
-          <xsd:element name="manufacturer" type="xsd:string" nillable="true" minOccurs="0">
-          </xsd:element>
-          <xsd:element name="manufactureDate" type="gen:ManufactureDateType" nillable="true" minOccurs="0">
-          </xsd:element>
-          <xsd:element name="productName" type="xsd:string" nillable="true" minOccurs="0">
-          </xsd:element>
-          <xsd:element name="softwareVersion" type="xsd:string" nillable="true" minOccurs="0">
-          </xsd:element>
-          <xsd:element name="isInSyncState" type="xsd:boolean" nillable="true" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>Indicates if the EMS/OS is able to keep the current EMS/OS data synchronized with the current NE data and generate all appropriate notifications. The EMS sets this attribute to false to indicate that it requires resynchronization with NE data and that it is not able to generate the appropriate notifications (such as OCs/ODs/AVCs) while doing so.</p>
-                <p>The EMS/OS sets this attribute back to true when the resynchronization is completed and when notifications can start being generated as appropriate.</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
-          <xsd:element name="supportedConnectionLayerRateList" type="lay:LayerRateListType" nillable="true" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>This attribute is a list (possibly empty) of potential Cross Connection Rates at which it is possible to have cross-connections within the managed element.</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
-          <xsd:element name="communicationState" type="tns:CommunicationStateType" nillable="true" minOccurs="0">
-          </xsd:element>
-          <xsd:element name="asapRef" type="nam:NamingAttributeType" nillable="true" minOccurs="0">
-            <xsd:annotation>
-              <xsd:documentation>
-                <p>Indicates the assignment of an ASAP to this ME object. Value is of the ASAP name.</p>
-              </xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
-        </xsd:sequence>
-      </xsd:extension>
-    </xsd:complexContent>
-  </xsd:complexType>
-  <!-- ================= -->
-  <xsd:complexType name="ManagedElementListType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>List of ManagedElements</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element ref="tns:me" minOccurs="0" maxOccurs="unbounded"/>
-    </xsd:sequence>
-  </xsd:complexType>
-  <!-- ================= -->
-  <xsd:simpleType name="CommunicationStateType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>This state reflects a communication state between the EMS and its ManagedElement.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:restriction base="xsd:string">
-      <xsd:enumeration value="CS_AVAILABLE"/>
-      <xsd:enumeration value="CS_UNAVAILABLE"/>
-    </xsd:restriction>
-  </xsd:simpleType>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/me/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:ituArc="http://www.tmforum.org/mtop/nra/xsd/ituArc/v1" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/me/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: Data Model Network Resource FulFillment</p>
+			<p>Module: Aggregate XSD Module</p>
+			<p>Description: This module contains the XML Schema type definition of the mTOP ME XML structure.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ============== -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/ituArc/v1" schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/ITU-T-ArcDefinitions.xsd"/>
+	<!-- ================= -->
+	<xsd:element name="me" type="tns:ManagedElementType"/>
+	<!-- ================= -->
+	<xsd:complexType name="ManagedElementType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This aggregate defines all the Managed Element mTOP network resource object attributes.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="cri:CommonResourceInfoType">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This element entails the attributes common to all mTOP network resource objects.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="location" type="xsd:string" nillable="true" minOccurs="0"/>
+					<xsd:element name="manufacturer" type="xsd:string" nillable="true" minOccurs="0"/>
+					<xsd:element name="manufactureDate" type="gen:ManufactureDateType" nillable="true" minOccurs="0"/>
+					<xsd:element name="productName" type="xsd:string" nillable="true" minOccurs="0"/>
+					<xsd:element name="softwareVersion" type="xsd:string" nillable="true" minOccurs="0"/>
+					<xsd:element name="isInSyncState" type="xsd:boolean" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Indicates if the EMS/OS is able to keep the current EMS/OS data synchronized with the current NE data and generate all appropriate notifications. The EMS sets this attribute to false to indicate that it requires resynchronization with NE data and that it is not able to generate the appropriate notifications (such as OCs/ODs/AVCs) while doing so.</p>
+								<p>The EMS/OS sets this attribute back to true when the resynchronization is completed and when notifications can start being generated as appropriate.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="supportedConnectionLayerRateList" type="lay:LayerRateListType" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>This attribute is a list (possibly empty) of potential Cross Connection Rates at which it is possible to have cross-connections within the managed element.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="communicationState" type="tns:CommunicationStateType" nillable="true" minOccurs="0"/>
+					<xsd:element name="asapRef" type="nam:NamingAttributeType" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Indicates the assignment of an ASAP to this ME object. Value is of the ASAP name.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ituArcStateAndStatusList" type="ituArc:ItuArcStateAndStatusList"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="ManagedElementListType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>List of ManagedElements</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="tns:me" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:simpleType name="CommunicationStateType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This state reflects a communication state between the EMS and its ManagedElement.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="CS_AVAILABLE"/>
+			<xsd:enumeration value="CS_UNAVAILABLE"/>
+		</xsd:restriction>
+	</xsd:simpleType>
 </xsd:schema>
