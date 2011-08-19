@@ -42,11 +42,16 @@
       <wsdl:output message="tns:getAssociatingFlowDomainResponse"/>
       <wsdl:fault name="getAssociatingFlowDomainException" message="tns:getAssociatingFlowDomainException"/>
     </wsdl:operation>
+    <wsdl:operation name="getConnectivityAwareness">
+      <wsdl:input message="tns:getConnectivityAwarenessRequest"/>
+      <wsdl:output message="tns:getConnectivityAwarenessResponse"/>
+      <wsdl:fault name="getConnectivityAwarenessException" message="tns:getConnectivityAwarenessException"/>
+    </wsdl:operation>
     <wsdl:operation name="getFlowDomain">
       <wsdl:input message="tns:getFlowDomainRequest"/>
       <wsdl:output message="tns:getFlowDomainResponse"/>
       <wsdl:fault name="getFlowDomainException" message="tns:getFlowDomainException"/>
-    </wsdl:operation>
+    </wsdl:operation>    
     <wsdl:operation name="getFlowDomainFragment">
       <wsdl:input message="tns:getFlowDomainFragmentRequest"/>
       <wsdl:output message="tns:getFlowDomainFragmentResponse"/>
@@ -182,7 +187,23 @@
         <soap:fault name="getAssociatingFlowDomainException" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
-    <wsdl:operation name="getFlowDomain">
+    
+    <wsdl:operation name="getConnectivityAwareness">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getConnectivityAwarenessRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getConnectivityAwarenessResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getConnectivityAwarenessException">
+        <soap:fault name="getConnectivityAwarenessException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    
+      <wsdl:operation name="getFlowDomain">
       <soap:operation style="document"/>
       <wsdl:input>
         <soap:header message="tns:getFlowDomainRequest" part="mtopHeader" use="literal"/>
@@ -196,6 +217,7 @@
         <soap:fault name="getFlowDomainException" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
+      
     <wsdl:operation name="getFlowDomainFragment">
       <soap:operation style="document"/>
       <wsdl:input>
