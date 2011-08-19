@@ -1,335 +1,336 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2008 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/mer/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/mer/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:me="http://www.tmforum.org/mtop/nrf/xsd/me/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
-  <xsd:annotation>
-    <xsd:documentation>
-      <p>DDP: Manage Resource Inventory</p>
-      <p>Module: Message XSD Module</p>
-      <p>Description: This module contains the XML Schema type definitions of all the mTOP ManagedElementRetrieval SI XML message structures.</p>
-    </xsd:documentation>
-  </xsd:annotation>
-  <!-- ================ -->
-  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
-  <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
-  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
-  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1"/>
-  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Me.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/me/v1"/>
-  <!-- ================ -->
-  <xsd:complexType name="FilterType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Definition of the ME Filter data type.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element name="location" type="xsd:string" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>The location is the geographical location of the Managed Element.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="manufacturer" type="xsd:string" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>The manufacturer attribute identifies the managed element manufacturer name.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="productName" type="xsd:string" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>The productName identifies the managed element product/type name.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-      <xsd:element name="resourceState" type="cri:ResourceStateType" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>See SD2-17_MTOSI_EnhancedResourceStates supporting document.</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-    </xsd:sequence>
-  </xsd:complexType>
-  <!-- ================== -->
-  <xsd:element name="getAllManagedElementsRequest">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the getAllManagedElements operation</p>
-        <p>This operation returns all the Managed Elements contained by a provided Management Domain or Multi Layer Subnetwork.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element name="mdOrMlsnRef " type="nam:NamingAttributeType" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>This parameter provides the name of the Management Domain or Multi Layer Subnetwork for which to retrieve the contained Managed Elements.</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
-  <!-- ================== -->
-  <xsd:element name="getAllManagedElementsResponse" type="tns:MultipleMeObjectsResponseType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Response message structure of the getAllManagedElements operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <!-- ================== -->
-  <xsd:element name="getAllManagedElementsException">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Exception message structure of the getAllManagedElements operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:complexContent>
-        <xsd:restriction base="msg:AllExceptionsType">
-          <xsd:choice>
-            <xsd:element ref="msg:commLoss"/>
-            <xsd:element ref="msg:entityNotFound"/>
-            <xsd:element ref="msg:internalError"/>
-            <xsd:element ref="msg:invalidInput"/>
-            <xsd:element ref="msg:tooManyOpenIterators"/>
-            <xsd:element ref="msg:unableToComply"/>
-          </xsd:choice>
-        </xsd:restriction>
-      </xsd:complexContent>
-    </xsd:complexType>
-  </xsd:element>
-  <!-- ================== -->
-  <xsd:element name="getAllManagedElementsPassingFilterRequest">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the getAllManagedElementsPassingFilter operation</p>
-        <p>This operation returns all ManagedElements (MEs) contained by a specific Management Domain that pass a given filter condition. The filter condition should test for equality based on any combination of location, manufacturer, productName and resourceState. The matching is based in "AND", i.e., all the supplied filter conditions must be met. If the filter is left empty, then all the MEs contained by the given MD are returned.</p>
-        <p>The operation can only be directed to a top-level OS and not to a subordinate OS.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element name="mdRef" type="nam:NamingAttributeType" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>The name of the Management Domain whose contained MEs are being requested.</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-        <xsd:element name="filter" type="tns:FilterType" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>A list of any combination of a location, manufacturer, productName and resourceState. The matching is based on "AND", i.e., all the supplied filter conditions must be met.</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
-  <!-- ================== -->
-  <xsd:element name="getAllManagedElementsPassingFilterResponse" type="tns:MultipleMeObjectsResponseType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the getAllManagedElementsPassingFilter operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <!-- ================== -->
-  <xsd:element name="getAllManagedElementsPassingFilterException">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Exception message structure of the getAllManagedElementsPassingFilter operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:complexContent>
-        <xsd:restriction base="msg:AllExceptionsType">
-          <xsd:choice>
-            <xsd:element ref="msg:commLoss"/>
-            <xsd:element ref="msg:entityNotFound"/>
-            <xsd:element ref="msg:internalError"/>
-            <xsd:element ref="msg:invalidInput"/>
-            <xsd:element ref="msg:notImplemented"/>
-            <xsd:element ref="msg:tooManyOpenIterators"/>
-            <xsd:element ref="msg:unableToComply"/>
-          </xsd:choice>
-        </xsd:restriction>
-      </xsd:complexContent>
-    </xsd:complexType>
-  </xsd:element>
-  <!-- ================== -->
-  <xsd:element name="getAllManagedElementsWrtOsRequest">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the getAllManagedElementsWrtOs operation</p>
-        <p>This operation returns the data structure for each ManagedElement (ME) managed by a given subordinate OS AND contained by a specific Management Domain. Note that Wrt in the name of the operation stands for "with respect to".</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element name="osRef" type="nam:NamingAttributeType" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>The name of the subordinate OS whose contained MEs are being requested.</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-        <xsd:element name="mdRef" type="nam:NamingAttributeType" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>The name of the Management Domain whose contained MEs are being requested.</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
-  <!-- ================== -->
-  <xsd:element name="getAllManagedElementsWrtOsResponse" type="tns:MultipleMeObjectsResponseType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the getAllManagedElementsWrtOs operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <!-- ================== -->
-  <xsd:element name="getAllManagedElementsWrtOsException">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Exception message structure of the getAllManagedElementsWrtOs operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:complexContent>
-        <xsd:restriction base="msg:AllExceptionsType">
-          <xsd:choice>
-            <xsd:element ref="msg:commLoss"/>
-            <xsd:element ref="msg:entityNotFound"/>
-            <xsd:element ref="msg:internalError"/>
-            <xsd:element ref="msg:invalidInput"/>
-            <xsd:element ref="msg:notImplemented"/>
-            <xsd:element ref="msg:tooManyOpenIterators"/>
-            <xsd:element ref="msg:unableToComply"/>
-          </xsd:choice>
-        </xsd:restriction>
-      </xsd:complexContent>
-    </xsd:complexType>
-  </xsd:element>
-  <!-- ================== -->
-  <xsd:element name="getManagedElementRequest">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the getManagedElement operation</p>
-        <p>This operation returns the Managed Element for the given managed element name.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element name="meRef" type="nam:NamingAttributeType" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>The name of the Managed Element requested.</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
-  <!-- ================== -->
-  <xsd:element name="getManagedElementResponse" type="tns:SingleMeObjectResponseType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Response message structure of the getManagedElement operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <!-- ================== -->
-  <xsd:element name="getManagedElementException">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Exception message structure of the getManagedElement operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:complexContent>
-        <xsd:restriction base="msg:AllExceptionsType">
-          <xsd:choice>
-            <xsd:element ref="msg:commLoss"/>
-            <xsd:element ref="msg:entityNotFound"/>
-            <xsd:element ref="msg:internalError"/>
-            <xsd:element ref="msg:invalidInput"/>
-            <xsd:element ref="msg:notImplemented"/>
-            <xsd:element ref="msg:unableToComply"/>
-          </xsd:choice>
-        </xsd:restriction>
-      </xsd:complexContent>
-    </xsd:complexType>
-  </xsd:element>
-  <!-- ================= -->
-  <!-- Definitions of Iterator messages for Object and Object Name retrievals  -->
-  <!-- ================= -->
-  <xsd:element name="getManagedElementsIteratorRequest" type="msg:GetAllDataIteratorRequestType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the getManagedElementsIterator operation</p>
-        <p>This is the iterator request to return the next batch of Managed Elements from the OS to which an ME retrieval request was initially sent.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <!-- ================== -->
-  <xsd:element name="getManagedElementsIteratorResponse" type="tns:MultipleMeObjectsResponseType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Response message structure of the getManagedElementsIterator operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <!-- ================== -->
-  <xsd:element name="getManagedElementsIteratorException" type="msg:GetAllDataIteratorExceptionType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Exception message structure of the getManagedElementsIterator operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  <!-- ================= -->
-  <!-- Type Definitions of various Object responses  -->
-  <!-- ================= -->
-  <xsd:complexType name="SingleMeObjectResponseType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Response message structure for a single ManagedElement object</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element name="me" type="me:ManagedElementType" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>The retrieved ME</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-    </xsd:sequence>
-  </xsd:complexType>
-  <!-- ================== -->
-  <xsd:complexType name="MultipleMeObjectsResponseType">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Response message structure for a set of ManagedElement objects</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:sequence>
-      <xsd:element name="meList" type="me:ManagedElementListType" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            <p>The list of MEs</p>
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-    </xsd:sequence>
-  </xsd:complexType>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/mer/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:me="http://www.tmforum.org/mtop/nrf/xsd/me/v1" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/mer/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: Manage Resource Inventory</p>
+			<p>Module: Message XSD Module</p>
+			<p>Description: This module contains the XML Schema type definitions of all the mTOP ManagedElementRetrieval SI XML message structures.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ================ -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/me/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Me.xsd"/>
+	<!-- ================ -->
+	<xsd:complexType name="FilterType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Definition of the ME Filter data type.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="location" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The location is the geographical location of the Managed Element.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="manufacturer" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The manufacturer attribute identifies the managed element manufacturer name.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="productName" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The productName identifies the managed element product/type name.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="resourceState" type="cri:ResourceStateType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>See SD2-17_MTOSI_EnhancedResourceStates supporting document.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================== -->
+	<xsd:element name="getAllManagedElementsRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getAllManagedElements operation</p>
+				<p>This operation returns all the Managed Elements contained by a provided Management Domain or Multi Layer Subnetwork.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="mdOrMlsnRef " type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter provides the name of the Management Domain or Multi Layer Subnetwork for which to retrieve the contained Managed Elements.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getAllManagedElementsResponse" type="tns:MultipleMeObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getAllManagedElements operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getAllManagedElementsException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getAllManagedElements operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>						
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getAllManagedElementsPassingFilterRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getAllManagedElementsPassingFilter operation</p>
+				<p>This operation returns all ManagedElements (MEs) contained by a specific Management Domain that pass a given filter condition. The filter condition should test for equality based on any combination of location, manufacturer, productName and resourceState. The matching is based in "AND", i.e., all the supplied filter conditions must be met. If the filter is left empty, then all the MEs contained by the given MD are returned.</p>
+				<p>The operation can only be directed to a top-level OS and not to a subordinate OS.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="mdRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The name of the Management Domain whose contained MEs are being requested.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="filter" type="tns:FilterType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>A list of any combination of a location, manufacturer, productName and resourceState. The matching is based on "AND", i.e., all the supplied filter conditions must be met.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getAllManagedElementsPassingFilterResponse" type="tns:MultipleMeObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getAllManagedElementsPassingFilter operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getAllManagedElementsPassingFilterException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getAllManagedElementsPassingFilter operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getAllManagedElementsWrtOsRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getAllManagedElementsWrtOs operation</p>
+				<p>This operation returns the data structure for each ManagedElement (ME) managed by a given subordinate OS AND contained by a specific Management Domain. Note that Wrt in the name of the operation stands for "with respect to".</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="osRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The name of the subordinate OS whose contained MEs are being requested.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="mdRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The name of the Management Domain whose contained MEs are being requested.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getAllManagedElementsWrtOsResponse" type="tns:MultipleMeObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getAllManagedElementsWrtOs operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getAllManagedElementsWrtOsException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getAllManagedElementsWrtOs operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getManagedElementRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getManagedElement operation</p>
+				<p>This operation returns the Managed Element for the given managed element name.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="meRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The name of the Managed Element requested.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getManagedElementResponse" type="tns:SingleMeObjectResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getManagedElement operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getManagedElementException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getManagedElement operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================= -->
+	<!-- Definitions of Iterator messages for Object and Object Name retrievals  -->
+	<!-- ================= -->
+	<xsd:element name="getManagedElementsIteratorRequest" type="msg:GetAllDataIteratorRequestType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getManagedElementsIterator operation</p>
+				<p>This is the iterator request to return the next batch of Managed Elements from the OS to which an ME retrieval request was initially sent.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getManagedElementsIteratorResponse" type="tns:MultipleMeObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getManagedElementsIterator operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getManagedElementsIteratorException" type="msg:GetAllDataIteratorExceptionType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getManagedElementsIterator operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================= -->
+	<!-- Type Definitions of various Object responses  -->
+	<!-- ================= -->
+	<xsd:complexType name="SingleMeObjectResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure for a single ManagedElement object</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="me" type="me:ManagedElementType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The retrieved ME</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================== -->
+	<xsd:complexType name="MultipleMeObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure for a set of ManagedElement objects</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="meList" type="me:ManagedElementListType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The list of MEs</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
 </xsd:schema>
