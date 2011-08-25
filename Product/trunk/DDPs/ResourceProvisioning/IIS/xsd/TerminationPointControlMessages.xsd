@@ -139,63 +139,14 @@
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:complexType>
-			<xsd:sequence>
-				<xsd:element name="userLabel" type="xsd:string" minOccurs="0">
+			<xsd:sequence>			
+				<xsd:element name="createData" type="tns:GroupTerminationPointCreateDataType" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>
-							<p>the userLabel for the GTP.</p>
+							<p>Structure describing the group termination point structure to be created.</p>
 						</xsd:documentation>
 					</xsd:annotation>
-				</xsd:element>
-				<xsd:element name="forceUniqueness" type="xsd:boolean" minOccurs="0">
-					<xsd:annotation>
-						<xsd:documentation>
-							<p>Specifies whether uniqueness of the userLabel is required amongst GTPs of the EMS.  The operation will fail if userLabel is already in use.</p>
-						</xsd:documentation>
-					</xsd:annotation>
-				</xsd:element>
-				<xsd:element name="owner" type="xsd:string" minOccurs="0">
-					<xsd:annotation>
-						<xsd:documentation>
-							<p>the owner of the GTP.</p>
-						</xsd:documentation>
-					</xsd:annotation>
-				</xsd:element>
-				<xsd:element name="tpRefList" type="nam:NamingAttributeListType" minOccurs="0">
-					<xsd:annotation>
-						<xsd:documentation>
-							<p>the list of CTPs that comprise the GTP.</p>
-						</xsd:documentation>
-					</xsd:annotation>
-				</xsd:element>
-				<xsd:element name="initialCtpName" type="nam:NamingAttributeType" minOccurs="0">
-					<xsd:annotation>
-						<xsd:documentation>
-							<p>in cases where the CTPs are contiguous and of the same layerRate, this parameter is used to indicate the first CTP in the group. This parameter is used in lieu of the listOfTPs parameter.</p>
-						</xsd:documentation>
-					</xsd:annotation>
-				</xsd:element>
-				<xsd:element name="numberOfCtp" type="xsd:long" minOccurs="0">
-					<xsd:annotation>
-						<xsd:documentation>
-							<p>This parameter is used in conjunction with the initialCTPname parameter. It indicates the number of contiguous CTPs that follow the initial CTP. It equals 1 minus the total number of CTPs in the GTP.</p>
-						</xsd:documentation>
-					</xsd:annotation>
-				</xsd:element>
-				<xsd:element name="gtpEffort" type="tns:GroupTerminationPointEffortType" minOccurs="0">
-					<xsd:annotation>
-						<xsd:documentation>
-							<p>This parameter is used to indicate if the GTP bandwidth specification can be met with a different list of CTPs.</p>
-						</xsd:documentation>
-					</xsd:annotation>
-				</xsd:element>
-				<xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
-					<xsd:annotation>
-						<xsd:documentation>
-							<p>This is a container for all vendor extensions.</p>
-						</xsd:documentation>
-					</xsd:annotation>
-				</xsd:element>
+				</xsd:element>	
 			</xsd:sequence>
 		</xsd:complexType>
 	</xsd:element>
@@ -248,66 +199,18 @@
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:complexType>
-			<xsd:sequence>
-				<xsd:element name="userLabel" type="xsd:string" minOccurs="0">
+			<xsd:sequence>		
+				<xsd:element name="createData" type="tns:TerminationPointPoolCreateDataType" minOccurs="0">
 					<xsd:annotation>
 						<xsd:documentation>
-							<p>the userLabel for the TpPool.</p>
+							<p>Structure describing the termination point pool structure to be created.</p>
 						</xsd:documentation>
 					</xsd:annotation>
-				</xsd:element>
-				<xsd:element name="forceUniqueness" type="xsd:boolean" minOccurs="0">
-					<xsd:annotation>
-						<xsd:documentation>
-							<p>Specifies whether uniqueness of the userLabel is required amongst TpPools of the MLSN.  The operation will fail if userLabel is already in use.</p>
-						</xsd:documentation>
-					</xsd:annotation>
-				</xsd:element>
-				<xsd:element name="owner" type="xsd:string" minOccurs="0">
-					<xsd:annotation>
-						<xsd:documentation>
-							<p>the owner of the TpPool.</p>
-						</xsd:documentation>
-					</xsd:annotation>
-				</xsd:element>
-				<xsd:element name="containingMlsn" type="mlsn:MultiLayerSubnetworkType" minOccurs="0">
-					<xsd:annotation>
-						<xsd:documentation>
-							<p>The subnetwork that shall contain the TPPool to be created.</p>
-						</xsd:documentation>
-					</xsd:annotation>
-				</xsd:element>
-				<xsd:element name="containedMembersRefList" type="nam:NamingAttributeListType" minOccurs="0">
-					<xsd:annotation>
-						<xsd:documentation>
-							<p>The list of TPs or GTPs that shall comprise the TPPool.</p>
-						</xsd:documentation>
-					</xsd:annotation>
-				</xsd:element>
-				<xsd:element ref="lp:transmissionParametersList" minOccurs="0">
-					<xsd:annotation>
-						<xsd:documentation>
-							<p>The common layers and transmission parameters the above-specified Contained TPs, or TPs contained in Contained GTPs, are required to have (e.g., ATM VP layer with prescribed traffic characteristics).</p>
-						</xsd:documentation>
-					</xsd:annotation>
-				</xsd:element>
-				<xsd:element name="descriptionOfUse" type="xsd:string" minOccurs="0">
-					<xsd:annotation>
-						<xsd:documentation>
-							<p>A description of the specific use of the TP pool, in particular how its members are collected and administered. It could include, for example, the name of a TP with the meaning that all TP pool members have to be collected from the set of potential client CTPs of this TP.</p>
-						</xsd:documentation>
-					</xsd:annotation>
-				</xsd:element>
-				<xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
-					<xsd:annotation>
-						<xsd:documentation>
-							<p>This is a container for all vendor extensions.</p>
-						</xsd:documentation>
-					</xsd:annotation>
-				</xsd:element>
+				</xsd:element>	
 			</xsd:sequence>
 		</xsd:complexType>
 	</xsd:element>
+	
 	<xsd:element name="createTerminationPointPoolResponse">
 		<xsd:annotation>
 			<xsd:documentation>
@@ -856,4 +759,135 @@ that is involved in a cross connection (or SNC) should be rejected by the EMS. T
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
+	<!-- ================= -->
+		<xsd:complexType name="GroupTerminationPointCreateDataType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p> .</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="crcd:CommonResourceCreateDataType">
+				<xsd:sequence>		
+				<xsd:element name="containingMeRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>The name of the Managed Element containing the GTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>					
+				<xsd:element name="tpRefList" type="nam:NamingAttributeListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>the list of CTPs that comprise the GTP.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="initialCtpRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>in cases where the CTPs are contiguous and of the same layerRate, this parameter is used to indicate the first CTP in the group. This parameter is used in lieu of the listOfTPs parameter.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="numberOfCtp" type="xsd:long" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter is used in conjunction with the initialCTPname parameter. It indicates the number of contiguous CTPs that follow the initial CTP. It equals 1 minus the total number of CTPs in the GTP.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="gtpEffort" type="tns:GroupTerminationPointEffortType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter is used to indicate if the GTP bandwidth specification can be met with a different list of CTPs.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+					<xsd:element name="isReportingAlarms" type="xsd:boolean" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Provides an indication whether alarm reporting for this instance is active or not.</p>
+							 </xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>				
+				<xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This is a container for all vendor extensions.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ================= -->
+		<xsd:complexType name="TerminationPointPoolCreateDataType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p> .</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="crcd:CommonResourceCreateDataType">
+				<xsd:sequence>		
+				<xsd:element name="userLabel" type="xsd:string" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>the userLabel for the TpPool.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="forceUniqueness" type="xsd:boolean" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>Specifies whether uniqueness of the userLabel is required amongst TpPools of the MLSN.  The operation will fail if userLabel is already in use.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="owner" type="xsd:string" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>the owner of the TpPool.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="containingMlsn" type="mlsn:MultiLayerSubnetworkType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The subnetwork that shall contain the TPPool to be created.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="containedMembersRefList" type="nam:NamingAttributeListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The list of TPs or GTPs that shall comprise the TPPool.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element ref="lp:transmissionParametersList" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The common layers and transmission parameters the above-specified Contained TPs, or TPs contained in Contained GTPs, are required to have (e.g., ATM VP layer with prescribed traffic characteristics).</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="descriptionOfUse" type="xsd:string" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>A description of the specific use of the TP pool, in particular how its members are collected and administered. It could include, for example, the name of a TP with the meaning that all TP pool members have to be collected from the set of potential client CTPs of this TP.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This is a container for all vendor extensions.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>	
 </xsd:schema>
