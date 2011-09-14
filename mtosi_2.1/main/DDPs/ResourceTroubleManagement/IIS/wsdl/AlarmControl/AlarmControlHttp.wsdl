@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ResourceTroubleManagement - Copyright TeleManagement Forum 2007 -->
+<wsdl:definitions name="mTOP-AlarmControlV1-0" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.tmforum.org/mtop/rtm/wsdl/ac/v1-0" targetNamespace="http://www.tmforum.org/mtop/rtm/wsdl/ac/v1-0">
+  <wsdl:documentation>
+    <p>DDP: ResourceTroubleManagement</p>
+    <p>Module: AlarmControl Service Interface WSDL HTTP Module</p>
+    <p>Description: This module contains all the mTOP AlarmControl Service Interface WSDL definitions for the Web Service deployment profile with SOAP/HTTP binding.</p>
+    <p>Version: 1.0</p>
+  </wsdl:documentation>
+  <wsdl:import namespace="http://www.tmforum.org/mtop/rtm/wsdl/ac/v1-0" location="AlarmControlPortType.wsdl"/>
+  <wsdl:binding name="AlarmControlSoapHttpBinding" type="tns:AlarmControl">
+    <wsdl:documentation>
+      <p>SOAP HTTP binding definitions of the operations of the AlarmControl portType (interface)</p>
+    </wsdl:documentation>
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="setAlarmReporting">
+      <soap:operation soapAction="setAlarmReporting" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:setAlarmReportingRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:setAlarmReportingResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="setAlarmReportingException">
+        <soap:fault name="setAlarmReportingException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AlarmControlHttp">
+    <wsdl:documentation>
+      <p>Example of the AlarmControl WSDL Service definition as a deployment example of this mTOP Service Interface. It is expected to be modified to match the specific deployment configuration in a service provider's CCV.</p>
+    </wsdl:documentation>
+    <wsdl:port name="AlarmControlSoapHttp" binding="tns:AlarmControlSoapHttpBinding">
+      <soap:address location="http://aserver/mtosi/AlarmControl"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
