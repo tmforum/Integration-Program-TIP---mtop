@@ -1,226 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- mTOP DDP - OM ResourceTroubleManagement - Copyright TeleManagement Forum 2008 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rtm/xsd/ac/v1" xmlns:tns="http://www.tmforum.org/mtop/rtm/xsd/ac/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
-  <xsd:annotation>
-    <xsd:documentation>
-      <p>DDP: ResourceTroubleManagement</p>
-      <p>Module:  Message XSD Module</p>
-      <p>Description: This module contains the XML Schema type definitions of all the mTOP AlarmControl SI XML message structures.</p>
-    </xsd:documentation>
-  </xsd:annotation>
-  <!-- ================ -->
-  <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
-  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
-  <!-- ================ -->
-  <xsd:element name="setAlarmReportingOffRequest">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the setAlarmReportingOff operation</p>
-        <p>This operation disables (deactivates, or turns off) alarm reporting on 
-         an equipment or equipment holder.  Only alarms from the equipment or holder 
-         (not TP alarms) are turned off.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element name="equipmentOrEquipmentHolderName" type="nam:NamingAttributeType" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>the equipment or holder on which to activate alarm reporting.</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="setAlarmReportingOffResponse">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Response message structure of the setAlarmReportingOff operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:sequence>
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="setAlarmReportingOffException">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Exception message structure of the setAlarmReportingOff operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:complexContent>
-        <xsd:restriction base="msg:AllExceptionsType">
-          <xsd:choice>
-            <xsd:element ref="msg:commLoss"/>
-            <xsd:element ref="msg:entityNotFound"/>
-            <xsd:element ref="msg:internalError"/>
-            <xsd:element ref="msg:invalidInput"/>
-            <xsd:element ref="msg:notImplemented"/>
-            <xsd:element ref="msg:unableToComply"/>
-          </xsd:choice>
-        </xsd:restriction>
-      </xsd:complexContent>
-    </xsd:complexType>
-  </xsd:element>
-  <!-- ================ -->
-  <xsd:element name="setAlarmReportingOnRequest">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the setAlarmReportingOn operation</p>
-        <p>This operation enables (activates, or turns on) alarm reporting 
-         on an equipment or equipment holder. Only alarms from the equipment or 
-         equipment holder (not TP alarms) are turned on.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element name="equipmentOrEquipmentHolderName" type="nam:NamingAttributeType" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>the equipment or holder on which to activate alarm reporting.</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="setAlarmReportingOnResponse">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Response message structure of the setAlarmReportingOn operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:sequence>
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="setAlarmReportingOnException">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Exception message structure of the setAlarmReportingOn operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:complexContent>
-        <xsd:restriction base="msg:AllExceptionsType">
-          <xsd:choice>
-            <xsd:element ref="msg:commLoss"/>
-            <xsd:element ref="msg:entityNotFound"/>
-            <xsd:element ref="msg:internalError"/>
-            <xsd:element ref="msg:invalidInput"/>
-            <xsd:element ref="msg:notImplemented"/>
-            <xsd:element ref="msg:unableToComply"/>
-          </xsd:choice>
-        </xsd:restriction>
-      </xsd:complexContent>
-    </xsd:complexType>
-  </xsd:element>
-  <!-- ================ -->
-  <xsd:element name="setGtpAlarmReportingOffRequest">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the setGtpAlarmReportingOff operation</p>
-        <p>This operation enables (activates, or turns on) alarm reporting for a GTP.</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element name="gtpName" type="nam:NamingAttributeType" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>the GTP on which to activate alarm reporting.</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="setGtpAlarmReportingOffResponse">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Response message structure of the setGtpAlarmReportingOff operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:sequence>
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="setGtpAlarmReportingOffException">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Exception message structure of the setGtpAlarmReportingOff operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:complexContent>
-        <xsd:restriction base="msg:AllExceptionsType">
-          <xsd:choice>
-            <xsd:element ref="msg:commLoss"/>
-            <xsd:element ref="msg:entityNotFound"/>
-            <xsd:element ref="msg:internalError"/>
-            <xsd:element ref="msg:invalidInput"/>
-            <xsd:element ref="msg:notImplemented"/>
-            <xsd:element ref="msg:unableToComply"/>
-          </xsd:choice>
-        </xsd:restriction>
-      </xsd:complexContent>
-    </xsd:complexType>
-  </xsd:element>
-  <!-- ================ -->
-  <xsd:element name="setGtpAlarmReportingOnRequest">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Request message structure of the setGtpAlarmReportingOn operation</p>
-        <p>This operation .</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element name="gtpName" type="nam:NamingAttributeType" minOccurs="0">
-          <xsd:annotation>
-            <xsd:documentation>
-              <p>the GTP on which to activate alarm reporting.</p>
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="setGtpAlarmReportingOnResponse">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Response message structure of the setGtpAlarmReportingOn operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:sequence>
-      </xsd:sequence>
-    </xsd:complexType>
-  </xsd:element>
-  <xsd:element name="setGtpAlarmReportingOnException">
-    <xsd:annotation>
-      <xsd:documentation>
-        <p>Exception message structure of the setGtpAlarmReportingOn operation</p>
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexType>
-      <xsd:complexContent>
-        <xsd:restriction base="msg:AllExceptionsType">
-          <xsd:choice>
-            <xsd:element ref="msg:commLoss"/>
-            <xsd:element ref="msg:entityNotFound"/>
-            <xsd:element ref="msg:internalError"/>
-            <xsd:element ref="msg:invalidInput"/>
-            <xsd:element ref="msg:notImplemented"/>
-            <xsd:element ref="msg:unableToComply"/>
-          </xsd:choice>
-        </xsd:restriction>
-      </xsd:complexContent>
-    </xsd:complexType>
-  </xsd:element>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/rtm/xsd/ac/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" targetNamespace="http://www.tmforum.org/mtop/rtm/xsd/ac/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: ResourceTroubleManagement</p>
+			<p>Module:  Message XSD Module</p>
+			<p>Description: This module contains the XML Schema type definitions of all the mTOP AlarmControl SI XML message structures.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ================ -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd"/>	
+	<!-- ================ -->
+	<xsd:element name="setAlarmReportingRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This operation allows a requesting OS to activate and deactivate (allow/not allow, or turn on/off) alarm reporting for all object classes which are able to issue alarms.
+					 Alarm reporting for multi layer object classes can be activated/deactivated at a specific layerRate provided by the requesting OS.
+					The following object classes are able to issue alarms:
+						- Equipment
+						- Equipment Holder
+						- Equipment Protection Group
+						- Flow Domain
+						- Flow Domain Fragment
+						- Group Termination Point
+						- Managed Element
+						- Management Domain
+						- Matrix Flow Domain
+						- Multi-Layer Subnetwork
+						- Operations System
+						- Protection Group
+						- Subnetwork Connection
+						- Termination Point (and subclasses)
+						- Topological Link.
+</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="resourceRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter contains the name of the resource who's alarm reporting shall be set.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="mustReportAlarms" type="xsd:boolean" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter indicates that the Alarms have to be turned on (True) or turned off (False).</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="layerRate" type="lay:LayerRateType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter defines the layer rate of the object class who's alarm reporting shall be set.
+								  Default value "1" indicates for a multi layered Object class that all supported layers are in scope of the operation..</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>								
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="setAlarmReportingResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the setAlarmReporting operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence/>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="setAlarmReportingException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the setAlarmReporting operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
 </xsd:schema>
