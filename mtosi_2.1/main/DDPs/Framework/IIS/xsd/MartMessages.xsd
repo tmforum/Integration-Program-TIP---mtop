@@ -1,0 +1,508 @@
+<?xml version="1.0"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/mart/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/mart/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: Framework</p>
+			<p>Module: XSD Messages Module</p>
+			<p>Description: This module contains the XML Schema definitions of the mTOP MART service interfaces messages.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ================ -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" schemaLocation="MessageDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="GeneralDefinitions.xsd"/>
+	<!--  ============== -->
+	<xsd:element name="doProcessRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the doProcess compound operation</p>
+				<p>This operation allows the Client OS to send bulk operations to a Target OS.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="requestId" type="xsd:string" minOccurs="0"/>
+				<!-- requestId is used to further query the process state of a request -->
+				<xsd:element name="failPolicy" type="tns:FailPolicyType" minOccurs="0"/>
+				<xsd:element name="order" type="tns:OrderType" minOccurs="0"/>
+				<xsd:element name="templateList" type="tns:TemplateListType" minOccurs="0"/>
+				<xsd:element name="operationSet" type="tns:OperationSetType" maxOccurs="unbounded"/>
+				<xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="doProcessResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the doProcess compound operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="errorReason" type="xsd:string" nillable="true" minOccurs="0"/>
+				<xsd:element name="templateList" type="tns:TemplateListType" minOccurs="0"/>
+				<xsd:element name="operationSetResult" type="tns:OperationSetResultType" minOccurs="0" maxOccurs="unbounded"/>
+				<xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="doProcessException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the doProcess compound operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="exceptionType">
+					<xsd:complexType>
+						<xsd:complexContent>
+							<xsd:restriction base="msg:AllExceptionsType">
+								<xsd:choice>
+									<xsd:element ref="msg:commLoss"/>
+									<xsd:element ref="msg:internalError"/>
+									<xsd:element ref="msg:invalidInput"/>
+									<xsd:element ref="msg:notImplemented"/>
+									<xsd:element ref="msg:unableToComply"/>
+								</xsd:choice>
+							</xsd:restriction>
+						</xsd:complexContent>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!--  ============== -->
+	<xsd:element name="getProcessStateRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getProcessState operation</p>
+				<p>This operation allows the Client OS to query a server OS for the current status of a request</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="requestId" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="getProcessStateResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getProcessState operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="operationStateSet" type="tns:OperationSetStateType" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="getProcessStateException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getProcessState operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="exceptionType">
+					<xsd:complexType>
+						<xsd:complexContent>
+							<xsd:restriction base="msg:AllExceptionsType">
+								<xsd:choice>
+									<xsd:element ref="msg:commLoss"/>
+									<xsd:element ref="msg:entityNotFound"/>
+									<xsd:element ref="msg:internalError"/>
+									<xsd:element ref="msg:invalidInput"/>
+									<xsd:element ref="msg:notImplemented"/>
+									<xsd:element ref="msg:unableToComply"/>
+								</xsd:choice>
+							</xsd:restriction>
+						</xsd:complexContent>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!--  ============== -->
+	<xsd:element name="terminateProcessRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the terminateProcess operation</p>
+				<p>This operation allows the Client OS to terminate bulk operations under processiing at a Target OS.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="requestId" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="terminateProcessResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the terminateProcess operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="state" type="tns:StateType" nillable="true"/>
+				<xsd:element name="reason" type="xsd:string" nillable="true" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="terminateProcessException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the terminateProcess operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="exceptionType">
+					<xsd:complexType>
+						<xsd:complexContent>
+							<xsd:restriction base="msg:AllExceptionsType">
+								<xsd:choice>
+									<xsd:element ref="msg:commLoss"/>
+									<xsd:element ref="msg:entityNotFound"/>									
+									<xsd:element ref="msg:internalError"/>
+									<xsd:element ref="msg:invalidInput"/>
+									<xsd:element ref="msg:notImplemented"/>
+									<xsd:element ref="msg:unableToComply"/>
+								</xsd:choice>
+							</xsd:restriction>
+						</xsd:complexContent>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!--  ============== -->
+	<xsd:simpleType name="FailPolicyType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="BEST_EFFORT"/>
+			<xsd:enumeration value="HALT"/>
+			<xsd:enumeration value="ROLL_BACK"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!--  ============== -->
+	<xsd:simpleType name="OrderType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="SEQUENTIAL"/>
+			<xsd:enumeration value="ANY"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!--  ============== -->
+	<xsd:complexType name="TemplateListType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Templates have the same structure as the operations for which they are templates</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="template" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="name" type="xsd:string"/>
+						<xsd:element name="definition" type="tns:OperationType"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--  ============== -->
+	<xsd:complexType name="OperationSetType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Definition of a set of operations with their controls</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="operationSetLabel" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>label which is used to reassociate the results in the response with the operations set</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="failPolicy" type="tns:FailPolicyType">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Operation execution fail over control</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="order" type="tns:OrderType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Operation execution ordering control</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="operation" type="tns:OperationType" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>List of operations</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--  ============== -->
+	<xsd:complexType name="OperationType">
+		<xsd:sequence>
+			<xsd:element name="operationLabel" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>label which is used to reassociate the results in the response with the request</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="failPolicy" type="tns:FailPolicyType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>operation level controls</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="isResultDataRequested" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>flag used to indicate if the result should contain the operationResultData or not</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="templateName" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>An operation can optionally name a template which will provide values for any element not explicitly included here</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="operationData" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:any namespace="##any" processContents="lax" minOccurs="0"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--  ============== -->
+	<xsd:complexType name="OperationSetResultType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Definition of a set of operations results with their controls</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="operationSetResultLabel" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>label which is used to reassociate the results in the response with the operations set</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="result" type="tns:ResultType" nillable="true">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Operation set execution result</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="operation" type="tns:OperationResultType" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>List of operations</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--  ============== -->
+	<xsd:complexType name="OperationResultType">
+		<xsd:sequence>
+			<xsd:element name="operationLabel" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Operation label</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="result" type="tns:ResultType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Operation execution result</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="errorReason" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Operation execution error reason</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="templateName" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>An operation result can optionally name a template which will provide values for any element not explicitly included here</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="operationResultData" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>MTOSI fine-grained operation response</p>
+						<p>This is a loosely type definition - Refer to the unused (for reference only) strongly typed definition; OperationEnumType</p>
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:any namespace="##any" processContents="lax" minOccurs="0"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--  ============== -->
+	<xsd:simpleType name="ResultType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="SUCCESS"/>
+			<xsd:enumeration value="FAILURE"/>
+			<xsd:enumeration value="WARNING"/>
+			<xsd:enumeration value="NOT_ATTEMPTED"/>
+			<xsd:enumeration value="UNKNOWN"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!--  ============== -->
+	<xsd:simpleType name="StateType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="COMPLETED_SUCCESSFULLY"/>
+			<xsd:enumeration value="TERMINATED_SUCCESSFULLY"/>
+			<xsd:enumeration value="FAILED"/>
+			<xsd:enumeration value="NOT_STARTED"/>
+			<xsd:enumeration value="IN_PROGRESS"/>
+			<xsd:enumeration value="UNKNOWN"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!--  ============== -->
+	<xsd:complexType name="OperationSetStateType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Definition of a set of operations results with their controls</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="operationSetStateLabel" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>label which is used to reassociate the states in the response with the operations set</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="state" type="tns:StateType" nillable="true">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Operation set execution state</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="operation" type="tns:OperationStateType" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>List of operations</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="OperationStateType">
+		<xsd:sequence>
+			<xsd:element name="operationLabel" type="xsd:string" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Operation label</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="state" type="tns:StateType" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Operation process state</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="reason" type="xsd:string" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Explanation about the process state</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!--  ============== -->
+	<xsd:simpleType name="OperationEnumType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="provisionEquipment"/>
+			<xsd:enumeration value="unprovisionEquipment"/>
+			<xsd:enumeration value="verifyTMDAssignment"/>
+			<xsd:enumeration value="createFTP"/>
+			<xsd:enumeration value="deleteFTP"/>
+			<xsd:enumeration value="setTPData"/>
+			<xsd:enumeration value="createSNC"/>
+			<xsd:enumeration value="activateSNC"/>
+			<xsd:enumeration value="createAndActivateSNC"/>
+			<xsd:enumeration value="deactivateSNC"/>
+			<xsd:enumeration value="deleteSNC"/>
+			<xsd:enumeration value="deactivateAndDeleteSNC"/>
+			<xsd:enumeration value="checkValidSNC"/>
+			<xsd:enumeration value="createModifiedSNC"/>
+			<xsd:enumeration value="modifySNC"/>
+			<xsd:enumeration value="createTopologicalLink"/>
+			<xsd:enumeration value="deleteTopologicalLink"/>
+			<xsd:enumeration value="createTransmissionDescriptor"/>
+			<xsd:enumeration value="deleteTransmissionDescriptor"/>
+			<xsd:enumeration value="modifyTransmissionDescriptor"/>
+			<xsd:enumeration value="createFlowDomain"/>
+			<xsd:enumeration value="deleteFlowDomain"/>
+			<xsd:enumeration value="modifyFlowDomain"/>
+			<xsd:enumeration value="createMFD"/>
+			<xsd:enumeration value="deleteMFD"/>
+			<xsd:enumeration value="modifyMFD"/>
+			<xsd:enumeration value="validateTMDAssignmentToMFD"/>
+			<xsd:enumeration value="createAndActivateFDFr"/>
+			<xsd:enumeration value="deactivateAndDeleteFDFr"/>
+			<xsd:enumeration value="modifyFDFr"/>
+			<xsd:enumeration value="associateMFDsWithFlowDomain"/>
+			<xsd:enumeration value="deAssociateMFDsFromFlowDomain"/>
+			<xsd:enumeration value="associateCPTPsWithFlowDomain"/>
+			<xsd:enumeration value="deAssociateCPTPsFromFlowDomain"/>
+			<xsd:enumeration value="addFPsToFDFr"/>
+			<xsd:enumeration value="removeFPsFromFDFr"/>
+			<xsd:enumeration value="createTPPool"/>
+			<xsd:enumeration value="deleteTPPool"/>
+			<xsd:enumeration value="modifyTPPool"/>
+			<xsd:enumeration value="assignCPTPsToMFD"/>
+			<xsd:enumeration value="unassignCPTPsFromMFD"/>
+			<xsd:enumeration value="createGTP"/>
+			<xsd:enumeration value="deleteGTP"/>
+			<xsd:enumeration value="modifyGTP"/>
+			<xsd:enumeration value="createTCAParameterProfile"/>
+			<xsd:enumeration value="deleteTCAParameterProfile"/>
+			<xsd:enumeration value="setTCAParameterProfile"/>
+			<xsd:enumeration value="setTCAParameterProfilePointer"/>
+			<xsd:enumeration value="createASAP"/>
+			<xsd:enumeration value="deleteASAP"/>
+			<xsd:enumeration value="assignASAP"/>
+			<xsd:enumeration value="deassignASAP"/>
+			<xsd:enumeration value="establishCall"/>
+			<xsd:enumeration value="releaseCall"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>

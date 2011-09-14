@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/coi/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/coi/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Framework</p>
+      <p>Module: XSD Aggregate Module</p>
+      <p>Description: This module contains the XML Schema definitions of the common object information.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="NamingDefinitions.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="GeneralDefinitions.xsd"/>
+  <!-- ============== -->
+  <xsd:element name="commonObjectInfo" type="tns:CommonObjectInfoType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:complexType name="CommonObjectInfoType" abstract="true">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The aggregate of all common object attributes.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="name" type="nam:NamingAttributeType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This attribute represents a unique name/identifier for the object on the CCV. Consult the SD2-7 about object naming for additional normative references.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="userLabel" type="xsd:string" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="discoveredName" type="gen:DiscoveredNameType" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="namingOs" type="xsd:string" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+        <p>This is the object attribute definition to identify the name of the OS that provided the unique MTOSI name for the object. It is assumed that each object (that is published on the CCV) has a unique naming OS. This attribute is optional in a point to point NMS-EMS paradigm.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="owner" type="gen:OwnerType" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="aliasNameList" type="gen:AliasNameListType" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="vendorExtensions" type="gen:AnyListType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This is a container for all vendor extensions.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

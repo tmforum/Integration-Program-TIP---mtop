@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Framework</p>
+      <p>Module: XSD Aggregate Module</p>
+      <p>Description: This module contains the XML Schema definitions of all the generic mTOP XML naming structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================= -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="GeneralDefinitions.xsd"/>
+  <!-- ================= -->
+  <xsd:complexType name="RelativeDistinguishNameType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the type definition of relative distinguish name (RDN) data structure used in all object names.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="type" type="gen:ObjectTypeType">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>the RDN object type acronym.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="value" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>the RDN value.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="NamingAttributeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the type definition of the MTOSI object name data structure as a sequence of RDNs, which represents a unique identifier for the MTOSI object on the CCV. Once set by the naming OS, the name is invariant for the life of the object and should be used when referring to the object over the CCV. Name attribute of an object instance shall always be assigned a value, unless the object instance is first discovered by an OS that is not the naming OS for the object instance. In such a case, the discovering OS shall provide a value for the Discovered Name attribute of the object. The naming OS shall provide a value for the Name attribute of the object once it becomes aware of the new object.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="rdn" type="tns:RelativeDistinguishNameType" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="NamingAttributeListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the definition for the list of MTOSI object names.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="name" type="tns:NamingAttributeType" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>
