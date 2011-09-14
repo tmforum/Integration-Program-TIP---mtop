@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by G Grimes (Ericsson GmbH) -->
+<!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/rir/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:invdata="http://www.tmforum.org/mtop/nrf/xsd/invdata/v1" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/rir/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Manage Resource Inventory</p>
+      <p>Module:  Message XSD Module</p>
+      <p>Description: This module contains the XML Schema type definitions of all the mTOP InventoryRetrieval SI XML message structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/invdata/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/ResourceInventoryLayout.xsd"/>
+  <!-- ================= -->
+  <xsd:element name="getInventoryRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getInventory operation</p>
+        <p>This operation returns a specified portion of the inventory data from the OS to which the request is directed (i.e., the target OS). The target OS returns all objects satisfying the scope and filter constraints of the requesting OS that have a modification date equal to or later than the Diff Date and Time.</p>
+        <p>The operation can only be directed to a top-level OS and not to a subordinate OS.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="filter" type="tns:SimpleFilterType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This parameter defines the subset of the total inventory to be returned.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="diffDateAndTime" type="xsd:dateTime" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This parameter allows to constraint the inventory retrieval by a modification date and time. I.e., all objects with a modification date equal to or greater than this value are in scope of this operation.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================== -->
+  <xsd:element name="getInventoryResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getInventory operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="inventoryData" type="invdata:InventoryDataType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The inventory data which may vary based on the MEP. Refer to SD2-5 in the Framework DDP. Also, note that the atomic elements of the inventory data XML representation are all the following top-level objects: MD, ME, MLSN, OS, TL, and TMD. It means that all top-level object instances must be fully encapsulated in one batch when the MEP involves multiple responses.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================== -->
+  <xsd:element name="getInventoryException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getInventory operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+            <xsd:element ref="msg:unableToComply"/>
+            <xsd:element ref="msg:unsupportedCompressionFormat"/>
+            <xsd:element ref="msg:unsupportedPackingFormat"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================= -->
+  <xsd:element name="getInventoryIteratorRequest" type="msg:GetAllDataIteratorRequestType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getInventoryIterator operation</p>
+        <p>This is the iterator request to return the next batch of InventoryData from the target OS.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================== -->
+  <xsd:element name="getInventoryIteratorResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getInventoryIterator operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="inventoryData" type="invdata:InventoryDataType" minOccurs="0"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================== -->
+  <xsd:element name="getInventoryIteratorException" type="msg:GetAllDataIteratorExceptionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getInventoryIterator operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================= -->
+  <!--         All local types       -->
+  <!-- ================= -->
+  <xsd:simpleType name="GranularityType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Filter attribute used to select the granularity of the Inventory report.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="NAME">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Retrieve the name only.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ATTRS">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Retrieve the name and the other object attributes.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="FULL">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Retrieve the name, the object attributes adn all the relationsship object pointers.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="SimpleFilterType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The data structure of the Inventory Retrieval filter. Some examples are listed in the following table.
+        <table cellspacing="0" cellpadding="0">
+            <tr>
+              <td valign="top">
+                <p>
+                  <b>Filter Constraint</b>
+                </p>
+              </td>
+              <td valign="top">
+                <p>
+                  <b>Simple Filter</b>
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <p>Given an ME name (e.g., md1/ME123), get all the EHs and Equipment
+          Attributes</p>
+              </td>
+              <td valign="top">
+                <p>baseInstanceList: { (MD=md1;ME=ME123)}</p>
+                <p>includedObjectTypes: { (EH, ATTRS), (EQ, ATTRS) }</p>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <p>Given an ME name
+          (e.g., md1/ME123), get all the contained Ehs Attributes and the ME attibutes</p>
+              </td>
+              <td valign="top">
+                <p>baseInstanceList: { (MD=md1;ME=ME123) }</p>
+                <p>includedObjectTypes: { (ME, ATTRS), (EH, ATTRS) }</p>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <p>Get all MEs and
+          associated attributes (within the entire inventory known to the target OS)</p>
+              </td>
+              <td valign="top">
+                <p>baseInstanceList: { }</p>
+                <p>includedObjectTypes { (ME, ATTRS) }</p>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <p>Get all ME, OS
+          and MD names (within the entire inventory known to the target OS)</p>
+              </td>
+              <td valign="top">
+                <p>baseInstanceList: { }</p>
+                <p>includedObjectTypes: { (ME, NAME), (MD, NAME), (OS, NAME) }</p>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <p>Given an EH name
+          (e.g., md1/ME123/ACME7), get all the contained Equipment (and relationship
+          pointers)</p>
+              </td>
+              <td valign="top">
+                <p>baseInstanceList: { (MD=md1;ME=ME123;EH=ACME7) }</p>
+                <p>includedObjectTypes: { (EQ,FULL)}</p>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <p>Given a PTP name
+          (e.g., md1/ME123/PTPxyz), get the PTP Attributes</p>
+              </td>
+              <td valign="top">
+                <p>baseInstanceList: { (MD=md1;ME=ME123;PTP=PTPxyz) }</p>
+                <p>includedObjectTypes: { (PTP, ATTRS) }</p>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <p>Query attributes matching using Xpath 1.0 expresion. A consumer would like to query all ME softwareVersion equal to "2.0" in the "md1" MD and retrieve their name only.</p>
+              </td>
+              <td valign="top">
+                <p>baseInstanceList: { (MD=md1) }</p>
+                <p>queryExpression: { { {http://www.w3.org/TR/xpath}, {//meAttrs[softwareVersion=`2.0`} }, {NAME} }</p>
+              </td>
+            </tr>
+          </table>
+        </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="baseInstance" type="nam:NamingAttributeType" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This attribute identifies a list of base object instances for the subtrees to be retrieved. BaseInstanceList is a list of serialized MTOSI names. If the BaseInstanceList is left empty then all the nodes at the top of the MTOSI instance tree are selected (i.e., all MDs, TMDs, and OSs are selected). Specification of the BaseInstanceList does not select any objects in and of itself. In order to select specific objects, one needs to specify the IncludedObjectTypes.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:choice>
+        <xsd:annotation>
+          <xsd:documentation>Two options to identify the scope of the objects to be retrieved:
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="queryExpression" type="gen:QueryExpressionType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Specify an attribute matching query expression to be applied to the sub-tree of the inventory layout document targeted by the baseInstance. This expression is based on a standard specification query language (Xpath, ansi-92).</p>
+                <p>Refer to the Business Agrrement (BA) requirement description for details of the minimum set of supported query operations.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="granularity" type="tns:GranularityType">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Specify the granularity of the inventory report based.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <xsd:element name="includedObjectType" maxOccurs="unbounded">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This attribute identifies the type of objects contained under the selected base object instances that are to be included in the returned inventory file. The base object itself is included only if the type of the base instance appears in the IncludedObjectTypes list. If no included object types are listed, then the entire subtree under the base object instance is returned. For each included object type, one needs to indicate whether.
+            <ul>
+                  <li>just the name,</li>
+                  <li>all the associated attributes (including the name), or</li>
+                  <li>the associated attributes and relationship pointers are to be returned for each instance.</li>
+                </ul>
+            The IncludedObjectTypes need to be picked such that each selected base class has a single (connected) subtree below it. For example, if all the EHs under a given MD where needed, the requesting OS would need to list the given MD as a base instance and put ME and EH in the IncludedObjectTypes list. The requesting OS could just request the names of the MEs to reduce the size of the returned file.
+            </p>
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="objectType" type="gen:ObjectTypeType">
+                <xsd:annotation>
+                  <xsd:documentation>
+                    <p>Specify the object type acronym.</p>
+                  </xsd:documentation>
+                </xsd:annotation>
+              </xsd:element>
+              <xsd:element name="granularity" type="tns:GranularityType">
+                <xsd:annotation>
+                  <xsd:documentation>
+                    <p>Specify the granularity of the inventory report based.</p>
+                  </xsd:documentation>
+                </xsd:annotation>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:choice>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

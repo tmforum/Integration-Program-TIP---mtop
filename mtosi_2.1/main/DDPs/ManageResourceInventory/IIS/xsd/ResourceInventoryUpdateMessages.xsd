@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/riu/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/riu/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:invdata="http://www.tmforum.org/mtop/nrf/xsd/invdata/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: ManageResourceInventory</p>
+      <p>Module:  Message XSD Module</p>
+      <p>Description: This module contains the XML Schema type definitions of all the mTOP ResourceInventoryUpdate SI XML message structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/ResourceInventoryLayout.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/invdata/v1"/>
+  <!-- ================ -->
+  <xsd:element name="updateInventoryRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the updateInventory operation</p>
+        <p>This operation allows an OS to request that another OS (i.e., the Target OS) 
+				update its inventory. The expectation is that the target OS update its inventory 
+				as requested, but no other side-effects are expected (e.g., creating an SNC in the network). 
+				This is a key point concerning this capability. The update may entail object creations, 
+				attribute modifications and/or object deletions. The requesting OS provides an inventoryData 
+				structure that describes the desired updates to be made by the Target OS. The operation can 
+				only be directed to a top-level OS and not to a subordinate OS.</p>
+        <p> Rather than having an indicator for each object in the inventory layout (in the inventory 
+				update request) concerning the type of update desired, e.g., create, modify, delete or noChange. 
+				It was decided that the target OS shall determine the desired update by simply comparing the 
+				inventory layout to its current inventory, with the following rules:</p>
+        <p>If an object is included in the inventory layout that was not known to the target OS before, 
+				this is to be treated as a creation request.</p>
+        <p>Deletions are indicated by setting the resourceState to “Retiring/unavailable”.</p>
+        <p>Modifications are determined by comparing each existing object in the inventory layout 
+				(provided in the update request) to the object as currently known to the target OS. 
+				This is the same convention that was used for the getInventory operation. 
+				In this case, the information is being “pushed” rather than “pulled”.</p>
+        <p>In the case of effortMode="bestEffort", this operations uses Multi-Object Exceptions. 
+				In the case of effortMode="atomic" the first encountered exception is returned.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="inventoryUpdate" type="invdata:InventoryDataType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This attribute defines the requested inventory update. Note that the same data structure is used as in the response to the getInventory operation.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="effortMode" type="tns:EffortModeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This attribute is used to indicate the effort level for the updateInventory operations. The two possible values are "bestEffort" and "atomic". Either effort mode can be applied to any of the integration modes.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="integrationMode" type="tns:IntegrationModeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This attribute describes how the requested inventory update should be integrated into the existing inventory of the receiving OS.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="updateInventoryResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the updateInventory operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence/>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="updateInventoryException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the updateInventory operation</p>
+        <p>The updateInventory operation allows for multiple exceptions for a single request. This is explained
+		further in TMF518_MRI.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="msg:commLoss"/>
+        <xsd:element ref="msg:internalError"/>
+        <xsd:element ref="msg:notImplemented"/>
+        <xsd:element ref="msg:unableToComply"/>
+        <!-- ===================== Object does not exist ========= -->
+        <xsd:sequence>
+          <xsd:element name="invalidInputObjectDoesNotExist" type="msg:BaseExceptionMessageType"/>
+          <xsd:element name="nonExistentContainingObject" type="nam:NamingAttributeType" minOccurs="0" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>If while attempting to create an object whose containing object (possibly several 
+						layers up) does not exist, the target OS should raise an exception and supply the name 
+						of the containing object that it claims does not exist. The "reason" parameter of the 
+						exception should state "containing object does not exist".</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- ===================== Unsupported object types ========= -->
+        <xsd:sequence>
+          <xsd:element name="invalidInputUnsupportedObjectTypes" type="msg:BaseExceptionMessageType"/>
+          <xsd:element name="objectType" type="gen:ObjectTypeType" minOccurs="0" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>If the requesting OS is trying to create instance of one or more object types that
+						are unsupported by the target OS, the target OS should raise an exception and list the 
+						unsupported object types.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- ===================== Unsupported attributes or attribute values ========= -->
+        <xsd:sequence>
+          <xsd:element name="invalidInputUnsupportAttributesOrValues" type="msg:BaseExceptionMessageType"/>
+          <xsd:element name="objectType" type="gen:ObjectTypeType" minOccurs="0" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>If the requesting OS is trying to modify an unsupported attribute type or set an attribute
+						to a not allowed value (either because the value is not supported or because the current situation
+						does not allow the value to be set as requested, e.g., trying to reuse the name of an existing
+						object), the target OS should raise an exception and list the problem attributes types.</p>
+                <p>Depending on the situation, the reason parameter should state either
+						"unsupported attribute type" or "attempted to set attribute to not allowed value."</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- ===================== Objects in use ========= -->
+        <xsd:sequence>
+          <xsd:element name="objectInUse" type="msg:BaseExceptionMessageType"/>
+          <xsd:element name="objectName" type="nam:NamingAttributeType" minOccurs="0" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>If requesting OS is trying to modify an object that is in use (this may depend on the 
+						policies of the target OS), the target OS should raise an exception and provide 
+						the type and name of the object instances in question that are already in use.</p>
+                <p>If the requesting OS is attempting to delete an object when an associated object 
+						(possibly several layers up) is currently in use (e.g., attempting to delete a CTP when 
+						an associated SNC is still in use may violate a policy of the target OS) then the 
+						target OS should raise an exception and supply the name of the containing object that is 
+						in use. The "reason" parameter of the exception should say "Containing object is in use".</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+        <!-- ===================== Policy violation ========= -->
+        <xsd:sequence>
+          <xsd:element name="policyViolation" type="msg:BaseExceptionMessageType"/>
+          <xsd:element name="objectName" type="nam:NamingAttributeType" minOccurs="0" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>If creation of a given object violates a policy of the target OS, the target OS should 
+						raise an exception, identify the object (can leave the relative name empty if not provided
+						by the requesting OS) and indicate the specific policy that has been violated in the 
+						"reason" parameter of the exception.</p>
+                <p>If modification or deletion of a given object violates a policy of the target OS, the target 
+						OS should raise an exception, identify the object and indicate the specific policy that has been 
+						violated in the "reason" parameter of the exception.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- =========== Local Definitions ========= -->
+  <xsd:simpleType name="EffortModeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This parameter is used to indicate the effort level for the updateInventory operations.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="BEST_EFFORT">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The value "bestEffort" means that the target OS shall make as many of the requested updates as possible and report on the ones that failed.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ATOMIC">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The value "atomic" means that the target OS must make all the requested updates or completely roll back the operation.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="IntegrationModeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This parameter describes how the requested inventory update should be integrated into 
+				the existing inventory of the receiving OS.</p>
+        <p>The behavior associated with this parameter is further described in TMF518_MRI. 
+				TMF518_MRI also provides an example concerning the desired behavior associated with this parameter.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="REPLACE">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>For each proposed subtree update, everything from the root and below in the target OS's inventory is replaced by the proposed subtree update.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="MERGE_WITHOUT_OVERWRITE">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Each proposed subtree update is merged with the associated subtree in the target OS's inventory. For each proposed subtree update, additional branches and leaves are added to the associated subtree in the target OS's inventory to achieve alignment with the proposed update. In the case of overlapping objects (in the proposed update and in the target OS's inventory), the objects in the target OS remains unchanged.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="MERGE_WITH_OVERWRITE">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This is the same as Merge without Overwrite except for the treatment of overlapping objects. In this case, the proposed object replaces its associated object instance in the target OS's inventory.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>
