@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/tmd/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/tmd/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lp="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource FulFillment</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP TMD XML structure.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayeredParameters.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lp/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1"/>
+  <!-- ================= -->
+  <xsd:element name="tmd" type="tns:TransmissionDescriptorType"/>
+  <!-- ================= -->
+  <xsd:complexType name="TransmissionDescriptorType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This aggregate defines all the TransmissionDescriptor mTOP network resource object attributes.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="cri:CommonResourceInfoType">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This element entails the attributes common to all mTOP network resource objects.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element ref="lp:transmissionParametersList" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>A list of transmission parameters which can be set and retrieved at a specified layer on a TP having this TMD assigned as egress or ingress TMD</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="additionalObjectInformation" type="gen:NameAndValueStringListType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Additional info parameters which can be set and/or retrieved on a Object having this TMD assigned as egress or ingress TMD</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="containingTmdRef" type="nam:NamingAttributeType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The NamingAttributeType structure is used as a naming scheme between the NMS and EMS interface</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="externalRepresentationReference" type="tns:ExternalRepresentationReferenceType" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="conformanceDefinition" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Translates the ATM conformance definitions for TDs according to SD1-5_conformanceDefinitions.pdf to CTPs and Transmission Descriptors. </p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="serviceCategory" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Translates the ATM service categories for TDs to CTPs and Transmission Descriptors.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="TransmissionDescriptorListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>List of TransmissionDescriptor</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element ref="tns:tmd" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="ExternalRepresentationReferenceType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A means to store at the EMS a reference to the external representation of the TMD (e.g., an XML file name).</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+</xsd:schema>

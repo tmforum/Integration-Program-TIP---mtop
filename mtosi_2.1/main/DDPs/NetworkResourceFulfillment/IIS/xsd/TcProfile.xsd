@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/tcp/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/tcp/v1" xmlns:lp="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource FulFillment</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP Traffic Conditioning Profile (TC Profile) XML structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayeredParameters.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lp/v1"/>
+  <!-- ================= -->
+  <xsd:element name="tcp" type="tns:TrafficConditioningProfileType"/>
+  <!-- ================= -->
+  <xsd:complexType name="TrafficConditioningProfileType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A Traffic Conditioning Profile (TC Profile) represents a collection of attributes, which are used to define the traffic conditioning parameters (e.g., bandwidth characteristics) on a Termination Point (TP).</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="cri:CommonResourceInfoType">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This element entails the attributes common to all mTOP network resource objects.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="isDefaultProfile" type="xsd:boolean" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This Boolean attribute shall define the TC Profile as a non-deleteable profile (modification may be possible or rejected). An EMS may contain more than one default profile which condition different TPs.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element ref="lp:transmissionParametersList" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>A list of traffic conditioning parameters which can be set and/or retrieved at a specified connectionless layer on a Termination Point (TP) having this TC Profile assigned as a TC Profile. Refer to chapter "Traffic conditioning parameters" of the supporting document SD1-16 Layered Parameters for details of the currently defined traffic conditioning parameters.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="TrafficConditioningProfileListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A list of TC Profiles.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element ref="tns:tcp" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/mei/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/mei/v1" 
+xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1"   
+xmlns:invdata="http://www.tmforum.org/mtop/nrf/xsd/invdata/v1" 
+attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Framework</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema definitions of the Multi-Event Inventory notification.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/CommonEventInformation.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/cei/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/ResourceInventoryLayout.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/invdata/v1"/>
+  <!-- ================ -->
+  <xsd:element name="meiNotification" type="tns:MultiEventInventoryType" substitutionGroup="cei:commonEventInformation">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The element definition of the Multi-Event Inventory notification.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:complexType name="MultiEventInventoryType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the type definition of the MEI notification.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="cei:CommonEventInformationType">
+        <xsd:sequence>
+			<xsd:element name="events" type="invdata:InventoryDataType">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This structure contains the set of events to be reported. 
+						It follows the structure of the inventory layout.</p> 
+					</xsd:documentation>
+				</xsd:annotation>			
+			</xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================ -->
+</xsd:schema>
