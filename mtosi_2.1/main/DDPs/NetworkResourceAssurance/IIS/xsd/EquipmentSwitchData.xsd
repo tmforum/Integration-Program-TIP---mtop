@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - DM Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/esd/v1" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/esd/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:com="http://www.tmforum.org/mtop/nra/xsd/com/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource Assurance</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema EquipmentSwitchData type definitions used in some the mTOP XML Network Resource Assurance objects.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/com/v1" schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/CommonTypes.xsd"/>
+  <!-- ================= -->
+  <xsd:complexType name="EquipmentSwitchDataType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This data type identifies the current protection switch status of an Equipment Protection Group.</p>
+        <p>See SD1-34_protectionSwitch.pdf for more information. </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="epgType" type="com:EquipmentProtectionGroupTypeType" minOccurs="0" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The type of protection.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="equipmentSwitchReason" type="com:EquipmentSwitchReasonType" minOccurs="0" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The reason that the last switch occurred.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="epgRef" type="nam:NamingAttributeType" minOccurs="0" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This attributes identifies the equipment protection group for which 
+             protection switch status is being reported.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="protectedEquipmentRef" type="nam:NamingAttributeType" minOccurs="0" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This attributes identifies the protected equipment.
+           For a retrieval of an M:N group, it always 
+           identifies a worker equipment instance. In this case, N EquipmentSwitchDataType 
+           are returned as a result of retrieveEquipmentSwitchData (one for 
+           each worker equipment instance).</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="switchToEquipmentRef" type="nam:NamingAttributeType" minOccurs="0" nillable="true">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This attributes identifies the equipment instance
+             that is working after the switch, or currently working if
+             no protection switch is currently active.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="vendorExtensions" type="gen:AnyListType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This is a container for all vendor extensions.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ===================== -->
+  <xsd:complexType name="EquipmentSwitchDataListType">
+    <xsd:annotation>
+      <xsd:documentation><p>The list of EquipmentSwitchData</p></xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="equipmentSwitchData" type="tns:EquipmentSwitchDataType" minOccurs="0" maxOccurs="unbounded">
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

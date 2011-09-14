@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/alarmid/v1" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/alarmid/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lr="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:com="http://www.tmforum.org/mtop/nra/xsd/com/v1" xmlns:prc="http://www.tmforum.org/mtop/nra/xsd/prc/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource Assurance</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP Alarm ID XML structure.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1"/>
+  <xsd:import schemaLocation="CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/com/v1"/>
+  <xsd:import schemaLocation="ProbableCauses.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/prc/v1"/>
+  <!-- ================= -->
+  <xsd:element name="alarmId" type="tns:AlarmIdType"/>
+  <!-- ================= -->
+  <xsd:complexType name="AlarmIdType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Alarm ID is used as a unique identifier of an alarm.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="objectName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The name represents the name of the entity that gave rise to the alarm. See
+   Framework DDP SD2-7_ObjectNaming for further detail on name structure.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="layerRate" type="lr:LayerRateType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Identifies the layerRate of the object raising the alarm. For objects 
+   where the layerRate is not applicable, such as EMS/OS, the value is set to 
+   LR_Not_Applicable. LayerRate is applicable in alarms raised by objects 
+   such as PTPs.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="probableCause" type="prc:ProbableCauseType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Probable cause identifies the type of alarm raised against the object.  
+   See SD1-33_ProbableCauses.pdf  Specification of probableCause strings for a description of the probable cause strings.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="probableCauseQualifier" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Probable cause qualifier is used as the final component of the unique 
+   identification of the alarm and is left blank where the objectName, 
+   layerRate and probableCause alone provide a unique identification of the alarm.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+</xsd:schema>

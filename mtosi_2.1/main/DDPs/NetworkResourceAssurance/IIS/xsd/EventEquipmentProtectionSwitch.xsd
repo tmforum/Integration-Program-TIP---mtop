@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by G Grimes (Ericsson GmbH) -->
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/eps/v1" xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:com="http://www.tmforum.org/mtop/nra/xsd/com/v1" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/eps/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Framework</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema definitions of the Equipment Protection Switch event.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" schemaLocation="../../../Framework/IIS/xsd/CommonEventInformation.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/com/v1" schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/CommonTypes.xsd"/>
+  <!-- ================ -->
+  <xsd:element name="equipmentProtectionSwitch" type="tns:EquipmentProtectionSwitchType" substitutionGroup="cei:commonEventInformation">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The element definition of the Equipment Protection Switch event.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:complexType name="EquipmentProtectionSwitchType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The type definition of the EquipmentProtectionSwitch event.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="cei:CommonEventInformationType">
+        <xsd:sequence>
+          <xsd:element name="osTime" type="xsd:dateTime" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The time at which the event was reported by the OS (EMS).</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="protectionType" type="com:EquipmentProtectionGroupTypeType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The type of the equipment protection. If omitted, M:N is assumed.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="switchReason" type="com:EquipmentSwitchReasonType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The reason the switch occurred.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="epgRef" type="nam:NamingAttributeType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This attribute represents the name of the Equipment Protection Group (EPG) emitting the switch.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="protectedEquipmentRef" type="nam:NamingAttributeType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This attribute represents the name of the Equipment being protected when the switch occurred. 
+                For an M:N group, this attribute always identifies the worker equipment instance for which the switch occurred.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="switchAwayFromEquipmentRef" type="nam:NamingAttributeType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This attribute represents the name of the Equipment being switched away from.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="switchToEquipmentRef" type="nam:NamingAttributeType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This attribute represents the name of the Equipment that is switched to.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ===================== -->
+  <xsd:complexType name="EquipmentProtectionSwitchListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The list of EquipmentProtectionSwitch events.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="equipmentProtectionSwitch" type="tns:EquipmentProtectionSwitchType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>
