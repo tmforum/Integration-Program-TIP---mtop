@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/cc/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/cc/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:nrb.nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource Basic</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema definitions of the mTOP XML CC Resource object.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1"/>
+  <!-- ================= -->
+  <xsd:element name="cc" type="tns:CrossConnectType"/>
+  <!-- ================= -->
+  <xsd:complexType name="CrossConnectType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A CrossConnect represents a connection within a single managed element. This structure is primarily used in the specification of routes.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="isActive" type="xsd:boolean" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Indicates if the cross-connect is active in the ME.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="direction" type="com:ConnectionDirectionType" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="ccType" type="com:SubnetworkConnectionTypeType" nillable="true" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="isFixed" type="xsd:boolean" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The attribute defines if the CrossConnect is fixed (i.e. cannot be deleted by the NMS) or is flexible.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="aEndRefList" nillable="true" minOccurs="0">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="aEndName" type="nrb.nam:NamingAttributeType" maxOccurs="unbounded">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>Names of PTPs/CTPs/FTPs at the aEnd of the cross connection.</p>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="zEndRefList" nillable="true" minOccurs="0">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="zEndName" type="nrb.nam:NamingAttributeType" maxOccurs="unbounded">
+              <xsd:annotation>
+                <xsd:documentation>
+                  <p>Names of PTPs/CTPs/FTPs at the zEnd of the cross connection.</p>
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="connectionId" type="xsd:string" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This is the control plane identifier. This attribute is the Connection Name attribute in G.7713.
+Note that also the Cross Connection points to its superior Connection.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="routeActualState" type="xsd:string" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This parameter is the summary state of the activity states of the route’s CCs in the network, regardless the SNC the CCs are currently serving.  It can assume the following values:<ul>
+                <li>active:  all of the route’s CCs are active</li>
+                <li>inactive:  none of the route’s CCs is active</li>
+                <li>partial:  one or more but not all of the CCs of the route are active</li>
+              </ul>
+            </p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="routeAdminState" type="xsd:string" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This state has not any relationship with the actual state.  It can assume the following values:
+                <ul>
+                <li>locked:  the route is not allowed to be active</li>
+                <li>unlocked:  the route is allowed to be active</li>
+              </ul>
+            </p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="isRouteExclusive" type="xsd:boolean" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>“True” if not any routes of other SNCs can share any of the route’s CCs or CTPs, even in pending state, “False” otherwise..</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="routeId" type="xsd:string" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This parameter is a unique identifier within the SNC name, with format up to the EMS..</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="isRouteIntended" type="xsd:boolean" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The intended route (“True”) is defined as preferred, or default route for a given service.  The backup route (“False”) is partly or totally different from the intended route (but with same end points), and is useful for restoration and maintenance purposes.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="isRouteInUseBy" type="xsd:boolean" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>“True” if at least one of the route’s CCs or CTPs is carrying traffic of another SNC, “False” otherwise..</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This is a container for all vendor extensions.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="CrossConnectListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A list of CrossConnects</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element ref="tns:cc" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

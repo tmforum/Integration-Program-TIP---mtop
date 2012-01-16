@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - DM Network Resource Basic - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrb/xsd/com/v1" xmlns:tns="http://www.tmforum.org/mtop/nrb/xsd/com/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource Basic</p>
+      <p>Module: Dataset XSD Module</p>
+      <p>Description: This module contains the XML Schema common type definitions used in some the mTOP XML Network Resource objects.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================= -->
+  <xsd:complexType name="ProtectionSchemeStateType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The ProtectionSchemeState with MTOSI minor version extensions.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:ProtectionSchemeStateEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="ProtectionSchemeStateEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The protection scheme state identifies the state in which the protection scheme is in.
+Individual locks can be reported through transmission parameters on the appropriate TPs or equipment instances.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MINOR_EXT"/>
+      <xsd:enumeration value="PSS_UNKNOWN">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Protection scheme state is unknown by the system.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="PSS_AUTOMATIC">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>It indicates partial locking of the entire group.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="PSS_FORCED_OR_LOCKED_OUT">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>It indicates that the entire group is locked.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>

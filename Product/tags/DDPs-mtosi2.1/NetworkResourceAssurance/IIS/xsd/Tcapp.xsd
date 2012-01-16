@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/tcapp/v1" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/tcapp/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:tcapar="http://www.tmforum.org/mtop/nra/xsd/tcapar/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource Assurance</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP TCA Parameter Profile XML structure.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/tcapar/v1" schemaLocation="TcaParameter.xsd"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <!-- ================= -->
+  <xsd:element name="tcapp" type="tns:ThresholdCrossingAlertParameterProfileType"/>
+  <!-- ================= -->
+  <xsd:complexType name="ThresholdCrossingAlertParameterProfileListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A list of ThresholdCrossingAlertParameterProfileType</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="tcaParameterProfileList" type="tns:ThresholdCrossingAlertParameterProfileType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:complexType name="ThresholdCrossingAlertParameterProfileType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This object represents one performance monitoring point (PMP). It is determined by the containing TerminationPoint (TP) and by the layer rate, the PM</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="cri:CommonResourceInfoType">
+        <xsd:sequence>
+          <xsd:element name="layerRate" type="lay:LayerRateType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Represents the layer rate of the PMP. The layer specified must be supported by the containing TP.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="associatedTpRefList" type="nam:NamingAttributeListType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Represents list of the Termination Point (TP) that are associated with the TCA Parameter Profile.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="tcaParameterList" type="tcapar:ThresholdCrossingAlertParameterListType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Represents a list of Threshold Crossing Alert (TCA) Parameters.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+</xsd:schema>

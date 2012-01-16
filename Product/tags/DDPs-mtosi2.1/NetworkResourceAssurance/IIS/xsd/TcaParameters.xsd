@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/tcapars/v1" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/tcapars/v1" xmlns:pm="http://www.tmforum.org/mtop/nra/xsd/pm/v1" xmlns:pmtv="http://www.tmforum.org/mtop/nra/xsd/pmtv/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource Assurance</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP TCA Parameters XML structure.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/pm/v1" schemaLocation="PmDefinitions.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/pmtv/v1" schemaLocation="PmThresholdValue.xsd"/>
+  <!-- ================= -->
+  <xsd:complexType name="ThresholdCrossingAlertParametersType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The ThresholdCrossingAlertParameters structure is used to get or set one or more PM Threshold values for a given TP/layer/granularity measurement point.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="layerRate" type="lay:LayerRateType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Identifies the layer to which tcaTypeValues applies.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="granularity" type="pm:PerformanceMonitoringGranularityType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Identifies the granularity of the data. For gauges, this should be "NOT_APPLICABLE".</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="tcaTypeValues" type="pmtv:PerformanceMonitoringThresholdValueListType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Identifies threshold values. for PM parameters, PM locations and threshold types, and indicates Trigger/Clear properties.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

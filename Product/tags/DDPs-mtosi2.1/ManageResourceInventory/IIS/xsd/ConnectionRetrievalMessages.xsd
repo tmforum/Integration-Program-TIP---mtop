@@ -1,0 +1,928 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/conr/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:snc="http://www.tmforum.org/mtop/nrf/xsd/snc/v1" xmlns:cc="http://www.tmforum.org/mtop/nrf/xsd/cc/v1" xmlns:rt="http://www.tmforum.org/mtop/nrf/xsd/route/v1" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/conr/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: Manage Resource Inventory</p>
+			<p>Module:  Message XSD Module</p>
+			<p>Description: This module contains the XML Schema type definitions of all the mTOP ConnectionRetrieval SI XML message structures.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ================ -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/snc/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Snc.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/cc/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Cc.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/route/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Route.xsd"/>
+	<!-- ================ -->
+	<xsd:element name="getAllCrossConnectionsRequest" type="tns:GetCrossConnectionsRequestType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getAllCrossConnections operation</p>
+				<p>This operation retrieves the list of the Cross-Connects for the specified Managed Element at the specified Layer Rates.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getAllCrossConnectionsResponse" type="tns:MultipleCrossConnectionObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getAllManagedElementNames operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getAllCrossConnectionsException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getAllCrossConnections operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getAllFixedCrossConnectionsRequest" type="tns:GetCrossConnectionsRequestType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getAllFixedCrossConnections operation</p>
+				<p>This operation has exactly the same behaviour as getAllCrossConnections(), but instead returns only fixed Cross Connection object structures.
+        See Subnetwork Connection Types for an explanation of fixed SNCs.</p>
+				<p>A cross connection is identified as fixed using additional information.
+        See Additional Information Usage for detail on additional information for SNCs, cross connections and TPs.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getAllFixedCrossConnectionsResponse" type="tns:MultipleCrossConnectionObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getAllFixedCrossConnections operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getAllFixedCrossConnectionsException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getAllFixedCrossConnections operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getAllFixedSubnetworkConnectionsRequest" type="tns:GetSubnetworkConnectionsRequestType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getAllFixedSubnetworkConnections operation</p>
+				<p>This operation has exactly the same behaviour as getAllSubnetworkConnections(), but instead returns only fixed SNCs object structures. See Subnetwork Connection Types for an explanation of fixed SNCs. The operation also returns bundled SNCs, if any.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getAllFixedSubnetworkConnectionsResponse" type="tns:MultipleSubnetworkConnectionObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getAllFixedSubnetworkConnections operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getAllFixedSubnetworkConnectionsException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getAllFixedSubnetworkConnections operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getAllFixedSubnetworkConnectionsWithTpRequest" type="tns:GetSubnetworkConnectionsWithTpRequestType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getAllFixedSubnetworkConnectionsWithTp operation</p>
+				<p>This operation has exactly the same behaviour as getAllSubnetworkConnectionsWithTP(), but instead returns only fixed SNCs object structures. See Subnetwork Connection Types for an explanation of fixed SNCs.</p>
+				<p>An SNC is identified as fixed using additional information. See Additional Information Usage for detail on additional information for SNCs, cross connections and TPs..</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getAllFixedSubnetworkConnectionsWithTpResponse" type="tns:MultipleSubnetworkConnectionObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getAllFixedSubnetworkConnectionsWithTp operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getAllFixedSubnetworkConnectionsWithTpException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getAllFixedSubnetworkConnectionsWithTp operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getAllSubnetworkConnectionsRequest" type="tns:GetSubnetworkConnectionsRequestType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getAllSubnetworkConnections operation</p>
+				<p>This operation retrieves the filtered list of Subnetwork Connections (SNCs) contained within the Multi Layer Subnetwork. This operation also returns bundled SNCs, if any (see Bundled SNC overview for further details).</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getAllSubnetworkConnectionsResponse" type="tns:MultipleSubnetworkConnectionObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getAllSubnetworkConnections operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getAllSubnetworkConnectionsException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getAllSubnetworkConnections operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getAllSubnetworkConnectionsWithTpRequest" type="tns:GetSubnetworkConnectionsWithTpRequestType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getAllSubnetworkConnectionsWithTp operation</p>
+				<p>This operation retrieves the list of Subnetwork Connections (SNCs) using the specified Termination Point at the specified connection rates.</p>
+				<p>An SNC is using the specified TP if any of its routes, intended and/or backup, in any state, use this TP.
+A TP may be a PTP in which case a full list of SNCs using any of its contained CTPs is required. A TP may be a CTP, in which case only SNCs using that CTP or any of its contained CTPs are required.</p>
+				<p>
+Both end CTPs and intermediate CTPs at the same layer are considered. In all cases, only SNCs that also match the specified connection rate filter are returned.</p>
+				<p>
+All legs of a broadcast system can be retrieved using this operation where the source TP of the broadcast system is used as input to the operation. The output will be the list of individual SNCs that make up the broadcast system.</p>
+				<p>
+This operation also works if a GTP is supplied rather than a CTP. In this case, the layerRate is set to LR_Not_Applicable. If the GTP is part of a Cross-Connection, the target OS returns the set of bundled SNCs that use the provided GTP or contained GTP (if a CTP that is associated with a GTP is provided) as either an end point or an interior point.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getAllSubnetworkConnectionsWithTpResponse" type="tns:MultipleSubnetworkConnectionObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getAllSubnetworkConnectionsWithTp operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getAllSubnetworkConnectionsWithTpException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getAllSubnetworkConnectionsWithTp operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getBackupRoutesRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getBackupRoutes operation</p>
+				<p>The operation returns the requested route for the SNC whose name is specified as a parameter. If the input route is not specified (empty string), the operation replies all the routes of the SNC, intended and backup ones. The rest of the behavior is same as getRoute().</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="sncRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The name of the subnetwork connection.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="routeId" type="xsd:string" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The id of the route.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="isHigherOrderCcListIncluded" type="xsd:boolean" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>Specifies whether the higher order CCs of other SNCs used to carry the queried SNC route have to be included in addition to the CCs of the queried SNC route.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="additionalInfo" type="gen:NameAndValueStringListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>to allow the communication of additional information which is not explicitly modelled.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getBackupRoutesResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getBackupRoutes operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="additionalInfo" type="gen:NameAndValueStringListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>to allow the communication of additional information which is not explicitly modelled.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="routeList" type="rt:RouteListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The route(s) of the SNC..</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getBackupRoutesException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getBackupRoutes operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getIntendedRouteRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getIntendedRoute operation</p>
+				<p>The operation returns the intended route for the SNC whose name is specified as a parameter. The behavior is essentially the same as getRoute().</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="sncRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The name of the subnetwork connection.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="routeId" type="xsd:string" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The id of the route.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="isHigherOrderCcListIncluded" type="xsd:boolean" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>Specifies whether the higher order CCs of other SNCs used to carry the queried SNC route have to be included in addition to the CCs of the queried SNC route.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="additionalInfo" type="gen:NameAndValueStringListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>to allow the communication of additional information which is not explicitly modelled.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getIntendedRouteResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getIntendedRoute operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="additionalInfo" type="gen:NameAndValueStringListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>to allow the communication of additional information which is not explicitly modelled.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="route" type="rt:RouteType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The route of the SNC.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getIntendedRouteException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getIntendedRoute operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getPotentialFixedCrossConnectionsRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getPotentialFixedCcs operation</p>
+				<p>The operation is used to retrieve fixed connection schemes related to normal and inverse multiplexing.
+See Subnetwork Connection Types for an explanation of fixed SNCs.</p>
+				<p>The operation takes as an input a TP and if this TP may be or is involved in a multiplexing or inverse multiplexing scheme, it will report:<ul>
+						<li>The TP containing the fixed layer.</li>
+						<li>The list of potential fixed cross connects that will exist if the containing TP's clientConnectivity or serverConnectivity is set to "Connected" (i.e. If the containing TP is set to multiplexing or inverse multiplexing). </li>
+					</ul>
+				</p>
+				<p>If the clientConnectivity (resp. serverConnectivity) of the TP is currently set to "Connected", the potentialCcList matches the list of active fixed cross connects that involve its client TPs (resp. server TPs).</p>
+				<p>If the TP client layer (resp. server layer) is always fixed cross connected (hard-wired), the potentialCcList always matches the list of active fixed cross connects that involve the client TPs (resp. server TPs).</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="inputTp" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>Any TP name of the ME. The operation will return the multiplexing or inverse multiplexing scheme in which this TP is involved.
+          The input TP may be either the containing TP or one of the end TPs of the portentialCcList.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getPotentialFixedCrossConnectionsResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getPotentialFixedCcs operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="containingTp" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The TP supporting the attribute clientConnectivity or serverConnectivity.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="potentialCcList" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The list of fixed Cross Connect of that multiplexing scheme, i.e. the list of cross connects that will exist when the containing TP clientConnectivity or serverConnectiivty is set to "Connected". The A_end TPs of the cross connects should be the low order TPs that can be flexibly cross connected, and the Z_end TPs the TP client of the high order TP. The list of cross connect does not take any specific order. If there are no potential fixed cross connects and empty list is returned.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getPotentialFixedCrossConnectionsException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getPotentialFixedCcs operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getRouteRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getRoute operation</p>
+				<p>This operation retrieves the Route for a Subnetwork Connection (SNC). The Route information, in the form of Cross-Connections, should identify the resources allocated to the SNC at the time of the request and the way in which these resources are used.</p>
+				<p>
+If the SNC has more alternative Routes, then it retrieves the intended Route if the SNC is in Pending or Partial state, otherwise it retrieves the active Route. This because there can be more partial Routes and no active Route, in such case the intended Route is replied, as it is not known which of the partial Routes is the candidate for becoming the active Route.</p>
+				<p>
+The requesting OS specifies if it wants to retrieve only resources in the layer of the SNC (the Cross-Connections that belong to the SNC), or higher order Cross-Connections also (the Cross-Connections of other SNCs that are used to carry the traffic of the queried SNC).</p>
+				<p>
+All Cross-Connections allocated to the SNC must be returned, even if they are not active in the managed elements. This allows the requesting OS to query the Route that will be used before activating an SNC.</p>
+				<p>
+The operation also works for bundled SNCs. In the case of a bundled SNC, the target OS returns a set of Cross-Connections betweens GTPs.</p>
+				<p>
+In case of an SNC that represents a trail (to be identified by the roles of its end points) the operation getRouteAndTopologicalLinks() shall be used to facilitate the delivery of the Topological Links that support the trail termination inclusions of the SNC.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="sncRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The name of the SNC.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="isHigherOrderCcListIncluded" type="xsd:boolean" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>Specifies whether the higher order CCs of other SNCs used to carry the queried SNC have to be included in addition to the CCs of the queried SNC.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getRouteResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getRoute operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="route" type="rt:RouteType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The route of the SNC.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getRouteException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getRoute operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getSubnetworkConnectionRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getSubnetworkConnection operation</p>
+				<p>This operation will return the SubnetworkConnection structure for the SNC whose name is supplied as a parameter. This operations will provide a bundled SNC structure if the name provided is that of a bundled SNC (see Bundled SNC overview for further details).</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="sncRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The name of the SNC.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getSubnetworkConnectionResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getSubnetworkConnection operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="snc" type="snc:SubnetworkConnectionType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The SNC.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getSubnetworkConnectionException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getSubnetworkConnection operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getSubnetworkConnectionModeOfOperationRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getSubnetworkConnectionModeOfOperation operation</p>
+				<p>This operation returns the supported subnetwork connection management mode of operation. The defined modes are contained in the Supporting Document SD1-23_ModesOfOperation.
+				</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence/>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getSubnetworkConnectionModeOfOperationResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getSubnetworkConnectionModeOfOperation operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="sncModeOfOperation" type="snc:SubnetworkConnectionModeOfOperationType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The supported subnetwork connection management mode of operation.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getSubnetworkConnectionModeOfOperationException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getSubnetworkConnectionModeOfOperation operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getSubnetworkConnectionsByUserLabelRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getSubnetworkConnectionsByUserLabel operation</p>
+				<p>This operation will return the SubnetworkConnection structures for the SNCs whose userLabel is supplied as a parameter. This operation will provide a bundled SNC structure if the name provided is that of a bundled SNC (see Bundled SNC overview for further details).</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="userLabel" type="xsd:string" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The userLabel of the SNCs to retrieve.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getSubnetworkConnectionsByUserLabelResponse" type="tns:MultipleSubnetworkConnectionObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getSubnetworkConnectionsByUserLabel operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getSubnetworkConnectionsByUserLabelException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getSubnetworkConnectionsByUserLabel operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================= -->
+	<!-- Definitions of Iterator messages for Object and Object Name retrievals  -->
+	<!-- ================= -->
+	<xsd:element name="getCrossConnectionsIteratorRequest" type="msg:GetAllDataIteratorRequestType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getCrossConnectionsIterator operation</p>
+				<p>This is the iterator request to return the next batch of CC from the OS to which a CC retrieval request was initially sent.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getCrossConnectionsIteratorResponse" type="tns:MultipleCrossConnectionObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getCrossConnectionsIterator operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getCrossConnectionsIteratorException" type="msg:GetAllDataIteratorExceptionType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getCrossConnectionsIterator operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================= -->
+	<xsd:element name="getSubnetworkConnectionsIteratorRequest" type="msg:GetAllDataIteratorRequestType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getCcIterator operation</p>
+				<p>This is the iterator request to return the next batch of CC from the OS to which a CC retrieval request was initially sent.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getSubnetworkConnectionsIteratorResponse" type="tns:MultipleSubnetworkConnectionObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getSncIterator operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getSubnetworkConnectionsIteratorException" type="msg:GetAllDataIteratorExceptionType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getSncIterator operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================= -->
+	<!-- Local Data Type Definitions of various messages  -->
+	<!-- ================== -->
+	<xsd:complexType name="GetCrossConnectionsRequestType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure for a set of CC object names</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="meRef" type="nam:NamingAttributeType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Name of the Managed Element for which to retrieve CCs.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="connectionRateList" type="lay:LayerRateListType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>List of rates for which to retrieve CCs. This must not be an empty list. In this case an INVALID_INPUT exception is thrown.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================== -->
+	<xsd:complexType name="GetSubnetworkConnectionsRequestType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure for a set of SNC object names</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="mlsnRef" type="nam:NamingAttributeType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+            Name of the subnetwork.
+          </xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="connectionRateList" type="lay:LayerRateListType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>List of rates of the SNC names to be reported. If an empty list is specified, then all SNC names of all rates are to be reported.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================== -->
+	<xsd:complexType name="GetSubnetworkConnectionsWithTpRequestType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure for a set of SNC object names</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="tpRef" type="nam:NamingAttributeType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Termination point for which to report SNCs. The termination point name must be explicit (a generic endpoint specification may not be used in this case). See Object Naming for further detail on FTP naming.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="connectionRateList" type="lay:LayerRateListType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>List of rates of the SNC names to be reported. If an empty list is specified, then all SNC names of all rates are to be reported.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================== -->
+	<xsd:complexType name="MultipleCrossConnectionObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure for a set of CC objects</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="ccList" type="cc:CrossConnectListType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The list of CCs.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================== -->
+	<xsd:complexType name="MultipleSubnetworkConnectionObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure for a set of SNC objects</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="sncList" type="snc:SubnetworkConnectionListType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The list of SNCs.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

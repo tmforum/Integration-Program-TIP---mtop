@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/elc/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/elc/v1" xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Framework</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema definitions of the EventLossCleared event.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="CommonEventInformation.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/cei/v1"/>
+  <xsd:import schemaLocation="NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
+  <!-- ================ -->
+  <xsd:element name="eventLossCleared" type="tns:EventLossClearedType" substitutionGroup="cei:commonEventInformation">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The element definition of the EventLossCleared event.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:complexType name="EventLossClearedType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The type definition of the EventLossCleared event.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="cei:CommonEventInformationType">
+        <xsd:sequence>
+          <xsd:element name="objectType" type="gen:ObjectTypeType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Identifies the type of the object associated with the event. This attribute is needed to allow simple notification filtering based on the object type.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="objectName" type="nam:NamingAttributeType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Identifies the name of the object associated with the event.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="endTime" type="xsd:dateTime" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The time of the end of the event loss period, as determined by the notification producer OS.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================ -->
+</xsd:schema>

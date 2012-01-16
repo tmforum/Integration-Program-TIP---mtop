@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/fd/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:lp="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" xmlns:ituArc="http://www.tmforum.org/mtop/nra/xsd/ituArc/v1" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/fd/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: Data Model Network Resource FulFillment</p>
+			<p>Module: Aggregate XSD Module</p>
+			<p>Description: This module contains the XML Schema type definition of the mTOP FD XML structures.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ============== -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayeredParameters.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/ituArc/v1" schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/ITU-T-ArcDefinitions.xsd"/>
+	<!-- ============== -->
+	<xsd:simpleType name="ConnectivityStateType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This attribute provides an indication to the NMS about the server layer connectivity between the MFDs associated to an FD.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="CS_UNKNOWN">
+				<xsd:annotation>
+					<xsd:documentation>all FD Edge CPTPs are reachable to each other</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CS_FULLY_CONNECTED">
+				<xsd:annotation>
+					<xsd:documentation>at least one FD Edge CPTP is not reachable by another FD Edge CPTP</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CS_NOT_FULLY_CONNECTED">
+				<xsd:annotation>
+					<xsd:documentation>the Connectivity state of the FD is not known by the EMS</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!-- ============== -->
+	<xsd:simpleType name="FdTypeType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This (read-only) attribute provides an indication of the type of the FD.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="FDT_SINGLETON">
+				<xsd:annotation>
+					<xsd:documentation>The FD contains at most one MFD</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="FDT_NETWORK">
+				<xsd:annotation>
+					<xsd:documentation>The FD may contain more than one MFD</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!-- ============== -->
+	<xsd:element name="fd" type="tns:FlowDomainType"/>
+	<!-- ============== -->
+	<xsd:complexType name="FlowDomainType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A flow domain is associated with a set of flow domain edge CPTPs and matrix flow domains. Connectivity can be created between flow points contained by flow domain edge CPTPs through flow domain fragments.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="cri:CommonResourceInfoType">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This element entails the attributes common to all mTOP network resource objects.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element ref="lp:transmissionParametersList" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>A list of layer rates on which connectivity can be established in the flow domain together with a set of connectionless technology parameters for each layer rate. Refer to chapter "Connectionless Technology Parameters" of the supporting document LayeredParameters.pdf for details of the currently defined connectionless parameters.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="connectivityState" type="tns:ConnectivityStateType" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Indication about the server layer connectivity between matrix flow domains associated to the flow domain.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="type" type="tns:FdTypeType" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>This (read-only) attribute provides an indication of the type of the FD.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ituArcStateAndStatusList" type="ituArc:ItuArcStateAndStatusList"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ============== -->
+	<xsd:complexType name="FlowDomainListType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>List of FlowDomains</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="tns:fd" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ============== -->
+	<xsd:simpleType name="ConnectivityRequirementType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This attribute shall identify (for a "connectivity-aware" EMS) the requested operation mode in case not all FPs have potential connectivity to one another. If the EMS is not connectivity-aware, this parameter is ignored.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="CR_IGNORE">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>in case not all FPs have potential connectivity to one another, add all Flow Points regardless of potential connectivity (default value).</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CR_REJECT">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>in case not all FPs have potential connectivity to one another, reject the request.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+		<!-- ============== -->
+	<xsd:simpleType name="ConnectivityAwarenessType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="CONNECTIVITY_AWARE">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>i“connectivity aware” indicates that the target OS has some capability to detect the connectivity between the MFDs within an FD</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CONNECTIVITY_UNAWARE">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>“connectivity-unaware” indicates that the target OS has no capability at all to detect connectivity between the MFDs within an FD</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>

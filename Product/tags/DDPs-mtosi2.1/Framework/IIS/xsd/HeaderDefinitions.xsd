@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/hdr/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/hdr/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Framework</p>
+      <p>Module: XSD Aggregate Module</p>
+      <p>Description: This module contains the XML Schema definitions of the mTOP XML header.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="GeneralDefinitions.xsd"/>
+  <!-- ============== -->
+  <xsd:simpleType name="ActivityStatusEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Specifies the high-level response status for an activity.  Required for response messages, including error responses.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="SUCCESS"/>
+      <xsd:enumeration value="FAILURE"/>
+      <xsd:enumeration value="WARNING"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ============== -->
+  <xsd:complexType name="ActivityStatusType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Add to the initial enumerations the Qualifiable extension.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:ActivityStatusEnumType">
+        <xsd:attribute name="qualifier" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ============== -->
+  <xsd:simpleType name="MessageTypeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The type of the message that is being exchanged as part of an activity.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="REQUEST"/>
+      <xsd:enumeration value="RESPONSE"/>
+      <xsd:enumeration value="NOTIFICATION"/>
+      <xsd:enumeration value="ERROR"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ============== -->
+  <xsd:simpleType name="CommunicationPatternType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>See Communication Styles supporting document</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="SimpleResponse"/>
+      <xsd:enumeration value="MultipleBatchResponse"/>
+      <xsd:enumeration value="BulkResponse"/>
+      <xsd:enumeration value="Notification"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ============== -->
+  <xsd:simpleType name="CommunicationStyleType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>See Communication Style supporting document</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MSG"/>
+      <xsd:enumeration value="RPC"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="CompressionTypeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Specify if compression is to be performed.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:CompressionEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="CompressionEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Enumeration of supported compressions. All extensions allowed.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="NO_COMPRESSION"/>
+      <xsd:enumeration value="GZIP"/>
+      <xsd:enumeration value="VENDOR_EXT"/>
+      <xsd:enumeration value="MINOR_EXT"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="PackingTypeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Specify if the output file(s) are to be packed.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="tns:PackingEnumType">
+        <xsd:attribute name="extension" type="xsd:string" use="optional"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="PackingEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Enumeration of supported packing/packaging. All extensions allowed.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="NO_PACKING"/>
+      <xsd:enumeration value="ZIP"/>
+      <xsd:enumeration value="TAR"/>
+      <xsd:enumeration value="VENDOR_EXT"/>
+      <xsd:enumeration value="MINOR_EXT"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ============== -->
+  <xsd:element name="header">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>MTOSI Standard Header.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="activityName" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Identifies the name of the business transaction activity for the message being exchanged.
+      The value is usually the name of the mTOP operation, e.g. getInventory.
+      This value corresponds to the “operation” in the WSDL.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="msgName" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Identifies the name of the message (or contract) that is being exchanged as part of an activity.
+E.g. getInventoryResponse.
+This field corresponds to the message name in the WSDL.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="msgType" type="tns:MessageTypeType" minOccurs="0">
+        </xsd:element>
+        <xsd:element name="senderURI" type="xsd:anyURI" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Identifies the application sending this message.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="destinationURI" type="xsd:anyURI" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Identifies the final destination of the message (the OS that will process the content of the message). This field may point to a logical end point or abstract topic name to be resolved by the communication transport middleware in order to deliver the message.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="replyToURI" type="xsd:anyURI" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Used by request messages to specify destination for response message.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="originatorURI" type="xsd:anyURI" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Identifies the originating application of the message that resulted in this response or notification message.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="failureReplytoURI" type="xsd:anyURI" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Identifies the application receiving the potential error notification message. Required for all response messages and notifications which are triggered by request/response. If not specified the replyToURI is used. If the replyToURI is also not specified, senderURI endpoint is used to send back the failure response.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="activityStatus" type="tns:ActivityStatusType" minOccurs="0">
+        </xsd:element>
+        <xsd:element name="correlationId" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>An identifier that could be set by the originator of an asynchronous request that will allow it to correlate the response to the request.  If this field is set, it should be reflected in the header of the response message.  Not required for notification headers.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="security" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Provides credential nformation for use by a security service for identification, authentication, or authorization.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="securityType" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Identifies the type of credential contained in the security element.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="priority" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Indicates message-handling priority for asynchronous messages.  It must be in the range 0-9 (lowest-highest). Default: 4</p>
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:element>
+        <xsd:element name="msgSpecificProperties" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Conditionally required for request, response, and notification messages as identified by the documentation for a specific interface message.  The communications infrastructure or the receiving application can use this value for routing or filtering messages.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="property" minOccurs="0" maxOccurs="unbounded">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element name="propName" type="xsd:string"/>
+                    <xsd:element name="propValue" type="xsd:string"/>
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="communicationPattern" type="tns:CommunicationPatternType" minOccurs="0">
+        </xsd:element>
+        <xsd:element name="communicationStyle" type="tns:CommunicationStyleType" minOccurs="0">
+        </xsd:element>
+        <xsd:element name="requestedBatchSize" type="xsd:unsignedInt" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The RequestedBatchSize parameter provides the control for the batch segmentation of the full set of output data generated by a coarse-grained operation such as getInventory or getActiveAlarms. The unit is any of the MTOSI objects. And, it defines the maximum number of MTOSI objects that can be included in all the batches of data sent as part of a multiple responses MEP.</p>
+              <p>However, they are cases where a batch may exceed the number of objects defined in the RequestedBatchSize parameter. This is true if the granularity of a response atomic data representation is greater than just one object. This is true for the getInventory response.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="batchSequenceNumber" type="xsd:unsignedInt" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Used in a multiple response Comm. Pattern to identify the batch seq number in a sequence.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="batchSequenceEndOfReply" type="xsd:boolean" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Used in a multiple response Comm. Pattern, true if it is the last result batch in a sequence</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="iteratorReferenceURI" type="xsd:anyURI" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Mandatory for all SIT (iterators) MEP to allow description of the data retrieval iterator.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="fileLocationURI" type="xsd:anyURI" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Used for file retrieval. Specify the base name of the file(s) to be generated and the remote destination.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="compressionType" type="tns:CompressionTypeType" minOccurs="0">
+        </xsd:element>
+        <xsd:element name="packingType" type="tns:PackingTypeType" minOccurs="0">
+        </xsd:element>
+        <xsd:element name="timestamp" type="xsd:dateTime" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Message originating timestamp</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Location for all vendor extensions to the MTOSI standard header.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ============== -->
+</xsd:schema>

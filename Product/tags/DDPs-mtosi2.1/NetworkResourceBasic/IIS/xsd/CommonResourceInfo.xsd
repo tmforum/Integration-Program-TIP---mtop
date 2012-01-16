@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - DM Network Resources Basic - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:coi="http://www.tmforum.org/mtop/fmw/xsd/coi/v1" xmlns:itu="http://www.tmforum.org/mtop/nrb/xsd/itu/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" targetNamespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: Data Model Network Resource Basic</p>
+			<p>Module: Aggregate XSD Module</p>
+			<p>Description: This module contains the XML Schema type definition of the mTOP XML CommonResourceInfo structure.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ================= -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/coi/v1" schemaLocation="../../../Framework/IIS/xsd/CommonObjectInfo.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/itu/v1" schemaLocation="ITU-T-Definitions.xsd"/>
+	<!-- ================= -->
+	<xsd:element name="commonResourceInfo" type="tns:CommonResourceInfoType" substitutionGroup="coi:commonObjectInfo">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>The element definition for common resource info</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType name="CommonResourceInfoType" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This aggregate defines attributes common to all mTOP resource objects.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="coi:CommonObjectInfoType">
+				<xsd:sequence>
+					<xsd:element name="source" type="tns:SourceType" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Indicates whether the object was discovered or entered in OS inventory.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="networkAccessDomain" type="gen:NetworkAccessDomainType" nillable="true" minOccurs="0"/>
+					<xsd:element name="meiAttributes" type="gen:MultiEventInventoryAttributesType" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>This attribute is used when a object instance is embedded in the inventory
+					layout payload of a Multi-Event Inventory (MEI) notification. It provides the 
+					time at which the NE detected the inventory change (if available) and an indication
+					of the type of inventory update, e.g., Object Creation.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="resourceState" type="tns:ResourceStateType" nillable="true" minOccurs="0"/>
+					<xsd:element name="ituStateAndStatusList" type="itu:ItuStateAndStatusList"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="SourceType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This is the definition of the object attribute that indicates whether the object was discovered from the network, or was entered into the OS's inventory.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="tns:SourceEnumType">
+				<xsd:attribute name="qualifier" type="xsd:string" use="optional"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:simpleType name="SourceEnumType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="NETWORK_ME">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>the object was discovered directly from the ME.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="OS">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>the object was entered into an OS on the CCV, e.g., OS GUI or file transfer to the OS from some other system.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="NETWORK_EMS">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>the object was discovered from an EMS.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!-- ================= -->
+	<xsd:complexType name="ResourceStateType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This is the definition of the object attribute that indicates the state of the resource.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:simpleContent>
+			<xsd:extension base="tns:ResourceStateEnumType">
+				<xsd:attribute name="overlap" type="xsd:string" use="optional"/>
+				<xsd:attribute name="qualifier" type="xsd:string" use="optional"/>
+				<xsd:attribute name="extension" type="xsd:string" use="optional"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:simpleType name="ResourceStateEnumType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="VENDOR_EXT"/>
+			<xsd:enumeration value="MINOR_EXT"/>
+			<xsd:enumeration value="INSTALLING"/>
+			<xsd:enumeration value="INSTALLING_ACCEPTED"/>
+			<xsd:enumeration value="INSTALLING_COMMISSIONED"/>
+			<xsd:enumeration value="INSTALLING_DELIVERED"/>
+			<xsd:enumeration value="INSTALLING_INSTALLED"/>
+			<xsd:enumeration value="INSTALLING_INTEGRATED"/>
+			<xsd:enumeration value="INSTALLING_REJECTED"/>
+			<xsd:enumeration value="NON_WORKING"/>
+			<xsd:enumeration value="PLANNING"/>
+			<xsd:enumeration value="PLANNING_INITIAL_PLAN"/>
+			<xsd:enumeration value="PLANNING_ORDERED"/>
+			<xsd:enumeration value="PLANNING_PLANNED"/>
+			<xsd:enumeration value="RETIRING"/>
+			<xsd:enumeration value="RETIRING_DECOMMISSIONED"/>
+			<xsd:enumeration value="RETIRING_DEINSTALLED"/>
+			<xsd:enumeration value="RETIRING_DEINTEGRATED"/>
+			<xsd:enumeration value="RETIRING_RECOVERED"/>
+			<xsd:enumeration value="RETIRING_STORED"/>
+			<xsd:enumeration value="RETIRING_WITHDRAWN_ACTIVE"/>
+			<xsd:enumeration value="RETIRING_WITHDRAWN_UNAVAILABLE"/>
+			<xsd:enumeration value="UNKNOWN"/>
+			<xsd:enumeration value="WORKING"/>
+			<xsd:enumeration value="WORKING_ACTIVATED"/>
+			<xsd:enumeration value="WORKING_DEACTIVATED"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!-- ================= -->
+	<xsd:simpleType name="ObjectEnumType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This is the enumeration of all the known object type short names related to resources (at the time of this module definition). It is only provided as an implementation helper. For details of all object types and their naming refer to SD2-7 ObjectNaming (FMW DDP).</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="AID">
+				<xsd:annotation>
+					<xsd:documentation>Alarm IDentifier (NRA)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ASA">
+				<xsd:annotation>
+					<xsd:documentation>Alarm Severity Assignment (NRA)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ASAP">
+				<xsd:annotation>
+					<xsd:documentation>Alarm Severity Assignment Profile (NRA)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="CTP">
+				<xsd:annotation>
+					<xsd:documentation>Connection Termination Point (NRF)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="EH">
+				<xsd:annotation>
+					<xsd:documentation>Equipment Holder (NRF)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="EPG">
+				<xsd:annotation>
+					<xsd:documentation>Equipment Protection Group (NRF)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="EQ">
+				<xsd:annotation>
+					<xsd:documentation>Equipment (NRF)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="FD">
+				<xsd:annotation>
+					<xsd:documentation>Flow Domain (NRF)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="FDFR">
+				<xsd:annotation>
+					<xsd:documentation>Flow Domain Fragment (NRF)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="FTP">
+				<xsd:annotation>
+					<xsd:documentation>Flow Termination Point (NRF)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="GTP">
+				<xsd:annotation>
+					<xsd:documentation>Group Termination Point (NRF)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MD">
+				<xsd:annotation>
+					<xsd:documentation>Management Domain (NRF)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="ME">
+				<xsd:annotation>
+					<xsd:documentation>Managed Element (NRF)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MFD">
+				<xsd:annotation>
+					<xsd:documentation>Matrix Flow Domain (NRF)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="MLSN">
+				<xsd:annotation>
+					<xsd:documentation>Multi Layer Subnetwork (NRF)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="OS">
+				<xsd:annotation>
+					<xsd:documentation>Operations System (NRF)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PG">
+				<xsd:annotation>
+					<xsd:documentation>Protection Group (NRF)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PMP">
+				<xsd:annotation>
+					<xsd:documentation>Performance Monitoring Point (NRA)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="PTP">
+				<xsd:annotation>
+					<xsd:documentation>Physical Termination Point (NRF)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="SNC">
+				<xsd:annotation>
+					<xsd:documentation>Subnetwork Connection (NRF)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TCPROFILE">
+				<xsd:annotation>
+					<xsd:documentation>Traffic Condifitioning Profile (NRF)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TCAPP">
+				<xsd:annotation>
+					<xsd:documentation>Threshold Crossing Alert Parameter Profile (NRF)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TL">
+				<xsd:annotation>
+					<xsd:documentation>Topological Link (NRF)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TMD">
+				<xsd:annotation>
+					<xsd:documentation>Transmission Descriptor (NRF)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="TPPOOL">
+				<xsd:annotation>
+					<xsd:documentation>Termination Point Pool (NRF)</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>

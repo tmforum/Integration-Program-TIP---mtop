@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by G Grimes (Ericsson GmbH) -->
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/tca/v1" xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" xmlns:ei="http://www.tmforum.org/mtop/fmw/xsd/ei/v1" xmlns:pm="http://www.tmforum.org/mtop/nra/xsd/pm/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:com="http://www.tmforum.org/mtop/nra/xsd/com/v1" xmlns:pmth="http://www.tmforum.org/mtop/nra/xsd/pmth/v1" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/tca/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Framework</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema definitions of the ThresholdCrossingAlert event.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" schemaLocation="../../../Framework/IIS/xsd/CommonEventInformation.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/ei/v1" schemaLocation="../../../Framework/IIS/xsd/EventInformation.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/pm/v1" schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/PmDefinitions.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/com/v1" schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/CommonTypes.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/pm/v1" schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/PmDefinitions.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/pmth/v1" schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/PmThreshold.xsd"/>
+  <!-- ================ -->
+  <xsd:element name="thresholdCrossingAlert" type="tns:ThresholdCrossingAlertType" substitutionGroup="cei:commonEventInformation">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The element definition of the ThresholdCrossingAlert event.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:complexType name="ThresholdCrossingAlertType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The type definition of the ThresholdCrossingAlert event.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="ei:EventInformationType">
+        <xsd:sequence>
+          <xsd:element name="aliasNameList" type="gen:AliasNameListType">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Contains the list of aliases for the object associated with the event.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="isClearable" type="xsd:boolean">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Indicates if the event is clearable (or is itself a clear).</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="perceivedSeverity" type="com:PerceivedSeverityType">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Indicates the severity of the TCA.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="layerRate" type="lay:LayerRateType">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The layer which this alarm is relevant to.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="granularity" type="pm:PerformanceMonitoringGranularityType">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The layer for which this alarm is relevant.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="pmParameterName" type="pm:PerformanceMonitoringParameterNameType">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Carries the details of the threshold that has been crossed.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="pmLocation" type="pm:PerformanceMonitoringLocationType">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Carries the details of the threshold that has been crossed.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="thresholdType" type="pmth:PerformanceMonitoringThresholdType">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Carries the details of the threshold that has been crossed.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="thresholdValue" type="xsd:float" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Carries the details of the threshold that has been crossed, if known.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="thresholdUnit" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Carries the unit of measurement of the threshold that has been crossed.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="acknowledgeIndication" type="tns:AcknowledgeIndicationType">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Carries the details of the threshold that has been crossed, if known.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="isEdgePointRelated" type="xsd:boolean" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>TRUE if this event relates to a PTP that is an edge point or to a PGP that contains a PTP that is an edge point. FALSE otherwise; this field is optional in this case.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:simpleType name="AcknowledgeIndicationType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Describes the acknowledgement state of a notification.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="EVENT_ACKNOWLEDGED"/>
+      <xsd:enumeration value="EVENT_UNACKNOWLEDGED"/>
+      <xsd:enumeration value="NA"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================ -->
+</xsd:schema>

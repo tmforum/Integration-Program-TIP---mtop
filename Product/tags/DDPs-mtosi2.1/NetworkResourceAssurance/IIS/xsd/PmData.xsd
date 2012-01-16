@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/pmdata/v1" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/pmdata/v1" xmlns:lr="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:pm="http://www.tmforum.org/mtop/nra/xsd/pm/v1" xmlns:pmmsrt="http://www.tmforum.org/mtop/nra/xsd/pmmsrt/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource Assurance</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP PM Data XML structure.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/pm/v1" schemaLocation="PmDefinitions.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/pmmsrt/v1" schemaLocation="PmMeasurement.xsd"/>
+  <!-- ================= -->
+  <xsd:element name="pmData" type="tns:PerformanceMonitoringDataType"/>
+  <!-- ================= -->
+  <xsd:complexType name="PerformanceMonitoringDataType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This data type contains TP related performance measurements and some service related data.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="tpName" type="nam:NamingAttributeType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This attribute contains the name of the object to which the performance measurements belong to.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="layerRate" type="lr:LayerRateType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Represents the layer rate of the Layer of the collected PM data.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="granularity" type="pm:PerformanceMonitoringGranularityType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This attribute identifies the granularity of the data.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="retrievalTime" type="xsd:dateTime" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The time provided by the NE. In a case where the NE does not report time, this field is optional or an empty string can be reported.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="pmMeasurementList" type="pmmsrt:PerformanceMonitoringMeasurementListType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This attribute identifies the PM measurement values.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:complexType name="PerformanceMonitoringDataListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A list of PerformanceMonitoringData</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="pmData" type="tns:PerformanceMonitoringDataType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================ -->
+</xsd:schema>

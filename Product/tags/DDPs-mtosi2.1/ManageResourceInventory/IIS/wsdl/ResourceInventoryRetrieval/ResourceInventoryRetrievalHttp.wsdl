@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2007 -->
+<wsdl:definitions name="mTOP-ResourceInventoryRetrievalV1-0" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.tmforum.org/mtop/mri/wsdl/rir/v1-0" targetNamespace="http://www.tmforum.org/mtop/mri/wsdl/rir/v1-0">
+  <wsdl:documentation>
+    <p>DDP: ManageResourceInventory</p>
+    <p>Module: ResourceInventoryRetrieval Service Interface WSDL HTTP Module</p>
+    <p>Description: This module contains all the mTOP ResourceInventoryRetrieval Service Interface WSDL definitions for the Web Service deployment profile with SOAP/HTTP binding.</p>
+    <p>Version: 1.0</p>
+  </wsdl:documentation>
+  <wsdl:import namespace="http://www.tmforum.org/mtop/mri/wsdl/rir/v1-0" location="ResourceInventoryRetrievalMessages.wsdl"/>
+  <wsdl:portType name="ResourceInventoryRetrieval_RPC">
+    <wsdl:documentation>
+      <p>The ResourceInventoryRetrieval porttype (interface) for RPC (synchronous) based client/server communication patterns. All SIT operations use the specific get"ObjectType"Iterator operation to handle multiple responses.</p>
+    </wsdl:documentation>
+    <wsdl:operation name="getInventory">
+      <wsdl:input message="tns:getInventoryRequest"/>
+      <wsdl:output message="tns:getInventoryResponse"/>
+      <wsdl:fault name="getInventoryException" message="tns:getInventoryException"/>
+    </wsdl:operation>
+    <wsdl:operation name="getInventoryIterator">
+      <wsdl:input message="tns:getInventoryIteratorRequest"/>
+      <wsdl:output message="tns:getInventoryIteratorResponse"/>
+      <wsdl:fault name="getInventoryIteratorException" message="tns:getInventoryIteratorException"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ResourceInventoryRetrievalSoapHttpBinding" type="tns:ResourceInventoryRetrieval_RPC">
+    <wsdl:documentation>
+      <p>SOAP HTTP binding definitions of the operations of the ResourceInventoryRetrieval RPC portType (interface)</p>
+    </wsdl:documentation>
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getInventory">
+      <soap:operation soapAction="getInventory" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getInventoryRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getInventoryResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getInventoryException">
+        <soap:fault name="getInventoryException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getInventoryIterator">
+      <soap:operation soapAction="getInventoryIterator" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getInventoryIteratorRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getInventoryIteratorResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getInventoryIteratorException">
+        <soap:fault name="getInventoryIteratorException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ResourceInventoryRetrievalHttp">
+    <wsdl:documentation>
+      <p>Example of the ResourceInventoryRetrieval WSDL Service definition as a deployment example of this mTOP Service Interface. It is expected to be modified to match the specific deployment configuration in a service provider's CCV.</p>
+    </wsdl:documentation>
+    <wsdl:port name="ResourceInventoryRetrievalSoapHttp" binding="tns:ResourceInventoryRetrievalSoapHttpBinding">
+      <soap:address location="http://aserver/mtosi/ResourceInventoryRetrieval"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

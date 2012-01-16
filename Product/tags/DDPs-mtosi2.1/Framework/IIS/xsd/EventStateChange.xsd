@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/sc/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/sc/v1" xmlns:ei="http://www.tmforum.org/mtop/fmw/xsd/ei/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Framework</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema definitions of the StateChange event.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="EventInformation.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/ei/v1"/>
+  <xsd:import schemaLocation="NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <!-- ================ -->
+  <xsd:complexType name="StateChangeType" abstract="true">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The type definition of the StateChange event. The resource (NRB) or service (SB) event instances shall be used.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="ei:EventInformationType">
+        <xsd:sequence>
+          <xsd:element name="attributeList" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This container encapsulates the object element populated with the attributes which state value changed.</p>
+                <p>Refer to the SD2-14_AVC_SC_Notifications.doc for a description of all object attributes supported by the SC event</p>
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:any namespace="##any" processContents="lax" minOccurs="1" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The object element (e.g. me xmlns="http://www.tmforum.org/mtop/nrf/xsd/me/v1") populated with the state attributes and their new set value or deleted (nill="true").</p>
+              </xsd:documentation>
+            </xsd:annotation>
+                </xsd:any>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================ -->
+</xsd:schema>

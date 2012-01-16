@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by G Grimes (Ericsson GmbH) -->
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/pmpsc/v1" xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/pmpsc/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Framework</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema definitions of the PerformanceMonitoringPointStateChange event.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" schemaLocation="../../../Framework/IIS/xsd/CommonEventInformation.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
+  <!-- ================ -->
+  <xsd:element name="performanceMonitoringPointStateChange" type="tns:PerformanceMonitoringPointStateChangeType" substitutionGroup="cei:commonEventInformation">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The element definition of the PerformanceMonitoringPointStateChange event.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:complexType name="PerformanceMonitoringPointStateChangeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The type definition of the PerformanceMonitoringPointStateChange event.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="cei:CommonEventInformationType">
+        <xsd:sequence>
+          <xsd:element name="osTime" type="xsd:dateTime" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The time at which the event was reported by the OS (EMS).</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="pmRefList" type="nam:NamingAttributeListType">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This parameter identifies the PerformanceMonitoringPoint objects for which the AttributeValueChange applies.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="attributeList" type="gen:AnyListType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The name of the attribute that has changed, and the value to which it has change.</p>
+                <p>Three attributes names have been identified:</p>
+                <p>
+                  <br>clearPmData (an indication that PerformanceMonitoringPoint registers have been cleared for a PerformanceMonitoringPoint select list). This parameter has only one possible value, i.e., True.</br>
+                  <br>monitoringState (an indication that PerformanceMonitoringPoint data collection has been enabled or disabled for aPerformanceMonitoringPoint select list). This attribute is either AS_Unlocked (PerformanceMonitoringPoint data collection enabled), or AS_Locked (PerformanceMonitoringPoint data collection disabled).</br>
+                  <br>supervisionState (an indication that TCA generation has been enabled or disabled for a PerformanceMonitoringPoint select list). This attribute is either AS_Unlocked (TCA generation enabled) or AS_Locked (TCA generation disabled).</br>
+                </p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================ -->
+</xsd:schema>

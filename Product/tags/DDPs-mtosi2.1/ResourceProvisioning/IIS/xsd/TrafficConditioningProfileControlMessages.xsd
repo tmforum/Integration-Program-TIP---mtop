@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ResourceProvisioning - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/rp/xsd/tcpc/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lp="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" xmlns:tcp="http://www.tmforum.org/mtop/nrf/xsd/tcp/v1" xmlns:tpdata="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" xmlns:crcd="http://www.tmforum.org/mtop/nrb/xsd/crcd/v1" targetNamespace="http://www.tmforum.org/mtop/rp/xsd/tcpc/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: ResourceProvisioning</p>
+			<p>Module:  Message XSD Module</p>
+			<p>Description: This module contains the XML Schema type definitions of all the mTOP TrafficConditioningProfileControl SI XML message structures.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ================ -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayeredParameters.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/tcp/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/TcProfile.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/TpData.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/crcd/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceCreateDataType.xsd"/>
+	<!-- ================ -->
+	<xsd:element name="createTrafficConditioningProfileRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the createTrafficConditioningProfile operation</p>
+				<p>This operation is used to create
+           a new Traffic Conditioning Profile on the server. A Traffic Conditioning Profile 
+           create data representing the new Traffic Conditioning Profile is 
+           passed as input. The resulting Traffic Conditioning Profile is 
+           returned as a result.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="newTcProfileCreateData" type="tns:TrafficConditioningProfileCreateDataType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>information about the TC Profile to be created</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="createTrafficConditioningProfileResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the createTrafficConditioningProfile operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="newTcProfile" type="tcp:TrafficConditioningProfileType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The resulting TC Profile</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="createTrafficConditioningProfileException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the createTrafficConditioningProfile operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:capacityExceeded"/>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:unableToComply"/>						
+						<xsd:element ref="msg:userlabelInUse"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="deleteTrafficConditioningProfileRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the deleteTrafficConditioningProfile operation</p>
+				<p>This operation is used to 
+           delete a Traffic Conditioning Profile on the server. This operation is
+           idempotent. If the service is called with the
+           name of a non-existent Traffic Conditioning Profile, it will succeed.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="tcProfileName" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The name of the Traffic Conditioning profile to be deleted</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="deleteTrafficConditioningProfileResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the deleteTrafficConditioningProfile operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence/>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="deleteTrafficConditioningProfileException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the deleteTrafficConditioningProfile operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:objectInUse"/>
+						<xsd:element ref="msg:unableToComply"/>							
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="modifyTrafficConditioningProfileRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the modifyTrafficConditioningProfile operation</p>
+				<p>This operation is used to request from the EMS to modify an 
+         existing Traffic Conditioning Profile as specified by the parameters passed in the method.
+         A Traffic Conditioning Profile 
+         modify data representing the data to be changed is 
+         passed as input. The resulting Traffic Conditioning Profile is 
+         returned as a result.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="tcProfileName" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The name of the Traffic Conditioning profile to be deleted</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="tcProfileModifyData" type="tns:TrafficConditioningProfileCreateDataType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>TC Profile data to be changed</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The TPs to be modified</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="modifyTrafficConditioningProfileResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the modifyTrafficConditioningProfile operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The modified TPs are returned</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="modifiedTCProfile" type="tcp:TrafficConditioningProfileType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The modified TC Profile</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="errorReason" type="xsd:string" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>In case a "best effort" parameter could not be set   
+               an indication of the fault reason is provided by the EMS</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="modifyTrafficConditioningProfileException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the modifyTrafficConditioningProfile operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:unableToComply"/>							
+						<xsd:element ref="msg:userlabelInUse"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:complexType name="TrafficConditioningProfileCreateDataType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p/>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="crcd:CommonResourceCreateDataType">
+				<xsd:sequence>
+					<xsd:element ref="lp:transmissionParametersList" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>A list of traffic conditioning parameters which can be set and/or 
+             retrieved at a specified connectionless layer on a Termination Point (TP) 
+             having this TC Profile associated. Refer to chapter "Traffic Conditioning 
+             Parameters" of the supporting document SD1-16_LayeredParameters.pdf
+             for details of the currently defined connectionless parameters</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+</xsd:schema>
