@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../TestStyleSheet_FineGrain.xsl"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../TestTemplate_FineGrain.xsd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<testId>
+		<category>Configuration Service</category>
+		<interface>MultiLayerSubNetworMgr</interface>
+		<name/>
+		<number>1</number>
+	</testId>
+	<requirements/>
+	<operations>getTopologicalLink getTPPool getSNC getAssociatedTP getRoute getRouteAndTopologicalLinks
+	getSNCsByUserLabel</operations>
+	<preconditions>
+	Scenario 2
+	</preconditions>
+	<testCases>
+		<testCase>
+			<operation>getTopologicalLink</operation>
+			<bodyParameters><![CDATA[<b>topoLinkName</b>: Name of the subnetwork topological link to retrieve ]]></bodyParameters>
+			<response>This service returns a subnetwork topological link given its name</response>
+			<xmlExamples>
+				<xmlExample>
+					none
+			</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getTPPool</operation>
+			<bodyParameters><![CDATA[<b>tPPoolName</b>: The name of the TP pool or TP for which to retrieve the association. ]]></bodyParameters>
+			<response>This service returns the TPPool structure for the given TPPool name, and the additional attributes numberOfMembers, numberOfIdleMembers, and descriptionOfUse. The attribute containedMembers, i.e. the list of names of contained TPs, can be retrieved by means of the operation getTPGroupingRelationships() with input tpPoolName.
+      	</response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getSNC</operation>
+			<bodyParameters><![CDATA[<b>sncName</b>: The name of the SNC.]]></bodyParameters>
+			<response>This operation will return the SubnetworkConnection structure for the SNC whose name is supplied as a parameter. This operations will provide a bundled SNC structure if the name provided is that of a bundled SNC (see Bundled SNC overview for further details).
+      		</response>
+			<xmlExamples>
+				<xmlExample>
+					<input xlink:href="examples/MultiLayerSubNetworkMgr_getSNC.xml" xlink:type="simple">  request </input>
+					<output xlink:href="examples/MultiLayerSubNetworkMgr_getSNCResponse.xml" xlink:type="simple"> response</output>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation> getAssociatedTP</operation>
+			<bodyParameters><![CDATA[<b>tpName</b>:  The name of the TP for which to retrieve associated TPs ]]></bodyParameters>
+			<response>This service returns a list of PSR (UPSR or SNCP) associated termination points for the TP whose name is passed as a parameter.
+      		Note: The termination point name must be explicit (a generic endpoint specification may not be used in this case). See Object Naming for further detail on FTP naming.
+When this service is invoked with a TP that is not an edge point, the returned TPs will be on the same Managed Element
+</response>
+			<xmlExamples>
+				<xmlExample>
+					none
+			</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation> getRoute</operation>
+			<bodyParameters><![CDATA[<b>sncName</b>: The name of the SNC.<br/>
+														<b>includeHigherOrderCCs</b>: Specifies whether the higher order CCs of other SNCs used to carry the queried SNC have to be included in addition to the CCs of the queried SNC
+  ]]></bodyParameters>
+			<response>This service returns the route for the SNC whose name is specified as a parameter. This operation also works for bundled SNCs.
+</response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				  
+				
+			</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getRouteAndTopologicalLinks</operation>
+			<bodyParameters><![CDATA[<b>sncName</b>: The name of the SNC. ]]></bodyParameters>
+			<response>Like getRoute(), this service returns the route, in terms of crossconnects, for the SNC whose name is specified as a parameter. This service also returns the list of topological links for that SNC that are used in the route.
+
+
+</response>
+			<xmlExamples>
+				<xmlExample>
+					none
+			</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getSNCsByUserLabel</operation>
+			<bodyParameters><![CDATA[<b>userLabel</b>:  The userLabel of the SNCs to retrieve. ]]></bodyParameters>
+			<response>This operation will return the SubnetworkConnection structures for the SNCs whose userLabel is supplied as a parameter. It will provide a bundled SNC structure if the name provided is that of a bundled SNC (see Bundled SNC overview for further details).
+This operation does not use multiple responses, since the number of SNCs returned is expected to be usually 1.
+</response>
+			<xmlExamples>
+				<xmlExample>
+					none
+			</xmlExample>
+			</xmlExamples>
+		</testCase>
+	</testCases>
+	<exceptions><![CDATA[
+	EXCPT_NOT_IMPLEMENTED <br>
+	EXCPT_INTERNAL_ERROR   <br>
+	EXCPT_INVALID_INPUT        <br>
+	EXCPT_ENTITY_NOT_FOUND <br>
+	EXCPT_COMM_FAILURE <br>
+Note: Those exceptions are common to all operations.]]></exceptions>
+	<postconditions>
+		<success>
+	The requesting OS has all the requested inventory information from the target OS.
+	</success>
+		<failure>
+	The requesting OS does not have the entire requested inventory information from the target OS.
+	</failure>
+	</postconditions>
+	<comments><![CDATA[
+	CommunicationPattern	=  SimpleResponse<br/>	
+	CommunicationStyle		=  RPC or MSG<br/>
+	]]></comments>
+</tests>

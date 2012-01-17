@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xlink="http://www.w3.org/1999/xlink" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:element name="tests">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="testId" type="testIdType"/>
+				<xsd:element name="requirements" type="xsd:string"/>
+				<xsd:element name="operations" type="xsd:string"/>
+				<xsd:element name="preconditions" type="xsd:string"/>
+				<xsd:element name="testCases" type="testCasesType"/>
+				<xsd:element name="exceptions" type="xsd:string"/>
+				<xsd:element name="postconditions" type="postconditionsType"/>
+				<xsd:element name="comments" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:complexType name="testIdType">
+		<xsd:sequence>
+			<xsd:element name="category" type="xsd:string"/>
+			<xsd:element name="interface" type="xsd:string"/>
+			<xsd:element name="name" type="xsd:string"/>
+			<xsd:element name="number" type="xsd:positiveInteger"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="testCasesType">
+		<xsd:sequence>
+			<xsd:element name="testCase" type="testCaseType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="testCaseType">
+		<xsd:sequence>
+			<xsd:element name="operation" type="xsd:string"/>
+			<xsd:element name="bodyParameters" type="xsd:string"/>
+			<xsd:element name="response" type="xsd:string"/>
+			<xsd:element name="xmlExamples" type="xmlExamplesType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="xmlExamplesType">
+		<xsd:sequence>
+			<xsd:element name="xmlExample" type="xmlExampleType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="xmlExampleType" mixed="true">
+		<xsd:sequence>
+			<xsd:element name="input" type="inputType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="output" type="outputType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="inputType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:anyAttribute namespace="http://www.w3.org/1999/xlink" processContents="skip"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="outputType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:anyAttribute namespace="http://www.w3.org/1999/xlink" processContents="skip"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	<xsd:complexType name="postconditionsType">
+		<xsd:sequence>
+			<xsd:element name="success" type="xsd:string"/>
+			<xsd:element name="failure" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

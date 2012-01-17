@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../TestStyleSheet_FineGrain.xsl"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../TestTemplate_FineGrain.xsd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<testId>
+		<category>Configuration Service</category>
+		<interface>OsMgr</interface>
+		<name>Asynchronous Request/Reply - Synchronous Request/Reply MEPs</name>
+		<number>1</number>
+	</testId>
+	<requirements>
+	II.016 II.014 II.015
+	</requirements>
+	<operations>getAllTLsBetweenMDs  getAllTLNamesBetweenMDs getMultiLayerSubnetwork
+getTopLevelTopologicalLink
+getOS getSubordinateOS getMD
+</operations>
+	<preconditions>
+	Scenario 2
+	</preconditions>
+	<testCases>
+		<testCase>
+			<operation>getAllTLsBetweenMDs </operation>
+			<bodyParameters>none</bodyParameters>
+			<response>This operation returns all the TopologicalLink (TL) objects with end points in two different ManagementDomains (MDs) which are managed by the addressed top-level OS.
+      The operation can only be directed to a top-level OS and not to a subordinate OS.
+            </response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllTLNamesBetweenMDs </operation>
+			<bodyParameters>none</bodyParameters>
+			<response> This operation returns the name of each TopologicalLink (TL) with end points in two different ManagementDomains (MDs) which are managed by the addressed top-level OS.
+      The operation can only be directed to a top-level OS and not to a subordinate OS.
+          Note that the response message is handled by getObjectNamesResponse_T.
+      </response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getTopLevelTopologicalLink</operation>
+			<bodyParameters><![CDATA[<b>topoLinkName</b>: Name of the top level topological link to retrieve.]]></bodyParameters>
+			<response>This service returns a top level topological link given its name.</response>
+			<xmlExamples>
+				<xmlExample>
+none				
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getOS</operation>
+			<bodyParameters>none</bodyParameters>
+			<response>This operation returns the data structure associated with the addessed OS.
+      This operation may only be directed to a top-level OS and not to a subordinate OS.</response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getSubordinateOS</operation>
+			<bodyParameters>none</bodyParameters>
+			<response>This operation returns the data structure associated with a given subordinate OS identified by the provided subordinateOSName. The operation can only be directed to a top-level OS and not to a subordinate OS.
+          </response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getMD</operation>
+			<bodyParameters><![CDATA[<b>mdName</b>: The name of the MD being requested. ]]></bodyParameters>
+			<response>This operation returns the data structure associated with a given Management Domain (MD) identified by the provided mdName.
+      The operation can only be directed to a top-level OS and not to a subordinate OS.
+      </response>
+			<xmlExamples>
+				<xmlExample>
+						none
+			</xmlExample>
+			</xmlExamples>
+		</testCase>
+	</testCases>
+	<exceptions><![CDATA[
+	EXCPT_NOT_IMPLEMENTED <br>
+	EXCPT_INTERNAL_ERROR   <br>
+	EXCPT_INVALID_INPUT        <br>
+	EXCPT_ENTITY_NOT_FOUND <br>
+	EXCPT_COMM_FAILURE <br>
+Note: Those exceptions are common to all operations.The conditions when they are raised are specific to each operation.]]></exceptions>
+	<postconditions>
+		<success>
+	The requesting OS has all the requested inventory information from the target OS.
+	</success>
+		<failure>
+	The requesting OS does not have the entire requested inventory information from the target OS.
+	</failure>
+	</postconditions>
+	<comments><![CDATA[
+	CommunicationPattern	=  SimpleResponse<br/>	
+	CommunicationStyle		=  RPC or MSG<br/>
+	]]></comments>
+</tests>

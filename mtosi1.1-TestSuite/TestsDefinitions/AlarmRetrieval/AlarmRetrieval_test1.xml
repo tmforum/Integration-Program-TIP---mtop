@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../TestStyleSheet_CoarseGrain.xsl"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../TestTemplate_CoarseGrain.xsd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<testId>
+		<number>1</number>
+		<category>Fault Service</category>
+		<interface>AlarmRetrieval</interface>
+		<name>Scope all - Internal alarms</name>
+	</testId>
+	<requirements><![CDATA[&nbsp;]]></requirements>
+	<operations>
+		getActiveAlarms
+	</operations>
+	<preconditions>
+	Scenario 3
+	</preconditions>
+	<testCase>
+		<request>
+			<headerParameters><![CDATA[
+CommunicationPattern = SimpleResponse<br/>
+			CommunicationStyle = MSG<br/>	
+			]]></headerParameters>
+			<bodyParameters><![CDATA[
+	Filter.source = INTERNAL<br/>		
+	Filter.perceivedSeverityList = { PS_MAJOR, PS_MINOR, PS_CLEARED, PS_CRITICAL }<br/>
+	Filter.probableCauseList = { BER_SD, EQPT, ENV }<br/>
+    Filter.acknowledgeIndication = AI_EVENT_ACKNOWLEDGED<br/>
+			]]></bodyParameters>
+		</request>
+		<response>
+		Retrieves all internal alarms satisfying the filter constraints of the requesting OS.
+				</response>
+<xmlExamples>		
+		<xmlExample>
+			<input xlink:href="examples/AlarmRetrieval_getActiveAlarms1.xml" xlink:type="simple">  request </input>
+			<output xlink:href="examples/AlarmRetrieval_getActiveAlarmsResponse1.xml" xlink:type="simple"> response</output>
+		</xmlExample>
+</xmlExamples>
+	</testCase>
+	<postconditions>
+		<success>
+	The requesting OS has all the requested inventory information from the target OS.
+	</success>
+		<failure>
+	The requesting OS does not have the entire requested inventory information from the target OS.
+	</failure>
+	</postconditions>
+	<comments><![CDATA[
+	This operation can only be directed to a top-level OS and not to a subordinate OS.<br/>
+      getActiveAlarmsCountResponse: activeAlarmCount = 12.
+	]]></comments>
+</tests>

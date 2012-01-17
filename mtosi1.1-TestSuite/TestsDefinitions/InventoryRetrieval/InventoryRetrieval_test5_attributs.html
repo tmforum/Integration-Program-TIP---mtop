@@ -1,0 +1,93 @@
+<html xmlns:xlink="http://www.w3.org/1999/xlink">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>test cases</title>
+</head>
+<body>
+<table border="2px">
+<tr>
+<th>Test Identification</th><td><span style="width:150px">		
+		Test Number:
+		</span>	5<br>
+<span style="width:150px">
+		Test Category:
+		</span> Configuration Service<br>
+<span style="width:150px">
+		MTOSI Interface:
+		</span> InventoryRetrieval<br>
+<span style="width:150px">
+		Test Name:
+		</span> Filter &ndash; Attributes selection<br>
+</td>
+</tr>
+<tr>
+<th>517 Requirement</th><td>
+	<b>Requirement II. 11</b>
+	Each of the bulk inventory mechanisms listed in Requirement II 9 shall support the ability to provide a subset of the inventory known to the target OS. The subset is defined by a filter provided by the requesting OS. The following filter shall be supported:<br/>b. Selection of all instances of a given type including all attributes associated with each instance.
+	</td>
+</tr>
+<tr>
+<th>Operations</th><td>
+		getInventory
+	</td>
+</tr>
+<tr>
+<th>Preconditions</th><td>
+<div style="font-family:Times New Roman">
+	Scenario 1
+	</div>
+</td>
+</tr>
+<tr>
+<th>Test case</th><td>
+			Request: 
+		<div style="margin-left: 30px; margin-top: 5px; margin-bottom: 15px">
+			Header Parameters:
+<div style="margin-left: 30px; margin-top: 5px; margin-bottom: 10px; font-size:10pt">
+	ReplyToAddress = Inventory-OS address<br/>			
+	RequestedBatchSize = 0<br/>
+	CorrelationId = Test Number			
+			</div>
+			Body Parameters:
+<div style="margin-left: 30px; margin-top: 5px; margin-bottom: 10px; font-size:10pt">
+	Filter.baseInstanceList	 =	{ (MD=md1) }<br/>	
+	Filter.includedObjectTypes	 =	{ (ME, ATTRS) }<br/>	
+			</div>
+</div>
+		Response: 
+		<div style="margin-left: 30px; margin-top: 5px; margin-bottom: 15px">
+		Retrieves all Managed Element names and attributes within Management 	Domain md1.
+			</div>
+		XML Examples:
+			<div style="margin-left: 30px; margin-top: 5px">
+<a href="examples/InventoryRetrieval_getInventory5_attributs.xml">  request </a>
+			
+			
+		
+						&nbsp; &nbsp;
+					<a href="examples/InventoryRetrieval_getInventoryResponse5_attributs.xml"> response</a>
+						&nbsp; &nbsp;
+		</div>
+<br>
+</td>
+</tr>
+<tr>
+<th>Post-conditions</th><td>
+		In case of success<br>
+<div style="text-indent:40px">
+	The requesting OS has all the requested inventory information from the target OS.
+	</div>
+	In case of failure<br>
+<div style="text-indent:40px">
+	The requesting OS does not have the entire requested inventory information from the target OS.
+	</div>
+</td>
+</tr>
+<tr>
+<th>Comments</th><td>
+	None
+	</td>
+</tr>
+</table>
+</body>
+</html>

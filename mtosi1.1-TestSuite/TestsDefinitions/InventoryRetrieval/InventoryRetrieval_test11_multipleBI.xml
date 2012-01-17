@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../TestStyleSheet_CoarseGrain.xsl"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../TestTemplate_CoarseGrain.xsd"
+xmlns:xlink="http://www.w3.org/1999/xlink">
+	<testId>
+		<number>	11</number>
+		<category> Configuration Service</category>
+		<interface> InventoryRetrieval</interface>
+		<name> Filter – Multiple Base Instances</name>
+	</testId>
+	<requirements>
+	<![CDATA[<b>Requirement II. 10</b>
+	 Each of the bulk inventory mechanisms listed in Requirement II 9 shall support the ability to provide a subset of the inventory known to the target OS. The subset is defined by a filter provided by the requesting OS. The following filter shall be supported:<br/>f. Selection of all object types or a subset of the object types contained under a given base instance, including the object associated with the base instance, shall be an allowable filter condition. A single filter can have multiple base instances, i.e., multiple subtrees can be selected.]]>
+	</requirements>
+	<operations>
+		getInventory
+	</operations>
+	<preconditions>
+	Scenario 2
+	</preconditions>
+	<testCase>
+		<request>
+			<headerParameters><![CDATA[
+	CommunicationPattern = MultipleResponse<br/>
+		CommunicationStyle = MSG<br/>
+		RequestedBatchSize = 0			
+			]]></headerParameters>
+			<bodyParameters><![CDATA[
+			Filter.baseInstanceList	 =	{ (MD=md1, ME=me1), (MD=md1, ME=me2) }<br/>		
+			Filter.includedObjectTypes	 =	{ (ME, ATTRS), (EH, NAME) }<br/>
+			]]></bodyParameters>
+		</request>
+		<response><![CDATA[
+		Retrieves the attributes of all Equipment Holder within Managed Element me1 within Management Domain md1.<br/>
+		Retrieves the attributes of all Equipment Holder within Managed Element me2 within Management Domain md1.
+			]]></response>
+			<xmlExamples>
+		<xmlExample>
+			<input  xlink:href="examples/InventoryRetrieval_getInventory11_multipleBI.xml" xlink:type="simple">  request </input>
+			<output xlink:href="examples/InventoryRetrieval_getInventoryResponse11_multipleBI.xml" xlink:type="simple"> response</output>
+		</xmlExample>
+		</xmlExamples>
+	</testCase>
+	<postconditions>
+	<success>
+	The requesting OS has all the requested inventory information from the target OS.
+	</success>
+	<failure>
+	The requesting OS does not have the entire requested inventory information from the target OS.
+	</failure>	
+	</postconditions>
+	<comments>
+	None
+	</comments>
+</tests>

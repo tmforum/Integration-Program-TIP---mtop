@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../TestStyleSheet_FineGrain.xsl"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../TestTemplate_FineGrain.xsd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<testId>
+		<category>Configuration Service</category>
+		<interface>TransmissionDescriptorMgr</interface>
+				<name>Asynchronous Request/Reply - Synchronous Request/Reply MEPs</name>
+		<number>1</number>
+	</testId>
+	<requirements>
+	II. 21
+	</requirements>
+	<operations>getTransmissionDescriptor</operations>
+<preconditions>
+	Scenario 2
+	</preconditions>
+	<testCases>
+		<testCase>
+			<operation>getTransmissionDescriptor</operation>
+			<bodyParameters><![CDATA[<b>tmdName</b>: the name of the Transmission Descriptor  ]]></bodyParameters>
+			<response>Get a specific TransmissionDescriptor and its associated distinguishing information.
+      This operation may only be directed to a top-level OS and not to a subordinate OS.
+    </response>
+			<xmlExamples><xmlExample>
+					none
+				<input/>
+				<output/>
+			</xmlExample></xmlExamples>
+		</testCase>
+	</testCases>
+<exceptions><![CDATA[
+	EXCPT_NOT_IMPLEMENTED <br>
+	EXCPT_INTERNAL_ERROR   <br>
+	EXCPT_INVALID_INPUT        <br>
+	EXCPT_ENTITY_NOT_FOUND <br>
+	EXCPT_COMM_FAILURE <br>
+Note: Those exceptions are common to all operations.The conditions when they are raised are specific to each operation (Refer to the TMF 854 XML Solution Set document for details).]]>
+	</exceptions>
+	<postconditions>
+	<success>
+	The requesting OS has all the requested inventory information from the target OS.
+	</success>
+	<failure>
+	The requesting OS does not have the entire requested inventory information from the target OS.
+	</failure>	
+	</postconditions>
+	<comments><![CDATA[
+	CommunicationPattern	=  SimpleResponse<br/>	
+	CommunicationStyle		=  RPC or MSG<br/>
+	]]></comments>
+</tests>

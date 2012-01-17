@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../TestStyleSheet_FineGrain.xsl"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../TestTemplate_FineGrain.xsd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<testId>
+		<category>Configuration Service</category>
+		<interface>EquipmentInventoryMgr</interface>
+		<name>Asynchronous Request/Reply - Synchronous Request/Reply MEPs</name>
+		<number>1</number>
+	</testId>
+	<requirements><![CDATA[&nbsp;]]></requirements>
+	<operations>getSupportingEquipment getSupportingEquipmentNames getSupportedEquipment
+	get SupportedEquipmentNames getContainedEquipment getEquipment</operations>
+	<preconditions>Scenario 2</preconditions>
+	<testCases>
+		<testCase>
+			<operation>getSupportingEquipment</operation>
+			<bodyParameters><![CDATA[<b>equipmentName</b>:
+            the name of the equipment for which to retrieve the supporting equipments.]]></bodyParameters>
+			<response>This service allows an NMS to request all of the equipment that supports a given piece of equipment, e.g., the power pack and synchronization card that support a given piece of equipment.
+      		</response>
+			<xmlExamples>
+				<xmlExample>
+			none
+			</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getSupportingEquipmentNames</operation>
+			<bodyParameters>Same as getSupportingEquipment.</bodyParameters>
+			<response>This operation has exactly the same behaviour as getSupportingEquipment(), but returns the object names instead of returning the entire objects.
+        Note that the response message is handled by getObjectNamesResponse_T.</response>
+			<xmlExamples>
+				<xmlExample>
+			none		
+					</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getSupportedEquipment</operation>
+			<bodyParameters><![CDATA[<b>equipmentName</b>: The name of the equipment for which to retrieve the supported equipment list  ]]></bodyParameters>
+			<response>This service allows an NMS to request all of the pieces of equipment supported by a given piece of equipment, e.g., a power pack might support many circuit packs.
+   </response>
+			<xmlExamples>
+				<xmlExample>
+none			
+						</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getSupportedEquipmentNames</operation>
+			<bodyParameters>Same as getSupportedEquipment.</bodyParameters>
+			<response>This operation has exactly the same behaviour as getSupportedEquipment(), but returns the object names instead of returning the entire objects.
+          Note that the response message is handled by getObjectNamesResponse_T.</response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getContainedEquipment</operation>
+			<bodyParameters><![CDATA[<b>equipmentHolderName</b>: The name of the equipment holder for which to retrieve the directly contained equipment and equipment holders.  ]]></bodyParameters>
+			<response>This service returns the equipments and equipment holders directly contained by a specific equipment holder. This method differs from getAllEquipment in that it only looks at the next level of the containment hierarchy.
+      		</response>
+			<xmlExamples>
+				<xmlExample>
+					<input xlink:href="examples/EquipmentInventoryMgr_getContainedEquipment.xml" xlink:type="simple">  request </input>
+					<output xlink:href="examples/EquipmentInventoryMgr_getContainedEquipmentResponse.xml" xlink:type="simple"> response</output>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getEquipment</operation>
+			<bodyParameters><![CDATA[<b>equipmentOrHolderName</b>: The name of the equipment or equipment holder to retrieve]]></bodyParameters>
+			<response>This service returns the equipment or equipment holder for the given equipment or equipment holder name.</response>
+			<xmlExamples>
+				<xmlExample>
+					<input xlink:href="examples/EquipmentInventoryMgr_getEquipment.xml" xlink:type="simple">  request </input>
+					<output xlink:href="examples/EquipmentInventoryMgr_getEquipmentResponse.xml" xlink:type="simple"> response</output>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+	</testCases>
+	<exceptions><![CDATA[
+	EXCPT_NOT_IMPLEMENTED <br>
+	EXCPT_INTERNAL_ERROR   <br>
+	EXCPT_INVALID_INPUT        <br>
+	EXCPT_ENTITY_NOT_FOUND <br>
+	EXCPT_COMM_FAILURE <br>
+Note: Those exceptions are common to all operations.]]></exceptions>
+	<postconditions>
+		<success>
+	The requesting OS has all the requested inventory information from the target OS.
+	</success>
+		<failure>
+	The requesting OS does not have the entire requested inventory information from the target OS.
+	</failure>
+	</postconditions>
+	<comments><![CDATA[
+	CommunicationPattern	=  SimpleResponse<br/>	
+	CommunicationStyle		=  RPC or MSG<br/>
+	]]></comments>
+</tests>

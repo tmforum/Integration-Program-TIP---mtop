@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../TestStyleSheet_FineGrain.xsl"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../TestTemplate_FineGrain.xsd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<testId>
+		<category>Configuration Service</category>
+		<interface>ProtectionMgr</interface>
+				<name>Asynchronous Request/Reply - Synchronous Request/Reply MEPs</name>
+		<number>1</number>
+	</testId>
+	<requirements>
+	513: II. 059 II. 274 II. 275 II.276
+	</requirements>
+	<operations>
+getContainingPGNames	retrieveSwitchData retrieveESwitchData getProtectionGroup getEProtectionGroup
+</operations>
+	<preconditions>
+	Scenario 2
+	</preconditions>
+	<testCases>
+		<testCase>
+			<operation>getContainingPGNames</operation>
+			<bodyParameters><![CDATA[<b>pTPName</b>:  ]]>   The name of the PhysicalTerminationPoint
+</bodyParameters>
+			<response>This service returns the names of the Protection Groups containing the given PhysicalTerminationPoint.
+           Note that the response message is handled by getObjectNamesResponse_T.
+</response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>retrieveSwitchData</operation>
+			<bodyParameters><![CDATA[<b>reliableSinkCtpOrGroupName</b>:                		This is the CTP/FTP that is the output of a service selector in case of the SNC or the group name for which the switch data is being requested. The termination point name must be explicit (a generic endpoint specification may not be used in this case).
+ ]]></bodyParameters>
+			<response>	This service is used by the NMS to get the latest switch status on a SNC or a MSP group. 
+      It should be noted that although the term MSP was chosen as the original specific protection scheme to which the related behaviour applied was Multiplex Section Protection, the label is now more generally applied to any 1+1 or 1:N Trail protection scheme.
+      </response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>retrieveESwitchData</operation>
+			<bodyParameters><![CDATA[<b>ePGPName</b>:              This is the equipment protection group name for which the switch data is being requested.
+]]></bodyParameters>
+			<response> This service is used by the NMS to get the latest switch status on an equipment protection group.
+           For a retrieval of a revertive M:N group, N ESwitchData_T are returned as a result of retrieveESwitchData (one for each worker equipment instance).
+        For a retrieval of a non-revertive M:N group, N ESwitchData_T are returned as a result of retrieveESwitchData (one for each active equipment instance).
+</response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getProtectionGroup</operation>
+			<bodyParameters><![CDATA[<b>protectionGroupName</b>: name of the  protection group that the client is interested in.
+]]></bodyParameters>
+			<response>This operation is used to get the current status of a  Protection Group. This service is needed so that even if a filter is established, the NMS can query the status of a protection group.
+      		</response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getEProtectionGroup</operation>
+			<bodyParameters><![CDATA[<b>ePGPName</b>:              name of the equipment protection group that the client is interested in.
+]]></bodyParameters>
+			<response>        This operation is used to get the current status of a Equipment Protection Group. This service is needed so that even if a filter is established, the NMS can query the status of a protection group.
+</response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+	</testCases>
+	<exceptions><![CDATA[
+	EXCPT_NOT_IMPLEMENTED <br>
+	EXCPT_INTERNAL_ERROR   <br>
+	EXCPT_INVALID_INPUT        <br>
+	EXCPT_ENTITY_NOT_FOUND <br>
+	EXCPT_COMM_FAILURE <br>
+Note: Those exceptions are common to all operations.The conditions when they are raised are specific to each operation.]]></exceptions>
+	<postconditions>
+		<success/>
+		<failure/>
+	</postconditions>
+	<comments><![CDATA[
+	CommunicationPattern	=  SimpleResponse<br/>	
+	CommunicationStyle		=  RPC or MSG<br/>
+	]]></comments>
+</tests>

@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../TestStyleSheet_FineGrain.xsl"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../TestTemplate_FineGrain.xsd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<testId>
+		<category> Configuration Service</category>
+		<interface> ManagedElementMgr</interface>
+		<name> Asynchronous Batch Response - Synchronous Iterator MEPs</name>
+		<number>2</number>
+	</testId>
+	<requirements>
+		  513: II.002 II.003 II.005 </requirements>
+	<operations>
+getAllPTPs getAllPTPNames getAllFTPs getAllFTPNames getContainedPotentialCTPs getContainedPotentialCTPNames 
+getContainedInUseCTPs getContainedInUseCTPNames getContainedCurrentCTPs getContainedCurrentCTPNames
+getAllManagedElements getAllManagedElementNames getAllActiveAlarms getAllUnacknowledsAlarms getAllPTPs getAllCrossConnections getAllPTPsWithoutFTPs
+getAllPTPNamesWithoutFTPs getAllFTPs getAllFixedCrossConnections
+	</operations>
+	<preconditions><![CDATA[
+	Scenario 2
+	]]></preconditions>
+	<testCases>
+		<testCase>
+			<operation>getAllPTPs</operation>
+			<bodyParameters><![CDATA[
+			<b>meName</b>:	The name of the Managed Element.<br/>	
+			<b>TpLayerRateList</b>: List of PTP layer rates for which the PTPs are to be fetched. A PTP must contain at least one of the layer rates specified to be reported. If the list is empty then all PTPs (of all rates) are returned.<br/>	
+			<b>ConnectionLayerRateList</b>: List of connection layer rates for which the PTPs are to be fetched. A PTP must support connections for at least one of the layer rates specified to be reported. If the list is empty then all PTPs (for all connection rates) are returned.]]></bodyParameters>
+			<response>
+			This allows an NMS to request all of the PTPs and FTPs on the specified Managed Element, that contain one or more of the NMS-specified PTP/FTP layer rates, and that are capable of supporting one or more of the NMS- specified connection layer rates. If there are no PTPs/FTPs that match the layer constraints, an empty list is returned. 
+		</response>
+			<xmlExamples>
+				<xmlExample>
+					<input xlink:href="examples/ManagedElementMgr_getAllPTPs.xml" xlink:type="simple">  request </input>
+					<output xlink:href="examples/ManagedElementMgr_getAllPTPsResponse.xml" xlink:type="simple"> response</output>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllPTPNames</operation>
+			<bodyParameters>Same as getAllPTPs.</bodyParameters>
+			<response>This operation has exactly the Same behaviour as getAllPTPs(), but instead of returning the entire object structures, this operation returns their names.
+      Note that the response message is handled by getObjectNamesResponse_T.</response>
+			<xmlExamples>
+				<xmlExample>
+					<input xlink:href="examples/ManagedElementMgr_getAllPTPNames.xml" xlink:type="simple">  request </input>
+					<output xlink:href="examples/ManagedElementMgr_getAllPTPNamesResponse.xml" xlink:type="simple"> response </output>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllFTPs</operation>
+			<bodyParameters><![CDATA[
+			<b>meName</b>:	The name of the Managed Element.<br/>
+			<b>TpLayerRateList</b>: List of PTP layer rates for which the PTPs are to be fetched. A PTP must contain at least one of the layer rates specified to be reported. If the list is empty then all PTPs (of all rates) are returned.<br/>	
+			<b>ConnectionLayerRateList</b> : List of connection layer rates for which the PTPs are to be fetched. A PTP must support connections for at least one of the layer rates specified to be reported. If the list is empty then all PTPs (for all connection rates) are returned.]]></bodyParameters>
+			<response>This operation has exactly the Same behaviour as getAllPTPs(), but instead of returning both PTPs and FTPs it returns solely FTPs.
+      		 </response>
+			<xmlExamples>
+				<xmlExample>
+			none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllFTPNames</operation>
+			<bodyParameters>Same as getAllPTPs.</bodyParameters>
+			<response>This operation has exactly the Same behaviour as getAllFTPs(), but instead of returning the entire object structures, this operation returns their names.
+      		      Note that the response message is handled by getObjectNamesResponse_T.</response>
+			<xmlExamples>
+				<xmlExample>
+			none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getContainedPotentialCTPs</operation>
+			<bodyParameters><![CDATA[
+			<b>tpName</b>: Name of the PTP, FTP or CTP for which to get contained CTPs. The termination point name must be explicit (a generic endpoint specification may not be used in this case). See Object Naming for further detail on FTP naming.<br/>
+			<b>layerRateList</b>:   The list of rates of the contained in use CTPs to be returned. An empty list indicates to get all contained in use CTPs (of all rates).]]></bodyParameters>
+			<response>
+			This allows an NMS to request all of the CTPs that it is potentially capable of supporting in all possible mapping configurations, at the specified rates and that are contained by the specified termination point.This service returns all potential contained CTPs for a given TP. The TP may be a PTP, an FTP or a CTP. If the layerRateList is empty then contained CTPs at all flexible and/or static LayerRates are returned.
+			</response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getContainedPotentialCTPNames</operation>
+			<bodyParameters>
+			Same as getContainedPotentialCTPs
+			</bodyParameters>
+			<response>
+			This operation has exactly the Same behaviour as getContainedPotentialCTPs(), but instead of returning the entire object structures, this operation returns their names.
+			</response>
+			<xmlExamples>
+				<xmlExample>
+			none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getContainedInUseCTPs</operation>
+			<bodyParameters><![CDATA[
+			<b>tpName</b>: The name of the TP for which to get contained in use TPs. The termination point name must be explicit (a generic endpoint specification may not be used in this case). See Object Naming for further detail on FTP naming.<br/>
+			<b>layerRateList</b>: The list of rates of the contained in use CTPs to be returned. An empty list indicates to get all contained in use CTPs (of all rates).
+.
+  ]]></bodyParameters>
+			<response>
+	This service is used to retrieve the "in use" CTPs that are contained within a specific PTP, FTP or CTP, at specific layer rates. An "in use" CTP is defined as a CTP that is used by an SNC in any state (including pending), either as a CM end point or as an intermediate connection point, or a CTP that is terminated and mapped. This operation will be used when there are a large number of potential CTPs (e.g., in ATM).
+			</response>
+			<xmlExamples>
+				<xmlExample>
+					<input xlink:href="examples/ManagedElementMgr_getContainedInUseCTPs.xml" xlink:type="simple">  request </input>
+					<output xlink:href="examples/ManagedElementMgr_getContainedInUseCTPsResponse.xml" xlink:type="simple"> response</output>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getContainedInUseCTPNames</operation>
+			<bodyParameters>
+			Same as getContainedInUseCTPs.
+			</bodyParameters>
+			<response>
+			This operation has exactly the Same behaviour as getContainedInUseCTPs(), but instead of returning the entire object structures, this operation returns their names.
+      	      	      Note that the response message is handled by getObjectNamesResponse_T.
+			</response>
+			<xmlExamples>
+				<xmlExample>
+					<input xlink:href="examples/ManagedElementMgr_getContainedInUseCTPNames.xml" xlink:type="simple">  request </input>
+					<output xlink:href="examples/ManagedElementMgr_getContainedInUseCTPNamesResponse.xml" xlink:type="simple"> response</output>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getContainedCurrentCTPs</operation>
+			<bodyParameters><![CDATA[
+			<b>tpName</b>: The name of the PTP, FTP or CTP for which to get current contained CTPs. The termination point name must be explicit (a generic endpoint specification may not be used in this case). See Object Naming for further detail on FTP naming.<br/>
+			<b>layerRateList</b>: The list of rates of the current contained CTPS to be returned. An empty list indicates to get all current contained CTPs (of all rates).]]></bodyParameters>
+			<response>
+			This service is used to retrieve the "current" CTPs that are contained within a specific PTP, FTP or CTP, at specific layer rates. A "current" CTP is defined as a CTP that is either cross-connectable or cross-connected, in the current mapping configuration.
+      				</response>
+			<xmlExamples>
+				<xmlExample>
+none
+							</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getContainedCurrentCTPNames</operation>
+			<bodyParameters>
+			Same as getContainedCurrentCTPs.
+			</bodyParameters>
+			<response>
+			This operation has exactly the Same behaviour as getContainedCurrentTPs(), but instead of returning the entire object structures, this operation returns their names.
+      				</response>
+			<xmlExamples>
+				<xmlExample>
+					<input xlink:href="" xlink:type="simple">   </input>
+					<output xlink:href="" xlink:type="simple"> </output>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllManagedElements</operation>
+			<bodyParameters><![CDATA[
+	<b>mdName</b>: the name of the Management Domain whose contained MEs are being requested]]></bodyParameters>
+			<response>This allows an NMS to request a list of all the known ManagedElements in the given MD.
+      		      		</response>
+			<xmlExamples>
+				<xmlExample>
+					<input xlink:href="examples/ManagedElementMgr_getAllManagedElements.xml" xlink:type="simple"> request   </input>
+					<output xlink:href="examples/ManagedElementMgr_getAllManagedElementsResponse.xml" xlink:type="simple">response</output>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllManagedElementNames</operation>
+			<bodyParameters><![CDATA[
+			<b>mdName</b>: the name of the Management Domain whose contained MEs are being requested]]></bodyParameters>
+			<response>
+			This allows an NMS to request a list of all the known ManagedElements in the given MD.
+      			</response>
+			<xmlExamples>
+				<xmlExample>
+					<input xlink:href="examples/ManagedElementMgr_getAllManagedElementNames.xml" xlink:type="simple">request </input>
+					<output xlink:href="examples/ManagedElementMgr_getAllManagedElementNamesResponse.xml" xlink:type="simple"> response</output>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllActiveAlarms</operation>
+			<bodyParameters><![CDATA[ 
+	<b>meName</b>: Name of the Managed Element for which to retrieve active alarms.<br/>
+	<b>excludeProbCauseList</b>: List of probable causes to exclude from the output list.<br/> 
+	<b>excludeSeverityList</b>: List of severities to exclude from the output list. 
+	]]></bodyParameters>
+			<response>This allows an NMS to request all of the active alarms for the specified managed element. Alarms that are not reported by the ME to the EMS should not be reported by this operation. Some alarms may be filtered out (excluded) by specifying their probable causes or severities. 
+The result of this operation is independent of the filtering set up by the NMS for the notification service.
+</response>
+			<xmlExamples>
+				<xmlExample>
+					<input xlink:href="examples/ManagedElementMgr_getAllActiveAlarms.xml" xlink:type="simple">request </input>
+					<output xlink:href="examples/ManagedElementMgr_getAllActiveAlarmsResponse.xml" xlink:type="simple"> response</output>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllUnacknowledgedActiveAlarms</operation>
+			<bodyParameters><![CDATA[ <b>meName</b>: The name of the Managed Element for which to retrieve unacknowledged alarms.<br/>
+	<b>excludeProbCauseList</b>: List of probable causes to exclude from the output list.<br/>
+	<b>excludeSeverityList</b>: List of severities to exclude from the output list.
+	]]></bodyParameters>
+			<response>This allows an NMS to request all of the active alarms for the specified managed element that have not been acknowledged. Alarms that are not reported by the ME to the EMS should not be reported by this operation. Some alarms may be filtered out (excluded) by specifying their probable causes or severities. 
+The result of this operation is independent of the filtering set up by the NMS for the notification service.
+</response>
+			<xmlExamples>
+				<xmlExample>
+					<input xlink:href="examples/ManagedElementMgr_getAllUnacknowledgedActiveAlarms.xml" xlink:type="simple">request </input>
+					<output xlink:href="examples/ManagedElementMgr_getAllUnacknowledgedActiveAlarmsResponse.xml" xlink:type="simple"> response</output>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllCrossConnections</operation>
+			<bodyParameters><![CDATA[
+	<b>meName</b>: Name of the Managed Element for which to retrieve CCs.<br/>
+	<b>connectionRateList</b>: List of rates for which to retrieve CCs. This must not be an empty list. In this case an INVALID_INPUT exception is thrown. 
+ 	 ]]></bodyParameters>
+			<response>This allows an NMS to request a list of the cross-connects for the specified managed element at the specified layer rates. This operation returns cross-connects between CTPs/FTPs.
+      	      </response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllPTPsWithoutFTPs</operation>
+			<bodyParameters><![CDATA[ <b>meName</b>: The name of the Managed Element.<br/>
+	<b>tpLayerRateList</b>: List of PTP layer rates for which the PTPs are to be fetched. A PTP must contain at least one of the layer rates specified to be reported. If the list is empty then all PTPs (of all rates) are returned.<br/>
+	<b>connectionLayerRateList</b>: List of connection layer rates for which the PTPs are to be fetched. A PTP must support connections for at least one of the layer rates specified to be reported. If the list is empty then all PTPs (for all connection rates) are returned.<br/>
+	]]></bodyParameters>
+			<response>	This operation has exactly the Same behaviour as getAllPTPs() but instead of returning both PTPs and FTPs it returns solely PTPs.
+       </response>
+			<xmlExamples>
+				<xmlExample>
+			none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllPTPNamesWithoutFTPs </operation>
+			<bodyParameters>Same as getAllPTPsWithoutFTPs</bodyParameters>
+			<response>This operation has exactly the Same behaviour as getAllPTPsWithoutFTP, but instead of returning the entire object structures, this operation returns their names.
+      	      Note that the response message is handled by getObjectNamesResponse_T.</response>
+			<xmlExamples>
+				<xmlExample>
+			none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllFixedCrossConnections</operation>
+			<bodyParameters><![CDATA[<b>meName</b>: Name of the Managed Element for which to retrieve CCs.<br/>
+	<b>connectionRateList</b>: List of rates for which to retrieve CCs. This must not be an empty list. In this case an INVALID_INPUT exception is thrown. 
+	 ]]></bodyParameters>
+			<response>This operation has exactly the Same behaviour as getAllCrossConnections(), but instead returns only fixed Cross Connection object structures. See Subnetwork Connection Types for an explanation of fixed SNCs.
+A cross connection is identified as fixed using additional information. See Additional Information Usage for detail on additional information for SNCs, cross connections and TPs.
+      	</response>
+			<xmlExamples>
+				<xmlExample>
+			none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+	</testCases>
+	<exceptions><![CDATA[
+	EXCPT_NOT_IMPLEMENTED <br>
+	EXCPT_INTERNAL_ERROR   <br>
+	EXCPT_INVALID_INPUT        <br>
+	EXCPT_ENTITY_NOT_FOUND <br>
+	EXCPT_COMM_FAILURE <br>
+Note: Those exceptions are common to all operations.]]></exceptions>
+	<postconditions>
+		<success>
+	The requesting OS has all the requested inventory information from the target OS.
+	</success>
+		<failure>
+	The requesting OS does not have the entire requested inventory information from the target OS.
+	</failure>
+	</postconditions>
+	<comments><![CDATA[
+	CommunicationPattern	=  MultipleBatchResponse<br/>	
+	CommunicationStyle		=  RPC or MSG<br/>
+	]]></comments>
+</tests>

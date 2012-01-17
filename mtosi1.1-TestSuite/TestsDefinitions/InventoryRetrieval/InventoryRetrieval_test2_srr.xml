@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../TestStyleSheet_CoarseGrain.xsl"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../TestTemplate_CoarseGrain.xsd"
+xmlns:xlink="http://www.w3.org/1999/xlink">
+	<testId>
+		<number>2</number>
+		<category>Configuration Service</category>
+		<interface>InventoryRetrieval</interface>
+		<name>Simple Response - RPC Style</name>
+	</testId>
+	
+	<requirements>Requirement II. 9
+	  </requirements>
+	<operations>
+		getInventory
+	</operations>
+	<preconditions>
+	Scenario 1
+	</preconditions>
+	<testCase>
+		<request>
+			<headerParameters><![CDATA[
+			CommunicationPattern = SimpleResponse<br/>
+			CommunicationStyle = MSG<br/>			 			
+			]]></headerParameters>
+			<bodyParameters><![CDATA[
+	Filter.baseInstanceList = { (MD=md1) } <br/>
+	Filter.includedObjectTypes = { (ME, FULL) , (EH, FULL), (PTP, FULL) } <br/>
+			]]></bodyParameters>
+		</request>
+		<response>
+		Retrieves the attributes and relationship pointers of all Managed Element, Equipment Holder and Physical Termination Point within Management Domain md1.
+	The requested information is sent using the RPC communication style in one batch.
+		</response>
+<xmlExamples>
+		<xmlExample>
+			<input  xlink:href="examples/InventoryRetrieval_getInventory2_srr.xml" xlink:type="simple">  request </input>
+			<output xlink:href="examples/InventoryRetrieval_getInventoryResponse2_srr.xml" xlink:type="simple"> response</output>
+		</xmlExample>
+</xmlExamples>
+	</testCase>
+
+	<postconditions>
+		<success>
+	The requesting OS has all the requested inventory information from the target OS.
+	</success>
+		<failure>
+	The requesting OS does not have the entire requested inventory information from the target OS.
+	</failure>
+	</postconditions>
+	<comments>
+	None
+	</comments>
+</tests>

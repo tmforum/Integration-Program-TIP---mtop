@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../TestStyleSheet_Notification.xsl"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../TestTemplate_Notification.xsd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<testId>
+		<number>2</number>
+		<category>Notification Service</category>
+		<interface>NotificationBroker/NotificationConsumer</interface>
+		<name>Notification - two subscribed OS</name>
+	</testId>
+	<requirements>
+	
+	  </requirements>
+	<operations>
+		notify
+	</operations>
+	<preconditions>
+	Scenario 4
+	</preconditions>
+	<testCase>
+		<bodyParameters>
+			<![CDATA[
+			topic = Fault<br>
+			Message type of Event = Alarm<br> 
+			Alarm.objectName  = { (MD=md1; ME=me1; PTP=ptp1) }<br>
+			Alarm.objectType = OT_PHYSICAL_TERMINATION_POINT<br>
+			]]>
+		</bodyParameters>
+		<description>
+	The EMS OS sends a notification to the BrokerOS. Two OS have subscribed to receive this notification.
+			</description>
+		<xmlExamples>
+				<xmlExample>
+				<notification xlink:href="examples/Notification_notify_alarm.xml" xlink:type="simple"> notification </notification>
+			</xmlExample>
+		</xmlExamples>
+	</testCase>
+	<postconditions>
+		<success>
+	The two OS that have subscribed to receive this notification receive it.
+		</success>
+		<failure>
+	One or both of the two OS that have subscribed to receive this notification do not receive it.
+	</failure>
+	</postconditions>
+	<comments><![CDATA[
+	CommunicationPattern	=  SimpleResponse<br/>	
+	CommunicationStyle		=  MSG<br/>
+	Only the tested parameters are represented.<br/>
+	]]></comments>
+</tests>

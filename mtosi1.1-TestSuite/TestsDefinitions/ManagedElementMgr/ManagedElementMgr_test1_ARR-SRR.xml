@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../TestStyleSheet_FineGrain.xsl"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../TestTemplate_FineGrain.xsd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<testId>
+		<category> Configuration Service</category>
+		<interface> ManagedElementMgr</interface>
+		<name> Asynchronous Request/Reply - Synchronous Request/Reply MEPs</name>
+		<number> 1</number>
+	</testId>
+	<requirements>
+		513: II.285  II.009 II.006 </requirements>
+	<operations>
+getContainingTPs getContainingTPNames getContainingSubNetworkNames getTp getManagedElement
+ getPotentialFixedCCs 
+	</operations>
+	<preconditions><![CDATA[
+	Scenario 2
+	]]></preconditions>
+	<testCases>
+		<testCase>
+			<operation>getContainingTPs</operation>
+			<bodyParameters><![CDATA[<b>tpName</b>: Name of the CTP for which containing CTPs and PTP/FTP are to be reported. The termination point name must be explicit (a generic endpoint specification may not be used in this case). See Object Naming for further detail on FTP naming.]]></bodyParameters>
+			<response>This service returns a list of the containing TPs given a CTP. This will return an PTP or FTP where there is only one level of containment. In a case of deeper containment this will return a list of CTPs and a PTP or FTP.
+		</response>
+			<xmlExamples>
+				<xmlExample>
+					<input xlink:href="examples/ManagedElementMgr_getContainingTPs.xml" xlink:type="simple" xlink:show="new">  request </input>
+					<output xlink:href="examples/ManagedElementMgr_getContainingTPsResponse.xml" xlink:type="simple" xlink:show="new"> response</output>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getContainingTPNames</operation>
+			<bodyParameters>Same as getContainingTPs.</bodyParameters>
+			<response>Same as getContainingTPs but returns the name instead of the entire object structures.</response>
+			<xmlExamples>
+				<xmlExample>
+					<input xlink:href="examples/ManagedElementMgr_getContainingTPNames.xml" xlink:type="simple">  request </input>
+					<output xlink:href="examples/ManagedElementMgr_getContainingTPNamesResponse.xml" xlink:type="simple"> response</output>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getContainingSubNetworkNames</operation>
+			<bodyParameters><![CDATA[<b>meName</b>: The name of the managed element for which to retrieve the containing subnetwork names.]]></bodyParameters>
+			<response>This service returns the list of subnetwork names that the Managed Element supplied as an input parameter belongs to.</response>
+			<xmlExamples>
+				<xmlExample>
+					<input xlink:href="examples/ManagedElementMgr_getContainingSubNetworkNames.xml" xlink:type="simple"> request </input>
+					<output xlink:href="examples/ManagedElementMgr_getContainingSubNetworkNamesResponse.xml" xlink:type="simple"> response</output>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getTp</operation>
+			<bodyParameters><![CDATA[ <b>tpName</b>: The retrieved TP name.]]></bodyParameters>
+			<response>This service returns the termination point structure for the given TP name (CTP, FTP or PTP)</response>
+			<xmlExamples>
+				<xmlExample>
+					<input xlink:href="examples/ManagedElementMgr_getTP.xml" xlink:type="simple">  request </input>
+					<output xlink:href="examples/ManagedElementMgr_getTPResponse.xml" xlink:type="simple"> response</output>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getManagedElement</operation>
+			<bodyParameters><![CDATA[ <b>meName</b>: Name of the ME to retrieve]]></bodyParameters>
+			<response>This service returns the Managed Element for the given managed element name
+			</response>
+			<xmlExamples>
+				<xmlExample>
+					<input xlink:href="examples/ManagedElementMgr_getManagedElement.xml" xlink:type="simple">  request </input>
+					<output xlink:href="examples/ManagedElementMgr_getManagedElementResponse.xml" xlink:type="simple"> response
+				</output>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getPotentialFixedCCs</operation>
+			<bodyParameters><![CDATA[ <b>tpName</b>: Any TP name of the ME. The operation will return the multiplexing or inverse multiplexing scheme in which this TP is involved. The input TP may be either the containing TP or one of the end TPs of the portentialCCList.]]></bodyParameters>
+			<response><![CDATA[ This operation is used to retrieve fixed connection schemes related to normal and inverse multiplexing. See Subnetwork Connection Types for an explanation of fixed SNCs.<br>
+Specific Exception: EXCPT_UNABLE_TO_COMPLY - Raised when TP is neither a higher order TP that supports fixed multiplexing nor a lower order TP that supports fixed inverse multiplexing.]]></response>
+			<xmlExamples>
+				<xmlExample>
+			none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+	</testCases>
+	<exceptions><![CDATA[
+	EXCPT_NOT_IMPLEMENTED <br>
+	EXCPT_INTERNAL_ERROR   <br>
+	EXCPT_INVALID_INPUT        <br>
+	EXCPT_ENTITY_NOT_FOUND <br>
+	EXCPT_COMM_FAILURE <br>
+Note: Those exceptions are common to all operations.]]></exceptions>
+	<postconditions>
+		<success>
+	The requesting OS has all the requested inventory information from the target OS.
+	</success>
+		<failure>
+	The requesting OS does not have the entire requested inventory information from the target OS.
+	</failure>
+	</postconditions>
+	<comments><![CDATA[
+	CommunicationPattern	=  SimpleResponse<br/>	
+	CommunicationStyle		=  RPC or MSG<br/>
+	]]></comments>
+</tests>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../TestStyleSheet_CoarseGrain.xsl"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../TestTemplate_CoarseGrain.xsd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<testId>
+		<number>3</number>
+		<category>Configuration Service</category>
+		<interface>InventoryRetrieval</interface>
+		<name>Multiple Batch Response - MSG Style</name>
+	</testId>
+	<requirements>Requirement II. 9
+	  </requirements>
+	<operations>
+		getInventory
+	</operations>
+	<preconditions>
+	Scenario 1
+	</preconditions>
+	<testCase>
+		<request>
+			<headerParameters><![CDATA[
+	CommunicationPattern = MultipleResponse<br/>
+		CommunicationStyle = MSG<br/>
+		RequestedBatchSize = 2		
+			]]></headerParameters>
+			<bodyParameters><![CDATA[
+	Filter.baseInstanceList = { (MD=md1) } <br/>
+	Filter.includedObjectTypes = { (ME, FULL) , (EH, FULL), (PTP, FULL) } <br/>
+			]]></bodyParameters>
+		</request>
+		<response>
+Retrieves the attributes and relationship pointers of all Managed Element, Equipment Holder and Physical Termination Point within Management Domain md1. 
+		The requested information is sent using the Messaging communication style in two batches.
+				</response>
+		<xmlExamples>
+			<xmlExample>
+				<input xlink:href="examples/InventoryRetrieval_getInventory3_abr.xml" xlink:type="simple">  request </input>
+				
+			</xmlExample>
+			<xmlExample>
+			<output xlink:href="examples/InventoryRetrieval_getInventoryResponse3_abr_1.xml" xlink:type="simple"> response1</output>
+				
+			</xmlExample>
+<xmlExample>
+<output xlink:href="examples/InventoryRetrieval_getInventoryResponse3_abr_2.xml" xlink:type="simple"> response2</output>
+</xmlExample>			
+			
+		</xmlExamples>
+	</testCase>
+	<postconditions>
+		<success>
+	The requesting OS has all the requested inventory information from the target OS.
+	</success>
+		<failure>
+	The requesting OS does not have the entire requested inventory information from the target OS.
+	</failure>
+	</postconditions>
+	<comments>
+	None
+	</comments>
+</tests>

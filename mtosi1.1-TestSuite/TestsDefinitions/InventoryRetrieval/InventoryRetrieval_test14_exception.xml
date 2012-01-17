@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../TestStyleSheet_CoarseGrain.xsl"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../TestTemplate_CoarseGrain.xsd"
+xmlns:xlink="http://www.w3.org/1999/xlink">
+<testId>
+		<number>	14</number>
+		<category> Configuration Service</category>
+		<interface> InventoryRetrieval</interface>
+		<name> Exception - Multiple Base Instances not disjoint</name>
+	</testId>
+	<requirements>
+	<![CDATA[<b>Requirement II. 10</b>
+	 Each of the bulk inventory mechanisms listed in Requirement II 9 shall support the ability to provide a subset of the inventory known to the target OS. The subset is defined by a filter provided by the requesting OS. The following filter shall be supported:<br/>f. The subtrees should be disjoint.]]>
+	</requirements>
+	<operations>
+		getInventory
+	</operations>
+	<preconditions>
+	Scenario 2
+	</preconditions>
+	<testCase>
+		<request>
+			<headerParameters><![CDATA[
+	CommunicationPattern = MultipleResponse<br/>
+		CommunicationStyle = MSG<br/>
+		RequestedBatchSize = 0		
+			]]></headerParameters>
+			<bodyParameters><![CDATA[
+			Filter.baseInstanceList	 =	{ (MD=md1, ME=me1, EH=eh1), (MD=md1, ME=me1)}<br/>		
+			Filter.includedObjectTypes	 =	{ (ME, ATTRS) }<br/>
+			DiffDateAndTime		 =	NULL<br/>
+			]]></bodyParameters>
+		</request>
+		<response><![CDATA[
+		EXCPT_INVALID_INPUT exception
+			]]></response>
+			<xmlExamples>
+		<xmlExample>
+			<input  xlink:href="examples/InventoryRetrieval_getInventory14_exception.xml" xlink:type="simple">  request </input>
+			<output xlink:href="examples/InventoryRetrieval_getInventoryResponse14_exception.xml" xlink:type="simple"> response</output>
+		</xmlExample>
+		</xmlExamples>
+	</testCase>
+	<postconditions>
+	<success>
+	The requesting OS has all the requested inventory information from the target OS.
+	</success>
+	<failure>
+	The requesting OS does not have the entire requested inventory information from the target OS.
+	</failure>	
+	</postconditions>
+	<comments>
+	None
+	</comments>
+</tests>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../TestStyleSheet_Notification.xsl"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../TestTemplate_Notification.xsd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<testId>
+		<number>1</number>
+		<category>Notification Service</category>
+		<interface>NotificationBroker/NotificationConsumer</interface>
+		<name>Notification - one subscribed OS</name>
+	</testId>
+	<requirements>
+	II. 24
+	  </requirements>
+	<operations>
+		notify
+	</operations>
+	<preconditions>
+	Scenario 4
+	</preconditions>
+	<testCase>
+		<bodyParameters>
+			<![CDATA[
+			topic = Inventory<br>
+			Message type of Event = ObjectDeletion <br>
+			ObjectDeletion.objectName  = { (MD=md1; ME=me1; EH=eh1; EQ=eq1) }<br>
+			ObjectDeletion.objectType = OT_EQUIPMENT<br>
+			]]>
+		</bodyParameters>
+		<description>
+	The EMS OS sends a notification to the BrokerOS. Only one OS has subscribed to receive this notification.
+			</description>
+		<xmlExamples>
+			<xmlExample>
+				<notification xlink:href="examples/Notification_notify_objectDeletion.xml" xlink:type="simple"> notification </notification>
+			</xmlExample>
+		</xmlExamples>
+	</testCase>
+	<postconditions>
+		<success>
+	The OS that has subscribed to receive this notification receives it.
+		</success>
+		<failure>
+	The OS that has subscribed to receive this notification does not receive it.
+	</failure>
+	</postconditions>
+	<comments><![CDATA[
+	CommunicationPattern	=  SimpleResponse<br/>	
+	CommunicationStyle		=  MSG<br/>
+	Only the tested parameters are represented.<br/>
+	]]></comments>
+</tests>

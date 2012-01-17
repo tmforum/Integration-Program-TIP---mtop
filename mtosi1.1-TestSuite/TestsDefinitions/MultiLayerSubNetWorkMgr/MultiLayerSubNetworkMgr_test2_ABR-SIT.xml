@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../TestStyleSheet_FineGrain.xsl"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../TestTemplate_FineGrain.xsd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<testId>
+		<category>Configuration Service</category>
+		<interface>MultiLayerSubNetworMgr</interface>
+		<name/>
+		<number>2</number>
+	</testId>
+	<requirements/>
+	<operations>getAllManagedElements getAllManagedElementNames getAllTopologicalLinks getAllTopologicalLinkNames
+getAllTPPools getAllTPPoolNames
+getAllSubnetworkConnections getAllSubnetworkConnectionNames
+getAllEdgePoints getAllEdgePointNames
+getAllSubnetworkConnectionsWithTP
+getAllSubnetworkConnectionNamesWithTP
+getTPGroupingRelationships
+
+</operations>
+	<preconditions>
+	Scenario 2
+	</preconditions>
+	<testCases>
+		<testCase>
+			<operation>getAllManagedElementsWrtMLSN</operation>
+			<bodyParameters><![CDATA[<b>subNetNames</b>:    Name of the subnetwork]]></bodyParameters>
+			<response> This allows an NMS to request a list of the ManagedElements that are associated with the specified Subnetwork.
+      		</response>
+			<xmlExamples>
+				<xmlExample>
+					none
+			</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllManagedElementNamesWrtMLSN</operation>
+			<bodyParameters>Same as getAllManagedElementsWrtMLSN.</bodyParameters>
+			<response>This operation has exactly the same behaviour as getAllManagedElements(), but instead of returning the entire object structures, this operation returns their names.
+      Note that the response message is handled by getObjectNamesResponse_T.</response>
+			<xmlExamples>
+				<xmlExample>
+			none
+			</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllTopologicalLinks </operation>
+			<bodyParameters><![CDATA[<b>subNetName</b>: Name of the subnetwork ]]></bodyParameters>
+			<response>This service returns a list of TopologicalLinks which exist inside the Subnetwork whose name is passed as a parameter. For singletons, no topologicalLinks will be returned. The OS should report topological links at the "lowest" layer (i.e. closest to physical) about which it has accurate knowledge
+</response>
+			<xmlExamples>
+				<xmlExample>
+					none
+							</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllTopologicalLinkNames</operation>
+			<bodyParameters>Same as getAllTopologicalLinks.</bodyParameters>
+			<response>This operation has exactly the same behaviour as getAllTopologicalLinks, but instead of returning the entire object structures, this operation returns their names.
+      Note that the response message is handled by getObjectNamesResponse_T.
+      </response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				
+				
+			</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllTPPools</operation>
+			<bodyParameters><![CDATA[<b>subnetworkName </b>: subnetworkName ]]></bodyParameters>
+			<response>This service returns all TP Pools within a Subnetwork contained in an OS. The TP Pool is a TP used to logically group TPs. The TP Pool does not affect TP containment. TP containment remains from the Network Element view. Given a TP Pool, the NMS could then determine all the TPs that are associated with the TP Pool, for the purpose of logical partitioning or grouping. See getTPGroupingRelationships().
+      		</response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				
+				
+			</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllTPPoolNames</operation>
+			<bodyParameters>Same as getAllTPPools.</bodyParameters>
+			<response>	This operation has exactly the same behaviour as getAllTPPools but instead of returning the entire object structures, this operation returns their names.
+      Note that the response message is handled by getObjectNamesResponse_T.
+      	</response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				 
+				 
+			</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllSubnetworkConnections</operation>
+			<bodyParameters><![CDATA[<b>subNetName</b>: Name of the subnetwork<br/>
+														<b>connectionRateList</b>: List of rates of the SNCs to be reported. If an empty list is specified, then all SNCs of all rates are to be reported.
+	]]></bodyParameters>
+			<response>	This allows an NMS to request a list of the SNCs for the specified Subnetwork at the specified connectionRates. This operation also returns bundled SNCs, if any (see Bundled SNC overview for further details).
+      		</response>
+			<xmlExamples>
+				<xmlExample>
+					<input xlink:href="examples/MultiLayerSubnetworkMgr_getAllSubnetworkConnections.xml" xlink:type="simple" xlink:show="new">  request </input>
+					<output xlink:href="examples/MultiLayerSubnetworkMgr_getAllSubnetworkConnectionsResponse.xml" xlink:type="simple" xlink:show="new"> response </output>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllSubnetworkConnectionNames</operation>
+			<bodyParameters>Same as getAllSubnetworkConnections.</bodyParameters>
+			<response>	This operation has exactly the same behaviour as getAllSubnetworkConnections but instead of returning the entire object structures, this operation returns their names.
+      Note that the response message is handled by getObjectNamesResponse_T.
+      	</response>
+			<xmlExamples>
+				<xmlExample>
+					<input xlink:href="examples/MultiLayerSubnetworkMgr_getAllSubnetworkConnectionNames.xml" xlink:type="simple">  request </input>
+					<output xlink:href="examples/MultiLayerSubnetworkMgr_getAllSubnetworkConnectionNamesResponse.xml" xlink:type="simple"> response </output>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllEdgePoints</operation>
+			<bodyParameters><![CDATA[<b>subNetName</b>: Name of the subnetwork<br/>
+														<b>tpLayerRateList</b>: List of TP layer rates for which the edge points are to be fetched. An edge point must contain at least one of the layer rates specified to be reported. If the list is empty then edge points of all rates are returned.
+<br/>
+														<b>connectionLayerRateList</b>: List of connection layer rates for which the edge points are to be fetched. An edge point must support connections for at least one of the layer rates specified to be reported. If the list is empty then edge points for all connection rates are returned. 
+<br/>  ]]></bodyParameters>
+			<response>	This allows an NMS to request a list of the edge termination points (PTPs/FTPs) for the specified subnetwork, at one or more of the NMS- specified layers, and that are capable of containing CTPs that can be connected at one or more of the NMS-specified connection layer rates. This operation considers the capability/flexibility of the TPs, not their current states.
+      	</response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				
+				
+			</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllEdgePointNames</operation>
+			<bodyParameters>Same as getAllEdgePoints.</bodyParameters>
+			<response>  This operation has exactly the same behaviour as getAllEdgePoints(), but instead of returning the entire object structures, this operation returns their names.
+      Note that the response message is handled by getObjectNamesResponse_T.
+</response>
+			<xmlExamples>
+				<xmlExample>
+				none
+				
+				
+			</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllSubnetworkConnectionsWithTP</operation>
+			<bodyParameters><![CDATA[<b>tpName</b>: Termination point for which to report SNCs. The termination point name must be explicit (a generic endpoint specification may not be used in this case). See Object Naming for further detail on FTP naming
+<br/>
+<b>connectionRateList</b>: List of rates of the SNCs to be reported. If an empty list is specified, then all SNCs of all rates are to be reported.
+  <br/>
+]]></bodyParameters>
+			<response>This allows an NMS to request a list of the SNCs using the specified termination point at the specified connection rates. A SNC is using the specified TP if any of its routes, intended and/or backup, in any state, use this TP. A TP may be a PTP in which case a full list of SNCs using any of its contained CTPs is required. A TP may be:
+
+a CTP, in which case SNCs using that CTP or any of its contained CTPs are required. This includes SNCs in which any of the referenced CTPs participate that match the specified connection rate filter. 
+an FTP, in which case a full list of SNCs using the FTP or any of its contained CTPs is required. This includes SNCs in which the FTP or any of the referenced CTPs participate that match the specified connection rate filter. 
+
+All legs of a broadcast system can be retrieved using this operation where the source TP of the broadcast system is used as input to the operation.The output will be the list of individual SNCs that make up the broadcast system.
+
+        Refer to the TMF 854 XML Solution Set document for details on the Message Exchange Pattern controls (multiple batch response).
+</response>
+			<xmlExamples>
+				<xmlExample>
+				none
+				
+				
+			</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllSubnetworkConnectionNamesWithTP</operation>
+			<bodyParameters>Same as getAllSubnetworkNamesWithTP.</bodyParameters>
+			<response>		This operation has exactly the same behaviour as getAllSubnetworkConnectionsWithTP(), but instead of returning the entire object structures, this operation returns their names.
+      Note that the response message is handled by getObjectNamesResponse_T.
+      	</response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				
+				
+			</xmlExample>
+			</xmlExamples>
+		</testCase>
+	</testCases>
+	<exceptions><![CDATA[
+	EXCPT_NOT_IMPLEMENTED <br>
+	EXCPT_INTERNAL_ERROR   <br>
+	EXCPT_INVALID_INPUT        <br>
+	EXCPT_ENTITY_NOT_FOUND <br>
+	EXCPT_COMM_FAILURE <br>
+Note: Those exceptions are common to all operations.The conditions when they are raised are specific to each operation (Refer to the TMF 854 XML Solution Set document for details).]]></exceptions>
+	<postconditions>
+		<success>
+	The requesting OS has all the requested inventory information from the target OS.
+	</success>
+		<failure>
+	The requesting OS does not have the entire requested inventory information from the target OS.
+	</failure>
+	</postconditions>
+	<comments><![CDATA[
+	CommunicationPattern	=  MultipleBatchResponse<br/>	
+	CommunicationStyle		=  RPC or MSG<br/>]]></comments>
+</tests>

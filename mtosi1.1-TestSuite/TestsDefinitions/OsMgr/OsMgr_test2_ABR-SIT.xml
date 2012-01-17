@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../TestStyleSheet_FineGrain.xsl"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../TestTemplate_FineGrain.xsd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<testId>
+		<category>Configuration Service</category>
+		<interface>OsMgr</interface>
+		<name>Asynchronous Batch Response - Synchronous Iterator MEPs</name>
+		<number>2</number>
+	</testId>
+	<requirements>
+	II.011 II.012 II.14 II.16 II.21 II.008
+	</requirements>
+	<operations>
+getAllTopLevelSubnetworks getAllTopLevelSubnetworkNames
+getAllTopLevelTopologicalLinks getAllTopLevelTopologicalLinkNames
+getAllOSs getAllOSNames
+getAllMDs getAllMDNames
+getAllTLsWrtOS getAllTLNamesWrtOS 
+getAllTMDsWrtOS getAllTMDNamesWrtOS 
+getAllMEsWrtOS getAllMENamesWrtOS 
+getAllSNsWrtOS getAllSNNamesWrtOS 
+getAllMEsPassingFilter getAllMENamesPassingFilter
+</operations>
+	<preconditions>
+	Scenario 2
+	</preconditions>
+	<testCases>
+		<testCase>
+			<operation>getAllTopLevelSubnetworks</operation>
+			<bodyParameters><![CDATA[<b>mdName</b>:   The name of the MD for which associated top level MLSNs are being requested.
+ ]]></bodyParameters>
+			<response> This operation returns the subnetworks contained by the MD to which the operation is directed.
+     </response>
+			<xmlExamples>
+				<xmlExample>
+					<input xlink:href="examples/OperationsSystemMgr_getAllTopLevelSubnetworks.xml" xlink:type="simple">  request </input>
+					<output xlink:href="examples/OperationsSystemMgr_getAllTopLevelSubnetworksResponse.xml" xlink:type="simple"> response</output>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllTopLevelSubnetworkNames</operation>
+			<bodyParameters>Same as getAllTopLevelSubnetworks.</bodyParameters>
+			<response>  This operation returns the subnetwork names for the subnetworks contained by the MD to which the operation is directed.
+          Note that the response message is handled by getObjectNamesResponse_T.
+      </response>
+			<xmlExamples>
+				<xmlExample>
+					<input xlink:href="examples/OperationsSystemMgr_getAllTopLevelSubnetworkNames.xml" xlink:type="simple">  request </input>
+					<output xlink:href="examples/OperationsSystemMgr_getAllTopLevelSubnetworkNamesResponse.xml" xlink:type="simple"> response</output>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllTopLevelTopologicalLinks</operation>
+			<bodyParameters><![CDATA[<b>mdName</b>: The name of the MD for which associated top level TLs are being requested. ]]></bodyParameters>
+			<response>   This operation returns the TLs between the subnetworks contained by the MD to which the operation is directed.
+   </response>
+			<xmlExamples>
+				<xmlExample>
+					<input xlink:href="examples/OperationsSystemMgr_getAllTopLevelTopologicalLinks.xml" xlink:type="simple">  request </input>
+					<output xlink:href="examples/OperationsSystemMgr_getAllTopLevelTopologicalLinksResponse.xml" xlink:type="simple"> response</output>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllTopLevelTopologicalLinkNames</operation>
+			<bodyParameters>Same as getAllTopLevelTopologicalLinks.</bodyParameters>
+			<response>This operation returns the names of the TLs between the subnetworks contained by the MD to which the operation is directed.
+         Note that the response message is handled by getObjectNamesResponse_T.
+      </response>
+			<xmlExamples>
+				<xmlExample>
+					<input xlink:href="examples/OperationsSystemMgr_getAllTopLevelTopologicalLinkNames.xml" xlink:type="simple">  request </input>
+					<output xlink:href="examples/OperationsSystemMgr_getAllTopLevelTopologicalLinkNamesResponse.xml" xlink:type="simple"> response</output>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllOSs</operation>
+			<bodyParameters>none</bodyParameters>
+			<response>This operation returns the data structure for each OS known to the top-level OS to which the operation is directed. The data structure corresponding to the top-level OS is also returned. This operation can only be directed to a top-level OS and not to a subordinate OS.
+    </response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllOSNames</operation>
+			<bodyParameters>none</bodyParameters>
+			<response> This operation returns the name of each OS known to the top-level OS to which the operation is directed. The data structure corresponding to the top-level OS is also returned. This operation can only be directed to a top-level OS and not to a subordinate OS.
+         Note that the response message is handled by getObjectNamesResponse_T.
+      </response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllMDs</operation>
+			<bodyParameters>none</bodyParameters>
+			<response>  This operation returns the data structure for each Management Domain (MD) associated with a top-level OS.
+      This operation can only be directed to a top-level OS and not to a subordinate OS.
+   </response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllMDNames</operation>
+			<bodyParameters>none</bodyParameters>
+			<response>This operation returns the name of each Management Domain (MD) associated with a top-level OS.
+      This operation can only be directed to a top-level OS and not to a subordinate OS.
+          Note that the response message is handled by getObjectNamesResponse_T.
+</response>
+			<xmlExamples>
+				<xmlExample>
+					<input xlink:href="examples/OperationsSystemMgr_getAllMDNames.xml" xlink:type="simple">  request </input>
+					<output xlink:href="examples/OperationsSystemMgr_getAllMDNamesResponse.xml" xlink:type="simple"> response</output>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllTLsWrtOS</operation>
+			<bodyParameters><![CDATA[<b>osName</b>:   The name of the subordinate OS whose associated TLs.<br/>
+														<b>mdName</b>:  The name of the Management Domain whose contained TLs are requested.
+				 ]]></bodyParameters>
+			<response> This operation returns the data structure for each Topological Link (TL) managed by a given subordinate OS AND contained by a specific Management Domain.
+      Note that Wrt in the name of the operation stands for "with respect to".
+    </response>
+			<xmlExamples>
+				<xmlExample>
+			none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllTLNamesWrtOS</operation>
+			<bodyParameters>Same as getAllTLsWrtOS.</bodyParameters>
+			<response> This operation returns the name of each Topological Link (TL) managed by a given subordinate OS AND contained by a specific Management Domain.
+      Note that Wrt in the name of the operation stands for "with respect to".
+         Note that the response message is handled by getObjectNamesResponse_T.
+      </response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllTMDsWrtOS</operation>
+			<bodyParameters><![CDATA[<b>osName</b>: The name of the OS whose associated TLs are being requested.
+ ]]></bodyParameters>
+			<response> This operation returns the data structure for each Transmission Descriptor (TMD) associated with a given subordinate OS.
+      Note that Wrt in the name of the operation stands for "with respect to". 
+          </response>
+			<xmlExamples>
+				<xmlExample>
+			none
+			<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllTMDNamesWrtOS</operation>
+			<bodyParameters>Same as getAllTMDsWrtOS.</bodyParameters>
+			<response>  This operation returns the name of each Transmission Descriptor (TMD) associated with a given subordinate OS.
+      Note that Wrt in the name of the operation stands for "with respect to".
+         Note that the response message is handled by getObjectNamesResponse_T.
+     </response>
+			<xmlExamples>
+				<xmlExample>
+				none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllMEsWrtOS</operation>
+			<bodyParameters><![CDATA[<b>osName</b>:    The name of the subordinate OS whose contained MEs are being requested.<br/>
+														<b>mdName</b>:   The name of the Management Domain whose contained MEs are being requested.
+	]]></bodyParameters>
+			<response> This operation returns the data structure for each ManagedElement (ME) managed by a given subordinate OS AND contained by a specific Management Domain.
+      Note that Wrt in the name of the operation stands for "with respect to".
+  </response>
+			<xmlExamples>
+				<xmlExample>
+			none
+			<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllMENamesWrtOS</operation>
+			<bodyParameters>Same as getAllMEsWrtOS.</bodyParameters>
+			<response>This operation returns the name of each Transmission Descriptor (TMD) associated with a given subordinate OS.
+      Note that Wrt in the name of the operation stands for "with respect to".
+         Note that the response message is handled by getObjectNamesResponse_T.
+    </response>
+			<xmlExamples>
+				<xmlExample>
+			none
+			<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllSNsWrtOS</operation>
+			<bodyParameters><![CDATA[<b>osName</b>:              The name of the subordinate OS whose associated MLSNs are being requested.
+ <br/>
+														<b>mdName</b>:               The name of the Management Domain whose associated MLSNs are being requested.
+
+  ]]></bodyParameters>
+			<response>This operation returns the data structure for each MultiLayerSubnetwork (MLSN) managed by a given subordinate OS AND contained by a specific Management Domain.
+      Note that Wrt in the name of the operation stands for "with respect to".
+          </response>
+			<xmlExamples>
+				<xmlExample>
+				none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllSNNamesWrtOS</operation>
+			<bodyParameters>Same as getAllSNsWrtOS.</bodyParameters>
+			<response> This operation returns the name of each MultiLayerSubnetwork (MLSN) managed by a given subordinate OS AND contained by a specific Management Domain.
+      Note that Wrt in the name of the operation stands for "with respect to".
+      Note that the response message is handled by getObjectNamesResponse_T.
+</response>
+			<xmlExamples>
+				<xmlExample>
+				none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+	</testCases>
+	<exceptions><![CDATA[
+	EXCPT_NOT_IMPLEMENTED <br>
+	EXCPT_INTERNAL_ERROR   <br>
+	EXCPT_INVALID_INPUT        <br>
+	EXCPT_ENTITY_NOT_FOUND <br>
+	EXCPT_COMM_FAILURE <br>
+Note: Those exceptions are common to all operations.The conditions when they are raised are specific to each operation (Refer to the TMF 854 XML Solution Set document for details).]]></exceptions>
+	<postconditions>
+		<success>
+	The requesting OS has all the requested inventory information from the target OS.
+	</success>
+		<failure>
+	The requesting OS does not have the entire requested inventory information from the target OS.
+	</failure>
+	</postconditions>
+	<comments><![CDATA[
+	CommunicationPattern	=  MultipleBatchResponse<br/>	
+	CommunicationStyle		=  RPC or MSG<br/>]]></comments>
+</tests>

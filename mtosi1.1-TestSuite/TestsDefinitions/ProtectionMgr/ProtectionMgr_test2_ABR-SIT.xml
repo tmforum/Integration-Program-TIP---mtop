@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../TestStyleSheet_FineGrain.xsl"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../TestTemplate_FineGrain.xsd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<testId>
+		<category>Configuration Service</category>
+		<interface>ProtectionMgr</interface>
+		<name>Asynchronous Batch Response - Synchronous Iterator MEPs
+</name>
+		<number>2</number>
+	</testId>
+	<requirements><![CDATA[&nbsp;]]></requirements>
+	<operations>getAllNUTTPNames getAllProtectedTPNames getAllPreemptibleTPNames  getAllProtectionGroups getAllEProtectionGroups </operations>
+	<preconditions>
+	Scenario 2
+	</preconditions>
+	<testCases>
+		<testCase>
+			<operation>getAllNUTTPNames</operation>
+			<bodyParameters><![CDATA[<b>ePGPName</b>:              name of the equipment protection group that the client is interested in.
+]]></bodyParameters>
+			<response>        This operation is used to get the current status of a Equipment Protection Group. This service is needed so that even if a filter is established, the NMS can query the status of a protection group.
+</response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllProtectedTPNames</operation>
+			<bodyParameters><![CDATA[<b>pgName</b>:             Name of the protection group
+ ]]></bodyParameters>
+			<response>   This operation gets the list of CTPs that can carry protected traffic. The result is independent of the current switch status.
+           Note that the response message is handled by getObjectNamesResponse_T.
+</response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllPreemptibleTPNames</operation>
+			<bodyParameters><![CDATA[<b>groupName</b>:             Name of the protection group
+ ]]></bodyParameters>
+			<response>        This operation gets the list of names of CTPs that can carry preemptible extra traffic. The result is independent of the current switch status
+       Note that the response message is handled by getObjectNamesResponse_T.
+        </response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllProtectionGroups</operation>
+			<bodyParameters><![CDATA[<b>meName</b>:             the name of the managed element for which the request is made
+ ]]></bodyParameters>
+			<response> This operation is used by the client to discover all the  protection groups currently in operation for the managed element.
+             </response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllEProtectionGroups</operation>
+			<bodyParameters><![CDATA[<b>meName</b>:             the name of the managed element for which the request is made
+  ]]></bodyParameters>
+			<response>This operation is used by the client to discover all the equipment protection groups currently in operation for the managed element.
+       </response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+	</testCases>
+	<exceptions><![CDATA[
+	EXCPT_NOT_IMPLEMENTED <br>
+	EXCPT_INTERNAL_ERROR   <br>
+	EXCPT_INVALID_INPUT        <br>
+	EXCPT_ENTITY_NOT_FOUND <br>
+	EXCPT_COMM_FAILURE <br>
+Note: Those exceptions are common to all operations.The conditions when they are raised are specific to each operation.]]></exceptions>
+	<postconditions>
+		<success>
+	The requesting OS has all the requested inventory information from the target OS.
+	</success>
+		<failure>
+	The requesting OS does not have the entire requested inventory information from the target OS.
+	</failure>
+	</postconditions>
+	<comments><![CDATA[
+	CommunicationPattern	=  MultipleBatchResponse<br/>	
+	CommunicationStyle		=  RPC or MSG<br/> ]]></comments>
+</tests>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../TestStyleSheet_FineGrain.xsl"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../TestTemplate_FineGrain.xsd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<testId>
+		<category>Configuration Service</category>
+		<interface>EquipmentInventoryMgr</interface>
+		<name>Asynchronous Batch Response - Synchronous Iterator MEPs</name>
+		<number>2</number>
+	</testId>
+	<requirements><![CDATA[&nbsp;]]></requirements>
+	<operations>getAllSupportedPTPs getAllSupportedPTPNames getAllEquipment getAllEquipmentNames</operations>
+	<preconditions>Scenario 2</preconditions>
+	<testCases>
+		<testCase>
+			<operation>getAllSupportedPTPs</operation>
+			<bodyParameters><![CDATA[<b>equipmentNames</b>:  the name of the equipment for which to retrieve supported PTPs/FTPs  ]]></bodyParameters>
+			<response>This service allows an NMS to request the PTPs/FTPs that are directly supported by a given equipment. The PTPs that are returned are those that share their physical layer with the primary equipment (i.e. that represent a port on the equipment or are connected by a fibre, wire, etc.). The FTPs that are returned are those which are implemented by the physical circuitry supported by the equipment and will include FTPs that are named from the specified equipment (the FTPs will depend upon the presence of that equipment for their most basic operation). 
+</response>
+<xmlExamples>			
+			<xmlExample>
+							<input xlink:href="examples/EquipmentInventoryMgr_getAllSupportedPTPs.xml" xlink:type="simple">  request </input>
+			<output xlink:href="examples/EquipmentInventoryMgr_getAllSupportedPTPsResponse.xml" xlink:type="simple">  response</output>
+			</xmlExample>
+</xmlExamples>		
+		</testCase>
+		<testCase>
+			<operation>getAllSupportedPTPNames</operation>
+			<bodyParameters>Same as getAllSupportedPTPs.</bodyParameters>
+			<response>This operation has exactly the same behaviour as getAllSupportedPTPs(), but returns the object names instead of returning the entire objects
+          Note that the response message is handled by getObjectNamesResponse_T.
+</response>
+<xmlExamples>
+			<xmlExample>
+					<input xlink:href="examples/EquipmentInventoryMgr_getAllSupportedPTPNames.xml" xlink:type="simple">  request </input>
+			<output xlink:href="examples/EquipmentInventoryMgr_getAllSupportedPTPNamesResponse.xml" xlink:type="simple">  response</output>
+			</xmlExample>
+</xmlExamples>		
+		</testCase>
+		<testCase>
+			<operation>getAllEquipment</operation>
+			<bodyParameters><![CDATA[<b>meOrHolderName</b>: The name of the ME or equipment holder for which to retrieve contained equipments and equipment holders.  ]]></bodyParameters>
+			<response>This allows an NMS to request all of the equipments and equipment holders that are contained in a managed element or equipment holder.
+                  </response>
+          <xmlExamples>
+			<xmlExample>
+				<input xlink:href="examples/EquipmentInventoryMgr_getAllEquipment.xml" xlink:type="simple">  request </input>
+				<output xlink:href="examples/EquipmentInventoryMgr_getAllEquipmentResponse.xml" xlink:type="simple"> response
+				</output>
+			</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>getAllEquipmentNames</operation>
+			<bodyParameters>Same as getAllEquipment.</bodyParameters>
+			<response>This operation has exactly the same behaviour as getAllEquipment(), but returns the object names instead of returning the entire objects.
+                  Note that the response message is handled by getObjectNamesResponse_T.</response>
+<xmlExamples>		
+			<xmlExample>
+				<input xlink:href="examples/EquipmentInventoryMgr_getAllEquipmentNames.xml" xlink:type="simple">  request </input>
+				<output xlink:href="examples/EquipmentInventoryMgr_getAllEquipmentNamesResponse.xml" xlink:type="simple"> response</output>
+			</xmlExample>
+</xmlExamples>		
+		</testCase>
+	</testCases>
+	<exceptions><![CDATA[
+	EXCPT_NOT_IMPLEMENTED <br>
+	EXCPT_INTERNAL_ERROR   <br>
+	EXCPT_INVALID_INPUT        <br>
+	EXCPT_ENTITY_NOT_FOUND <br>
+	EXCPT_COMM_FAILURE <br>
+Note: Those exceptions are common to all operations.]]>
+	</exceptions>
+	<postconditions>
+	<success>
+	The requesting OS has all the requested inventory information from the target OS.
+	</success>
+	<failure>
+	The requesting OS does not have the entire requested inventory information from the target OS.
+	</failure>	
+	</postconditions>
+	<comments>
+<![CDATA[
+	CommunicationPattern	=  MultipleBatchResponse<br/>	
+	CommunicationStyle		=  RPC or MSG<br/>]]>	
+	</comments>
+</tests>

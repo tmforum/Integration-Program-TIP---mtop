@@ -1,0 +1,92 @@
+<html xmlns:xlink="http://www.w3.org/1999/xlink">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>test cases</title>
+</head>
+<body>
+<table border="2px">
+<tr>
+<th>Test Identification</th><td><span style="width:150px">		
+		Test Number:
+		</span>1<br>
+<span style="width:150px">
+		Test Category:
+		</span>Fault Service<br>
+<span style="width:150px">
+		MTOSI Interface:
+		</span>AlarmRetrieval<br>
+<span style="width:150px">
+		Test Name:
+		</span>Scope all - Internal alarms<br>
+</td>
+</tr>
+<tr>
+<th>517 Requirement</th><td>&nbsp;</td>
+</tr>
+<tr>
+<th>Operations</th><td>
+		getActiveAlarms
+	</td>
+</tr>
+<tr>
+<th>Preconditions</th><td>
+<div style="font-family:Times New Roman">
+	Scenario 3
+	</div>
+</td>
+</tr>
+<tr>
+<th>Test case</th><td>
+			Request: 
+		<div style="margin-left: 30px; margin-top: 5px; margin-bottom: 15px">
+			Header Parameters:
+<div style="margin-left: 30px; margin-top: 5px; margin-bottom: 10px; font-size:10pt">
+CommunicationPattern = SimpleResponse<br/>
+			CommunicationStyle = MSG<br/>	
+			</div>
+			Body Parameters:
+<div style="margin-left: 30px; margin-top: 5px; margin-bottom: 10px; font-size:10pt">
+	Filter.source = INTERNAL<br/>		
+	Filter.perceivedSeverityList = { PS_MAJOR, PS_MINOR, PS_CLEARED, PS_CRITICAL }<br/>
+	Filter.probableCauseList = { BER_SD, EQPT, ENV }<br/>
+    Filter.acknowledgeIndication = AI_EVENT_ACKNOWLEDGED<br/>
+			</div>
+</div>
+		Response: 
+		<div style="margin-left: 30px; margin-top: 5px; margin-bottom: 15px">
+		Retrieves all internal alarms satisfying the filter constraints of the requesting OS.
+				</div>
+		XML Examples:
+			<div style="margin-left: 30px; margin-top: 5px">
+<a href="examples/AlarmRetrieval_getActiveAlarms1.xml">  request </a>
+			
+			
+		
+						&nbsp; &nbsp;
+					<a href="examples/AlarmRetrieval_getActiveAlarmsResponse1.xml"> response</a>
+						&nbsp; &nbsp;
+		</div>
+<br>
+</td>
+</tr>
+<tr>
+<th>Post-conditions</th><td>
+		In case of success<br>
+<div style="text-indent:40px">
+	The requesting OS has all the requested inventory information from the target OS.
+	</div>
+	In case of failure<br>
+<div style="text-indent:40px">
+	The requesting OS does not have the entire requested inventory information from the target OS.
+	</div>
+</td>
+</tr>
+<tr>
+<th>Comments</th><td>
+	This operation can only be directed to a top-level OS and not to a subordinate OS.<br/>
+      getActiveAlarmsCountResponse: activeAlarmCount = 12.
+	</td>
+</tr>
+</table>
+</body>
+</html>

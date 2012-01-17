@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../TestStyleSheet_FineGrain.xsl"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../TestTemplate_FineGrain.xsd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<testId>
+		<category>Configuration Service</category>
+		<interface>TransmissionDescriptorMgr</interface>
+		<name>Asynchronous Batch Response - Synchronous Iterator MEPs</name>
+		<number>2</number>
+	</testId>
+	<requirements>
+	II. 21
+	</requirements>
+	<operations>
+getAllTransmissionDescriptorNames	
+	getAllTransmissionDescriptors
+getAssociatedTPs
+</operations>
+	<preconditions>
+	Scenario 2
+	</preconditions>
+	<testCases>
+		<testCase>
+			<operation>getAllTransmissionDescriptorNames	
+	</operation>
+			<bodyParameters>none</bodyParameters>
+			<response>Get the list of existing TransmissionDescriptor names.
+      This operation may only be directed to a top-level OS and not to a subordinate OS.
+          Note that the response message is handled by getObjectNamesResponse_T.
+</response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>
+	getAllTransmissionDescriptors
+</operation>
+			<bodyParameters>none</bodyParameters>
+			<response> Get the list of existing TransmissionDescriptors and their associated distinguishing information.
+      This operation may only be directed to a top-level OS and not to a subordinate OS.
+         </response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+		<testCase>
+			<operation>
+getAssociatedTPs</operation>
+			<bodyParameters><![CDATA[<b>tmdName</b>: the name of the Transmission Descriptor ]]></bodyParameters>
+			<response>   This operation allows an OS to request all of the TPs associated with the specified Transmission Descriptor.
+      If there are no TPs which are associated with the specified Transmission Descriptor, then an empty list is returned.
+ </response>
+			<xmlExamples>
+				<xmlExample>
+					none
+				<input/>
+					<output/>
+				</xmlExample>
+			</xmlExamples>
+		</testCase>
+	</testCases>
+	<exceptions><![CDATA[
+	EXCPT_NOT_IMPLEMENTED <br>
+	EXCPT_INTERNAL_ERROR   <br>
+	EXCPT_INVALID_INPUT        <br>
+	EXCPT_ENTITY_NOT_FOUND <br>
+	EXCPT_COMM_FAILURE <br>
+Note: Those exceptions are common to all operations.The conditions when they are raised are specific to each operation (Refer to the TMF 854 XML Solution Set document for details).]]></exceptions>
+	<postconditions>
+		<success>
+	The requesting OS has all the requested inventory information from the target OS.
+	</success>
+		<failure>
+	The requesting OS does not have the entire requested inventory information from the target OS.
+	</failure>
+	</postconditions>
+	<comments><![CDATA[
+	CommunicationPattern	=  MultipleBatchResponse<br/>	
+	CommunicationStyle		=  RPC or MSG<br/>]]></comments>
+</tests>

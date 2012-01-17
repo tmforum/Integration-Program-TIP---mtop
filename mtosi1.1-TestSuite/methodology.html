@@ -1,0 +1,360 @@
+<html>
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<title>Test Suite - Introduction</title>
+
+</head>
+
+<body>
+<h1><a name="methodology">Methodology</a></h1>
+
+<h2><a name="whatandhow">What and How</a></h1>
+<p>
+This test suite will be used to support the process of validating the conformance of a product implementing MTOSI Rel 1.1 Services partially or completely.
+</p>
+<p>
+The chosen approach is driven by the MTOSI Services specification. Each MTOSI Service is organized in Interfaces which in turn specify one or more Operations. To some exceptions, there is one test specified for each MTOSI Operation.
+</p>
+<p>
+MTOSI Rel 1.1 exposes the following services and interfaces:
+</p>
+
+<table border="1">
+<tr>
+<th>Services</th>
+<th>Interfaces</th>
+</tr>
+<tr>
+<td>ConfigurationService</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td width="70%">InventoryRetrieval </td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>ManagedElementMgr</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>EquipmentInventoryMgr</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>MultiLayerSubnetworkMgr</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>OSMgr</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>ProtectionMgr</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>TransmissionDescriptorMgr</td>
+</tr>
+<tr>
+<td>DiscoveryService</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>DiscoveryService</td>
+</tr>
+
+<tr>
+<td>FaultService</td>
+<td>&nbsp;</td>
+</tr>
+<td>&nbsp;</td>
+<td>AlarmRetrieval</td>
+</tr>
+
+<tr>
+<td>NotificationService</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>NotificationBroker</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>NotificationConsumer</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>NotificationProducer</td>
+</tr>
+
+</table>
+<p>
+The same structure is used to organize the test suite with the following exceptions:<br>
+- there is no test for the DiscoveryService and its unique getAllCapabilities Operation;<br>
+- there is no test for the "subscribe" and "unsubscribe" operations of the NotificationService</p>
+<p>
+The tests are elaborated based on the specification of the corresponding operations as described in the wsdl and xsd files from [2] and following the appropriate requirement(s) from [1]. <br>
+The requirements in [1] are organized in five different categories:
+<ul>
+<li>category I: Static and structural requirements</li>
+<li>category II: 	Normal sequences, dynamic requirements</li>
+<li>category III: 	Abnormal or exception conditions, dynamic requirements</li>
+<li>category IV: 	Expectations and non functional requirements</li>
+<li>category V: 	System administration requirements (empty)</li>
+</ul>
+where the first two categories are by far the most important ones.
+</p>
+
+<b>Requirements covered in the test suite:</b>
+<p>The test suite covers the functional behavior of the MTOSI operations according to category II requirements in [1]. 
+</p>
+
+<b>Requirements not covered in the test suite:</b>
+<p>Other requirements from the other categories or related to CCV Security and Dynamic Naming in category I.<br>
+Implementation related aspects such as performance, security or specific programming language adaptation (MTOSI specifies an abstract API and  does not mandate any requirements on those aspects).<br>
+</p>
+
+
+<h2><a name="testTemplates">Tests Templates</a></h2>
+<p>
+The MEPs supported by the MTOSI operations and notifications are documented in [3].
+They belong to two different communication styles (synchronous and asynchronous) and four communication patterns:
+<ul>
+<li>Simple Response</li>
+<li>Multiple Batch Response</li>
+<li>Bulk Response</li>
+<li>Notification</li>
+</ul>
+MTOSI notifications support the Notification pattern only.<br>
+MTOSI operations fall in two categories w.r.t MEPs (discarding the Bulk Response MEP):
+<ul> 
+<li>operations supporting the Multiple Batch Response pattern (ABR and SIT)</li>
+<li>operations supporting the Simple Response pattern (ARR and SRR)</li>
+</ul>
+In addition only two operations have a "coarse-grain" style (a filter mechanism is available for the corresponding request) as opposed to the fine-grain style of the getters operations. Those two operations are:
+<ul> 
+<li>getInventoryRetrieval (InventoryRetrieval interface)</li>
+<li>getActiveAlarms (AlarmRetrieval interface)</li>
+</ul>
+The above considerations have been used to specify the test templates. There are two different test templates:
+<ul>
+<li>one template for the coarse-grain style; 
+this template is instantiated several times to specify different tests for each coarse-grain operation (getInventoryRetrieval and getActiveAlarms)
+</li>
+<li>
+one template for the fine-grain-style; this template is instantiated only two times for each interface to represent either the Simple Response or the Multiple Batch Response patterns (the operations of the corresponding interfaces are grouped according to their supported pattern).
+</li>
+</ul>
+The following figure shows the template for coarse-grain operations:
+</p>
+<table border="1">
+<tr>
+<th> Test Identification </th>
+<td width="80%">Test Category:<br>
+MTOSI Interface:<br>
+Test Name:<br>
+Test Number:<br>
+</td>
+</tr>
+<tr>
+<th>517 Requirement </th>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<th>Operation</th>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<th>Pre-conditions</th>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<th>Test Case</th>
+<td>
+<pre>
+Request:
+        Header Parameters:
+                                                     
+        Body Parameters:
+
+Response:
+
+Xml Examples:
+        Request      Response
+</pre>
+</td>
+</tr>
+<tr>
+<th>Post-conditions</th>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<th>Comments</th>
+<td>&nbsp;</td>
+</tr>
+</table>
+
+<p>
+The following figure shows the template for fine-grain operations: <br>
+</p>
+
+<table border="1">
+<tr>
+<th> Test Identification </th>
+<td width="80%">Test Category:<br>
+MTOSI Interface:<br>
+Test Name:<br>
+Test Number:<br>
+</td>
+</tr>
+<tr>
+<th>517 Requirement </th>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<th>Operations</th>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<th>Pre-conditions</th>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<th>Test Case</th>
+<td>
+<pre>
+Operation:   
+               Request body parameters:
+                                            &nbsp;
+               Response:
+
+               XML Examples:
+               
+Operation:   
+               Request body parameters:
+
+               Response:
+
+               XML Examples:   
+
+....
+</pre>
+</td>
+</tr>
+<tr>
+<th>Exceptions</th>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<th>Post-conditions</th>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<th>Comments</th>
+<td>&nbsp;</td>
+</tr>
+</table>
+
+<p>
+The following figure shows the template for notify operation (Notification Service): 
+</p>
+<table border="1">
+<tr>
+<th> Test Identification </th>
+<td width="80%">Test Category:<br>
+MTOSI Interface:<br>
+Test Name:<br>
+Test Number:<br>
+</td>
+</tr>
+<tr>
+<th>517 Requirement </th>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<th>Operation</th>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<th>Pre-conditions</th>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<th>Test Case</th>
+<td>
+<pre>
+Notification Body Parameters:
+                                            &nbsp;
+
+Description:
+
+XML Example:
+</pre>
+</td>
+</tr>
+<tr>
+<th>Post-conditions</th>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<th>Comments</th>
+<td>&nbsp;</td>
+</tr>
+</table>
+</p>
+
+
+
+
+<h2><a name="testExamples">Tests Examples</a></h2>
+<p>Beyond the text specification the operations of the test suite are illustrated by concrete examples of requests and responses as XML files. These examples (requests/responses) are elaborated on the basis of the lab network which is presented in [5]. The figure below shows the network topology.
+</p>
+<p>
+<img src="network.JPG">
+</p>
+As shown in the figure, the network modeled is made of five managed elements (MEs) organized in two rings.<br>
+The figure below gives an idea of the number of various objects modeled in this example. You will notice that the ME 54016 has not been modeled (although its supporting SubNetwork object is modeled). Few CTPs are modeled as well (not shown in the picture).
+<p>
+<img src="examples.JPG">
+</p>
+Despite the richness of this example based on a real lab network, not all the MTOSI operations have been supported.<br/>
+For those operations which could be illustrated, the corresponding XML files have been integrated in the RI. It is then possible to run the RI using the request/response messages.
+
+<h2><a name="fileStructure">File Structure of the Test Suite</a></h2>
+
+<img src="structure.JPG">
+
+<p>
+The test files are organized per MTOSI Interface within directory <i>TestsDefinitions</i>.
+This directory also contains the common files needed (stylesheet and schema)  for the display of the test cases templates in html:
+<li>
+The "build.xml" file is used to drive the automatic generation of html test files whenever the corresponding xml test files are modified.
+</li>
+<li>
+"TestTemplate-CoarseGrain.xsd" "TestTemplate-FineGrain.xsd" and "TestTemplate_Notification.xsd" contain the schema definition for the three test templates.
+</li>
+<li>
+"TestTemplate-CoarseGrain.xsl" "TestTemplate-FineGrain.xsl" and "TestStyleSheet_Notification.xsl" contain the XSLT instructions to drive the transformation of the xml test files into their corresponding html equivalent.
+</li> 
+</p>
+Each Interface directory contains the following files:
+<ul>
+<li>"<i>InterfaceName</i>_test<i>N</i>.xml" files represent the actual definition of the test specifications. The information inside is generated by hand (reusing indeed the material from the MTOSI deliverables). Their structures conform to the appropriate test template (coarse-grain or fine-grain).<br/>
+It is this kind of files that need to be created if additional tests are desirable in possible future versions of the test suite. 
+</li>
+<li>
+"<i>InterfaceName</i>_test<i>N</i>.html" files represent the same information in html format.
+They result from an xslt transform automatically generated by a "ant" command at the top level.
+</li>
+<li>
+A directory "examples" (when appropriate) which contains xml request/response files illustrating the tests for the corresponding Interface.
+</li>
+</ul>
+</ul>
+</p>
+</body>
+</html>
+
