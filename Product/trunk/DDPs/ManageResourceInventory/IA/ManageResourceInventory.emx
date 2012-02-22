@@ -4122,6 +4122,767 @@ If no Group is provided, all Transmission Parameters supported by the Resource a
       <packagedElement xmi:type="uml:Dependency" xmi:id="_d25u0BBaEd20R6sCaTblKg" name="uses" supplier="_569zUBBWEd20R6sCaTblKg" client="_yd-RANyHEdyY2qUBC6uXag"/>
       <packagedElement xmi:type="uml:Dependency" xmi:id="_EanJUBEYEd22C4fNvkcGXQ" name="uses" supplier="__OnlkBEXEd22C4fNvkcGXQ" client="_FYXMcBA6EdyZiYIRB9PLdQ"/>
       <packagedElement xmi:type="uml:Dependency" xmi:id="_VG-9sBUCEd2iK4kbHbyS2g" name="uses" supplier="_EgzEABUBEd2iK4kbHbyS2g" client="_MFjIINyIEdyY2qUBC6uXag"/>
+      <packagedElement xmi:type="uml:Interface" xmi:id="_5NoecEEpEeGVAv7bueWJUg" name="CallRetrievalService">
+        <ownedOperation xmi:id="_3rLcFkD-EeGCAo9-ZY7z8A" name="getCall" visibility="public" precondition="_3rLcGED-EeGCAo9-ZY7z8A" postcondition="_3rLcGkD-EeGCAo9-ZY7z8A">
+          <ownedComment xmi:id="_3rLcF0D-EeGCAo9-ZY7z8A" annotatedElement="_3rLcFkD-EeGCAo9-ZY7z8A">
+            <body>This operation returns the attributes of a Call object given a specified Call name.
+
+Note: The EMS has to control the originating end of the Call otherwise the Call information is not available.
+
+Operation Exceptions:
+1. NOT_IMPLEMENTED - Raised when the entire operation is not supported by the EMS or the operation with the specified input parameters is not supported.
+2. INTERNAL_ERROR - Raised when the operation has resulted in an EMS internal error.
+3. INVALID_INPUT - Raised when the operation contains an input parameter that is syntactically incorrect or identifies an object of the wrong type or is out of range.
+4. ENTITY_NOT_FOUND - Raised when the specified object instance does not exist.
+5. UNABLE_TO_COMPLY - Raised when the EMS cannot respond to the request.
+6. NE_COMM_LOSS - Raised when the EMS is unable to communicate with the NE and communication is required to complete the operation.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_3rLcGED-EeGCAo9-ZY7z8A" constrainedElement="_3rLcFkD-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLcGUD-EeGCAo9-ZY7z8A">
+              <body>None.</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_3rLcGkD-EeGCAo9-ZY7z8A" constrainedElement="_3rLcFkD-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLcG0D-EeGCAo9-ZY7z8A">
+              <body>The system remains unchanged.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_3rLcHED-EeGCAo9-ZY7z8A" direction="return">
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIhUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/void?"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLcHUD-EeGCAo9-ZY7z8A" name="callName" direction="inout">
+            <ownedComment xmi:id="_3rLcHkD-EeGCAo9-ZY7z8A" annotatedElement="_3rLcHUD-EeGCAo9-ZY7z8A">
+              <body>/* in */ The name of the Call to be retrieved.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIg0DnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/Name?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLcH0D-EeGCAo9-ZY7z8A">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLcIED-EeGCAo9-ZY7z8A" name="call" direction="inout">
+            <ownedComment xmi:id="_3rLcIUD-EeGCAo9-ZY7z8A" annotatedElement="_3rLcIED-EeGCAo9-ZY7z8A">
+              <body>/* out */ The Call object to be retrieved.</body>
+            </ownedComment>
+            <type xmi:type="uml:Class" href="platform:/resource/MTNM_CP/TMF608.emx#_3A6F1C080203408CBC6C0089?TMF608/Logical%20View/Call%20and%20Connection/Call?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLcIkD-EeGCAo9-ZY7z8A">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_3rLcYkD-EeGCAo9-ZY7z8A" name="getAllCallsAndTopLevelConnections" visibility="public" precondition="_3rLcZED-EeGCAo9-ZY7z8A" postcondition="_3rLcZkD-EeGCAo9-ZY7z8A">
+          <ownedComment xmi:id="_3rLcY0D-EeGCAo9-ZY7z8A" annotatedElement="_3rLcYkD-EeGCAo9-ZY7z8A">
+            <body>This operation returns all the Calls managed by the EMS within the scope of the top level Multilayer Routing Area (with all the attributes for each Call) and the top level Connections for each Call (with all the attributes for each top level Connection).
+
+The Connections are returned regardless of their state.
+
+Only the Calls and top level Connections that originate on Managed Elements managed by the EMS are returned. By implication this informs the NMS which EMS controls each Call.
+
+
+Operation Exceptions:
+1. NOT_IMPLEMENTED - Raised when the entire operation is not supported by the EMS or the operation with the specified input parameters is not supported.
+2. INTERNAL_ERROR - Raised when the operation has resulted in an EMS internal error.
+3. UNABLE_TO_COMPLY - Raised when the specified Call is not defined in a top-level MLRA or the EMS cannot respond to the request.
+4. NE_COMM_LOSS - Raised when the EMS is unable to communicate with the NE and communication is required to complete the operation.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_3rLcZED-EeGCAo9-ZY7z8A" constrainedElement="_3rLcYkD-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLcZUD-EeGCAo9-ZY7z8A">
+              <body>None.</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_3rLcZkD-EeGCAo9-ZY7z8A" constrainedElement="_3rLcYkD-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLcZ0D-EeGCAo9-ZY7z8A">
+              <body>The system remains unchanged.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_3rLcaED-EeGCAo9-ZY7z8A" direction="return">
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIhUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/void?"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLcaUD-EeGCAo9-ZY7z8A" name="callsAndTopLevelConnections" direction="inout">
+            <ownedComment xmi:id="_3rLcakD-EeGCAo9-ZY7z8A" annotatedElement="_3rLcaUD-EeGCAo9-ZY7z8A">
+              <body>/* out */ All contained Call objects and their associated top-level Connection objects.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MY1DekDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/CIS%20SequenceOf%20Logical%20View/Call%20and%20Connection/DataTypes/CallAndTopLevelConnections?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLca0D-EeGCAo9-ZY7z8A">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_3rLcbED-EeGCAo9-ZY7z8A" name="getCallAndTopLevelConnections" visibility="public" precondition="_3rLcbkD-EeGCAo9-ZY7z8A" postcondition="_3rLccED-EeGCAo9-ZY7z8A">
+          <ownedComment xmi:id="_3rLcbUD-EeGCAo9-ZY7z8A" annotatedElement="_3rLcbED-EeGCAo9-ZY7z8A">
+            <body>This operation returns the following given a specific Call Id or a Call name that is within the scope of the top level MultiLayerRoutingArea:
+- all the attributes for the Call
+- the top level Connections for the Call (with all the attributes for each top level Connection).
+
+If the NMS provides a Call ID AND a Call Name, the EMS will reject the operation with INVALID_INPUT.
+
+
+Operation Exceptions:
+1. NOT_IMPLEMENTED - Raised when the entire operation is not supported by the EMS or the operation with the specified input parameters is not supported.
+2. INTERNAL_ERROR - Raised when the operation has resulted in an EMS internal error.
+3. INVALID_INPUT - Raised when the operation contains an input parameter that is syntactically incorrect or identifies an object of the wrong type or is out of range.
+4. ENTITY_NOT_FOUND - Raised when the specified object instance does not exist.
+5. UNABLE_TO_COMPLY - Raised when the specified Call is not defined in a top-level MLRA or the EMS cannot respond to the request.
+6. NE_COMM_LOSS - Raised when the EMS is unable to communicate with the NE and communication is required to complete the operation.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_3rLcbkD-EeGCAo9-ZY7z8A" constrainedElement="_3rLcbED-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLcb0D-EeGCAo9-ZY7z8A">
+              <body>None.</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_3rLccED-EeGCAo9-ZY7z8A" constrainedElement="_3rLcbED-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLccUD-EeGCAo9-ZY7z8A">
+              <body>The system remains unchanged.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_3rLcckD-EeGCAo9-ZY7z8A" direction="return">
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIhUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/void?"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLcc0D-EeGCAo9-ZY7z8A" name="callId" direction="inout">
+            <ownedComment xmi:id="_3rLcdED-EeGCAo9-ZY7z8A" annotatedElement="_3rLcc0D-EeGCAo9-ZY7z8A">
+              <body>/* in */ The identifier of the Call to be retrieved.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIiUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/CIS%20CharacterString?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLcdUD-EeGCAo9-ZY7z8A">
+              <body>empty string</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLcdkD-EeGCAo9-ZY7z8A" name="callName" direction="inout">
+            <ownedComment xmi:id="_3rLcd0D-EeGCAo9-ZY7z8A" annotatedElement="_3rLcdkD-EeGCAo9-ZY7z8A">
+              <body>/* in */ The name of the Call to be retrieved.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIg0DnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/Name?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLceED-EeGCAo9-ZY7z8A">
+              <body>CIS Null</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLceUD-EeGCAo9-ZY7z8A" name="callsAndTopLevelConnections" direction="inout">
+            <ownedComment xmi:id="_3rLcekD-EeGCAo9-ZY7z8A" annotatedElement="_3rLceUD-EeGCAo9-ZY7z8A">
+              <body>/* out */ The Call object and the associated top level Connection objects.</body>
+            </ownedComment>
+            <type xmi:type="uml:Class" href="platform:/resource/MTNM_CP/TMF608.emx#_3A6F1C08020343CFFEC203AC?TMF608/Logical%20View/Call%20and%20Connection/DataTypes/CallAndTopLevelConnections?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLce0D-EeGCAo9-ZY7z8A">
+              <body>CIS Null</body>
+            </defaultValue>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_3rLcjED-EeGCAo9-ZY7z8A" name="getAllCallIdsWithSNPPOrTNAName" visibility="public" precondition="_3rLcjkD-EeGCAo9-ZY7z8A" postcondition="_3rLckED-EeGCAo9-ZY7z8A">
+          <ownedComment xmi:id="_3rLcjUD-EeGCAo9-ZY7z8A" annotatedElement="_3rLcjED-EeGCAo9-ZY7z8A">
+            <body>This operation returns the ID of all the Calls that are supported by either the specified SNPP identifier or the specified TNA identifier.
+
+Operation Exceptions:
+1. NOT_IMPLEMENTED - Raised when the entire operation is not supported by the EMS or the operation with the specified input parameters is not supported.
+2. INTERNAL_ERROR - Raised when the operation has resulted in an EMS internal error.
+3. INVALID_INPUT - Raised when the operation contains an input parameter that is syntactically incorrect or identifies an object of the wrong type or is out of range.
+4. ENTITY_NOT_FOUND - Raised when the specified object instance does not exist.
+5. UNABLE_TO_COMPLY - Raised when the EMS cannot respond to the request.
+6. NE_COMM_LOSS - Raised when the EMS is unable to communicate with the NE and communication is required to complete the operation.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_3rLcjkD-EeGCAo9-ZY7z8A" constrainedElement="_3rLcjED-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLcj0D-EeGCAo9-ZY7z8A">
+              <body>None</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_3rLckED-EeGCAo9-ZY7z8A" constrainedElement="_3rLcjED-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLckUD-EeGCAo9-ZY7z8A">
+              <body>The system remians unchanged.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_3rLckkD-EeGCAo9-ZY7z8A" direction="return">
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIhUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/void?"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLck0D-EeGCAo9-ZY7z8A" name="snppOrTNAName" direction="inout">
+            <ownedComment xmi:id="_3rLclED-EeGCAo9-ZY7z8A" annotatedElement="_3rLck0D-EeGCAo9-ZY7z8A">
+              <body>/* in */ It identifies either an SNPP or a TNA Name provided as an input.</body>
+            </ownedComment>
+            <type xmi:type="uml:Class" href="platform:/resource/MTNM_CP/TMF608.emx#_3A6F1C0802033E1C139E015A?TMF608/Logical%20View/Structs/AVP?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLclUD-EeGCAo9-ZY7z8A">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLclkD-EeGCAo9-ZY7z8A" name="callIdList" direction="inout">
+            <ownedComment xmi:id="_3rLcl0D-EeGCAo9-ZY7z8A" annotatedElement="_3rLclkD-EeGCAo9-ZY7z8A">
+              <body>/* out */ A list of Call identifiers.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYrSikDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/CIS%20SequenceOf%20CharacterString?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLcmED-EeGCAo9-ZY7z8A">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_3rLcmUD-EeGCAo9-ZY7z8A" name="getAllCallIdsWithTP" visibility="public" precondition="_3rLcm0D-EeGCAo9-ZY7z8A" postcondition="_3rLcnUD-EeGCAo9-ZY7z8A">
+          <ownedComment xmi:id="_3rLcmkD-EeGCAo9-ZY7z8A" annotatedElement="_3rLcmUD-EeGCAo9-ZY7z8A">
+            <body>This operation returns the ID of all the Calls that are supported by the specified TP. A Call is considered as using the specified TP if any of its supporting connections use an SNP that corresponds to the specified TP or a TP contained in the specified TP.
+
+Operation Exceptions:
+1. NOT_IMPLEMENTED - Raised when the entire operation is not supported by the EMS or the operation with the specified input parameters is not supported.
+2. INTERNAL_ERROR - Raised when the operation has resulted in an EMS internal error.
+3. INVALID_INPUT - Raised when the operation contains an input parameter that is syntactically incorrect or identifies an object of the wrong type or is out of range.
+4. ENTITY_NOT_FOUND - Raised when the specified object instance does not exist.
+5. UNABLE_TO_COMPLY - Raised when the EMS cannot respond to the request.
+6. NE_COMM_LOSS - Raised when the EMS is unable to communicate with the NE and communication is required to complete the operation.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_3rLcm0D-EeGCAo9-ZY7z8A" constrainedElement="_3rLcmUD-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLcnED-EeGCAo9-ZY7z8A">
+              <body>None</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_3rLcnUD-EeGCAo9-ZY7z8A" constrainedElement="_3rLcmUD-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLcnkD-EeGCAo9-ZY7z8A">
+              <body>The system remians unchanged.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_3rLcn0D-EeGCAo9-ZY7z8A" direction="return">
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIhUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/void?"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLcoED-EeGCAo9-ZY7z8A" name="tpName" direction="inout">
+            <ownedComment xmi:id="_3rLcoUD-EeGCAo9-ZY7z8A" annotatedElement="_3rLcoED-EeGCAo9-ZY7z8A">
+              <body>/* in */ It identifies the TP Name provided as an input.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIg0DnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/Name?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLcokD-EeGCAo9-ZY7z8A">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLco0D-EeGCAo9-ZY7z8A" name="callIdList" direction="inout">
+            <ownedComment xmi:id="_3rLcpED-EeGCAo9-ZY7z8A" annotatedElement="_3rLco0D-EeGCAo9-ZY7z8A">
+              <body>/* out */ A list of Call identifiers.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYrSikDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/CIS%20SequenceOf%20CharacterString?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLcpUD-EeGCAo9-ZY7z8A">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_3rLcpkD-EeGCAo9-ZY7z8A" name="getAllCallsAndTopLevelConnectionsWithME" visibility="public" precondition="_3rLcqED-EeGCAo9-ZY7z8A" postcondition="_3rLcqkD-EeGCAo9-ZY7z8A">
+          <ownedComment xmi:id="_3rLcp0D-EeGCAo9-ZY7z8A" annotatedElement="_3rLcpkD-EeGCAo9-ZY7z8A">
+            <body>This operation returns all the Calls managed by the EMS within the scope of the top level Multilayer Routing Area (with all the attributes for each Call) and the top level Connections for each Call (with all the attributes for each top level Connection) that are supported by the specified managed element.
+
+Operation Exceptions:
+1. NOT_IMPLEMENTED - Raised when the entire operation is not supported by the EMS or the operation with the specified input parameters is not supported.
+2. INTERNAL_ERROR - Raised when the operation has resulted in an EMS internal error.
+3. INVALID_INPUT - Raised when the operation contains an input parameter that is syntactically incorrect or identifies an object of the wrong type or is out of range.
+4. ENTITY_NOT_FOUND - Raised when objectName references an object which does not exist.
+5. UNABLE_TO_COMPLY - Raised when the EMS cannot respond to the request.
+6. NE_COMM_LOSS - Raised when the EMS is unable to communicate with the NE and communication is required to complete the operation.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_3rLcqED-EeGCAo9-ZY7z8A" constrainedElement="_3rLcpkD-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLcqUD-EeGCAo9-ZY7z8A">
+              <body>None</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_3rLcqkD-EeGCAo9-ZY7z8A" constrainedElement="_3rLcpkD-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLcq0D-EeGCAo9-ZY7z8A">
+              <body>The system remains unchanged.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_3rLcrED-EeGCAo9-ZY7z8A" direction="return">
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIhUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/void?"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLcrUD-EeGCAo9-ZY7z8A" name="meName" direction="inout">
+            <ownedComment xmi:id="_3rLcrkD-EeGCAo9-ZY7z8A" annotatedElement="_3rLcrUD-EeGCAo9-ZY7z8A">
+              <body>/* in */ A name of the Managed Element terminating the Calls to be returned.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIg0DnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/Name?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLcr0D-EeGCAo9-ZY7z8A">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLcsED-EeGCAo9-ZY7z8A" name="callsAndTopLevelConnections" direction="inout">
+            <ownedComment xmi:id="_3rLcsUD-EeGCAo9-ZY7z8A" annotatedElement="_3rLcsED-EeGCAo9-ZY7z8A">
+              <body>/* out */ All contained Call objects and their associated top level Connection objects.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MY1DekDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/CIS%20SequenceOf%20Logical%20View/Call%20and%20Connection/DataTypes/CallAndTopLevelConnections?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLcskD-EeGCAo9-ZY7z8A">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_3rLcs0D-EeGCAo9-ZY7z8A" name="getAllCallsAndTopLevelConnectionsAndSNCs" visibility="public" precondition="_3rLctUD-EeGCAo9-ZY7z8A" postcondition="_3rLct0D-EeGCAo9-ZY7z8A">
+          <ownedComment xmi:id="_3rLctED-EeGCAo9-ZY7z8A" annotatedElement="_3rLcs0D-EeGCAo9-ZY7z8A">
+            <body>This operation returns the following:
+- a list of all Call objects
+- for each Call object a list of:
+   + all the top-level Connection objects that support the Call
+   + for each top-level Connection object a list of:
+      * all the SubnetworkConnection objects that support the Connection.
+
+If the NMS provides a callId AND a callName, the EMS will reject the operation with INVALID_INPUT.
+
+Operation Exceptions:
+1. NOT_IMPLEMENTED - Raised when the entire operation is not supported by the EMS or the operation with the specified input parameters is not supported.
+2. INTERNAL_ERROR - Raised when the operation has resulted in an EMS internal error.
+3. UNABLE_TO_COMPLY - Raised when the EMS cannot respond to the request.
+4. NE_COMM_LOSS - Raised when the EMS is unable to communicate with the NE and communication is required to complete the operation.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_3rLctUD-EeGCAo9-ZY7z8A" constrainedElement="_3rLcs0D-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLctkD-EeGCAo9-ZY7z8A">
+              <body>None.</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_3rLct0D-EeGCAo9-ZY7z8A" constrainedElement="_3rLcs0D-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLcuED-EeGCAo9-ZY7z8A">
+              <body>The system remains unchanged.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_3rLcuUD-EeGCAo9-ZY7z8A" direction="return">
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIhUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/void?"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLcukD-EeGCAo9-ZY7z8A" name="callsAndTopLevelConnectionsAndSNCs" direction="inout">
+            <ownedComment xmi:id="_3rLcu0D-EeGCAo9-ZY7z8A" annotatedElement="_3rLcukD-EeGCAo9-ZY7z8A">
+              <body>/* out */  All the Call objects, their associated top level Connection objects (if any) and the SNC objects.
+</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MY-0fkDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/CIS%20SequenceOf%20Logical%20View/Call%20and%20Connection/DataTypes/CallAndTopLevelConnectionsAndSNCs?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLcvED-EeGCAo9-ZY7z8A">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_3rLcvUD-EeGCAo9-ZY7z8A" name="getAllCallsAndTopLevelConnectionsAndSNCsWithME" visibility="public" precondition="_3rLcv0D-EeGCAo9-ZY7z8A" postcondition="_3rLcwUD-EeGCAo9-ZY7z8A">
+          <ownedComment xmi:id="_3rLcvkD-EeGCAo9-ZY7z8A" annotatedElement="_3rLcvUD-EeGCAo9-ZY7z8A">
+            <body>This operation returns the following for the specified Managed Element:
+- the list of all Call objects
+- for each Call a list of:
+   + all the top-level Connection objects that support the Call - possibly empty
+   + for each top-level Connection object a list of:
+      * all the SubnetworkConnection objects that support the Connection
+
+
+Operation Exceptions:
+1. NOT_IMPLEMENTED - Raised when the entire operation is not supported by the EMS or the operation with the specified input parameters is not supported.
+2. INTERNAL_ERROR - Raised when the operation has resulted in an EMS internal error.
+3. INVALID_INPUT - Raised when the operation contains an input parameter that is syntactically incorrect or identifies an object of the wrong type or is out of range.
+4. ENTITY_NOT_FOUND - Raised when the specified object instance does not exist.
+5. UNABLE_TO_COMPLY - Raised when the MLRA is not a top level MLRA or more than one input parameter is provided.
+6. NE_COMM_LOSS - Raised when the EMS is unable to communicate with the NE and communication is required to complete the operation.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_3rLcv0D-EeGCAo9-ZY7z8A" constrainedElement="_3rLcvUD-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLcwED-EeGCAo9-ZY7z8A">
+              <body>None.</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_3rLcwUD-EeGCAo9-ZY7z8A" constrainedElement="_3rLcvUD-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLcwkD-EeGCAo9-ZY7z8A">
+              <body>The system remains unchanged.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_3rLcw0D-EeGCAo9-ZY7z8A" direction="return">
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIhUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/void?"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLcxED-EeGCAo9-ZY7z8A" name="meName" direction="inout">
+            <ownedComment xmi:id="_3rLcxUD-EeGCAo9-ZY7z8A" annotatedElement="_3rLcxED-EeGCAo9-ZY7z8A">
+              <body>/* in */ The name of the Managed Element terminating the Calls to be returned.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIg0DnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/Name?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLcxkD-EeGCAo9-ZY7z8A">
+              <body>CIS Null</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLcx0D-EeGCAo9-ZY7z8A" name="callsAndTopLevelConnectionsAndSNCs" direction="inout">
+            <ownedComment xmi:id="_3rLcyED-EeGCAo9-ZY7z8A" annotatedElement="_3rLcx0D-EeGCAo9-ZY7z8A">
+              <body>/* out */ The list of Call objects, their associated top level Connection objects and the associated Subnetwork Connection objects.
+</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MY-0fkDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/CIS%20SequenceOf%20Logical%20View/Call%20and%20Connection/DataTypes/CallAndTopLevelConnectionsAndSNCs?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLcyUD-EeGCAo9-ZY7z8A">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_3rLcykD-EeGCAo9-ZY7z8A" name="getAllCallsAndTopLevelConnectionsAndSNCsWithTP" visibility="public" precondition="_3rLczED-EeGCAo9-ZY7z8A" postcondition="_3rLczkD-EeGCAo9-ZY7z8A">
+          <ownedComment xmi:id="_3rLcy0D-EeGCAo9-ZY7z8A" annotatedElement="_3rLcykD-EeGCAo9-ZY7z8A">
+            <body>This operation returns the following for the specified Termination Point
+- the list of all Call objects
+- for each Call a list of:
+   + all top-level Connection objects that support the Call - possibly empty
+   + for each top-level Connection object a list of:
+      * all the SubnetworkConnection objects that support the Connection.
+
+
+Note:
+A Call that has at least one Connection/Subnetwork Connection which terminates on the specified TP itself or terminates on any TP contained in the specified TP will be returned.
+
+Operation Exceptions:
+1. NOT_IMPLEMENTED - Raised when the entire operation is not supported by the EMS or the operation with the specified input parameters is not supported.
+2. INTERNAL_ERROR - Raised when the operation has resulted in an EMS internal error.
+3. INVALID_INPUT - Raised when the operation contains an input parameter that is syntactically incorrect or identifies an object of the wrong type or is out of range.
+4. ENTITY_NOT_FOUND - Raised when the specified object instance does not exist.
+5. UNABLE_TO_COMPLY - Raised when the MLRA is not a top level MLRA or more than one input parameter is provided.
+6. NE_COMM_LOSS - Raised when the EMS is unable to communicate with the NE and communication is required to complete the operation.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_3rLczED-EeGCAo9-ZY7z8A" constrainedElement="_3rLcykD-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLczUD-EeGCAo9-ZY7z8A">
+              <body>None.</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_3rLczkD-EeGCAo9-ZY7z8A" constrainedElement="_3rLcykD-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLcz0D-EeGCAo9-ZY7z8A">
+              <body>The system remains unchanged.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_3rLc0ED-EeGCAo9-ZY7z8A" direction="return">
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIhUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/void?"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLc0UD-EeGCAo9-ZY7z8A" name="tpName" direction="inout">
+            <ownedComment xmi:id="_3rLc0kD-EeGCAo9-ZY7z8A" annotatedElement="_3rLc0UD-EeGCAo9-ZY7z8A">
+              <body>/* in */ The name of the TP terminating at least one of the Connections which are associated to the Calls to be retrieved.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIg0DnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/Name?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLc00D-EeGCAo9-ZY7z8A">
+              <body>CIS Null</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLc1ED-EeGCAo9-ZY7z8A" name="callsAndTopLevelConnectionsAndSNCs" direction="inout">
+            <ownedComment xmi:id="_3rLc1UD-EeGCAo9-ZY7z8A" annotatedElement="_3rLc1ED-EeGCAo9-ZY7z8A">
+              <body>/* out */ The list of Call objects, their associated top-level Connection objects and the associated SubnetworkConnection objects.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MY-0fkDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/CIS%20SequenceOf%20Logical%20View/Call%20and%20Connection/DataTypes/CallAndTopLevelConnectionsAndSNCs?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLc1kD-EeGCAo9-ZY7z8A">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_3rLc10D-EeGCAo9-ZY7z8A" name="getCallAndTopLevelConnectionsAndSNCs" visibility="public" precondition="_3rLc2UD-EeGCAo9-ZY7z8A" postcondition="_3rLc20D-EeGCAo9-ZY7z8A">
+          <ownedComment xmi:id="_3rLc2ED-EeGCAo9-ZY7z8A" annotatedElement="_3rLc10D-EeGCAo9-ZY7z8A">
+            <body>This operation returns the following given a specific Call Id or a Call name that is within the scope of the top-level MultiLayerRoutingArea:
+- all the attributes for the Call
+ + all the top-level Connection objects that support the Call
+ + for each top-level Connection object a list of:
+      * all the SubnetworkConnection objects that support the Connection.
+
+If the NMS provides a callId AND a callName, the EMS will reject the operation with INVALID_INPUT.
+
+
+Operation Exceptions:
+1. NOT_IMPLEMENTED - Raised when the entire operation is not supported by the EMS or the operation with the specified input parameters is not supported.
+2. INTERNAL_ERROR - Raised when the operation has resulted in an EMS internal error.
+3. INVALID_INPUT - Raised when the operation contains an input parameter that is syntactically incorrect or identifies an object of the wrong type or is out of range.
+4. ENTITY_NOT_FOUND - Raised when the specified object instance does not exist.
+5. UNABLE_TO_COMPLY - Raised when the specified Call is not defined in a top-level MLRA or the EMS cannot respond to the request.
+6. NE_COMM_LOSS - Raised when the EMS is unable to communicate with the NE and communication is required to complete the operation.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_3rLc2UD-EeGCAo9-ZY7z8A" constrainedElement="_3rLc10D-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLc2kD-EeGCAo9-ZY7z8A">
+              <body>None.</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_3rLc20D-EeGCAo9-ZY7z8A" constrainedElement="_3rLc10D-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLc3ED-EeGCAo9-ZY7z8A">
+              <body>The system remains unchanged.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_3rLc3UD-EeGCAo9-ZY7z8A" direction="return">
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIhUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/void?"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLc3kD-EeGCAo9-ZY7z8A" name="callId" direction="inout">
+            <ownedComment xmi:id="_3rLc30D-EeGCAo9-ZY7z8A" annotatedElement="_3rLc3kD-EeGCAo9-ZY7z8A">
+              <body>/* in */ The identifier of the Call to be retrieved.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIiUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/CIS%20CharacterString?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLc4ED-EeGCAo9-ZY7z8A">
+              <body>empty string</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLc4UD-EeGCAo9-ZY7z8A" name="callName" direction="inout">
+            <ownedComment xmi:id="_3rLc4kD-EeGCAo9-ZY7z8A" annotatedElement="_3rLc4UD-EeGCAo9-ZY7z8A">
+              <body>/* in */ The name of the Call to be retrieved.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIg0DnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/Name?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLc40D-EeGCAo9-ZY7z8A">
+              <body>CIS Null</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLc5ED-EeGCAo9-ZY7z8A" name="callAndTopLevelConnectionsAndSNCs" direction="inout">
+            <ownedComment xmi:id="_3rLc5UD-EeGCAo9-ZY7z8A" annotatedElement="_3rLc5ED-EeGCAo9-ZY7z8A">
+              <body>/* out */ The Call object, the associated top level Connection objects and the corresponding SNC objects.
+</body>
+            </ownedComment>
+            <type xmi:type="uml:Class" href="platform:/resource/MTNM_CP/TMF608.emx#_3A6F1C08020344350F2F011E?TMF608/Logical%20View/Call%20and%20Connection/DataTypes/CallAndTopLevelConnectionsAndSNCs?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLc5kD-EeGCAo9-ZY7z8A">
+              <body>CIS Null</body>
+            </defaultValue>
+          </ownedParameter>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Interface" xmi:id="_HeCB8EEqEeGVAv7bueWJUg" name="ControlPlaneRetrievalService">
+        <ownedOperation xmi:id="_3rLb20D-EeGCAo9-ZY7z8A" name="getAllSubordinateMLRAs" visibility="public" precondition="_3rLb3UD-EeGCAo9-ZY7z8A" postcondition="_3rLb30D-EeGCAo9-ZY7z8A">
+          <ownedComment xmi:id="_3rLb3ED-EeGCAo9-ZY7z8A" annotatedElement="_3rLb20D-EeGCAo9-ZY7z8A">
+            <body>This operation returns all the MultiLayerRoutingArea objects that are \&quot;contained\&quot; within the targeted MultiLayerRoutingArea.  This operation returns all the MultilayerRouting Areas down to and including those that represent Routing Nodes.
+
+
+Operation Exceptions:
+1. NOT_IMPLEMENTED - Raised when the entire operation is not supported by the EMS or the operation with the specified input parameters is not supported.
+2. INTERNAL_ERROR - Raised when the operation has resulted in an EMS internal error.
+3. INVALID_INPUT - Raised when the operation contains an input parameter that is syntactically incorrect or identifies an object of the wrong type or is out of range.
+4. ENTITY_NOT_FOUND - Raised when the specified object instance does not exist.
+5. UNABLE_TO_COMPLY - Raised when the EMS cannot respond to the request
+6. NE_COMM_LOSS - Raised when the EMS is unable to communicate with the NE and communication is required to complete the operation.
+</body>
+          </ownedComment>
+          <ownedRule xmi:id="_3rLb3UD-EeGCAo9-ZY7z8A" constrainedElement="_3rLb20D-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLb3kD-EeGCAo9-ZY7z8A">
+              <body>None.</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_3rLb30D-EeGCAo9-ZY7z8A" constrainedElement="_3rLb20D-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLb4ED-EeGCAo9-ZY7z8A">
+              <body>The system remains unchanged.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_3rLb4UD-EeGCAo9-ZY7z8A" direction="return">
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIhUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/void?"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLb4kD-EeGCAo9-ZY7z8A" name="mLRAs" direction="inout">
+            <ownedComment xmi:id="_3rLb40D-EeGCAo9-ZY7z8A" annotatedElement="_3rLb4kD-EeGCAo9-ZY7z8A">
+              <body>/* out */  A list of the MultilayerRoutingAreas.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MY1Dg0DnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/CIS%20SequenceOf%20Logical%20View/Control%20Plane/MultiLayerRoutingArea?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLb5ED-EeGCAo9-ZY7z8A">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_3rLb5UD-EeGCAo9-ZY7z8A" name="getAllEdgeMLSNPPLinks" visibility="public" precondition="_3rLb50D-EeGCAo9-ZY7z8A" postcondition="_3rLb6UD-EeGCAo9-ZY7z8A">
+          <ownedComment xmi:id="_3rLb5kD-EeGCAo9-ZY7z8A" annotatedElement="_3rLb5UD-EeGCAo9-ZY7z8A">
+            <body>This operation has exactly the same behaviour as getAllMLSNPPLinks, but instead of returning all the MultiLayerSNPPLink objects this operation returns only those that are external to the MultiLayerRoutingArea.
+
+Operation Exceptions:
+1. NOT_IMPLEMENTED - Raised when the entire operation is not supported by the EMS or the operation with the specified input parameters is not supported.
+2. INTERNAL_ERROR - Raised when the operation has resulted in an EMS internal error.
+3. INVALID_INPUT - Raised when the operation contains an input parameter that is syntactically incorrect or identifies an object of the wrong type or is out of range.
+4. ENTITY_NOT_FOUND - Raised when the specified object instance does not exist.
+5. UNABLE_TO_COMPLY - Raised when the EMS cannot respond to the request
+6. NE_COMM_LOSS - Raised when the EMS is unable to communicate with the NE and communication is required to complete the operation.
+</body>
+          </ownedComment>
+          <ownedRule xmi:id="_3rLb50D-EeGCAo9-ZY7z8A" constrainedElement="_3rLb5UD-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLb6ED-EeGCAo9-ZY7z8A">
+              <body>None.</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_3rLb6UD-EeGCAo9-ZY7z8A" constrainedElement="_3rLb5UD-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLb6kD-EeGCAo9-ZY7z8A">
+              <body>The system remains unchanged.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_3rLb60D-EeGCAo9-ZY7z8A" direction="return">
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIhUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/void?"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLb7ED-EeGCAo9-ZY7z8A" name="snpListRequested" direction="inout">
+            <ownedComment xmi:id="_3rLb7UD-EeGCAo9-ZY7z8A" annotatedElement="_3rLb7ED-EeGCAo9-ZY7z8A">
+              <body>/* in */  This parameter indicates if the SNPs must be included  in the return. </body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIjEDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/CIS%20Boolean?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLb7kD-EeGCAo9-ZY7z8A">
+              <body>False</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLb70D-EeGCAo9-ZY7z8A" name="mLSNPPLinkList" direction="inout">
+            <ownedComment xmi:id="_3rLb8ED-EeGCAo9-ZY7z8A" annotatedElement="_3rLb70D-EeGCAo9-ZY7z8A">
+              <body>/* out */ List of MultiLayerSNPPLink(s) or empty list.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MY-0fUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/CIS%20SequenceOf%20MultiLayerSNPPLink?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLb8UD-EeGCAo9-ZY7z8A">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_3rLb8kD-EeGCAo9-ZY7z8A" name="getAllInternalMLSNPPLinks" visibility="public" precondition="_3rLb9ED-EeGCAo9-ZY7z8A" postcondition="_3rLb9kD-EeGCAo9-ZY7z8A">
+          <ownedComment xmi:id="_3rLb80D-EeGCAo9-ZY7z8A" annotatedElement="_3rLb8kD-EeGCAo9-ZY7z8A">
+            <body>This operation has exactly the same behaviour as the getAllMLSNPPLinks operation, but instead of returning all the MultiLayerSNPPLink objects this operation returns only those that are to the MultiLayerRoutingArea. If the MultiLayerRoutingArea is a Routing Node then the list will be empty.
+
+Operation Exceptions:
+1. NOT_IMPLEMENTED - Raised when the entire operation is not supported by the EMS or the operation with the specified input parameters is not supported.
+2. INTERNAL_ERROR - Raised when the operation has resulted in an EMS internal error.
+3. INVALID_INPUT - Raised when the operation contains an input parameter that is syntactically incorrect or identifies an object of the wrong type or is out of range.
+4. ENTITY_NOT_FOUND - Raised when the specified object instance does not exist.
+5. UNABLE_TO_COMPLY - Raised when the EMS cannot respond to the request
+6. NE_COMM_LOSS - Raised when the EMS is unable to communicate with the NE and communication is required to complete the operation.
+</body>
+          </ownedComment>
+          <ownedRule xmi:id="_3rLb9ED-EeGCAo9-ZY7z8A" constrainedElement="_3rLb8kD-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLb9UD-EeGCAo9-ZY7z8A">
+              <body>None.</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_3rLb9kD-EeGCAo9-ZY7z8A" constrainedElement="_3rLb8kD-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLb90D-EeGCAo9-ZY7z8A">
+              <body>The system remains unchanged.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_3rLb-ED-EeGCAo9-ZY7z8A" direction="return">
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIhUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/void?"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLb-UD-EeGCAo9-ZY7z8A" name="snpListRequested" direction="inout">
+            <ownedComment xmi:id="_3rLb-kD-EeGCAo9-ZY7z8A" annotatedElement="_3rLb-UD-EeGCAo9-ZY7z8A">
+              <body>/* in */  This parameter indicates if the SNPs must be included  in the return. </body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIjEDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/CIS%20Boolean?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLb-0D-EeGCAo9-ZY7z8A">
+              <body>False</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLb_ED-EeGCAo9-ZY7z8A" name="mLSNPPLinkList" direction="inout">
+            <ownedComment xmi:id="_3rLb_UD-EeGCAo9-ZY7z8A" annotatedElement="_3rLb_ED-EeGCAo9-ZY7z8A">
+              <body>/* out */ List of MultiLayerSNPPLink(s) or empty list.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MY-0fUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/CIS%20SequenceOf%20MultiLayerSNPPLink?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLb_kD-EeGCAo9-ZY7z8A">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_3rLb_0D-EeGCAo9-ZY7z8A" name="getAllMLSNPPs" visibility="public" precondition="_3rLcAUD-EeGCAo9-ZY7z8A" postcondition="_3rLcA0D-EeGCAo9-ZY7z8A">
+          <ownedComment xmi:id="_3rLcAED-EeGCAo9-ZY7z8A" annotatedElement="_3rLb_0D-EeGCAo9-ZY7z8A">
+            <body>This operation shall return all the MultiLayerSNPPs.
+  
+Note that the MultiLayerSNPP represents SNPPs that are pools of SNPs that correspond to CTPs of G.805 TCP type while the SNPPs that group SNPs that represent G.805 CPs are retrieved as a component of the MultiLayerSNPPLink.
+
+The reply may be an empty or a partial list depending upon the visibility that EMS has of the control plane:
+- Local &amp; Complete - the EMS completely manages the MultiLayerRoutingArea and the supporting transport plane resources (ME, TP, etc.) such that it can provide a complete view of the MultiLayerSNPPs and all associated transport plane data.
+- Local CP Only - the EMS manages the MultiLayerRoutingArea but has no view of the supporting transport plane resources such that it can provide a complete view of the MultiLayerSNPPs but can not provide any associated transport plane data.
+- Remote CP Transparent - the EMS manages the MultiLayerRoutingArea at this level but may not have a view of the details of the subordinate MultiLayerRoutingArea levels and has no view of the supporting transport plane resources, such that it can provide a complete view of the MultiLayerSNPPs but not necessarily all of the SNPP aliases and can not provide any associated transport plane data.
+Remote CP Limited - the EMS partially manages the MultiLayerRoutingArea at this level and may not have a view of the details of the subordinate MultiLayerRoutingArea levels and has no view of the supporting transport plane resources, such that it can provide a view of some of the MultiLayerSNPPs and not necessarily all of the subordinate SNPP for those MultiLayerSNPPs and can not provide any associated transport plane data.
+- Remote CP Opaque:&lt;/b> The EMS is unable to provide any information related to MultiLayerSNPPs for the specified MultiLayerRoutingArea 
+
+Operation Exceptions:
+1. NOT_IMPLEMENTED - Raised when the entire operation is not supported by the EMS or the operation with the specified input parameters is not supported.
+2. INTERNAL_ERROR - Raised when the operation has resulted in an EMS internal error.
+3. INVALID_INPUT - Raised when the operation contains an input parameter that is syntactically incorrect or identifies an object of the wrong type or is out of range.
+4. ENTITY_NOT_FOUND - Raised when the specified object instance does not exist.
+5. UNABLE_TO_COMPLY - Raised when the EMS cannot respond to the request
+6. NE_COMM_LOSS - Raised when the EMS is unable to communicate with the NE and communication is required to complete the operation.
+</body>
+          </ownedComment>
+          <ownedRule xmi:id="_3rLcAUD-EeGCAo9-ZY7z8A" constrainedElement="_3rLb_0D-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLcAkD-EeGCAo9-ZY7z8A">
+              <body>None.</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_3rLcA0D-EeGCAo9-ZY7z8A" constrainedElement="_3rLb_0D-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLcBED-EeGCAo9-ZY7z8A">
+              <body>The system remains unchanged.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_3rLcBUD-EeGCAo9-ZY7z8A" direction="return">
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIhUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/void?"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLcBkD-EeGCAo9-ZY7z8A" name="mLSNPPList" direction="inout">
+            <ownedComment xmi:id="_3rLcB0D-EeGCAo9-ZY7z8A" annotatedElement="_3rLcBkD-EeGCAo9-ZY7z8A">
+              <body>/* out */ List of MultiLayer SNPP(s) or empty list.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MZH-ZkDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/CIS%20SequenceOf%20MultiLayerSNPP?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLcCED-EeGCAo9-ZY7z8A">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_3rLcCUD-EeGCAo9-ZY7z8A" name="getMLSNPPLink" visibility="public" precondition="_3rLcC0D-EeGCAo9-ZY7z8A" postcondition="_3rLcDUD-EeGCAo9-ZY7z8A">
+          <ownedComment xmi:id="_3rLcCkD-EeGCAo9-ZY7z8A" annotatedElement="_3rLcCUD-EeGCAo9-ZY7z8A">
+            <body>This operation returns a MultiLayerSNPPLink given a MultiLayerSNPPLink name.
+
+Operation Exceptions:
+1. NOT_IMPLEMENTED - Raised when the entire operation is not supported by the EMS or the operation with the specified input parameters is not supported.
+2. INTERNAL_ERROR - Raised when the operation has resulted in an EMS internal error.
+3. INVALID_INPUT - Raised when the operation contains an input parameter that is syntactically incorrect or identifies an object of the wrong type or is out of range.
+4. ENTITY_NOT_FOUND - Raised when the specified object instance does not exist.
+5. UNABLE_TO_COMPLY - Raised when the EMS cannot respond to the request.
+6. NE_COMM_LOSS - Raised when the EMS is unable to communicate with the NE and communication is required to complete the operation.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_3rLcC0D-EeGCAo9-ZY7z8A" constrainedElement="_3rLcCUD-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLcDED-EeGCAo9-ZY7z8A">
+              <body>None.</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_3rLcDUD-EeGCAo9-ZY7z8A" constrainedElement="_3rLcCUD-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLcDkD-EeGCAo9-ZY7z8A">
+              <body>The system remains unchanged.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_3rLcD0D-EeGCAo9-ZY7z8A" direction="return">
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIhUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/void?"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLcEED-EeGCAo9-ZY7z8A" name="mLSNPPName" direction="inout">
+            <ownedComment xmi:id="_3rLcEUD-EeGCAo9-ZY7z8A" annotatedElement="_3rLcEED-EeGCAo9-ZY7z8A">
+              <body>/* in */ The unique identifier of the MultiLayer SNPP.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIg0DnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/Name?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLcEkD-EeGCAo9-ZY7z8A">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLcE0D-EeGCAo9-ZY7z8A" name="mLSNPPLink" direction="inout">
+            <ownedComment xmi:id="_3rLcFED-EeGCAo9-ZY7z8A" annotatedElement="_3rLcE0D-EeGCAo9-ZY7z8A">
+              <body>/* out */ The MultiLayerSNPPLink identified by the provided name.</body>
+            </ownedComment>
+            <type xmi:type="uml:Class" href="platform:/resource/MTNM_CP/TMF608.emx#_3A6F1C080203408CB7BD0360?TMF608/Logical%20View/Control%20Plane/MultiLayerSNPPLink?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLcFUD-EeGCAo9-ZY7z8A">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_3rLcfED-EeGCAo9-ZY7z8A" name="getAllSubordinateRAIdsWithConnection" visibility="public" precondition="_3rLcfkD-EeGCAo9-ZY7z8A" postcondition="_3rLcgED-EeGCAo9-ZY7z8A">
+          <ownedComment xmi:id="_3rLcfUD-EeGCAo9-ZY7z8A" annotatedElement="_3rLcfED-EeGCAo9-ZY7z8A">
+            <body>This operation returns the identifiers of the subordinate MultiLayerRoutingAreas, at the lower partitioning level (N-1 level) and which are known to be involved in the route of a Connection at the level N. This operation supports a parameter that enables the specification of the type of route for which the subordinate MultiLayerRoutingAreas are being requested. This operation result is not recursive i.e. the operation has been designed to operate in a 3 level hierarchy, i.e. where the top level MultiLayerRoutingArea contains subordinate MultiLayerRoutingAreas, and such subordinate MultiLayerRoutingAreas contain Routing Nodes. This operation can only be addressed to a top level routing area.
+
+The output of this operation has the following characteristics:
+- The MultiLayerRoutingArea List is empty if there is no MultiLayerRoutingAreas for the requested intended or actual route or if the MultiLayerRoutingArea is a MultiLayerRoutingNode.
+- There may be no Home/Intended route in the case where none was provisioned.
+- There may be no Actual route where the connection is searching or the actual route traverses a different MultiLayerRoutingArea to the Home/Intended route.
+- For an SNCP connection, the replied Home/Intended route will always include both main and spare legs of the SNCP protection, while the replied actual route may return only one leg, if only such leg is currently active in the network.
+- The route is described in full across the MultiLayerRoutingArea regardless of sharing of same Routing Node Connections among distinct routes of the same Call.
+
+Operation Exceptions:
+1. NOT_IMPLEMENTED - Raised when the entire operation is not supported by the EMS or the operation with the specified input parameters is not supported.
+2. INTERNAL_ERROR - Raised when the operation has resulted in an EMS internal error.
+3. INVALID_INPUT - Raised when the operation contains an input parameter that is syntactically incorrect or identifies an object of the wrong type or is out of range.
+4. ENTITY_NOT_FOUND - Raised when the specified object instance does not exist.
+5. UNABLE_TO_COMPLY - Raised when the EMS cannot respond to the request.
+6. NOT_IN_VALID_STATE - Raised when the state of the specified object is such that the EMS cannot perform the request.
+7. NE_COMM_LOSS - Raised when the EMS is unable to communicate with the NE and communication is required to complete the operation.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_3rLcfkD-EeGCAo9-ZY7z8A" constrainedElement="_3rLcfED-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLcf0D-EeGCAo9-ZY7z8A">
+              <body>None.</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_3rLcgED-EeGCAo9-ZY7z8A" constrainedElement="_3rLcfED-EeGCAo9-ZY7z8A">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_3rLcgUD-EeGCAo9-ZY7z8A">
+              <body>The system remains unchanged.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_3rLcgkD-EeGCAo9-ZY7z8A" direction="return">
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIhUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/void?"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLcg0D-EeGCAo9-ZY7z8A" name="connectionName" direction="inout">
+            <ownedComment xmi:id="_3rLchED-EeGCAo9-ZY7z8A" annotatedElement="_3rLcg0D-EeGCAo9-ZY7z8A">
+              <body>/* in */ The name of the Connection for which the route (in terms of Routing Areas) is requested.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIg0DnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/Name?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLchUD-EeGCAo9-ZY7z8A">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLchkD-EeGCAo9-ZY7z8A" name="routeType" direction="inout">
+            <ownedComment xmi:id="_3rLch0D-EeGCAo9-ZY7z8A" annotatedElement="_3rLchkD-EeGCAo9-ZY7z8A">
+              <body>/* in */ The type of route that is required; either the home route, the actual route or both routes.</body>
+            </ownedComment>
+            <type xmi:type="uml:Class" href="platform:/resource/MTNM_CP/TMF608.emx#_3A6F1C08020345A2CB250030?TMF608/Logical%20View/Call%20and%20Connection/DataTypes/RouteType?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLciED-EeGCAo9-ZY7z8A">
+              <body>BOTH</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_3rLciUD-EeGCAo9-ZY7z8A" name="routePerRouteType" direction="inout">
+            <ownedComment xmi:id="_3rLcikD-EeGCAo9-ZY7z8A" annotatedElement="_3rLciUD-EeGCAo9-ZY7z8A">
+              <body>/* out */ A list of the MultiLayerRouting Area Identifiers, the type of route with which they are associated (HOME, ACTUAL or BOTH) and a brief description.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIkEDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/CIS%20SequenceOf%20Logical%20View/Call%20and%20Connection/DataTypes/RouteAndRouteType?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLci0D-EeGCAo9-ZY7z8A">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+        </ownedOperation>
+      </packagedElement>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_6Dfl8BA5EdyZiYIRB9PLdQ" name="Class Diagrams">
       <eAnnotations xmi:id="_6Dfl8RA5EdyZiYIRB9PLdQ" source="uml2.diagrams">
@@ -5769,4 +6530,67 @@ Traceability: R_TMF518_MRI_II_0005.</body>
   <Default:Documentation xmi:id="_jPC4QFnfEeCMhuuj9iM8Hg" base_Comment="_jO5HQVnfEeCMhuuj9iM8Hg"/>
   <Default:Documentation xmi:id="_-PX681nzEeCMhuuj9iM8Hg" base_Comment="_-PX68VnzEeCMhuuj9iM8Hg"/>
   <Default:URL xmi:id="_UHZ4YHyJEeCQpcxxWRGsXA" base_Comment="_EfhkkHyJEeCQpcxxWRGsXA"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_Fk4vAEEqEeGVAv7bueWJUg" base_Operation="_3rLcFkD-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vAUEqEeGVAv7bueWJUg" base_Comment="_3rLcF0D-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vAkEqEeGVAv7bueWJUg" base_Comment="_3rLcHkD-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vA0EqEeGVAv7bueWJUg" base_Comment="_3rLcIUD-EeGCAo9-ZY7z8A"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_Fk4vBEEqEeGVAv7bueWJUg" base_Operation="_3rLcYkD-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vBUEqEeGVAv7bueWJUg" base_Comment="_3rLcY0D-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vBkEqEeGVAv7bueWJUg" base_Comment="_3rLcakD-EeGCAo9-ZY7z8A"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_Fk4vB0EqEeGVAv7bueWJUg" base_Operation="_3rLcbED-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vCEEqEeGVAv7bueWJUg" base_Comment="_3rLcbUD-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vCUEqEeGVAv7bueWJUg" base_Comment="_3rLcdED-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vCkEqEeGVAv7bueWJUg" base_Comment="_3rLcd0D-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vC0EqEeGVAv7bueWJUg" base_Comment="_3rLcekD-EeGCAo9-ZY7z8A"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_Fk4vDEEqEeGVAv7bueWJUg" base_Operation="_3rLcjED-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vDUEqEeGVAv7bueWJUg" base_Comment="_3rLcjUD-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vDkEqEeGVAv7bueWJUg" base_Comment="_3rLclED-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vD0EqEeGVAv7bueWJUg" base_Comment="_3rLcl0D-EeGCAo9-ZY7z8A"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_Fk4vEEEqEeGVAv7bueWJUg" base_Operation="_3rLcmUD-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vEUEqEeGVAv7bueWJUg" base_Comment="_3rLcmkD-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vEkEqEeGVAv7bueWJUg" base_Comment="_3rLcoUD-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vE0EqEeGVAv7bueWJUg" base_Comment="_3rLcpED-EeGCAo9-ZY7z8A"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_Fk4vFEEqEeGVAv7bueWJUg" base_Operation="_3rLcpkD-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vFUEqEeGVAv7bueWJUg" base_Comment="_3rLcp0D-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vFkEqEeGVAv7bueWJUg" base_Comment="_3rLcrkD-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vF0EqEeGVAv7bueWJUg" base_Comment="_3rLcsUD-EeGCAo9-ZY7z8A"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_Fk4vGEEqEeGVAv7bueWJUg" base_Operation="_3rLcs0D-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vGUEqEeGVAv7bueWJUg" base_Comment="_3rLctED-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vGkEqEeGVAv7bueWJUg" base_Comment="_3rLcu0D-EeGCAo9-ZY7z8A"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_Fk4vG0EqEeGVAv7bueWJUg" base_Operation="_3rLcvUD-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vHEEqEeGVAv7bueWJUg" base_Comment="_3rLcvkD-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vHUEqEeGVAv7bueWJUg" base_Comment="_3rLcxUD-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vHkEqEeGVAv7bueWJUg" base_Comment="_3rLcyED-EeGCAo9-ZY7z8A"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_Fk4vH0EqEeGVAv7bueWJUg" base_Operation="_3rLcykD-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vIEEqEeGVAv7bueWJUg" base_Comment="_3rLcy0D-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vIUEqEeGVAv7bueWJUg" base_Comment="_3rLc0kD-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vIkEqEeGVAv7bueWJUg" base_Comment="_3rLc1UD-EeGCAo9-ZY7z8A"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_Fk4vI0EqEeGVAv7bueWJUg" base_Operation="_3rLc10D-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vJEEqEeGVAv7bueWJUg" base_Comment="_3rLc2ED-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vJUEqEeGVAv7bueWJUg" base_Comment="_3rLc30D-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vJkEqEeGVAv7bueWJUg" base_Comment="_3rLc4kD-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_Fk4vJ0EqEeGVAv7bueWJUg" base_Comment="_3rLc5UD-EeGCAo9-ZY7z8A"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_MeaLkEEqEeGVAv7bueWJUg" base_Operation="_3rLb20D-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_MeaLkUEqEeGVAv7bueWJUg" base_Comment="_3rLb3ED-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_MeaLkkEqEeGVAv7bueWJUg" base_Comment="_3rLb40D-EeGCAo9-ZY7z8A"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_MeaLk0EqEeGVAv7bueWJUg" base_Operation="_3rLb5UD-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_MeaLlEEqEeGVAv7bueWJUg" base_Comment="_3rLb5kD-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_MeaLlUEqEeGVAv7bueWJUg" base_Comment="_3rLb7UD-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_MeaLlkEqEeGVAv7bueWJUg" base_Comment="_3rLb8ED-EeGCAo9-ZY7z8A"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_MeaLl0EqEeGVAv7bueWJUg" base_Operation="_3rLb8kD-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_MeaLmEEqEeGVAv7bueWJUg" base_Comment="_3rLb80D-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_MeaLmUEqEeGVAv7bueWJUg" base_Comment="_3rLb-kD-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_MeaLmkEqEeGVAv7bueWJUg" base_Comment="_3rLb_UD-EeGCAo9-ZY7z8A"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_MeaLm0EqEeGVAv7bueWJUg" base_Operation="_3rLb_0D-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_MeaLnEEqEeGVAv7bueWJUg" base_Comment="_3rLcAED-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_MeaLnUEqEeGVAv7bueWJUg" base_Comment="_3rLcB0D-EeGCAo9-ZY7z8A"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_MeaLnkEqEeGVAv7bueWJUg" base_Operation="_3rLcCUD-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_MeaLn0EqEeGVAv7bueWJUg" base_Comment="_3rLcCkD-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_MfAogEEqEeGVAv7bueWJUg" base_Comment="_3rLcEUD-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_MfAogUEqEeGVAv7bueWJUg" base_Comment="_3rLcFED-EeGCAo9-ZY7z8A"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_MfAogkEqEeGVAv7bueWJUg" base_Operation="_3rLcfED-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_MfAog0EqEeGVAv7bueWJUg" base_Comment="_3rLcfUD-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_MfAohEEqEeGVAv7bueWJUg" base_Comment="_3rLchED-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_MfAohUEqEeGVAv7bueWJUg" base_Comment="_3rLch0D-EeGCAo9-ZY7z8A"/>
+  <Default:Documentation xmi:id="_MfAohkEqEeGVAv7bueWJUg" base_Comment="_3rLcikD-EeGCAo9-ZY7z8A"/>
 </xmi:XMI>
