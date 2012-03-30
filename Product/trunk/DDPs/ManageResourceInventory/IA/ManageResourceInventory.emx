@@ -6,7 +6,9 @@
   <uml:Model xmi:id="_YcGc4A6qEdyd7PUNb-IYCQ" name="ManageResourceInventory">
     <eAnnotations xmi:id="_YcGc4Q6qEdyd7PUNb-IYCQ" source="uml2.diagrams"/>
     <ownedComment xmi:id="_AtoRcARSEeC-l6U8aOqMIw" annotatedElement="_YcGc4A6qEdyd7PUNb-IYCQ">
-      <body>Changes done between Release 2.1 and 3.0:&#xD;
+      <body>Changes done between Release 2.1 and 3.0&#xD;
+&#xD;
+New specifications:&#xD;
 - Interfaces::CallConnectionRetrievalService added&#xD;
 - Interfaces::CallConnectionRetrievalService::getAllCallsAndTopLevelConnections added&#xD;
 - Interfaces::CallConnectionRetrievalService::getAllCallsAndTopLevelConnectionsAndSNCs added&#xD;
@@ -14,7 +16,15 @@
 - Type Definitions::CallAndTopLevelConnectionsAndSNCs added&#xD;
 - Type Definitions::ConnectionAndSupportingSNCsList added&#xD;
 - Type Definitions::RouteType added&#xD;
-- Type Definitions::ConnectionAndRoute added</body>
+- Type Definitions::ConnectionAndRoute added&#xD;
+&#xD;
+Modified specifications:&#xD;
+- Interfaces::ConnectionRetrievalService::getAllSubnetworkConnections: Documentation enhanced&#xD;
+- Interfaces::ConnectionRetrievalService::getAllSubnetworkConnectionsWithTp: Documentation enhanced&#xD;
+- Interfaces::ConnectionRetrievalService::getRoute: Documentation enhanced&#xD;
+- Interfaces::ConnectionRetrievalService::getSubnetworkConnection: Documentation enhanced&#xD;
+- Interfaces::ConnectionRetrievalService::getSubnetworkConnectionsByUserLabel: Documentation enhanced&#xD;
+- Interfaces::ConnectionRetrievalService::getSubnetworkConnectionsByUserLabel: NeCommLoss exception replaced by CommLoss</body>
     </ownedComment>
     <packageImport xmi:id="_YcGc5A6qEdyd7PUNb-IYCQ">
       <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
@@ -452,10 +462,13 @@ If the list is empty, all fixed Subnetwork Connections contained in the Multi La
         </ownedOperation>
         <ownedOperation xmi:id="_4MyGkNyKEdyY2qUBC6uXag" name="getAllSubnetworkConnections" visibility="public" precondition="_4MyGktyKEdyY2qUBC6uXag" postcondition="_4MyGlNyKEdyY2qUBC6uXag">
           <ownedComment xmi:id="_4MyGkdyKEdyY2qUBC6uXag" annotatedElement="_4MyGkNyKEdyY2qUBC6uXag">
-            <body>This operation retrieves the filtered list of Subnetwork Connections (SNCs) contained within the Multi Layer Subnetwork.&#xD;
-This operation also returns bundled SNCs, if any.&#xD;
+            <body>This operation retrieves the filtered list of Subnetwork Connections (SNCs) contained within the Multi Layer Subnetwork at the specified connectionRates.&#xD;
+This operation also returns bundled SNCs, if any (see associated supporting document SD1-3 on Bundled SNCs for further details).&#xD;
 &#xD;
 Traceability: R_TMF518_MRI_II_0030, R_TMF518_MRI_II_0032.</body>
+          </ownedComment>
+          <ownedComment xmi:id="_dEOb8GFjEeGX08VS0ncJzw" annotatedElement="_4MyGkNyKEdyY2qUBC6uXag">
+            <body>..\..\NetworkResourceFulfillment\SD\SD1-3_BundledSNC.pdf</body>
           </ownedComment>
           <ownedRule xmi:id="_4MyGktyKEdyY2qUBC6uXag" constrainedElement="_4MyGkNyKEdyY2qUBC6uXag">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_4MyGk9yKEdyY2qUBC6uXag">
@@ -511,13 +524,15 @@ If the list is empty, all Subnetwork Connections contained in the Multi Layer Su
           <ownedComment xmi:id="_4M73odyKEdyY2qUBC6uXag" annotatedElement="_4M73oNyKEdyY2qUBC6uXag">
             <body>This operation retrieves the list of Subnetwork Connections (SNCs) using the specified Termination Point at the specified connection rates.&#xD;
 An SNC is using the specified TP if any of its routes, intended and/or backup, in any state, use this TP.&#xD;
-A TP may be a PTP in which case a full list of SNCs using any of its contained CTPs is required. A TP may be a CTP, in which case only SNCs using that CTP or any of its contained CTPs are required.&#xD;
+A TP may be a PTP in which case a full list of SNCs using any of its contained CTPs is required.&#xD;
+A TP may be a CTP, in which case only SNCs using that CTP or any of its contained CTPs are required. This includes SNCs in which any of the referenced CTPs participate that match the specified connection rate filter and bundled SNCs that are associated with any GTPs in which any of the referenced CTPs are grouped.&#xD;
+A TP may be an FTP, in which case a full list of SNCs using the FTP or any of its contained CTPs is required. This includes SNCs in which the FTP or any of the referenced CTPs participate that match the specified connection rate filter and bundled SNCs that are associated with any GTPs in which any of the referenced CTPs are grouped.&#xD;
+A TP may be a GTP, in which case the layerRate is set to LR_Not_Applicable. If the GTP is part of a Cross-Connection, the target OS returns the set of bundled SNCs that use the provided GTP or contained GTP (if a CTP that is associated with a GTP is provided) as either an end point or an interior point.&#xD;
+Both end CTPs/FTPs/GTPs and intermediate CTPs/FTPs/GTPs are considered (see also SD1-3 Bundled SNC overview for further details).&#xD;
 Both end CTPs and intermediate CTPs at the same layer are considered. In all cases, only SNCs that also match the specified connection rate filter are returned.&#xD;
 All legs of a broadcast system can be retrieved using this operation where the source TP of the broadcast system is used as input to the operation. The output will be the list of individual SNCs that make up the broadcast system.&#xD;
-This operation also works if a GTP is supplied rather than a CTP. In this case, the layerRate is set to LR_Not_Applicable. If the GTP is part of a Cross-Connection, the target OS returns the set of bundled SNCs that use the provided GTP or contained GTP (if a CTP that is associated with a GTP is provided) as either an end point or an interior point.&#xD;
 &#xD;
-Traceability: R_TMF518_MRI_II_0034.&#xD;
-</body>
+Traceability: R_TMF518_MRI_II_0034.</body>
           </ownedComment>
           <ownedRule xmi:id="_4M73otyKEdyY2qUBC6uXag" constrainedElement="_4M73oNyKEdyY2qUBC6uXag">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_4M73o9yKEdyY2qUBC6uXag">
@@ -765,6 +780,7 @@ The input TP may be either the containing TP or one of the end TPs of the porten
         <ownedOperation xmi:id="_K6_SRNyLEdyY2qUBC6uXag" name="getRoute" visibility="public" precondition="_K6_SRtyLEdyY2qUBC6uXag" postcondition="_K6_SSNyLEdyY2qUBC6uXag">
           <ownedComment xmi:id="_nEFq0NyLEdyY2qUBC6uXag" annotatedElement="_K6_SRNyLEdyY2qUBC6uXag">
             <body>This operation retrieves the Route for a Subnetwork Connection (SNC). The Route information, in the form of Cross-Connections, should identify the resources allocated to the SNC at the time of the request and the way in which these resources are used.&#xD;
+For example, for a resilient SNC that is implemented in the subnetwork using subnetwork connection protection, all details of the route including normal and alternative paths should be provided.&#xD;
 If the SNC has more alternative Routes, then it retrieves the intended Route if the SNC is in Pending or Partial state, otherwise it retrieves the active Route. This because there can be more partial Routes and no active Route, in such case the intended Route is replied, as it is not known which of the partial Routes is the candidate for becoming the active Route.&#xD;
 The requesting OS specifies if it wants to retrieve only resources in the layer of the SNC (the Cross-Connections that belong to the SNC), or higher order Cross-Connections also (the Cross-Connections of other SNCs that are used to carry the traffic of the queried SNC).&#xD;
 All Cross-Connections allocated to the SNC must be returned, even if they are not active in the managed elements. This allows the requesting OS to query the Route that will be used before activating an SNC.&#xD;
@@ -821,9 +837,12 @@ Traceability: R_TMF518_MRI_II_0042.</body>
         <ownedOperation xmi:id="_4M73xNyKEdyY2qUBC6uXag" name="getSubnetworkConnection" visibility="public" precondition="_4M73xtyKEdyY2qUBC6uXag" postcondition="_4M73yNyKEdyY2qUBC6uXag">
           <ownedComment xmi:id="_4M73xdyKEdyY2qUBC6uXag" annotatedElement="_4M73xNyKEdyY2qUBC6uXag">
             <body>This operation retrieves the Subnetwork Connection and its associated distinguishing information.&#xD;
-The operation will return a bundled SNC structure if the name provided is that of a bundled SNC.&#xD;
+The operation will return a bundled SNC structure if the name provided is that of a bundled SNC (see associated supporting document SD1-3 on Bundled SNCs for further details).&#xD;
 &#xD;
 Traceability: R_TMF518_MRI_II_0036.</body>
+          </ownedComment>
+          <ownedComment xmi:id="_v7vmYGIlEeGziPKxqXlj-w" annotatedElement="_4MyGkNyKEdyY2qUBC6uXag">
+            <body>..\..\NetworkResourceFulfillment\SD\SD1-3_BundledSNC.pdf</body>
           </ownedComment>
           <ownedRule xmi:id="_4M73xtyKEdyY2qUBC6uXag" constrainedElement="_4M73xNyKEdyY2qUBC6uXag">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_4M73x9yKEdyY2qUBC6uXag">
@@ -862,9 +881,12 @@ Traceability: R_TMF518_MRI_II_0036.</body>
         <ownedOperation xmi:id="_4NFBgNyKEdyY2qUBC6uXag" name="getSubnetworkConnectionsByUserLabel" visibility="public" precondition="_4NFBgtyKEdyY2qUBC6uXag" postcondition="_4NFBhNyKEdyY2qUBC6uXag">
           <ownedComment xmi:id="_4NFBgdyKEdyY2qUBC6uXag" annotatedElement="_4NFBgNyKEdyY2qUBC6uXag">
             <body>This operation returns the Subnetwork Connections whose userLabel is supplied as a parameter.&#xD;
-The operation also works for bundled SNCs.&#xD;
+The operation also works for bundled SNCs (see associated supporting document SD1-3 on Bundled SNCs for further details).&#xD;
 &#xD;
 Traceability: R_TMF518_MRI_II_0037.</body>
+          </ownedComment>
+          <ownedComment xmi:id="_FcnG0GImEeGziPKxqXlj-w" annotatedElement="_4MyGkNyKEdyY2qUBC6uXag">
+            <body>..\..\NetworkResourceFulfillment\SD\SD1-3_BundledSNC.pdf</body>
           </ownedComment>
           <ownedRule xmi:id="_4NFBgtyKEdyY2qUBC6uXag" constrainedElement="_4NFBgNyKEdyY2qUBC6uXag">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_4NFBg9yKEdyY2qUBC6uXag">
@@ -897,7 +919,7 @@ Traceability: R_TMF518_MRI_II_0037.</body>
               <body>NA</body>
             </defaultValue>
           </ownedParameter>
-          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_6VdIcCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/NeCommLoss?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/CommLoss?"/>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InvalidInput?"/>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UnableToComply?"/>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
@@ -4130,9 +4152,7 @@ Traceability: R_TMF518_MRI_II_xxx.</body>
               <body>The system remains unchanged.</body>
             </specification>
           </ownedRule>
-          <ownedParameter xmi:id="_3rLcaED-EeGCAo9-ZY7z8A" name="void" direction="return">
-            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIhUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/void?"/>
-          </ownedParameter>
+          <ownedParameter xmi:id="_3rLcaED-EeGCAo9-ZY7z8A" name="void" direction="return"/>
           <ownedParameter xmi:id="_3rLcaUD-EeGCAo9-ZY7z8A" name="callAndTopLevelConnectionsList" type="_Im0SoF08EeGswfcCxRZm4Q" direction="out">
             <ownedComment xmi:id="_3rLcakD-EeGCAo9-ZY7z8A" annotatedElement="_3rLcaUD-EeGCAo9-ZY7z8A">
               <body>This parameter returns all Call objects and their associated top-level Connection objects contained by the given MLRA.</body>
@@ -4175,9 +4195,7 @@ Traceability: R_TMF518_MRI_II_xxx.</body>
               <body>The system remains unchanged.</body>
             </specification>
           </ownedRule>
-          <ownedParameter xmi:id="_3rLcuUD-EeGCAo9-ZY7z8A" name="void" direction="return">
-            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIhUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/void?"/>
-          </ownedParameter>
+          <ownedParameter xmi:id="_3rLcuUD-EeGCAo9-ZY7z8A" name="void" direction="return"/>
           <ownedParameter xmi:id="_3rLcukD-EeGCAo9-ZY7z8A" name="callAndTopLevelConnectionsAndSNCsList" type="_UkRb8F1kEeGswfcCxRZm4Q" direction="out">
             <ownedComment xmi:id="_3rLcu0D-EeGCAo9-ZY7z8A" annotatedElement="_3rLcukD-EeGCAo9-ZY7z8A">
               <body>This parameter returns all Call objects, their associated top-level Connection objects and their supporting SNC objects contained by the given MLRA.</body>
@@ -4220,9 +4238,7 @@ Traceability: R_TMF518_MRI_II_xxx.</body>
               <body>The system remains unchanged.</body>
             </specification>
           </ownedRule>
-          <ownedParameter xmi:id="_3rLcrED-EeGCAo9-ZY7z8A" name="void" direction="return">
-            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIhUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/void?"/>
-          </ownedParameter>
+          <ownedParameter xmi:id="_3rLcrED-EeGCAo9-ZY7z8A" name="void" direction="return"/>
           <ownedParameter xmi:id="_3rLcrUD-EeGCAo9-ZY7z8A" name="meRef">
             <ownedComment xmi:id="_3rLcrkD-EeGCAo9-ZY7z8A" annotatedElement="_3rLcrUD-EeGCAo9-ZY7z8A">
               <body>This parameter provides the name of the Managed Element terminating the Calls to be returned.</body>
@@ -4273,9 +4289,7 @@ Traceability: R_TMF518_MRI_II_xxx.</body>
               <body>The system remains unchanged.</body>
             </specification>
           </ownedRule>
-          <ownedParameter xmi:id="_3rLcw0D-EeGCAo9-ZY7z8A" direction="return">
-            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIhUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/void?"/>
-          </ownedParameter>
+          <ownedParameter xmi:id="_3rLcw0D-EeGCAo9-ZY7z8A" direction="return"/>
           <ownedParameter xmi:id="_IF53gF34EeGtX978TggU8Q" name="meRef">
             <ownedComment xmi:id="_IF53gV34EeGtX978TggU8Q" annotatedElement="_IF53gF34EeGtX978TggU8Q">
               <body>This parameter provides the name of the Managed Element terminating the Calls to be returned.</body>
@@ -4326,9 +4340,7 @@ Traceability: R_TMF518_MRI_II_xxx.</body>
               <body>The system remains unchanged.</body>
             </specification>
           </ownedRule>
-          <ownedParameter xmi:id="_3rLc0ED-EeGCAo9-ZY7z8A" name="void" direction="return">
-            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIhUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/void?"/>
-          </ownedParameter>
+          <ownedParameter xmi:id="_3rLc0ED-EeGCAo9-ZY7z8A" name="void" direction="return"/>
           <ownedParameter xmi:id="_PJVAsF4pEeGtX978TggU8Q" name="tpRef">
             <ownedComment xmi:id="_PJVAsV4pEeGtX978TggU8Q" annotatedElement="_PJVAsF4pEeGtX978TggU8Q">
               <body>This parameter provides the name of the TP terminating at least one of the Connections which are associated to the Calls to be retrieved.</body>
@@ -4379,9 +4391,7 @@ Traceability: R_TMF518_MRI_II_xxx.</body>
               <body>The system remians unchanged.</body>
             </specification>
           </ownedRule>
-          <ownedParameter xmi:id="_3rLcn0D-EeGCAo9-ZY7z8A" name="void" direction="return">
-            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIhUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/void?"/>
-          </ownedParameter>
+          <ownedParameter xmi:id="_3rLcn0D-EeGCAo9-ZY7z8A" name="void" direction="return"/>
           <ownedParameter xmi:id="_3rLco0D-EeGCAo9-ZY7z8A" name="callIdList" direction="out">
             <ownedComment xmi:id="_3rLcpED-EeGCAo9-ZY7z8A" annotatedElement="_3rLco0D-EeGCAo9-ZY7z8A">
               <body>This parameter returns all Call identifiers contained by the given MLRA and having at least one Connection/Subnetwork Connection which terminates on the specified TP itself or terminates on any TP contained in the specified TP.</body>
@@ -4432,9 +4442,7 @@ Traceability: R_TMF518_MRI_II_xxx.</body>
               <body>The system remians unchanged.</body>
             </specification>
           </ownedRule>
-          <ownedParameter xmi:id="_3rLckkD-EeGCAo9-ZY7z8A" name="void" direction="return">
-            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIhUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/void?"/>
-          </ownedParameter>
+          <ownedParameter xmi:id="_3rLckkD-EeGCAo9-ZY7z8A" name="void" direction="return"/>
           <ownedParameter xmi:id="_3rLck0D-EeGCAo9-ZY7z8A" name="snppOrTNARef">
             <ownedComment xmi:id="_3rLclED-EeGCAo9-ZY7z8A" annotatedElement="_3rLck0D-EeGCAo9-ZY7z8A">
               <body>This parameter provides the identifier of either an SNPP or a TNA.</body>
@@ -4489,9 +4497,7 @@ Traceability: R_TMF518_MRI_II_xxx.</body>
               <body>The system remains unchanged.</body>
             </specification>
           </ownedRule>
-          <ownedParameter xmi:id="_3rLc3UD-EeGCAo9-ZY7z8A" name="void" direction="return">
-            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIhUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/void?"/>
-          </ownedParameter>
+          <ownedParameter xmi:id="_3rLc3UD-EeGCAo9-ZY7z8A" name="void" direction="return"/>
           <ownedParameter xmi:id="_3rLc3kD-EeGCAo9-ZY7z8A" name="callId">
             <ownedComment xmi:id="_3rLc30D-EeGCAo9-ZY7z8A" annotatedElement="_3rLc3kD-EeGCAo9-ZY7z8A">
               <body>This parameter provides the identifier of the Call to be retrieved.</body>
@@ -4552,9 +4558,7 @@ Traceability: R_TMF518_MRI_II_xxx.</body>
               <body>The system remains unchanged.</body>
             </specification>
           </ownedRule>
-          <ownedParameter xmi:id="_3rLcckD-EeGCAo9-ZY7z8A" direction="return">
-            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIhUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/void?"/>
-          </ownedParameter>
+          <ownedParameter xmi:id="_3rLcckD-EeGCAo9-ZY7z8A" direction="return"/>
           <ownedParameter xmi:id="_z_vTEF6-EeG-j5n9Zqk2Ag" name="mlraRef">
             <ownedComment xmi:id="_z_vTEV6-EeG-j5n9Zqk2Ag" annotatedElement="_z_vTEF6-EeG-j5n9Zqk2Ag">
               <body>This parameter provides the name of the MLRA containing the Call (and Call associated Connections and Connection supporting SNCs) to be retrieved.</body>
@@ -4615,9 +4619,7 @@ Traceability: R_TMF518_MRI_II_xxx.</body>
               <body>The system remains unchanged.</body>
             </specification>
           </ownedRule>
-          <ownedParameter xmi:id="_3rLcHED-EeGCAo9-ZY7z8A" name="void" direction="return">
-            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIhUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/void?"/>
-          </ownedParameter>
+          <ownedParameter xmi:id="_3rLcHED-EeGCAo9-ZY7z8A" name="void" direction="return"/>
           <ownedParameter xmi:id="_3rLcIED-EeGCAo9-ZY7z8A" name="call" direction="out">
             <ownedComment xmi:id="_3rLcIUD-EeGCAo9-ZY7z8A" annotatedElement="_3rLcIED-EeGCAo9-ZY7z8A">
               <body>This parameter returns the Call object.</body>
@@ -4684,9 +4686,7 @@ Traceability: R_TMF518_MRI_II_xxx.</body>
               <body>The system remains unchanged.</body>
             </specification>
           </ownedRule>
-          <ownedParameter xmi:id="_IP1V5l7EEeG-j5n9Zqk2Ag" name="void" direction="return">
-            <type xmi:type="uml:PrimitiveType" href="platform:/resource/MTNM_CP/TMF608.emx#_MYiIhUDnEeGNvcm2KAVb5g?TMF608/RoseUserDefinedTypes/void?"/>
-          </ownedParameter>
+          <ownedParameter xmi:id="_IP1V5l7EEeG-j5n9Zqk2Ag" name="void" direction="return"/>
           <ownedParameter xmi:id="_IP1V517EEeG-j5n9Zqk2Ag" name="callID">
             <ownedComment xmi:id="_IP1V6F7EEeG-j5n9Zqk2Ag" annotatedElement="_IP1V517EEeG-j5n9Zqk2Ag">
               <body>This parameter provides the the control plane identifier of the Call.</body>
@@ -5032,6 +5032,860 @@ Operation Exceptions:
       <packagedElement xmi:type="uml:Dependency" xmi:id="_ZDMGwF3yEeGtX978TggU8Q" name="uses" supplier="_UkRb8F1kEeGswfcCxRZm4Q" client="_5NoecEEpEeGVAv7bueWJUg"/>
       <packagedElement xmi:type="uml:Dependency" xmi:id="_75wE0F7VEeG-j5n9Zqk2Ag" name="uses" supplier="_hbqoAF7LEeG-j5n9Zqk2Ag" client="_5NoecEEpEeGVAv7bueWJUg"/>
       <packagedElement xmi:type="uml:Dependency" xmi:id="_AdNo8F7WEeG-j5n9Zqk2Ag" name="uses" supplier="_V1pVMF7NEeG-j5n9Zqk2Ag" client="_5NoecEEpEeGVAv7bueWJUg"/>
+      <packagedElement xmi:type="uml:Interface" xmi:id="_tLBXcHlsEeGkCrhS32IC1g" name="MultiLayerRoutingAreaRetrievalService" clientDependency="_uUTHIHmBEeGkCrhS32IC1g _wQAwcHmCEeGkCrhS32IC1g">
+        <ownedOperation xmi:id="_tLBXcXlsEeGkCrhS32IC1g" name="getAllMultiLayerRoutingAreasWrtOs" visibility="public" precondition="_tLBXc3lsEeGkCrhS32IC1g" postcondition="_tLBXdXlsEeGkCrhS32IC1g">
+          <ownedComment xmi:id="_tLBXcnlsEeGkCrhS32IC1g" annotatedElement="_tLBXcXlsEeGkCrhS32IC1g">
+            <body>This operation returns all Multi Layer Routing Areas (MLRAs) managed by the provided subordinate OS AND contained by the provided Management Domain (MD).&#xD;
+If no MD is provided all MLRAs managed by the provided subordinate OS are returned.&#xD;
+Note that &quot;Wrt&quot; in the name of the operation stands for &quot;with respect to&quot;.&#xD;
+&#xD;
+Traceability: R_TMF518_MRI_II_xxx, UC_TMF518_MRI_xxx.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_tLBXc3lsEeGkCrhS32IC1g" constrainedElement="_tLBXcXlsEeGkCrhS32IC1g">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_tLBXdHlsEeGkCrhS32IC1g">
+              <body>None</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_tLBXdXlsEeGkCrhS32IC1g" constrainedElement="_tLBXcXlsEeGkCrhS32IC1g">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_tLBXdnlsEeGkCrhS32IC1g">
+              <body>No change in the system.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_tLBXeHlsEeGkCrhS32IC1g" name="osRef">
+            <ownedComment xmi:id="_tLBXeXlsEeGkCrhS32IC1g" annotatedElement="_tLBXeHlsEeGkCrhS32IC1g">
+              <body>This parameter provides the name of the subordinate OS whose managed Multi Layer Routing Areas are in scope of the request.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_tLBXenlsEeGkCrhS32IC1g">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_tLBXe3lsEeGkCrhS32IC1g" name="mdRef">
+            <ownedComment xmi:id="_tLBXfHlsEeGkCrhS32IC1g" annotatedElement="_tLBXe3lsEeGkCrhS32IC1g">
+              <body>This parameter provides the name of the Management Domain whose contained Multi Layer Routing Areas are in scope of the request.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <defaultValue xmi:type="uml:LiteralNull" xmi:id="_tLBXfXlsEeGkCrhS32IC1g"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_tLBXfnlsEeGkCrhS32IC1g" name="mlraList" direction="out">
+            <ownedComment xmi:id="_tLBXf3lsEeGkCrhS32IC1g" annotatedElement="_tLBXfnlsEeGkCrhS32IC1g">
+              <body>This parameter returns the list of all Multi Layer Routing Area objects managed by the provided subordinate OS and contained by the provided MD.</body>
+            </ownedComment>
+            <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_3rLbwED-EeGCAo9-ZY7z8A?NetworkResourceFulfillment/Data%20Object%20Classes/MultiLayerRoutingArea?"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_tLBXgHlsEeGkCrhS32IC1g" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_tLBXgXlsEeGkCrhS32IC1g"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_tLBXgnlsEeGkCrhS32IC1g">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_tLBXd3lsEeGkCrhS32IC1g" name="void" isUnique="false" direction="return"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/CommLoss?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_TAYcACVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/EntityNotFound?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InvalidInput?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UnableToComply?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_j_qksHl4EeGkCrhS32IC1g" name="getAllMultiLayerRoutingAreas" visibility="public" precondition="_j_qksnl4EeGkCrhS32IC1g" postcondition="_j_qktHl4EeGkCrhS32IC1g">
+          <ownedComment xmi:id="_j_qksXl4EeGkCrhS32IC1g" annotatedElement="_j_qksHl4EeGkCrhS32IC1g">
+            <body>This operation returns all Multi Layer Routing Areas (MLRAs) contained by the provided Management Domain (MD).&#xD;
+The returned list contains all the MLRAs at all levels of cotainment.&#xD;
+&#xD;
+Traceability: R_TMF518_MRI_II_xxx, UC_TMF518_MRI_xxx.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_j_qksnl4EeGkCrhS32IC1g" constrainedElement="_j_qksHl4EeGkCrhS32IC1g">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_j_qks3l4EeGkCrhS32IC1g">
+              <body>None</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_j_qktHl4EeGkCrhS32IC1g" constrainedElement="_j_qksHl4EeGkCrhS32IC1g">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_j_qktXl4EeGkCrhS32IC1g">
+              <body>No change in the system.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_j_qkunl4EeGkCrhS32IC1g" name="mdRef">
+            <ownedComment xmi:id="_j_qku3l4EeGkCrhS32IC1g" annotatedElement="_j_qkunl4EeGkCrhS32IC1g">
+              <body>This parameter provides the name of the Management Domain whose contained Multi Layer Routing Areas are in scope of the request.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <defaultValue xmi:type="uml:LiteralNull" xmi:id="_j_qkvHl4EeGkCrhS32IC1g"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_j_qkvXl4EeGkCrhS32IC1g" name="mlraList" direction="out">
+            <ownedComment xmi:id="_j_qkvnl4EeGkCrhS32IC1g" annotatedElement="_j_qkvXl4EeGkCrhS32IC1g">
+              <body>This parameter returns the list of all Multi Layer Routing Area objects contained by the provided MD.</body>
+            </ownedComment>
+            <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_3rLbwED-EeGCAo9-ZY7z8A?NetworkResourceFulfillment/Data%20Object%20Classes/MultiLayerRoutingArea?"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_j_qkv3l4EeGkCrhS32IC1g" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_j_qkwHl4EeGkCrhS32IC1g"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_j_qkwXl4EeGkCrhS32IC1g">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_j_qktnl4EeGkCrhS32IC1g" name="void" isUnique="false" direction="return"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/CommLoss?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_TAYcACVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/EntityNotFound?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InvalidInput?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UnableToComply?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_tLBXg3lsEeGkCrhS32IC1g" name="getAllTopLevelMultiLayerRoutingAreas" visibility="public" precondition="_tLBXhXlsEeGkCrhS32IC1g" postcondition="_tLBXh3lsEeGkCrhS32IC1g">
+          <ownedComment xmi:id="_tLBXhHlsEeGkCrhS32IC1g" annotatedElement="_tLBXg3lsEeGkCrhS32IC1g">
+            <body>This operation returns all top level Multi Layer Routing Areas contained by a provided Management Domain.&#xD;
+&#xD;
+Traceability: R_TMF518_MRI_II_xxx.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_tLBXhXlsEeGkCrhS32IC1g" constrainedElement="_tLBXg3lsEeGkCrhS32IC1g">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_tLBXhnlsEeGkCrhS32IC1g">
+              <body>None</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_tLBXh3lsEeGkCrhS32IC1g" constrainedElement="_tLBXg3lsEeGkCrhS32IC1g">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_tLBXiHlsEeGkCrhS32IC1g">
+              <body>No change in the system.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_tLBXinlsEeGkCrhS32IC1g" name="mdRef">
+            <ownedComment xmi:id="_tLBXi3lsEeGkCrhS32IC1g" annotatedElement="_tLBXinlsEeGkCrhS32IC1g">
+              <body>This parameter provides the name of the Management Domain for which to retrieve the contained Multi Layer Routing Areas.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_tLBXjHlsEeGkCrhS32IC1g">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_tLBXjXlsEeGkCrhS32IC1g" name="mlraList" direction="out">
+            <ownedComment xmi:id="_tLBXjnlsEeGkCrhS32IC1g" annotatedElement="_tLBXjXlsEeGkCrhS32IC1g">
+              <body>This parameter returns the list of all contained Multi Layer Routing Area objects.</body>
+            </ownedComment>
+            <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_3rLbwED-EeGCAo9-ZY7z8A?NetworkResourceFulfillment/Data%20Object%20Classes/MultiLayerRoutingArea?"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_tLBXj3lsEeGkCrhS32IC1g" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_tLBXkHlsEeGkCrhS32IC1g"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_tLBXkXlsEeGkCrhS32IC1g">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_tLBXiXlsEeGkCrhS32IC1g" name="void" isUnique="false" direction="return"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/CommLoss?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_TAYcACVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/EntityNotFound?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InvalidInput?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UnableToComply?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_tLBXoXlsEeGkCrhS32IC1g" name="getMultiLayerRoutingArea" visibility="public" precondition="_tLBXo3lsEeGkCrhS32IC1g" postcondition="_tLBXpXlsEeGkCrhS32IC1g">
+          <ownedComment xmi:id="_tLBXonlsEeGkCrhS32IC1g" annotatedElement="_tLBXoXlsEeGkCrhS32IC1g">
+            <body>This operation retrieves the details of a Multi Layer Routing Area given its name.&#xD;
+&#xD;
+Traceability: R_TMF518_MRI_II_xxx.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_tLBXo3lsEeGkCrhS32IC1g" constrainedElement="_tLBXoXlsEeGkCrhS32IC1g">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_tLBXpHlsEeGkCrhS32IC1g">
+              <body>None</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_tLBXpXlsEeGkCrhS32IC1g" constrainedElement="_tLBXoXlsEeGkCrhS32IC1g">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_tLBXpnlsEeGkCrhS32IC1g">
+              <body>No change in the system.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_tLBXqHlsEeGkCrhS32IC1g" name="mlraRef">
+            <ownedComment xmi:id="_tLBXqXlsEeGkCrhS32IC1g" annotatedElement="_tLBXqHlsEeGkCrhS32IC1g">
+              <body>This parameter provides the name of the Multi Layer Routing Area to be retrieved.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_tLBXqnlsEeGkCrhS32IC1g">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_tLBXq3lsEeGkCrhS32IC1g" name="mlra" direction="out">
+            <ownedComment xmi:id="_tLBXrHlsEeGkCrhS32IC1g" annotatedElement="_tLBXq3lsEeGkCrhS32IC1g">
+              <body>This parameter returns the Multi Layer Routing Area object selected by the given name.</body>
+            </ownedComment>
+            <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_3rLbwED-EeGCAo9-ZY7z8A?NetworkResourceFulfillment/Data%20Object%20Classes/MultiLayerRoutingArea?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_tLBXrXlsEeGkCrhS32IC1g">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_tLBXp3lsEeGkCrhS32IC1g" name="void" isUnique="false" direction="return"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/CommLoss?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_TAYcACVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/EntityNotFound?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InvalidInput?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UnableToComply?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_szSFsHmUEeGkCrhS32IC1g" name="getAllSubordinateMultiLayerRoutingAreas" visibility="public" precondition="_szSFsnmUEeGkCrhS32IC1g" postcondition="_szSFtHmUEeGkCrhS32IC1g">
+          <ownedComment xmi:id="_szSFsXmUEeGkCrhS32IC1g" annotatedElement="_szSFsHmUEeGkCrhS32IC1g">
+            <body>This operation returns all the MultiLayerRoutingArea objects that are &quot;contained&quot; within the targeted MultiLayerRoutingArea. This operation returns all the MultilayerRouting Areas down to and including those that represent Routing Nodes.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_szSFsnmUEeGkCrhS32IC1g" constrainedElement="_szSFsHmUEeGkCrhS32IC1g">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_szSFs3mUEeGkCrhS32IC1g">
+              <language></language>
+              <body>None</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_szSFtHmUEeGkCrhS32IC1g" constrainedElement="_szSFsHmUEeGkCrhS32IC1g">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_szSFtXmUEeGkCrhS32IC1g">
+              <body>The system remains unchanged.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_imqEMHmVEeGkCrhS32IC1g" name="mlraRef">
+            <ownedComment xmi:id="_imqEMXmVEeGkCrhS32IC1g" annotatedElement="_imqEMHmVEeGkCrhS32IC1g">
+              <body>This parameter provides the name of the Multi Layer Routing Area to be retrieved.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_imqEMnmVEeGkCrhS32IC1g">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_szSFtnmUEeGkCrhS32IC1g" name="void" direction="return"/>
+          <ownedParameter xmi:id="_4uxx4HmVEeGkCrhS32IC1g" name="mlraList" direction="out">
+            <ownedComment xmi:id="_4uxx4XmVEeGkCrhS32IC1g" annotatedElement="_4uxx4HmVEeGkCrhS32IC1g">
+              <body>This parameter returns the list of all subordinated Multi Layer Routing Area objects.</body>
+            </ownedComment>
+            <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_3rLbwED-EeGCAo9-ZY7z8A?NetworkResourceFulfillment/Data%20Object%20Classes/MultiLayerRoutingArea?"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_4uxx4nmVEeGkCrhS32IC1g" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_4uxx43mVEeGkCrhS32IC1g"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_4uxx5HmVEeGkCrhS32IC1g">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/CommLoss?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_TAYcACVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/EntityNotFound?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InvalidInput?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UnableToComply?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_ug11sHl-EeGkCrhS32IC1g" name="getAllSubordinateRoutingAreaIdsWithConnection" visibility="public" precondition="_ug11snl-EeGkCrhS32IC1g" postcondition="_ug11tHl-EeGkCrhS32IC1g">
+          <ownedComment xmi:id="_ug11sXl-EeGkCrhS32IC1g" annotatedElement="_ug11sHl-EeGkCrhS32IC1g">
+            <body>This operation returns the identifiers of the subordinate MultiLayerRoutingAreas, at the lower partitioning level (N-1 level) and which are known to be involved in the route of a Connection at level N.&#xD;
+&#xD;
+This operation supports a parameter that enables the specification of the type of route for which the subordinate MultiLayerRoutingAreas are being requested. This operation result is not recursive i.e. the operation has been designed to operate in a 3 level hierarchy, i.e. where the top level MultiLayerRoutingArea contains subordinate MultiLayerRoutingAreas, and such subordinate MultiLayerRoutingAreas contain Routing Nodes. &#xD;
+This operation can only be addressed to a top level routing area.&#xD;
+&#xD;
+The output of this operation has the following characteristics:&#xD;
+- The MultiLayerRoutingArea List is empty if there is no MultiLayerRoutingAreas for the requested intended or actual route or if the MultiLayerRoutingArea is a MultiLayerRoutingNode.&#xD;
+- There may be no Home/Intended route in the case where none was provisioned.&#xD;
+- There may be no Actual route where the connection is searching or the actual route traverses a different MultiLayerRoutingArea to the Home/Intended route.&#xD;
+- For an SNCP connection, the replied Home/Intended route will always include both main and spare legs of the SNCP protection, while the replied actual route may return only one leg, if only such leg is currently active in the network.&#xD;
+- The route is described in full across the MultiLayerRoutingArea regardless of sharing of same Routing Node Connections among distinct routes of the same Call.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_ug11snl-EeGkCrhS32IC1g" constrainedElement="_ug11sHl-EeGkCrhS32IC1g">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_ug11s3l-EeGkCrhS32IC1g">
+              <language></language>
+              <body>None</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_ug11tHl-EeGkCrhS32IC1g" constrainedElement="_ug11sHl-EeGkCrhS32IC1g">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_ug11tXl-EeGkCrhS32IC1g">
+              <body>The system remains unchanged.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_EeOdkHmAEeGkCrhS32IC1g" name="mlraRef">
+            <ownedComment xmi:id="_EeOdkXmAEeGkCrhS32IC1g" annotatedElement="_EeOdkHmAEeGkCrhS32IC1g">
+              <body>This parameter provides the name of the top level Multi Layer Routing Area.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_EeOdknmAEeGkCrhS32IC1g">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_ug11t3l-EeGkCrhS32IC1g" name="connectionRef">
+            <ownedComment xmi:id="_ug11uHl-EeGkCrhS32IC1g" annotatedElement="_ug11t3l-EeGkCrhS32IC1g">
+              <body>This parameter provides the name of the Connection for which the route (in terms of Routing Areas) is requested.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_ug11uXl-EeGkCrhS32IC1g">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_ug11unl-EeGkCrhS32IC1g" name="routeType" type="_V1pVMF7NEeG-j5n9Zqk2Ag">
+            <ownedComment xmi:id="_ug11u3l-EeGkCrhS32IC1g" annotatedElement="_ug11unl-EeGkCrhS32IC1g">
+              <body>This parameter provides the type of route that is required; either the home/intended route, the actual/current route or both routes.</body>
+            </ownedComment>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_ug11vHl-EeGkCrhS32IC1g">
+              <body>BOTH</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_ug11vXl-EeGkCrhS32IC1g" name="routePerRouteTypeList" type="_nqTe4HmCEeGkCrhS32IC1g" direction="out">
+            <ownedComment xmi:id="_ug11vnl-EeGkCrhS32IC1g" annotatedElement="_ug11vXl-EeGkCrhS32IC1g">
+              <body>This parameter returns the list of MultiLayerRouting Area Identifiers, the type of route with which they are associated (home/intended route, actual/current route or both) and a brief description.</body>
+            </ownedComment>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_OIfKIXmFEeGkCrhS32IC1g" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_OIfKIHmFEeGkCrhS32IC1g"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_ug11v3l-EeGkCrhS32IC1g">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_ug11tnl-EeGkCrhS32IC1g" name="void" direction="return"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/CommLoss?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_TAYcACVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/EntityNotFound?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InvalidInput?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UnableToComply?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_VvFWkCVfEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotInValidState?"/>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_uUTHIHmBEeGkCrhS32IC1g" name="uses" supplier="_V1pVMF7NEeG-j5n9Zqk2Ag" client="_tLBXcHlsEeGkCrhS32IC1g"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_wQAwcHmCEeGkCrhS32IC1g" name="uses" supplier="_nqTe4HmCEeGkCrhS32IC1g" client="_tLBXcHlsEeGkCrhS32IC1g"/>
+      <packagedElement xmi:type="uml:Interface" xmi:id="_oAqZUHmWEeGkCrhS32IC1g" name="MultiLayerSubNetworkPointPoolLinkRetrievalService">
+        <ownedOperation xmi:id="_0OcIUHmXEeGkCrhS32IC1g" name="getAllMultiLayerSubNetworkPointPoolLinksWithTp" visibility="public" precondition="_0OcIUXmXEeGkCrhS32IC1g" postcondition="_0OcIU3mXEeGkCrhS32IC1g">
+          <ownedComment xmi:id="_WOqagHmaEeGkCrhS32IC1g" annotatedElement="_0OcIUHmXEeGkCrhS32IC1g">
+            <body>This operation is used to query all the MultiLayer SNPP Link(s) that are known to the target OS using the specified Termination Point (PTP or CTP).&#xD;
+Both internal and edge links are returned.&#xD;
+It can be requested to return also the SNPs terminating the MLSNPP Links to be returned.&#xD;
+&#xD;
+Traceability: R_TMF518_MRI_II_xxx, UC_TMF518_MRI_xxx.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_0OcIUXmXEeGkCrhS32IC1g" constrainedElement="_0OcIUHmXEeGkCrhS32IC1g">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_0OcIUnmXEeGkCrhS32IC1g">
+              <body>None</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_0OcIU3mXEeGkCrhS32IC1g" constrainedElement="_0OcIUHmXEeGkCrhS32IC1g">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_0OcIVHmXEeGkCrhS32IC1g">
+              <body>No change in the system.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_0OcIVXmXEeGkCrhS32IC1g" name="void" isUnique="false" direction="return"/>
+          <ownedParameter xmi:id="_WOqagXmaEeGkCrhS32IC1g" name="tpRef">
+            <ownedComment xmi:id="_WOqagnmaEeGkCrhS32IC1g" annotatedElement="_WOqagXmaEeGkCrhS32IC1g">
+              <body>This parameter provides the Termination Point name for which the MultiLayer SNPP Links are requested.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_WOqag3maEeGkCrhS32IC1g">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_WO0LgHmaEeGkCrhS32IC1g" name="isSnpListRequested">
+            <ownedComment xmi:id="_WO0LgXmaEeGkCrhS32IC1g" annotatedElement="_WO0LgHmaEeGkCrhS32IC1g">
+              <body>This parameter indicates if the SNPs must be included in the reply.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_WO0LgnmaEeGkCrhS32IC1g">
+              <body>False</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_WO0Lg3maEeGkCrhS32IC1g" name="mlsnppLinkList" direction="out">
+            <ownedComment xmi:id="_WO0LhHmaEeGkCrhS32IC1g" annotatedElement="_WO0Lg3maEeGkCrhS32IC1g">
+              <body>This parameter returns the list of the requested MultiLayer SNPP Links and optionally the corresponding terminating SNPs.</body>
+            </ownedComment>
+            <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_Z5cjQED8EeGCAo9-ZY7z8A?NetworkResourceFulfillment/Data%20Object%20Classes/MultiLayerSubNetworkPointPoolLink?"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Tw2TQXmlEeGkCrhS32IC1g" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Tw2TQHmlEeGkCrhS32IC1g"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_WO0LhXmaEeGkCrhS32IC1g">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/CommLoss?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_TAYcACVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/EntityNotFound?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InvalidInput?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UnableToComply?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_zo4kMHmXEeGkCrhS32IC1g" name="getAllMultiLayerSubNetworkPointPoolLinksWithMlras" visibility="public" precondition="_zo4kMXmXEeGkCrhS32IC1g" postcondition="_zo4kM3mXEeGkCrhS32IC1g">
+          <ownedComment xmi:id="_NZKZcHmaEeGkCrhS32IC1g" annotatedElement="_zo4kMHmXEeGkCrhS32IC1g">
+            <body>This operation returns all MLSNPP Links that interconnect a pair of specified MLRAs.&#xD;
+Both internal and edge links are returned.&#xD;
+&#xD;
+Traceability: R_TMF518_MRI_II_xxx.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_zo4kMXmXEeGkCrhS32IC1g" constrainedElement="_zo4kMHmXEeGkCrhS32IC1g">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_zo4kMnmXEeGkCrhS32IC1g">
+              <body>None</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_zo4kM3mXEeGkCrhS32IC1g" constrainedElement="_zo4kMHmXEeGkCrhS32IC1g">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_zo4kNHmXEeGkCrhS32IC1g">
+              <body>No change in the system.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_NZKZcXmaEeGkCrhS32IC1g" name="mlraRefList">
+            <ownedComment xmi:id="_NZKZcnmaEeGkCrhS32IC1g" annotatedElement="_NZKZcXmaEeGkCrhS32IC1g">
+              <body>This parameter provides two MultiLayer Routing Area names. All returned MultiLayer SNPP Links must be between these two MultiLayer Routing Areas.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_8BUbgXmnEeGkCrhS32IC1g" value="2"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_8BUbgHmnEeGkCrhS32IC1g" value="2"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_NZKZc3maEeGkCrhS32IC1g">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_ZEf20HmoEeGkCrhS32IC1g" name="isSnpListRequested">
+            <ownedComment xmi:id="_ZEf20XmoEeGkCrhS32IC1g" annotatedElement="_ZEf20HmoEeGkCrhS32IC1g">
+              <body>This parameter indicates if the SNPs must be included in the reply.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_ZEf20nmoEeGkCrhS32IC1g">
+              <body>False</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_zo4kNXmXEeGkCrhS32IC1g" name="void" isUnique="false" direction="return"/>
+          <ownedParameter xmi:id="_evN98HmoEeGkCrhS32IC1g" name="mlsnppLinkList" direction="out">
+            <ownedComment xmi:id="_evN98XmoEeGkCrhS32IC1g" annotatedElement="_evN98HmoEeGkCrhS32IC1g">
+              <body>This parameter returns the list of the requested MultiLayer SNPP Links and optionally the corresponding terminating SNPs.</body>
+            </ownedComment>
+            <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_Z5cjQED8EeGCAo9-ZY7z8A?NetworkResourceFulfillment/Data%20Object%20Classes/MultiLayerSubNetworkPointPoolLink?"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_evN98nmoEeGkCrhS32IC1g" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_evN983moEeGkCrhS32IC1g"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_evN99HmoEeGkCrhS32IC1g">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/CommLoss?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_TAYcACVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/EntityNotFound?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InvalidInput?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UnableToComply?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_z79RMHmXEeGkCrhS32IC1g" name="getAllMultiLayerSubNetworkPointPoolLinksWithTna" visibility="public" precondition="_z79RMXmXEeGkCrhS32IC1g" postcondition="_z79RM3mXEeGkCrhS32IC1g">
+          <ownedComment xmi:id="_Rtul8HmaEeGkCrhS32IC1g" annotatedElement="_z79RMHmXEeGkCrhS32IC1g">
+            <body>This operation returns all MultiLayer SNPP Links using the specified TNA.&#xD;
+Both internal and edge links are returned.&#xD;
+&#xD;
+Traceability: R_TMF518_MRI_II_xxx.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_z79RMXmXEeGkCrhS32IC1g" constrainedElement="_z79RMHmXEeGkCrhS32IC1g">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_z79RMnmXEeGkCrhS32IC1g">
+              <body>None</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_z79RM3mXEeGkCrhS32IC1g" constrainedElement="_z79RMHmXEeGkCrhS32IC1g">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_z79RNHmXEeGkCrhS32IC1g">
+              <body>No change in the system.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_Rtul8XmaEeGkCrhS32IC1g" name="tnaRef">
+            <ownedComment xmi:id="_Rtul8nmaEeGkCrhS32IC1g" annotatedElement="_Rtul8XmaEeGkCrhS32IC1g">
+              <body>This parameter provides the TNA identifiers for which the MultiLayer SNPP Links are requested.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_Rtul83maEeGkCrhS32IC1g">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_G8H00HmrEeGkCrhS32IC1g" name="isSnpListRequested">
+            <ownedComment xmi:id="_G8H00XmrEeGkCrhS32IC1g" annotatedElement="_G8H00HmrEeGkCrhS32IC1g">
+              <body>This parameter indicates if the SNPs must be included in the reply.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_G8H00nmrEeGkCrhS32IC1g">
+              <body>False</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_XWWyoHmrEeGkCrhS32IC1g" name="mlsnppLinkList" direction="out">
+            <ownedComment xmi:id="_XWWyoXmrEeGkCrhS32IC1g" annotatedElement="_XWWyoHmrEeGkCrhS32IC1g">
+              <body>This parameter returns the list of the requested MultiLayer SNPP Links and optionally the corresponding terminating SNPs.&#xD;
+&#xD;
+</body>
+            </ownedComment>
+            <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_Z5cjQED8EeGCAo9-ZY7z8A?NetworkResourceFulfillment/Data%20Object%20Classes/MultiLayerSubNetworkPointPoolLink?"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_XWWyonmrEeGkCrhS32IC1g" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_XWWyo3mrEeGkCrhS32IC1g"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_XWWypHmrEeGkCrhS32IC1g">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_z79RNXmXEeGkCrhS32IC1g" name="void" isUnique="false" direction="return"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/CommLoss?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_TAYcACVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/EntityNotFound?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InvalidInput?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UnableToComply?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_nKB20HmXEeGkCrhS32IC1g" name="getMultiLayerSubNetworkPointPoolLink" visibility="public" precondition="_nKB20nmXEeGkCrhS32IC1g" postcondition="_nKB21HmXEeGkCrhS32IC1g">
+          <ownedComment xmi:id="_zUhy4HmZEeGkCrhS32IC1g" annotatedElement="_nKB20HmXEeGkCrhS32IC1g">
+            <body>This operation returns a MultiLayer SNPP Link given a MultiLayer SNPP Link name.&#xD;
+&#xD;
+Traceability: R_TMF518_MRI_II_xxx.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_nKB20nmXEeGkCrhS32IC1g" constrainedElement="_nKB20HmXEeGkCrhS32IC1g">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_nKB203mXEeGkCrhS32IC1g">
+              <body>None</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_nKB21HmXEeGkCrhS32IC1g" constrainedElement="_nKB20HmXEeGkCrhS32IC1g">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_nKB21XmXEeGkCrhS32IC1g">
+              <body>No change in the system.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_zUhy4XmZEeGkCrhS32IC1g" name="mlsnppLinkRef">
+            <ownedComment xmi:id="_zUhy4nmZEeGkCrhS32IC1g" annotatedElement="_zUhy4XmZEeGkCrhS32IC1g">
+              <body>This parameter provides the unique identifier of the MultiLayer SNPP Link to be retrieved.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_zUhy43mZEeGkCrhS32IC1g">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_sfaakHmsEeGkCrhS32IC1g" name="isSnpListRequested">
+            <ownedComment xmi:id="_sfaakXmsEeGkCrhS32IC1g" annotatedElement="_sfaakHmsEeGkCrhS32IC1g">
+              <body>This parameter indicates if the SNPs must be included in the reply.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_sfaaknmsEeGkCrhS32IC1g">
+              <body>False</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_sfaak3msEeGkCrhS32IC1g" name="mlsnppLink" direction="out">
+            <ownedComment xmi:id="_sfaalHmsEeGkCrhS32IC1g" annotatedElement="_sfaak3msEeGkCrhS32IC1g">
+              <body>This parameter returns the requested MultiLayer SNPP Link and optionally the corresponding terminating SNPs.</body>
+            </ownedComment>
+            <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_Z5cjQED8EeGCAo9-ZY7z8A?NetworkResourceFulfillment/Data%20Object%20Classes/MultiLayerSubNetworkPointPoolLink?"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sfaalXmsEeGkCrhS32IC1g" value="1"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sfaalnmsEeGkCrhS32IC1g"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_sfaal3msEeGkCrhS32IC1g">
+              <body></body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_nKB23nmXEeGkCrhS32IC1g" name="void" isUnique="false" direction="return"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/CommLoss?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_TAYcACVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/EntityNotFound?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InvalidInput?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UnableToComply?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_zSYvwHmXEeGkCrhS32IC1g" name="getAllMultiLayerSubNetworkPointPoolLinks" visibility="public" precondition="_zSYvwXmXEeGkCrhS32IC1g" postcondition="_zSYvw3mXEeGkCrhS32IC1g">
+          <ownedComment xmi:id="_E9cKUHmaEeGkCrhS32IC1g" annotatedElement="_zSYvwHmXEeGkCrhS32IC1g">
+            <body>This operation returns all MultiLayerSNPPLinks known to the target OS.&#xD;
+&#xD;
+If a MultiLayerRoutingArea object name is provided as an input parameter, the operation returns only the MultiLayerSNPPLinks internal and external to the specified MultiLayerRoutingArea (only MultiLayerSNPPLinks directly within the MultiLayerRoutingArea or directly at the edge of the MultiLayerRoutingArea are returned).&#xD;
+&#xD;
+If the MultiLayerRoutingArea represents a Routing Node, then only external MultiLayerSNPPLinks are returned.&#xD;
+The MultiLayerSNPPLinks returned may include the information on the SNPs, dependent upon the input parameter choice.&#xD;
+&#xD;
+Considering the external MultiLayerSNPPLinks:&#xD;
+- In the case of the top-level MultiLayerRoutingArea then the operation shall return all the MultiLayerSNPPLinks to external devices (i.e. UNI or dumb-SNPPLinks - note that dumb-SNPPLinks may coincide with top-level Topological Links).&#xD;
+- In the case of a MultiLayerRoutingArea of level N, N being any level subordinate of the top level (including the Routing Node) then it shall return all the MultiLayerSNPPLinks to another MultiLayerRoutingArea of the same level N.&#xD;
+&#xD;
+Considering the internal MultiLayerSNPPLinks:&#xD;
+- Only I-NNI links are returned.&#xD;
+Note that E-NNI and I-NNI definitions are related to the hierarchy level considered,  following the partitioning concept. For example. given a MultiLayerRoutingArea of level N, its edge  links have the E-NNI role with respect to level N. Same links have I-NNI role with respect to level N-1 (superior), i.e. are internal links of superior MultiLayerRoutingArea.&#xD;
+The reply may be an empty or a partial list depending upon the visibility that the target OS has of the control plane: &#xD;
+- Local &amp; Complete - the target OS completely manages the MultiLayerRoutingArea and the supporting transport plane resources (ME, TP, etc.) such that it can provide a complete view of the MultiLayerSNPPLinks and all associated transport plane data.&#xD;
+- Local CP Only - the target OS manages the MultiLayerRoutingArea but has no view of the supporting transport plane resources such that it can provide a complete view of the MultiLayerSNPPLinks but cannot provide any associated transport plane data.&#xD;
+- Remote CP Transparent - the target OS manages the MultiLayerRoutingArea at this level but may not have a view of the details of the subordinate MLRA levels and has no view of the supporting transport plane resources, such that it can provide a complete view of the MultiLayerSNPPLinks but not necessarily all of the SNPP aliases and can not provide any associated transport plane data.&#xD;
+- Remote CP Limited - the target OS partially manages the MultiLayerRoutingArea at this level and may not have a view of the details of the subordinate MultiLayerRoutingArea levels and has no view of the supporting transport plane resources, such that it can provide a view of some of the MultiLayerSNPPLinks and not necessarily all of the subordinate SNPPs for those MultiLayerSNPPLinks and can not provide any associated transport plane data.&#xD;
+- Remote CP Opaque - the target OS is unable to provide any information related to MultiLayerSNPPLinks that are internal to the specified MultiLayerRoutingArea.&#xD;
+&#xD;
+Traceability: R_TMF518_MRI_II_xxx.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_zSYvwXmXEeGkCrhS32IC1g" constrainedElement="_zSYvwHmXEeGkCrhS32IC1g">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_zSYvwnmXEeGkCrhS32IC1g">
+              <body>None</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_zSYvw3mXEeGkCrhS32IC1g" constrainedElement="_zSYvwHmXEeGkCrhS32IC1g">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_zSYvxHmXEeGkCrhS32IC1g">
+              <body>No change in the system.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_E9cKUXmaEeGkCrhS32IC1g" name="mlraRef">
+            <ownedComment xmi:id="_E9cKUnmaEeGkCrhS32IC1g" annotatedElement="_E9cKUXmaEeGkCrhS32IC1g">
+              <body>This parameter provides the name of the MultiLayerRoutingArea object.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_4ouD0XmuEeGkCrhS32IC1g" value="1"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_4ouD0HmuEeGkCrhS32IC1g"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_E9cKU3maEeGkCrhS32IC1g">
+              <body></body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_RKkB8HmvEeGkCrhS32IC1g" name="isSnpListRequested">
+            <ownedComment xmi:id="_RKkB8XmvEeGkCrhS32IC1g" annotatedElement="_RKkB8HmvEeGkCrhS32IC1g">
+              <body>This parameter indicates if the SNPs must be included in the reply.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_RKkB8nmvEeGkCrhS32IC1g">
+              <body>False</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_RKkB83mvEeGkCrhS32IC1g" name="mlsnppLinkList" direction="out">
+            <ownedComment xmi:id="_RKkB9HmvEeGkCrhS32IC1g" annotatedElement="_RKkB83mvEeGkCrhS32IC1g">
+              <body>This parameter returns the list of the requested MultiLayer SNPP Links and optionally the corresponding terminating SNPs.</body>
+            </ownedComment>
+            <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_Z5cjQED8EeGCAo9-ZY7z8A?NetworkResourceFulfillment/Data%20Object%20Classes/MultiLayerSubNetworkPointPoolLink?"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_RKkB9XmvEeGkCrhS32IC1g" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_RKkB9nmvEeGkCrhS32IC1g"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_RKkB93mvEeGkCrhS32IC1g">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_zSYvxXmXEeGkCrhS32IC1g" name="void" isUnique="false" direction="return"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/CommLoss?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_TAYcACVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/EntityNotFound?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InvalidInput?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UnableToComply?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_y8L2QHmXEeGkCrhS32IC1g" name="getAllInternalMultiLayerSubNetworkPointPoolLinks" visibility="public" precondition="_y8L2QXmXEeGkCrhS32IC1g" postcondition="_y8L2Q3mXEeGkCrhS32IC1g">
+          <ownedComment xmi:id="__mkMQHmZEeGkCrhS32IC1g" annotatedElement="_y8L2QHmXEeGkCrhS32IC1g">
+            <body>This operation has exactly the same behaviour as the getAllMultiLayerSubNetworkPointPoolLinks operation, but instead of returning all the Multi Layer SNPP Link objects this operation returns only those that are internal to the addressed Multi Layer Routing Area.&#xD;
+If the addressed Multi Layer Routing Area is a Routing Node then the list will be empty.&#xD;
+&#xD;
+Traceability: R_TMF518_MRI_II_xxx, UC_TMF518_MRI_xxx.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_y8L2QXmXEeGkCrhS32IC1g" constrainedElement="_y8L2QHmXEeGkCrhS32IC1g">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_y8L2QnmXEeGkCrhS32IC1g">
+              <body>None</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_y8L2Q3mXEeGkCrhS32IC1g" constrainedElement="_y8L2QHmXEeGkCrhS32IC1g">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_y8L2RHmXEeGkCrhS32IC1g">
+              <body>No change in the system.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_G84QgHmwEeGkCrhS32IC1g" name="mlraRef">
+            <ownedComment xmi:id="_G84QgXmwEeGkCrhS32IC1g" annotatedElement="_G84QgHmwEeGkCrhS32IC1g">
+              <body>This parameter provides the name of the Multi Layer Routing Area containing the Multi Layer SNPP Links to be retrieved.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_G84QgnmwEeGkCrhS32IC1g">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_GhMkoHmxEeGkCrhS32IC1g" name="isSnpListRequested">
+            <ownedComment xmi:id="_GhMkoXmxEeGkCrhS32IC1g" annotatedElement="_GhMkoHmxEeGkCrhS32IC1g">
+              <body>This parameter indicates if the SNPs must be included in the reply.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_GhMkonmxEeGkCrhS32IC1g">
+              <body>False</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_GhMko3mxEeGkCrhS32IC1g" name="mlsnppLinkList" direction="out">
+            <ownedComment xmi:id="_GhMkpHmxEeGkCrhS32IC1g" annotatedElement="_GhMko3mxEeGkCrhS32IC1g">
+              <body>This parameter returns the list of the requested MultiLayer SNPP Links and optionally the corresponding terminating SNPs.</body>
+            </ownedComment>
+            <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_Z5cjQED8EeGCAo9-ZY7z8A?NetworkResourceFulfillment/Data%20Object%20Classes/MultiLayerSubNetworkPointPoolLink?"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_GhMkpXmxEeGkCrhS32IC1g" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_GhMkpnmxEeGkCrhS32IC1g"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_GhMkp3mxEeGkCrhS32IC1g">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_y8L2RXmXEeGkCrhS32IC1g" name="void" isUnique="false" direction="return"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/CommLoss?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_TAYcACVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/EntityNotFound?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InvalidInput?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UnableToComply?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_ygA3oHmXEeGkCrhS32IC1g" name="getAllEdgeMultiLayerSubNetworkPointPoolLinks" visibility="public" precondition="_ygA3oXmXEeGkCrhS32IC1g" postcondition="_ygA3o3mXEeGkCrhS32IC1g">
+          <ownedComment xmi:id="_5z-ikHmZEeGkCrhS32IC1g">
+            <body>This operation has exactly the same behaviour as getAllMLSNPPLinks, but instead of returning all the MultiLayerSNPPLink objects this operation returns only those that are external to the MultiLayerRoutingArea.
+
+Operation Exceptions:
+1. NOT_IMPLEMENTED - Raised when the entire operation is not supported by the EMS or the operation with the specified input parameters is not supported.
+2. INTERNAL_ERROR - Raised when the operation has resulted in an EMS internal error.
+3. INVALID_INPUT - Raised when the operation contains an input parameter that is syntactically incorrect or identifies an object of the wrong type or is out of range.
+4. ENTITY_NOT_FOUND - Raised when the specified object instance does not exist.
+5. UNABLE_TO_COMPLY - Raised when the EMS cannot respond to the request
+6. NE_COMM_LOSS - Raised when the EMS is unable to communicate with the NE and communication is required to complete the operation.
+</body>
+          </ownedComment>
+          <ownedRule xmi:id="_ygA3oXmXEeGkCrhS32IC1g" constrainedElement="_ygA3oHmXEeGkCrhS32IC1g">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_ygA3onmXEeGkCrhS32IC1g">
+              <body>None</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_ygA3o3mXEeGkCrhS32IC1g" constrainedElement="_ygA3oHmXEeGkCrhS32IC1g">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_ygA3pHmXEeGkCrhS32IC1g">
+              <body>No change in the system.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_5HBCAHmxEeGkCrhS32IC1g" name="mlraRef">
+            <ownedComment xmi:id="_5HBCAXmxEeGkCrhS32IC1g" annotatedElement="_5HBCAHmxEeGkCrhS32IC1g">
+              <body>This parameter provides the name of the Multi Layer Routing Area where the requested Multi Layer SNPP Links are external to.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_5HBCAnmxEeGkCrhS32IC1g">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_5HBCA3mxEeGkCrhS32IC1g" name="isSnpListRequested">
+            <ownedComment xmi:id="_5HBCBHmxEeGkCrhS32IC1g" annotatedElement="_5HBCA3mxEeGkCrhS32IC1g">
+              <body>This parameter indicates if the SNPs must be included in the reply.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_5HBCBXmxEeGkCrhS32IC1g">
+              <body>False</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_5HBCBnmxEeGkCrhS32IC1g" name="mlsnppLinkList" direction="out">
+            <ownedComment xmi:id="_5HBCB3mxEeGkCrhS32IC1g" annotatedElement="_5HBCBnmxEeGkCrhS32IC1g">
+              <body>This parameter returns the list of the requested MultiLayer SNPP Links and optionally the corresponding terminating SNPs.</body>
+            </ownedComment>
+            <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_Z5cjQED8EeGCAo9-ZY7z8A?NetworkResourceFulfillment/Data%20Object%20Classes/MultiLayerSubNetworkPointPoolLink?"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_5HBCCHmxEeGkCrhS32IC1g" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5HBCCXmxEeGkCrhS32IC1g"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_5HBCCnmxEeGkCrhS32IC1g">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_ygA3pXmXEeGkCrhS32IC1g" name="void" isUnique="false" direction="return"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/CommLoss?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_TAYcACVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/EntityNotFound?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InvalidInput?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UnableToComply?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Interface" xmi:id="_ELEI0HmzEeGkCrhS32IC1g" name="MultiLayerSubNetworkPointPoolRetrievalService">
+        <ownedOperation xmi:id="_-VrL4Ho4EeGV-4k-0X86UA" name="getAllMultiLayerSubNetworkPointPoolsWithTp" visibility="public" precondition="_-VrL4Xo4EeGV-4k-0X86UA" postcondition="_-VrL43o4EeGV-4k-0X86UA">
+          <ownedComment xmi:id="_OmQecHo5EeGV-4k-0X86UA" annotatedElement="_-VrL4Ho4EeGV-4k-0X86UA">
+            <body>This operation returns all MultiLayer SNPP(s) that are known to the target OS using the specified Termination Point (PTP or CTP).&#xD;
+&#xD;
+Traceability: R_TMF518_MRI_II_xxx, UC_TMF518_MRI_xxx.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_-VrL4Xo4EeGV-4k-0X86UA" constrainedElement="_-VrL4Ho4EeGV-4k-0X86UA">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_-VrL4no4EeGV-4k-0X86UA">
+              <body>None</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_-VrL43o4EeGV-4k-0X86UA" constrainedElement="_-VrL4Ho4EeGV-4k-0X86UA">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_-VrL5Ho4EeGV-4k-0X86UA">
+              <body>No change in the system.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_OmQecXo5EeGV-4k-0X86UA" name="tpRef">
+            <ownedComment xmi:id="_OmQecno5EeGV-4k-0X86UA" annotatedElement="_OmQecXo5EeGV-4k-0X86UA">
+              <body>This parameter provides the Termination Point name for which the MultiLayer SNPPs are requested.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_OmQec3o5EeGV-4k-0X86UA">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_OmQedHo5EeGV-4k-0X86UA" name="mlsnppList" direction="out">
+            <ownedComment xmi:id="_OmQedXo5EeGV-4k-0X86UA" annotatedElement="_OmQedHo5EeGV-4k-0X86UA">
+              <body>This parameter returns the list of the requested MultiLayer SNPPs containing the provided TP.</body>
+            </ownedComment>
+            <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_fCBmoED8EeGCAo9-ZY7z8A?NetworkResourceFulfillment/Data%20Object%20Classes/MultiLayerSubNetworkPointPool?"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_THbHEHo6EeGV-4k-0X86UA" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_THR9IHo6EeGV-4k-0X86UA"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_OmQedno5EeGV-4k-0X86UA">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_-VrL6Ho4EeGV-4k-0X86UA" name="void" isUnique="false" direction="return"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/CommLoss?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_TAYcACVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/EntityNotFound?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InvalidInput?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UnableToComply?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_-AqlMHo4EeGV-4k-0X86UA" name="getAllMultiLayerSubNetworkPointPoolsWithTna" visibility="public" precondition="_-AqlMXo4EeGV-4k-0X86UA" postcondition="_-AqlM3o4EeGV-4k-0X86UA">
+          <ownedComment xmi:id="_JaGioHo5EeGV-4k-0X86UA" annotatedElement="_-AqlMHo4EeGV-4k-0X86UA">
+            <body>This operation returns all MultiLayer SNPPs using the specified TNA.&#xD;
+&#xD;
+Traceability: R_TMF518_MRI_II_xxx.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_-AqlMXo4EeGV-4k-0X86UA" constrainedElement="_-AqlMHo4EeGV-4k-0X86UA">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_-AqlMno4EeGV-4k-0X86UA">
+              <body>None</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_-AqlM3o4EeGV-4k-0X86UA" constrainedElement="_-AqlMHo4EeGV-4k-0X86UA">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_-AqlNHo4EeGV-4k-0X86UA">
+              <body>No change in the system.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_JaGioXo5EeGV-4k-0X86UA" name="tnaRef">
+            <ownedComment xmi:id="_JaGiono5EeGV-4k-0X86UA" annotatedElement="_JaGioXo5EeGV-4k-0X86UA">
+              <body>This parameter provides the TNA identifier for which the MultiLayer SNPPs are requested.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_JaGio3o5EeGV-4k-0X86UA">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_JaGipHo5EeGV-4k-0X86UA" name="mlsnppList" direction="out">
+            <ownedComment xmi:id="_JaGipXo5EeGV-4k-0X86UA" annotatedElement="_JaGipHo5EeGV-4k-0X86UA">
+              <body>This parameter returns the list of the requested MultiLayer SNPPs.</body>
+            </ownedComment>
+            <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_fCBmoED8EeGCAo9-ZY7z8A?NetworkResourceFulfillment/Data%20Object%20Classes/MultiLayerSubNetworkPointPool?"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_M_RAkXo7EeGV-4k-0X86UA" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_M_RAkHo7EeGV-4k-0X86UA"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_JaGipno5EeGV-4k-0X86UA">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_-AqlOHo4EeGV-4k-0X86UA" name="void" isUnique="false" direction="return"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/CommLoss?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_TAYcACVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/EntityNotFound?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InvalidInput?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UnableToComply?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_2mWvwHo4EeGV-4k-0X86UA" name="getAllMultiLayerSubNetworkPointPools" visibility="public" precondition="_2mWvwno4EeGV-4k-0X86UA" postcondition="_2mWvxHo4EeGV-4k-0X86UA">
+          <ownedComment xmi:id="_AsLwQHo5EeGV-4k-0X86UA" annotatedElement="_2mWvwHo4EeGV-4k-0X86UA">
+            <body>This operation returns all MultiLayer SNPP(s) that are known to the target OS. The operation returns the MLSNPPs that are of type TCP.&#xD;
+&#xD;
+Traceability: R_TMF518_MRI_II_xxx.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_2mWvwno4EeGV-4k-0X86UA" constrainedElement="_2mWvwHo4EeGV-4k-0X86UA">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_2mWvw3o4EeGV-4k-0X86UA">
+              <body>None</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_2mWvxHo4EeGV-4k-0X86UA" constrainedElement="_2mWvwHo4EeGV-4k-0X86UA">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_2mWvxXo4EeGV-4k-0X86UA">
+              <body>No change in the system.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_ThqhIHo8EeGV-4k-0X86UA" name="mlraRef">
+            <ownedComment xmi:id="_ThqhIXo8EeGV-4k-0X86UA" annotatedElement="_ThqhIHo8EeGV-4k-0X86UA">
+              <body>This parameter provides the name of the MultiLayerRoutingArea object.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ThqhIno8EeGV-4k-0X86UA" value="1"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ThqhI3o8EeGV-4k-0X86UA"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_ThqhJHo8EeGV-4k-0X86UA">
+              <body></body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_2mWvyXo4EeGV-4k-0X86UA" name="isSnpListRequested">
+            <ownedComment xmi:id="_2mWvyno4EeGV-4k-0X86UA" annotatedElement="_2mWvyXo4EeGV-4k-0X86UA">
+              <body>This parameter indicates if the SNPs must be included in the reply.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_2mWvy3o4EeGV-4k-0X86UA">
+              <body>False</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_AsLwQXo5EeGV-4k-0X86UA" name="mlsnppList" direction="out">
+            <ownedComment xmi:id="_AsLwQno5EeGV-4k-0X86UA" annotatedElement="_AsLwQXo5EeGV-4k-0X86UA">
+              <body>This parameter returns the list of the requested MultiLayer SNPPs and optionally the corresponding SNPs.</body>
+            </ownedComment>
+            <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_fCBmoED8EeGCAo9-ZY7z8A?NetworkResourceFulfillment/Data%20Object%20Classes/MultiLayerSubNetworkPointPool?"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_k6B7IXo8EeGV-4k-0X86UA" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_k6B7IHo8EeGV-4k-0X86UA"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_AsLwQ3o5EeGV-4k-0X86UA">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_2mWv0Xo4EeGV-4k-0X86UA" name="void" isUnique="false" direction="return"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/CommLoss?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_TAYcACVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/EntityNotFound?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InvalidInput?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UnableToComply?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
+        </ownedOperation>
+      </packagedElement>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_6Dfl8BA5EdyZiYIRB9PLdQ" name="Class Diagrams">
       <eAnnotations xmi:id="_6Dfl8RA5EdyZiYIRB9PLdQ" source="uml2.diagrams">
@@ -5736,7 +6590,7 @@ Operation Exceptions:
               <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_dr1wLl0yEeGswfcCxRZm4Q"/>
             </children>
             <styles xmi:type="umlnotation:UMLClassifierStyle" xmi:id="_dr1wIV0yEeGswfcCxRZm4Q" showListSignature="true" showParent="QualifiedName" showStereotype="Label" useClassifierShape="true"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_dr1wIl0yEeGswfcCxRZm4Q" x="660" y="1716"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_dr1wIl0yEeGswfcCxRZm4Q" x="7298" y="1716"/>
           </children>
           <children xmi:id="_QSKWAF3yEeGtX978TggU8Q" element="_Im0SoF08EeGswfcCxRZm4Q">
             <children xmi:id="_QSKWA13yEeGtX978TggU8Q" type="ImageCompartment">
@@ -5753,7 +6607,7 @@ Operation Exceptions:
               <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_QSTf9l3yEeGtX978TggU8Q"/>
             </children>
             <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_QSKWAV3yEeGtX978TggU8Q" showListSignature="true" showParent="QualifiedName" showStereotype="Label"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_QSKWAl3yEeGtX978TggU8Q" x="924" y="9108"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_QSKWAl3yEeGtX978TggU8Q" x="7392" y="9108"/>
           </children>
           <children xmi:id="_WoN5IF3yEeGtX978TggU8Q" element="_UkRb8F1kEeGswfcCxRZm4Q">
             <children xmi:id="_WoN5I13yEeGtX978TggU8Q" type="ImageCompartment">
@@ -5770,7 +6624,7 @@ Operation Exceptions:
               <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_WoN5LF3yEeGtX978TggU8Q"/>
             </children>
             <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_WoN5IV3yEeGtX978TggU8Q" showListSignature="true" showParent="QualifiedName" showStereotype="Label"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_WoN5Il3yEeGtX978TggU8Q" x="15048" y="9108"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_WoN5Il3yEeGtX978TggU8Q" x="20262" y="9108"/>
           </children>
           <children xmi:id="_bVNzwF3yEeGtX978TggU8Q" element="_2QW8EF1kEeGswfcCxRZm4Q">
             <children xmi:id="_bVNzw13yEeGtX978TggU8Q" type="ImageCompartment">
@@ -5787,7 +6641,7 @@ Operation Exceptions:
               <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_bVXkwV3yEeGtX978TggU8Q"/>
             </children>
             <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_bVNzwV3yEeGtX978TggU8Q" showListSignature="true" showParent="QualifiedName" showStereotype="Label"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_bVNzwl3yEeGtX978TggU8Q" x="16239" y="12540"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_bVNzwl3yEeGtX978TggU8Q" x="21453" y="12540"/>
           </children>
           <children xmi:id="_v2nDEF7VEeG-j5n9Zqk2Ag" element="_V1pVMF7NEeG-j5n9Zqk2Ag">
             <children xmi:id="_v2nDE17VEeG-j5n9Zqk2Ag" type="ImageCompartment">
@@ -5807,7 +6661,7 @@ Operation Exceptions:
               <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_v2nDHl7VEeG-j5n9Zqk2Ag"/>
             </children>
             <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_v2nDEV7VEeG-j5n9Zqk2Ag" showParent="QualifiedName" showStereotype="Label"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_v2nDEl7VEeG-j5n9Zqk2Ag" x="31680" y="13596"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_v2nDEl7VEeG-j5n9Zqk2Ag" x="35772" y="13596"/>
           </children>
           <children xmi:id="_32UEkF7VEeG-j5n9Zqk2Ag" element="_hbqoAF7LEeG-j5n9Zqk2Ag">
             <children xmi:id="_32UEk17VEeG-j5n9Zqk2Ag" type="ImageCompartment">
@@ -5824,7 +6678,84 @@ Operation Exceptions:
               <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_32UEnF7VEeG-j5n9Zqk2Ag"/>
             </children>
             <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_32UEkV7VEeG-j5n9Zqk2Ag" showParent="QualifiedName" showStereotype="Label"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_32UEkl7VEeG-j5n9Zqk2Ag" x="33792" y="9108"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_32UEkl7VEeG-j5n9Zqk2Ag" x="37224" y="9108"/>
+          </children>
+          <children xmi:id="_zqwbAHlsEeGkCrhS32IC1g" element="_tLBXcHlsEeGkCrhS32IC1g">
+            <children xmi:id="_zqwbA3lsEeGkCrhS32IC1g" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_zqwbBHlsEeGkCrhS32IC1g" width="530" height="530"/>
+            </children>
+            <children xmi:id="_zqwbBXlsEeGkCrhS32IC1g" type="Stereotype"/>
+            <children xmi:id="_zqwbBnlsEeGkCrhS32IC1g" type="Kind"/>
+            <children xmi:id="_zqwbB3lsEeGkCrhS32IC1g" type="Name"/>
+            <children xmi:id="_zqwbCHlsEeGkCrhS32IC1g" type="Parent"/>
+            <children xmi:id="_zq5k8HlsEeGkCrhS32IC1g" type="AttributeCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_zq5k8XlsEeGkCrhS32IC1g"/>
+            </children>
+            <children xmi:id="_zq5k8nlsEeGkCrhS32IC1g" type="OperationCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_zq5k83lsEeGkCrhS32IC1g"/>
+            </children>
+            <children xmi:id="_zq5k9HlsEeGkCrhS32IC1g" visible="false" type="SignalCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_zq5k9XlsEeGkCrhS32IC1g"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLClassifierStyle" xmi:id="_zqwbAXlsEeGkCrhS32IC1g" showListSignature="true" showParent="QualifiedName" showStereotype="Label" useClassifierShape="true"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_zqwbAnlsEeGkCrhS32IC1g" x="10724" y="17292"/>
+          </children>
+          <children xmi:id="_ogPoYHmCEeGkCrhS32IC1g" element="_nqTe4HmCEeGkCrhS32IC1g">
+            <children xmi:id="_ogPoY3mCEeGkCrhS32IC1g" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_ogPoZHmCEeGkCrhS32IC1g" width="1320" height="1320"/>
+            </children>
+            <children xmi:id="_ogPoZXmCEeGkCrhS32IC1g" type="Stereotype"/>
+            <children xmi:id="_ogPoZnmCEeGkCrhS32IC1g" type="Kind"/>
+            <children xmi:id="_ogPoZ3mCEeGkCrhS32IC1g" type="Name"/>
+            <children xmi:id="_ogPoaHmCEeGkCrhS32IC1g" type="Parent"/>
+            <children xmi:id="_ogPoaXmCEeGkCrhS32IC1g" type="AttributeCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_ogPoanmCEeGkCrhS32IC1g"/>
+            </children>
+            <children xmi:id="_ogPoa3mCEeGkCrhS32IC1g" visible="false" type="OperationCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_ogPobHmCEeGkCrhS32IC1g"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLShapeStyle" xmi:id="_ogPoYXmCEeGkCrhS32IC1g" showListSignature="true" showParent="QualifiedName" showStereotype="Label"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ogPoYnmCEeGkCrhS32IC1g" x="23517" y="22704"/>
+          </children>
+          <children xmi:id="_Ep0LEHmXEeGkCrhS32IC1g" element="_oAqZUHmWEeGkCrhS32IC1g">
+            <children xmi:id="_Ep0LE3mXEeGkCrhS32IC1g" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_Ep0LFHmXEeGkCrhS32IC1g" width="530" height="530"/>
+            </children>
+            <children xmi:id="_Ep0LFXmXEeGkCrhS32IC1g" type="Stereotype"/>
+            <children xmi:id="_Ep9VAHmXEeGkCrhS32IC1g" type="Kind"/>
+            <children xmi:id="_Ep9VAXmXEeGkCrhS32IC1g" type="Name"/>
+            <children xmi:id="_Ep9VAnmXEeGkCrhS32IC1g" type="Parent"/>
+            <children xmi:id="_Ep9VA3mXEeGkCrhS32IC1g" type="AttributeCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_Ep9VBHmXEeGkCrhS32IC1g"/>
+            </children>
+            <children xmi:id="_Ep9VBXmXEeGkCrhS32IC1g" type="OperationCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_Ep9VBnmXEeGkCrhS32IC1g"/>
+            </children>
+            <children xmi:id="_Ep9VB3mXEeGkCrhS32IC1g" visible="false" type="SignalCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_Ep9VCHmXEeGkCrhS32IC1g"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLClassifierStyle" xmi:id="_Ep0LEXmXEeGkCrhS32IC1g" showListSignature="true" showParent="QualifiedName" showStereotype="Label" useClassifierShape="true"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Ep0LEnmXEeGkCrhS32IC1g" x="11994" y="26400"/>
+          </children>
+          <children xmi:id="_IPZg8HmzEeGkCrhS32IC1g" element="_ELEI0HmzEeGkCrhS32IC1g">
+            <children xmi:id="_IPZg83mzEeGkCrhS32IC1g" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_IPZg9HmzEeGkCrhS32IC1g" width="530" height="530"/>
+            </children>
+            <children xmi:id="_IPZg9XmzEeGkCrhS32IC1g" type="Stereotype"/>
+            <children xmi:id="_IPZg9nmzEeGkCrhS32IC1g" type="Kind"/>
+            <children xmi:id="_IPZg93mzEeGkCrhS32IC1g" type="Name"/>
+            <children xmi:id="_IPZg-HmzEeGkCrhS32IC1g" type="Parent"/>
+            <children xmi:id="_IPZg-XmzEeGkCrhS32IC1g" type="AttributeCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_IPZg-nmzEeGkCrhS32IC1g"/>
+            </children>
+            <children xmi:id="_IPZg-3mzEeGkCrhS32IC1g" type="OperationCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_IPZg_HmzEeGkCrhS32IC1g"/>
+            </children>
+            <children xmi:id="_IPZg_XmzEeGkCrhS32IC1g" visible="false" type="SignalCompartment">
+              <styles xmi:type="umlnotation:UMLListCompartmentStyle" xmi:id="_IPZg_nmzEeGkCrhS32IC1g"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLClassifierStyle" xmi:id="_IPZg8XmzEeGkCrhS32IC1g" showListSignature="true" showParent="QualifiedName" showStereotype="Label" useClassifierShape="true"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_IPZg8nmzEeGkCrhS32IC1g" x="13992" y="31944"/>
           </children>
           <styles xmi:type="umlnotation:UMLDiagramStyle" xmi:id="_ajuIoV0yEeGswfcCxRZm4Q"/>
           <element xsi:nil="true"/>
@@ -5880,7 +6811,25 @@ Operation Exceptions:
               <layoutConstraint xmi:type="notation:Bounds" xmi:id="_AdNo9V7WEeG-j5n9Zqk2Ag" y="-186"/>
             </children>
             <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_AdNo8l7WEeG-j5n9Zqk2Ag" routing="Rectilinear" lineWidth="1" showStereotype="Text"/>
-            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_AdNo817WEeG-j5n9Zqk2Ag" points="[10678, 3159, -2549, -6871]$[10678, 8722, -2549, -1308]"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_AdNo817WEeG-j5n9Zqk2Ag" points="[8433, 3159, -2698, -6871]$[8433, 8722, -2698, -1308]"/>
+          </edges>
+          <edges xmi:id="_uUcREHmBEeGkCrhS32IC1g" element="_uUTHIHmBEeGkCrhS32IC1g" source="_zqwbAHlsEeGkCrhS32IC1g" target="_v2nDEF7VEeG-j5n9Zqk2Ag">
+            <children xmi:id="_uUcRE3mBEeGkCrhS32IC1g" type="NameLabel">
+              <children xmi:id="_uUcRFXmBEeGkCrhS32IC1g" type="Stereotype"/>
+              <children xmi:id="_uUcRFnmBEeGkCrhS32IC1g" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_uUcRFHmBEeGkCrhS32IC1g" y="-186"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_uUcREXmBEeGkCrhS32IC1g" routing="Rectilinear" lineWidth="1" showStereotype="Text"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_uUcREnmBEeGkCrhS32IC1g" points="[158, -71, -117, 90]$[317, -112, 42, 49]"/>
+          </edges>
+          <edges xmi:id="_wQAwcXmCEeGkCrhS32IC1g" element="_wQAwcHmCEeGkCrhS32IC1g" source="_zqwbAHlsEeGkCrhS32IC1g" target="_ogPoYHmCEeGkCrhS32IC1g">
+            <children xmi:id="_wQAwdHmCEeGkCrhS32IC1g" type="NameLabel">
+              <children xmi:id="_wQAwdnmCEeGkCrhS32IC1g" type="Stereotype"/>
+              <children xmi:id="_wQJ6YHmCEeGkCrhS32IC1g" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_wQAwdXmCEeGkCrhS32IC1g" y="-186"/>
+            </children>
+            <styles xmi:type="umlnotation:UMLConnectorStyle" xmi:id="_wQAwcnmCEeGkCrhS32IC1g" routing="Rectilinear" lineWidth="1" showStereotype="Text"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_wQAwc3mCEeGkCrhS32IC1g" points="[20, 72, 9, -86]$[97, 109, 86, -49]"/>
           </edges>
         </contents>
       </eAnnotations>
@@ -6261,11 +7210,11 @@ Traceability: R_TMF518_MRI_II_0005.</body>
           <ownedComment xmi:id="_kHLMCl7LEeG-j5n9Zqk2Ag" annotatedElement="_kHLMCV7LEeG-j5n9Zqk2Ag">
             <body>This attribute contains the edge MultiLayerSNPPLink objects associated with the route of the Connection object.</body>
           </ownedComment>
-          <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_Z5cjQED8EeGCAo9-ZY7z8A?NetworkResourceFulfillment/Data%20Object%20Classes/MultiLayerSNPPLink?"/>
+          <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_Z5cjQED8EeGCAo9-ZY7z8A?NetworkResourceFulfillment/Data%20Object%20Classes/MultiLayerSubNetworkPointPoolLink?"/>
           <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Cd7nsF7PEeG-j5n9Zqk2Ag" value="*"/>
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_CdydwF7PEeG-j5n9Zqk2Ag"/>
           <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_EmIqUF7PEeG-j5n9Zqk2Ag">
-            <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_Z5cjQED8EeGCAo9-ZY7z8A?NetworkResourceFulfillment/Data%20Object%20Classes/MultiLayerSNPPLink?"/>
+            <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_Z5cjQED8EeGCAo9-ZY7z8A?NetworkResourceFulfillment/Data%20Object%20Classes/MultiLayerSubNetworkPointPoolLink?"/>
             <body>empty list</body>
           </defaultValue>
         </ownedAttribute>
@@ -6273,11 +7222,11 @@ Traceability: R_TMF518_MRI_II_0005.</body>
           <ownedComment xmi:id="_kHLMDl7LEeG-j5n9Zqk2Ag" annotatedElement="_kHLMDV7LEeG-j5n9Zqk2Ag">
             <body>This attribute contains the internal MultiLayerSNPPLink objects associated with the route of the Connection object.</body>
           </ownedComment>
-          <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_Z5cjQED8EeGCAo9-ZY7z8A?NetworkResourceFulfillment/Data%20Object%20Classes/MultiLayerSNPPLink?"/>
+          <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_Z5cjQED8EeGCAo9-ZY7z8A?NetworkResourceFulfillment/Data%20Object%20Classes/MultiLayerSubNetworkPointPoolLink?"/>
           <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_V7ho0V7PEeG-j5n9Zqk2Ag" value="*"/>
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_V7ho0F7PEeG-j5n9Zqk2Ag"/>
           <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_Wzsm8F7PEeG-j5n9Zqk2Ag">
-            <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_Z5cjQED8EeGCAo9-ZY7z8A?NetworkResourceFulfillment/Data%20Object%20Classes/MultiLayerSNPPLink?"/>
+            <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_Z5cjQED8EeGCAo9-ZY7z8A?NetworkResourceFulfillment/Data%20Object%20Classes/MultiLayerSubNetworkPointPoolLink?"/>
             <body>empty list</body>
           </defaultValue>
         </ownedAttribute>
@@ -6315,6 +7264,50 @@ Traceability: R_TMF518_MRI_II_0005.</body>
         </ownedLiteral>
       </packagedElement>
       <packagedElement xmi:type="uml:Dependency" xmi:id="__Ljz0F7VEeG-j5n9Zqk2Ag" name="uses" supplier="_V1pVMF7NEeG-j5n9Zqk2Ag" client="_hbqoAF7LEeG-j5n9Zqk2Ag"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_nqTe4HmCEeGkCrhS32IC1g" name="RouteAndRouteType">
+        <ownedComment xmi:id="_uUeQ0HmCEeGkCrhS32IC1g">
+          <annotatedElement xmi:type="uml:Class" href="platform:/resource/MTNM_CP/TMF608.emx#_3A6F1C08020345A2CD270369?TMF608/Logical%20View/Call%20and%20Connection/DataTypes/RouteAndRouteType?"/>
+          <annotatedElement xmi:type="uml:DataType" href="#_nqTe4HmCEeGkCrhS32IC1g?ManageResourceInventory/Type%20Definitions/RouteAndRouteType?"/>
+          <body>This data type defines a list of Routing Area identifiers, the type of route with which they are associated (home/intended route, actual/current route or both) and a brief description.</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_uUeQ0XmCEeGkCrhS32IC1g" name="raIdList" visibility="public">
+          <ownedComment xmi:id="_uUeQ0nmCEeGkCrhS32IC1g" annotatedElement="_uUeQ0XmCEeGkCrhS32IC1g">
+            <body>This attribute contains the identifiers of the Routing Areas (RAs) participating in the route of a Connection.</body>
+          </ownedComment>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_PnyroXmDEeGkCrhS32IC1g" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_PnyroHmDEeGkCrhS32IC1g"/>
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_Qf0f0HmDEeGkCrhS32IC1g">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+            <body>empty list</body>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_uUeQ1XmCEeGkCrhS32IC1g" name="routeType" visibility="public" type="_V1pVMF7NEeG-j5n9Zqk2Ag">
+          <ownedComment xmi:id="_uUeQ1nmCEeGkCrhS32IC1g" annotatedElement="_uUeQ1XmCEeGkCrhS32IC1g">
+            <body>This attribute indicates the type of the route, home/intended or actual/current.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_A-it0XmEEeGkCrhS32IC1g" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_A-it0HmEEeGkCrhS32IC1g"/>
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_BqDI8HmEEeGkCrhS32IC1g" type="_V1pVMF7NEeG-j5n9Zqk2Ag">
+            <body>empty list</body>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_uUeQ2HmCEeGkCrhS32IC1g" name="routeDescription" visibility="public">
+          <ownedComment xmi:id="_uUeQ2XmCEeGkCrhS32IC1g" annotatedElement="_uUeQ2HmCEeGkCrhS32IC1g">
+            <body>This attribute provides a description of the route.&#xD;
+Including the degree of detail available from the Control Plane (depending on the signalling), i.e. whether the route description is available in a &quot;sparse&quot; or &quot;full&quot; form:&#xD;
+- Full&#xD;
+The Control Plane component at the originating point of the Connection has a full view of all of the ids of the Routing Area one level subordinate to the top-level Routing Area involved in the Connection.&#xD;
+- Sparce&#xD;
+The Control Plane component at the originating point of the Connection can only provide the id of the local Routing Area, the next neighbour and the destination Routing Area (and can not provide the identifiers of any other Routing Areas along the route).</body>
+          </ownedComment>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_uUeQ2nmCEeGkCrhS32IC1g">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+            <body>empty string</body>
+          </defaultValue>
+        </ownedAttribute>
+      </packagedElement>
     </packagedElement>
     <packagedElement xmi:type="uml:Association" xmi:id="_Q6PrIBBaEd20R6sCaTblKg" memberEnd="_Q6PrIRBaEd20R6sCaTblKg _Q6ZcIhBaEd20R6sCaTblKg">
       <ownedEnd xmi:id="_Q6ZcIhBaEd20R6sCaTblKg" name="" visibility="private" type="_569zUBBWEd20R6sCaTblKg" association="_Q6PrIBBaEd20R6sCaTblKg"/>
@@ -7122,4 +8115,131 @@ Traceability: R_TMF518_MRI_II_0005.</body>
   <Default:Documentation xmi:id="_kHLMGV7LEeG-j5n9Zqk2Ag" base_Comment="_kHLMDl7LEeG-j5n9Zqk2Ag"/>
   <Default:Documentation xmi:id="_kHLMGl7LEeG-j5n9Zqk2Ag" base_Comment="_kHLMEl7LEeG-j5n9Zqk2Ag"/>
   <Default:Documentation xmi:id="_ZhiYIV7NEeG-j5n9Zqk2Ag" base_Comment="_ZhiYIF7NEeG-j5n9Zqk2Ag"/>
+  <Default:URL xmi:id="_nZ-u0GFjEeGX08VS0ncJzw" base_Comment="_dEOb8GFjEeGX08VS0ncJzw"/>
+  <Default:URL xmi:id="_v7vmYWIlEeGziPKxqXlj-w" base_Comment="_v7vmYGIlEeGziPKxqXlj-w"/>
+  <Default:URL xmi:id="_FcnG0WImEeGziPKxqXlj-w" base_Comment="_FcnG0GImEeGziPKxqXlj-w"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_tLn0YHlsEeGkCrhS32IC1g" base_Operation="_tLBXcXlsEeGkCrhS32IC1g">
+    <messageExchangePattern>SIT</messageExchangePattern>
+    <messageExchangePattern>ABR</messageExchangePattern>
+  </mTOPUMLProfile:mTOPOperation>
+  <Default:Documentation xmi:id="_tLn0YXlsEeGkCrhS32IC1g" base_Comment="_tLBXcnlsEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_tLn0YnlsEeGkCrhS32IC1g" base_Comment="_tLBXeXlsEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_tLn0Y3lsEeGkCrhS32IC1g" base_Comment="_tLBXfHlsEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_tLn0ZHlsEeGkCrhS32IC1g" base_Comment="_tLBXf3lsEeGkCrhS32IC1g"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_tLn0ZXlsEeGkCrhS32IC1g" base_Operation="_tLBXg3lsEeGkCrhS32IC1g">
+    <messageExchangePattern>SIT</messageExchangePattern>
+    <messageExchangePattern>ABR</messageExchangePattern>
+  </mTOPUMLProfile:mTOPOperation>
+  <Default:Documentation xmi:id="_tLn0ZnlsEeGkCrhS32IC1g" base_Comment="_tLBXhHlsEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_tLn0Z3lsEeGkCrhS32IC1g" base_Comment="_tLBXi3lsEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_tLn0aHlsEeGkCrhS32IC1g" base_Comment="_tLBXjnlsEeGkCrhS32IC1g"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_tLn0bXlsEeGkCrhS32IC1g" base_Operation="_tLBXoXlsEeGkCrhS32IC1g">
+    <messageExchangePattern>SRR</messageExchangePattern>
+    <messageExchangePattern>ARR</messageExchangePattern>
+  </mTOPUMLProfile:mTOPOperation>
+  <Default:Documentation xmi:id="_tLn0bnlsEeGkCrhS32IC1g" base_Comment="_tLBXonlsEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_tLn0b3lsEeGkCrhS32IC1g" base_Comment="_tLBXqXlsEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_tLn0cHlsEeGkCrhS32IC1g" base_Comment="_tLBXrHlsEeGkCrhS32IC1g"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_j_zuoHl4EeGkCrhS32IC1g" base_Operation="_j_qksHl4EeGkCrhS32IC1g">
+    <messageExchangePattern>SIT</messageExchangePattern>
+    <messageExchangePattern>ABR</messageExchangePattern>
+  </mTOPUMLProfile:mTOPOperation>
+  <Default:Documentation xmi:id="_j_zuoXl4EeGkCrhS32IC1g" base_Comment="_j_qksXl4EeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_j_zuo3l4EeGkCrhS32IC1g" base_Comment="_j_qku3l4EeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_j_zupHl4EeGkCrhS32IC1g" base_Comment="_j_qkvnl4EeGkCrhS32IC1g"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_ug11wHl-EeGkCrhS32IC1g" base_Operation="_ug11sHl-EeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_ug11wXl-EeGkCrhS32IC1g" base_Comment="_ug11sXl-EeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_ug11wnl-EeGkCrhS32IC1g" base_Comment="_ug11uHl-EeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_ug11w3l-EeGkCrhS32IC1g" base_Comment="_ug11u3l-EeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_ug11xHl-EeGkCrhS32IC1g" base_Comment="_ug11vnl-EeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_EeOdk3mAEeGkCrhS32IC1g" base_Comment="_EeOdkXmAEeGkCrhS32IC1g"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_uUeQ1HmCEeGkCrhS32IC1g" base_StructuralFeature="_uUeQ0XmCEeGkCrhS32IC1g"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_uUeQ13mCEeGkCrhS32IC1g" base_StructuralFeature="_uUeQ1XmCEeGkCrhS32IC1g"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_uUeQ23mCEeGkCrhS32IC1g" base_StructuralFeature="_uUeQ2HmCEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_uUeQ3HmCEeGkCrhS32IC1g" base_Comment="_uUeQ0HmCEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_uUeQ3XmCEeGkCrhS32IC1g" base_Comment="_uUeQ0nmCEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_uUeQ3nmCEeGkCrhS32IC1g" base_Comment="_uUeQ1nmCEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_uUeQ33mCEeGkCrhS32IC1g" base_Comment="_uUeQ2XmCEeGkCrhS32IC1g"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_szSFunmUEeGkCrhS32IC1g" base_Operation="_szSFsHmUEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_szbPoHmUEeGkCrhS32IC1g" base_Comment="_szSFsXmUEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_imqEM3mVEeGkCrhS32IC1g" base_Comment="_imqEMXmVEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_4uxx5XmVEeGkCrhS32IC1g" base_Comment="_4uxx4XmVEeGkCrhS32IC1g"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_nKLn0HmXEeGkCrhS32IC1g" base_Operation="_nKB20HmXEeGkCrhS32IC1g">
+    <messageExchangePattern>SIT</messageExchangePattern>
+    <messageExchangePattern>ABR</messageExchangePattern>
+  </mTOPUMLProfile:mTOPOperation>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_ygA3p3mXEeGkCrhS32IC1g" base_Operation="_ygA3oHmXEeGkCrhS32IC1g">
+    <messageExchangePattern>SIT</messageExchangePattern>
+    <messageExchangePattern>ABR</messageExchangePattern>
+  </mTOPUMLProfile:mTOPOperation>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_y8L2R3mXEeGkCrhS32IC1g" base_Operation="_y8L2QHmXEeGkCrhS32IC1g">
+    <messageExchangePattern>SIT</messageExchangePattern>
+    <messageExchangePattern>ABR</messageExchangePattern>
+  </mTOPUMLProfile:mTOPOperation>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_zSYvx3mXEeGkCrhS32IC1g" base_Operation="_zSYvwHmXEeGkCrhS32IC1g">
+    <messageExchangePattern>SIT</messageExchangePattern>
+    <messageExchangePattern>ABR</messageExchangePattern>
+  </mTOPUMLProfile:mTOPOperation>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_zo4kN3mXEeGkCrhS32IC1g" base_Operation="_zo4kMHmXEeGkCrhS32IC1g">
+    <messageExchangePattern>SIT</messageExchangePattern>
+    <messageExchangePattern>ABR</messageExchangePattern>
+  </mTOPUMLProfile:mTOPOperation>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_z79RN3mXEeGkCrhS32IC1g" base_Operation="_z79RMHmXEeGkCrhS32IC1g">
+    <messageExchangePattern>SIT</messageExchangePattern>
+    <messageExchangePattern>ABR</messageExchangePattern>
+  </mTOPUMLProfile:mTOPOperation>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_0OcIV3mXEeGkCrhS32IC1g" base_Operation="_0OcIUHmXEeGkCrhS32IC1g">
+    <messageExchangePattern>SIT</messageExchangePattern>
+    <messageExchangePattern>ABR</messageExchangePattern>
+  </mTOPUMLProfile:mTOPOperation>
+  <Default:Documentation xmi:id="_zUrj5nmZEeGkCrhS32IC1g" base_Comment="_zUhy4HmZEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_zUrj53mZEeGkCrhS32IC1g" base_Comment="_zUhy4nmZEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_5z-il3mZEeGkCrhS32IC1g" base_Comment="_5z-ikHmZEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="__mt9QHmZEeGkCrhS32IC1g" base_Comment="__mkMQHmZEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_E9cKWnmaEeGkCrhS32IC1g" base_Comment="_E9cKUHmaEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_E9cKW3maEeGkCrhS32IC1g" base_Comment="_E9cKUnmaEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_NZUKc3maEeGkCrhS32IC1g" base_Comment="_NZKZcHmaEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_NZUKdHmaEeGkCrhS32IC1g" base_Comment="_NZKZcnmaEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_Rtul-nmaEeGkCrhS32IC1g" base_Comment="_Rtul8HmaEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_Rtul-3maEeGkCrhS32IC1g" base_Comment="_Rtul8nmaEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_WO0LhnmaEeGkCrhS32IC1g" base_Comment="_WOqagHmaEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_WO0Lh3maEeGkCrhS32IC1g" base_Comment="_WOqagnmaEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_WO0LiHmaEeGkCrhS32IC1g" base_Comment="_WO0LgXmaEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_WO0LiXmaEeGkCrhS32IC1g" base_Comment="_WO0LhHmaEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_ZEf203moEeGkCrhS32IC1g" base_Comment="_ZEf20XmoEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_evN99XmoEeGkCrhS32IC1g" base_Comment="_evN98XmoEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_G8H003mrEeGkCrhS32IC1g" base_Comment="_G8H00XmrEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_XWWypXmrEeGkCrhS32IC1g" base_Comment="_XWWyoXmrEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_sfaamHmsEeGkCrhS32IC1g" base_Comment="_sfaakXmsEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_sfaamXmsEeGkCrhS32IC1g" base_Comment="_sfaalHmsEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_RKkB-HmvEeGkCrhS32IC1g" base_Comment="_RKkB8XmvEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_RKkB-XmvEeGkCrhS32IC1g" base_Comment="_RKkB9HmvEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_G84Qg3mwEeGkCrhS32IC1g" base_Comment="_G84QgXmwEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_GhMkqHmxEeGkCrhS32IC1g" base_Comment="_GhMkoXmxEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_GhMkqXmxEeGkCrhS32IC1g" base_Comment="_GhMkpHmxEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_5HKzAHmxEeGkCrhS32IC1g" base_Comment="_5HBCAXmxEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_5HKzAXmxEeGkCrhS32IC1g" base_Comment="_5HBCBHmxEeGkCrhS32IC1g"/>
+  <Default:Documentation xmi:id="_5HKzAnmxEeGkCrhS32IC1g" base_Comment="_5HBCB3mxEeGkCrhS32IC1g"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_2mpqsHo4EeGV-4k-0X86UA" base_Operation="_2mWvwHo4EeGV-4k-0X86UA">
+    <messageExchangePattern>SIT</messageExchangePattern>
+    <messageExchangePattern>ABR</messageExchangePattern>
+  </mTOPUMLProfile:mTOPOperation>
+  <Default:Documentation xmi:id="_2mpqs3o4EeGV-4k-0X86UA" base_Comment="_2mWvyno4EeGV-4k-0X86UA"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_-A0WMXo4EeGV-4k-0X86UA" base_Operation="_-AqlMHo4EeGV-4k-0X86UA">
+    <messageExchangePattern>SIT</messageExchangePattern>
+    <messageExchangePattern>ABR</messageExchangePattern>
+  </mTOPUMLProfile:mTOPOperation>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_-V084Ho4EeGV-4k-0X86UA" base_Operation="_-VrL4Ho4EeGV-4k-0X86UA">
+    <messageExchangePattern>SIT</messageExchangePattern>
+    <messageExchangePattern>ABR</messageExchangePattern>
+  </mTOPUMLProfile:mTOPOperation>
+  <Default:Documentation xmi:id="_AsLwRHo5EeGV-4k-0X86UA" base_Comment="_AsLwQHo5EeGV-4k-0X86UA"/>
+  <Default:Documentation xmi:id="_AsLwRXo5EeGV-4k-0X86UA" base_Comment="_AsLwQno5EeGV-4k-0X86UA"/>
+  <Default:Documentation xmi:id="_JaGip3o5EeGV-4k-0X86UA" base_Comment="_JaGioHo5EeGV-4k-0X86UA"/>
+  <Default:Documentation xmi:id="_JaGiqHo5EeGV-4k-0X86UA" base_Comment="_JaGiono5EeGV-4k-0X86UA"/>
+  <Default:Documentation xmi:id="_JaGiqXo5EeGV-4k-0X86UA" base_Comment="_JaGipXo5EeGV-4k-0X86UA"/>
+  <Default:Documentation xmi:id="_OmQed3o5EeGV-4k-0X86UA" base_Comment="_OmQecHo5EeGV-4k-0X86UA"/>
+  <Default:Documentation xmi:id="_OmQeeHo5EeGV-4k-0X86UA" base_Comment="_OmQecno5EeGV-4k-0X86UA"/>
+  <Default:Documentation xmi:id="_OmQeeXo5EeGV-4k-0X86UA" base_Comment="_OmQedXo5EeGV-4k-0X86UA"/>
+  <Default:Documentation xmi:id="_ThqhJXo8EeGV-4k-0X86UA" base_Comment="_ThqhIXo8EeGV-4k-0X86UA"/>
 </xmi:XMI>
