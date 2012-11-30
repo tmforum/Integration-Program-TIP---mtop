@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - DM Network Resource Fulfillment - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/comcp/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/comcp/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource Basic</p>
+      <p>Module: Dataset XSD Module</p>
+      <p>Description: This module contains the XML Schema common type definitions used in Control Plane mTOP XML Resource objects.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+<!-- SNPP and SNPP Link part -->
+  <xsd:complexType name="LayeredSNPPLinkListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> It is a list of the SNPP Links at a particular layer. A given layerRate value can appear only once in this list.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="layeredSNPPLinkType" type="tns:LayeredSNPPLinkType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ============== -->
+  <xsd:complexType name="LayeredSNPPLinkType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This structure provides a layerRate and the list of SNPPLinks at the particular layer rate.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="layerRate" type="lay:LayerRateType" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="sNPPLinkList" type="tns:SNPPLinkListType" minOccurs="0">
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ============== -->
+  <xsd:complexType name="SNPPLinkListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> It is a list of the SNPP Links across the levels of routing hierarchy.</p>
+        <p> This shall always include the details for the SNPP Links in the relevant layer directly represented by the MLSNPPLink and may also include details for the subordinate SNPP Links if the information is available to the target OS.</p>
+        <p> The routing level is identified via the Routing Area IDs of end SNPPs.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="sNPPLinkType" type="tns:SNPPLinkType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ============== -->
+  <xsd:complexType name="SNPPLinkType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> The SNPP Link interconnects a pair of SNPPs in different subnetworks that are part of the same layer network.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="sNPPLinkId" type="xsd:string" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> This is the Control Plane identifier for the SNPPLink.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="aEnd" type="tns:SNPPType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> It identifies the SNPP of type CP which originates the link.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="zEnd" type="tns:SNPPType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> It identifies the SNPP of type CP which terminates the link.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ============== -->
+  <xsd:complexType name="SNPPType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This structure provides a SNPP control plane identifier and the list of the SNPs contained.</p>
+        <p> The Subnetwork Point Pool (SNPP) is a set of subnetwork points (SNPs) with common attributes which are grouped together for the purposes of routing.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="sNPPId" type="xsd:string" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> It represents the control plane identifier of the SNPP.</p>
+            <p> Each SNPP at each routing level may be identified by the control plane following a hierachical partition.</p>
+            <p> In addition, an SNPP at a higher level may represent more than one SNPP at a lower hierarchical level.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sNPList" type="tns:SNPListType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> It provides the list of SNPs contained in the SNPP, if the detailed knowledge of Control Plane resources is available (and requested).</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="tNAName" type="tns:TNANameType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> The TNA name assigned to the SNPP.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="groupTNAName" type="tns:TNANameType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> The TNA group name associated to the SNPP.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="rAId" type="xsd:string" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> It identifies the Routing Area with which the SNPP is associated.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ============== -->
+  <xsd:complexType name="SNPListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> It is a list of the SNPs.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="sNPType" type="tns:SNPType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ============== -->
+  <xsd:complexType name="SNPType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> An SNP is an abstraction that represents an actual or potential underlying TP (CTP/PTP/FTP representing a CP or TCP).</p>
+        <p> Several SNPs (in different sub-network partitions or Routing Areas) may represent the same TP.</p>
+        <p> See SD1-18 layers (Functional Modelling Concepts) for further detail on TP modelling and SD1-45_ASONControlPlaneManagement-Primer for further details on SNP to TP relationships.</p>
+        <p> A SNP is modeled as a data structure which is used to encapsulate details of the SNP and TP to reduce the number of objects across the interface.</p>
+        <p> The SNP structure provides the names that identifies the SNP. The names may contain information on attributes, e.g. directionality is implicit in the TP name.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="sNPId" type="xsd:string" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> The control plane identifier of the SNP. It is a readonly attribute.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="tPName" type="nam:NamingAttributeType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> It represents the name of the TP associated with SNP.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="tNAName" type="tns:TNANameType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> The TNA name assigned to the SNP. This string may include the TNA Name, TNA Logical Port Identifier and TNA Index.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ============== -->
+  <xsd:simpleType name="InterfaceTypeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This attribute represents the type of interface in which the MLSNPPLink participates.</p> 
+        <p> Possible values are:
+        <ol>
+            <li> "UNI" </li>
+            <li> "I-NNI" </li>
+            <li> "internal E-NNI" </li>
+            <li> "external E-NNI": the link is at the edge of the requesting OS domain.</li>
+            <li> "UNSPECIFIED" </li>
+          </ol></p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="SignallingProtocolType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This represents the Signalling Protocol to be used.</p> 
+        <p> Potential values are:
+        <ol>
+            <li> "CRLDP" </li>
+            <li> "RSVP" </li>
+            <li> "PNNI" </li>
+          </ol></p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ============== -->
+  <xsd:complexType name="LayeredSNPPListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> The List of layered SNPPs. It is a list of the SNPPs at all layers. A given layerRate value can appear only once in this list.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="layeredSNPPType" type="tns:LayeredSNPPType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ============== -->
+  <xsd:complexType name="LayeredSNPPType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This structure provides a layerRate and the list of SNPPs at the particular layer rate.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="layerRate" type="lay:LayerRateType" minOccurs="0">
+      </xsd:element>
+      <xsd:element name="sNPPListType" type="tns:SNPPListType" minOccurs="0">
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ============== -->
+  <xsd:complexType name="SNPPListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> It is a list of the SNPPs across the levels of routing hierarchy. This shall always include the details for the SNPPs in the relevant layer directly represented by the MLSNPP and may also include details for the subordinate SNPPs if the information is available to the target OS. The routing level is identified via the Routing Area IDs.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="sNPPType" type="tns:SNPPType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ============== -->
+<!-- Call part -->
+  <xsd:complexType name="CallEndType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This structure provides the names of one call end. The value of this attribute is in one or more of the included fieds.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="tNANameOrGroupTNAName" type="tns:TNANameType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+           <p> This attribute provides either a TNA or a Group-TNA Name for the call end.</p>
+           <p> It is possible to specify to any depth of substructure (e.g. logical port identifier, index).</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sNPPid" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>The control plane identifier of the SNPP at the end of the call.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sNPid" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>The control plane identifier of the SNP at the end of the call.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="tpName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> This attribute represents the name of the TP at the end of the call.</p>
+            <p> One of the end TPs of the Call can be an "off-network" TP (i.e., outside the target OS domain and therefore addressed by a remote address.</p>
+            <p> See SD1-25 Object Naming for further detail.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+   <xsd:complexType name="CallParameterProfileType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This structure includes parameters of the Call. It includes conditions and qualifiers to support a class of service for the call.</p>
+        <p> (E.g. qualifiers that describe LCAS based services). </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="severelyDegradedThreshold" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+                   <p> Indicates the threshold that qualifies the call as severely degraded in a VCAT environment.</p>
+            <p> Default Value is "1".</p>
+           </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="degradedTreshold" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> Indicates the threshold that qualifies the call as degraded in a VCAT environment.</p>
+            <p> Default Value is "1".</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="classOfService" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation> The class of service of the Call.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="classOfServiceParameters" type="gen:NameAndValueStringListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Includes parameters specific to Class of Service.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="CallStateType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The call state has dependency upon the state of the associated connections. This dependency is related to call type and policy.</p>
+        <p>See SD1-35_StateDiagrams for details on valid transitions.</p> 
+        <p>The state values are:
+        <ol>
+            <li> "IN_PROGRESS": The supporting Connections are currently being created. May not be valid for non Control Plane calls.</li>
+            <li> "ESTABLISHED_IN_SERVICE": All the supporting Connections have been created successfully.</li>
+            <li> "ESTABLISHED_IN_SERVICE_SEARCHING": A Call has been modified through the addition of Connections and not all new Connections have been successfully created. May not be valid for non Control Plane calls.</li>
+            <li> "ESTABLISHED_OUT_OF_SERVICE": All Connections have failed and they are not being restored.</li>
+            <li> "ESTABLISHED_OUT_OF_SERVICE_SEARCHING": All Connections have failed and they are currently being restored. May not be valid for non Control Plane calls.</li>
+            <li> "ESTABLISHED_IN_SERVICE_DEGRADED": The number of failed connections has reached or exceeded the degraded threshold AND the severely degraded threshold has not been reached or exceeded.</li>
+            <li> "ESTABLISHED_IN_SERVICE_SEVERELY_DEGRADED": The number of failed supporting Connections has reached or exceeded the severely degraded threshold (in case of LCAS support).</li>
+            <li> "ESTABLISHED_IN_SERVICE_DEGRADED_SEARCHING": At least one supporting Connection has failed (in the case of LCAS support) AND the severely degraded threshold has not been reached or exceeded. The failed Connections are being restored. May not be valid for non Control Plane calls.</li>
+            <li> "ESTABLISHED_IN_SERVICE_SEVERELY_DEGRADED_SEARCHING": The number of failed supporting Connections has reached or exceeded the severely degraded threshold (in case of LCAS support). The failed Connections are being restored. May not be valid for non Control Plane calls.</li>
+          </ol></p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ============== -->
+  <xsd:complexType name="DiversityInfoListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> A list of the diversity types and their associated shared resources.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="diversityInfoType" type="tns:DiversityInfoType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ============== -->
+  <xsd:complexType name="DiversityInfoType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This structure provides the information on the diversity  that was partially achieved or the diversity violations produced during call restoration in failure events.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="sRGType" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> The SRG Type where a violation is or the sRGType value of the diversity partially achieved. Default Value is Empty String.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sharedResourceList" type="tns:SharedResourceListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+                   <p> May be empty sequence according to target OS capability. Default value is an empty list.</p> 
+           </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ============== -->
+  <xsd:complexType name="DiversityType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This structure provides the diversity information for one call and its supporting connections.</p>
+        <p> The diversity and co-routing parameter set includes a route group label for each Connection supporting a Call).</p>
+        <p> Please see SD1-45_ASONControlPlaneManagement-Primer for further detail on diversity use.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="coroutingLevelOfEffort" type="tns:LevelOfEffortType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+                  <p> This parameter shall represent whether the connections in a route group are co-routed or not.</p> 
+            <p> This applies within all route groups of the call.</p>
+            <p> If the value is "None" then there is no co-routing requirement in any of the route group.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+       <xsd:element name="nodeDiversityLevelOfEffort" type="tns:LevelOfEffortType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+                  <p> This parameter indicates the degree to which the connections in any route group are required to be node diverse from the connections in all other route groups of the call.</p>
+            <p> If the value is "None" there is no node diversity requirement for the call.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="linkDiversityLevelOfEffort" type="tns:LevelOfEffortType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+                   <p> This parameter indicates the degree to which the connections in any route group are required to be link diverse from the connections in all other route groups of the call.</p> 
+             <p> If the value is "None" there is no link diversity requirement for the call.</p>
+           </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="nodeSRGType" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> This attribute represents the risk type to be used for Node diversity.</p>
+            <p> Note that risk type is defined for the Additional info attribute "SRG".</p>
+            <p> See SD1-1 Additional Info Usage for further information on the format and usage.</p>
+            <p> If nodeDiversityLevelOfEffort is not set to "None" but no value is specified for the nodeSRGType, then the requirement is to route the call simply using separate routingNodes/MEs.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="linkSRGType" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> This attribute represents the risk type to be used for Link diversity.</p>
+            <p> Note that risk type is defined for the Additional info attribute "SRG".</p>
+            <p> See SD1-1 Additional Info Usage for further information on the format and usage.</p>
+            <p> If linkDiversityLevelOfEffort is not set to "None" but no value is specified for the linkSRGType, then the requirement is to route the call simply using separate SNPPLinks/TopologicalLinks.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ============== -->
+  <xsd:simpleType name="LevelOfEffortType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The following degrees of effort are defined:
+        <ol>
+            <li> "NONE" </li>
+            <li> "BEST_EFFORT" </li>
+            <li> "MANDATORY" </li>
+          </ol></p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="SharedResourceListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> A list of the resources being shared by a list of connections.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="sharedResourceType" type="tns:SharedResourceType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="SharedResourceType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This structure provides the list of connection/SNC names that share a resource (link or node).</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="name" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+                   <p> The name of the node or the link being shared.</p> 
+           </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+       <xsd:element name="connectionNameList" type="nam:NamingAttributeListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+                 <p> The list of connections sharing a link or a node. This list may be empty according to target OS capability.</p>
+                 <p> Default value is an empty list. </p>
+               </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="TNANameType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This represents the TNA Name.</p>
+        <p> It is an opaque logical name that does not reflect the network structure that may be published externally to the network.</p>
+        <p> The value maybe substructured, it may include a sequence of TNA Name, TNA Logical Port Identifier and Index, however there is no constraints placed on the structure by the interface definition.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:complexType name="TNAListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> It is a list of the TNA Names.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="tNANameType" type="tns:TNANameType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

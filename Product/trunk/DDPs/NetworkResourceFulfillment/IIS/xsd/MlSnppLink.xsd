@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/mlsnpplink/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/mlsnpplink/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:comcp="http://www.tmforum.org/mtop/nrf/xsd/comcp/v1" xmlns:tpdata="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource FulFillment</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP MLSNPP Link (Multi-Layer Subnetwork Point Pool Link) XML structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1"/>
+  <xsd:import schemaLocation="CommonControlPlaneTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/comcp/v1"/>
+  <xsd:import schemaLocation="TpData.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1"/>
+  <!-- ================= -->
+  <xsd:element name="mlsnpplink" type="tns:MlSnppLinkType"/>
+  <!-- ================= -->
+  <xsd:complexType name="MlSnppLinkType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> The MLSNPPLink (Multi-Layer SNPP Link) structure is the abstraction of a set of control plane SNPP Links in different layered networks offered by the target OS to the requesting OS. Note that multi-layer does not imply client-server relationship, but flexible mapping at the same switching layer.</p>
+        <p> The MLSNPPLink represents the relationship between a pair of MLSNPPs. The MLSNPPLink represents a set (>0) of SNPP Links.</p>
+        <p> The SNPP link represents the relationship between a pair of SNPPs in different routing areas that are part of the same layer network.</p>
+        <p> For more details see SD1-45_ASONControlPlaneManagement-Primer. </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="cri:CommonResourceInfoType">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This element entails the attributes common to all mTOP network resource objects.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="direction" type="com:ConnectionDirectionType" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="aMLRAName" type="nam:NamingAttributeType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p> Identifies the MLRA name at the A end. If the information is not available, the field is left empty.</p>
+                <p> This may occur e.g. in case of UNSPECIFIED, or External E-NNI or UNI interface types.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+           <xsd:element name="zMLRAName" type="nam:NamingAttributeType" minOccurs="0">
+             <xsd:annotation>
+               <xsd:documentation>
+                 <p> Identifies the MLRA name at the Z end. If the information is not available, the field is left empty.</p>
+                 <p> This may occur e.g. in case of UNSPECIFIED, or External E-NNI or UNI interface types.</p>
+               </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="aTNAName" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p> The TNAName of the a-end of the MLSNPPLink.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="zTNAName" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p> The TNAName of the z-end of the MLSNPPLink.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="aTNAGroupName" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p> The TNAGroupName of the a-end of the MLSNPPLink.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="zTNAGroupName" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p> The TNAGroupName of the z-end of the MLSNPPLink.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="sNPPLinkList" type="comcp:LayeredSNPPLinkListType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p> The list of multilayer SNPP links.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="interfaceType" type="comcp:InterfaceTypeType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p> Defines the type of interface in which the link participates. Four values are possible: UNI, I-NNI, internal E-NNI, external E-NNI and UNSPECIFIED where External E-NNI means that the link is at the edge of the requesting os domain.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="signallingParameters" type="gen:NameAndValueStringListType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>It specifies the parameters to be used for signalling.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="signallingControllerIdentifier" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p> Attribute that provides the Identifier of the signalling controller that the MLSNPP link is assigned to.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="signallingProtocol" type="comcp:SignallingProtocolType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p> Defines the type of interface in which the link participates. Four values are possible: UNI, I-NNI, internal E-NNI, external E-NNI and UNSPECIFIED where External E-NNI means that the link is at the edge of the requesting os domain.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="signallingEnabled" type="xsd:boolean" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p> Specifies whether signaling is enabled in the link.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="cost" type="gen:NameAndValueStringListType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation> It represents a vector of one or more metrics, each of which indicates the relative desirability of this link over another during path selection.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="discovered" type="xsd:boolean" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p> Optional attribute which represents if the link is discovered or provisioned.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="availability" type="gen:NameAndValueStringListType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation> 
+                <p> Optional attribute which represents a vector of one or more availability factors for the MLSNPPLink.</p>
+                <p> Availability may be represented in different ways between domains and within domains.</p>
+                <p> Within domains it may be used to represent a survivability capability of the MultiLayerSNPPlink.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="linkSRG" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p> Sequence of {risk type, and sequence of values}.</p>
+                <p> The format of the LinkSRG is the same as that of the "SRG" additional Info attribute.</p>
+                <p> See SD1-1 Additional Info Usage for further information on the format.</p>
+                <p> Note: The behavior when routing a connection that specifies a risk type that is not present in the linkSRG for one or more links is dictated by the control plane implementation.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="MlSnppLinkListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A list of MLSNPP Links.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element ref="tns:mlsnpplink" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>
