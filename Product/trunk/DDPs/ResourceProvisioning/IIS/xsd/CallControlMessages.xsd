@@ -1,0 +1,638 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ResourceProvisioning - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rp/xsd/callc/v1" xmlns:tns="http://www.tmforum.org/mtop/rp/xsd/callc/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:comcp="http://www.tmforum.org/mtop/nrf/xsd/comcp/v1" xmlns:call="http://www.tmforum.org/mtop/nrf/xsd/call/v1" xmlns:callconr="http://www.tmforum.org/mtop/mri/xsd/callconr/v1" xmlns:lr="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:snc="http://www.tmforum.org/mtop/nrf/xsd/snc/v1" xmlns:cc="http://www.tmforum.org/mtop/nrf/xsd/cc/v1" xmlns:route="http://www.tmforum.org/mtop/nrf/xsd/route/v1" xmlns:routedes="http://www.tmforum.org/mtop/nrf/xsd/routedes/v1" xmlns:tpdata="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" xmlns:crcd="http://www.tmforum.org/mtop/nrb/xsd/crcd/v1" xmlns:crmd="http://www.tmforum.org/mtop/nrb/xsd/crmd/v1" xmlns:conc="http://www.tmforum.org/mtop/rp/xsd/conc/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: ResourceProvisioning</p>
+      <p>Module:  Message XSD Module</p>
+      <p>Description: This module contains the XML Schema type definitions of all the mTOP ConnectionControl SI XML message structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Snc.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/snc/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Cc.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/cc/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Route.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/route/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/RouteDescriptor.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/routedes/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/TpData.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/CommonControlPlaneTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/comcp/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Call.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/call/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceCreateDataType.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/crcd/v1"/>
+  <xsd:import schemaLocation="../../../ManageResourceInventory/IIS/xsd/CallConnRetrievalMessages.xsd" namespace="http://www.tmforum.org/mtop/mri/xsd/callconr/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceModifyDataType.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/crmd/v1"/>
+  <xsd:import schemaLocation="ConnectionControlMessages.xsd" namespace="http://www.tmforum.org/mtop/rp/xsd/conc/v1"/>
+  <!-- ================ -->
+  <xsd:element name="establishCallRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This operation provides a way to establish a point to point call with zero or more top level connections.</p>
+        <p> At least one end point of the Call has to be within the target OS domain. The other end points may be an "off-network" TP (i.e., addressed by a remote address) or an SNP/SNPP/TNA outside the target OS domain.</p>
+        <p> For more detail on the process of establishing a call in the Control Plane, please see SD1-35_StateDiagrams, SD1-45_ASONControlPlaneManagement-Primer and SD1-46_ASONControlPlaneManagement-Scenarios.</p>
+        <p>If the requesting OS specifies routing constraints in the request the connection routes shall match the constraints to the degree mandated by the appropriate effort statement.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="callCreateData" type="tns:CallCreateDataType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Describes the call to be created.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="connectionCreateDataList" type="tns:SNCCreateDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Set of connections requested to support the call.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="routeGroupsNumber" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This parameter identifies the number of requested Route Groups in case the Route Group names are not provided with the Connection-related data. Value "0" means that the requesting OS doesn't care about the number of Route Groups. Value "NA" means that this parameter can be ignored.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tpsToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>A list of TPs and parameters to apply.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="establishCallResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the establishCall operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="tpsToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>A list of updated TPs to provide the resulting parameters.</p>
+              <p>If a given entry in the list of transmission parameters specified in the TPData type can not be successfully applied to the TP, for any reason, then the errorReason field is appended with an appropriate reason text.</p>
+              <p>Applying transmission parameters is best-effort and the resulting values of the transmission parameters are provided in this parameter.</p>
+             </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="callAndTopLevelConnectionsAndSNCs" type="callconr:CallAndTopLevelConnectionsAndSNCsType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Provides information on the call and list of connections that were created.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+         <xsd:element name="sNCsNotCreated" type="tns:SNCCreateDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The list of connection requests provided as input that could not be created. This response is only supplied in the case of the establishment of a non Control Plane call.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+         <xsd:element name="partialSNCs" type="snc:SubnetworkConnectionListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation> The List of SNCs that were partially created during the operation. This response is only supplied in the case of the establishment of a non Control Plane call.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Specifies the creation error(s) if any.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="establishCallException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the establishCall operation</p>
+        <p>commLoss - Raised when the target OS is unable to communicate with the NE or the target OS is unable to communicate with any Control Plane component and communications is required to complete the request.</p>
+        <p>unableToComply - Raised if the target OS does not control the originating end of the call. Raised when the layer parameters are inconsistent, for example where two parameters at one TP conflict or where a parameter at one end of the Connection has a value that is illegal with respect to a parameter value at the other end of the Connection. Raised when the Diversity requirements contradict each other (E.g. when the requesting OS provides a routeGroupsNumber and the additional info parameter routeGroupLabel is provided in at least one Connection). </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:objectInUse"/>
+            <xsd:element ref="msg:unableToComply"/>
+            <xsd:element ref="msg:unsupportedRoutingConstraints"/>
+            <xsd:element ref="msg:userlabelInUse"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="modifyCallRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This operation allows the requesting OS to modify the following attributes of a Call in accordance with the requesting OS provided parameter list:
+          <ol>
+             <li> - User label</li>
+             <li> - Owner</li>
+             <li> - Network access domain</li>
+             <li> - Additional information / Vendor Extension</li>
+          </ol></p>
+        <p> This operation is used to modify only the attributes of the Call, the bandwidth is modified through other operations. This operation is best effort except the change of the user label with user label uniqueness.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="callName" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The name of the call to modify.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="callModifyData" type="tns:CallModifyDataType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Structure describing how the call should be modified.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="modifyCallResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the modifyCall operation.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="modifiedCall" type="call:CallType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p> The modified call.</p>
+             </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="modifyCallException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the establishCall operation.</p>
+        <p>commLoss - Raised when the target OS is unable to communicate with the NE or the target OS is unable to communicate with any Control Plane component and communications is required to complete the request.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:userlabelInUse"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="releaseCallRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This operation provides a way to release a call. </p>
+        <p> In the control plane case, it is assumed that the control plane will remove the connections from the network, delete the connection objects, remove the call, delete the call object and send appropriate notifications to the requesting OS. See SD1-35_StateDiagrams.</p>
+        <p> In the non Control Plane case the target OS will return the list of SNCs which could not be deleted.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="callName" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The call to be released.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tpsToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>A list of TPs and parameters to apply.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="releaseCallResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the releaseCall operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="tpsToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>A list of updated TPs to provide the resulting parameters.</p>
+              <p>If a given entry in the list of transmission parameters specified in the TPData type can not be successfully applied to the TP, for any reason, then the errorReason field is appended with an appropriate reason text.</p>
+              <p>Applying transmission parameters is best-effort and the resulting values of the transmission parameters are provided in this parameter.</p>
+             </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+         <xsd:element name="remainingSNCs" type="snc:SubnetworkConnectionListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Connections that could not be deleted.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Specifies the error(s) if any.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="releaseCallException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the releaseCall operation.</p>
+        <p>commLoss - Raised when the target OS is unable to communicate with the NE or the target OS is unable to communicate with any Control Plane component and communications is required to complete the request.</p>
+        <p>unableToComply - Raised if the tareget OS can not remove the call. Based on service provider preferences, it may be raised when the target OS determines that the call is carrying traffic.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="addConnectionsRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This operation provides a way to add one or more supporting connections to an existing call and set any necessary TP Data.</p>
+        <p> In a Control Plane environment it is assumed that the Control Plane will either set up the entire top level Connection or will fail the entire top level Connection; there is no partial top level Connection state.</p>
+        <p> In the non Control Plane case the target OS will return the list of SNCs in partial state. See SD1-35_StateDiagrams.</p>
+        <p> If the requesting OS specifies routing constraints in the request the connection routes shall match the constraints to the degree mandated by the appropriate effort statement.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="callName" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The call name for which to add a set of connections.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="connectionsToAdd" type="tns:SNCCreateDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The list of connections to be added.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="connectionRouteReArrangementAllowed" type="xsd:boolean" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Indicates whether any existing connections of call can be rearranged in order to meet the request.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tpsToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>A list of TPs and parameters to apply.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="addConnectionsResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the addConnections operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="tpsToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>A list of updated TPs to provide the resulting parameters.</p>
+              <p>If a given entry in the list of transmission parameters specified in the TPData type can not be successfully applied to the TP, for any reason, then the errorReason field is appended with an appropriate reason text.</p>
+              <p>Applying transmission parameters is best-effort and the resulting values of the transmission parameters are provided in this parameter.</p>
+             </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+         <xsd:element name="connectionList" type="snc:SubnetworkConnectionListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The List of Connections that were added.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+         <xsd:element name="partialSNCs" type="snc:SubnetworkConnectionListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation> The List of SNCs added to the Call that were partially created during the operation. This response is only supplied in the case of the establishment of a non Control Plane call.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Specifies the error(s) if any.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="addConnectionsException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the establishCall operation</p>
+        <p>capacityExceeded - Raised if the number of additional connections exceeds the maximum provisionable.</p>
+        <p>commLoss - Raised when the target OS is unable to communicate with the NE or the target OS is unable to communicate with any Control Plane component and communications is required to complete the request.</p>
+         <p>unsupportedRoutingConstraints - Raised if target OS/Control Plane can not support the routing constraints. Raised if the target OS/network can not determine the route without Connection rearrangement and ConnectionRouteReArrangement is not allowed.</p>
+        <p>unableToComply - Raised if diversity or co-routing are requested but not all Connections to be added do specify a "Route Group Label". Raised if the layer parameters are inconsistent (E.g. two parameters at one TP conflict, a parameter at one end of the Connection has an illegal value with respect to a parameter value at the other end). If the target OS cannot determine the reason it could not comply, it is also allowed to throw this exception.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:capacityExceeded"/>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:objectInUse"/>
+            <xsd:element ref="msg:unableToComply"/>
+            <xsd:element ref="msg:unsupportedRoutingConstraints"/>
+            <xsd:element ref="msg:userlabelInUse"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="removeConnectionsRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This operation provides a way to remove one or more connections  from an existing call and to set any necessary TP Data.</p>
+        <p> As a consequent action, the control plane removes the connections from the network, delete the connection objects, and send appropriate notifications to the requesting OS.</p>
+        <p> In the non Control Plane case the target OS will return the list of SNCs which could not be deleted.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="callName" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation> The name of the call from which the specified connections will be removed.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="connectionNamesList" type="nam:NamingAttributeListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The list of Connections to be removed.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tpsToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>A list of TPs and parameters to apply.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="removeConnectionsResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the removeConnections operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="tpsToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>A list of updated TPs to provide the resulting parameters.</p>
+              <p>If a given entry in the list of transmission parameters specified in the TPData type can not be successfully applied to the TP, for any reason, then the errorReason field is appended with an appropriate reason text.</p>
+              <p>Applying transmission parameters is best-effort and the resulting values of the transmission parameters are provided in this parameter.</p>
+             </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+         <xsd:element name="sNCsNotDeleted" type="snc:SubnetworkConnectionListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The list of Top Level Connections that could not be removed.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="errorReason" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Specifies the error(s) if any.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="removeConnectionsException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the establishCall operation</p>
+        <p>commLoss - Raised when the target OS is unable to communicate with the NE or the target OS is unable to communicate with any Control Plane component and communications is required to complete the request.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="modifyDiversityAndCoroutingRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This operation allows the requesting OS to request the target OS to modify diversity and co-routing parameters of an existing Call and its supporting SNC/Connections.</p>
+        <p> The diversity and co-routing parameter set includes a route group label for each SNC/Connection.</p>
+        <p> If the request indicates that rerouting is allowed then one or more SNC(s)/Connection(s) may remain in "Searching"/"Partial" state.</p>
+        <p> If all diversity requirement parameters are set to "None" and routeGroupsNumber is "None", the target OS will remove all diversity and co-routing requirements for the Call.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="callName" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The name of the call for which to modify diversity.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="callDiversity" type="comcp:DiversityType">
+          <xsd:annotation>
+            <xsd:documentation>The new diversity and corouting requirements for the call.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="routeGroupInfoList" type="tns:RouteGroupInfoListType">
+          <xsd:annotation>
+            <xsd:documentation> The list of Connections and for each the routeGroupLabel.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="connectionRouteReArrangementAllowed" type="xsd:boolean" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Indicates whether connections may be rerouted in order to meet the request.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="routeGroupsNumber" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>Indicates the number of route groups to be established for the connections of the call.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="modifyDiversityAndCoroutingResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the modifyDiversityAndCorouting operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="callAndTopLevelConnections" type="callconr:CallAndTopLevelConnectionsType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>Provides the call and list of connections with their resulting parameters.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="modifyDiversityAndCoroutingException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the modifyDiversityAndCorouting operation</p>
+        <p>commLoss - Raised when the target OS is unable to communicate with the NE or the target OS is unable to communicate with any Control Plane component and communications is required to complete the request.</p>
+        <p>unableToComply - Raised if connectionRouteReArrangementAllowed is set to not allow rerouting and rerouting is required in order to satisfy the criteria.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+            <xsd:element ref="msg:unsupportedRoutingConstraints"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <!-- Local Data Type Definitions of various messages  -->
+  <!-- ================== -->
+  <xsd:complexType name="SNCCreateDataListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> A sequence of data for the creation of a set of SNCs.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="item" type="conc:SubnetworkConnectionCreateDataType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ==================== -->
+  <xsd:complexType name="CallCreateDataType">
+    <xsd:annotation>
+      <xsd:documentation>
+      The read-create attributes required for the creation of a subnetworkConnection on the EMS are packaged together in an SNCCreateData structure which the NMS will pass to the EMS at SNC creation time. These are the read-create attributes of the SNC.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="crcd:CommonResourceCreateDataType">
+        <xsd:sequence>
+          <xsd:element name="aEnd" type="comcp:CallEndType">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p> The originating point of the call.</p>
+                <p> During Call Creation the A-end and Z-end may be of different types (e.g. SNPP name at A-end and TNAName at Z-end).</p>
+                <p> This attribute can be null when the specific details of the end points are supplied in the connection specifications.</p>
+                <p> For a detailed description of the use of this attribute see SD1-45_ASONControlPlaneManagement-Primer.</p>
+               </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="zEnd" type="comcp:CallEndType">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p> The destination point of the call (see aEnd).</p>
+               </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="callParameters" type="comcp:CallParameterProfileType">
+            <xsd:annotation>
+              <xsd:documentation>It provides the call parameters.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="callDiversity" type="comcp:DiversityType">
+            <xsd:annotation>
+              <xsd:documentation>It provides the call parameters.</xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ==================== -->
+  <xsd:complexType name="CallModifyDataType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The read/write attributes required for the modification of a call on the target OS are packed together in a CallModifyData structure which the requesting OS will pass to the target OS in a request to modify an existing call.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="crmd:CommonResourceModifyDataType">
+        <xsd:sequence>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ==================== -->
+  <xsd:complexType name="RouteGroupInfoListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This structure provides a list of SNCs/Connections and associated route group labels.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="item" type="tns:RouteGroupInfoType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ==================== -->
+  <xsd:complexType name="RouteGroupInfoType">
+    <xsd:annotation>
+      <xsd:documentation>This structure provides the routing Information (I.e.routeGroupLabel) associated to a SNC/Connection.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="sNCname" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>The name of a SNC/Connection.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="routeGroupLabel" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The route group label. See SD1-1 Additional Information Usage for definition of routeGroupLabel.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>
