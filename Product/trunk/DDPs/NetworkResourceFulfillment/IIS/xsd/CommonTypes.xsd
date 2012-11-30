@@ -283,8 +283,11 @@ For a detailed description of the use of this attribute see SNC Types supporting
   <xsd:simpleType name="NetworkRoutedType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>Network routed, indicates if the route must be or is computed and implemented at the network level. NR_YES indicates that the route must be / is computed at the network. NR_NO indicates that the route must not be / is not computed at the network. NR_NA indicates that the route can be computed anywhere.</p>
-        <p>If rerouting is allowed, this attribute will indicate who last rerouted the SNC, the network (NR_YES) or the EMS (NR_NO).</p>
+        <p>Network routed, indicates if the route must be or is computed and implemented at the network level.</p>
+        <p>NR_YES indicates that the route must be / is computed at the network.</p>
+        <p>NR_NO indicates that the route must not be / is not computed at the network.</p>
+        <p>NR_NA indicates that the route can be computed anywhere.</p>
+        <p>If rerouting is allowed, this attribute will indicate who last rerouted the SNC, the network (NR_YES) or the target OS (NR_NO).</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:restriction base="xsd:string">
@@ -360,7 +363,7 @@ For a detailed description of the use of this attribute see SNC Types supporting
       <xsd:documentation>
         <p>The protection effort is a statement of the requirement of the static protection level. For example if EFFORT_SAME_OR_WORSE is specified for a 3-ended FULLY_PROTECTED connection, a 3-ended PARTIALLY_PROTECTED connection is acceptable, but a 2-ended connection (ST_SIMPLE) is not acceptable i.e. ProtectionEffort does not have any bearing on the externaly visible shape of the SNC.
 EFFORT_WHATEVER indicates that the specified static protection level is preferred, but that any other level is acceptable.</p>
-        <p>For a detailed description of the use of this attribute see SNC Types.</p>
+        <p>For a detailed description of the use of this attribute see SD1-36 SNC Types.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:restriction base="xsd:string">
@@ -401,9 +404,11 @@ EFFORT_WHATEVER indicates that the specified static protection level is preferre
   <xsd:simpleType name="RerouteType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>The RerouteType type indicates if the EMS/MEs are allowed and/or required to reroute this SNC if there is a failure on this SNC, periodically to optimize the routes, of for any other reason.It is an EMS/ME implementation whether this is done using network routing protocols or if the EMS/MEs detect the failure and take appropriate action to attempt to fix the SNC.</p>
-
-T<p>he RR_NO value means that the EMS/MEs are not allowed to reroute the SNC. The RR_YES value means that the EMS/MEs are allowed to reroute the SNC and required to attempt to reroute it upon failure. The RR_NA value is used when the NMS does not want to specify the exact EMS behaviour. In this case it is left up to the EMS to decide whether rerouting will be provided. It is also used if the EMS/MEs are allowed to reroute the SNC but not required to attempt to reroute it upon failure.</p>
+        <p>The RerouteType type indicates if the target OS/MEs/Control Plane are allowed and/or required to reroute this SNC if there is a failure on this SNC, periodically to optimize the routes, of for any other reason.</p>
+        <p>This can be done either using network routing protocols or through centralized management.</p>
+        <p>The RR_NO value means that the target OS/MEs/Control Plane are not allowed to reroute the SNC.</p>
+        <p>The RR_YES value means that the target OS/MEs/Control Plane are allowed to reroute the SNC and required to attempt to reroute it upon failure.</p>
+        <p>The RR_NA value is used when the requesting OS does not want to specify the exact behaviour. In this case it is left up to the target OS(MEs/Control Plane to decide whether rerouting will be provided. It is also used if the target OS/MEs/Control Plane are allowed to reroute the SNC but not required to attempt to reroute it upon failure.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:restriction base="xsd:string">
@@ -464,10 +469,11 @@ T<p>he RR_NO value means that the EMS/MEs are not allowed to reroute the SNC. Th
     <xsd:annotation>
       <xsd:documentation>
         <p>The SNCState enum is used to represent the various states that an SNC may take.</p>
-        <p>The following states may be supported by the EMS, depending on the SNC management mode of operation used by the EMS. See SNC Management Modes Of Operation for details.</p>
-        <p>SNCS_PENDING: the SNC has been created by an NMS and has not been activated by any NMS; or the SNC has been successfully deactivated by an NMS. That state has no relationship with the network state of the cross- connects of the SNC. It is allowable for an EMS to not support the SNCS_PENDING state and to reject any operation that attempts to put an SNC into SNCS_PENDING state. </p>
-        <p>SNCS_ACTIVE: the SNC is not in pending state, a route has been assigned to the SNC and all cross-connects for the SNC are active in the network. </p>
-        <p>SNCS_PARTIAL: the SNC is not in pending state, and either a route has not been assigned to the SNC, or not all of the cross-connects of the SNC are active in the network. This may or may not include activated SNCs for which there are currently no active cross- connects in the network, depending on the SNC management mode of operation.It is possible that, in some EMSes, this state be unreachable. </p>
+        <p>The following states may be supported by the target OS, depending on the SNC management mode of operation used by the target OS. See SD1-23 SNC Management Modes Of Operation for details.</p>
+        <p>If the Connection is used in a Control Plane environment, the SNC State is fixed to active.</p>
+        <p>SNCS_PENDING: the SNC has been created by a requesting OS and has not been activated by any requesting OS; or the SNC has been successfully deactivated by a requesting OS. That state has no relationship with the network state of the cross- connects of the SNC. It is allowable for a target OS to not support the SNCS_PENDING state and to reject any operation that attempts to put an SNC into SNCS_PENDING state. </p>
+        <p>SNCS_ACTIVE: the SNC is not in pending state, a route has been assigned to the SNC and all cross-connects for the SNC are active in the network. This is the only SNC State valid for an Connection in the Control Plane environment.</p>
+        <p>SNCS_PARTIAL: the SNC is not in pending state, and either a route has not been assigned to the SNC, or not all of the cross-connects of the SNC are active in the network. This may or may not include activated SNCs for which there are currently no active cross- connects in the network, depending on the SNC management mode of operation.It is possible that, in some target OSs, this state be unreachable.</p>
         <p>SNCS_NONEXISTENT: this is not an SNC state per se, as it applies to "non-existent SNCs". It is used in the interface to report SNCs that have been deleted. </p>
         <p>See SNCState state diagram for details on valid transitions.</p>
       </xsd:documentation>
@@ -483,9 +489,10 @@ T<p>he RR_NO value means that the EMS/MEs are not allowed to reroute the SNC. Th
   <xsd:simpleType name="SubnetworkConnectionTypeType">
     <xsd:annotation>
       <xsd:documentation>
-        <p>The SNC Type describes the connection based on the signal flows. 
-For a detailed description of the use of this attribute see SNC Types.
-In case of an ATM SNC (VP or VC), ST_SIMPLE is used to specify a 'plain' (hard or regular) PVC.</p>
+        <p>The SNC Type describes the connection based on the signal flows.</p>
+        <p>The only types applicable to a Control Plane Connection are ST_SIMPLE, ST_ADD_DROP_A and ST_ADD_DROP_Z.</p>
+        <p>For a detailed description of the use of this attribute see SD1-36 SNC Types.</p>
+        <p>In case of an ATM SNC (VP or VC), ST_SIMPLE is used to specify a 'plain' (hard or regular) PVC.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:restriction base="xsd:string">
@@ -527,7 +534,7 @@ In case of an ATM SNC (VP or VC), ST_SIMPLE is used to specify a 'plain' (hard o
       <xsd:documentation>
         <p>The static protection level is a statement of the internal resiliency of the SNC (internal to the subnetwork). The more resilient an SNC is, the more bandwidth it will consume.</p>
         <p>The protection level does not have any bearing on the externally visible shape and traffic flows of the SNC (in non-failure cases).
-For a detailed description of the use of this attribute, see SNC Types.</p>
+For a detailed description of the use of this attribute, see SD1-36 SNC Types.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:restriction base="xsd:string">
