@@ -68,6 +68,7 @@
       <xsd:documentation>
         <p>Request message structure of the getAllTopologicalLinks operation</p>
         <p>This operation returns a list of TopologicalLinks which exist inside the Subnetwork whose name is passed as a parameter. For singleton MLSNs, no Topological Links will be returned. The target OS reports Topological Links at the "lowest" layer (i.e. closest to physical) about which it has accurate knowledge.</p>
+        <p>If the Subnetwork represents a MLRA in the control plane, the operation is rejected and an exception is raised.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -93,6 +94,7 @@
     <xsd:annotation>
       <xsd:documentation>
         <p>Exception message structure of the getAllTopologicalLinks operation</p>
+        <p>unableToComply - Raised if the target OS is unable to execute the request because the Subnetwork represents a MLRA in the control plane.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
@@ -259,6 +261,8 @@
       <xsd:documentation>
         <p>Request message structure of the getRouteAndTopologicalLinks operation</p>
         <p>This operation returns (like the operation getRoute) the Route, in terms of Cross-Connections, for the provided Subnetwork Connection (SNC). It also returns the list of Topological Links that are used in the Route.</p>
+        <p>If the SNC represents a Connection in the Control Plane, the operation is rejected and an exception is Raised.</p>
+        <p>All topological links that the traffic of the SNC travel across are returned including the links that connect to the terminating PTP and/or TP containing the termination TP.</p>
         <p>
 If the SNC has more alternative Routes, then it retrieves the intended Route if the SNC is pending or partial state, otherwise it retrieves the active Route. This because there can be more partial Routes and no active Route, in such case the intended Route is replied, as it is not known which of the partial Routes is the candidate for becoming the active Route.</p>
         <p>
@@ -269,6 +273,7 @@ The list of Topological Links can be used in conjunction with the Cross-Connecti
 Unlike the operation getRoute, this operation always retrieves Resources in all layers that support the Route. This includes all Cross-Connections of the SNC (i.e. the Cross-Connections that are in the layer of the SNC) and all higher order Cross-Connections (i.e. the Cross-Connections of server SNCs that are used to carry the traffic of the queried SNC). It also includes all Topological Links (at any layer) that any traffic of the SNC passes across.</p>
         <p>
 All Cross-Connections allocated to the SNC must be returned, even if they are not active in the Managed Elements. This allows the target OS to query the Route that will be used before activating the SNC. The operation also applies to bundled SNCs.</p>
+        <p>If the SNC has more alternative routes, then it retrieves the intended route if the SNC is pending or partial, otherwise it retrieves the active route. This because there can be more partial routes and no active route, in such case the intended route is replied, as it is not known which of the partial routes is the candidate for becoming the active route.</p>
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexType>
