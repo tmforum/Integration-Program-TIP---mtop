@@ -36,7 +36,7 @@
       <xsd:element name="isFixed" type="xsd:boolean" nillable="true" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>The attribute defines if the CrossConnect is fixed (i.e. cannot be deleted by the NMS) or is flexible.</p>
+            <p>The attribute defines if the CrossConnect is fixed (i.e. cannot be deleted by the requesting OS) or is flexible.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
@@ -47,6 +47,7 @@
               <xsd:annotation>
                 <xsd:documentation>
                   <p>Names of PTPs/CTPs/FTPs at the aEnd of the cross connection.</p>
+                  <p>If the cross connection represents a Control Plane (Routing Node) connection, the end points are the SNPs.</p>
                 </xsd:documentation>
               </xsd:annotation>
             </xsd:element>
@@ -60,6 +61,7 @@
               <xsd:annotation>
                 <xsd:documentation>
                   <p>Names of PTPs/CTPs/FTPs at the zEnd of the cross connection.</p>
+                  <p>If the cross connection represents an Routing Node connection, then end points are the SNPs.</p>
                 </xsd:documentation>
               </xsd:annotation>
             </xsd:element>
@@ -77,10 +79,10 @@ Note that also the Cross Connection points to its superior Connection.</p>
       <xsd:element name="routeActualState" type="xsd:string" nillable="true" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>This parameter is the summary state of the activity states of the route’s CCs in the network, regardless the SNC the CCs are currently serving.  It can assume the following values:<ul>
-                <li>active:  all of the route’s CCs are active</li>
-                <li>inactive:  none of the route’s CCs is active</li>
-                <li>partial:  one or more but not all of the CCs of the route are active</li>
+            <p>This parameter is the summary state of the activity states of the route's CCs in the network, regardless the SNC the CCs are currently serving.  It can assume the following values:<ul>
+                <li>active: all of the route's CCs are active</li>
+                <li>inactive: none of the route's CCs is active</li>
+                <li>partial: one or more but not all of the CCs of the route are active</li>
               </ul>
             </p>
           </xsd:documentation>
@@ -89,10 +91,10 @@ Note that also the Cross Connection points to its superior Connection.</p>
       <xsd:element name="routeAdminState" type="xsd:string" nillable="true" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>This state has not any relationship with the actual state.  It can assume the following values:
+            <p>This state has not any relationship with the routeActualState. It can assume the following values:
                 <ul>
-                <li>locked:  the route is not allowed to be active</li>
-                <li>unlocked:  the route is allowed to be active</li>
+                <li>locked: the route is not allowed to be active</li>
+                <li>unlocked: the route is allowed to be active</li>
               </ul>
             </p>
           </xsd:documentation>
@@ -101,28 +103,29 @@ Note that also the Cross Connection points to its superior Connection.</p>
       <xsd:element name="isRouteExclusive" type="xsd:boolean" nillable="true" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>“True” if not any routes of other SNCs can share any of the route’s CCs or CTPs, even in pending state, “False” otherwise..</p>
+            <p>True if not any routes of other SNCs can share any of the route's CCs or CTPs, even in pending state, False otherwise.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
       <xsd:element name="routeId" type="xsd:string" nillable="true" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>This parameter is a unique identifier within the SNC name, with format up to the EMS..</p>
+            <p>This parameter is a unique identifier within the SNC name, with format up to the target OS.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
       <xsd:element name="isRouteIntended" type="xsd:boolean" nillable="true" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>The intended route (“True”) is defined as preferred, or default route for a given service.  The backup route (“False”) is partly or totally different from the intended route (but with same end points), and is useful for restoration and maintenance purposes.</p>
+            <p>The intended route (True) is defined as preferred, or default route for a given service.</p>
+            <p>The backup route (False) is partly or totally different from the intended route (but with same end points), and is useful for restoration and maintenance purposes.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
       <xsd:element name="isRouteInUseBy" type="xsd:boolean" nillable="true" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            <p>“True” if at least one of the route’s CCs or CTPs is carrying traffic of another SNC, “False” otherwise..</p>
+            <p>True if at least one of the route's CCs or CTPs is carrying traffic of another SNC, False otherwise.</p>
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
