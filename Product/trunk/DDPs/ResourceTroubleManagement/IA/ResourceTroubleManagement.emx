@@ -8,7 +8,15 @@
     <ownedComment xmi:id="_t70tYARTEeC-l6U8aOqMIw" annotatedElement="_nUpi8P-rEduKKLvC_EB00A">
       <body>Changes done between Release 2.1 and 3.0:&#xD;
 &#xD;
-- Interfaces::AlarmControlService::setAlarmReporting: Documentation updated to cover setting of alarm reporting for Connections.</body>
+- Interfaces::AlarmControlService::setAlarmReporting: Documentation updated to cover setting of alarm reporting for Connections&#xD;
+- Protection Interface Diagram added&#xD;
+- Interfaces::ProtectionControlService::createProtectionGroup added&#xD;
+- Interfaces::ProtectionControlService::deleteProtectionGroup added&#xD;
+- Interfaces::ProtectionControlService::modifyProtectionGroup added&#xD;
+&#xD;
+- Type Definitions::ProtectionGroupSetData added&#xD;
+- Type Definitions::ProtectionGroupCreateData added&#xD;
+- Type Definitions::ProtectionGroupModifyData added</body>
     </ownedComment>
     <packageImport xmi:id="_nUpi9P-rEduKKLvC_EB00A">
       <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
@@ -1080,7 +1088,7 @@ Traceability: R_TMF518_RTM_II_0062.</body>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_VvFWkCVfEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotInValidState?"/>
         </ownedOperation>
       </packagedElement>
-      <packagedElement xmi:type="uml:Interface" xmi:id="_mC_cUN1eEdyrKNXnBMy96w" name="ProtectionControlService">
+      <packagedElement xmi:type="uml:Interface" xmi:id="_mC_cUN1eEdyrKNXnBMy96w" name="ProtectionControlService" clientDependency="_kmmWwHc9EeKYE-orp3dsag _jPrqUHdBEeKYE-orp3dsag">
         <ownedOperation xmi:id="_ProKAN1kEdyrKNXnBMy96w" name="performProtectionCommand" visibility="public" precondition="_ProKAt1kEdyrKNXnBMy96w" postcondition="_ProKBN1kEdyrKNXnBMy96w">
           <ownedComment xmi:id="_ProKAd1kEdyrKNXnBMy96w" annotatedElement="_ProKAN1kEdyrKNXnBMy96w">
             <body>This operation is used to execute a protection switch. The protection switch may be performed via a protection switch command, on a protection group or on a CTP/FTP involved in an SNCP. It performs a specified protection command or clears all outstanding persistent protection commands.&#xD;
@@ -1148,6 +1156,198 @@ Traceability: R_TMF518_RTM_II_0058, UC_TMF518_RTM_0008.</body>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InvalidInput?"/>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_5w7XwHdDEeKYE-orp3dsag" name="createProtectionGroup">
+          <ownedComment xmi:id="_s_7VAHdEEeKYE-orp3dsag" annotatedElement="_5w7XwHdDEeKYE-orp3dsag">
+            <body>This operation creates a Protection Group within the addressed Managed Element.&#xD;
+The name, i.e., a unique identifier of the new Protection Group can be provided by the requesting OS. If no name is provided by the requesting OS, the target OS has to define a unique name.&#xD;
+&#xD;
+The target OS may or may not allow for multiple Protection Groups of the same type, rate and an overlapping set of TPs. When multiple Protection Groups are supported, an attempt to create a new Protection Group with a type, layer and list of TPs fully or partially matching an existing Protection Group should not trigger an Exception, and a new Protection Group object with a unique name (selected by the requesting OS or target OS) shall be created. When multiple Protection Groups are not supported by the target OS, an existing Protection Group is returned when a requested name, rate, type and the list of TPs match an existing object, otherwise an exception EXCPT_OBJECT_IN_USE is thrown.&#xD;
+Existing Protection Groups are never altered by this method.&#xD;
+The cardinality of the terminationPointList in the protection GroupCreateData should be greater than 0 and must not exceed the protection group type specific maximum number of TP members; e.g., with 1:1 type maximum of two TPs can be included in the terminationPointList.&#xD;
+&#xD;
+The resulting Protection Group must include at least one TP otherwise this operation fails and an exception shall be thrown.&#xD;
+&#xD;
+Additional information on exceptions:&#xD;
+invalidInput - Raised when any input parameter is syntactically incorrect (e.g. a field of protectionGroupCreateData is invalid including any field in the terminationPointList).&#xD;
+This exception is also raised when parameters are syntactically correct but terminationPointList is empty or the cardinality of terminationPointList in the protectionGroupCreateData exceeds the maximum number of TP members allowed for a specific a protection group type.&#xD;
+The exception is raised  when TPs in the protectionGroupList do not support a layer specified in the protectionGroupCreateData or cannot be associated in a protection relation at this layer.&#xD;
+&#xD;
+unableToComply - Raised when the target OS is unable to process the request because at least one parameter in the protectionGroupCreateData although valid and syntactically correct could not be set, or when the request fails at the Managed Eelement.&#xD;
+&#xD;
+Traceability: R_TMF518_TRM_II_xxx, UC_TMF518_RTM_xxx.&#xD;
+</body>
+          </ownedComment>
+          <ownedParameter xmi:id="_N8wQgHdHEeKYE-orp3dsag" name="meRef">
+            <ownedComment xmi:id="_N8wQgXdHEeKYE-orp3dsag" annotatedElement="_N8wQgHdHEeKYE-orp3dsag">
+              <body>This parameter provides the name of the Managed Element containing the new Protection Group.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_N8wQgndHEeKYE-orp3dsag">
+              <language></language>
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_82EjwHdDEeKYE-orp3dsag" name="protectionGroupCreateData" type="_WpaGUHdBEeKYE-orp3dsag">
+            <ownedComment xmi:id="_zNVAgHdGEeKYE-orp3dsag" annotatedElement="_82EjwHdDEeKYE-orp3dsag">
+              <body>This parameter provides the create attributes describing the Protection Group to be created.</body>
+            </ownedComment>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_Cs-swHdEEeKYE-orp3dsag" name="">
+              <language></language>
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_D9TFIHdEEeKYE-orp3dsag" name="createdProtectionGroup" direction="out">
+            <ownedComment xmi:id="_HeMRoHdHEeKYE-orp3dsag" annotatedElement="_D9TFIHdEEeKYE-orp3dsag">
+              <body>This parameter returns the created Protection Group.</body>
+            </ownedComment>
+            <type xmi:type="uml:Class" href="../../NetworkResourceAssurance/IA/NetworkResourceAssurance.emx#_Q8_tUFFhEdyZhYPB67lKRA?NetworkResourceAssurance/Data%20Object%20Classes/ProtectionGroup?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_JWsywHdEEeKYE-orp3dsag" name="">
+              <language></language>
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_N8wQg3dHEeKYE-orp3dsag" name="errorReason" direction="out">
+            <ownedComment xmi:id="_N8wQhHdHEeKYE-orp3dsag" annotatedElement="_N8wQg3dHEeKYE-orp3dsag">
+              <body>This parameter returns the creation error(s), if any.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+            <defaultValue xmi:type="uml:LiteralString" xmi:id="_SqNeIHdHEeKYE-orp3dsag" value="empty string"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_ZEObkHdEEeKYE-orp3dsag" name="void" direction="return"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/CommLoss?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_TAYcACVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/EntityNotFound?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InvalidInput?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UnableToComply?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_412MUCVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/ObjectInUse?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_ExQ1cCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/CapacityExceeded?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_gSxfICVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/UserlabelInUse?"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_2w5jAHdIEeKYE-orp3dsag" name="deleteProtectionGroup">
+          <ownedComment xmi:id="_2w5jAXdIEeKYE-orp3dsag" annotatedElement="_2w5jAHdIEeKYE-orp3dsag">
+            <body>This operation deletes a Protection Group.&#xD;
+&#xD;
+Additional information on exceptions:&#xD;
+unableToComply - This exception is raised and delete operation is rejected when swap of protection role is selected (case 1) but protectionGroupType does not support the feature, or client TPs protected by the Protection Group being deleted do not support relaxed containment feature, hence these client TPs should change their object names.&#xD;
+&#xD;
+Traceability: R_TMF518_TRM_II_xxx, UC_TMF518_RTM_xxx.&#xD;
+</body>
+          </ownedComment>
+          <ownedParameter xmi:id="_2w5jAndIEeKYE-orp3dsag" name="protectionGroupRef">
+            <ownedComment xmi:id="_2w5jA3dIEeKYE-orp3dsag" annotatedElement="_2w5jAndIEeKYE-orp3dsag">
+              <body>This parameter provides the name of the Protection Group to be deleted.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_2w5jBHdIEeKYE-orp3dsag">
+              <language></language>
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_KMk4kHdJEeKYE-orp3dsag" name="swapTpRef">
+            <ownedComment xmi:id="_KMk4kXdJEeKYE-orp3dsag" annotatedElement="_KMk4kHdJEeKYE-orp3dsag">
+              <body>This parameter is applicable to 1+1 or 1:N protection group type only. In all other cases, the parameter has to be empty.&#xD;
+&#xD;
+Case 1) Valid TP name: Swap of protection role and delete PG, i.e., the client traffic previously supported by the former worker trail (ended by the TP which name is specified) will remain supported by the former protection trail.&#xD;
+Case 2) Empty value: No swap, i.e., client traffic will remain supported by former worker trail(s).</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_KMk4kndJEeKYE-orp3dsag">
+              <language></language>
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_2w5jCHdIEeKYE-orp3dsag" name="deletedProtectionGroup?" direction="out">
+            <ownedComment xmi:id="_2w5jCXdIEeKYE-orp3dsag" annotatedElement="_2w5jCHdIEeKYE-orp3dsag">
+              <body>This parameter returns the deleted Protection Group.</body>
+            </ownedComment>
+            <type xmi:type="uml:Class" href="../../NetworkResourceAssurance/IA/NetworkResourceAssurance.emx#_Q8_tUFFhEdyZhYPB67lKRA?NetworkResourceAssurance/Data%20Object%20Classes/ProtectionGroup?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_2w5jCndIEeKYE-orp3dsag" name="">
+              <language></language>
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_2w5jC3dIEeKYE-orp3dsag" name="errorReason" direction="out">
+            <ownedComment xmi:id="_2w5jDHdIEeKYE-orp3dsag" annotatedElement="_2w5jC3dIEeKYE-orp3dsag">
+              <body>This parameter returns the deletion error(s), if any.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+            <defaultValue xmi:type="uml:LiteralString" xmi:id="_2w5jDXdIEeKYE-orp3dsag" value="empty string"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_2w5jDndIEeKYE-orp3dsag" name="void" direction="return"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/CommLoss?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_TAYcACVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/EntityNotFound?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InvalidInput?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UnableToComply?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_y-D4oHdKEeKYE-orp3dsag" name="modifyProtectionGroup">
+          <ownedComment xmi:id="_y-D4oXdKEeKYE-orp3dsag" annotatedElement="_y-D4oHdKEeKYE-orp3dsag">
+            <body>This operation modifies an existing Protection Group.&#xD;
+The terminationPointList should always include the complete intended list of Protection Group TP names rather than a delta from the existing Protection Group as each TP has well defined position in the list according to their role and priority. The terminationPointList should never be empty as Protection Groups without TP members are not permitted. The list size should not exceed the cardinality specific to the protectionGroupType with an exception of a reconfiguration scenario when working or protecting TP may be replaced thus existing followed by replacement TP is included in the list.&#xD;
+The swap of protection role can be provisioned by modifying accordingly the positions of TPs in the list. Note that this feature is applicable to 1+1 or 1:N protection group type only.&#xD;
+When all attributes including terminationPointList are exactly the same as in the target Protection Group, there should be no disruption to traffic and the modify operation should complete successfully. This operation should be utilized along with protection commands to replace and/or swap workers with protecting TPs. The consequences of using this operation only without steps to execute Lockout, protection switch and lock release are  implementation/target OS dependent.&#xD;
+&#xD;
+&#xD;
+Additional information on exceptions:&#xD;
+invalidInput - Raised when any input parameter is syntactically incorrect (e.g., a field of protectionGroupCreateData is invalid including any field in the terminationPointList).&#xD;
+The exception is also raised under the following conditions:&#xD;
+- TPs in the terminationPointList do not support the same layer as the Protection Group or cannot be associated in a protection relation at this layer&#xD;
+- the terminationPointList contains no TPs.&#xD;
+&#xD;
+unableToComply - Raised when the target OS is unable to process the request because at least one parameter in the protectionGroupModifyData although valid and syntactically correct could not be set, or when the request fails at the Managed Eelement.&#xD;
+The exception is raised also when swap of protection role is provisioned (through change of TP positions in the terminationPointList ) but protectionGroupType does not support the feature, or client TPs protected by the Protection Group do not support the relaxed containment feature, hence these client TPs should change their object names.&#xD;
+&#xD;
+Traceability: R_TMF518_TRM_II_xxx, UC_TMF518_RTM_xxx.&#xD;
+</body>
+          </ownedComment>
+          <ownedParameter xmi:id="_8b8S4HdLEeKYE-orp3dsag" name="protectionGroupRef">
+            <ownedComment xmi:id="_8b8S4XdLEeKYE-orp3dsag" annotatedElement="_8b8S4HdLEeKYE-orp3dsag">
+              <body>This parameter provides the name of the Protection Group to be modified.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_8b8S4ndLEeKYE-orp3dsag">
+              <language></language>
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_y-D4pXdKEeKYE-orp3dsag" name="protectionGroupModifyData" type="_h6X6IHbGEeKYE-orp3dsag">
+            <ownedComment xmi:id="_y-D4pndKEeKYE-orp3dsag" annotatedElement="_y-D4pXdKEeKYE-orp3dsag">
+              <body>This parameter provides the attributes describing how the Protection Group should be modified.</body>
+            </ownedComment>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_y-D4p3dKEeKYE-orp3dsag" name="">
+              <language></language>
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_y-D4qHdKEeKYE-orp3dsag" name="modifiedProtectionGroup" direction="out">
+            <ownedComment xmi:id="_y-D4qXdKEeKYE-orp3dsag" annotatedElement="_y-D4qHdKEeKYE-orp3dsag">
+              <body>This parameter returns the modified Protection Group.</body>
+            </ownedComment>
+            <type xmi:type="uml:Class" href="../../NetworkResourceAssurance/IA/NetworkResourceAssurance.emx#_Q8_tUFFhEdyZhYPB67lKRA?NetworkResourceAssurance/Data%20Object%20Classes/ProtectionGroup?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_y-D4qndKEeKYE-orp3dsag" name="">
+              <language></language>
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_y-D4q3dKEeKYE-orp3dsag" name="errorReason" direction="out">
+            <ownedComment xmi:id="_y-D4rHdKEeKYE-orp3dsag" annotatedElement="_y-D4q3dKEeKYE-orp3dsag">
+              <body>This parameter returns the modification error(s), if any.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+            <defaultValue xmi:type="uml:LiteralString" xmi:id="_y-D4rXdKEeKYE-orp3dsag" value="empty string"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_y-D4rndKEeKYE-orp3dsag" name="void" direction="return"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/CommLoss?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_TAYcACVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/EntityNotFound?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InvalidInput?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UnableToComply?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_ExQ1cCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/CapacityExceeded?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_gSxfICVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/UserlabelInUse?"/>
         </ownedOperation>
       </packagedElement>
       <packagedElement xmi:type="uml:Interface" xmi:id="_oFPA4N1eEdyrKNXnBMy96w" name="ProtectionRetrievalService">
@@ -1587,6 +1787,8 @@ Traceability: R_TMF518_RTM_II_0069.</body>
       </packagedElement>
       <packagedElement xmi:type="uml:Dependency" xmi:id="_puOS4OqOEdyuRYe8TzA8ug" supplier="_v_AmYOqMEdyuRYe8TzA8ug" client="_PexogN1eEdyrKNXnBMy96w"/>
       <packagedElement xmi:type="uml:Dependency" xmi:id="_gcQisDLkEd2PLsMcDETQ2w" name="uses" supplier="_lIf4EN1gEdyrKNXnBMy96w" client="_SE7LYN1eEdyrKNXnBMy96w"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_kmmWwHc9EeKYE-orp3dsag" name="modifies PG with" supplier="_h6X6IHbGEeKYE-orp3dsag" client="_mC_cUN1eEdyrKNXnBMy96w"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_jPrqUHdBEeKYE-orp3dsag" name="creates PG with" supplier="_WpaGUHdBEeKYE-orp3dsag" client="_mC_cUN1eEdyrKNXnBMy96w"/>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_DmvO0P_IEduKKLvC_EB00A" name="Type Definitions">
       <eAnnotations xmi:id="_Dm1VcP_IEduKKLvC_EB00A" source="uml2.diagrams"/>
@@ -2092,6 +2294,89 @@ In case of an M:N equipment protection type, protectedEquipmentRef always identi
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_4ty1Le9mEdymm-1bIGvQpw"/>
           <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_4ty1Lu9mEdymm-1bIGvQpw">
             <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <body>NA</body>
+          </defaultValue>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_h6X6IHbGEeKYE-orp3dsag" name="ProtectionGroupModifyData">
+        <ownedComment xmi:id="_yHghkHc-EeKYE-orp3dsag" annotatedElement="_h6X6IHbGEeKYE-orp3dsag">
+          <body>This data type provides the modifyable Protection Group attributes.</body>
+        </ownedComment>
+        <generalization xmi:id="_jOO1oHc9EeKYE-orp3dsag">
+          <general xmi:type="uml:DataType" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_ZbGqoKlcEdy39Z05qVqfpQ?NetworkResourceBasic/Type%20Definitions/CommonResourceModifyData?"/>
+        </generalization>
+        <generalization xmi:id="_skbWsHdCEeKYE-orp3dsag" general="_fMXJYHdCEeKYE-orp3dsag"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_WpaGUHdBEeKYE-orp3dsag" name="ProtectionGroupCreateData">
+        <ownedComment xmi:id="_WpaGUXdBEeKYE-orp3dsag" annotatedElement="_WpaGUHdBEeKYE-orp3dsag">
+          <body>This data type provides the attributes required for the creation of a Protection Group.</body>
+        </ownedComment>
+        <generalization xmi:id="_WpaGUndBEeKYE-orp3dsag">
+          <general xmi:type="uml:DataType" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_ZsO24KlcEdy39Z05qVqfpQ?NetworkResourceBasic/Type%20Definitions/CommonResourceCreateData?"/>
+        </generalization>
+        <generalization xmi:id="_qewqsHdCEeKYE-orp3dsag" general="_fMXJYHdCEeKYE-orp3dsag"/>
+        <ownedAttribute xmi:id="_4sCeMHdBEeKYE-orp3dsag" name="protectionGroupType" visibility="public">
+          <ownedComment xmi:id="_4sCeMXdBEeKYE-orp3dsag" annotatedElement="_4sCeMHdBEeKYE-orp3dsag">
+            <body>This attribute identifies the type of the Protection Group.</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="../../NetworkResourceAssurance/IA/NetworkResourceAssurance.emx#_m0E44FFiEdyZhYPB67lKRA?NetworkResourceAssurance/Type%20Definitions/ProtectionGroupType?"/>
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_4sCeMndBEeKYE-orp3dsag">
+            <type xmi:type="uml:Enumeration" href="../../NetworkResourceAssurance/IA/NetworkResourceAssurance.emx#_m0E44FFiEdyZhYPB67lKRA?NetworkResourceAssurance/Type%20Definitions/ProtectionGroupType?"/>
+            <body>NA</body>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_V3RpUHdCEeKYE-orp3dsag" name="layerRate" visibility="public" isReadOnly="true">
+          <ownedComment xmi:id="_V3RpUXdCEeKYE-orp3dsag" annotatedElement="_V3RpUHdCEeKYE-orp3dsag">
+            <body>This attribute identifies the line rate of the PTPs of the Protection Group.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_eNqf0CPHEdypgfGA_0P3-g?NetworkResourceBasic/Type%20Definitions/LayerRate?"/>
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_V3RpUndCEeKYE-orp3dsag">
+            <type xmi:type="uml:DataType" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_eNqf0CPHEdypgfGA_0P3-g?NetworkResourceBasic/Type%20Definitions/LayerRate?"/>
+            <body>NA</body>
+          </defaultValue>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_fMXJYHdCEeKYE-orp3dsag" name="ProtectionGroupSetData">
+        <ownedComment xmi:id="_fMXJYXdCEeKYE-orp3dsag" annotatedElement="_fMXJYHdCEeKYE-orp3dsag">
+          <body>This data type provides the modifyable Protection Group attributes.</body>
+        </ownedComment>
+        <ownedAttribute xmi:id="_fMXJY3dCEeKYE-orp3dsag" name="reversionMode" visibility="public" isReadOnly="true">
+          <ownedComment xmi:id="_fMXJZHdCEeKYE-orp3dsag" annotatedElement="_fMXJY3dCEeKYE-orp3dsag">
+            <body>This attribute identifies whether the protection scheme is revertive or not.</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="../../NetworkResourceAssurance/IA/NetworkResourceAssurance.emx#_fyCP8FFWEdyZhYPB67lKRA?NetworkResourceAssurance/Type%20Definitions/ReversionMode?"/>
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_fMXJZXdCEeKYE-orp3dsag">
+            <type xmi:type="uml:Enumeration" href="../../NetworkResourceAssurance/IA/NetworkResourceAssurance.emx#_fyCP8FFWEdyZhYPB67lKRA?NetworkResourceAssurance/Type%20Definitions/ReversionMode?"/>
+            <body>Depends on the protection group implementation.</body>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_fMXJZndCEeKYE-orp3dsag" name="terminationPointList" visibility="public" isOrdered="true" isReadOnly="true">
+          <ownedComment xmi:id="_fMXJZ3dCEeKYE-orp3dsag" annotatedElement="_fMXJZndCEeKYE-orp3dsag">
+            <body>This attribute identifies the complete intended list of Protection Group TP names. It is a partially ordered list as in the Protection Group structure, i.e. workers names are first and protecting TP names follow in order of priority. Thus each TP has a well defined position in the list according to its role and priority.&#xD;
+In normal operation the list shall contain a number of TPs specific to the protection type however under reconfiguration scenarios there may be more or less TPs than normal for a short period.  However, the terminationPointList should never be empty as Protection Groups without TP members are not permitted.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_fMXJaHdCEeKYE-orp3dsag" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fMXJaXdCEeKYE-orp3dsag" value="1"/>
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_fMXJandCEeKYE-orp3dsag">
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <language></language>
+            <body>NA</body>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_fMXJa3dCEeKYE-orp3dsag" name="parameterList" visibility="public" isReadOnly="true">
+          <ownedComment xmi:id="_fMXJbHdCEeKYE-orp3dsag" annotatedElement="_fMXJa3dCEeKYE-orp3dsag">
+            <body>This attribute contains a name value list for the parameters of the Protection Group to be created or modified.&#xD;
+See attached SD1-29_PGPParameters supporting document for details (values and descriptions) on Protection Group parameters.</body>
+          </ownedComment>
+          <ownedComment xmi:id="_fMXJbXdCEeKYE-orp3dsag" annotatedElement="_fMXJa3dCEeKYE-orp3dsag">
+            <body>..\SD\SD1-29_PGPParameters.pdf</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_8_P-sPo7EduVsYI7mfNDXQ?Framework/Type%20Definitions/AttributeValuePair?"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_fMXJbndCEeKYE-orp3dsag" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fMXJb3dCEeKYE-orp3dsag"/>
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_fMXJcHdCEeKYE-orp3dsag">
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_8_P-sPo7EduVsYI7mfNDXQ?Framework/Type%20Definitions/AttributeValuePair?"/>
             <body>NA</body>
           </defaultValue>
         </ownedAttribute>
@@ -2650,6 +2935,208 @@ In case of an M:N equipment protection type, protectedEquipmentRef always identi
             <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_VHOXopETEdypurMa9DXJyw" points="[0, 0, 0, 0]$[0, 0, 0, 0]"/>
           </edges>
         </contents>
+        <contents xmi:type="umlnotation:UMLDiagram" xmi:id="_qzAHsHbGEeKYE-orp3dsag" type="Class" name="RTM Protection Interface Diagram">
+          <children xmi:type="umlnotation:UMLClassifierShape" xmi:id="_wEOJsHbGEeKYE-orp3dsag" element="_mC_cUN1eEdyrKNXnBMy96w" fontHeight="8" showListSignature="true" transparency="0" lineColor="14263149" lineWidth="1" showParent="QualifiedName" showStereotype="Label" useClassifierShape="true">
+            <children xmi:type="notation:DecorationNode" xmi:id="_wEq1oHbGEeKYE-orp3dsag" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_wEq1oXbGEeKYE-orp3dsag" width="530" height="530"/>
+            </children>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_wEq1onbGEeKYE-orp3dsag" type="Stereotype"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_wEq1o3bGEeKYE-orp3dsag" type="Kind"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_wEq1pHbGEeKYE-orp3dsag" type="Name"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_wEq1pXbGEeKYE-orp3dsag" type="Parent"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_wE0moHbGEeKYE-orp3dsag" type="AttributeCompartment"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_wE0moXbGEeKYE-orp3dsag" type="OperationCompartment"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_wE0monbGEeKYE-orp3dsag" visible="false" type="SignalCompartment"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_wEOJsXbGEeKYE-orp3dsag" x="284" y="-5676"/>
+          </children>
+          <children xmi:type="umlnotation:UMLShape" xmi:id="_4zK20HbGEeKYE-orp3dsag" fontHeight="8" showListSignature="true" transparency="0" lineColor="14263149" lineWidth="1" showParent="QualifiedName" showStereotype="Label">
+            <children xmi:type="notation:DecorationNode" xmi:id="_4zK20nbGEeKYE-orp3dsag" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_4zK203bGEeKYE-orp3dsag" width="1320" height="1320"/>
+            </children>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_4zK21HbGEeKYE-orp3dsag" type="Stereotype"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_4zK21XbGEeKYE-orp3dsag" type="Kind"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_4zK21nbGEeKYE-orp3dsag" type="Name"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_4zK213bGEeKYE-orp3dsag" type="Parent"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_4zK22HbGEeKYE-orp3dsag" type="AttributeCompartment"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_4zK22XbGEeKYE-orp3dsag" visible="false" type="OperationCompartment"/>
+            <element xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_MPswEP_FEduKKLvC_EB00A?Framework/Type%20Definitions/CommonObjectSetData?"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_4zK20XbGEeKYE-orp3dsag" x="10404" y="-396"/>
+          </children>
+          <children xmi:type="umlnotation:UMLShape" xmi:id="_5PLdYHbGEeKYE-orp3dsag" fontHeight="8" showListSignature="true" transparency="0" lineColor="14263149" lineWidth="1" showParent="QualifiedName" showStereotype="Label">
+            <children xmi:type="notation:DecorationNode" xmi:id="_5PLdYnbGEeKYE-orp3dsag" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_5PLdY3bGEeKYE-orp3dsag" width="1320" height="1320"/>
+            </children>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_5PLdZHbGEeKYE-orp3dsag" type="Stereotype"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_5PLdZXbGEeKYE-orp3dsag" type="Kind"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_5PLdZnbGEeKYE-orp3dsag" type="Name"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_5PLdZ3bGEeKYE-orp3dsag" type="Parent"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_5PLdaHbGEeKYE-orp3dsag" type="AttributeCompartment"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_5PLdaXbGEeKYE-orp3dsag" visible="false" type="OperationCompartment"/>
+            <element xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_fJJBQKf4EdyBvu4QgH3iCw?Framework/Type%20Definitions/CommonObjectCreateData?"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_5PLdYXbGEeKYE-orp3dsag" x="5362" y="5009"/>
+          </children>
+          <children xmi:type="umlnotation:UMLShape" xmi:id="_5rV08HbGEeKYE-orp3dsag" fontHeight="8" showListSignature="true" transparency="0" lineColor="14263149" lineWidth="1" showParent="QualifiedName" showStereotype="Label">
+            <children xmi:type="notation:DecorationNode" xmi:id="_5rV08nbGEeKYE-orp3dsag" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_5rV083bGEeKYE-orp3dsag" width="1320" height="1320"/>
+            </children>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_5rV09HbGEeKYE-orp3dsag" type="Stereotype"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_5rV09XbGEeKYE-orp3dsag" type="Kind"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_5rV09nbGEeKYE-orp3dsag" type="Name"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_5rV093bGEeKYE-orp3dsag" type="Parent"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_5rV0-HbGEeKYE-orp3dsag" type="AttributeCompartment"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_5rV0-XbGEeKYE-orp3dsag" visible="false" type="OperationCompartment"/>
+            <element xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_QXAswbqbEdyA7v53CjAzng?Framework/Type%20Definitions/CommonObjectModifyData?"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_5rV08XbGEeKYE-orp3dsag" x="20094" y="5148"/>
+          </children>
+          <children xmi:type="umlnotation:UMLShape" xmi:id="_HBevoHbHEeKYE-orp3dsag" fontHeight="8" showListSignature="true" transparency="0" lineColor="14263149" lineWidth="1" showParent="QualifiedName" showStereotype="Label">
+            <children xmi:type="notation:DecorationNode" xmi:id="_HBevonbHEeKYE-orp3dsag" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_HBevo3bHEeKYE-orp3dsag" width="1320" height="1320"/>
+            </children>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_HBevpHbHEeKYE-orp3dsag" type="Stereotype"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_HBevpXbHEeKYE-orp3dsag" type="Kind"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_HBevpnbHEeKYE-orp3dsag" type="Name"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_HBevp3bHEeKYE-orp3dsag" type="Parent"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_HBevqHbHEeKYE-orp3dsag" type="AttributeCompartment"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_HBevqXbHEeKYE-orp3dsag" visible="false" type="OperationCompartment"/>
+            <element xmi:type="uml:DataType" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_ZsO24KlcEdy39Z05qVqfpQ?NetworkResourceBasic/Type%20Definitions/CommonResourceCreateData?"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_HBevoXbHEeKYE-orp3dsag" x="4119" y="7920"/>
+          </children>
+          <children xmi:type="umlnotation:UMLShape" xmi:id="_He_LAHbHEeKYE-orp3dsag" fontHeight="8" showListSignature="true" transparency="0" lineColor="14263149" lineWidth="1" showParent="QualifiedName" showStereotype="Label">
+            <children xmi:type="notation:DecorationNode" xmi:id="_He_LAnbHEeKYE-orp3dsag" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_He_LA3bHEeKYE-orp3dsag" width="1320" height="1320"/>
+            </children>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_He_LBHbHEeKYE-orp3dsag" type="Stereotype"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_He_LBXbHEeKYE-orp3dsag" type="Kind"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_He_LBnbHEeKYE-orp3dsag" type="Name"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_He_LB3bHEeKYE-orp3dsag" type="Parent"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_He_LCHbHEeKYE-orp3dsag" type="AttributeCompartment"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_He_LCXbHEeKYE-orp3dsag" visible="false" type="OperationCompartment"/>
+            <element xmi:type="uml:DataType" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_ZbGqoKlcEdy39Z05qVqfpQ?NetworkResourceBasic/Type%20Definitions/CommonResourceModifyData?"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_He_LAXbHEeKYE-orp3dsag" x="18216" y="7920"/>
+          </children>
+          <children xmi:type="umlnotation:UMLShape" xmi:id="_dwn9cHc9EeKYE-orp3dsag" element="_h6X6IHbGEeKYE-orp3dsag" fontHeight="8" showListSignature="true" transparency="0" lineColor="14263149" lineWidth="1" showParent="QualifiedName" showStereotype="Label">
+            <children xmi:type="notation:DecorationNode" xmi:id="_dwn9cnc9EeKYE-orp3dsag" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_dwn9c3c9EeKYE-orp3dsag" width="1320" height="1320"/>
+            </children>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_dwn9dHc9EeKYE-orp3dsag" type="Stereotype"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_dwn9dXc9EeKYE-orp3dsag" type="Kind"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_dwn9dnc9EeKYE-orp3dsag" type="Name"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_dwn9d3c9EeKYE-orp3dsag" type="Parent"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_dwn9eHc9EeKYE-orp3dsag" type="AttributeCompartment"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_dwn9eXc9EeKYE-orp3dsag" visible="false" type="OperationCompartment"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_dwn9cXc9EeKYE-orp3dsag" x="18849" y="13992"/>
+          </children>
+          <children xmi:type="umlnotation:UMLShape" xmi:id="_ZK7n4HdBEeKYE-orp3dsag" element="_WpaGUHdBEeKYE-orp3dsag" fontHeight="8" showListSignature="true" transparency="0" lineColor="14263149" lineWidth="1" showParent="QualifiedName" showStereotype="Label">
+            <children xmi:type="notation:DecorationNode" xmi:id="_ZK7n4ndBEeKYE-orp3dsag" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_ZK7n43dBEeKYE-orp3dsag" width="1320" height="1320"/>
+            </children>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_ZK7n5HdBEeKYE-orp3dsag" type="Stereotype"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_ZK7n5XdBEeKYE-orp3dsag" type="Kind"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_ZK7n5ndBEeKYE-orp3dsag" type="Name"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_ZK7n53dBEeKYE-orp3dsag" type="Parent"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_ZK7n6HdBEeKYE-orp3dsag" type="AttributeCompartment"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_ZK7n6XdBEeKYE-orp3dsag" visible="false" type="OperationCompartment"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ZK7n4XdBEeKYE-orp3dsag" x="3828" y="13860"/>
+          </children>
+          <children xmi:type="umlnotation:UMLShape" xmi:id="_hv0koHdCEeKYE-orp3dsag" element="_fMXJYHdCEeKYE-orp3dsag" fontHeight="8" showListSignature="true" transparency="0" lineColor="14263149" lineWidth="1" showParent="QualifiedName" showStereotype="Label">
+            <children xmi:type="notation:DecorationNode" xmi:id="_hv0kondCEeKYE-orp3dsag" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_hv0ko3dCEeKYE-orp3dsag" width="1320" height="1320"/>
+            </children>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_hv0kpHdCEeKYE-orp3dsag" type="Stereotype"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_hv0kpXdCEeKYE-orp3dsag" type="Kind"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_hv0kpndCEeKYE-orp3dsag" type="Name"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_hv0kp3dCEeKYE-orp3dsag" type="Parent"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_hv0kqHdCEeKYE-orp3dsag" type="AttributeCompartment"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_hv0kqXdCEeKYE-orp3dsag" visible="false" type="OperationCompartment"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_hv0koXdCEeKYE-orp3dsag" x="8976" y="10164"/>
+          </children>
+          <element xsi:nil="true"/>
+          <edges xmi:type="umlnotation:UMLConnector" xmi:id="_5PLdanbGEeKYE-orp3dsag" source="_5PLdYHbGEeKYE-orp3dsag" target="_4zK20HbGEeKYE-orp3dsag" fontHeight="8" roundedBendpointsRadius="4" routing="Tree" lineColor="8421504" lineWidth="1" showStereotype="Text">
+            <children xmi:type="notation:DecorationNode" xmi:id="_5PLdbHbGEeKYE-orp3dsag" type="NameLabel">
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_5PLdbnbGEeKYE-orp3dsag" type="Stereotype"/>
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_5PLdb3bGEeKYE-orp3dsag" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_5PLdbXbGEeKYE-orp3dsag" y="-186"/>
+            </children>
+            <element xmi:type="uml:Generalization" href="../../Framework/IA/Framework.emx#_qUGd0Kf4EdyBvu4QgH3iCw?Framework/Type%20Definitions/CommonObjectCreateData/%3CGeneralization%3E?"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_5PLda3bGEeKYE-orp3dsag" points="[0, -885, -7489, 3463]$[0, -1423, -7489, 2925]$[7392, -1423, -97, 2925]$[7392, -2405, -97, 1943]"/>
+          </edges>
+          <edges xmi:type="umlnotation:UMLConnector" xmi:id="_5rV0-nbGEeKYE-orp3dsag" source="_5rV08HbGEeKYE-orp3dsag" target="_4zK20HbGEeKYE-orp3dsag" fontHeight="8" roundedBendpointsRadius="4" routing="Tree" lineColor="8421504" lineWidth="1" showStereotype="Text">
+            <children xmi:type="notation:DecorationNode" xmi:id="_5rV0_HbGEeKYE-orp3dsag" type="NameLabel">
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_5rV0_nbGEeKYE-orp3dsag" type="Stereotype"/>
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_5rV0_3bGEeKYE-orp3dsag" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_5rV0_XbGEeKYE-orp3dsag" y="-186"/>
+            </children>
+            <element xmi:type="uml:Generalization" href="../../Framework/IA/Framework.emx#_X-SAILqbEdyA7v53CjAzng?Framework/Type%20Definitions/CommonObjectModifyData/%3CGeneralization%3E?"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_5rV0-3bGEeKYE-orp3dsag" points="[13, -818, 6779, 3602]$[13, -1495, 6779, 2925]$[-6863, -1495, -97, 2925]$[-6863, -2477, -97, 1943]"/>
+          </edges>
+          <edges xmi:type="umlnotation:UMLConnector" xmi:id="_HBevqnbHEeKYE-orp3dsag" source="_HBevoHbHEeKYE-orp3dsag" target="_5PLdYHbGEeKYE-orp3dsag" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+            <children xmi:type="notation:DecorationNode" xmi:id="_HBevrHbHEeKYE-orp3dsag" type="NameLabel">
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_HBevrnbHEeKYE-orp3dsag" type="Stereotype"/>
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_HBevr3bHEeKYE-orp3dsag" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_HBevrXbHEeKYE-orp3dsag" y="-186"/>
+            </children>
+            <element xmi:type="uml:Generalization" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_R1WkwKldEdy39Z05qVqfpQ?NetworkResourceBasic/Type%20Definitions/CommonResourceCreateData/%3CGeneralization%3E?"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_HBevq3bHEeKYE-orp3dsag" points="[0, 0, 0, 0]$[0, 0, 0, 0]"/>
+          </edges>
+          <edges xmi:type="umlnotation:UMLConnector" xmi:id="_He_LCnbHEeKYE-orp3dsag" source="_He_LAHbHEeKYE-orp3dsag" target="_5rV08HbGEeKYE-orp3dsag" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+            <children xmi:type="notation:DecorationNode" xmi:id="_He_LDHbHEeKYE-orp3dsag" type="NameLabel">
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_He_LDnbHEeKYE-orp3dsag" type="Stereotype"/>
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_He_LD3bHEeKYE-orp3dsag" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_He_LDXbHEeKYE-orp3dsag" y="-186"/>
+            </children>
+            <element xmi:type="uml:Generalization" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_T-5EIKldEdy39Z05qVqfpQ?NetworkResourceBasic/Type%20Definitions/CommonResourceModifyData/%3CGeneralization%3E?"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_He_LC3bHEeKYE-orp3dsag" points="[0, 0, 0, 0]$[0, 0, 0, 0]"/>
+          </edges>
+          <edges xmi:type="umlnotation:UMLConnector" xmi:id="_jO-cgHc9EeKYE-orp3dsag" element="_jOO1oHc9EeKYE-orp3dsag" source="_dwn9cHc9EeKYE-orp3dsag" target="_He_LAHbHEeKYE-orp3dsag" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+            <children xmi:type="notation:DecorationNode" xmi:id="_jO-cgnc9EeKYE-orp3dsag" type="NameLabel">
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_jO-chHc9EeKYE-orp3dsag" type="Stereotype"/>
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_jO-chXc9EeKYE-orp3dsag" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_jO-cg3c9EeKYE-orp3dsag" y="-186"/>
+            </children>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_jO-cgXc9EeKYE-orp3dsag" points="[2844, -818, 2763, 5187]$[2844, -5120, 2763, 885]"/>
+          </edges>
+          <edges xmi:type="umlnotation:UMLConnector" xmi:id="_knMMoHc9EeKYE-orp3dsag" element="_kmmWwHc9EeKYE-orp3dsag" source="_wEOJsHbGEeKYE-orp3dsag" target="_dwn9cHc9EeKYE-orp3dsag" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+            <children xmi:type="notation:DecorationNode" xmi:id="_knMMonc9EeKYE-orp3dsag" type="NameLabel">
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_knMMpHc9EeKYE-orp3dsag" type="Stereotype"/>
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_knMMpXc9EeKYE-orp3dsag" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_knMMo3c9EeKYE-orp3dsag" y="-186"/>
+            </children>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_knMMoXc9EeKYE-orp3dsag" points="[12708, 1044, 7474, -18399]$[12708, 19231, 7474, -212]$[8990, 19231, 3756, -212]"/>
+          </edges>
+          <edges xmi:type="umlnotation:UMLConnector" xmi:id="_ZK7n6ndBEeKYE-orp3dsag" element="_WpaGUndBEeKYE-orp3dsag" source="_ZK7n4HdBEeKYE-orp3dsag" target="_HBevoHbHEeKYE-orp3dsag" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+            <children xmi:type="notation:DecorationNode" xmi:id="_ZK7n7HdBEeKYE-orp3dsag" type="NameLabel">
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_ZK7n7ndBEeKYE-orp3dsag" type="Stereotype"/>
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_ZK7n73dBEeKYE-orp3dsag" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ZK7n7XdBEeKYE-orp3dsag" y="-186"/>
+            </children>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_ZK7n63dBEeKYE-orp3dsag" points="[-1710, -1731, -5219, 4273]$[-1710, -5901, -5219, 103]"/>
+            <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_dscrQHdBEeKYE-orp3dsag" id="(0.8925601507927708,0.9418666666666666)"/>
+          </edges>
+          <edges xmi:type="umlnotation:UMLConnector" xmi:id="_jPrqUXdBEeKYE-orp3dsag" element="_jPrqUHdBEeKYE-orp3dsag" source="_wEOJsHbGEeKYE-orp3dsag" target="_ZK7n4HdBEeKYE-orp3dsag" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+            <children xmi:type="notation:DecorationNode" xmi:id="_jPrqU3dBEeKYE-orp3dsag" type="NameLabel">
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_jPrqVXdBEeKYE-orp3dsag" type="Stereotype"/>
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_jPrqVndBEeKYE-orp3dsag" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_jPrqVHdBEeKYE-orp3dsag" y="-186"/>
+            </children>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_jPrqUndBEeKYE-orp3dsag" points="[-13300, 1255, -5970, -18122]$[-13300, 19430, -5970, 53]$[-12091, 19430, -4761, 53]"/>
+          </edges>
+          <edges xmi:type="umlnotation:UMLConnector" xmi:id="_qewqsXdCEeKYE-orp3dsag" element="_qewqsHdCEeKYE-orp3dsag" source="_ZK7n4HdBEeKYE-orp3dsag" target="_hv0koHdCEeKYE-orp3dsag" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+            <children xmi:type="notation:DecorationNode" xmi:id="_qewqs3dCEeKYE-orp3dsag" type="NameLabel">
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_qewqtXdCEeKYE-orp3dsag" type="Stereotype"/>
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_qewqtndCEeKYE-orp3dsag" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_qewqtHdCEeKYE-orp3dsag" y="-186"/>
+            </children>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_qewqsndCEeKYE-orp3dsag" points="[55, -65, -254, 225]$[140, -241, -169, 49]"/>
+          </edges>
+          <edges xmi:type="umlnotation:UMLConnector" xmi:id="_skbWsXdCEeKYE-orp3dsag" element="_skbWsHdCEeKYE-orp3dsag" source="_dwn9cHc9EeKYE-orp3dsag" target="_hv0koHdCEeKYE-orp3dsag" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+            <children xmi:type="notation:DecorationNode" xmi:id="_skbWs3dCEeKYE-orp3dsag" type="NameLabel">
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_skbWtXdCEeKYE-orp3dsag" type="Stereotype"/>
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_skbWtndCEeKYE-orp3dsag" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_skbWtHdCEeKYE-orp3dsag" y="-186"/>
+            </children>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_skbWsndCEeKYE-orp3dsag" points="[-2197, -818, 7708, 5688]$[-2197, -2007, 7708, 4499]$[-4844, -2007, 5061, 4499]$[-4844, -5198, 5061, 1308]"/>
+          </edges>
+        </contents>
       </eAnnotations>
     </packagedElement>
     <profileApplication xmi:id="_nUpi9f-rEduKKLvC_EB00A">
@@ -3006,4 +3493,36 @@ In case of an M:N equipment protection type, protectedEquipmentRef always identi
   <Default:Documentation xmi:id="_yTvf8HvgEeCfM9JZ3UtqLA" base_Comment="_yTlu8XvgEeCfM9JZ3UtqLA"/>
   <Default:Documentation xmi:id="_yTvf8XvgEeCfM9JZ3UtqLA" base_Comment="_yTlu9XvgEeCfM9JZ3UtqLA"/>
   <Default:URL xmi:id="_18eEsXvhEeCfM9JZ3UtqLA" base_Comment="_18eEsHvhEeCfM9JZ3UtqLA"/>
+  <Default:Documentation xmi:id="_yHghkXc-EeKYE-orp3dsag" base_Comment="_yHghkHc-EeKYE-orp3dsag"/>
+  <Default:Documentation xmi:id="_WpaGZHdBEeKYE-orp3dsag" base_Comment="_WpaGUXdBEeKYE-orp3dsag"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_4sCeNHdBEeKYE-orp3dsag" base_StructuralFeature="_4sCeMHdBEeKYE-orp3dsag" writeable="TARGET_OS_ONLY" isInvariant="true"/>
+  <Default:Documentation xmi:id="_4sCeNXdBEeKYE-orp3dsag" base_Comment="_4sCeMXdBEeKYE-orp3dsag"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_V3RpVHdCEeKYE-orp3dsag" base_StructuralFeature="_V3RpUHdCEeKYE-orp3dsag" writeable="TARGET_OS_ONLY" isInvariant="true"/>
+  <Default:Documentation xmi:id="_V3RpVXdCEeKYE-orp3dsag" base_Comment="_V3RpUXdCEeKYE-orp3dsag"/>
+  <Default:Documentation xmi:id="_fMXJdHdCEeKYE-orp3dsag" base_Comment="_fMXJYXdCEeKYE-orp3dsag"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_fMXJdXdCEeKYE-orp3dsag" notificationType="ATTRIBUTE_VALUE_CHANGE" base_StructuralFeature="_fMXJY3dCEeKYE-orp3dsag" writeable="TARGET_OS_ONLY"/>
+  <Default:Documentation xmi:id="_fMXJdndCEeKYE-orp3dsag" base_Comment="_fMXJZHdCEeKYE-orp3dsag"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_fMXJd3dCEeKYE-orp3dsag" notificationType="ATTRIBUTE_VALUE_CHANGE" base_StructuralFeature="_fMXJZndCEeKYE-orp3dsag" writeable="TARGET_OS_ONLY"/>
+  <Default:Documentation xmi:id="_fMXJeHdCEeKYE-orp3dsag" base_Comment="_fMXJZ3dCEeKYE-orp3dsag"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_fMXJeXdCEeKYE-orp3dsag" base_StructuralFeature="_fMXJa3dCEeKYE-orp3dsag" writeable="TARGET_OS_ONLY" isInvariant="true"/>
+  <Default:Documentation xmi:id="_fMXJendCEeKYE-orp3dsag" base_Comment="_fMXJbHdCEeKYE-orp3dsag"/>
+  <Default:URL xmi:id="_fMXJe3dCEeKYE-orp3dsag" base_Comment="_fMXJbXdCEeKYE-orp3dsag" displayName="SD1-29_PGPParameters.pdf"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_5w7XwXdDEeKYE-orp3dsag" base_Operation="_5w7XwHdDEeKYE-orp3dsag"/>
+  <Default:Documentation xmi:id="_s_7VAXdEEeKYE-orp3dsag" base_Comment="_s_7VAHdEEeKYE-orp3dsag"/>
+  <Default:Documentation xmi:id="_zNVAgXdGEeKYE-orp3dsag" base_Comment="_zNVAgHdGEeKYE-orp3dsag"/>
+  <Default:Documentation xmi:id="_HeMRoXdHEeKYE-orp3dsag" base_Comment="_HeMRoHdHEeKYE-orp3dsag"/>
+  <Default:Documentation xmi:id="_N8wQhndHEeKYE-orp3dsag" base_Comment="_N8wQgXdHEeKYE-orp3dsag"/>
+  <Default:Documentation xmi:id="_N8wQh3dHEeKYE-orp3dsag" base_Comment="_N8wQhHdHEeKYE-orp3dsag"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_2w5jEHdIEeKYE-orp3dsag" base_Operation="_2w5jAHdIEeKYE-orp3dsag"/>
+  <Default:Documentation xmi:id="_2w5jEXdIEeKYE-orp3dsag" base_Comment="_2w5jAXdIEeKYE-orp3dsag"/>
+  <Default:Documentation xmi:id="_2w5jEndIEeKYE-orp3dsag" base_Comment="_2w5jA3dIEeKYE-orp3dsag"/>
+  <Default:Documentation xmi:id="_2w5jFHdIEeKYE-orp3dsag" base_Comment="_2w5jCXdIEeKYE-orp3dsag"/>
+  <Default:Documentation xmi:id="_2w5jFXdIEeKYE-orp3dsag" base_Comment="_2w5jDHdIEeKYE-orp3dsag"/>
+  <Default:Documentation xmi:id="_KMupkHdJEeKYE-orp3dsag" base_Comment="_KMk4kXdJEeKYE-orp3dsag"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_y-D4sHdKEeKYE-orp3dsag" base_Operation="_y-D4oHdKEeKYE-orp3dsag"/>
+  <Default:Documentation xmi:id="_y-D4sXdKEeKYE-orp3dsag" base_Comment="_y-D4oXdKEeKYE-orp3dsag"/>
+  <Default:Documentation xmi:id="_y-D4s3dKEeKYE-orp3dsag" base_Comment="_y-D4pndKEeKYE-orp3dsag"/>
+  <Default:Documentation xmi:id="_y-D4tHdKEeKYE-orp3dsag" base_Comment="_y-D4qXdKEeKYE-orp3dsag"/>
+  <Default:Documentation xmi:id="_y-D4tXdKEeKYE-orp3dsag" base_Comment="_y-D4rHdKEeKYE-orp3dsag"/>
+  <Default:Documentation xmi:id="_8b8S43dLEeKYE-orp3dsag" base_Comment="_8b8S4XdLEeKYE-orp3dsag"/>
 </xmi:XMI>
