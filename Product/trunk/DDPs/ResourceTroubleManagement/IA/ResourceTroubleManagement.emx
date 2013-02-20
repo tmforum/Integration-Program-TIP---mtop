@@ -1157,7 +1157,7 @@ Traceability: R_TMF518_RTM_II_0058, UC_TMF518_RTM_0008.</body>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
         </ownedOperation>
-        <ownedOperation xmi:id="_5w7XwHdDEeKYE-orp3dsag" name="createProtectionGroup">
+        <ownedOperation xmi:id="_5w7XwHdDEeKYE-orp3dsag" name="createProtectionGroup" precondition="_-iCyAHdyEeKpuKU43UAFGg" postcondition="__-lBcHdyEeKpuKU43UAFGg">
           <ownedComment xmi:id="_s_7VAHdEEeKYE-orp3dsag" annotatedElement="_5w7XwHdDEeKYE-orp3dsag">
             <body>This operation creates a Protection Group within the addressed Managed Element.&#xD;
 The name, i.e., a unique identifier of the new Protection Group can be provided by the requesting OS. If no name is provided by the requesting OS, the target OS has to define a unique name.&#xD;
@@ -1166,18 +1166,29 @@ The target OS may or may not allow for multiple Protection Groups of the same ty
 Existing Protection Groups are never altered by this method.&#xD;
 The cardinality of the terminationPointList in the protection GroupCreateData should be greater than 0 and must not exceed the protection group type specific maximum number of TP members; e.g., with 1:1 type maximum of two TPs can be included in the terminationPointList.&#xD;
 &#xD;
-The resulting Protection Group must include at least one TP otherwise this operation fails and an exception shall be thrown.&#xD;
+The resulting Protection Group must include at least one TP otherwise this operation fails and an exception shall be thrown. Existing Protection Groups are never altered by this operation.&#xD;
 &#xD;
 Additional information on exceptions:&#xD;
 invalidInput - Raised when any input parameter is syntactically incorrect (e.g. a field of protectionGroupCreateData is invalid including any field in the terminationPointList).&#xD;
 This exception is also raised when parameters are syntactically correct but terminationPointList is empty or the cardinality of terminationPointList in the protectionGroupCreateData exceeds the maximum number of TP members allowed for a specific a protection group type.&#xD;
-The exception is raised  when TPs in the protectionGroupList do not support a layer specified in the protectionGroupCreateData or cannot be associated in a protection relation at this layer.&#xD;
+The exception is raised when TPs in the protectionGroupList do not support a layer specified in the protectionGroupCreateData or cannot be associated in a protection relation at this layer.&#xD;
 &#xD;
 unableToComply - Raised when the target OS is unable to process the request because at least one parameter in the protectionGroupCreateData although valid and syntactically correct could not be set, or when the request fails at the Managed Eelement.&#xD;
 &#xD;
-Traceability: R_TMF518_TRM_II_xxx, UC_TMF518_RTM_xxx.&#xD;
-</body>
+Traceability: R_TMF518_RTM_II_PBB-TE_FSD_2, UC_TMF518_RTM_FSD_PBB-TE_0001.</body>
           </ownedComment>
+          <ownedRule xmi:id="_-iCyAHdyEeKpuKU43UAFGg" constrainedElement="_5w7XwHdDEeKYE-orp3dsag">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_-iyY4HdyEeKpuKU43UAFGg">
+              <language></language>
+              <body>None</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="__-lBcHdyEeKpuKU43UAFGg" constrainedElement="_5w7XwHdDEeKYE-orp3dsag">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="__-lBcXdyEeKpuKU43UAFGg">
+              <language></language>
+              <body>The Protection Group object has been created as requested.</body>
+            </specification>
+          </ownedRule>
           <ownedParameter xmi:id="_N8wQgHdHEeKYE-orp3dsag" name="meRef">
             <ownedComment xmi:id="_N8wQgXdHEeKYE-orp3dsag" annotatedElement="_N8wQgHdHEeKYE-orp3dsag">
               <body>This parameter provides the name of the Managed Element containing the new Protection Group.</body>
@@ -1225,16 +1236,27 @@ Traceability: R_TMF518_TRM_II_xxx, UC_TMF518_RTM_xxx.&#xD;
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_ExQ1cCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/CapacityExceeded?"/>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_gSxfICVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/UserlabelInUse?"/>
         </ownedOperation>
-        <ownedOperation xmi:id="_2w5jAHdIEeKYE-orp3dsag" name="deleteProtectionGroup">
+        <ownedOperation xmi:id="_2w5jAHdIEeKYE-orp3dsag" name="deleteProtectionGroup" precondition="_AkTSwHd1EeKpuKU43UAFGg" postcondition="_CA_TMHd1EeKpuKU43UAFGg">
           <ownedComment xmi:id="_2w5jAXdIEeKYE-orp3dsag" annotatedElement="_2w5jAHdIEeKYE-orp3dsag">
             <body>This operation deletes a Protection Group.&#xD;
 &#xD;
 Additional information on exceptions:&#xD;
 unableToComply - This exception is raised and delete operation is rejected when swap of protection role is selected (case 1) but protectionGroupType does not support the feature, or client TPs protected by the Protection Group being deleted do not support relaxed containment feature, hence these client TPs should change their object names.&#xD;
 &#xD;
-Traceability: R_TMF518_TRM_II_xxx, UC_TMF518_RTM_xxx.&#xD;
-</body>
+Traceability: R_TMF518_TRM_II_PBB-TE_FSD_5, UC_TMF518_RTM_FSD_PBB-TE_0002.</body>
           </ownedComment>
+          <ownedRule xmi:id="_AkTSwHd1EeKpuKU43UAFGg" constrainedElement="_2w5jAHdIEeKYE-orp3dsag">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_AkTSwXd1EeKpuKU43UAFGg">
+              <language></language>
+              <body>None</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_CA_TMHd1EeKpuKU43UAFGg" constrainedElement="_2w5jAHdIEeKYE-orp3dsag">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_CA_TMXd1EeKpuKU43UAFGg">
+              <language></language>
+              <body>The Protection Group object has been deleted.</body>
+            </specification>
+          </ownedRule>
           <ownedParameter xmi:id="_2w5jAndIEeKYE-orp3dsag" name="protectionGroupRef">
             <ownedComment xmi:id="_2w5jA3dIEeKYE-orp3dsag" annotatedElement="_2w5jAndIEeKYE-orp3dsag">
               <body>This parameter provides the name of the Protection Group to be deleted.</body>
@@ -1283,7 +1305,7 @@ Case 2) Empty value: No swap, i.e., client traffic will remain supported by form
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
         </ownedOperation>
-        <ownedOperation xmi:id="_y-D4oHdKEeKYE-orp3dsag" name="modifyProtectionGroup">
+        <ownedOperation xmi:id="_y-D4oHdKEeKYE-orp3dsag" name="modifyProtectionGroup" precondition="_d1tscHd3EeKpuKU43UAFGg" postcondition="_e8DCYHd3EeKpuKU43UAFGg">
           <ownedComment xmi:id="_y-D4oXdKEeKYE-orp3dsag" annotatedElement="_y-D4oHdKEeKYE-orp3dsag">
             <body>This operation modifies an existing Protection Group.&#xD;
 The terminationPointList should always include the complete intended list of Protection Group TP names rather than a delta from the existing Protection Group as each TP has well defined position in the list according to their role and priority. The terminationPointList should never be empty as Protection Groups without TP members are not permitted. The list size should not exceed the cardinality specific to the protectionGroupType with an exception of a reconfiguration scenario when working or protecting TP may be replaced thus existing followed by replacement TP is included in the list.&#xD;
@@ -1300,9 +1322,21 @@ The exception is also raised under the following conditions:&#xD;
 unableToComply - Raised when the target OS is unable to process the request because at least one parameter in the protectionGroupModifyData although valid and syntactically correct could not be set, or when the request fails at the Managed Eelement.&#xD;
 The exception is raised also when swap of protection role is provisioned (through change of TP positions in the terminationPointList ) but protectionGroupType does not support the feature, or client TPs protected by the Protection Group do not support the relaxed containment feature, hence these client TPs should change their object names.&#xD;
 &#xD;
-Traceability: R_TMF518_TRM_II_xxx, UC_TMF518_RTM_xxx.&#xD;
+Traceability: R_TMF518_TRM_II_xxx, UC_TMF518_RTM_FSD_PBB-TE_0003.&#xD;
 </body>
           </ownedComment>
+          <ownedRule xmi:id="_d1tscHd3EeKpuKU43UAFGg" constrainedElement="_y-D4oHdKEeKYE-orp3dsag">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_d1tscXd3EeKpuKU43UAFGg">
+              <language></language>
+              <body>None</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_e8DCYHd3EeKpuKU43UAFGg" constrainedElement="_y-D4oHdKEeKYE-orp3dsag">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_e8DCYXd3EeKpuKU43UAFGg">
+              <language></language>
+              <body>The Protection Group object has been modified as requested.</body>
+            </specification>
+          </ownedRule>
           <ownedParameter xmi:id="_8b8S4HdLEeKYE-orp3dsag" name="protectionGroupRef">
             <ownedComment xmi:id="_8b8S4XdLEeKYE-orp3dsag" annotatedElement="_8b8S4HdLEeKYE-orp3dsag">
               <body>This parameter provides the name of the Protection Group to be modified.</body>
@@ -2300,7 +2334,9 @@ In case of an M:N equipment protection type, protectedEquipmentRef always identi
       </packagedElement>
       <packagedElement xmi:type="uml:DataType" xmi:id="_h6X6IHbGEeKYE-orp3dsag" name="ProtectionGroupModifyData">
         <ownedComment xmi:id="_yHghkHc-EeKYE-orp3dsag" annotatedElement="_h6X6IHbGEeKYE-orp3dsag">
-          <body>This data type provides the modifyable Protection Group attributes.</body>
+          <body>This data type provides the modifyable Protection Group attributes.&#xD;
+&#xD;
+Traceability: R_TMF518_TRM_II_PBB-TE_FSD_4.</body>
         </ownedComment>
         <generalization xmi:id="_jOO1oHc9EeKYE-orp3dsag">
           <general xmi:type="uml:DataType" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_ZbGqoKlcEdy39Z05qVqfpQ?NetworkResourceBasic/Type%20Definitions/CommonResourceModifyData?"/>
@@ -2309,7 +2345,9 @@ In case of an M:N equipment protection type, protectedEquipmentRef always identi
       </packagedElement>
       <packagedElement xmi:type="uml:DataType" xmi:id="_WpaGUHdBEeKYE-orp3dsag" name="ProtectionGroupCreateData">
         <ownedComment xmi:id="_WpaGUXdBEeKYE-orp3dsag" annotatedElement="_WpaGUHdBEeKYE-orp3dsag">
-          <body>This data type provides the attributes required for the creation of a Protection Group.</body>
+          <body>This data type provides the attributes required for the creation of a Protection Group.&#xD;
+&#xD;
+Traceability: R_TMF518_TRM_II_PBB-TE_FSD_2.</body>
         </ownedComment>
         <generalization xmi:id="_WpaGUndBEeKYE-orp3dsag">
           <general xmi:type="uml:DataType" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_ZsO24KlcEdy39Z05qVqfpQ?NetworkResourceBasic/Type%20Definitions/CommonResourceCreateData?"/>
@@ -2335,14 +2373,26 @@ In case of an M:N equipment protection type, protectedEquipmentRef always identi
             <body>NA</body>
           </defaultValue>
         </ownedAttribute>
+        <ownedAttribute xmi:id="_qrqeQHmzEeKlgfPxDEByxA" name="protectionSchemeState" visibility="public" isReadOnly="true">
+          <ownedComment xmi:id="_qrqeQXmzEeKlgfPxDEByxA" annotatedElement="_qrqeQHmzEeKlgfPxDEByxA">
+            <body>This attribute indicates whether the protection scheme shall be active (AUTOMATIC) or frozen (FORCED_OR_LOCKED_OUT).</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="../../NetworkResourceAssurance/IA/NetworkResourceAssurance.emx#_V8Qx8E8XEdyfLry44XcUuw?NetworkResourceAssurance/Type%20Definitions/ProtectionSchemeState?"/>
+          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_qrqeQnmzEeKlgfPxDEByxA" name="AUTOMATIC">
+            <type xmi:type="uml:Enumeration" href="../../NetworkResourceAssurance/IA/NetworkResourceAssurance.emx#_V8Qx8E8XEdyfLry44XcUuw?NetworkResourceAssurance/Type%20Definitions/ProtectionSchemeState?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="../../NetworkResourceAssurance/IA/NetworkResourceAssurance.emx#_ceZCME8XEdyfLry44XcUuw?NetworkResourceAssurance/Type%20Definitions/ProtectionSchemeState/AUTOMATIC?"/>
+          </defaultValue>
+        </ownedAttribute>
       </packagedElement>
       <packagedElement xmi:type="uml:DataType" xmi:id="_fMXJYHdCEeKYE-orp3dsag" name="ProtectionGroupSetData">
         <ownedComment xmi:id="_fMXJYXdCEeKYE-orp3dsag" annotatedElement="_fMXJYHdCEeKYE-orp3dsag">
-          <body>This data type provides the modifyable Protection Group attributes.</body>
+          <body>This data type provides the Protection Group attributes which can be set at creation and modification time.&#xD;
+&#xD;
+Traceability: R_TMF518_TRM_II_PBB-TE_FSD_2, R_TMF518_TRM_II_PBB-TE_FSD_4.</body>
         </ownedComment>
         <ownedAttribute xmi:id="_fMXJY3dCEeKYE-orp3dsag" name="reversionMode" visibility="public" isReadOnly="true">
           <ownedComment xmi:id="_fMXJZHdCEeKYE-orp3dsag" annotatedElement="_fMXJY3dCEeKYE-orp3dsag">
-            <body>This attribute identifies whether the protection scheme is revertive or not.</body>
+            <body>This attribute identifies whether the protection scheme shall be revertive or not.</body>
           </ownedComment>
           <type xmi:type="uml:Enumeration" href="../../NetworkResourceAssurance/IA/NetworkResourceAssurance.emx#_fyCP8FFWEdyZhYPB67lKRA?NetworkResourceAssurance/Type%20Definitions/ReversionMode?"/>
           <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_fMXJZXdCEeKYE-orp3dsag">
@@ -2350,7 +2400,7 @@ In case of an M:N equipment protection type, protectedEquipmentRef always identi
             <body>Depends on the protection group implementation.</body>
           </defaultValue>
         </ownedAttribute>
-        <ownedAttribute xmi:id="_fMXJZndCEeKYE-orp3dsag" name="terminationPointList" visibility="public" isOrdered="true" isReadOnly="true">
+        <ownedAttribute xmi:id="_fMXJZndCEeKYE-orp3dsag" name="terminationPointRefList" visibility="public" isOrdered="true" isReadOnly="true">
           <ownedComment xmi:id="_fMXJZ3dCEeKYE-orp3dsag" annotatedElement="_fMXJZndCEeKYE-orp3dsag">
             <body>This attribute identifies the complete intended list of Protection Group TP names. It is a partially ordered list as in the Protection Group structure, i.e. workers names are first and protecting TP names follow in order of priority. Thus each TP has a well defined position in the list according to its role and priority.&#xD;
 In normal operation the list shall contain a number of TPs specific to the protection type however under reconfiguration scenarios there may be more or less TPs than normal for a short period.  However, the terminationPointList should never be empty as Protection Groups without TP members are not permitted.</body>
@@ -2379,6 +2429,27 @@ See attached SD1-29_PGPParameters supporting document for details (values and de
             <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_8_P-sPo7EduVsYI7mfNDXQ?Framework/Type%20Definitions/AttributeValuePair?"/>
             <body>NA</body>
           </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_mf59kHm1EeKlgfPxDEByxA" name="apsProtocolType" visibility="public" isReadOnly="true">
+          <ownedComment xmi:id="_mf59kXm1EeKlgfPxDEByxA" annotatedElement="_mf59kHm1EeKlgfPxDEByxA">
+            <body>This attribute defines the APS protocol on which the switching function shall be based on.&#xD;
+&#xD;
+Possible values:&#xD;
+- &quot;G.783&quot; in case of K1/K2 based APS&#xD;
+- &quot;Legacy&quot; in case of proprietary APS protocol, as for radio equipment.</body>
+          </ownedComment>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_mf59knm1EeKlgfPxDEByxA">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+            <body>NA</body>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_O5qFAHm1EeKlgfPxDEByxA" name="asapRef" visibility="public">
+          <ownedComment xmi:id="_O5qFAXm1EeKlgfPxDEByxA" annotatedElement="_O5qFAHm1EeKlgfPxDEByxA">
+            <body>This attribute defines the assignment of an Alarm Severity Assignement Profile (ASAP) to the Protection Group.</body>
+          </ownedComment>
+          <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+          <defaultValue xmi:type="uml:LiteralNull" xmi:id="_O5qFAnm1EeKlgfPxDEByxA"/>
         </ownedAttribute>
       </packagedElement>
     </packagedElement>
@@ -2962,7 +3033,7 @@ See attached SD1-29_PGPParameters supporting document for details (values and de
             <element xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_MPswEP_FEduKKLvC_EB00A?Framework/Type%20Definitions/CommonObjectSetData?"/>
             <layoutConstraint xmi:type="notation:Bounds" xmi:id="_4zK20XbGEeKYE-orp3dsag" x="10404" y="-396"/>
           </children>
-          <children xmi:type="umlnotation:UMLShape" xmi:id="_5PLdYHbGEeKYE-orp3dsag" fontHeight="8" showListSignature="true" transparency="0" lineColor="14263149" lineWidth="1" showParent="QualifiedName" showStereotype="Label">
+          <children xmi:type="umlnotation:UMLShape" xmi:id="_5PLdYHbGEeKYE-orp3dsag" fontHeight="8" showListVisibility="None" showListSignature="true" transparency="0" lineColor="14263149" lineWidth="1" showParent="QualifiedName" showStereotype="Text">
             <children xmi:type="notation:DecorationNode" xmi:id="_5PLdYnbGEeKYE-orp3dsag" type="ImageCompartment">
               <layoutConstraint xmi:type="notation:Size" xmi:id="_5PLdY3bGEeKYE-orp3dsag" width="1320" height="1320"/>
             </children>
@@ -3024,7 +3095,7 @@ See attached SD1-29_PGPParameters supporting document for details (values and de
             <children xmi:type="notation:BasicDecorationNode" xmi:id="_dwn9d3c9EeKYE-orp3dsag" type="Parent"/>
             <children xmi:type="notation:SemanticListCompartment" xmi:id="_dwn9eHc9EeKYE-orp3dsag" type="AttributeCompartment"/>
             <children xmi:type="notation:SemanticListCompartment" xmi:id="_dwn9eXc9EeKYE-orp3dsag" visible="false" type="OperationCompartment"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_dwn9cXc9EeKYE-orp3dsag" x="18849" y="13992"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_dwn9cXc9EeKYE-orp3dsag" x="18876" y="14916"/>
           </children>
           <children xmi:type="umlnotation:UMLShape" xmi:id="_ZK7n4HdBEeKYE-orp3dsag" element="_WpaGUHdBEeKYE-orp3dsag" fontHeight="8" showListSignature="true" transparency="0" lineColor="14263149" lineWidth="1" showParent="QualifiedName" showStereotype="Label">
             <children xmi:type="notation:DecorationNode" xmi:id="_ZK7n4ndBEeKYE-orp3dsag" type="ImageCompartment">
@@ -3036,7 +3107,7 @@ See attached SD1-29_PGPParameters supporting document for details (values and de
             <children xmi:type="notation:BasicDecorationNode" xmi:id="_ZK7n53dBEeKYE-orp3dsag" type="Parent"/>
             <children xmi:type="notation:SemanticListCompartment" xmi:id="_ZK7n6HdBEeKYE-orp3dsag" type="AttributeCompartment"/>
             <children xmi:type="notation:SemanticListCompartment" xmi:id="_ZK7n6XdBEeKYE-orp3dsag" visible="false" type="OperationCompartment"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ZK7n4XdBEeKYE-orp3dsag" x="3828" y="13860"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ZK7n4XdBEeKYE-orp3dsag" x="3855" y="14784"/>
           </children>
           <children xmi:type="umlnotation:UMLShape" xmi:id="_hv0koHdCEeKYE-orp3dsag" element="_fMXJYHdCEeKYE-orp3dsag" fontHeight="8" showListSignature="true" transparency="0" lineColor="14263149" lineWidth="1" showParent="QualifiedName" showStereotype="Label">
             <children xmi:type="notation:DecorationNode" xmi:id="_hv0kondCEeKYE-orp3dsag" type="ImageCompartment">
@@ -3109,7 +3180,7 @@ See attached SD1-29_PGPParameters supporting document for details (values and de
               <children xmi:type="notation:BasicDecorationNode" xmi:id="_ZK7n73dBEeKYE-orp3dsag" type="Name"/>
               <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ZK7n7XdBEeKYE-orp3dsag" y="-186"/>
             </children>
-            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_ZK7n63dBEeKYE-orp3dsag" points="[-1710, -1731, -5219, 4273]$[-1710, -5901, -5219, 103]"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_ZK7n63dBEeKYE-orp3dsag" points="[-3298, -1308, -5907, 5197]$[-3298, -6402, -5907, 103]"/>
             <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_dscrQHdBEeKYE-orp3dsag" id="(0.8925601507927708,0.9418666666666666)"/>
           </edges>
           <edges xmi:type="umlnotation:UMLConnector" xmi:id="_jPrqUXdBEeKYE-orp3dsag" element="_jPrqUHdBEeKYE-orp3dsag" source="_wEOJsHbGEeKYE-orp3dsag" target="_ZK7n4HdBEeKYE-orp3dsag" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
@@ -3118,7 +3189,7 @@ See attached SD1-29_PGPParameters supporting document for details (values and de
               <children xmi:type="notation:BasicDecorationNode" xmi:id="_jPrqVndBEeKYE-orp3dsag" type="Name"/>
               <layoutConstraint xmi:type="notation:Bounds" xmi:id="_jPrqVHdBEeKYE-orp3dsag" y="-186"/>
             </children>
-            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_jPrqUndBEeKYE-orp3dsag" points="[-13300, 1255, -5970, -18122]$[-13300, 19430, -5970, 53]$[-12091, 19430, -4761, 53]"/>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_jPrqUndBEeKYE-orp3dsag" points="[-13829, 1678, -7372, -17488]$[-13829, 19324, -7372, 158]$[-12091, 19324, -5634, 158]"/>
           </edges>
           <edges xmi:type="umlnotation:UMLConnector" xmi:id="_qewqsXdCEeKYE-orp3dsag" element="_qewqsHdCEeKYE-orp3dsag" source="_ZK7n4HdBEeKYE-orp3dsag" target="_hv0koHdCEeKYE-orp3dsag" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
             <children xmi:type="notation:DecorationNode" xmi:id="_qewqs3dCEeKYE-orp3dsag" type="NameLabel">
@@ -3525,4 +3596,10 @@ See attached SD1-29_PGPParameters supporting document for details (values and de
   <Default:Documentation xmi:id="_y-D4tHdKEeKYE-orp3dsag" base_Comment="_y-D4qXdKEeKYE-orp3dsag"/>
   <Default:Documentation xmi:id="_y-D4tXdKEeKYE-orp3dsag" base_Comment="_y-D4rHdKEeKYE-orp3dsag"/>
   <Default:Documentation xmi:id="_8b8S43dLEeKYE-orp3dsag" base_Comment="_8b8S4XdLEeKYE-orp3dsag"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_quyqwHmzEeKlgfPxDEByxA" notificationType="STATE_CHANGE" base_StructuralFeature="_qrqeQHmzEeKlgfPxDEByxA"/>
+  <Default:Documentation xmi:id="_quyqwXmzEeKlgfPxDEByxA" base_Comment="_qrqeQXmzEeKlgfPxDEByxA"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_O5qFBHm1EeKlgfPxDEByxA" notificationType="ATTRIBUTE_VALUE_CHANGE" base_StructuralFeature="_O5qFAHm1EeKlgfPxDEByxA"/>
+  <Default:Documentation xmi:id="_O5qFBXm1EeKlgfPxDEByxA" base_Comment="_O5qFAXm1EeKlgfPxDEByxA"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_mf59lHm1EeKlgfPxDEByxA" base_StructuralFeature="_mf59kHm1EeKlgfPxDEByxA" writeable="TARGET_OS_ONLY" isInvariant="true"/>
+  <Default:Documentation xmi:id="_mf59lXm1EeKlgfPxDEByxA" base_Comment="_mf59kXm1EeKlgfPxDEByxA"/>
 </xmi:XMI>
