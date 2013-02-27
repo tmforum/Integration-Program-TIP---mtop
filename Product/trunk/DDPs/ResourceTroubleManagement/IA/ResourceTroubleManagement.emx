@@ -14,6 +14,10 @@
 - Interfaces::ProtectionControlService::deleteProtectionGroup added&#xD;
 - Interfaces::ProtectionControlService::modifyProtectionGroup added&#xD;
 &#xD;
+- Type Definitions::SwitchData::pgRef converted into a navigable relationship&#xD;
+- Type Definitions::SwitchData::protectedTpRef converted into a navigable relationship&#xD;
+- Type Definitions::SwitchData::switchToTpRef converted into a navigable relationship&#xD;
+&#xD;
 - Type Definitions::ProtectionGroupSetData added&#xD;
 - Type Definitions::ProtectionGroupCreateData added&#xD;
 - Type Definitions::ProtectionGroupModifyData added</body>
@@ -2048,17 +2052,17 @@ The value NOT_APPLICABLE indicates that Alarms with any acknowledge indication a
             <body>empty list</body>
           </defaultValue>
         </ownedAttribute>
-        <ownedAttribute xmi:id="_iGfGYt1lEdyrKNXnBMy96w" name="pgRef" visibility="public" isUnique="false">
-          <ownedComment xmi:id="_I60Q0O64Edyh5fRIhFD3eQ" annotatedElement="_iGfGYt1lEdyrKNXnBMy96w">
+        <ownedAttribute xmi:id="_3oqt4XztEeKY_qd4nwhL1Q" name="protectionGroupRef" visibility="public" association="_3oqt4HztEeKY_qd4nwhL1Q">
+          <ownedComment xmi:id="_uugXgIDYEeKhc5xIlKvikA" annotatedElement="_3oqt4XztEeKY_qd4nwhL1Q">
             <body>This attribute identifies the Protection Group in case of a trail protection switch. This is empty, if the protection type is SNCP.</body>
           </ownedComment>
-          <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
-          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_iGfGY91lEdyrKNXnBMy96w" value="1"/>
-          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_iGfGZN1lEdyrKNXnBMy96w"/>
-          <defaultValue xmi:type="uml:LiteralNull" xmi:id="_UPBI8O64Edyh5fRIhFD3eQ"/>
+          <type xmi:type="uml:Class" href="../../NetworkResourceAssurance/IA/NetworkResourceAssurance.emx#_Q8_tUFFhEdyZhYPB67lKRA?NetworkResourceAssurance/Data%20Object%20Classes/ProtectionGroup?"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_3oqt5HztEeKY_qd4nwhL1Q" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_3oqt43ztEeKY_qd4nwhL1Q"/>
+          <defaultValue xmi:type="uml:LiteralNull" xmi:id="_J318UIDZEeKhc5xIlKvikA"/>
         </ownedAttribute>
-        <ownedAttribute xmi:id="_iGfGZt1lEdyrKNXnBMy96w" name="protectedTpRef" visibility="public" isUnique="false">
-          <ownedComment xmi:id="_0Ayh8O87Edy_S80nkRpY9Q" annotatedElement="_iGfGZt1lEdyrKNXnBMy96w">
+        <ownedAttribute xmi:id="_JCJswXzvEeKY_qd4nwhL1Q" name="protectedTpRef" visibility="public" association="_JCJswHzvEeKY_qd4nwhL1Q">
+          <ownedComment xmi:id="_ab6yoIDZEeKhc5xIlKvikA" annotatedElement="_JCJswXzvEeKY_qd4nwhL1Q">
             <body>This attribute contains the name of the TP that is protected. The protected (worker) and protecting TPs are fixed in a revertive Protection Group, the worker can be active or not at any point in time. In a non-revertive Protection Group, there is no fixed worker / protecting distinction. The worker TP is indeed always the active TP; after a switch, the worker and protecting TPs exchange their roles.&#xD;
 - For an SNCP, this is always the reliable TP.&#xD;
 - For a retrieval of a 2F BLSR, each TP is protected, and two SwitchData instances are returned.&#xD;
@@ -2068,24 +2072,26 @@ The value NOT_APPLICABLE indicates that Alarms with any acknowledge indication a
 - For a retrieval of a non-revertive 1+1 trail protection (e.g. MSP) switch, this is the active TP.&#xD;
 - This TP is a CTP for SNCP and a PTP for trail protection schemes.</body>
           </ownedComment>
-          <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
-          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_iGfGZ91lEdyrKNXnBMy96w" value="1"/>
-          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_iGfGaN1lEdyrKNXnBMy96w"/>
-          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_1B8ygOnhEdyXaLXVYgag_Q">
-            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+          <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_v0h8wCsCEdyxqrDz5j4e5g?NetworkResourceFulfillment/Data%20Object%20Classes/TerminationPoint?"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_JCJsxHzvEeKY_qd4nwhL1Q" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_JCJsw3zvEeKY_qd4nwhL1Q"/>
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_Wn-m8IDZEeKhc5xIlKvikA">
+            <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_v0h8wCsCEdyxqrDz5j4e5g?NetworkResourceFulfillment/Data%20Object%20Classes/TerminationPoint?"/>
+            <language></language>
             <body>NA</body>
           </defaultValue>
         </ownedAttribute>
-        <ownedAttribute xmi:id="_iGfGat1lEdyrKNXnBMy96w" name="switchToTpRef" visibility="public" isUnique="false">
-          <ownedComment xmi:id="_Qfj9wO8-Edy_S80nkRpY9Q" annotatedElement="_iGfGat1lEdyrKNXnBMy96w">
+        <ownedAttribute xmi:id="_uM-koXzvEeKY_qd4nwhL1Q" name="switchToTpRef" visibility="public" association="_uM-koHzvEeKY_qd4nwhL1Q">
+          <ownedComment xmi:id="_uIttYIDZEeKhc5xIlKvikA" annotatedElement="_uM-koXzvEeKY_qd4nwhL1Q">
             <body>This attribute identifies the TP which is being switched to and is the active source after the switch.&#xD;
 This TP is a CTP for SNCP and a PTP for trail protection schemes.</body>
           </ownedComment>
-          <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
-          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_iGfGa91lEdyrKNXnBMy96w" value="1"/>
-          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_iGfGbN1lEdyrKNXnBMy96w"/>
-          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_4p9bAOnhEdyXaLXVYgag_Q">
-            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+          <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_v0h8wCsCEdyxqrDz5j4e5g?NetworkResourceFulfillment/Data%20Object%20Classes/TerminationPoint?"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_uM-kpHzvEeKY_qd4nwhL1Q" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_uM-ko3zvEeKY_qd4nwhL1Q"/>
+          <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_Xc4OoIDZEeKhc5xIlKvikA">
+            <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_v0h8wCsCEdyxqrDz5j4e5g?NetworkResourceFulfillment/Data%20Object%20Classes/TerminationPoint?"/>
+            <language></language>
             <body>NA</body>
           </defaultValue>
         </ownedAttribute>
@@ -2451,6 +2457,55 @@ Possible values:&#xD;
           <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
           <defaultValue xmi:type="uml:LiteralNull" xmi:id="_O5qFAnm1EeKlgfPxDEByxA"/>
         </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_3oqt4HztEeKY_qd4nwhL1Q" name="" memberEnd="_3oqt4XztEeKY_qd4nwhL1Q _3oqt5XztEeKY_qd4nwhL1Q">
+        <ownedComment xmi:id="_wB57YHzuEeKY_qd4nwhL1Q" annotatedElement="_3oqt4HztEeKY_qd4nwhL1Q">
+          <body>This relationship identifies the protection group in case of a trail protection switch.&#xD;
+This is empty, if the protectionType is SNCP.</body>
+        </ownedComment>
+        <ownedEnd xmi:id="_3oqt5XztEeKY_qd4nwhL1Q" name="" visibility="private" type="_yfWnoN1kEdyrKNXnBMy96w" association="_3oqt4HztEeKY_qd4nwhL1Q">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="__qUQIXztEeKY_qd4nwhL1Q" value="2"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="__qUQIHztEeKY_qd4nwhL1Q"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_JCJswHzvEeKY_qd4nwhL1Q" name="" memberEnd="_JCJswXzvEeKY_qd4nwhL1Q _JCJsxXzvEeKY_qd4nwhL1Q">
+        <ownedComment xmi:id="_TYi40HzvEeKY_qd4nwhL1Q" annotatedElement="_JCJswHzvEeKY_qd4nwhL1Q">
+          <body>This is the TP that is protected. The protected (worker) and protecting TPs are fixed in a revertive protection group, the worker can be active or not at any point in time. In a non-revertive protection group, there is no fixed worker / protecting distinction. The worker TP is indeed always the active TP; after a switch, the worker and protecting TPs exchange their roles.&#xD;
+&#xD;
+- For a SNCP, this is always the reliable TP.&#xD;
+- For a retrieval of a 2F BLSR, each TP is protected, and two SwitchData instances are returned.&#xD;
+- For a retrieval of a 4FMSSPR, each worker TP is protected, and two SwitchData instances are returned.&#xD;
+- For a retrieval of a 1:N trail protection (e.g. MSP), each worker TP is protected, and N SwitchData instances are returned.&#xD;
+- For a retrieval of a revertive 1+1 trail protection (e.g. MSP), this is always the worker TP.&#xD;
+- For a retrieval of a non-revertive 1+1 trail protection (e.g. MSP) switch, this is the active TP.&#xD;
+- This TP is a CTP for SNCP and a PTP for trail protection schemes.</body>
+        </ownedComment>
+        <ownedRule xmi:id="_jPPEsHzvEeKY_qd4nwhL1Q" constrainedElement="_JCJswHzvEeKY_qd4nwhL1Q">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_jPPEsXzvEeKY_qd4nwhL1Q">
+            <language></language>
+            <body>CTP for SNCP, PTP for trail protection schemes</body>
+          </specification>
+        </ownedRule>
+        <ownedEnd xmi:id="_JCJsxXzvEeKY_qd4nwhL1Q" name="" visibility="private" type="_yfWnoN1kEdyrKNXnBMy96w" association="_JCJswHzvEeKY_qd4nwhL1Q">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_JCJsyHzvEeKY_qd4nwhL1Q" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_JCJsx3zvEeKY_qd4nwhL1Q"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_uM-koHzvEeKY_qd4nwhL1Q" name="" memberEnd="_uM-koXzvEeKY_qd4nwhL1Q _uM-kpXzvEeKY_qd4nwhL1Q">
+        <ownedComment xmi:id="_4MloYHzvEeKY_qd4nwhL1Q" annotatedElement="_uM-koHzvEeKY_qd4nwhL1Q">
+          <body>This relationship identifies the TP which is being switched to. This identifies the TP that is the active source after the switch.&#xD;
+This TP is a CTP for SNCP and a PTP for trail protection schemes.</body>
+        </ownedComment>
+        <ownedRule xmi:id="_A4trAHzwEeKY_qd4nwhL1Q" constrainedElement="_uM-koHzvEeKY_qd4nwhL1Q">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_A4trAXzwEeKY_qd4nwhL1Q">
+            <language></language>
+            <body>CTP for SNCP, PTP for trail protection schemes</body>
+          </specification>
+        </ownedRule>
+        <ownedEnd xmi:id="_uM-kpXzvEeKY_qd4nwhL1Q" name="" visibility="private" type="_yfWnoN1kEdyrKNXnBMy96w" association="_uM-koHzvEeKY_qd4nwhL1Q">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_uM-kqHzvEeKY_qd4nwhL1Q" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_uM-kp3zvEeKY_qd4nwhL1Q"/>
+        </ownedEnd>
       </packagedElement>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="__W04QB8VEdybTc3BlJsa9Q" name="Class Diagrams">
@@ -3408,9 +3463,6 @@ Possible values:&#xD;
   <mTOPUMLProfile:mTOPAttribute xmi:id="_iGfGWd1lEdyrKNXnBMy96w" base_StructuralFeature="_iGfGVt1lEdyrKNXnBMy96w" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
   <mTOPUMLProfile:mTOPAttribute xmi:id="_iGfGXd1lEdyrKNXnBMy96w" base_StructuralFeature="_iGfGWt1lEdyrKNXnBMy96w" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
   <mTOPUMLProfile:mTOPAttribute xmi:id="_iGfGYd1lEdyrKNXnBMy96w" base_StructuralFeature="_iGfGXt1lEdyrKNXnBMy96w" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
-  <mTOPUMLProfile:mTOPAttribute xmi:id="_iGfGZd1lEdyrKNXnBMy96w" base_StructuralFeature="_iGfGYt1lEdyrKNXnBMy96w" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
-  <mTOPUMLProfile:mTOPAttribute xmi:id="_iGfGad1lEdyrKNXnBMy96w" base_StructuralFeature="_iGfGZt1lEdyrKNXnBMy96w" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
-  <mTOPUMLProfile:mTOPAttribute xmi:id="_iGfGbd1lEdyrKNXnBMy96w" base_StructuralFeature="_iGfGat1lEdyrKNXnBMy96w" writeable="TARGET_AND_REQUESTING_OS" isInvariant="true"/>
   <Default:Documentation xmi:id="_iGo3Ud1lEdyrKNXnBMy96w" base_Comment="_iGfGW91lEdyrKNXnBMy96w"/>
   <Default:Documentation xmi:id="_iGo3Ut1lEdyrKNXnBMy96w" base_Comment="_iGfGX91lEdyrKNXnBMy96w"/>
   <Default:Documentation xmi:id="_iGo3U91lEdyrKNXnBMy96w" base_Comment="_iGfGU91lEdyrKNXnBMy96w"/>
@@ -3524,9 +3576,6 @@ Possible values:&#xD;
   <Default:Documentation xmi:id="_XTcoc-6mEdyh5fRIhFD3eQ" base_Comment="_XTcoce6mEdyh5fRIhFD3eQ"/>
   <Default:Documentation xmi:id="_hj6ugO6tEdyh5fRIhFD3eQ" base_Comment="_hjw9ge6tEdyh5fRIhFD3eQ"/>
   <Default:Documentation xmi:id="_Z2hBIe6xEdyh5fRIhFD3eQ" base_Comment="_Z2hBIO6xEdyh5fRIhFD3eQ"/>
-  <Default:Documentation xmi:id="_I6-B0O64Edyh5fRIhFD3eQ" base_Comment="_I60Q0O64Edyh5fRIhFD3eQ"/>
-  <Default:Documentation xmi:id="_0Ayh8e87Edy_S80nkRpY9Q" base_Comment="_0Ayh8O87Edy_S80nkRpY9Q"/>
-  <Default:Documentation xmi:id="_QftuwO8-Edy_S80nkRpY9Q" base_Comment="_Qfj9wO8-Edy_S80nkRpY9Q"/>
   <Default:Documentation xmi:id="_QrBj4-9fEdymm-1bIGvQpw" base_Comment="_QrBj4e9fEdymm-1bIGvQpw"/>
   <Default:Documentation xmi:id="_PSML4-9jEdymm-1bIGvQpw" base_Comment="_PSML4e9jEdymm-1bIGvQpw"/>
   <Default:Documentation xmi:id="_bYsjU-9mEdymm-1bIGvQpw" base_Comment="_bYsjUe9mEdymm-1bIGvQpw"/>
@@ -3602,4 +3651,13 @@ Possible values:&#xD;
   <Default:Documentation xmi:id="_O5qFBXm1EeKlgfPxDEByxA" base_Comment="_O5qFAXm1EeKlgfPxDEByxA"/>
   <mTOPUMLProfile:mTOPAttribute xmi:id="_mf59lHm1EeKlgfPxDEByxA" base_StructuralFeature="_mf59kHm1EeKlgfPxDEByxA" writeable="TARGET_OS_ONLY" isInvariant="true"/>
   <Default:Documentation xmi:id="_mf59lXm1EeKlgfPxDEByxA" base_Comment="_mf59kXm1EeKlgfPxDEByxA"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_3oqt4nztEeKY_qd4nwhL1Q" base_StructuralFeature="_3oqt4XztEeKY_qd4nwhL1Q"/>
+  <Default:Documentation xmi:id="_wCDsYHzuEeKY_qd4nwhL1Q" base_Comment="_wB57YHzuEeKY_qd4nwhL1Q"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_JCJswnzvEeKY_qd4nwhL1Q" base_StructuralFeature="_JCJswXzvEeKY_qd4nwhL1Q"/>
+  <Default:Documentation xmi:id="_TYi40XzvEeKY_qd4nwhL1Q" base_Comment="_TYi40HzvEeKY_qd4nwhL1Q"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_uM-konzvEeKY_qd4nwhL1Q" base_StructuralFeature="_uM-koXzvEeKY_qd4nwhL1Q"/>
+  <Default:Documentation xmi:id="_4MloYXzvEeKY_qd4nwhL1Q" base_Comment="_4MloYHzvEeKY_qd4nwhL1Q"/>
+  <Default:Documentation xmi:id="_uugXgYDYEeKhc5xIlKvikA" base_Comment="_uugXgIDYEeKhc5xIlKvikA"/>
+  <Default:Documentation xmi:id="_ab6yoYDZEeKhc5xIlKvikA" base_Comment="_ab6yoIDZEeKhc5xIlKvikA"/>
+  <Default:Documentation xmi:id="_uIttYYDZEeKhc5xIlKvikA" base_Comment="_uIttYIDZEeKhc5xIlKvikA"/>
 </xmi:XMI>
