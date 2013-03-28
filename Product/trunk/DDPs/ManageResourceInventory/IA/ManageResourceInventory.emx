@@ -3774,12 +3774,14 @@ Traceability: R_TMF518_MRI_II_0007, R_TMF518_MRI_II_0013, UC_TMF518_MRI_0012.</b
         <ownedOperation xmi:id="_2xSsENyiEdyY2qUBC6uXag" name="getRouteAndTopologicalLinks" visibility="public" precondition="_2xSsEtyiEdyY2qUBC6uXag" postcondition="_2xSsFNyiEdyY2qUBC6uXag">
           <ownedComment xmi:id="_XPkjgBYCEd2pfsm2_Ckf6w" annotatedElement="_2xSsENyiEdyY2qUBC6uXag">
             <body>This operation returns (like the operation getRoute) the Route, in terms of Cross-Connections, for the provided Subnetwork Connection (SNC). It also returns the list of Topological Links that are used in the Route.&#xD;
+All topological links that the traffic of the SNC travels across are returned including the links that connect to the terminating PTP and/or TP containing the termination TP.&#xD;
 If the SNC has more alternative Routes, then it retrieves the intended Route if the SNC is pending or partial state, otherwise it retrieves the active Route. This because there can be more partial Routes and no active Route, in such case the intended Route is replied, as it is not known which of the partial Routes is the candidate for becoming the active Route.&#xD;
 The Route information, in the form of Cross-Connections, identifies the Resources allocated to the SNC at the time of the request and the way in which these Resources are used. For example, for a resilient SNC that is implemented in the Multi Layer Subnetwork (MLSN) using Subnetwork Connection Protection, all details of the Route including normal and alternative paths should be provided. If the SNC is using some form of dynamic rerouting then it is clearly acceptable that the Route include only the single thread of Cross-Connections that is supporting the traffic (as there may be many alternative potential paths that could be selected).&#xD;
 The list of Topological Links can be used in conjunction with the Cross-Connections to lay out the entire Route through the MLSN.&#xD;
 Unlike the operation getRoute, this operation always retrieves Resources in all layers that support the Route. This includes all Cross-Connections of the SNC (i.e. the Cross-Connections that are in the layer of the SNC) and all higher order Cross-Connections (i.e. the Cross-Connections of server SNCs that are used to carry the traffic of the queried SNC). It also includes all Topological Links (at any layer) that any traffic of the SNC passes across.&#xD;
 All Cross-Connections allocated to the SNC must be returned, even if they are not active in the Managed Elements. This allows the target OS to query the Route that will be used before activating the SNC.&#xD;
 The operation also applies to bundled SNCs.&#xD;
+If the SNC has more alternative routes, then it retrieves the intended route if the SNC is pending or partial, otherwise it retrieves the active route. This because there can be more partial routes and no active route, in such case the intended route is replied, as it is not known which of the partial routes is the candidate for becoming the active route.&#xD;
 &#xD;
 Traceability: R_TMF518_MRI_II_0043.</body>
           </ownedComment>
@@ -4210,9 +4212,8 @@ If no Group is provided, all Transmission Parameters supported by the Resource a
             <body>This operation provides a way for the requesting OS to retrieve all details of the Calls and associated Top Level Connections in the scope of a specified top level MLRA.&#xD;
 A target OS will only return the Calls and top level Connections that it controls the Originating Point of. By implication this informs the requesting OS which target OS controls each Call.&#xD;
 &#xD;
-Notes:&#xD;
+Note:&#xD;
 The reply can be an empty list, if there are no Calls established from any of the points controlled by the target OS.&#xD;
-The Connections are returned regardless of their state.&#xD;
 &#xD;
 Traceability: R_TMF518_MRI_II_0157.</body>
           </ownedComment>
@@ -4254,7 +4255,9 @@ Traceability: R_TMF518_MRI_II_0157.</body>
         </ownedOperation>
         <ownedOperation xmi:id="_3rLcs0D-EeGCAo9-ZY7z8A" name="getAllCallsAndTopLevelConnectionsAndSNCs" visibility="public" precondition="_3rLctUD-EeGCAo9-ZY7z8A" postcondition="_3rLct0D-EeGCAo9-ZY7z8A">
           <ownedComment xmi:id="_3rLctED-EeGCAo9-ZY7z8A" annotatedElement="_3rLcs0D-EeGCAo9-ZY7z8A">
-            <body>This operation allows the requesting OS to retrieve the attributes of all the Calls associated with an MLRA. For each Call object it returns also the attributes of all associated top-level Connection objects. For each top-level Connection object it returns also the attributes of all supporting SubnetworkConnection objects.&#xD;
+            <body>This operation provides a way for the requesting OS to retrieve the attributes of all the Calls associated with an MLRA. For each Call object it returns also the attributes of all associated top-level Connection objects. For each top-level Connection object it returns also the attributes of all supporting SubnetworkConnection objects.&#xD;
+&#xD;
+Additional information on exceptions:&#xD;
 If the requesting OS provides a callId AND a callRef, the target OS must reject the operation with INVALID_INPUT.&#xD;
 &#xD;
 Traceability: R_TMF518_MRI_II_0159.</body>
@@ -4299,7 +4302,14 @@ Traceability: R_TMF518_MRI_II_0159.</body>
         </ownedOperation>
         <ownedOperation xmi:id="_3rLcpkD-EeGCAo9-ZY7z8A" name="getAllCallsAndTopLevelConnectionsWithME" visibility="public" precondition="_3rLcqED-EeGCAo9-ZY7z8A" postcondition="_3rLcqkD-EeGCAo9-ZY7z8A">
           <ownedComment xmi:id="_3rLcp0D-EeGCAo9-ZY7z8A" annotatedElement="_3rLcpkD-EeGCAo9-ZY7z8A">
-            <body>This operation returns all the Calls managed by the target OS within the scope of the top level Multilayer Routing Area (with all the attributes for each Call) and the top level Connections for each Call (with all the attributes for each top level Connection) that are supported by the specified managed element.&#xD;
+            <body>This operation allows the requesting OS to retrieve the attributes of all the Calls associated with an MLRA and supported by an ME. For each Call object it returns also the attributes of all associated top-level Connection objects. For each top-level Connection object it returns also the attributes of all supporting SubnetworkConnection objects.&#xD;
+&#xD;
+This operation provides a way for the requesting OS to return all the Calls managed by the target OS within the scope of the top level MLRA (with all the attributes for each Call) and the top level Connections for each Call (with all the attributes for each top level Connection) that are supported by the specified managed element.&#xD;
+This operation has exactly the same behaviour as getAllCallsAndTopLevelConnections(), except that the request returns only Calls (and all Top Level Connections) that have at least one Top Level connection terminated on an SNP that corresponds to a TP contained in the specified ME.&#xD;
+&#xD;
+Additional information on exceptions:&#xD;
+invalidInput - Raised if the mlraRef does not represent an MLRA in the Control Plane.&#xD;
+unableToComply - Raised if the specified MLRA is not a Top Level MLRA.&#xD;
 &#xD;
 Traceability: R_TMF518_MRI_II_0165.</body>
           </ownedComment>
@@ -4349,7 +4359,11 @@ Traceability: R_TMF518_MRI_II_0165.</body>
         </ownedOperation>
         <ownedOperation xmi:id="_3rLcvUD-EeGCAo9-ZY7z8A" name="getAllCallsAndTopLevelConnectionsAndSNCsWithME" visibility="public" precondition="_3rLcv0D-EeGCAo9-ZY7z8A" postcondition="_3rLcwUD-EeGCAo9-ZY7z8A">
           <ownedComment xmi:id="_3rLcvkD-EeGCAo9-ZY7z8A" annotatedElement="_3rLcvUD-EeGCAo9-ZY7z8A">
-            <body>This operation allows the requesting OS to retrieve the attributes of all the Calls associated with an MLRA and supported by an ME. For each Call object it returns also the attributes of all associated top-level Connection objects. For each top-level Connection object it returns also the attributes of all supporting SubnetworkConnection objects.&#xD;
+            <body>This operation provides a way for the requesting OS to retrieve the attributes of all the Calls associated with an MLRA and supported by an ME. For each Call object it returns also the attributes of all associated top-level Connection objects. For each top-level Connection object it returns also the attributes of all supporting SubnetworkConnection objects.&#xD;
+This operation has exactly the same behaviour as getAllCallsAndTopLevelConnectionsAndSNCs(), except that the request returns only Calls (and all Top Level Connections with their supporting SNCs) that have at least one Top Level connection terminated on the specified ME.&#xD;
+&#xD;
+Additional information on exceptions:&#xD;
+unableToComply - Raised if the specified MLRA is not managed by the Control Plane.&#xD;
 &#xD;
 Traceability: R_TMF518_MRI_II_0160.</body>
           </ownedComment>
@@ -4400,7 +4414,8 @@ Traceability: R_TMF518_MRI_II_0160.</body>
         </ownedOperation>
         <ownedOperation xmi:id="_3rLcykD-EeGCAo9-ZY7z8A" name="getAllCallsAndTopLevelConnectionsAndSNCsWithTP" visibility="public" precondition="_3rLczED-EeGCAo9-ZY7z8A" postcondition="_3rLczkD-EeGCAo9-ZY7z8A">
           <ownedComment xmi:id="_3rLcy0D-EeGCAo9-ZY7z8A" annotatedElement="_3rLcykD-EeGCAo9-ZY7z8A">
-            <body>This operation allows the requesting OS to retrieve the attributes of all Calls associated with an MLRA and having at least one Connection/Subnetwork Connection which terminates on the specified TP itself or terminates on any TP contained in the specified TP. For each Call object it returns also the attributes of all associated top-level Connection objects. For each top-level Connection object it returns also the attributes of all supporting SubnetworkConnection objects.&#xD;
+            <body>This operation provides a way for the requesting OS to retrieve the attributes of all Calls associated with an MLRA and having at least one Connection/Subnetwork Connection which terminates on the specified TP itself or terminates on any TP contained in the specified TP. For each Call object it returns also the attributes of all associated top-level Connection objects. For each top-level Connection object it returns also the attributes of all supporting SubnetworkConnection objects.&#xD;
+This operation has exactly the same behaviour as getAllCallsAndTopLevelConnectionsAndSNCs(), except that the request returns only Calls (and all Top Level Connections with their supporting SNCs) that have at least one Top Level connection supported by the specified TP (either directly or via a TP contained in this TP).&#xD;
 &#xD;
 Traceability: R_TMF518_MRI_II_0161.</body>
           </ownedComment>
@@ -4417,7 +4432,15 @@ Traceability: R_TMF518_MRI_II_0161.</body>
           <ownedParameter xmi:id="_3rLc0ED-EeGCAo9-ZY7z8A" name="void" direction="return"/>
           <ownedParameter xmi:id="_PJVAsF4pEeGtX978TggU8Q" name="tpRef">
             <ownedComment xmi:id="_PJVAsV4pEeGtX978TggU8Q" annotatedElement="_PJVAsF4pEeGtX978TggU8Q">
-              <body>This parameter provides the name of the TP terminating at least one of the Connections which are associated to the Calls to be retrieved.</body>
+              <body>This parameter provides the name of the TP terminating at least one of the Connections which are associated to the Calls to be retrieved.&#xD;
+&#xD;
+This parameter provides the name of the TP terminating at least one of the Connections which are associated to the Calls to be retrieved.&#xD;
+The name must be explicit (a generic endpoint specification may not be used in this case).&#xD;
+&#xD;
+See SD1-25 Object Naming for further detail on TP naming.</body>
+            </ownedComment>
+            <ownedComment xmi:id="_sNeIoJeWEeKVILk7_xOE2w" annotatedElement="_PJVAsF4pEeGtX978TggU8Q">
+              <body>..\..\Framework\SD\SD1-25_objectNaming.pdf</body>
             </ownedComment>
             <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_PJVAsl4pEeGtX978TggU8Q">
@@ -4450,7 +4473,11 @@ Traceability: R_TMF518_MRI_II_0161.</body>
         </ownedOperation>
         <ownedOperation xmi:id="_3rLcmUD-EeGCAo9-ZY7z8A" name="getAllCallIdsWithTP" visibility="public" precondition="_3rLcm0D-EeGCAo9-ZY7z8A" postcondition="_3rLcnUD-EeGCAo9-ZY7z8A">
           <ownedComment xmi:id="_3rLcmkD-EeGCAo9-ZY7z8A" annotatedElement="_3rLcmUD-EeGCAo9-ZY7z8A">
-            <body>This operation returns the ID of all the Calls that are supported by the specified TP. A Call is considered as using the specified TP if any of its supporting connections use an SNP that corresponds to the specified TP or a TP contained in the specified TP.&#xD;
+            <body>This operation provides a way for the requesting OS to retrieve the ID of all Calls supported by the specified TP.&#xD;
+A Call is considered as using the specified TP if any of its supporting connections use an SNP that corresponds to the specified TP or a TP contained in the specified TP.&#xD;
+&#xD;
+Note that this operation only returns calls ID and not other details as it is only the ID that will be available to the control plane.&#xD;
+In fact this operation applies only in control plane context. For example if a PTP in the centre of the network is referenced, the control plane will be aware of the ID of the calls that pass through the resources of that PTP that have been allocated to the control plane but will not be aware of any other details for calls that originate outside the routing area to which the resources from the PTP are allocated.&#xD;
 &#xD;
 Traceability: R_TMF518_MRI_II_0163.</body>
           </ownedComment>
@@ -4478,7 +4505,13 @@ Traceability: R_TMF518_MRI_II_0163.</body>
           </ownedParameter>
           <ownedParameter xmi:id="_FkR1MF4tEeGtX978TggU8Q" name="tpRef">
             <ownedComment xmi:id="_FkR1MV4tEeGtX978TggU8Q" annotatedElement="_FkR1MF4tEeGtX978TggU8Q">
-              <body>This parameter provides the name of the TP terminating at least one of the Connections which are associated to the Calls to be retrieved.</body>
+              <body>This parameter provides the name of the TP terminating at least one of the Connections which are associated to the Calls to be retrieved.&#xD;
+The termination point name must be explicit (a generic endpoint specification may not be used in this case).&#xD;
+&#xD;
+See SD1-25 Object Naming for further detail on TP naming.</body>
+            </ownedComment>
+            <ownedComment xmi:id="_-vmnEJeWEeKVILk7_xOE2w" annotatedElement="_FkR1MF4tEeGtX978TggU8Q">
+              <body>..\..\Framework\SD\SD1-25_objectNaming.pdf</body>
             </ownedComment>
             <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_FkR1Ml4tEeGtX978TggU8Q">
@@ -4503,7 +4536,8 @@ Traceability: R_TMF518_MRI_II_0163.</body>
         </ownedOperation>
         <ownedOperation xmi:id="_3rLcjED-EeGCAo9-ZY7z8A" name="getAllCallIdsWithSNPPOrTNAName" visibility="public" precondition="_3rLcjkD-EeGCAo9-ZY7z8A" postcondition="_3rLckED-EeGCAo9-ZY7z8A">
           <ownedComment xmi:id="_3rLcjUD-EeGCAo9-ZY7z8A" annotatedElement="_3rLcjED-EeGCAo9-ZY7z8A">
-            <body>This operation returns the ID of all the Calls that are supported by either the specified SNPP identifier or the specified TNA identifier.&#xD;
+            <body>This operation provides a way for the requesting OS to retrieve the ID of all the Calls that are supported by either the specified SNPP or the specified TNA.&#xD;
+This operation has exactly the same behaviour as getAllCallIdsWithTP, but instead of using TP as an input, it specifies a SNPP or TNA.&#xD;
 &#xD;
 Additional information on exceptions:&#xD;
 unableToComply - Raised if the specified input is not controlled by the Control Plane.&#xD;
@@ -4523,7 +4557,12 @@ Traceability: R_TMF518_MRI_II_0163.</body>
           <ownedParameter xmi:id="_3rLckkD-EeGCAo9-ZY7z8A" name="void" direction="return"/>
           <ownedParameter xmi:id="_3rLck0D-EeGCAo9-ZY7z8A" name="snppOrTNARef">
             <ownedComment xmi:id="_3rLclED-EeGCAo9-ZY7z8A" annotatedElement="_3rLck0D-EeGCAo9-ZY7z8A">
-              <body>This parameter provides the identifier of either an SNPP or a TNA.</body>
+              <body>This parameter provides the identifier of either an SNPP or a TNA.&#xD;
+&#xD;
+See SD1-25 Object Naming for further detail on SNPP or TNA naming.</body>
+            </ownedComment>
+            <ownedComment xmi:id="_PDd3IJeXEeKVILk7_xOE2w" annotatedElement="_3rLck0D-EeGCAo9-ZY7z8A">
+              <body>..\..\Framework\SD\SD1-25_objectNaming.pdf</body>
             </ownedComment>
             <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_8_P-sPo7EduVsYI7mfNDXQ?Framework/Type%20Definitions/AttributeValuePair?"/>
             <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_3rLclUD-EeGCAo9-ZY7z8A">
@@ -4559,8 +4598,12 @@ Traceability: R_TMF518_MRI_II_0163.</body>
         </ownedOperation>
         <ownedOperation xmi:id="_3rLc10D-EeGCAo9-ZY7z8A" name="getCallAndTopLevelConnectionsAndSNCs" visibility="public" precondition="_3rLc2UD-EeGCAo9-ZY7z8A" postcondition="_3rLc20D-EeGCAo9-ZY7z8A">
           <ownedComment xmi:id="_3rLc2ED-EeGCAo9-ZY7z8A" annotatedElement="_3rLc10D-EeGCAo9-ZY7z8A">
-            <body>This operation allows the requesting OS to retrieve the attributes of a Call given a specific Call Id or a Call name that is within the scope of the top-level MLRA. The operation returns also the attributes of all associated top-level Connection objects. For each top-level Connection object it returns the attributes of all supporting SubnetworkConnection objects.&#xD;
+            <body>This operation provides a way for the requesting OS to retrieve the attributes of a Call given a specific Call Id or a Call name that is within the scope of the top-level MLRA. The operation returns also the attributes of all associated top-level Connection objects. For each top-level Connection object it returns the attributes of all supporting SubnetworkConnection objects.&#xD;
+This operation has exactly the same behaviour as getAllCallsAndTopLevelConnectionsAndSNCs(), except that the request returns only the named call (and all Top Level Connections with their supporting SNCs).&#xD;
+&#xD;
+Additional information on exceptions:&#xD;
 If the requesting OS provides a callId AND a callRef, the target OS must reject the operation with INVALID_INPUT.&#xD;
+unableToComply - Raised if the specified Call is defined in an MLRA which is not managed by the Control Plane.&#xD;
 &#xD;
 Traceability: R_TMF518_MRI_II_0162.</body>
           </ownedComment>
@@ -4620,8 +4663,12 @@ Traceability: R_TMF518_MRI_II_0162.</body>
         </ownedOperation>
         <ownedOperation xmi:id="_3rLcbED-EeGCAo9-ZY7z8A" name="getCallAndTopLevelConnections" visibility="public" precondition="_3rLcbkD-EeGCAo9-ZY7z8A" postcondition="_3rLccED-EeGCAo9-ZY7z8A">
           <ownedComment xmi:id="_3rLcbUD-EeGCAo9-ZY7z8A" annotatedElement="_3rLcbED-EeGCAo9-ZY7z8A">
-            <body>This operation allows the requesting OS to retrieve the attributes of a Call given a specific Call Id or a Call name that is within the scope of the top-level MLRA. The operation returns also the attributes of all associated top-level Connection objects.&#xD;
+            <body>This operation provides a way for the requesting OS to retrieve the attributes of a Call given a specific Call Id or a Call name that is within the scope of the top-level MLRA. The operation returns also the attributes of all associated top-level Connection objects.&#xD;
+This operation has exactly the same behaviour as getAllCallsAndTopLevelConnections(), except that the request returns only the call which is identified by callId or named by callName (and all Top Level Connections).&#xD;
+&#xD;
+Additional information on exceptions:&#xD;
 If the requesting OS provides a callId AND a callRef, the target OS must reject the operation with INVALID_INPUT.&#xD;
+unableToComply - Raised if the specified Call is not defined in a Top Level MLRA, controlled by the Control Plane.&#xD;
 &#xD;
 Traceability: R_TMF518_MRI_II_0158.</body>
           </ownedComment>
@@ -4684,6 +4731,9 @@ Traceability: R_TMF518_MRI_II_0158.</body>
             <body>This operation returns the attributes of a Call object given a specified Call name.&#xD;
 Note: The target OS has to control the originating end of the Call otherwise the Call information is not available.&#xD;
 &#xD;
+Additional information on exceptions:&#xD;
+entityNotFound - Raised when callRef references a Call object that does not exist (e.g. when the target OS does not control the originating end, the Call information is not available at this target OS).&#xD;
+&#xD;
 Traceability: R_TMF518_MRI_II_0164.</body>
           </ownedComment>
           <ownedRule xmi:id="_3rLcGED-EeGCAo9-ZY7z8A" constrainedElement="_3rLcFkD-EeGCAo9-ZY7z8A">
@@ -4738,7 +4788,7 @@ Traceability: R_TMF518_MRI_II_0164.</body>
 &#xD;
 Note: (In a Control Plane environment,) The target OS has to control the originating end of the Connection otherwise the Call information is not available.&#xD;
 &#xD;
-Traceability: R_TMF518_MRI_II_0171, UC_TMF518_MRI_xxx.</body>
+Traceability: R_TMF518_MRI_II_0171.</body>
           </ownedComment>
           <ownedRule xmi:id="_vD_uOED_EeGCAo9-ZY7z8A" constrainedElement="_vD_uNkD_EeGCAo9-ZY7z8A">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_vD_uOUD_EeGCAo9-ZY7z8A">
@@ -4780,7 +4830,7 @@ Traceability: R_TMF518_MRI_II_0171, UC_TMF518_MRI_xxx.</body>
           <ownedComment xmi:id="_18eCM0D_EeGCAo9-ZY7z8A" annotatedElement="_18eCMkD_EeGCAo9-ZY7z8A">
             <body>This operation returns the specified route for the Connection. If the input route is not specified, the operation replies all the routes of the Connection, intended and backup ones. The rest of the behavior is the same as the getRoute() operation.&#xD;
 &#xD;
-Traceability: R_TMF518_MRI_II_0173, UC_TMF518_MRI_xxx.</body>
+Traceability: R_TMF518_MRI_II_0173.</body>
           </ownedComment>
           <ownedRule xmi:id="_18eCNED_EeGCAo9-ZY7z8A" constrainedElement="_18eCMkD_EeGCAo9-ZY7z8A">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_18eCNUD_EeGCAo9-ZY7z8A">
@@ -4853,7 +4903,7 @@ Traceability: R_TMF518_MRI_II_0173, UC_TMF518_MRI_xxx.</body>
           <ownedComment xmi:id="_18eClUD_EeGCAo9-ZY7z8A" annotatedElement="_18eClED_EeGCAo9-ZY7z8A">
             <body>This operation retrieves the intended Route of a Connection.&#xD;
 &#xD;
-Traceability: R_TMF518_MRI_II_0174, UC_TMF518_MRI_xxx.</body>
+Traceability: R_TMF518_MRI_II_0174.</body>
           </ownedComment>
           <ownedRule xmi:id="_18eClkD_EeGCAo9-ZY7z8A" constrainedElement="_18eClED_EeGCAo9-ZY7z8A">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_18eCl0D_EeGCAo9-ZY7z8A">
@@ -4911,13 +4961,7 @@ All cross-connections allocated to the connection must be returned, even if they
 &#xD;
 This allows the requesting OS to query the route that will be used before activating an SNC.&#xD;
 &#xD;
-Traceability: R_TMF518_MRI_II_xxx, UC_TMF518_MRI_0175.&#xD;
-&#xD;
-&#xD;
-&#xD;
-Operation Exceptions:&#xD;
-1. NOT_IMPLEMENTED - Raised when an EMS does not implement the specified includeHigherOrderCCs value.&#xD;
-2. INTERNAL_ERROR - Raised in case of non-specific EMS internal failure.</body>
+Traceability: R_TMF518_MRI_II_0175, UC_TMF518_MRI_0027.</body>
           </ownedComment>
           <ownedRule xmi:id="_18eCJ0D_EeGCAo9-ZY7z8A" constrainedElement="_18eCJUD_EeGCAo9-ZY7z8A">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_18eCKED_EeGCAo9-ZY7z8A">
@@ -4985,6 +5029,9 @@ The response may include the edge and internal MLSNPPLinks.&#xD;
 &#xD;
 Note: given an SNCP scheme, the replied home route will always include both main and spare legs of the SNCP protection, while the replied actual route may return only one leg, if only one leg is currently active in the network. Once the CP routing succeeds to activate the spare leg, then both legs are replied when actual route is asked.&#xD;
 &#xD;
+Additional information on exceptions:&#xD;
+unableToComply - Raised if the target OS can not access the route information.&#xD;
+&#xD;
 Traceability: R_TMF518_MRI_II_xxx.</body>
           </ownedComment>
           <ownedRule xmi:id="_IP1V4l7EEeG-j5n9Zqk2Ag" constrainedElement="_IP1V4F7EEeG-j5n9Zqk2Ag">
@@ -5044,7 +5091,8 @@ Traceability: R_TMF518_MRI_II_xxx.</body>
           </ownedParameter>
           <ownedParameter xmi:id="_IP1V9l7EEeG-j5n9Zqk2Ag" name="connectionAndRouteList" type="_hbqoAF7LEeG-j5n9Zqk2Ag" direction="out">
             <ownedComment xmi:id="_IP1V917EEeG-j5n9Zqk2Ag" annotatedElement="_IP1V9l7EEeG-j5n9Zqk2Ag">
-              <body>This parameter returns the Connections and their corresponding route details.</body>
+              <body>This parameter returns the Connections and their corresponding route details.&#xD;
+The route details are given in terms of Routing Node Connections.</body>
             </ownedComment>
             <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_l9MScV7LEeG-j5n9Zqk2Ag" value="*"/>
             <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_l9MScF7LEeG-j5n9Zqk2Ag"/>
@@ -5060,11 +5108,11 @@ Traceability: R_TMF518_MRI_II_xxx.</body>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
         </ownedOperation>
-        <ownedOperation xmi:id="_18eCDUD_EeGCAo9-ZY7z8A" name="getRouteAndMLSNPPLinks" visibility="public" precondition="_18eCD0D_EeGCAo9-ZY7z8A" postcondition="_18eCEUD_EeGCAo9-ZY7z8A">
+        <ownedOperation xmi:id="_18eCDUD_EeGCAo9-ZY7z8A" name="getRouteAndMlsnppLinks" visibility="public" precondition="_18eCD0D_EeGCAo9-ZY7z8A" postcondition="_18eCEUD_EeGCAo9-ZY7z8A">
           <ownedComment xmi:id="_18eCDkD_EeGCAo9-ZY7z8A" annotatedElement="_18eCDUD_EeGCAo9-ZY7z8A">
             <body>This operation retrieves the route, and optionally the details of all MLSNPP Links, of the Connection.&#xD;
 &#xD;
-Traceability: R_TMF518_MRI_II_0175.</body>
+Traceability: R_TMF518_MRI_II_0175, UC_TMF518_MRI_0027.</body>
           </ownedComment>
           <ownedRule xmi:id="_18eCD0D_EeGCAo9-ZY7z8A" constrainedElement="_18eCDUD_EeGCAo9-ZY7z8A">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_18eCEED_EeGCAo9-ZY7z8A">
@@ -5103,7 +5151,7 @@ Traceability: R_TMF518_MRI_II_0175.</body>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
         </ownedOperation>
-        <ownedOperation xmi:id="_vD_uQ0D_EeGCAo9-ZY7z8A" name="getAllConnectionsWithMLSNPPLinks??" visibility="public" precondition="_vD_uRUD_EeGCAo9-ZY7z8A" postcondition="_vD_uR0D_EeGCAo9-ZY7z8A">
+        <ownedOperation xmi:id="_vD_uQ0D_EeGCAo9-ZY7z8A" name="getAllConnectionsWithMlsnppLinks??" visibility="public" precondition="_vD_uRUD_EeGCAo9-ZY7z8A" postcondition="_vD_uR0D_EeGCAo9-ZY7z8A">
           <ownedComment xmi:id="_vD_uRED_EeGCAo9-ZY7z8A" annotatedElement="_vD_uQ0D_EeGCAo9-ZY7z8A">
             <body>Andrea (130206): yes... in fact I remember such operation, but I can find it neither in BA nor in IDL!&#xD;
 Very likely it was foreseen at a certain stage of specification, but then no longer developed, I guess because all inventory operations start from the Call, then the related Connections are found, and further the getConnectionsAndRouteDetails() allows to trace the connections. I believe it’s difficult for Control Plane to directly evaluate which Connections are routed over a given link.&#xD;
@@ -5178,7 +5226,7 @@ Operation Exceptions:&#xD;
 If no MD is provided all MLRAs managed by the provided subordinate OS are returned.&#xD;
 Note that &quot;Wrt&quot; in the name of the operation stands for &quot;with respect to&quot;.&#xD;
 &#xD;
-Traceability: R_TMF518_MRI_II_0181, UC_TMF518_MRI_xxx.</body>
+Traceability: R_TMF518_MRI_II_0181, UC_TMF518_MRI_0019.</body>
           </ownedComment>
           <ownedRule xmi:id="_tLBXc3lsEeGkCrhS32IC1g" constrainedElement="_tLBXcXlsEeGkCrhS32IC1g">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_tLBXdHlsEeGkCrhS32IC1g">
@@ -5230,7 +5278,7 @@ Traceability: R_TMF518_MRI_II_0181, UC_TMF518_MRI_xxx.</body>
             <body>This operation returns all Multi Layer Routing Areas (MLRAs) contained by the provided Management Domain (MD).&#xD;
 The returned list contains all the MLRAs at all levels of cotainment.&#xD;
 &#xD;
-Traceability: R_TMF518_MRI_II_xxx, UC_TMF518_MRI_xxx.</body>
+Traceability: R_TMF518_MRI_II_0181, UC_TMF518_MRI_0019.</body>
           </ownedComment>
           <ownedRule xmi:id="_j_qksnl4EeGkCrhS32IC1g" constrainedElement="_j_qksHl4EeGkCrhS32IC1g">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_j_qks3l4EeGkCrhS32IC1g">
@@ -5272,7 +5320,7 @@ Traceability: R_TMF518_MRI_II_xxx, UC_TMF518_MRI_xxx.</body>
           <ownedComment xmi:id="_tLBXhHlsEeGkCrhS32IC1g" annotatedElement="_tLBXg3lsEeGkCrhS32IC1g">
             <body>This operation returns all top level Multi Layer Routing Areas contained by a provided Management Domain.&#xD;
 &#xD;
-Traceability: R_TMF518_MRI_II_0184.</body>
+Traceability: R_TMF518_MRI_II_0184, UC_TMF518_MRI_0019.</body>
           </ownedComment>
           <ownedRule xmi:id="_tLBXhXlsEeGkCrhS32IC1g" constrainedElement="_tLBXg3lsEeGkCrhS32IC1g">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_tLBXhnlsEeGkCrhS32IC1g">
@@ -5316,7 +5364,7 @@ Traceability: R_TMF518_MRI_II_0184.</body>
           <ownedComment xmi:id="_tLBXonlsEeGkCrhS32IC1g" annotatedElement="_tLBXoXlsEeGkCrhS32IC1g">
             <body>This operation retrieves the details of a Multi Layer Routing Area given its name.&#xD;
 &#xD;
-Traceability: R_TMF518_MRI_II_0182.</body>
+Traceability: R_TMF518_MRI_II_0182, UC_TMF518_MRI_0019.</body>
           </ownedComment>
           <ownedRule xmi:id="_tLBXo3lsEeGkCrhS32IC1g" constrainedElement="_tLBXoXlsEeGkCrhS32IC1g">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_tLBXpHlsEeGkCrhS32IC1g">
@@ -5356,9 +5404,11 @@ Traceability: R_TMF518_MRI_II_0182.</body>
         </ownedOperation>
         <ownedOperation xmi:id="_szSFsHmUEeGkCrhS32IC1g" name="getAllSubordinateMultiLayerRoutingAreas" visibility="public" precondition="_szSFsnmUEeGkCrhS32IC1g" postcondition="_szSFtHmUEeGkCrhS32IC1g">
           <ownedComment xmi:id="_szSFsXmUEeGkCrhS32IC1g" annotatedElement="_szSFsHmUEeGkCrhS32IC1g">
-            <body>This operation returns all the MultiLayerRoutingArea objects that are &quot;contained&quot; within the targeted MultiLayerRoutingArea. This operation returns all the MultilayerRouting Areas down to and including those that represent Routing Nodes.&#xD;
+            <body>This operation provides a way for the requesting OS to return all the MLRAs that are &quot;contained&quot; within the targeted MultiLayerRoutingArea. This operation returns all the MLRAs down to and including those that represent Routing Nodes.&#xD;
+This allows a requesting OS to request the MLRAs or Routing Nodes that are completely managed by the target OS (i.e. the target OS is allowed to read and provision all transport plane aspects, e.g. PTP, CTP).&#xD;
+If the operation is addressed to an MLRA of Routing Node type, which is at the bottom of the routing hierarchy, the result is an empty list.&#xD;
 &#xD;
-Traceability: R_TMF518_MRI_II_0183.</body>
+Traceability: R_TMF518_MRI_II_0183, UC_TMF518_MRI_0020.</body>
           </ownedComment>
           <ownedRule xmi:id="_szSFsnmUEeGkCrhS32IC1g" constrainedElement="_szSFsHmUEeGkCrhS32IC1g">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_szSFs3mUEeGkCrhS32IC1g">
@@ -5417,7 +5467,7 @@ Additional information on exceptions:&#xD;
 unableToComply - Raised if the target OS does not control the originating point for the specified connection. Raised if the adressed MLRA does not represent a top level MLRA. Raised if the addressed MLRA is the top level MLRA but the network has only 2 levels of routing hierarchy.&#xD;
 notInValidState  - Raised if the target OS is unable to comply because the Connection State is Searching.&#xD;
 &#xD;
-Traceability: R_TMF518_MRI_II_0172.</body>
+Traceability: R_TMF518_MRI_II_0172, UC_TMF518_MRI_0026.</body>
           </ownedComment>
           <ownedRule xmi:id="_ug11snl-EeGkCrhS32IC1g" constrainedElement="_ug11sHl-EeGkCrhS32IC1g">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_ug11s3l-EeGkCrhS32IC1g">
@@ -5479,13 +5529,13 @@ Traceability: R_TMF518_MRI_II_0172.</body>
       <packagedElement xmi:type="uml:Dependency" xmi:id="_uUTHIHmBEeGkCrhS32IC1g" name="uses" supplier="_V1pVMF7NEeG-j5n9Zqk2Ag" client="_tLBXcHlsEeGkCrhS32IC1g"/>
       <packagedElement xmi:type="uml:Dependency" xmi:id="_wQAwcHmCEeGkCrhS32IC1g" name="uses" supplier="_nqTe4HmCEeGkCrhS32IC1g" client="_tLBXcHlsEeGkCrhS32IC1g"/>
       <packagedElement xmi:type="uml:Interface" xmi:id="_oAqZUHmWEeGkCrhS32IC1g" name="MultiLayerSubNetworkPointPoolLinkRetrievalService" clientDependency="_JI110HHGEeK3ecN5OCh5hw">
-        <ownedOperation xmi:id="_0OcIUHmXEeGkCrhS32IC1g" name="getAllMultiLayerSubNetworkPointPoolLinksWithTp" visibility="public" precondition="_0OcIUXmXEeGkCrhS32IC1g" postcondition="_0OcIU3mXEeGkCrhS32IC1g">
+        <ownedOperation xmi:id="_0OcIUHmXEeGkCrhS32IC1g" name="getAllMlsnppLinksWithTp" visibility="public" precondition="_0OcIUXmXEeGkCrhS32IC1g" postcondition="_0OcIU3mXEeGkCrhS32IC1g">
           <ownedComment xmi:id="_WOqagHmaEeGkCrhS32IC1g" annotatedElement="_0OcIUHmXEeGkCrhS32IC1g">
             <body>This operation is used to query all the MultiLayer SNPP Link(s) that are known to the target OS using the specified Termination Point (PTP or CTP).&#xD;
 Both internal and edge links are returned.&#xD;
 It can be requested to return also the SNPs terminating the MLSNPP Links to be returned.&#xD;
 &#xD;
-Traceability: R_TMF518_MRI_II_0189, UC_TMF518_MRI_xxx.</body>
+Traceability: R_TMF518_MRI_II_0189, UC_TMF518_MRI_0021.</body>
           </ownedComment>
           <ownedRule xmi:id="_0OcIUXmXEeGkCrhS32IC1g" constrainedElement="_0OcIUHmXEeGkCrhS32IC1g">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_0OcIUnmXEeGkCrhS32IC1g">
@@ -5534,12 +5584,12 @@ Traceability: R_TMF518_MRI_II_0189, UC_TMF518_MRI_xxx.</body>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
         </ownedOperation>
-        <ownedOperation xmi:id="_zo4kMHmXEeGkCrhS32IC1g" name="getAllMultiLayerSubNetworkPointPoolLinksWithMlras" visibility="public" precondition="_zo4kMXmXEeGkCrhS32IC1g" postcondition="_zo4kM3mXEeGkCrhS32IC1g">
+        <ownedOperation xmi:id="_zo4kMHmXEeGkCrhS32IC1g" name="getAllMlsnppLinksWithMlras" visibility="public" precondition="_zo4kMXmXEeGkCrhS32IC1g" postcondition="_zo4kM3mXEeGkCrhS32IC1g">
           <ownedComment xmi:id="_NZKZcHmaEeGkCrhS32IC1g" annotatedElement="_zo4kMHmXEeGkCrhS32IC1g">
             <body>This operation returns all MLSNPP Links that interconnect a pair of specified MLRAs.&#xD;
 Both internal and edge links are returned.&#xD;
 &#xD;
-Traceability: R_TMF518_MRI_II_0192.</body>
+Traceability: R_TMF518_MRI_II_0192, UC_TMF518_MRI_0021.</body>
           </ownedComment>
           <ownedRule xmi:id="_zo4kMXmXEeGkCrhS32IC1g" constrainedElement="_zo4kMHmXEeGkCrhS32IC1g">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_zo4kMnmXEeGkCrhS32IC1g">
@@ -5590,12 +5640,12 @@ Traceability: R_TMF518_MRI_II_0192.</body>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
         </ownedOperation>
-        <ownedOperation xmi:id="_z79RMHmXEeGkCrhS32IC1g" name="getAllMultiLayerSubNetworkPointPoolLinksWithTna" visibility="public" precondition="_z79RMXmXEeGkCrhS32IC1g" postcondition="_z79RM3mXEeGkCrhS32IC1g">
+        <ownedOperation xmi:id="_z79RMHmXEeGkCrhS32IC1g" name="getAllMlsnppLinksWithTna" visibility="public" precondition="_z79RMXmXEeGkCrhS32IC1g" postcondition="_z79RM3mXEeGkCrhS32IC1g">
           <ownedComment xmi:id="_Rtul8HmaEeGkCrhS32IC1g" annotatedElement="_z79RMHmXEeGkCrhS32IC1g">
             <body>This operation returns all MultiLayer SNPP Links using the specified TNA.&#xD;
 Both internal and edge links are returned.&#xD;
 &#xD;
-Traceability: R_TMF518_MRI_II_0191.</body>
+Traceability: R_TMF518_MRI_II_0191, UC_TMF518_MRI_0021.</body>
           </ownedComment>
           <ownedRule xmi:id="_z79RMXmXEeGkCrhS32IC1g" constrainedElement="_z79RMHmXEeGkCrhS32IC1g">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_z79RMnmXEeGkCrhS32IC1g">
@@ -5646,11 +5696,11 @@ Traceability: R_TMF518_MRI_II_0191.</body>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
         </ownedOperation>
-        <ownedOperation xmi:id="_nKB20HmXEeGkCrhS32IC1g" name="getMultiLayerSubNetworkPointPoolLink" visibility="public" precondition="_nKB20nmXEeGkCrhS32IC1g" postcondition="_nKB21HmXEeGkCrhS32IC1g">
+        <ownedOperation xmi:id="_nKB20HmXEeGkCrhS32IC1g" name="getMlsnppLink" visibility="public" precondition="_nKB20nmXEeGkCrhS32IC1g" postcondition="_nKB21HmXEeGkCrhS32IC1g">
           <ownedComment xmi:id="_zUhy4HmZEeGkCrhS32IC1g" annotatedElement="_nKB20HmXEeGkCrhS32IC1g">
             <body>This operation returns a MultiLayer SNPP Link given a MultiLayer SNPP Link name.&#xD;
 &#xD;
-Traceability: R_TMF518_MRI_II_0188.</body>
+Traceability: R_TMF518_MRI_II_0188, UC_TMF518_MRI_0022.</body>
           </ownedComment>
           <ownedRule xmi:id="_nKB20nmXEeGkCrhS32IC1g" constrainedElement="_nKB20HmXEeGkCrhS32IC1g">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_nKB203mXEeGkCrhS32IC1g">
@@ -5699,7 +5749,7 @@ Traceability: R_TMF518_MRI_II_0188.</body>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
         </ownedOperation>
-        <ownedOperation xmi:id="_zSYvwHmXEeGkCrhS32IC1g" name="getAllMultiLayerSubNetworkPointPoolLinks" visibility="public" precondition="_zSYvwXmXEeGkCrhS32IC1g" postcondition="_zSYvw3mXEeGkCrhS32IC1g">
+        <ownedOperation xmi:id="_zSYvwHmXEeGkCrhS32IC1g" name="getAllMlsnppLinks" visibility="public" precondition="_zSYvwXmXEeGkCrhS32IC1g" postcondition="_zSYvw3mXEeGkCrhS32IC1g">
           <ownedComment xmi:id="_E9cKUHmaEeGkCrhS32IC1g" annotatedElement="_zSYvwHmXEeGkCrhS32IC1g">
             <body>This operation returns all MultiLayerSNPPLinks known to the target OS.&#xD;
 &#xD;
@@ -5722,7 +5772,7 @@ The reply may be an empty or a partial list depending upon the visibility that t
 - Remote CP Limited - the target OS partially manages the MultiLayerRoutingArea at this level and may not have a view of the details of the subordinate MultiLayerRoutingArea levels and has no view of the supporting transport plane resources, such that it can provide a view of some of the MultiLayerSNPPLinks and not necessarily all of the subordinate SNPPs for those MultiLayerSNPPLinks and can not provide any associated transport plane data.&#xD;
 - Remote CP Opaque - the target OS is unable to provide any information related to MultiLayerSNPPLinks that are internal to the specified MultiLayerRoutingArea.&#xD;
 &#xD;
-Traceability: R_TMF518_MRI_II_0187.</body>
+Traceability: R_TMF518_MRI_II_0187, UC_TMF518_MRI_0021.</body>
           </ownedComment>
           <ownedRule xmi:id="_zSYvwXmXEeGkCrhS32IC1g" constrainedElement="_zSYvwHmXEeGkCrhS32IC1g">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_zSYvwnmXEeGkCrhS32IC1g">
@@ -5773,12 +5823,12 @@ Traceability: R_TMF518_MRI_II_0187.</body>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
         </ownedOperation>
-        <ownedOperation xmi:id="_y8L2QHmXEeGkCrhS32IC1g" name="getAllInternalMultiLayerSubNetworkPointPoolLinks" visibility="public" precondition="_y8L2QXmXEeGkCrhS32IC1g" postcondition="_y8L2Q3mXEeGkCrhS32IC1g">
+        <ownedOperation xmi:id="_y8L2QHmXEeGkCrhS32IC1g" name="getAllInternalMlsnppLinks" visibility="public" precondition="_y8L2QXmXEeGkCrhS32IC1g" postcondition="_y8L2Q3mXEeGkCrhS32IC1g">
           <ownedComment xmi:id="__mkMQHmZEeGkCrhS32IC1g" annotatedElement="_y8L2QHmXEeGkCrhS32IC1g">
             <body>This operation has exactly the same behaviour as the getAllMultiLayerSubNetworkPointPoolLinks operation, but instead of returning all the Multi Layer SNPP Link objects this operation returns only those that are internal to the addressed Multi Layer Routing Area.&#xD;
 If the addressed Multi Layer Routing Area is a Routing Node then the list will be empty.&#xD;
 &#xD;
-Traceability: R_TMF518_MRI_II_0186, UC_TMF518_MRI_xxx.</body>
+Traceability: R_TMF518_MRI_II_0186, UC_TMF518_MRI_0022.</body>
           </ownedComment>
           <ownedRule xmi:id="_y8L2QXmXEeGkCrhS32IC1g" constrainedElement="_y8L2QHmXEeGkCrhS32IC1g">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_y8L2QnmXEeGkCrhS32IC1g">
@@ -5827,11 +5877,11 @@ Traceability: R_TMF518_MRI_II_0186, UC_TMF518_MRI_xxx.</body>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
         </ownedOperation>
-        <ownedOperation xmi:id="_ygA3oHmXEeGkCrhS32IC1g" name="getAllEdgeMultiLayerSubNetworkPointPoolLinks" visibility="public" precondition="_ygA3oXmXEeGkCrhS32IC1g" postcondition="_ygA3o3mXEeGkCrhS32IC1g">
+        <ownedOperation xmi:id="_ygA3oHmXEeGkCrhS32IC1g" name="getAllEdgeMlsnppLinks" visibility="public" precondition="_ygA3oXmXEeGkCrhS32IC1g" postcondition="_ygA3o3mXEeGkCrhS32IC1g">
           <ownedComment xmi:id="_5z-ikHmZEeGkCrhS32IC1g" annotatedElement="_ygA3oHmXEeGkCrhS32IC1g">
             <body>This operation has exactly the same behaviour as getAllMultiLayerSubNetworkPointPoolLinks, but instead of returning all the Multi Layer SNPP Link objects this operation returns only those that are external to the addressed Multi Layer Routing Area.&#xD;
 &#xD;
-Traceability: R_TMF518_MRI_II_0190.</body>
+Traceability: R_TMF518_MRI_II_0190, UC_TMF518_MRI_0021.</body>
           </ownedComment>
           <ownedRule xmi:id="_ygA3oXmXEeGkCrhS32IC1g" constrainedElement="_ygA3oHmXEeGkCrhS32IC1g">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_ygA3onmXEeGkCrhS32IC1g">
@@ -5884,17 +5934,7 @@ Traceability: R_TMF518_MRI_II_0190.</body>
           <ownedComment xmi:id="_Z5cjp0D8EeGCAo9-ZY7z8A" annotatedElement="_Z5cjpkD8EeGCAo9-ZY7z8A">
             <body>This operation retrieves the capacity of the MulitLayer SNPP Link in terms of a count of the connections available on a per layer basis. If a layer rate is not specified then the target OS returns the available capacity for each layer rate that is supported.&#xD;
 &#xD;
-Traceability: R_TMF518_MRI_II_0193, UC_TMF518_MRI_xxx.&#xD;
-&#xD;
-&#xD;
-Operation Exceptions:&#xD;
-1. NOT_IMPLEMENTED - Raised when the entire operation is not supported by the EMS or the operation with the specified input parameters is not supported.&#xD;
-2. INTERNAL_ERROR - Raised when the operation has resulted in an EMS internal error.&#xD;
-3. INVALID_INPUT - Raised when the operation contains an input parameter that is syntactically incorrect or identifies an object of the wrong type or is out of range.&#xD;
-4. ENTITY_NOT_FOUND - Raised when objectName references an object which does not exist.&#xD;
-5. UNABLE_TO_COMPLY - Raised when the EMS cannot respond to the request&#xD;
-6. NE_COMM_LOSS - Raised when the EMS is unable to communicate with the NE and communication is required to complete the operation.&#xD;
-</body>
+Traceability: R_TMF518_MRI_II_0193, UC_TMF518_MRI_0022.</body>
           </ownedComment>
           <ownedRule xmi:id="_Z5cjqED8EeGCAo9-ZY7z8A" constrainedElement="_Z5cjpkD8EeGCAo9-ZY7z8A">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_Z5cjqUD8EeGCAo9-ZY7z8A">
@@ -5947,11 +5987,11 @@ Operation Exceptions:&#xD;
         </ownedOperation>
       </packagedElement>
       <packagedElement xmi:type="uml:Interface" xmi:id="_ELEI0HmzEeGkCrhS32IC1g" name="MultiLayerSubNetworkPointPoolRetrievalService">
-        <ownedOperation xmi:id="_ZDs_kHtUEeKAa-j2RRvYPg" name="getMultiLayerSubNetworkPointPool" visibility="public" precondition="_ZDs_kntUEeKAa-j2RRvYPg" postcondition="_ZDs_lHtUEeKAa-j2RRvYPg">
+        <ownedOperation xmi:id="_ZDs_kHtUEeKAa-j2RRvYPg" name="getMlsnpp" visibility="public" precondition="_ZDs_kntUEeKAa-j2RRvYPg" postcondition="_ZDs_lHtUEeKAa-j2RRvYPg">
           <ownedComment xmi:id="_ZDs_kXtUEeKAa-j2RRvYPg" annotatedElement="_ZDs_kHtUEeKAa-j2RRvYPg">
             <body>This operation returns a MultiLayer SNPP given a MultiLayer SNPP name.&#xD;
 &#xD;
-Traceability: R_TMF518_MRI_II_0195.</body>
+Traceability: R_TMF518_MRI_II_0195, UC_TMF518_MRI_0029.</body>
           </ownedComment>
           <ownedRule xmi:id="_ZDs_kntUEeKAa-j2RRvYPg" constrainedElement="_ZDs_kHtUEeKAa-j2RRvYPg">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_ZDs_k3tUEeKAa-j2RRvYPg">
@@ -6000,11 +6040,11 @@ Traceability: R_TMF518_MRI_II_0195.</body>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
         </ownedOperation>
-        <ownedOperation xmi:id="_-VrL4Ho4EeGV-4k-0X86UA" name="getAllMultiLayerSubNetworkPointPoolsWithTp" visibility="public" precondition="_-VrL4Xo4EeGV-4k-0X86UA" postcondition="_-VrL43o4EeGV-4k-0X86UA">
+        <ownedOperation xmi:id="_-VrL4Ho4EeGV-4k-0X86UA" name="getAllMlsnppsWithTp" visibility="public" precondition="_-VrL4Xo4EeGV-4k-0X86UA" postcondition="_-VrL43o4EeGV-4k-0X86UA">
           <ownedComment xmi:id="_OmQecHo5EeGV-4k-0X86UA" annotatedElement="_-VrL4Ho4EeGV-4k-0X86UA">
             <body>This operation returns all MultiLayer SNPP(s) that are known to the target OS using the specified Termination Point (PTP or CTP).&#xD;
 &#xD;
-Traceability: R_TMF518_MRI_II_xxx, UC_TMF518_MRI_0196.</body>
+Traceability: R_TMF518_MRI_II_0196, UC_TMF518_MRI_0029.</body>
           </ownedComment>
           <ownedRule xmi:id="_-VrL4Xo4EeGV-4k-0X86UA" constrainedElement="_-VrL4Ho4EeGV-4k-0X86UA">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_-VrL4no4EeGV-4k-0X86UA">
@@ -6044,11 +6084,11 @@ Traceability: R_TMF518_MRI_II_xxx, UC_TMF518_MRI_0196.</body>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
         </ownedOperation>
-        <ownedOperation xmi:id="_-AqlMHo4EeGV-4k-0X86UA" name="getAllMultiLayerSubNetworkPointPoolsWithTna" visibility="public" precondition="_-AqlMXo4EeGV-4k-0X86UA" postcondition="_-AqlM3o4EeGV-4k-0X86UA">
+        <ownedOperation xmi:id="_-AqlMHo4EeGV-4k-0X86UA" name="getAllMlsnppsWithTna" visibility="public" precondition="_-AqlMXo4EeGV-4k-0X86UA" postcondition="_-AqlM3o4EeGV-4k-0X86UA">
           <ownedComment xmi:id="_JaGioHo5EeGV-4k-0X86UA" annotatedElement="_-AqlMHo4EeGV-4k-0X86UA">
             <body>This operation returns all MultiLayer SNPPs using the specified TNA.&#xD;
 &#xD;
-Traceability: R_TMF518_MRI_II_0197.</body>
+Traceability: R_TMF518_MRI_II_0197, UC_TMF518_MRI_0029.</body>
           </ownedComment>
           <ownedRule xmi:id="_-AqlMXo4EeGV-4k-0X86UA" constrainedElement="_-AqlMHo4EeGV-4k-0X86UA">
             <specification xmi:type="uml:OpaqueExpression" xmi:id="_-AqlMno4EeGV-4k-0X86UA">
@@ -6088,7 +6128,7 @@ Traceability: R_TMF518_MRI_II_0197.</body>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
           <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
         </ownedOperation>
-        <ownedOperation xmi:id="_2mWvwHo4EeGV-4k-0X86UA" name="getAllMultiLayerSubNetworkPointPools" visibility="public" precondition="_2mWvwno4EeGV-4k-0X86UA" postcondition="_2mWvxHo4EeGV-4k-0X86UA">
+        <ownedOperation xmi:id="_2mWvwHo4EeGV-4k-0X86UA" name="getAllMlsnpps" visibility="public" precondition="_2mWvwno4EeGV-4k-0X86UA" postcondition="_2mWvxHo4EeGV-4k-0X86UA">
           <ownedComment xmi:id="_AsLwQHo5EeGV-4k-0X86UA" annotatedElement="_2mWvwHo4EeGV-4k-0X86UA">
             <body>This operation returns all MultiLayer SNPP(s) that are known to the target OS.&#xD;
 The operation returns the MLSNPPs that are pools of SNPs that correspond to CTPs of G.805 TCP type while the SNPPs that group SNPs that represent G.805 CPs are retrieved as a component of the MultiLayer SNPP Link.&#xD;
@@ -6098,9 +6138,9 @@ The reply may be an empty or a partial list depending upon the visibility that t
 - Local CP Only - the target OS manages the MultiLayerRoutingArea but has no view of the supporting transport plane resources such that it can provide a complete view of the MultiLayerSNPPs but can not provide any associated transport plane data.&#xD;
 - Remote CP Transparent - the target OS manages the MultiLayerRoutingArea at this level but may not have a view of the details of the subordinate MultiLayerRoutingArea levels and has no view of the supporting transport plane resources, such that it can provide a complete view of the MultiLayerSNPPs but not necessarily all of the SNPP aliases and can not provide any associated transport plane data.&#xD;
 Remote CP Limited - the target OS partially manages the MultiLayerRoutingArea at this level and may not have a view of the details of the subordinate MultiLayerRoutingArea levels and has no view of the supporting transport plane resources, such that it can provide a view of some of the MultiLayerSNPPs and not necessarily all of the subordinate SNPP for those MultiLayerSNPPs and can not provide any associated transport plane data.&#xD;
-- Remote CP Opaque:&lt;/b> The target OS is unable to provide any information related to MultiLayerSNPPs for the specified MultiLayerRoutingArea &#xD;
+- Remote CP Opaque: The target OS is unable to provide any information related to MultiLayerSNPPs for the specified MultiLayerRoutingArea &#xD;
 &#xD;
-Traceability: R_TMF518_MRI_II_0198.&#xD;
+Traceability: R_TMF518_MRI_II_0198, UC_TMF518_MRI_0029.&#xD;
 </body>
           </ownedComment>
           <ownedRule xmi:id="_2mWvwno4EeGV-4k-0X86UA" constrainedElement="_2mWvwHo4EeGV-4k-0X86UA">
@@ -7341,7 +7381,7 @@ Traceability: R_TMF518_MRI_II_0005.</body>
             <body>empty list</body>
           </defaultValue>
         </ownedAttribute>
-        <ownedAttribute xmi:id="_kHLMCV7LEeG-j5n9Zqk2Ag" name="edgeMLSNPPLinkList" visibility="public">
+        <ownedAttribute xmi:id="_kHLMCV7LEeG-j5n9Zqk2Ag" name="edgeMlsnppLinkList" visibility="public">
           <ownedComment xmi:id="_kHLMCl7LEeG-j5n9Zqk2Ag" annotatedElement="_kHLMCV7LEeG-j5n9Zqk2Ag">
             <body>This attribute contains the edge MultiLayerSNPPLink objects associated with the route of the Connection object.</body>
           </ownedComment>
@@ -7353,7 +7393,7 @@ Traceability: R_TMF518_MRI_II_0005.</body>
             <body>empty list</body>
           </defaultValue>
         </ownedAttribute>
-        <ownedAttribute xmi:id="_kHLMDV7LEeG-j5n9Zqk2Ag" name="internalMLSNPPLinks" visibility="public">
+        <ownedAttribute xmi:id="_kHLMDV7LEeG-j5n9Zqk2Ag" name="internalMlsnppLinkList" visibility="public">
           <ownedComment xmi:id="_kHLMDl7LEeG-j5n9Zqk2Ag" annotatedElement="_kHLMDV7LEeG-j5n9Zqk2Ag">
             <body>This attribute contains the internal MultiLayerSNPPLink objects associated with the route of the Connection object.</body>
           </ownedComment>
@@ -8282,7 +8322,7 @@ The Control Plane component at the originating point of the Connection can only 
   <Default:Documentation xmi:id="_kHLMGF7LEeG-j5n9Zqk2Ag" base_Comment="_kHLMCl7LEeG-j5n9Zqk2Ag"/>
   <Default:Documentation xmi:id="_kHLMGV7LEeG-j5n9Zqk2Ag" base_Comment="_kHLMDl7LEeG-j5n9Zqk2Ag"/>
   <Default:Documentation xmi:id="_kHLMGl7LEeG-j5n9Zqk2Ag" base_Comment="_kHLMEl7LEeG-j5n9Zqk2Ag"/>
-  <Default:URL xmi:id="_nZ-u0GFjEeGX08VS0ncJzw" base_Comment="_dEOb8GFjEeGX08VS0ncJzw"/>
+  <Default:URL xmi:id="_nZ-u0GFjEeGX08VS0ncJzw" base_Comment="_dEOb8GFjEeGX08VS0ncJzw" displayName="SD1-3_BundledSNC.pdf"/>
   <Default:URL xmi:id="_v7vmYWIlEeGziPKxqXlj-w" base_Comment="_v7vmYGIlEeGziPKxqXlj-w"/>
   <Default:URL xmi:id="_FcnG0WImEeGziPKxqXlj-w" base_Comment="_FcnG0GImEeGziPKxqXlj-w"/>
   <mTOPUMLProfile:mTOPOperation xmi:id="_tLn0YHlsEeGkCrhS32IC1g" base_Operation="_tLBXcXlsEeGkCrhS32IC1g">
@@ -8471,4 +8511,7 @@ The Control Plane component at the originating point of the Connection can only 
   <Default:Documentation xmi:id="_ZFo5QntUEeKAa-j2RRvYPg" base_Comment="_ZDs_l3tUEeKAa-j2RRvYPg"/>
   <Default:Documentation xmi:id="_ZFo5Q3tUEeKAa-j2RRvYPg" base_Comment="_ZD2wkXtUEeKAa-j2RRvYPg"/>
   <Default:Documentation xmi:id="_ZFo5RHtUEeKAa-j2RRvYPg" base_Comment="_ZD2wlHtUEeKAa-j2RRvYPg"/>
+  <Default:URL xmi:id="_s41Z0JeWEeKVILk7_xOE2w" base_Comment="_sNeIoJeWEeKVILk7_xOE2w" displayName="SD1-25_objectNaming.pdf" type=""/>
+  <Default:URL xmi:id="__a94QJeWEeKVILk7_xOE2w" base_Comment="_-vmnEJeWEeKVILk7_xOE2w" displayName="SD1-25_objectNaming.pdf" type=""/>
+  <Default:URL xmi:id="_PnrXcJeXEeKVILk7_xOE2w" base_Comment="_PDd3IJeXEeKVILk7_xOE2w" displayName="SD1-25_objectNaming.pdf" type=""/>
 </xmi:XMI>
