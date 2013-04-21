@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2006 rel. 3 sp1 (http://www.altova.com) by ﻿user user (Amdocs Management UK) -->
 <!-- mTOP DDP - OM ServiceComponentActivationInterface - Copyright TeleManagement Forum 2008 -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/sa/xsd/scai/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:scaiexcpt="http://www.tmforum.org/mtop/sa/xsd/saiexcpt/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:soc="http://www.tmforum.org/mtop/sb/xsd/soc/v1" xmlns:savc="http://www.tmforum.org/mtop/sb/xsd/savc/v1" xmlns:sodel="http://www.tmforum.org/mtop/sb/xsd/sodel/v1" xmlns:csi="http://www.tmforum.org/mtop/sb/xsd/csi/v1" xmlns:svc="http://www.tmforum.org/mtop/sb/xsd/svc/v1" targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
-	<xsd:annotation>
-		<xsd:documentation>
-			<p>DDP: Service Component Activation Interface</p>
-			<p>Module:  Message XSD Module</p>
-			<p>Description: This module contains the XML Schema type definitions of all the mTOP ServiceComponentActivationInterface SI XML message structures.</p>
-		</xsd:documentation>
-	</xsd:annotation>
-	<!-- ================ -->
 	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
 	<xsd:import namespace="http://www.tmforum.org/mtop/sa/xsd/saiexcpt/v1" schemaLocation="SaExceptions.xsd"/>
 	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd"/>
@@ -18,6 +11,14 @@
 	<xsd:import namespace="http://www.tmforum.org/mtop/sb/xsd/savc/v1" schemaLocation="../../../ServiceBasic/IIS/xsd/EventServiceAttributeValueChange.xsd"/>
 	<xsd:import namespace="http://www.tmforum.org/mtop/sb/xsd/csi/v1" schemaLocation="../../../ServiceBasic/IIS/xsd/CommonServiceInfo.xsd"/>
 	<xsd:import namespace="http://www.tmforum.org/mtop/sb/xsd/svc/v1" schemaLocation="../../../ServiceBasic/IIS/xsd/Service.xsd"/>
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: Service Component Activation Interface</p>
+			<p>Module:  Message XSD Module</p>
+			<p>Description: This module contains the XML Schema type definitions of all the mTOP ServiceComponentActivationInterface SI XML message structures.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ================ -->
 	<!-- =====================  Feasibility Check Response Values========= -->
 	<xsd:simpleType name="FeasibilityCheckEnumType">
 		<xsd:annotation>
@@ -46,8 +47,8 @@
 			<xsd:enumeration value="DEACTIVATE"/>
 		</xsd:restriction>
 	</xsd:simpleType>
-	<!-- =====================  Modify Service Data Values========= -->
-	<xsd:complexType name="ModifyServiceDataType">
+	<!-- =====================  Create Service Data Values========= -->
+	<xsd:complexType name="RFSRequestDataType">
 		<xsd:annotation>
 			<xsd:documentation>
 				<p/>
@@ -57,7 +58,7 @@
 			<xsd:extension base="csi:CommonServiceInfoType">
 				<xsd:annotation>
 					<xsd:documentation>
-						<p>This element provides the service attributes that are modifiable.</p>
+						<p>This element provides the service attributes that are required to create an RFS.</p>
 					</xsd:documentation>
 				</xsd:annotation>
 				<xsd:sequence>
@@ -88,7 +89,7 @@
 				</xsd:documentation>
 			</xsd:annotation>
 			<xsd:sequence>
-				<xsd:element name="rfsCheckData" type="svc:ResourceFacingServiceType"/>
+				<xsd:element name="rfsCheckData" type="tns:RFSRequestDataType"/>
 			</xsd:sequence>
 		</xsd:complexType>
 	</xsd:element>
@@ -136,7 +137,7 @@
 				<xsd:annotation>
 					<xsd:documentation>
 						<p>The RFS data structure contains necessary information to actually reserve resources associated to instantiation of RFS </p>
-						<xsd:element name="rfsCreateData" type="svc:ResourceFacingServiceType"/>
+						<xsd:element name="rfsCreateData" type="tns:RFSRequestDataType"/>
 						<xsd:element name="expiringTime" type="xsd:dateTime"/>
 					</xsd:documentation>
 				</xsd:annotation>
@@ -193,7 +194,7 @@
 				</xsd:documentation>
 			</xsd:annotation>
 			<xsd:choice>
-				<xsd:element name="rfsCreateData" type="svc:ResourceFacingServiceType"/>
+				<xsd:element name="rfsCreateData" type="tns:RFSRequestDataType"/>
 				<xsd:element name="rfsName" type="nam:NamingAttributeType"/>
 			</xsd:choice>
 		</xsd:complexType>
@@ -251,7 +252,7 @@
 				</xsd:documentation>
 			</xsd:annotation>
 			<xsd:choice>
-				<xsd:element name="rfsCreateData" type="svc:ResourceFacingServiceType"/>
+				<xsd:element name="rfsCreateData" type="tns:RFSRequestDataType"/>
 				<xsd:element name="rfsName" type="nam:NamingAttributeType"/>
 			</xsd:choice>
 		</xsd:complexType>
@@ -410,7 +411,7 @@
 		</xsd:annotation>
 		<xsd:complexType>
 			<xsd:sequence>
-				<xsd:element name="rfsModifyData" type="tns:ModifyServiceDataType">
+				<xsd:element name="rfsModifyData" type="tns:RFSRequestDataType">
 					<xsd:annotation>
 						<xsd:documentation>
 							<p>The modify service data structure contains data to be modified</p>
