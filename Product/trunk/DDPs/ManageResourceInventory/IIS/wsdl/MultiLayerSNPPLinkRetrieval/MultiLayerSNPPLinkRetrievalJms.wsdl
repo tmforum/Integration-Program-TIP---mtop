@@ -61,7 +61,13 @@
       <wsdl:fault name="getAllEdgeMLSNPPLinksException" message="tns:getAllEdgeMLSNPPLinksException"/>
     </wsdl:operation>
 
+        <wsdl:operation name="getMultiLayerSNPPLinksIterator">
+      <wsdl:input message="tns:getMultiLayerSNPPLinksIteratorRequest"/>
+      <wsdl:output message="tns:getMultiLayerSNPPLinksIteratorResponse"/>
+      <wsdl:fault name="getMultiLayerSNPPLinksIteratorException" message="tns:getMultiLayerSNPPLinksIteratorException"/>
+    </wsdl:operation>
   </wsdl:portType>
+  
   <wsdl:binding name="MultiLayerSNPPLinkRetrievalSoapJmsBinding" type="tns:MultiLayerSNPPLinkRetrieval_MSG">
     <wsdl:documentation>
       <p>SOAP JMS binding definitions of the operations of the MultiLayerSNPPLinkRetrieval MSG portType (interface)</p>
@@ -187,7 +193,22 @@
         <soap:fault name="getAllEdgeMLSNPPLinksException" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
-    
+   
+           <wsdl:operation name="getMultiLayerSNPPLinksIterator">
+      <soap:operation soapAction="getMultiLayerSNPPLinksIterator" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getMultiLayerSNPPLinksIteratorRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getMultiLayerSNPPLinksIteratorResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getMultiLayerSNPPLinksIteratorException">
+        <soap:fault name="getMultiLayerSNPPLinksIteratorException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+     
   </wsdl:binding>
   <wsdl:service name="MultiLayerSNPPLinkRetrievalJms">
     <wsdl:documentation>
