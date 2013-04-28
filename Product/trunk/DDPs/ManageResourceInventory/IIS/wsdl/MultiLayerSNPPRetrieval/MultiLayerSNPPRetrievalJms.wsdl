@@ -37,6 +37,12 @@
       <wsdl:fault name="getAllMLSNPPsException" message="tns:getAllMLSNPPsException"/>
     </wsdl:operation>
 
+        <wsdl:operation name="getMultiLayerSNPPsIterator">
+      <wsdl:input message="tns:getMultiLayerSNPPsIteratorRequest"/>
+      <wsdl:output message="tns:getMultiLayerSNPPsIteratorResponse"/>
+      <wsdl:fault name="getMultiLayerSNPPsIteratorException" message="tns:getMultiLayerSNPPsIteratorException"/>
+    </wsdl:operation>
+
   </wsdl:portType>
   <wsdl:binding name="MultiLayerSNPPRetrievalSoapJmsBinding" type="tns:MultiLayerSNPPRetrieval_MSG">
     <wsdl:documentation>
@@ -103,6 +109,21 @@
         <soap:fault name="getAllMLSNPPsException" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
+    
+        <wsdl:operation name="getMultiLayerSNPPsIterator">
+      <soap:operation soapAction="getMultiLayerSNPPsIterator" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getMultiLayerSNPPsIteratorRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getMultiLayerSNPPsIteratorResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getMultiLayerSNPPsIteratorException">
+        <soap:fault name="getMultiLayerSNPPsIteratorException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>    
     
   </wsdl:binding>
   <wsdl:service name="MultiLayerSNPPRetrievalJms">
