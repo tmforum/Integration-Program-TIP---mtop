@@ -37,6 +37,18 @@
       <wsdl:fault name="getAllSubordinateRoutingAreaIDsWrtConnectionException" message="tns:getAllSubordinateRoutingAreaIDsWrtConnectionException"/>
     </wsdl:operation>    
     
+    <wsdl:operation name="getMultiLayerRoutingAreasIterator">
+      <wsdl:input message="tns:getMultiLayerRoutingAreasIteratorRequest"/>
+      <wsdl:output message="tns:getMultiLayerRoutingAreasIteratorResponse"/>
+      <wsdl:fault name="getMultiLayerRoutingAreasIteratorException" message="tns:getMultiLayerRoutingAreasIteratorException"/>
+    </wsdl:operation>    
+    
+    <wsdl:operation name="getMultiLayerRoutingAreaNamesIterator">
+      <wsdl:input message="tns:getMultiLayerRoutingAreaNamesIteratorRequest"/>
+      <wsdl:output message="tns:getMultiLayerRoutingAreaNamesIteratorResponse"/>
+      <wsdl:fault name="getMultiLayerRoutingAreaNamesIteratorException" message="tns:getMultiLayerRoutingAreaNamesIteratorException"/>
+    </wsdl:operation>     
+    
   </wsdl:portType>
   
   <wsdl:binding name="MultiLayerRoutingAreaRetrievalSoapJmsBinding" type="tns:MultiLayerRoutingAreaRetrieval_MSG">
@@ -104,7 +116,37 @@
         <soap:fault name="getAllSubordinateRoutingAreaIDsWrtConnectionException" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>  
+  
+        <wsdl:operation name="getMultiLayerRoutingAreasIterator">
+      <soap:operation soapAction="getMultiLayerRoutingAreasIterator" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getMultiLayerRoutingAreasIteratorRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getMultiLayerRoutingAreasIteratorResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getMultiLayerRoutingAreasIteratorException">
+        <soap:fault name="getMultiLayerRoutingAreasIteratorException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
     
+        <wsdl:operation name="getMultiLayerRoutingAreaNamesIterator">
+      <soap:operation soapAction="getMultiLayerRoutingAreaNamesIterator" style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:getMultiLayerRoutingAreaNamesIteratorRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:getMultiLayerRoutingAreaNamesIteratorResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="getMultiLayerRoutingAreaNamesIteratorException">
+        <soap:fault name="getMultiLayerRoutingAreaNamesIteratorException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation> 
+        
   </wsdl:binding>
   
   <wsdl:service name="MultiLayerRoutingAreaRetrievalJms">
