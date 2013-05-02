@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ResourceTroubleManagement - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+xmlns:tns="http://www.tmforum.org/mtop/rtm/xsd/pc/v1" 
+xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" 
+xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" 
+xmlns:com="http://www.tmforum.org/mtop/nra/xsd/com/v1" 
+xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" 
+xmlns:nrb.com="http://www.tmforum.org/mtop/nrb/xsd/com/v1" 
+xmlns:pgp="http://www.tmforum.org/mtop/nra/xsd/pgp/v1" 
+xmlns:pg="http://www.tmforum.org/mtop/nra/xsd/pg/v1" 
+xmlns:crcd="http://www.tmforum.org/mtop/nrb/xsd/crcd/v1"
+xmlns:crmd="http://www.tmforum.org/mtop/nrb/xsd/crmd/v1" 
+xmlns:sd="http://www.tmforum.org/mtop/nra/xsd/sd/v1" targetNamespace="http://www.tmforum.org/mtop/rtm/xsd/pc/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: ResourceTroubleManagement</p>
+			<p>Module:  Message XSD Module</p>
+			<p>Description: This module contains the XML Schema type definitions of all the mTOP ProtectionControl SI XML message structures.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ================ -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/com/v1" schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/CommonTypes.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/sd/v1" schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/SwitchData.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/com/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonTypes.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/pg/v1" schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/Pg.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/pgp/v1" schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/PgParameters.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/crcd/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceCreateDataType.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/crmd/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceModifyDataType.xsd"/>	
+	<!-- ================ -->
+	<xsd:element name="performProtectionCommandRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the performProtectionCommand operation</p>
+				<p>This operation is used to execute a protection switch. The protection switch may be performed via a protection switch command, on a protection group or on a CTP/FTP involved in an SNCP. It performs a specified protection command or clears all outstanding persistent protection commands.</p>
+				<p>For 4-fiber SONET/SDH SPRINGS, the span switch is performed on the   
+   PGT_MSP_1_FOR_N protection group, and the ring switch on the 
+   PGT_4_FIBER_BLSR group.</p>
+				<p>See SD1-34_protectionSwitch.pdf for more information.</p>
+				<p>It should be noted that although the term MSP was chosen 
+   as the original specific protection scheme to which the related behaviour
+   applied was Multiplex Section Protection, the label is now more generally 
+   applied to any 1+1 or 1:N Trail protection scheme.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="protectionCommand" type="com:ProtectionCommandType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The command to be performed.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="resourceRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This is the CTP/FTP that is the output of a service selector in case of the SNC or the group name for which the switch data is being requested. The termination point name must be explicit (a generic endpoint specification may not be used in this case). See Framework DDP SD2-7_ObjectNaming  for further detail on FTP naming.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="fromTpRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The present source of the traffic. The termination point name must be explicit (a generic endpoint specification may not be used in this case).</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="toTpRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The requested source of the traffic after the command. The termination point name must be explicit (a generic endpoint specification may not be used in this case).</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="performProtectionCommandResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the performProtectionCommand operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="switchData" type="sd:SwitchDataType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The protection switch status of the toTp provided after the execution of the command.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="performProtectionCommandException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the performProtectionCommand operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="createProtectionGroupRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the createProtectionGroup operation</p>
+				<p> This operation allows the OS to request from the target OS the 
+         creation of a protection group for the managed element given
+         the parameters passed in the operation. The name, i.e. a unique identifier
+\tab  of the new Protection Group can be provided by the requesting OS or the target OS.
+\tab  If no name is provided by the requesting OS, the target OS has to define a unique name.
+\tab  The target OS may or may not allow for multiple protection groups of the same type,
+\tab  rate and an overlapping set of TPs. When multiple Protection Groups are supported 
+\tab  by the target OS, an attempt to create a new Protection Group with a type, layer and
+\tab  the list of TPs fully or partially matching an existing Protection Group should 
+\tab  not trigger an Exception, and a new Protection Group object with a unique name
+\tab  (selected by the requesting or target OS) shall be created.
+\tab  When multiple Protection Groups are not supported by the target OS, an existing 
+\tab  Protection Group is returned when a requested name, rate, type and the list of TPs 
+\tab  match an existing object, otherwise an exception is thrown.
+\tab  The cardinality of the protectionRelatedTpRefList in the pgCreateData should be greater
+\tab  than 0 and must not exceed the protection group type specific maximum number of TP 
+\tab  members; e.g. with 1:1 type maximum of two TPs can be included in the
+\tab  protectionRelatedTpRefList. 
+\tab  The resulting Protection Group, createdPg must include at least one TP otherwise this
+\tab  operation fails and an exception shall be thrown.
+\tab  Existing Protection Groups are never altered by this operation.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="pgCreateData" type="tns:ProtectionGroupCreateDataType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The structure describing the Protection Group to be created and all Protection Group attributes.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="createProtectionGroupResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the createProtectionGroup operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="createdPg" type="pg:ProtectionGroupType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The resulting Protection Group.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="createProtectionGroupException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the createProtectionGroup operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:capacityExceeded"/>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:objectInUse"/>
+						<xsd:element ref="msg:unableToComply"/>
+						<xsd:element ref="msg:userlabelInUse"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="deleteProtectionGroupRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the deleteProtectionGroup operation</p>
+				<p>This operation allows an OS to request the deletion of 
+         a Protection Group from the target OS.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="pgRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The name of the Protection Group to be deleted.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="swapTPName" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation> This parameter is applicable to 1+1 or 1:N protection group type only.
+              In all other cases, only empty value is foreseen.
+              Case 1) valid TP name: swap of protection role and delete PG,
+                      i.e. the client traffic previously supported by the former worker trail
+                      (ended by the TP which name is specified) will remain supported by the
+                      former protection trail.
+              Case 2) Empty value: no swap, i.e. client traffic will remain supported
+                      by former worker trail(s).
+            </xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="deleteProtectionGroupResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the deleteProtectionGroup operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="deletedPg" type="pg:ProtectionGroupType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The Protection Group deleted.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="deleteProtectionGroupException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the deleteProtectionGroup operation</p>
+				<p>unableToComply - This exception is raised and delete operation is rejected by the target OS
+          also when swap of protection role is selected (case 1) but protection group type does not
+          support the feature, or client TPs protected by the group being deleted do not support
+          relaxed containment feature, hence these client TPs should change their object names.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="modifyProtectionGroupRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the modifyProtectionGroup operation</p>
+ \tab <p>This operation allows the OS to request from the target OS to modify an existing
+         Protection Group as specified by the parameters passed in the operation. All
+\tab  attributes and parameters passed in the pgModifyData should be set to values as desired
+\tab  to be present in the resulting Protection Group.</p>
+\tab  <p>The protectionRelatedTpRefList should always include the complete intended list of Protection
+\tab  Group TP names rather than a delta from the existing Protection Group as each TP has 
+\tab  well defined position in the list according to their role and priority. 
+\tab  The protectionRelatedTpRefList should never be empty as Protection Groups without TP
+\tab  members are not permitted. The list size should not exceed the cardinality specific to 
+\tab  the protection type with an exception of a reconfig scenario when working or 
+\tab  protecting TP may be replaced thus existing followed by replacement TP is included in 
+\tab  the list.
+       \cf1\f1 The swap of protection role can be provisioned by modifying accordingly the positions of TPs
+       in the list. Note that this feature is applicable to 1+1 or 1:N protection group type only.\cf0\f0  </p>
+\tab  <p>When all attributes including protectionRelatedTpRefList are exactly the same as in the
+\tab  target Protection Group, there should be no disruption to traffic and modify operation
+\tab  should complete successfully. This operation should be utilized along with protection 
+\tab  commands to replace and/or swap workers with protecting TPs. The consequences of using 
+\tab  this operation only without steps to execute Lockout, protection switch and lock release
+\tab  are implementation/target OS dependent.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="pgRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The name of the PG to be modified.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="pgModifyData" type="tns:ProtectionGroupModifyDataType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The structure describing how the Protection Group should be modified.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="modifyProtectionGroupResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the ModifyProtectionGroup operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="modifiedPg" type="pg:ProtectionGroupType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The resulting Protection Group.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="modifyProtectionGroupException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the modifyProtectionGroup operation</p>
+\cf1\f1         <p>unableToComply - This exception is raised also when swap of protection role is provisioned
+          (through change of TP positions in the pgpTPList ) but protection group type does not support
+          the feature, or client TPs protected by the group do not support relaxed containment
+          feature, hence these client TPs should change their object names. </p>
+\cf0\f0       </xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:capacityExceeded"/>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:unableToComply"/>
+						<xsd:element ref="msg:userlabelInUse"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:complexType name="ProtectionGroupSetDataType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>The data structure of specific Protection Group attributes which can be set
+       on the target OS at creation time and modification time.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="reversionMode" type="com:ReversionModeType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Defines whether the protection scheme is revertive or not.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="protectionRelatedTpRefList" type="nam:NamingAttributeListType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This is the complete intended list of Protection Group TP names. It is 
+      a partially ordered list as in the Protection Group structure, i.e. workers
+      names are first and protecting TP names follow in order of priority. 
+      Thus each TP has well defined position in the list according to its role and
+      priority.
+      In normal operation the list shall contain a number of TPs specific to
+      the protection type however under reconfiguration scenarios there may be more or
+      less TPs than normal for a short period.  However, the list should never
+      be empty as Protection Groups without TP members are not permitted.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="parameterList" type="pgp:ProtectionGroupParameterListType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The list of parameters of the protection group. See SD1-29_PGParameters.pdf 
+       for details on Protection Group parameters</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="apsProtocolType" type="com:G_774_3_APSfunctionType" nillable="true" minOccurs="0"/>
+			<xsd:element name="asapRef" type="xsd:string" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Indicates the assignment of an ASAP to this PG object. Value is of the ASAP name.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================ -->
+	<xsd:complexType name="ProtectionGroupCreateDataType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>The attributes required for the creation of a
+         Protection Group on the target OS are packaged together in a 
+         ProtectionGroupCreateDataType structure which the requesting OS will pass to the target OS at
+         Protection Group creation time.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="crcd:CommonResourceCreateDataType">
+				<xsd:sequence>
+					<xsd:element name="type" type="com:ProtectionGroupTypeType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Defines the type of scheme this Protection Group represents ( 1:N, 1+1, 2f blsr, 4f blsr). It is a read-only attribute.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="layerRate" type="lay:LayerRateType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Layer rate of TP members in the Protection Group.
+         It is a readonly attribute.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="setData" type="tns:ProtectionGroupSetDataType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Other settable Protection Group attributes</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ================ -->
+	<xsd:complexType name="ProtectionGroupModifyDataType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>The Protection Group attributes which can be modified
+       on the target OS are packaged together in a ProtectionGroupModifyDataType structure.
+       The requesting OS will pass this structure to the target OS when modifications 
+       of Protection Group attributes, e.g. reversion mode, transmission 
+       parameters, and/or list of TPs are required. This structure shall contain
+       absolute set of desired values for all attributes of a Protection Group.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="crmd:CommonResourceModifyDataType">
+				<xsd:sequence>
+					<xsd:element name="setData" type="tns:ProtectionGroupSetDataType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Other settable Protection Group attributes</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>	
+</xsd:schema>
