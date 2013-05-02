@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrb/xsd/rscavc/v1" xmlns:tns="http://www.tmforum.org/mtop/nrb/xsd/rscavc/v1" xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" xmlns:avc="http://www.tmforum.org/mtop/fmw/xsd/avc/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Framework</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema definitions of the ResourceAttributeValueChange event.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/CommonEventInformation.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/cei/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/EventAttributeValueChange.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/avc/v1"/>
+  <!-- ================ -->
+  <xsd:element name="resourceAttributeValueChange" type="tns:ResourceAttributeValueChangeType" substitutionGroup="cei:commonEventInformation">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The element definition of the ResourceAttributeValueChange event.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:complexType name="ResourceAttributeValueChangeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The type definition of the AttributeValueChange event.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="avc:AttributeValueChangeType">
+        <xsd:sequence>
+          <xsd:element name="isEdgePointRelated" type="xsd:boolean" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>TRUE if this event relates to a PTP that is an edge point or to a PGP that contains a PTP that is an edge point. FALSE otherwise; this field is optional in this case.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================ -->
+</xsd:schema>
