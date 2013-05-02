@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/tl/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:ituArc="http://www.tmforum.org/mtop/nra/xsd/ituArc/v1" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/tl/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: Data Model Network Resource FulFillment</p>
+			<p>Module: Aggregate XSD Module</p>
+			<p>Description: This module contains the XML Schema type definition of the mTOP TL XML structures.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ============== -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1" schemaLocation="CommonTypes.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/ituArc/v1" schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/ITU-T-ArcDefinitions.xsd"/>
+	<!-- ================= -->
+	<xsd:element name="tl" type="tns:TopologicalLinkType"/>
+	<!-- ============== -->
+	<xsd:complexType name="TopologicalLinkType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This aggregate defines the TopologicalLink mTOP network resource object.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="cri:CommonResourceInfoType">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This element entails the attributes common to all mTOP network resource objects.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="direction" type="com:ConnectionDirectionType" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Direction of the topological link. A topological link can be unidirectional even if both its ends are bidirectional TPs.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="layerRate" type="lay:LayerRateType" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>The layer of the topological link.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="aEndTpRefList" type="nam:NamingAttributeListType" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Name of A end TP (PTP/CTP/FTP). The termination point name must be explicit (a generic endpoint specification may not be used in this case).</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="zEndTpRefList" type="nam:NamingAttributeListType" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Name of Z end TP (PTP/CTP/FTP). The termination point name must be explicit (a generic endpoint specification may not be used in this case).</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="isReportingAlarms" type="xsd:boolean" nillable="true" minOccurs="0"/>
+					<xsd:element name="asapRef" type="nam:NamingAttributeType" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Indicates the assignment of an ASAP to this TL object. Value is of the ASAP name.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ituArcStateAndStatusList" type="ituArc:ItuArcStateAndStatusList"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="TopologicalLinkListType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A list of TopologicalLinks</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="tns:tl" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

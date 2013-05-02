@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/fdfr/v1" xmlns:tpdata="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:itu="http://www.tmforum.org/mtop/nrb/xsd/itu/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:lp="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:ituArc="http://www.tmforum.org/mtop/nra/xsd/ituArc/v1" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/fdfr/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: Data Model Network Resource FulFillment</p>
+			<p>Module: Aggregate XSD Module</p>
+			<p>Description: This module contains the XML Schema type definition of the mTOP FDFR XML structures.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ============== -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/itu/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/ITU-T-Definitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayeredParameters.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1" schemaLocation="CommonTypes.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" schemaLocation="TpData.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/ituArc/v1" schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/ITU-T-ArcDefinitions.xsd"/>
+	<!-- ============== -->
+	<xsd:element name="fdfr" type="tns:FlowDomainFragmentType"/>
+	<!-- ============== -->
+	<xsd:complexType name="FlowDomainFragmentType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A flow domain fragment represents connectivity between flow points.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="cri:CommonResourceInfoType">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This element entails the attributes common to all mTOP network resource objects.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="direction" type="com:ConnectionDirectionType" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>This attribute shall represent the directionality of the FDFr (bidirectional or unidirectional). Note: In the case of Ethernet, the directionality is always bidirectional.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element ref="lp:transmissionParameters" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>The layer rate on which connectivity is established and a related set of connectionless parameters. Refer to chapter "Connectionless Technology Parameters" of the supporting document LayeredParameters.pdf for details of the currently defined connectionless parameters</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="aEndTpDataList" type="tpdata:TerminationPointDataListType" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>The flow points between which connectivity is established by this flow domain fragment. For each flow point the termination points data is included. The flow points must be connectable on the same layer as the flow domain fragment's layer rate. Only between client flow points of flow domain edge TPs of the same flow domain connectivity can be established.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="zEndTpDataList" type="tpdata:TerminationPointDataListType" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>The flow points between which connectivity is established by this flow domain fragment with the termination point data included for each flow point. The flow points must be connectable on the same layer as the flow domain fragment's layer rate. Only between client flow points of  flow domain edge TPs of the same flow domain connectivity can be established.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="isFlexible" type="xsd:boolean" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Indicates whether the flow domain fragment is fixed (i.e., cannot be modified or deleted by the NMS, in particular flow points cannot be added or/ removed) or is flexible.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="administrativeState" type="itu:X721.AdministrativeStateType" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Indicates whether the FDFr is locked (i.e., traffic units cannot flow through the FDFr) or unlocked (i.e., traffic units are allowed to flow through the FDFr).</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="fdfrState" type="com:SubnetworkConnectionStateType" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Indicates  one of the following values: Active if  all MFDFrs and all (edge and internal) FPs for the FDFr are active in the network. Partial if not all parts (MFDFrs or FPs) of the FDFr were created during the creation operation, or not all parts of the FDFr were deleted  during the deletion operation.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="fdfrType" type="com:FlowDomainFragmentTypeType" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Indicates  one of the following values: Active if  all MFDFrs and all (edge and internal) FPs for the FDFr are active in the network. Partial if not all parts (MFDFrs or FPs) of the FDFr were created during the creation operation, or not all parts of the FDFr were deleted  during the deletion operation.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ituArcStateAndStatusList" type="ituArc:ItuArcStateAndStatusList"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ============== -->
+	<xsd:complexType name="FlowDomainFragmentListType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>List of FlowDomainFragment</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="tns:fdfr" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/tp/v1" xmlns:ptp="http://www.tmforum.org/mtop/nrf/xsd/ptp/v1" xmlns:ftp="http://www.tmforum.org/mtop/nrf/xsd/ftp/v1" xmlns:ctp="http://www.tmforum.org/mtop/nrf/xsd/ctp/v1" 
+ targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/tp/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: Data Model Network Resource FulFillment</p>
+			<p>Module: Aggregate XSD Module</p>
+			<p>Description: This module contains the XML Schema type definition of the mTOP TP XML structures.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ============== -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/ptp/v1" schemaLocation="Ptp.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/ftp/v1" schemaLocation="Ftp.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/ctp/v1" schemaLocation="Ctp.xsd"/>
+	<!-- ================= -->
+	<xsd:complexType name="TerminationPointType">
+		<xsd:sequence>
+			<xsd:choice>
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>A union containment of all forms of TerminationPoints (PTP, FTP, and CTP).</p>
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:element ref="ptp:ptp"/>
+				<xsd:element ref="ftp:ftp"/>
+				<xsd:element ref="ctp:ctp"/>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="TerminationPointListType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A heterogeneous list of TerminationPoints (PTPs, FTPs, and CTPs) with no particular order.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="tp" type="tns:TerminationPointType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

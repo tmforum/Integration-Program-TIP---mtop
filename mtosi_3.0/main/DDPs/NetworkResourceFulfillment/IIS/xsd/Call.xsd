@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/call/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/call/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:tpdata="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" xmlns:comcp="http://www.tmforum.org/mtop/nrf/xsd/comcp/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource FulFillment</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP CALL XML structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1"/>
+  <xsd:import schemaLocation="CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1"/>
+  <xsd:import schemaLocation="TpData.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1"/>
+  <xsd:import schemaLocation="CommonControlPlaneTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/comcp/v1"/>
+  <!-- ================= -->
+  <xsd:element name="call" type="tns:CallType"/>
+  <!-- ================= -->
+  <xsd:complexType name="CallType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This aggregate defines the Call mTOP network resource object.</p>
+        <p> The call structure is the abstraction of a call. G.8080 defines a call as the association between endpoints that supports an instance of a service.</p>
+        <p> As such, an end-to-end call is considered to consist of multiple call segments, depending on whether the call traverses multiple domains (signalling, routing or recovery domains included).</p>
+        <p> For purposes of this interface call and call segments are identical.</p> 
+        <p> The association between calls in a client/server layer relationship are coordinated by the layer NCC (Network Call Controller). This association can recurs to mirror a set of "stacked" adaptations.</p>
+        <p> The target OS interaction with the call is realized through the layer NCC at which the call was requested.</p>
+        <p> Call Operations can only be done by the target OS that controls the call, this is by the OS that controls the originating points of the call.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="cri:CommonResourceInfoType">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This element entails the attributes common to all mTOP network resource objects.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="callId" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p> This attribute represents the identifier of the Call. This identifier is only used for control plane signaling.</p>
+                <p> This attribute is the Call Name attribute in G.7713. </p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="callState" type="comcp:CallStateType" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="aEnd" type="comcp:CallEndType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p> The source point of the call. During Call Creation the A-end and Z-end names shall be of the same type.</p>
+                <p> For a detailed description of the use of this attribute, see SD1-25 Naming. </p>
+                <p> This is a read only attribute.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="zEnd" type="comcp:CallEndType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p> The destination point of the call. During Call Creation the A-end and Z-end names shall be of the same type.</p>
+                <p> For a detailed description of the use of this attribute, see SD1-25 Naming.</p>
+                <p> This is a read only attribute.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="callParameters" type="comcp:CallParameterProfileType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p> It provides the Call parameters.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="callDiversity" type="comcp:DiversityType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p> It provides the information on corouting and diversity (link and node) for the call.</p>
+                <p> A call may have No Diversity or Link Diversity and/or Node Diversity.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="diversitySynthesis" type="xsd:string" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This string provides a synthesis of current state of diversity violations of the call (diversity different to the provisioned diversity).</p>
+        <p> The possible values are:
+        <ol>
+                     <li> "NotApplicable" </li>
+                     <li> "Unknown" </li>
+                     <li> "NoViolations" </li>
+                     <li> "Violations": This value can be used when the target OS does not distinguish between link and node violations </li>
+                     <li> "LinkViolations" </li>
+                     <li> "NodeViolations" </li>
+                     <li> "LinkAndNodeViolations" </li>
+          </ol>.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="linkDiversityViolations" type="comcp:DiversityInfoType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p> This attribute contains the list of link diversity violations.</p>
+                <p> The value sRGType indicates the link sRGType required for the call.</p>
+                <p> The sharedResourceList indicates the MLSNPPLink/TopologicalLink Name(s) where the violation(s) occurred and also the Name of the connection(s)/SNC(s) affected by each violation.</p>
+                <p> Note that the connection(s) affected by the violation(s) can not be currently routed in the case of a Mandatory diversity effort requirement.</p>
+                <p> Depending upon the capability of the target OS this parameter may be empty.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="nodeDiversityViolations" type="comcp:DiversityInfoType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p> This attribute contains the list of node diversity violations.</p>
+                <p> The value sRGType indicates the node sRGType required for the call.</p>
+                <p> The sharedResourceList indicates the routingNode/ME Name(s) where the violation(s) occurred and also the Name of the connection(s)/SNC(s) affected by each violation.</p>
+                <p> Note that the connection(s) affected by the violation(s) can not be currently routed in the case of a Mandatory diversity effort requirement.</p> 
+                <p> Depending upon the capability of the target OS this parameter may be empty.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="linkPartialDiversityList" type="comcp:DiversityInfoListType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p> Where there has been a diversity violation this attribute provides further information on the current state of routing.</p>
+                <p> The value sRGType indicates:
+        <ol>
+                   <li>For Mandatory: The sRGType that could have been achieved on the links(s) where the diversity violation occurred if the request had been for Best Effort. The sharedResourceList indicates the MLSNPPLink/TopologicalLink(s) where the "reduced" diversity would have been achieved and also the Name of each top level connection affected.</li>
+                   <li>For Best Effort: The sRGType that has been achieved on the links(s) where the diversity violation occurred. The sharedResourceList indicates the MLSNPPLink/TopologicalLink(s) where the "reduced" diversity has been achieved and also the Name of each top level connection affected.</li>
+                 </ol>.</p>
+                 <p> Note that in the case of a Mandatory Diversity Effort, the connection(s) affected by the violation(s) can not be currently routed and they are in "searching" state.</p>
+                 <p> Depending upon the capability of the target OS this parameter may be empty.</p>
+                 <p> For example, consider the case where a call is requested with best effort link diversity of "bridge" sRGType, but only routes that all share a single bridge are available. In this case a violation will be indicated identifying the links that traverse the bridge, the connections that used these links and the degree of diversity achieved (e.g. "duct").</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="nodePartialDiversityList" type="comcp:DiversityInfoListType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p> Where there has been a diversity violation this attribute provides further information on the current state of routing.</p>
+                <p> The value sRGType indicates:
+        <ol>
+                   <li>For Mandatory: The sRGType that could have been achieved on the node(s) where the diversity violation occurred if the request had been for Best Effort. The sharedResourceList indicates the routingNode/ME(s) where the "reduced" diversity would have been achieved and also the Name of each top level connection affected.</li>
+                   <li>For Best Effort: The sRGType that has been achieved on the node(s) where the diversity violation occurred. The sharedResourceList indicates the routingNode/ME(s) where the "reduced" diversity has been achieved and also the Name of each top level connection affected.</li>  
+                 </ol>.</p>
+                 <p> Note that in the case of a Mandatory Diversity Effort, the connection(s) affected by the violation(s) can not be currently routed and they are in "searching" state.</p>
+                 <p> Depending upon the capability of the target OS this parameter may be empty.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="CallListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A list of Calls</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element ref="tns:call" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>
