@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by G Grimes (Ericsson GmbH) -->
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/ps/v1" xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:com="http://www.tmforum.org/mtop/nra/xsd/com/v1" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/ps/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Framework</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema definitions of the Protection Switch event.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" schemaLocation="../../../Framework/IIS/xsd/CommonEventInformation.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/com/v1" schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/CommonTypes.xsd"/>
+  <!-- ================ -->
+  <xsd:element name="protectionSwitch" type="tns:ProtectionSwitchType" substitutionGroup="cei:commonEventInformation">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The element definition of the Protection Switch event.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:complexType name="ProtectionSwitchType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The type definition of the protectionSwitch event.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="cei:CommonEventInformationType">
+        <xsd:sequence>
+          <xsd:element name="osTime" type="xsd:dateTime" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The time at which the event was reported by the OS (EMS).</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="protectionType" type="com:ProtectionTypeType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The type of the protection.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="switchReason" type="com:SwitchReasonType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The reason the switch occurred.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="layerRate" type="lay:LayerRateType">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The layer which this switch is relevant to.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="pgRef" type="nam:NamingAttributeType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Identifies the protectionGroup emitting the switch. If protectionType is SNCP, this field is optional or an empty name can be reported.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="protectedTpRef" type="nam:NamingAttributeType">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Identifies the TP that was protected when the switch occurred.  For an SNCP, this is always the reliable TP.  For a 2F BLSR ring switch notification, this is the TP that is/was inactive during the switch.  For a 4FMSSP ring switch notification, this is the worker TP that is/was inactive during the switch.  For a 1:N MSP switch notification, this is the worker TP for which the protection switch occurred.  For a revertive 1+1 MSP, this is always the worker TP.  For a non-revertive 1+1 MSP switch notification, this is the TP that was active before the switch (note that after the switch the protected TP changes).</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="switchAwayFromTpRef" type="nam:NamingAttributeType">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Identifies the TP being switched away from.  For a 2F MSSPRING ring switch, this is the TP that switched.  For a 4-Fiber MSSPRING span switch, this is one of the TPs in the MSP 1:N groups (worker or protection).  For a 4-Fiber ring switch, this is the worker TP of the span that switched; for example if the East span switches to the West span then this TP is the East-Worker.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="switchToTpRef" type="nam:NamingAttributeType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Identifies the TP which is being switched to.  This identifies the TP that is the active source after the switch, or currently active if no protection switch is currently active.  For a 2F BLSR, when the state returns to normal, this is the TP that had switched.  For a 4F BLSR ring switch, when the state returns to normal, this is the worker TP of the span that had switched; for example, if the East span had switched to the West span, then this is the East worker TP.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ===================== -->
+  <xsd:complexType name="ProtectionSwitchListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The list of Protection Switch events.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="protectionSwitch" type="tns:ProtectionSwitchType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

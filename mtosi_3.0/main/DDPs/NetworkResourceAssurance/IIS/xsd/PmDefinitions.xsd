@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/pm/v1" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/pm/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource Assurance</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP PM ParameterName XML structure.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================= -->
+  <xsd:element name="pmParameterName" type="tns:PerformanceMonitoringParameterNameType"/>
+  <!-- ================= -->
+  <!-- TODO Should this be changed to a structure like in layers, where all possibilites are listed? -->
+  <xsd:simpleType name="PerformanceMonitoringParameterNameType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Holds the name of Performance Measurements. It has been defined as a string to accommodate backward compatibility and proprietary extension. </p>
+        <p>For currently standardized values see Performance Parameters. </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================ -->
+  <xsd:complexType name="PerformanceMonitoringParameterNameListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A list of PerformanceMonitoringParameterName</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="pmParameterName" type="tns:PerformanceMonitoringParameterNameType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:simpleType name="PerformanceMonitoringThresholdTypeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Describes threshold types (watermark levels) for TCA parameters. The TWM_HIGH and TWM_HIGHEST types are used for TCAs </p>
+        <p>that are raised when the measured value goes above the threshold. The TWM_LOW and TWM_LOWEST types are used for TCAs that </p>
+        <p>are raised when the measured value goes below the threshold (only apply to gauges). </p>
+        <p/>
+        <p>When there is only one level of TCA trigger, only TWM_HIGH and/or TWM_LOW are used. When there are two levels of TCA triggers, </p>
+        <p>TWM_HIGHEST and/or TWM_LOWEST are used in addition. </p>
+        <p>See SD1-37 PM Threshold Types for information on how water mark levels are used. </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="TWM_HIGHEST"/>
+      <xsd:enumeration value="TWM_HIGH"/>
+      <xsd:enumeration value="TWM_LOW"/>
+      <xsd:enumeration value="TWM_LOWEST"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================ -->
+  <xsd:complexType name="PerformanceMonitoringGranularityListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A list of PMGranularity</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="pmGranularity" type="tns:PerformanceMonitoringGranularityType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:simpleType name="PerformanceMonitoringGranularityType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Count period (interval) for which PM data may be collected (and subsequently retrieved).</p>
+        <p>
+          <br>The value is one of: </br>
+          <br>"15min" (15 minute interval collection)</br>
+          <br>"24h" (24 hour interval collection)</br>
+          <br>"NA" (for current instantaneous measurements)</br>
+        </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="15min"/>
+      <xsd:enumeration value="24h"/>
+      <xsd:enumeration value="NA"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================ -->
+  <xsd:simpleType name="PerformanceMonitoringIntervalStatusType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The following string values, to indicate the relationship of measurement value and measurement interval</p>
+        <p>
+          <br>The value is one of: </br>
+          <br>PMIS_Valid - Valid data.</br>
+          <br>PMIS_Incomplete - Data not available for the complete interval.</br>
+          <br>PMIS_Invalid - Data available but marked as invalid for the interval (can not distinguish incomplete measurements from invalid measurements.</br>
+          <br>PMIS_Unavailable - No data available at all for this interval.</br>
+          <br>PMIS_ZeroSuppressed - Zero-suppressed intervals.</br>
+        </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="PMIS_Valid"/>
+      <xsd:enumeration value="PMIS_Incomplete"/>
+      <xsd:enumeration value="PMIS_Invalid"/>
+      <xsd:enumeration value="PMIS_Unavailable"/>
+      <xsd:enumeration value="PMIS_ZeroSuppressed"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================ -->
+  <xsd:complexType name="PerformanceMonitoringLocationListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A list of PMLocation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="pmLocation" type="tns:PerformanceMonitoringLocationType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:simpleType name="PerformanceMonitoringLocationType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Specification of PM location. For further details, see supporting documentation: Location Identification).</p>
+        <p>PM parameters may relate to measurements taken on receive or transmit traffic either at the named TP (PML_NEAR_END_Rx/Tx) or at the TP at the far end of the trail (circuit/path) connected to the named TP (PML_FAR_END_Rx/Tx). Alternatively, the PM parameters may be bidirectional (PML_BIDIRECTIONAL) e.g. resulting from a second by second summation and evaluation of both far and near TPs.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="PML_NEAR_END_Rx"/>
+      <xsd:enumeration value="PML_FAR_END_Rx"/>
+      <xsd:enumeration value="PML_FAR_ENDTypex"/>
+      <xsd:enumeration value="PML_BIDIRECTIONAL"/>
+      <xsd:enumeration value="PML_CONTRA_NEAR_END_Rx"/>
+      <xsd:enumeration value="PML_CONTRA_FAR_END_Rx"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================ -->
+  <xsd:simpleType name="HoldingTimeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This data type contains the minimum time the 24h PM data records and 15min PM data records can hold the data. This minimum time refers to the time after the particular collection bins are closed.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="storeTime24hr"/>
+      <xsd:enumeration value="storeTime15min"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================ -->
+  <xsd:simpleType name="TriggerType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This type is used to indicate whether a threshold type shall trigger a “raise” or a “clear” TCA</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="raise"/>
+      <xsd:enumeration value="clear"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>

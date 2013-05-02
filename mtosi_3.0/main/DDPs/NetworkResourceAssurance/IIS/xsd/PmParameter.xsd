@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/pmpar/v1" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/pmpar/v1" xmlns:pm="http://www.tmforum.org/mtop/nra/xsd/pm/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource Assurance</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP PM Parameter XML structure.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================= -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/pm/v1" schemaLocation="PmDefinitions.xsd"/>
+  <!-- ================= -->
+  <xsd:element name="pmParameter" type="tns:PerformanceMonitoringParameterType"/>
+  <!-- ================= -->
+  <xsd:complexType name="PerformanceMonitoringParameterType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Used to represent the PM parameter name of the PM measure qualified by its location.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="pmParameter" type="pm:PerformanceMonitoringParameterNameType" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Represents the name of the PM Measurement.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="pmLocation" type="pm:PerformanceMonitoringLocationType" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Represents the location of the PM Measure.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:complexType name="PerformanceMonitoringParameterListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A list of PerformanceMonitoringParameter</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="pmParameter" type="tns:PerformanceMonitoringParameterType" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Represents the name of the PM Measure.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

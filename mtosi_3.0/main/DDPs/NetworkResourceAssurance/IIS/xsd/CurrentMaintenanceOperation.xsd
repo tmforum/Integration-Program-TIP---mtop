@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Assurance - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/cmo/v1" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/cmo/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:lr="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource Assurance</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP Maintenance Operations XML structure.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1"/>
+  <!-- ================= -->
+  <xsd:complexType name="CurrentMaintenanceOperationType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This struct is used to represent a current persistent 
+       maintenance operation that has been invoked for the given TP,
+       and layerRate if applicable.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="tpName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The name of the TP to which the maintenance operation applies
+           The termination point name must be explicit (a generic endpoint
+           specification may not be used in this case). See Framework DDP 
+           SD2-7_ObjectNaming for further details on TP naming.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="maintenanceOperation" type="tns:MaintenanceOperationType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Current maintenance operation that is invoked, released, or retrieved.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="layerRate" type="lr:LayerRateType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The layer to which the maintenance operation applies
+             Use LR_Optional if not required or not applicable.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="vendorExtensions" type="gen:AnyListType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This is a container for all vendor extensions.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:complexType name="CurrentMaintenanceOperationListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is the list of maintenance operations.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="maintenanceOperation" type="tns:CurrentMaintenanceOperationType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="MaintenanceOperationType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This struct is the loosely typed (free string) definition all supported maintenance operations.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="MaintenanceOperationEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This struct is the strongly typed definition of all supported maintenance operations.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="FACILITY_LOOPBACK"/>
+      <xsd:enumeration value="TERMINAL_LOOPBACK"/>
+      <xsd:enumeration value="FACILITY_FORCED_AIS"/>
+      <xsd:enumeration value="TERMINAL_FORCED_AIS"/>
+      <xsd:enumeration value="FORCE_RDI"/>
+      <!-- ATM -->
+      <xsd:enumeration value="SET_AS_SEGMENT_END_POINT"/>
+      <xsd:enumeration value="END_TO_END_LOOPBACK_OAM_CELL"/>
+      <xsd:enumeration value="SEGMENT_LOOPBACK_OAM_CELL"/>
+      <!-- DSL -->
+      <xsd:enumeration value="LOCAL_LOOP_QUALIFICATION"/>
+      <xsd:enumeration value="DSL_LINE_SUPERVISION"/>
+      <xsd:enumeration value="SINGLE_ENDED_LINE_TEST"/>
+      <xsd:enumeration value="DUAL_ENDED_LINE_TEST"/>
+      <!-- PDH -->
+      <xsd:enumeration value="PAYLOAD_LOOPBACK"/>
+      <xsd:enumeration value="DUAL_LOOPBACK"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="MaintenanceOperationModeEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This struct is the strongly typed definition of all supported maintenance operation modes.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="MOM_OPERATE"/>
+      <xsd:enumeration value="MOM_RELEASE"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>

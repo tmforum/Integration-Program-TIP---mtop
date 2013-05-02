@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/pmtgt/v1" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/pmtgt/v1" xmlns:lr="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:pm="http://www.tmforum.org/mtop/nra/xsd/pm/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource Assurance</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP basic PM ObjectSelect (Target) XML structure.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/pm/v1" schemaLocation="PmDefinitions.xsd"/>
+  <!-- ================= -->
+  <xsd:element name="pmObjectSelect" type="tns:PerformanceMonitoringObjectSelectType"/>
+  <!-- ================= -->
+  <xsd:complexType name="PerformanceMonitoringObjectSelectType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is used to specify the scope/target for a PM operation.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="name" type="nam:NamingAttributeType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The name of the object to which this selection applies. (i.e. the target of the PM operation). This may be:</p>
+            <p>
+              <br>Managed Element: The selection applies to all termination points contained within the ManagedElement.</br>
+              <br>Termination Point: The selection applies only to the named TP. Unlike the case for Managed Element, the operation will not apply to any "contained" TPs.</br>
+              <br>Management Domain: The selection applies to all TPs contained within the Management Domain.</br>
+              <br>Subnetwork Connection (SNC): The selection applies to all TPs along the SNC at the same layerRate as the SNC.</br>
+              <br>Subnetwork: The selection applies to all TPs within all the managed elements in the Subnetwork.</br>
+              <br>OS: The selection applies to all TPs within all the managed elements associated with the OS.</br>
+            </p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="layerRateList" type="lr:LayerRateListType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This attribute contains the set of layers to which the selection applies. An empty list means all layers supported by the addressed objects.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="pmLocationList" type="pm:PerformanceMonitoringLocationListType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This attribute contains the set of PM measure locations to which the selection applies. An empty list means all locations supported by the addressed objects.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="granularityList" type="pm:PerformanceMonitoringGranularityListType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This attribute contains the set of PM register granularities to which the selection applies. An empty list means all granularities supported by the addressed objects.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:complexType name="PerformanceMonitoringObjectSelectListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A list of PerformanceMonitoringObjectSelectType</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="pmObjectSelect" type="tns:PerformanceMonitoringObjectSelectType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>
