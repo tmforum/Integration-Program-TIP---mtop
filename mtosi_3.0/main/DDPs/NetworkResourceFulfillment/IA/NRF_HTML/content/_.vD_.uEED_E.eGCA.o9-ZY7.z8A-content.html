@@ -1,0 +1,1060 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Data Object Classes UML Documentation</title>
+<meta name="generator" content="IBM Rational Model Publisher">
+<meta name="description" content="Content for Call">
+<link rel="stylesheet" type="text/css" href="WebPublish.css">
+</head>
+<body>
+<table class="NavigationBar">
+<tr>
+<td>
+<table class="NavBarLeft">
+<tr>
+<td class="NavBarMainLink"><a target="_top" href="../index.html">Overview</a></td><td class="NavBarMainLink"><a href="_N.y2.mQA6.qE.d.y.d7PUN.b-IYCQ-top-summary.html">Top</a></td><td class="NavBarMainLink"><a href="_V.yK4.cB5.cE.d.y.jX65.v.z.eW.aBA-content.html">Package</a></td><td class="NavBarMainHighlight">Element</td>
+</tr>
+</table>
+</td><td class="NavBarRight">Data Object Classes UML Documentation</td>
+</tr>
+</table>
+<table>
+<tr class="NavBarBookMarks">
+<td class="BookMarkSections"><span class="BookMarkElements">Summary:</span><span class="BookMarkElements"><a href="#attributeSummary" title="Attributes">Attributes</a></span><span class="BookMarkElements"><a href="#urlsSummary" title="URLs">URLs</a></span><span class="BookMarkElements"><a href="#specificationsSummary" title="Specifications">Specifications</a></span><span class="BookMarkElements"><a href="#propertiesTable" title="Properties">Properties</a></span></td><td class="BookMarkSections"><span class="BookMarkElements">Detail:</span><span class="BookMarkElements"><a href="#attributeDetail" title="Attributes">Attributes</a></span></td>
+</tr>
+</table>
+<hr>
+<span class="PackageFullyQualifiedName">Data Object Classes</span>
+<br>
+<span class="ElementTitle">Class Call</span>
+<p>
+<a name="documentationSection"></a>This object class represents a Call.</br></br>The call structure is the abstraction of a call. G.8080 defines a call as the association between endpoints that supports an instance of a service. As such, an end-to-end call is considered to consist of multiple call segments, depending on whether the call traverses multiple domains (signalling, routing or recovery domains included).</br>For purposes of this interface call and call segments are identical.</br></br>The association between calls in a client/server layer relationship are coordinated by the layer NCC (Network Call Controller). This association can recur to mirror a set of "stacked" adaptations.</br>The target OS interaction with the call is realized through the layer NCC at which the call was requested.</br>Call Operations can only be done by the target OS that controls the call, this is by the OS that controls the originating points of the call.</br></br>A Call can exist in the context of a MultiLayer Subnetwork (MLSN) if the routing domain is equivalent to the MLSN domain.</br>A Call can exist in the context of a Multi Layer Routing Area (MLRA) if the routing domain is spread over more than one MLSN domain.</br>In both cases the Call is named by the EMS. It represents the association between endpoints in support of an instance of a service or an infrastructure trail.</br></br>A Call is a grouping object that is used to facilitate and manage (establish, modify, delete) a set of Subnetwork Connections (SNCs) that provide end-to-end transport of user information.</br>Because the Call manages the set of Connections/SNCs as a group, it is possible to take diversity constraints between the individual Connections/SNCs into account when they are created/modified.</br>Calls which exist in the context of an MLSN manage the SNCs directly.</br></br>Calls which exist in the context of an MLRA:</br>- manage the SNCs indirectly via top-level Connections</br>- manage the Connections indirectly via top-level Connections</br>(refer to the Figure entitled "Example of Encapsulation Layer Link segments with off-network CPTPs" in the attached supporting document SD1-44_ConnectionlessTechnologyManagement.pdf).</br></br>There is a relationship between Calls and top-level Connections. Zero or more top-level Connections may be associated to a Call. A top-level Connection may not be part of more than one Call.</br>The bandwidth of a Call is provided by one or more Connections.</br></br>Note: Creating a Call between Termination Points (TPs) in the same Managed Element is possible.</br>Calls are expected to be identified globally.</br></br>Traceability: R_TMF518_NRF_I_0085, R_TMF518_NRF_I_0086.</p>
+<p></p>
+<table class="SummaryTable" border="1">
+<tr>
+<td class="SummaryTitle" colspan="3"><a name="attributeSummary">Attributes</a></td>
+</tr>
+<tr>
+<td class="packagedElementType">String </td><td><a title="NetworkResourceFulfillment::Data Object Classes::Call::callId" href="#_.vD_.uG.kD_E.eGCA.o9-ZY7.z8A"><img border="0" src="../images/923081473_icon.png" alt="callId"></a>&nbsp;<a title="NetworkResourceFulfillment::Data Object Classes::Call::callId" href="#_.vD_.uG.kD_E.eGCA.o9-ZY7.z8A">callId</a></td><td>
+<p>
+<a name="documentationSection"></a>This attribute shall represent the unique identifier of the Call. The identifier is assigned by the Control Plane and is only used for Control Plane Signalling.</br>Note: callId corresponds to the Call Name attribute in ITU-T Recommendation G.7713.</p>
+</td>
+</tr>
+<tr>
+<td class="packagedElementType">CallState </td><td><a title="NetworkResourceFulfillment::Data Object Classes::Call::callState" href="#_.vD_.uJ.kD_E.eGCA.o9-ZY7.z8A"><img border="0" src="../images/923081473_icon.png" alt="callState"></a>&nbsp;<a title="NetworkResourceFulfillment::Data Object Classes::Call::callState" href="#_.vD_.uJ.kD_E.eGCA.o9-ZY7.z8A">callState</a></td><td>
+<p>
+<a name="documentationSection"></a>This attribute represents the state of the Call. The Call state dependents on the state of the associated Connections.</br></br>Traceability: R_TMF518_NRF_I_0087.</p>
+</td>
+</tr>
+<tr>
+<td class="packagedElementType">CallEndType </td><td><a title="NetworkResourceFulfillment::Data Object Classes::Call::aEnd" href="#_.vD_.uIED_E.eGCA.o9-ZY7.z8A"><img border="0" src="../images/923081473_icon.png" alt="aEnd"></a>&nbsp;<a title="NetworkResourceFulfillment::Data Object Classes::Call::aEnd" href="#_.vD_.uIED_E.eGCA.o9-ZY7.z8A">aEnd</a></td><td>
+<p>
+<a name="documentationSection"></a>This attribute represents the source end point of the Call. The value of this attribute has the following fields:</br>- SNPP (Control Plane name space)</br>- SNP (Control Plane name space)</br>- CPTP/FTP/CTP/PTP (Transport Plane name space)</br>- TNA Name (which identifies either a TNA or a Group-TNA Name in the Control Plane name space).</br>All the fields may be empty.</br></br>Notes:</br>All TPs that are managed by different target OSes are off-network TPs which are addressed by remote addresses.</br>In a Control Plane environment the A-end TP and/or Z-end TP attributes may also contain a "Null-name".</br>In a Control Plane environment, the type is independent of the type of the Z-end.</br></br>For a detailed description of the use of this attribute, see SD1-25 Naming.</p>
+</td>
+</tr>
+<tr>
+<td class="packagedElementType">CallEndType </td><td><a title="NetworkResourceFulfillment::Data Object Classes::Call::zEnd" href="#_.vD_.uI0D_E.eGCA.o9-ZY7.z8A"><img border="0" src="../images/923081473_icon.png" alt="zEnd"></a>&nbsp;<a title="NetworkResourceFulfillment::Data Object Classes::Call::zEnd" href="#_.vD_.uI0D_E.eGCA.o9-ZY7.z8A">zEnd</a></td><td>
+<p>
+<a name="documentationSection"></a>This attribute represents the destination end point of the Call. The value of this attribute has the following fields:</br>- SNPP (Control Plane name space)</br>- SNP (Control Plane name space)</br>- CPTP/FTP/CTP/PTP (Transport Plane name space)</br>- TNA Name (which identifies either a TNA or a Group-TNA Name  in the Control Plane name space).</br>All the fields may be empty.</br></br>Notes:</br>All TPs that are managed by different target OSes are off-network TPs which are addressed by remote addresses.</br>In a Control Plane environment the A-end TP and/or Z-end TP attributes may also contain a "Null-name".</br>In a Control Plane environment, the type is independent of the type of the A-end.</br></br>For a detailed description of the use of this attribute, see SD1-25 Naming.</p>
+</td>
+</tr>
+<tr>
+<td class="packagedElementType">CallParameterProfile </td><td><a title="NetworkResourceFulfillment::Data Object Classes::Call::callParameters" href="#_.vD_.uKUD_E.eGCA.o9-ZY7.z8A"><img border="0" src="../images/923081473_icon.png" alt="callParameters"></a>&nbsp;<a title="NetworkResourceFulfillment::Data Object Classes::Call::callParameters" href="#_.vD_.uKUD_E.eGCA.o9-ZY7.z8A">callParameters</a></td><td>
+<p>
+<a name="documentationSection"></a>This attribute represents the following parameters:</br>- Severely Degraded Threshold</br>- Degraded Threshold</br>- Class Of Service</br>- Class Of Service specific Parameters.</p>
+</td>
+</tr>
+<tr>
+<td class="packagedElementType">DiversityConstraints </td><td><a title="NetworkResourceFulfillment::Data Object Classes::Call::callDiversity" href="#_.vD_.uLED_E.eGCA.o9-ZY7.z8A"><img border="0" src="../images/923081473_icon.png" alt="callDiversity"></a>&nbsp;<a title="NetworkResourceFulfillment::Data Object Classes::Call::callDiversity" href="#_.vD_.uLED_E.eGCA.o9-ZY7.z8A">callDiversity</a></td><td>
+<p>
+<a name="documentationSection"></a>This attribute represents the diversity status of the Call.</br>It provides the information on corouting and diversity (link and node) for the call.</br>A call may have No Diversity or Link Diversity and/or Node Diversity.</p>
+</td>
+</tr>
+<tr>
+<td class="packagedElementType">DiversityViolations </td><td><a title="NetworkResourceFulfillment::Data Object Classes::Call::diversityViolations" href="#_.vD_.uL0D_E.eGCA.o9-ZY7.z8A"><img border="0" src="../images/923081473_icon.png" alt="diversityViolations"></a>&nbsp;<a title="NetworkResourceFulfillment::Data Object Classes::Call::diversityViolations" href="#_.vD_.uL0D_E.eGCA.o9-ZY7.z8A">diversityViolations</a></td><td>
+<p>
+<a name="documentationSection"></a>This attribute represents information on the current state of diversity violations of the Call in the following parameters:</br>- diversitySynthesis</br>- linkDiversityViolationsList</br>- linkPartialDiversityList</br>- nodeDiversityViolationsList</br>- nodePartialDiversityList.</p>
+</td>
+</tr>
+</table>
+<p></p>
+<table class="SummaryTable" border="1">
+<tr>
+<td class="SummaryTitle" colspan="1"><a name="urlsSummary">URLs</a></td>
+</tr>
+<tr>
+<td><a title="NetworkResourceFulfillment::Data Object Classes::Call::<Comment>">..\..\Framework\SD\SD1-44_ConnectionlessTechnologyManagement.pdf</a></td>
+</tr>
+<tr>
+<td><a title="NetworkResourceFulfillment::Data Object Classes::Call::<Comment>">..\..\Framework\SD\SD1-25_objectNaming.pdf</a></td>
+</tr>
+</table>
+<p xmlns:publish="http://www.ibm.com/Rational/XTools/Publish"></p>
+<table xmlns:publish="http://www.ibm.com/Rational/XTools/Publish" style="width: 100%; height: 40px;" border="1" cellpadding="4" class="PropertiesTable">
+<tr>
+<td class="SummaryTitle" colspan="2"><a name="specificationsSummary">Specifications</a></td>
+</tr>
+<tr>
+<td class="PropertyName" style="width: 50%;"><b>Specification</b></td><td class="PropertyName" style="width: 50%;"><b>Trace Relationship</b></td>
+</tr>
+<tr>
+<td class="PropertyName" style="width: 50%;"><a><img border="0" src="../images/100998000_icon.png" alt="SD1-25_objectNaming.pdf"></a>&nbsp;<a>SD1-25_objectNaming.pdf</a></td><td class="PropertyValue" style="width: 50%;">URL</td>
+</tr>
+<tr>
+<td class="PropertyName" style="width: 50%;"><a><img border="0" src="../images/100998000_icon.png" alt="SD1-44_ConnectionlessTechnologyManagement.pdf"></a>&nbsp;<a>SD1-44_ConnectionlessTechnologyManagement.pdf</a></td><td class="PropertyValue" style="width: 50%;">URL</td>
+</tr>
+</table>
+<br>
+<a name="propertiesTable">
+<p class="LargeTitle">Properties:</p>
+</a>
+<table class="PropertiesTable" cellpadding="4" cellspacing="0" border="1">
+<tr>
+<td class="PropertyName"><b>Alias</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Classifier Behavior</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Abstract</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Active</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Leaf</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Keywords</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Name</b></td><td class="PropertyValue">Call</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Name Expression</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Namespace</b></td><td class="PropertyValue"><a href="_V.yK4.cB5.cE.d.y.jX65.v.z.eW.aBA-content.html">Data Object Classes</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Owned Template Signature</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Owner</b></td><td class="PropertyValue"><a href="_V.yK4.cB5.cE.d.y.jX65.v.z.eW.aBA-content.html">Data Object Classes</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Owning Template Parameter</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Package</b></td><td class="PropertyValue"><a href="_V.yK4.cB5.cE.d.y.jX65.v.z.eW.aBA-content.html">Data Object Classes</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Qualified Name</b></td><td class="PropertyValue">NetworkResourceFulfillment::Data Object Classes::Call</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Representation</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Stereotype</b></td><td class="PropertyValue">mTOPClass</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Template Parameter</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Visibility</b></td><td class="PropertyValue">Public</td>
+</tr>
+</table>
+<p></p>
+<table class="DetailsTable">
+<tr>
+<td class="DetailsTitle" colspan="2"><a name="attributeDetail">Attribute Details</a></td>
+</tr>
+</table>
+<span class="ListItem">
+<br>
+<img src="../images/923081473_icon.png" alt="">&nbsp;<a name="_.vD_.uIED_E.eGCA.o9-ZY7.z8A">aEnd</a></span>
+<pre>Public&nbsp;CallEndType aEnd</pre>
+<dl>
+<dd>
+<p>
+<a name="documentationSection"></a>This attribute represents the source end point of the Call. The value of this attribute has the following fields:</br>- SNPP (Control Plane name space)</br>- SNP (Control Plane name space)</br>- CPTP/FTP/CTP/PTP (Transport Plane name space)</br>- TNA Name (which identifies either a TNA or a Group-TNA Name in the Control Plane name space).</br>All the fields may be empty.</br></br>Notes:</br>All TPs that are managed by different target OSes are off-network TPs which are addressed by remote addresses.</br>In a Control Plane environment the A-end TP and/or Z-end TP attributes may also contain a "Null-name".</br>In a Control Plane environment, the type is independent of the type of the Z-end.</br></br>For a detailed description of the use of this attribute, see SD1-25 Naming.</p>
+</dd>
+<dt>
+<a name="attributeConstraintsTable_.vD_.uIED_E.eGCA.o9-ZY7.z8A"><b>Constraints:</b></a>
+</dt>
+<dt>
+<b>Properties:</b>
+</dt>
+<dd>
+<br>
+<table class="PropertiesTable" cellpadding="4" cellspacing="0" border="1">
+<tr>
+<td class="PropertyName"><b>Aggregation</b></td><td class="PropertyValue">None</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Alias</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Association</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Association End</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Class</b></td><td class="PropertyValue"><a href="_.vD_.uEED_E.eGCA.o9-ZY7.z8A-content.html">«mTOPClass» Call</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Datatype</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Default</b></td><td class="PropertyValue">NA</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Default Value</b></td><td class="PropertyValue">()</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Composite</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Derived</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Derived Union</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Leaf</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Ordered</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Read Only</b></td><td class="PropertyValue">true</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Static</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Unique</b></td><td class="PropertyValue">true</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Keywords</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Lower</b></td><td class="PropertyValue">1</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Lower Value</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Multiplicity</b></td><td class="PropertyValue">1</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Name</b></td><td class="PropertyValue">aEnd</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Name Expression</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Namespace</b></td><td class="PropertyValue"><a href="_.vD_.uEED_E.eGCA.o9-ZY7.z8A-content.html">«mTOPClass» Call</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Opposite</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Owner</b></td><td class="PropertyValue"><a href="_.vD_.uEED_E.eGCA.o9-ZY7.z8A-content.html">«mTOPClass» Call</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Owning Association</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Owning Template Parameter</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Qualified Name</b></td><td class="PropertyValue">NetworkResourceFulfillment::Data Object Classes::Call::aEnd</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Stereotype</b></td><td class="PropertyValue">mTOPAttribute</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Template Parameter</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Type</b></td><td class="PropertyValue"><a href="_XU.a-0G.n.aE.eGER.v.yLCW.n.zWA-content.html">CallEndType</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Upper</b></td><td class="PropertyValue">1</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Upper Value</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Visibility</b></td><td class="PropertyValue">Public</td>
+</tr>
+</table>
+</dd>
+</dl>
+<hr>
+<span class="ListItem">
+<br>
+<img src="../images/923081473_icon.png" alt="">&nbsp;<a name="_.vD_.uLED_E.eGCA.o9-ZY7.z8A">callDiversity</a></span>
+<pre>Public&nbsp;DiversityConstraints callDiversity</pre>
+<dl>
+<dd>
+<p>
+<a name="documentationSection"></a>This attribute represents the diversity status of the Call.</br>It provides the information on corouting and diversity (link and node) for the call.</br>A call may have No Diversity or Link Diversity and/or Node Diversity.</p>
+</dd>
+<dt>
+<a name="attributeConstraintsTable_.vD_.uLED_E.eGCA.o9-ZY7.z8A"><b>Constraints:</b></a>
+</dt>
+<dt>
+<b>Properties:</b>
+</dt>
+<dd>
+<br>
+<table class="PropertiesTable" cellpadding="4" cellspacing="0" border="1">
+<tr>
+<td class="PropertyName"><b>Aggregation</b></td><td class="PropertyValue">None</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Alias</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Association</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Association End</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Class</b></td><td class="PropertyValue"><a href="_.vD_.uEED_E.eGCA.o9-ZY7.z8A-content.html">«mTOPClass» Call</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Datatype</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Default</b></td><td class="PropertyValue">NA</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Default Value</b></td><td class="PropertyValue">()</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Composite</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Derived</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Derived Union</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Leaf</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Ordered</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Read Only</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Static</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Unique</b></td><td class="PropertyValue">true</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Keywords</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Lower</b></td><td class="PropertyValue">1</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Lower Value</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Multiplicity</b></td><td class="PropertyValue">1</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Name</b></td><td class="PropertyValue">callDiversity</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Name Expression</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Namespace</b></td><td class="PropertyValue"><a href="_.vD_.uEED_E.eGCA.o9-ZY7.z8A-content.html">«mTOPClass» Call</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Opposite</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Owner</b></td><td class="PropertyValue"><a href="_.vD_.uEED_E.eGCA.o9-ZY7.z8A-content.html">«mTOPClass» Call</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Owning Association</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Owning Template Parameter</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Qualified Name</b></td><td class="PropertyValue">NetworkResourceFulfillment::Data Object Classes::Call::callDiversity</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Stereotype</b></td><td class="PropertyValue">mTOPAttribute</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Template Parameter</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Type</b></td><td class="PropertyValue"><a href="_.r.v.l-QEE.kE.eG.fNZQ.p.dI.a.j2Q-content.html">DiversityConstraints</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Upper</b></td><td class="PropertyValue">1</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Upper Value</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Visibility</b></td><td class="PropertyValue">Public</td>
+</tr>
+</table>
+</dd>
+</dl>
+<hr>
+<span class="ListItem">
+<br>
+<img src="../images/923081473_icon.png" alt="">&nbsp;<a name="_.vD_.uG.kD_E.eGCA.o9-ZY7.z8A">callId</a></span>
+<pre>Public&nbsp;String callId</pre>
+<dl>
+<dd>
+<p>
+<a name="documentationSection"></a>This attribute shall represent the unique identifier of the Call. The identifier is assigned by the Control Plane and is only used for Control Plane Signalling.</br>Note: callId corresponds to the Call Name attribute in ITU-T Recommendation G.7713.</p>
+</dd>
+<dt>
+<a name="attributeConstraintsTable_.vD_.uG.kD_E.eGCA.o9-ZY7.z8A"><b>Constraints:</b></a>
+</dt>
+<dt>
+<b>Properties:</b>
+</dt>
+<dd>
+<br>
+<table class="PropertiesTable" cellpadding="4" cellspacing="0" border="1">
+<tr>
+<td class="PropertyName"><b>Aggregation</b></td><td class="PropertyValue">None</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Alias</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Association</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Association End</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Class</b></td><td class="PropertyValue"><a href="_.vD_.uEED_E.eGCA.o9-ZY7.z8A-content.html">«mTOPClass» Call</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Datatype</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Default</b></td><td class="PropertyValue">empty string</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Default Value</b></td><td class="PropertyValue">()</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Composite</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Derived</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Derived Union</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Leaf</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Ordered</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Read Only</b></td><td class="PropertyValue">true</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Static</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Unique</b></td><td class="PropertyValue">true</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Keywords</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Lower</b></td><td class="PropertyValue">1</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Lower Value</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Multiplicity</b></td><td class="PropertyValue">1</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Name</b></td><td class="PropertyValue">callId</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Name Expression</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Namespace</b></td><td class="PropertyValue"><a href="_.vD_.uEED_E.eGCA.o9-ZY7.z8A-content.html">«mTOPClass» Call</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Opposite</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Owner</b></td><td class="PropertyValue"><a href="_.vD_.uEED_E.eGCA.o9-ZY7.z8A-content.html">«mTOPClass» Call</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Owning Association</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Owning Template Parameter</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Qualified Name</b></td><td class="PropertyValue">NetworkResourceFulfillment::Data Object Classes::Call::callId</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Stereotype</b></td><td class="PropertyValue">mTOPAttribute</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Template Parameter</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Type</b></td><td class="PropertyValue">String</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Upper</b></td><td class="PropertyValue">1</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Upper Value</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Visibility</b></td><td class="PropertyValue">Public</td>
+</tr>
+</table>
+</dd>
+</dl>
+<hr>
+<span class="ListItem">
+<br>
+<img src="../images/923081473_icon.png" alt="">&nbsp;<a name="_.vD_.uKUD_E.eGCA.o9-ZY7.z8A">callParameters</a></span>
+<pre>Public&nbsp;CallParameterProfile callParameters</pre>
+<dl>
+<dd>
+<p>
+<a name="documentationSection"></a>This attribute represents the following parameters:</br>- Severely Degraded Threshold</br>- Degraded Threshold</br>- Class Of Service</br>- Class Of Service specific Parameters.</p>
+</dd>
+<dt>
+<a name="attributeConstraintsTable_.vD_.uKUD_E.eGCA.o9-ZY7.z8A"><b>Constraints:</b></a>
+</dt>
+<dt>
+<b>Properties:</b>
+</dt>
+<dd>
+<br>
+<table class="PropertiesTable" cellpadding="4" cellspacing="0" border="1">
+<tr>
+<td class="PropertyName"><b>Aggregation</b></td><td class="PropertyValue">None</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Alias</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Association</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Association End</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Class</b></td><td class="PropertyValue"><a href="_.vD_.uEED_E.eGCA.o9-ZY7.z8A-content.html">«mTOPClass» Call</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Datatype</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Default</b></td><td class="PropertyValue">NA</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Default Value</b></td><td class="PropertyValue">()</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Composite</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Derived</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Derived Union</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Leaf</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Ordered</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Read Only</b></td><td class="PropertyValue">true</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Static</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Unique</b></td><td class="PropertyValue">true</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Keywords</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Lower</b></td><td class="PropertyValue">1</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Lower Value</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Multiplicity</b></td><td class="PropertyValue">1</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Name</b></td><td class="PropertyValue">callParameters</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Name Expression</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Namespace</b></td><td class="PropertyValue"><a href="_.vD_.uEED_E.eGCA.o9-ZY7.z8A-content.html">«mTOPClass» Call</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Opposite</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Owner</b></td><td class="PropertyValue"><a href="_.vD_.uEED_E.eGCA.o9-ZY7.z8A-content.html">«mTOPClass» Call</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Owning Association</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Owning Template Parameter</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Qualified Name</b></td><td class="PropertyValue">NetworkResourceFulfillment::Data Object Classes::Call::callParameters</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Stereotype</b></td><td class="PropertyValue">mTOPAttribute</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Template Parameter</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Type</b></td><td class="PropertyValue"><a href="_D8.t.p.kEE.lE.eG.fNZQ.p.dI.a.j2Q-content.html">CallParameterProfile</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Upper</b></td><td class="PropertyValue">1</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Upper Value</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Visibility</b></td><td class="PropertyValue">Public</td>
+</tr>
+</table>
+</dd>
+</dl>
+<hr>
+<span class="ListItem">
+<br>
+<img src="../images/923081473_icon.png" alt="">&nbsp;<a name="_.vD_.uJ.kD_E.eGCA.o9-ZY7.z8A">callState</a></span>
+<pre>Public&nbsp;CallState callState</pre>
+<dl>
+<dd>
+<p>
+<a name="documentationSection"></a>This attribute represents the state of the Call. The Call state dependents on the state of the associated Connections.</br></br>Traceability: R_TMF518_NRF_I_0087.</p>
+</dd>
+<dt>
+<a name="attributeConstraintsTable_.vD_.uJ.kD_E.eGCA.o9-ZY7.z8A"><b>Constraints:</b></a>
+</dt>
+<dt>
+<b>Properties:</b>
+</dt>
+<dd>
+<br>
+<table class="PropertiesTable" cellpadding="4" cellspacing="0" border="1">
+<tr>
+<td class="PropertyName"><b>Aggregation</b></td><td class="PropertyValue">None</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Alias</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Association</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Association End</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Class</b></td><td class="PropertyValue"><a href="_.vD_.uEED_E.eGCA.o9-ZY7.z8A-content.html">«mTOPClass» Call</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Datatype</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Default</b></td><td class="PropertyValue">NA</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Default Value</b></td><td class="PropertyValue">()</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Composite</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Derived</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Derived Union</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Leaf</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Ordered</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Read Only</b></td><td class="PropertyValue">true</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Static</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Unique</b></td><td class="PropertyValue">true</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Keywords</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Lower</b></td><td class="PropertyValue">1</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Lower Value</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Multiplicity</b></td><td class="PropertyValue">1</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Name</b></td><td class="PropertyValue">callState</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Name Expression</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Namespace</b></td><td class="PropertyValue"><a href="_.vD_.uEED_E.eGCA.o9-ZY7.z8A-content.html">«mTOPClass» Call</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Opposite</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Owner</b></td><td class="PropertyValue"><a href="_.vD_.uEED_E.eGCA.o9-ZY7.z8A-content.html">«mTOPClass» Call</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Owning Association</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Owning Template Parameter</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Qualified Name</b></td><td class="PropertyValue">NetworkResourceFulfillment::Data Object Classes::Call::callState</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Stereotype</b></td><td class="PropertyValue">mTOPAttribute</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Template Parameter</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Type</b></td><td class="PropertyValue"><a href="_A2.j.iEG.nDE.eGER.v.yLCW.n.zWA-content.html">CallState</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Upper</b></td><td class="PropertyValue">1</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Upper Value</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Visibility</b></td><td class="PropertyValue">Public</td>
+</tr>
+</table>
+</dd>
+</dl>
+<hr>
+<span class="ListItem">
+<br>
+<img src="../images/923081473_icon.png" alt="">&nbsp;<a name="_.vD_.uL0D_E.eGCA.o9-ZY7.z8A">diversityViolations</a></span>
+<pre>Public&nbsp;DiversityViolations diversityViolations</pre>
+<dl>
+<dd>
+<p>
+<a name="documentationSection"></a>This attribute represents information on the current state of diversity violations of the Call in the following parameters:</br>- diversitySynthesis</br>- linkDiversityViolationsList</br>- linkPartialDiversityList</br>- nodeDiversityViolationsList</br>- nodePartialDiversityList.</p>
+</dd>
+<dt>
+<a name="attributeConstraintsTable_.vD_.uL0D_E.eGCA.o9-ZY7.z8A"><b>Constraints:</b></a>
+</dt>
+<dt>
+<b>Properties:</b>
+</dt>
+<dd>
+<br>
+<table class="PropertiesTable" cellpadding="4" cellspacing="0" border="1">
+<tr>
+<td class="PropertyName"><b>Aggregation</b></td><td class="PropertyValue">None</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Alias</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Association</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Association End</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Class</b></td><td class="PropertyValue"><a href="_.vD_.uEED_E.eGCA.o9-ZY7.z8A-content.html">«mTOPClass» Call</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Datatype</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Default</b></td><td class="PropertyValue">NA</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Default Value</b></td><td class="PropertyValue">()</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Composite</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Derived</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Derived Union</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Leaf</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Ordered</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Read Only</b></td><td class="PropertyValue">true</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Static</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Unique</b></td><td class="PropertyValue">true</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Keywords</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Lower</b></td><td class="PropertyValue">1</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Lower Value</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Multiplicity</b></td><td class="PropertyValue">1</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Name</b></td><td class="PropertyValue">diversityViolations</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Name Expression</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Namespace</b></td><td class="PropertyValue"><a href="_.vD_.uEED_E.eGCA.o9-ZY7.z8A-content.html">«mTOPClass» Call</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Opposite</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Owner</b></td><td class="PropertyValue"><a href="_.vD_.uEED_E.eGCA.o9-ZY7.z8A-content.html">«mTOPClass» Call</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Owning Association</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Owning Template Parameter</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Qualified Name</b></td><td class="PropertyValue">NetworkResourceFulfillment::Data Object Classes::Call::diversityViolations</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Stereotype</b></td><td class="PropertyValue">mTOPAttribute</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Template Parameter</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Type</b></td><td class="PropertyValue"><a href="_YXP0EEE.lE.eG.fNZQ.p.dI.a.j2Q-content.html">DiversityViolations</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Upper</b></td><td class="PropertyValue">1</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Upper Value</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Visibility</b></td><td class="PropertyValue">Public</td>
+</tr>
+</table>
+</dd>
+</dl>
+<hr>
+<span class="ListItem">
+<br>
+<img src="../images/923081473_icon.png" alt="">&nbsp;<a name="_.vD_.uI0D_E.eGCA.o9-ZY7.z8A">zEnd</a></span>
+<pre>Public&nbsp;CallEndType zEnd</pre>
+<dl>
+<dd>
+<p>
+<a name="documentationSection"></a>This attribute represents the destination end point of the Call. The value of this attribute has the following fields:</br>- SNPP (Control Plane name space)</br>- SNP (Control Plane name space)</br>- CPTP/FTP/CTP/PTP (Transport Plane name space)</br>- TNA Name (which identifies either a TNA or a Group-TNA Name  in the Control Plane name space).</br>All the fields may be empty.</br></br>Notes:</br>All TPs that are managed by different target OSes are off-network TPs which are addressed by remote addresses.</br>In a Control Plane environment the A-end TP and/or Z-end TP attributes may also contain a "Null-name".</br>In a Control Plane environment, the type is independent of the type of the A-end.</br></br>For a detailed description of the use of this attribute, see SD1-25 Naming.</p>
+</dd>
+<dt>
+<a name="attributeConstraintsTable_.vD_.uI0D_E.eGCA.o9-ZY7.z8A"><b>Constraints:</b></a>
+</dt>
+<dt>
+<b>Properties:</b>
+</dt>
+<dd>
+<br>
+<table class="PropertiesTable" cellpadding="4" cellspacing="0" border="1">
+<tr>
+<td class="PropertyName"><b>Aggregation</b></td><td class="PropertyValue">None</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Alias</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Association</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Association End</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Class</b></td><td class="PropertyValue"><a href="_.vD_.uEED_E.eGCA.o9-ZY7.z8A-content.html">«mTOPClass» Call</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Datatype</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Default</b></td><td class="PropertyValue">NA</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Default Value</b></td><td class="PropertyValue">()</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Composite</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Derived</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Derived Union</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Leaf</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Ordered</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Read Only</b></td><td class="PropertyValue">true</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Static</b></td><td class="PropertyValue">false</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Is Unique</b></td><td class="PropertyValue">true</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Keywords</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Lower</b></td><td class="PropertyValue">1</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Lower Value</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Multiplicity</b></td><td class="PropertyValue">1</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Name</b></td><td class="PropertyValue">zEnd</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Name Expression</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Namespace</b></td><td class="PropertyValue"><a href="_.vD_.uEED_E.eGCA.o9-ZY7.z8A-content.html">«mTOPClass» Call</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Opposite</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Owner</b></td><td class="PropertyValue"><a href="_.vD_.uEED_E.eGCA.o9-ZY7.z8A-content.html">«mTOPClass» Call</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Owning Association</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Owning Template Parameter</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Qualified Name</b></td><td class="PropertyValue">NetworkResourceFulfillment::Data Object Classes::Call::zEnd</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Stereotype</b></td><td class="PropertyValue">mTOPAttribute</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Template Parameter</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Type</b></td><td class="PropertyValue"><a href="_XU.a-0G.n.aE.eGER.v.yLCW.n.zWA-content.html">CallEndType</a></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Upper</b></td><td class="PropertyValue">1</td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Upper Value</b></td><td class="PropertyValue"></td>
+</tr>
+<tr>
+<td class="PropertyName"><b>Visibility</b></td><td class="PropertyValue">Public</td>
+</tr>
+</table>
+</dd>
+</dl>
+<hr>
+<br>
+<table class="NavigationBar">
+<tr>
+<td>
+<table class="NavBarLeft">
+<tr>
+<td class="NavBarMainLink"><a target="_top" href="../index.html">Overview</a></td><td class="NavBarMainLink"><a href="_N.y2.mQA6.qE.d.y.d7PUN.b-IYCQ-top-summary.html">Top</a></td><td class="NavBarMainLink"><a href="_V.yK4.cB5.cE.d.y.jX65.v.z.eW.aBA-content.html">Package</a></td><td class="NavBarMainHighlight">Element</td>
+</tr>
+</table>
+</td><td class="NavBarRight">Data Object Classes UML Documentation</td>
+</tr>
+</table>
+<table>
+<tr class="NavBarBookMarks">
+<td class="BookMarkSections"><span class="BookMarkElements">Summary:</span><span class="BookMarkElements"><a href="#attributeSummary" title="Attributes">Attributes</a></span><span class="BookMarkElements"><a href="#urlsSummary" title="URLs">URLs</a></span><span class="BookMarkElements"><a href="#specificationsSummary" title="Specifications">Specifications</a></span><span class="BookMarkElements"><a href="#propertiesTable" title="Properties">Properties</a></span></td><td class="BookMarkSections"><span class="BookMarkElements">Detail:</span><span class="BookMarkElements"><a href="#attributeDetail" title="Attributes">Attributes</a></span></td>
+</tr>
+</table>
+</body>
+</html>
