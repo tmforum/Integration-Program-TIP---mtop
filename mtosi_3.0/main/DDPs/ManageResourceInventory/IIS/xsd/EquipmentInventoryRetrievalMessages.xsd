@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/eir/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:eq="http://www.tmforum.org/mtop/nrf/xsd/eq/v1" xmlns:eh="http://www.tmforum.org/mtop/nrf/xsd/eh/v1" xmlns:ei="http://www.tmforum.org/mtop/nrf/xsd/eq-inv/v1" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/eir/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: Manage Resource Inventory</p>
+			<p>Module:  Message XSD Module</p>
+			<p>Description: This module contains the XML Schema type definitions of all the mTOP EquipmentInventoryRetrieval SI XML message structures.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ================ -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/eq/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Eq.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/eh/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Eh.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/eq-inv/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/EquipmentInventory.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/eq/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/eq.xsd"/>
+	<!-- ================ -->
+	<xsd:element name="getAllEquipmentRequest" type="tns:GetAllEquipmentRequestType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getAllEquipment operation</p>
+				<p>This operation returns all Equipment and Equipment Holders that are contained in a provided Managed Element or Equipment Holder.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getAllEquipmentResponse" type="ei:EquipmentOrEquipmentHolderListType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getAllEquipment operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getAllEquipmentException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getAllEquipment operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getAllSupportingEquipmentRequest" type="tns:GetAllEquipmentWithPtpRequestType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getAllSupportingEquipment operation</p>
+				<p>This operation returns all Equipment that supports a provided Physical Termination Point (PTP) or Floating Termination Point (FTP).</p>
+				<p>For a PTP, the Equipment that are returned are those which support the physical layer of the PTP (i.e. implements the port or are connected by a fibre, wire, etc.).</p>
+				<p>For an FTP, the Equipment returned are those which support the physical circuitry implementing the FTP and will include the Equipment from which the FTP is named (the FTPs will depend upon the presence of that Equipment for their most basic operation).
+For a particular PTP/FTP the Tx port/function and Rx port/function may be on different cards and in this case both should be returned. Equipment that are used by the PTPs/FTPs, but that do not support them directly (such as a shared DEMUX card) are not reported.</p>
+				<p>In case of Equipment Protection, the operation reports the primary Equipment only; i.e., the protecting Equipment will not be returned.
+</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getAllSupportingEquipmentResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getAllSupportingEquipment operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="eq" type="eq:EquipmentType" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getAllSupportingEquipmentException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getAllSupportingEquipment operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getContainedEquipmentRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getContainedEquipment operation</p>
+				<p>This operation returns the Equipment and Equipment Holders directly contained by a provided Equipment Holder.
+The operation differs from getAllEquipment() in that it only looks at the next level of the containment hierachy.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="ehRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter provides the name of the Equipment Holder for which to retrieve the directly contained Equipment and Equipment Holders.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getContainedEquipmentResponse" type="ei:EquipmentOrEquipmentHolderListType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getContainedEquipment operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getContainedEquipmentException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getContainedEquipment operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getEquipmentRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getEquipment operation</p>
+				<p>This operation returns an Equipment or Equipment Holder object.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="equipmentOrEhRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter provides the name of the Equipment or Equipment Holder to be retrieved.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getEquipmentResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getContainedEquipment operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="equipmentOrEhList" type="ei:EquipmentOrEquipmentHolderType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter returns the list of all Equipment and/or Equipment Holder objects.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getEquipmentException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getContainedEquipment operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getSupportedEquipmentRequest" type="tns:GetSupportEquipmentRequestType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getSupportedEquipment operation</p>
+				<p>This operation returns all Equipment that are supported by the provided Equipment, e.g., a power pack might support many circuit packs.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getSupportedEquipmentResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getSupportedEquipment operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="eq" type="eq:EquipmentType" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getSupportedEquipmentException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getSupportedEquipment operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getSupportingEquipmentRequest" type="tns:GetSupportEquipmentRequestType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getSupportingEquipment operation</p>
+				<p>This operation returns all Equipment that supports the provided Equipment, e.g., the power pack and synchronization card that support a given piece of Equipment.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getSupportingEquipmentResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getSupportingEquipment operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="eq" type="eq:EquipmentType" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>		
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getSupportingEquipmentException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getSupportingEquipment operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getEquipmentIteratorRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getEquipmentIterator operation</p>
+				<p>This operation allows an NMS to request iteratively all the batches of equipments and equipment holders based on an initial specific request.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getEquipmentIteratorResponse" type="ei:EquipmentOrEquipmentHolderListType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getEquipmentIterator operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================== -->
+	<xsd:element name="getEquipmentIteratorException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getEquipmentIterator operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<!-- == Local Data Types == -->
+	<!-- ================ -->
+	<xsd:complexType name="GetSupportEquipmentRequestType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getSupportEquipment(Names) operations</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="equipmentRef" type="nam:NamingAttributeType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>the name of the equipment for which to retrieve the supported/supporting equipment list.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================ -->
+	<xsd:complexType name="GetAllEquipmentRequestType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getAllEquipment(Names) operations</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="meOrEhRef" type="nam:NamingAttributeType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This parameter provides the name of the Managed Element or Equipment Holder for which to retrieve the contained Equipment and Equipment Holders.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================ -->
+	<xsd:complexType name="GetAllEquipmentWithPtpRequestType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getAllEquipment(Names) operations wrt PTP</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="ptpRef" type="nam:NamingAttributeType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This parameter provides the name of the PTP/FTP for which to retrieve the supporting Equipment.
+The Termination Point name must be explicit (a generic endpoint specification may not be used in this case).</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================== -->
+</xsd:schema>

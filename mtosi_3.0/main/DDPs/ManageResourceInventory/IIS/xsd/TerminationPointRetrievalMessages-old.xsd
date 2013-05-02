@@ -1,0 +1,1399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/tpr/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lr="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:tp="http://www.tmforum.org/mtop/nrf/xsd/tp/v1" xmlns:tpp="http://www.tmforum.org/mtop/nrf/xsd/tppool/v1" xmlns:gtp="http://www.tmforum.org/mtop/nrf/xsd/gtp/v1" xmlns:fd="http://www.tmforum.org/mtop/nrf/xsd/fd/v1" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/tpr/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: Manage Resource Inventory</p>
+			<p>Module:  Message XSD Module</p>
+			<p>Description: This module contains the XML Schema type definitions of all the mTOP TP Retrieval SI XML message structures.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ================ -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/CommonTypes.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/fd/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Fd.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/tp/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Tp.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/tppool/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/TpPool.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/gtp/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Gtp.xsd"/>
+	<!-- ================ -->
+	<xsd:element name="getAllAssignableConnectionlessPortTerminationPointsRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getAllAssignableConnectionlessPortTerminationPoints operation</p>
+				<p>This operation retrieves the details of all Connectionless Port Termination Points (CPTPs) which are potentially able to be assigned to the provided Matrix Flow Domain (MFD).</p>
+				<p>
+Potentially means: The CPTPs are on the same Equipment or same Rack with backplane connectivity as the MFD. It is irrelevant whether the CPTPs are already assigned to an MFD or not.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="mfdRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter provides name of the Matrix Flow Domain whose potential CPTPs shall be returned.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="getAllAssignableConnectionlessPortTerminationPointsResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getAllAssignableConnectionlessPortTerminationPoints operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="cptpList" type="tp:TerminationPointListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter returns the list of Connectionless Port Termination Point objects (i.e., Physical Termination Points and Floating Termination Points) assignable to the provided Matrix Flow Domain.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="getAllAssignableConnectionlessPortTerminationPointsException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getAllAssignableConnectionlessPortTerminationPoints operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getAllAssignedConnectionlessPortTerminationPointsRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getAllAssignedConnectionlessPortTerminationPoints operation</p>
+				<p>This operation retrieves the details of all Connectionless Port Termination Points assigned to the provided Matrix Flow Domain.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="mfdRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter provides name of the Matrix Flow Domain whose assigned CPTPs shall be returned.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="getAllAssignedConnectionlessPortTerminationPointsResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getAllAssignedConnectionlessPortTerminationPoints operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="cptpList" type="tp:TerminationPointListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter returns the list of Connectionless Port Termination Point objects (i.e., Physical Termination Points and Floating Termination Points) assigned to the provided Matrix Flow Domain.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="getAllAssignedConnectionlessPortTerminationPointsException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getAllAssignedConnectionlessPortTerminationPoints operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getAllConnectionlessPortTerminationPointsRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getAllConnectionlessPortTerminationPoints operation</p>
+				<p>This operation retrieves the details of all Connectionless Port Termination Points (CPTPs) associated to the provided Flow Domain. It is possible to filter the request to retrieve only fdEdge (UNI and E-NNI sides), only fdInternal or all CPTPs.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="fdRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter provides name of the Flow Domain whose associated CPTPs are in scope.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="cptpRole" type="com:ConnectionlessPortTerminationPointRoleType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter provides the kind of CPTPs to be returned (only fdEdge, only fdInternal, or all).</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="getAllConnectionlessPortTerminationPointsResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getAllConnectionlessPortTerminationPoints operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="cptpList" type="tp:TerminationPointListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter returns the filtered list of Connectionless Port Termination Point objects (i.e., Physical Termination Points and Floating Termination Points) associated to the provided Flow Domain.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="getAllConnectionlessPortTerminationPointsException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getAllConnectionlessPortTerminationPoints operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getAllEdgePointsRequest" type="tns:GetAllEdgePointsType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getAllEdgePoints operation</p>
+				<p>This operation retrieves a filtered list of all Termination Points (TPs) that are at the edge of the provided Multi Layer Subnetwork (MLSN) which<ul>
+						<li>contain one or more of the provided TP Layer Rates and</li>
+						<li>are capable of containing CTPs that can be connected at one or more of the also provided connection Layer Rates.
+The operation considers the capability/flexibility of the PTPs, not their current states.</li>
+					</ul>
+				</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getAllEdgePointsResponse" type="tns:MultipleTerminationPointObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getAllEdgePoints operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getAllEdgePointsException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getAllEdgePoints operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getAllFloatingTerminationPointsRequest" type="tns:GetAllTerminationPointsType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getAllFloatingTerminationPoints operation</p>
+				<p>This operation has exactly the same behaviour as getAllPhysicalTerminationPoints(), but instead of returning both PTPs and FTPs it returns solely FTPs.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getAllFloatingTerminationPointsResponse" type="tns:MultipleTerminationPointObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getAllFloatingTerminationPoints operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getAllFloatingTerminationPointsException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getAllFloatingTerminationPoints operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getAllGroupTerminationPointsRequest" type="tns:GetAllGroupTerminationPointsType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getAllGroupTerminationPoints operation</p>
+				<p>This operation allows an OS to request all of the GTPs (on the given Managed Element) that contain one or more TPs at the specified layer rates. If there are no GTPs that match the layer constraints, an empty list is returned (see SD1-3 Bundled SNC overview for further information on GTP usage).</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getAllGroupTerminationPointsResponse" type="tns:MultipleGroupTerminationPointObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getAllGroupTerminationPoints operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getAllGroupTerminationPointsException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getAllGroupTerminationPoints operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getAllPhysicalTerminationPointsRequest" type="tns:GetAllTerminationPointsType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getAllPhysicalTerminationPoints operation</p>
+				<p>This operation allows an OS to request all of the PTPs and FTPs on the specified Managed Element, that contain one or more of the OS-specified PTP/FTP layer rates, and that are capable of supporting one or more of the OS-specified connection layer rates. If there are no PTPs/FTPs that match the layer constraints, an empty list is returned. A PTP/FTP will be returned regardless of connectivity to other managed elements and regardless of position in the subnetwork (both edgepoints of the subnetwork and the PTPs/FTPs that are internal to the subnetwork are reported).</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getAllPhysicalTerminationPointsResponse" type="tns:MultipleTerminationPointObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getAllPhysicalTerminationPoints operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getAllPhysicalTerminationPointsException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getAllPhysicalTerminationPoints operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getAllPhysicalTerminationPointsWithoutFtpsRequest" type="tns:GetAllTerminationPointsType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getAllPhysicalTerminationPointsWithoutFtps operation</p>
+				<p>This operation retrieves a filtered list of all Physical Termination Points (PTPs) (no Floating Termination Point (FTP) subclasses) within a provided Managed Element (ME) which<ul>
+						<li>contain one or more of the provided TP Layer Rates and</li>
+						<li>are capable of containing CTPs that can be connected at one or more of the provided connection Layer Rates.</li>
+					</ul>
+This operation considers the capability/flexibility of the PTPs, not their current states.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getAllPhysicalTerminationPointsWithoutFtpsResponse" type="tns:MultipleTerminationPointObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getAllPhysicalTerminationPointsWithoutFtps operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getAllPhysicalTerminationPointsWithoutFtpsException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getAllPhysicalTerminationPointsWithoutFtps operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getAllSupportedPhysicalTerminationPointsRequest" type="tns:RequestProfile3Type">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getAllSupportedPhysicalTerminationPoints operation</p>
+				<p>This operation allows an OS to request the PTPs/FTPs that are directly supported by a given equipment. The PTPs that are returned are those that share their physical layer with the primary equipment (i.e. that represent a port on the equipment or are connected by a fibre, wire, etc.). The FTPs that are returned are those which are implemented by the physical circuitry supported by the equipment and will include FTPs that are named from the specified equipment (the FTPs will depend upon the presence of that equipment for their most basic operation).</p>
+				<p>When there is equipment protection, this operation reports PTPs/FTPs for the primary equipment only. That is, when called on a protecting equipment (as opposed to the primary equipment), this operation returns an empty list, irrespective of the current switch status.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getAllSupportedPhysicalTerminationPointsResponse" type="tns:MultipleTerminationPointObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getAllSupportedPhysicalTerminationPoints operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getAllSupportedPhysicalTerminationPointsException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getAllSupportedPhysicalTerminationPoints operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getAllTerminationPointPoolsRequest" type="tns:RequestProfile1Type">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getAllTerminationPointPools operation</p>
+				<p>This operation retrieves all Termination Point Pools (TP Pools) contained by a provided Multi Layer Subnetwork (MLSN).</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getAllTerminationPointPoolsResponse" type="tns:MultipleTerminationPointPoolObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getAllTerminationPointPools operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getAllTerminationPointPoolsException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getAllTerminationPointPools operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getAssociatedTerminationPointRequest" type="tns:RequestProfile2Type">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getAssociatedTerminationPoint operation</p>
+				<p>This operation returns a list of PSR (UPSR or SNCP) associated termination points for the TP whose name is passed as a parameter. Note: The termination point name must be explicit (a generic endpoint specification may not be used in this case). See Object Naming for further detail on FTP naming.
+When this service is invoked with a TP that is not an edge point, the returned TPs will be on the same Managed Element</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getAssociatedTerminationPointResponse" type="tns:MultipleTerminationPointObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getAssociatedTerminationPoint operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getAssociatedTerminationPointException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getAssociatedTerminationPoint operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getAssociatedGroupTerminationPointRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getAssociatedGroupTerminationPoint operation</p>
+				<p>This operation retrieves the details of the Group Termination Point (GTP) containing the provided Connection Termination Point (CTP).</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="ctpRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter provides the name of the Connection Termination Point whose containing GTP is to be returned.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="getAssociatedGroupTerminationPointResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getAssociatedGroupTerminationPoint operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="gtp" type="gtp:GroupTerminationPointType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter returns the GTP object containing the provided CTP.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="getAssociatedGroupTerminationPointException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getAssociatedGroupTerminationPoint operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getAssociatedTerminationPointsWrtTmdRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getAssociatedTerminationPointsWrtTmd operation</p>
+				<p>This operation allows an OS to request all of the TPs associated with the specified Transmission Descriptor.
+      If there are no TPs which are associated with the specified Transmission Descriptor, then an empty list is returned.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="tmdRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The name of the TMD.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="getAssociatedTerminationPointsWrtTmdResponse" type="tns:MultipleTerminationPointObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getAssociatedTerminationPointsWrtTmd operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+
+	<xsd:element name="getAssociatedTerminationPointsWrtTmdException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getAssociatedTerminationPointsWrtTmd operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+		
+	<!-- ================ -->
+	<xsd:element name="getContainedCurrentConnectionTerminationPointsRequest" type="tns:GetAllConnectionTerminationPointsType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getContainedCurrentConnectionTerminationPoints operation</p>
+				<p>This operation is used to retrieve the "current" CTPs that are contained within a specific PTP, FTP or CTP, at specific layer rates. A "current" CTP is defined as a CTP that is either cross-connectable or cross-connected,in the current mapping configuration.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getContainedCurrentConnectionTerminationPointsResponse" type="tns:MultipleTerminationPointObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getContainedCurrentConnectionTerminationPoints operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getContainedCurrentConnectionTerminationPointsException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getContainedCurrentConnectionTerminationPoints operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getContainedInUseConnectionTerminationPointsRequest" type="tns:GetAllConnectionTerminationPointsType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getContainedInUseConnectionTerminationPoints operation</p>
+				<p>This operation is used to retrieve the "in use" CTPs that are contained within a specific PTP, FTP or CTP, at specific layer rates. An "in use" CTP is defined as a CTP that is used by an SNC in any state (including pending), either as a CM end point or as an intermediate connection point, or a CTP that is terminated and mapped. This operation will be used when there are a large number of potential CTPs (e.g., in ATM).</p>
+				<p>Example of usage with respect to ATM:
+To retrieve all actual ATM Network Interfaces associated with a PTP, this operation will be invoked using the PTP name as the tpName and LR_ATM_NI as the only layer rate in the layerRateList. The VPI and VCI ranges that are specified in the returned ATM Network Interface transmissionParams (i.e., Max_VPI_Bits and Max_VCI_Bits) can then be used to determine the potential VPI/VCI range. A subsequent invocation of this operation using an ATM Network Interface CTP as input can be used to determine which VPIs/VCIs are actually in use (with LR_ATM_VP and LR_ATM_VC included in the connectionRateList).</p>
+				<p>Example of usage with respect to SONET/SDH:
+Consider an STM4 PTP with layerRate: LR_Optical_OC12_and_STM4. Assume that the set of CTPs returned by operation getContainedPotentialTPs() contains one CTP with layerRate LR_STS3c_and_AU4_VC4 that is terminating an SNC (layerRate LR_STS3c_and_AU4_VC4), and another CTP with layerRate LR_STS3c_and_AU4_VC4 that is terminated and mapped (attribute tpMappingMode is set to TMTypeERMINATED_AND_AVAILABLE_FOR_MAPPING). The CTP with layerRate LR_STS3c_and_AU4_VC4 that is terminated and mapped contains one CTP with layerRate LR_VT2_andTypeU12_VC12 that is involved in an SNC. None of the other contained CTPs have attribute tpMappingMode set to TMTypeERMINATED_AND_AVAILABLE_FOR_MAPPING, or are involved in an SNC.
+Operation getContainedInUseTPs then returns three CTPs:<ul>
+						<li>The CTP with layerRate LR_STS3c_and_AU4_VC4 that is terminating an SNC.</li>
+						<li>The CTP with layerRate LR_STS3c_and_AU4_VC4 that has attribute tpMappingMode set to TMTypeERMINATED_AND_AVAILABLE_FOR_MAPPING.</li>
+						<li>The CTP with layerRate LR_VT2_andTypeU12_VC12 that is terminating an SNC.</li>
+					</ul>
+				</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getContainedInUseConnectionTerminationPointsResponse" type="tns:MultipleTerminationPointObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getContainedInUseConnectionTerminationPoints operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getContainedInUseConnectionTerminationPointsException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getContainedInUseConnectionTerminationPoints operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getContainedPotentialConnectionTerminationPointsRequest" type="tns:GetAllConnectionTerminationPointsType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getContainedPotentialConnectionTerminationPoints operation</p>
+				<p>This operation an OS to request all of the CTPs that it is potentially capable of supporting in all possible mapping configurations, at the specified rates and that are contained by the specified termination point.</p>
+				<p>This operation returns all potential contained CTPs for a given TP. The TP may be a PTP, an FTP or a CTP. If the layerRateList is empty then contained CTPs at all flexible and/or static LayerRates are returned.</p>
+				<p>For an OC3 PTP that has the potential of mapping to VT1.5 the response would contain 3 STS1 CTPs and 84 VT1.5 CTPs; on a T1 PTP, the contained TPs would be one T1 CTP; for an STS1 CTP the response would contain 28 VT1.5 CTPs. In the case where an OC3 PTP supports mapping to T1s and VT1.5, then the contained list for the OC3 PTP could be 1 STS3c, 3 STS1, 84 VT1.5 and 84 T1 CTPs; if a VT1.5 CTP is provided, 1 T1 CTP is returned; if a T1 CTP is provided, the result is an empty list.</p>
+				<p>Whenever a protection group is involved, the behaviour of this service is described below:</p>
+				<p>Scenario 1: Before the Protection Group is created  
+<ul>
+						<li>Query On Worker TPs returns list of all CTPs</li>
+						<li>Query On Protection TPs returns list of all CTPs </li>
+					</ul>
+				</p>
+				<p>Scenario 2: After ProtectionGroup is created, if extra (preemptible/non-pre-emptible) traffic is allowed.
+<ul>
+						<li>Query On Worker TPs returns list of all CTPs</li>
+						<li>Query On Protection TPs returns list of all CTPs</li>
+					</ul>
+				</p>
+				<p>Scenario 3: After ProtectionGroup is created, if extra (preemptible/non-pre-emptible) traffic is not allowed
+<ul>
+						<li>Query On Worker TPs returns list of CTPs that allow protected traffic</li>
+						<li>Query On Protection TPs returns an empty list (regardless of the switch status)</li>
+					</ul>
+				</p>
+				<p>In case the protection group is created after a query is made, no object delete notification is made, the NMS is expected to query the ports in the protection group to find the list of contained CTPs.</p>
+				<p>When ATM, this operation needs to be used with caution. The reason for this is that, in ATM, there can be a prohibitively large number of potential VP and VC CTPs returned by this operation. For retrieving ATM CTPs, the getContainedInUseTPs() operation should be considered.</p>
+				<p>If DWDM, SONET and/or SDH is combined with ATM, it is advisable that this operation be used with the appropriate DWDM, SONET and/or SDH layer rates entered into the layerRateList. Otherwise, ATM CTPs will be returned and the resulting list of contained TPs could get prohibitive.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getContainedPotentialConnectionTerminationPointsResponse" type="tns:MultipleTerminationPointObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getContainedPotentialConnectionTerminationPoints operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getContainedPotentialConnectionTerminationPointsException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getContainedPotentialConnectionTerminationPoints operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getContainingGroupTerminationPointRequest" type="tns:RequestProfile4Type">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getContainingGroupTerminationPoint operation</p>
+				<p>This operation returns the GTP object containing a given CTP (see SD1-3 Bundled SNC overview for further information on GTP usage). If the CTP is not contained in a GTP, the gtp output parameter is left empty.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getContainingGroupTerminationPointResponse" type="tns:SingleGroupTerminationPointObjectResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getContainingGroupTerminationPoint operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getContainingGroupTerminationPointException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getContainingGroupTerminationPoint operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getContainingTerminationPointsRequest" type="tns:RequestProfile4Type">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getContainingTerminationPoints operation</p>
+				<p>This operation returns a list of the containing TPs given a CTP. This will return an PTP or FTP where there is only one level of containment. In a case of deeper containment this will return a list of CTPs and a PTP or FTP. Using the UPSR OC3 example used in getContainedPotentialTPs, getContainingTPs on the working T1 CTP will return a working STS1 CTP and a working OC3PTP. If the OC3 was in APS, then getContainingTPs on the T1 CTP would return an STS1 CTP, an OC3 working PTP and an OC3 protect PTP.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getContainingTerminationPointsResponse" type="tns:MultipleTerminationPointObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getContainingTerminationPoints operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getContainingTerminationPointsException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getContainingTerminationPoints operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getGroupTerminationPointRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getGroupTerminationPoint operation</p>
+				<p>This operation returns the GTP structure for the given GTP name.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="gtpRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>Name of the GTP.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="getGroupTerminationPointResponse" type="tns:SingleGroupTerminationPointObjectResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getGroupTerminationPoint operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getGroupTerminationPointException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getGroupTerminationPoint operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getTrafficConditioningProfileAssociatedTpsRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getTrafficConditioningProfileAssociatedTps operation</p>
+				<p>The operation retrieves the details of all Termination Points (TPs) that are associated with the provided Traffic Conditioning Profile (TC Profile).</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="tcProfileRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The name of the TC Profile.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="getTrafficConditioningProfileAssociatedTpsResponse" type="tns:MultipleTerminationPointObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getTrafficConditioningProfileAssociatedTps operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getTrafficConditioningProfileAssociatedTpsException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getTrafficConditioningProfileAssociatedTps operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:tooManyOpenIterators"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getTerminationPointRequest" type="tns:RequestProfile2Type">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getTerminationPoint operation</p>
+				<p>This operation returns the termination point structure for the given TP name (CTP, FTP or PTP). The termination point name must be explicit (a generic endpoint specification may not be used in this case). See Framework DDP SD2-7_ObjectNaming for further detail on FTP naming. The termination point structure contains SD1-16_LayeredParameters.pdf. The transmission parameters returned will be the parameters in place on the actual termination point on the NE.  If there are no transmission parameters or the TP does not actually exist on the NE, then transmissionParams will be empty. The field transmissionParams will also be empty for "potential" ATM VP/VC CTPs.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getTerminationPointResponse" type="tns:SingleTerminationPointObjectResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getTerminationPoint operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getTerminationPointException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getTerminationPoint operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getTerminationPointGroupingRelationshipsRequest" type="tns:RequestProfile2Type">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getTerminationPointGroupingRelationships operation</p>
+				<p>This operation allows the NMS to query the associations between TPPool and TP.</p>
+				<p>f a TPPool name is supplied, the method will return the names of all the TPs that have been grouped to the supplied TPPool.
+If a TP name is supplied, the method will return the names of any associated TPPools. An empty list is returned if no associated TP pools exist for the input TP, or if no TPs have been grouped to the input TP pool.
+<uL>
+						<li>Note 1. Any termination point name must be explicit (a generic endpoint specification must not be used in this case). See Object Naming for further detail on FTP naming and for details on general TP and TP pool naming.</li>
+						<li>Note 2. A TP can be a member of at most one TPPool. A TP is associated to a TPPool (TP -- TPPool) by admission as a member (TP is a member of TPPool).</li>
+					</uL>
+				</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getTerminationPointGroupingRelationshipsResponse" type="tns:MultipleObjectNamesResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getTerminationPointGroupingRelationships operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getTerminationPointGroupingRelationshipsException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getTerminationPointGroupingRelationships operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getTerminationPointPoolRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getTerminationPointPool operation</p>
+				<p>This operation retrieves the details of a Termination Point Pool (TP Pool) given its name.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="tpPoolRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter provides the name of the Termination Point Pool to be retrieved.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="getTerminationPointPoolResponse" type="tns:SingleTerminationPointPoolObjectResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getTerminationPointPool operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getTerminationPointPoolException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getTerminationPointPool operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getTerminationPointsIteratorRequest" type="msg:GetAllDataIteratorRequestType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getTerminationPointsIterator operation</p>
+				<p>This operation is the iterator request to return the next batch of TPs from the OS to which a TP retrieval request was initially sent.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getTerminationPointsIteratorResponse" type="tns:MultipleTerminationPointObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getTerminationPointsIterator operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getTerminationPointsIteratorException" type="msg:GetAllDataIteratorExceptionType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getTerminationPointsIterator operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getTerminationPointPoolsIteratorRequest" type="msg:GetAllDataIteratorRequestType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getTerminationPointPoolsIterator operation</p>
+				<p>This operation is the iterator request to return the next batch of TPPools from the OS to which a TPPool retrieval request was initially sent..</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getTerminationPointPoolsIteratorResponse" type="tns:MultipleTerminationPointPoolObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getTerminationPointPoolsIterator operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getTerminationPointPoolsIteratorException" type="msg:GetAllDataIteratorExceptionType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getTerminationPointPoolsIterator operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getGroupTerminationPointsIteratorRequest" type="msg:GetAllDataIteratorRequestType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the getGroupTerminationPointsIterator operation</p>
+				<p>This operation is the iterator request to return the next batch of GTPs from the OS to which a GTP retrieval request was initially sent..</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getGroupTerminationPointsIteratorResponse" type="tns:MultipleGroupTerminationPointObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the getGroupTerminationPointsIterator operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="getGroupTerminationPointsIteratorException" type="msg:GetAllDataIteratorExceptionType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the getGroupTerminationPointsIterator operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================ -->
+	<!-- == Local Data Types == -->
+	<!-- ================ -->
+	<xsd:complexType name="GetAllEdgePointsType">
+		<xsd:sequence>
+			<xsd:element name="mlsnRef" type="nam:NamingAttributeType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Name of the subnetwork.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="tpLayerRateList" type="lr:LayerRateListType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>List of TP layer rates for which the edge points are to be fetched. An edge point must contain at least one of the layer rates specified to be reported. If the list is empty then edge points of all rates are returned.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="connectionLayerRateList" type="lr:LayerRateListType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>List of connection layer rates for which the edge points are to be fetched. An edge point must support connections for at least one of the layer rates specified to be reported. If the list is empty then edge points for all connection rates are returned.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetAllTerminationPointsType">
+		<xsd:sequence>
+			<xsd:element name="meRef" type="nam:NamingAttributeType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The name of the Managed Element.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="tpLayerRateList" type="lr:LayerRateListType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>List of TP layer rates for which the TPs are to be fetched. A TP must contain at least one of the layer rates specified to be reported. If the list is empty then all TPs (of all rates) are returned.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="connectionLayerRateList" type="lr:LayerRateListType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>List of connection layer rates for which the TPs are to be fetched. A TP must support connections for at least one of the layer rates specified to be reported. If the list is empty then all TPs (for all connection rates) are returned.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetAllConnectionTerminationPointsType">
+		<xsd:sequence>
+			<xsd:element name="tpRef" type="nam:NamingAttributeType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The name of the PTP, FTP or CTP for which to get CTPs. The termination point name must be explicit (a generic endpoint specification may not be used in this case). See Object Naming for further detail on FTP naming.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="layerRateList" type="lr:LayerRateListType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>List of TP layer rates for which the TPs are to be fetched. A TP must contain at least one of the layer rates specified to be reported. If the list is empty then all TPs (of all rates) are returned.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="GetAllGroupTerminationPointsType">
+		<xsd:sequence>
+			<xsd:element name="meRef" type="nam:NamingAttributeType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The name of the Managed Element for which to retrieve the GTPs.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="tpLayerRateList" type="lr:LayerRateListType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The GTPs to be returned must contain CTPs that have at least one of the Layer Rates identified by this parameter. If the list is empty then all GTPs supported by the ME are returned.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RequestProfile1Type">
+		<xsd:sequence>
+			<xsd:element name="mlsnRef" type="nam:NamingAttributeType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Name of the subnetwork</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RequestProfile2Type">
+		<xsd:sequence>
+			<xsd:element name="tpRef" type="nam:NamingAttributeType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Name of the TP</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RequestProfile3Type">
+		<xsd:sequence>
+			<xsd:element name="equipmentRef" type="nam:NamingAttributeType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Name of the equipment for which to retrieve supported PTPs/FTPs</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="RequestProfile4Type">
+		<xsd:sequence>
+			<xsd:element name="ctpRef" type="nam:NamingAttributeType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Name of the contained CTP</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="MultipleTerminationPointObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure for a set of objects</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="tpList" type="tp:TerminationPointListType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The list of TP objects</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SingleTerminationPointObjectResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure for one TP object</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="tp" type="tp:TerminationPointType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The TP object</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SingleGroupTerminationPointObjectResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure with a single GTP</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="gtp" type="gtp:GroupTerminationPointType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The GTP object</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="MultipleGroupTerminationPointObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure with a list of GTP</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="gtpList" type="gtp:GroupTerminationPointListType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This parameter returns the list of GTP objects.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="MultipleTerminationPointPoolObjectsResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure for a set of objects</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="tpPoolList" type="tpp:TerminationPointPoolListType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The list of TerminationPointPool objects.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="SingleTerminationPointPoolObjectResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure for one TPPool object</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="tpPool" type="tpp:TerminationPointPoolType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The TerminationPointPool.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================== -->
+	<xsd:complexType name="MultipleObjectNamesResponseType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure for a set of object names</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="nameList" type="nam:NamingAttributeListType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The list of object names.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================== -->
+</xsd:schema>

@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/mlsnppr/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/mlsnppr/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:comcp="http://www.tmforum.org/mtop/nrf/xsd/comcp/v1" xmlns:mlsnpp="http://www.tmforum.org/mtop/nrf/xsd/mlsnpp/v1" xmlns:mlsnpplink="http://www.tmforum.org/mtop/nrf/xsd/mlsnpplink/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Manage Resource Inventory</p>
+      <p>Module:  Message XSD Module</p>
+      <p>Description: This module contains the XML Schema type definitions of all the mTOP ML SNPP Retrieval SI XML message structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/CommonControlPlaneTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/comcp/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/MlSnpp.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/mlsnpp/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/MlSnppLink.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/mlsnpplink/v1"/>
+  <!-- ================ -->
+  <xsd:element name="getAllMLSNPPsGeneralRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This operation shall reply all the MLSNPPs known to the target OS.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="sNPListRequested" type="xsd:boolean">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p> Indicates if the list of SNPs must be included in the return.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllMLSNPPsGeneralResponse" type="mlsnpp:MlSnppListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllMLSNPPsGeneral operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllMLSNPPsGeneralException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllMLSNPPsGeneral operation</p>
+        <p>commLoss - Raised when the target OS is unable to communicate with the NE or the target OS is unable to communicate with any Control Plane component and communications is required to complete the request.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================= -->
+  <xsd:element name="getAllMLSNPPsWithTPRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This operation allows a requesting OS to request a list of the MLSNPPs associated with the specified TP (PTP/CTP/FTP).</p>
+        <p> The SNPPs returned may contain the list of SNPs based on the request for them.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="tPName" type="nam:NamingAttributeType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p> The TP name for which to retrieve the MLSNPP(s).</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="sNPListRequested" type="xsd:boolean">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p> Indicates if the list of SNPs must be included in the return.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllMLSNPPsWithTPResponse" type="mlsnpp:MlSnppListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllMLSNPPsWithTP operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllMLSNPPsWithTPException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllMLSNPPsWithTP operation</p>
+        <p>commLoss - Raised when the target OS is unable to communicate with the NE or the target OS is unable to communicate with any Control Plane component and communications is required to complete the request.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================= -->
+  <xsd:element name="getAllMLSNPPsWithTNARequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This operation allows a requesting OS to request a list of the MLSNPPs for the specified TNA Identifiers (possibly including TNALogicalPortID and TNAIndex).</p>
+        <p> If the target OS does not directly manage one or more of the addressed TNAs (the target OS does not manage the MLRA where the TNA is, but it can access the related control plane information), then the operation may reply an empty or partial list of MLSNPPs.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="tNAList" type="comcp:TNAListType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p> The list of TNA Names of the MLSNPPs to retrieve.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="sNPListRequested" type="xsd:boolean">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p> Indicates if the list of SNPs must be included in the return.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllMLSNPPsWithTNAResponse" type="mlsnpp:MlSnppListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllMLSNPPsWithTNA operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllMLSNPPsWithTNAException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllMLSNPPsWithTNA operation</p>
+        <p>commLoss - Raised when the target OS is unable to communicate with the NE or the target OS is unable to communicate with any Control Plane component and communications is required to complete the request.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================= -->
+  <xsd:element name="getAllMLSNPPsRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This operation shall reply all the MLSNPPs known to the target OS. For an explanation of the structure of the MLSNPP see SD1-46 ASONControlPlaneManagement-Scenarios</p>
+        <p> If a MLSN which represents a MLRA, is introduced as an input parameter, the operation retrieves only MLSNPPs of the addressed MLSN (only MLSNPPs directly within the MLRA are replied). If no MLSN is specified then all MLSNPPs available to the target OS are returned.</p>
+        <p> Note that the MLSNPP represents SNPPs that are pools of SNPs that correspond to CTPs of G.805 TCP type while the SNPPs that group SNPs that represent G.805 CPs are retrieved as a component of the MLSNPPLink.</p>
+        <p> The reply may be an empty or a partial list depending upon the visibility that target OS has of the control plane:
+           <ol>
+             <li> Local and Complete: The target OS completely manages the MLRA and the supporting transport plane resources (ME, TP etc) such that it can provide a complete view of the MLSNPPs and all associated transport plane data.</li>
+             <li> Local CP Only: The target OS manages the MLRA but has no view of the supporting transport plane resources such that it can provide a complete view of the MLSNPPs but can not provide any associated transport plane data.</li>
+             <li> Remote CP Transparent: The target OS manages the MLRA at this level but may not have a view of the details of the subordinate MLRA levels and has no view of the supporting transport plane resources, such that it can provide a complete view of the MLSNPPs but not necessarily all of the SNPP aliases and can not provide any associated transport plane data.</li>
+             <li> Remote CP Limited: The target OS partially manages the MLRA at this level and may not have a view of the details of the subordinate MLRA levels and has no view of the supporting transport plane resources, such that it can provide a view of some of the MLSNPPs and not necessarily all of the subordinate SNPP for those MLSNPPs and can not provide any associated transport plane data.</li>
+             <li> Remote CP Opaque: The target OS is unable to provide any information related to MLSNPPs for the specified MLRA.</li>
+           </ol></p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="subnetName" type="nam:NamingAttributeType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p> The name of the MLSN which references a MLRA for which to retrieve the MLSNPPs. This is an optional input parameter.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="sNPListRequested" type="xsd:boolean">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p> Indicates if the list of SNPs must be included in the return.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllMLSNPPsResponse" type="mlsnpp:MlSnppListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllMLSNPPs operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllMLSNPPsException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllMLSNPPs operation</p>
+        <p>unableToComply - Raised if the adressed MLSN does not represent a MLRA.</p>
+        <p>commLoss - Raised when the target OS is unable to communicate with the NE or the target OS is unable to communicate with any Control Plane component and communications is required to complete the request.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================= -->
+  <!-- Definitions of Iterator messages for Object and Object Name retrievals  -->
+  <!-- ================= -->
+  <xsd:element name="getMultiLayerSNPPsIteratorRequest" type="msg:GetAllDataIteratorRequestType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getMultiLayerSNPPsIterator operation</p>
+        <p>This is the iterator request to return the next batch of MLSNPPs from the OS to which a retrieval request was initially sent.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================== -->
+  <xsd:element name="getMultiLayerSNPPsIteratorResponse" type="tns:MultipleObjectsResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getMultiLayerSNPPsIterator operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================== -->
+  <xsd:element name="getMultiLayerSNPPsIteratorException" type="msg:GetAllDataIteratorExceptionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getMultiLayerSNPPsIterator operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================= -->
+  <!-- == Local Data Types == -->
+  <!-- ================ -->
+  <xsd:complexType name="SingleObjectResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure for a single MLSNPP object</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="mLSNPP" type="mlsnpp:MlSnppType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The retrieved MLSNPP.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================== -->
+  <xsd:complexType name="MultipleObjectsResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure for a set of MLSNPP objects</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="mlSnppList" type="mlsnpp:MlSnppListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The list of MLSNPPs.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>
