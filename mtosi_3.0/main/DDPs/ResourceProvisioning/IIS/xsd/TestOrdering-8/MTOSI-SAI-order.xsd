@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/xml/tip/internal/SAIOrd" xmlns:ord="http://www.tmforum.org/xml/tip/internal/ord" xmlns:extensibility="http://www.tmforum.org/xml/tip/internal/extensibility" xmlns:sai="http://www.tmforum.org/mtop/sa/xsd/sai/v1" 
+xmlns:tpc="http://www.tmforum.org/mtop/rp/xsd/tpc/v1"
+xmlns:RpTPControlOrd="http://www.tmforum.org/xml/tip/internal/RpTPControlOrd"
+targetNamespace="http://www.tmforum.org/xml/tip/internal/SAIOrd" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.1">
+	<xsd:import namespace="http://www.tmforum.org/xml/tip/internal/ord" schemaLocation="order_entity.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/xml/tip/internal/extensibility" schemaLocation="internal_extensibility.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/rp/xsd/tpc/v1" schemaLocation="../TerminationPointControlMessagesOrdering.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/sa/xsd/sai/v1" schemaLocation="../../../../ServiceActivation/IIS/xsd/ServiceActivationInterfaceMessagesOrdering.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/xml/tip/internal/RpTPControlOrd" schemaLocation="MTOSI-RP-TPControl-order.xsd"/>
+	<!-- ****************
+-->
+	<xsd:element name="service_Design_OI" type="tns:Service_Design_OI" substitutionGroup="ord:soi"/>
+	<xsd:complexType name="Service_Design_OI">
+		<xsd:complexContent>
+			<xsd:restriction base="ord:ServiceOrderItem">
+				<xsd:sequence>
+					<xsd:element name="id" type="ord:Identifier" minOccurs="0"/>
+					<xsd:element name="notes" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="quantity" type="xsd:integer" minOccurs="0"/>
+					<xsd:element name="priority" type="xsd:string" minOccurs="0"/>
+					<xsd:element ref="ord:service"/>
+					<xsd:element ref="ord:action" id="Service_Design"/>
+					<xsd:element name="actionData" type="sai:RequestInfoBasicType"/>
+				</xsd:sequence>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- 
+	The rest of this file is for option 2b only; not needed for option 2
+	-->
+	<xsd:complexType name="Service_Design_OI_List">
+		<xsd:complexContent>
+			<xsd:restriction base="ord:ServiceOrderItemList">
+				<xsd:sequence>
+					<xsd:element ref="tns:service_Design_OI"/>
+				</xsd:sequence>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- -->
+	<xsd:element name="service_design_oi_List" type="tns:Service_Design_OI_List" substitutionGroup="ord:soiList"/>
+	<!-- -->
+	<xsd:element name="service_Design_Order">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="ord:ServiceOrder">
+					<xsd:sequence>
+						<xsd:element name="id" type="ord:Identifier" minOccurs="0"/>
+						<xsd:element name="description" type="xsd:string" minOccurs="0"/>
+						<xsd:element name="interactionStatus" type="xsd:string" minOccurs="0"/>
+						<xsd:element name="notes" type="xsd:string" minOccurs="0"/>
+						<xsd:element name="schedule" type="ord:InteractionSchedule" minOccurs="0"/>
+						<xsd:element name="directives" type="ord:InteractionDirectives" minOccurs="0"/>
+						<xsd:element name="priority" type="xsd:string" minOccurs="0"/>
+						<xsd:element ref="tns:service_design_oi_List"/>
+					</xsd:sequence>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!--
+-->
+	<xsd:element name="aOrderWithSubOrders" type="ord:Order"/>	
+</xsd:schema>

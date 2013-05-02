@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ *  Generated with Tigerstripe Workbench 0.7.0.201206291233 and 
+ *  Plugin Nortel Networks, Hewlett-Packard Company/TIP_Soap_Generator(1.1) (1.1)
+ *
+ *  DO NOT EDIT THIS CODE WHICH WAS AUTOMATICALLY GENERATED
+-->
+<!--
+Copyright (C) 2010 Members of the TIP Open Source Community
+
+Licensed to Members of the TIP Open Source Community under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+Members of the TIP Open Source Community licences this file to You under the Apache License,
+Version 2.0 (the 'License'); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an 'AS IS' BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/xml/tip/internal/ord" xmlns:act="http://www.tmforum.org/xml/tip/internal/act" xmlns:extensibility="http://www.tmforum.org/xml/tip/internal/extensibility" xmlns:serv="http://www.tmforum.org/xml/tip/service/serv" xmlns:res="http://www.tmforum.org/xml/tip/resource/res" targetNamespace="http://www.tmforum.org/xml/tip/internal/ord" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.1">
+	<xsd:import namespace="http://www.tmforum.org/xml/tip/internal/act" schemaLocation="action.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/xml/tip/internal/extensibility" schemaLocation="internal_extensibility.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/xml/tip/service/serv" schemaLocation="tip_inv_dependencies_service_serv.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/xml/tip/resource/res" schemaLocation="tip_inv_dependencies_resource_res.xsd"/>
+	<!-- ****************
+ -->
+	<xsd:complexType name="Identifier">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string"/>
+		</xsd:simpleContent>
+	</xsd:complexType>
+<!-- -->	
+	<xsd:element name="oiList" type="tns:OrderItemList"/>
+<!-- "oil" is the "head" of a substitution group which root type, "OrderItemList" is abstract  -->
+<!-- -->
+	<xsd:element name="roiList" type="tns:ResourceOrderItemList" substitutionGroup="tns:oiList"/>
+	<xsd:element name="soiList" type="tns:ServiceOrderItemList" substitutionGroup="tns:oiList"/>
+<!-- -->
+	<xsd:complexType name="OrderItemList" abstract="true">	
+				<xsd:sequence/>
+	</xsd:complexType>
+<!-- -->
+	<xsd:element name="roi" type="tns:ResourceOrderItem"/>
+
+	<xsd:complexType name="ResourceOrderItemList">
+		<xsd:complexContent>
+			<xsd:extension base="tns:OrderItemList">
+				<xsd:sequence>
+					<xsd:element ref="tns:roi" minOccurs="0" maxOccurs="unbounded"/>				
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>		
+	</xsd:complexType> 
+<!-- -->	
+	<xsd:element name="soi" type="tns:ServiceOrderItem"/>
+
+	<xsd:complexType name="ServiceOrderItemList">
+		<xsd:complexContent>
+			<xsd:extension base="tns:OrderItemList">
+				<xsd:sequence>
+					<xsd:element ref="tns:soi" minOccurs="0"/>				
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>		
+	</xsd:complexType> 	
+ <!--
+-->
+	<xsd:complexType name="Order" abstract="true">
+		<xsd:sequence>
+			<xsd:element name="id" type="tns:Identifier" minOccurs="0"/>
+			<xsd:element ref="tns:oiList"/>
+		</xsd:sequence>
+	</xsd:complexType> 
+	
+	<xsd:complexType name="ResourceOrder" abstract="true">
+		<xsd:complexContent>
+			<xsd:restriction base="tns:Order">
+				<xsd:sequence>
+					<xsd:element name="id" type="tns:Identifier"/>
+					<xsd:element ref="tns:roiList"/>
+				</xsd:sequence>
+			</xsd:restriction>
+		</xsd:complexContent>	
+	</xsd:complexType>	
+	
+	<xsd:complexType name="ServiceOrder" abstract="true">
+		<xsd:complexContent>
+			<xsd:restriction base="tns:Order">
+				<xsd:sequence>
+					<xsd:element name="id" type="tns:Identifier" minOccurs="0"/>
+					<xsd:element ref="tns:soiList"/>
+				</xsd:sequence>
+			</xsd:restriction>
+		</xsd:complexContent>	
+	</xsd:complexType>		
+<!--
+-->	 
+	<xsd:complexType name="OrderItem" abstract="true">
+		<xsd:sequence>
+			<xsd:element name="id" type="tns:Identifier"/>
+			<xsd:element name="priority" type="xsd:string"/>
+			<xsd:element name="notes" type="xsd:string"/>
+			<xsd:element name="extensionInfo" type="extensibility:Any" minOccurs="0"/>
+			<xsd:element ref="tns:entityType"/>
+			<xsd:element ref="act:action"/>
+		</xsd:sequence>
+	</xsd:complexType>
+<!-- -->	
+	<xsd:element name="entityType" type="tns:ValidEntityType"/>
+<!-- "entityType" is the "head" of a substitution group which root type, "ValidEntityType" is abstract  -->
+	<xsd:complexType name="ValidEntityType" abstract="true">
+		<xsd:sequence/>
+	</xsd:complexType>
+<!-- -->
+	<xsd:element name="resourceEntityType" type="tns:ResourceEntityType" substitutionGroup="tns:entityType"/>
+	<xsd:element name="serviceEntityType" type="tns:ServiceEntityType" substitutionGroup="tns:entityType"/>
+<!-- -->	
+		<xsd:complexType name="ResourceEntityType">
+		<xsd:complexContent>
+			<xsd:extension base="tns:ValidEntityType">
+				<xsd:sequence>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+<!-- -->	
+		<xsd:complexType name="ServiceEntityType" abstract="true">
+		<xsd:complexContent>
+			<xsd:extension base="tns:ValidEntityType">
+				<xsd:sequence>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+<!-- ****************
+-->
+	<xsd:complexType name="ResourceOrderItem">
+		<xsd:complexContent>
+			<xsd:restriction base="tns:OrderItem">
+				<xsd:sequence>
+					<xsd:element name="id" type="tns:Identifier"/>
+					<xsd:element name="priority" type="xsd:string"/>
+					<xsd:element name="notes" type="xsd:string"/>
+					<xsd:element name="extensionInfo" type="extensibility:Any" minOccurs="0"/>
+					<xsd:element ref="tns:resourceEntityType"/>
+					<xsd:element ref="act:action"/>
+				</xsd:sequence>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!--
+-->
+	<xsd:complexType name="ServiceOrderItem">
+		<xsd:complexContent>
+			<xsd:restriction base="tns:OrderItem">
+				<xsd:sequence>
+					<xsd:element name="id" type="tns:Identifier"/>
+					<xsd:element name="priority" type="xsd:string"/>
+					<xsd:element name="notes" type="xsd:string"/>
+					<xsd:element name="extensionInfo" type="extensibility:Any" minOccurs="0"/>
+					<xsd:element ref="tns:serviceEntityType"/>
+					<xsd:element ref="act:action"/>
+				</xsd:sequence>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+</xsd:schema>

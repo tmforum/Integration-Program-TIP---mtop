@@ -1,0 +1,834 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ResourceProvisioning - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/rp/xsd/tpc/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:tp="http://www.tmforum.org/mtop/nrf/xsd/tp/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:ftp="http://www.tmforum.org/mtop/nrf/xsd/ftp/v1" xmlns:gtp="http://www.tmforum.org/mtop/nrf/xsd/gtp/v1" xmlns:mlsn="http://www.tmforum.org/mtop/nrf/xsd/mlsn/v1" xmlns:tppool="http://www.tmforum.org/mtop/nrf/xsd/tppool/v1" xmlns:lp="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" xmlns:tpdata="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" xmlns:crcd="http://www.tmforum.org/mtop/nrb/xsd/crcd/v1" targetNamespace="http://www.tmforum.org/mtop/rp/xsd/tpc/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: ResourceProvisioning</p>
+			<p>Module:  Message XSD Module</p>
+			<p>Description: This module contains the XML Schema type definitions of all the mTOP TerminationPointControl SI XML message structures.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ================ -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayeredParameters.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/CommonTypes.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/tp/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Tp.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/ftp/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Ftp.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/gtp/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Gtp.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/mlsn/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Mlsn.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/tppool/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/TpPool.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/TpData.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/crcd/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceCreateDataType.xsd"/>
+	<!-- ================ -->
+	<xsd:element name="createFloatingTerminationPointRequest" type="tns:CreateFloatingTerminationPointRequest"/>
+	<xsd:complexType name="CreateFloatingTerminationPointRequest">
+				<xsd:sequence>
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>Request message structure of the createFloatingTerminationPoint operation</p>
+							<p>This operation creates a Floating Termination Point (FTP) within an Equipment (and the CTPs contained in the FTP, if applicable).</p>
+						</xsd:documentation>
+					</xsd:annotation>
+					<xsd:element name="createData" type="tns:FloatingTerminationPointCreateDataType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>This parameter provides the attributes describing the Floating Termination Point to be created.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>This parameter identifies a list of TPs with associated parameters to be applied;
+              the parameter may be used by the requesting OS to determine the number of server layer CTPs 
+              to create for the specified FTP; an empty list means that the number of server layer CTPs is determined 
+              by the target OS</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="createFloatingTerminationPointResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the createFloatingTerminationPoint operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter identifies the list of TPs with associated applied parameters.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="createdFtp" type="ftp:FloatingTerminationPointType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter returns the newly created Floating Termination Point object.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="errorReason" type="xsd:string" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>Specifies the creation error(s) if any.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="createFloatingTerminationPointException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the createFloatingTerminationPoint operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:capacityExceeded"/>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:objectInUse"/>
+						<xsd:element ref="msg:unableToComply"/>
+						<xsd:element ref="msg:userlabelInUse"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="createGroupTerminationPointRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the createGroupTerminationPoint operation</p>
+				<p>This operation creates a new Group Termination Point (GTP). The requesting OS can either specify the list of CTPs comprising the GTP (the list is placed in the tpRefList parameter) or, in the case of contiguous CTPs of the same layerRate, the requesting OS may list the first CTP (in the initialCtpRef parameter) and the number of following CTPs (in the numberOfCtps parameter). The requesting OS may also provide the target OS with the flexibility to decide the list of CTPs by using the gtpEffort parameter. In this flexible mode the target OS uses the tpRefList parameter or the initialCtpRef/ numberOfCtps parameters to determine the total requested bandwidth but it may return a GTP (createdGtp parameter) with a different set of CTPs than those indicated in the original request. Note that this mode allows for the GTP components to be instantiated at a later time by the Managed Element (e.g., upon detection of user's signal). Therefore the operation may successfully return a createdGtp with an empty tpRefList attribute (to be updated at a later time once the component CTPs are created in the Managed Element).</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="createData" type="tns:GroupTerminationPointCreateDataType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter provides the attributes describing the Group Termination Point to be created.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="createGroupTerminationPointResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the createGroupTerminationPoint operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="createdGtp" type="gtp:GroupTerminationPointType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This output parameter contains the newly created GTP.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="createGroupTerminationPointException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the createGroupTerminationPoint operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:objectInUse"/>
+						<xsd:element ref="msg:unableToComply"/>
+						<xsd:element ref="msg:userlabelInUse"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="createTerminationPointPoolRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the createTerminationPointPool operation</p>
+				<p>This operation creates a new Termination Point Pool.</p>
+				<p>The requesting OS prescribes the Subnetwork the new TP pool shall be contained in and specifies the list of TPs or GTPs that shall comprise the TP pool.</p>
+				<p>All the specified TPs/GTPs shall be contained in MEs of the specified Subnetwork.</p>
+				<p>If this operation is in the context of the MLRA, the operation is rejected and an exception is raised.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="createData" type="tns:TerminationPointPoolCreateDataType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter provides the attributes describing the Termination Point Pool to be created.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="createTerminationPointPoolResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the createTerminationPointPool operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="createdTpPool" type="tppool:TerminationPointPoolType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter contains the newly created TPPool.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="createTerminationPointPoolException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the createTerminationPointPool operation</p>
+				<p>unableToComply - Raised if the containing MLSN represents a MLRA.</p>
+				<p>Raised when the target OS is unable to execute the request because at least one of the parameters although valid can not be set and that parameter is identified as "not best effort" in the SD1-1 Additional Information Usage document.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:capacityExceeded"/>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:objectInUse"/>
+						<xsd:element ref="msg:unableToComply"/>
+						<xsd:element ref="msg:userlabelInUse"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="deleteFloatingTerminationPointRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the deleteFloatingTerminationPoint operation</p>
+				<p>This operation deletes a Floating Termination Point (FTP) from the Managed Element together with any contained CTPs.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="ftpRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The name of the termination point to be deleted.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The list of TPs with associated parameters to be applied.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="deleteFloatingTerminationPointResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the deleteFloatingTerminationPoint operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The list of TPs with associated parameters.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="errorReason" type="xsd:string" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter returns the error(s) if any.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="deleteFloatingTerminationPointException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the deleteFloatingTerminationPoint operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:objectInUse"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="deleteGroupTerminationPointRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the deleteGroupTerminationPoint operation</p>
+				<p>This operation deletes a Group Termination Point (GTP). An attempt to delete a GTP that is involved in a Cross-Connection or SNC should be rejected by the target OS.
+The operation is idempotent; i.e., if the operation is called with the name of a non-existent GTP, it will succeed.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="gtpRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The name of GTP to be deleted.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="deleteGroupTerminationPointResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the deleteGroupTerminationPoint operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType/>
+	</xsd:element>
+	<xsd:element name="deleteGroupTerminationPointException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the deleteGroupTerminationPoint operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:objectInUse"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="deleteTerminationPointPoolRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the deleteTerminationPointPool operation</p>
+				<p>The delete TPPool operation is used to delete a TPPool. This operation is idempotent. If the service is called with the name of a non-existent TPPool, it will succeed.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="tpPoolRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The name of the TPPool to be deleted.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="deleteTerminationPointPoolResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the deleteTerminationPointPool operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType/>
+	</xsd:element>
+	<xsd:element name="deleteTerminationPointPoolException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the deleteTerminationPointPool operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:objectInUse"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="modifyGroupTerminationPointRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the modifyGroupTerminationPoint operation</p>
+				<p>This operation is used to add or remove CTPs to/from a Group Termination Point (GTP). For a given request, the requesting OS can only add or remove CTPs, not both. It should not be possible to add a CTP that is already involved in a Cross-Connection or SNC, or that is part of another GTP. See attached supporting document SD1-3_BundledSNC for further information on GTP usage.</p>
+				<p>
+Attempts to modify a GTP that is involved in a Cross-Connection or SNC should be rejected by the target OS.
+The operation is best-effort, i.e., the target OS will add or remove as many of the identified CTPs as possible.
+If the operation is called with the name of a non-existent GTP or CTP, it will fail.</p>
+				<p>
+Note: If the requesting OS created a GTP with gtpEffort equal to SAME, this also implies that the target OS will not modify on its own, i.e., the target OS will only modify the GTP if requested via the modify GTP operation.
+</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="gtpRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The name of the GTP to be modified.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="tpRefList" type="nam:NamingAttributeListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The names of the CTPs to be added or removed.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="actionType" type="tns:ActionType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>an indication of whether the listed TPs are to be added or deleted.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="modifyGroupTerminationPointResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the modifyGroupTerminationPoint operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="modifiedGtp" type="gtp:GroupTerminationPointType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>the structure for the modified GTP.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="modifyGroupTerminationPointException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the modifyGroupTerminationPoint operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:objectInUse"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="modifyTerminationPointPoolRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the modifyTerminationPointPool operation</p>
+				<p>This operation modifies a Termination Point Pool, i.e., adds/removes TPs or GTPs to/from a TPPool.
+For a given request, the requesting OS can only add TPs/GTPs or remove TPs/GTPs, not both. When TPs/GTPs are to be added, all the specified TPs/GTPs shall be contained in Managed Elements of the TP Pool's Subnetwork. It is not possible to add a TP/GTP that is part of another TP Pool or GTP.</p>
+				<p>The operation is best-effort, i.e., the target OS will add or remove as many of the identified TPs as possible. If the service is called with the name of a non-existent TP Pool or TP or GTP, it will fail.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="tpPoolRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The name of the TPPool to be modified.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="containedMembersRefList" type="nam:NamingAttributeListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The names of the TPs or GTPs to be added or removed.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="actionType" type="tns:ActionType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>an indication of whether the listed TPs or GTPs are to be added or removed.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="modifyTerminationPointPoolResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the modifyTerminationPointPool operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="modifiedTpPool" type="tppool:TerminationPointPoolType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>the structure for the modified TPPool.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="modifyTerminationPointPoolException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the modifyTerminationPointPool operation</p>
+				<p>unableToComply - Raised in case one or more TPs or GTPs do not exist or do not belong to theTPPool's Subnetwork, and so the addressed TPPool object can not be modified.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:capacityExceeded"/>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:objectInUse"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="setTerminationPointDataRequest" type="tns:SetTerminationPointDataRequest"/>
+	<xsd:complexType name="SetTerminationPointDataRequest">
+		<xsd:complexContent>
+			<xsd:restriction base="xsd:anyType">
+				<xsd:sequence>
+					<xsd:element name="tpData" type="tpdata:TerminationPointDataType" minOccurs="0"/>
+				</xsd:sequence>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="setTerminationPointDataResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the setTerminationPointData operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="modifiedTp" type="tp:TerminationPointType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>Result of modification.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="setTerminationPointDataException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the setTerminationPointData operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================= -->
+	<xsd:simpleType name="GroupTerminationPointEffortType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This enumeration defines a statement of the requirement of the list of CTPs for a new GTP.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="EFFORT_WHATEVER">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This enumeration specifies that the target OS may comply with the total bandwidth requirement by using a different set of CTPs.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="EFFORT_SAME">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This enumeration specifies that the target OS must create the GTP with the exact same list of CTPs as provided with the GTP creation request. Further, if the requesting OS uses SAME, it is assumed that the target OS will not modify the CTP list comprising the GTP at some later point (unless requested via the modifyGroupTerminetionPoint operation).</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!-- ================= -->
+	<xsd:simpleType name="ActionType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This enumeration indicates whether an item is to be added or removed.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="ADD">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This enumeration specifies that the item is to be added.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+			<xsd:enumeration value="REMOVE">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This enumeration specifies that the item is to be removed.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!-- ================= -->
+	<xsd:complexType name="FloatingTerminationPointCreateDataType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This data type represents the parameters that may be provided when creating a Floating Termination Point.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="crcd:CommonResourceCreateDataType">
+				<xsd:sequence>
+					<xsd:element name="equipmentRef" type="nam:NamingAttributeType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>This attribute defines the identifier of the Equipment hosting the new Floating Termination Point in the Network Element.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ingressTmdRef" type="nam:NamingAttributeType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>The FTP may have an optional reference to an ingress (incoming) Transmission Descriptor.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="egressTmdRef" type="nam:NamingAttributeType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>The FTP may have an optional reference to an egress (outgoing) Transmission Descriptor.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="tpMappingMode" type="com:TerminationModeType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Within the facade definition, the CTP/FTP can act as an 
+				aggregate of associated G.805 TCPs, G.805 Termination Functions and G.805 
+				CPs at one or more LayerRates. The CTP is contained within a PTP or FTP.</p>
+								<p>The TerminationMode attribute indicates and controls the connection of
+				the named CP at a specified LayerRate to the dedicated G.805 TCP and 
+				associated G.805 Termination Function at the same LayerRate within the 
+				CTP/FTP.</p>
+								<p>The TerminationMode is used, for example, to control the Termination and
+				mapping to VT1.5 of an STS1 Trail within an OC3 port. This capability
+				could potentially be used to terminate an STS1 backbone Trail within 
+				a lower order mux that has the capability to alternatively 
+				cross-connect the STS1 unterminated. The same capability is used in SDH
+				and is potentially applicable to any LayerRate.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="direction" type="com:DirectionalityType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>The direction of the termination point.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element ref="lp:transmissionParametersList" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>This attribute contains the layer rate on which connectivity is established and a related set of layered parameters.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="GroupTerminationPointCreateDataType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This data type represents the specific parameters that may be provided when creating a Group Termination Point.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="crcd:CommonResourceCreateDataType">
+				<xsd:sequence>
+					<xsd:element name="containingMeRef" type="nam:NamingAttributeType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>This attribute defines the identifier of the Managed Element hosting the new Group Termination Point.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="tpRefList" type="nam:NamingAttributeListType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>This attribute defines the list of CTPs that comprise the GTP.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="initialCtpRef" type="nam:NamingAttributeType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>In cases where the CTPs are contiguous and of the same Layer Rate, this attribute is used to indicate the first CTP in the group. This parameter is used in lieu of the tpRefList parameter.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="numberOfCtps" type="xsd:unsignedInt" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>This attribute is used in conjunction with the initialCtpRef attribute. It indicates the number of contiguous CTPs that follow the initial CTP. It equals 1 less than the total number of CTPs in the GTP.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="gtpEffort" type="tns:GroupTerminationPointEffortType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>This attribute is used to indicate if the GTP bandwidth specification can be met with a different list of CTPs.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="isReportingAlarms" type="xsd:boolean" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>This attribute indicates whether alarm reporting for the GTP to be created is administratively activated or de-activated.
+True = alarm reporting is activated; False = alarm reporting is de-activated.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="TerminationPointPoolCreateDataType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>The data structure for provisioning a Termination Point Pool.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="crcd:CommonResourceCreateDataType">
+				<xsd:sequence>
+					<xsd:element name="containingMlsnRef" type="nam:NamingAttributeType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>This attribute defines the identifier of the Multi Layer Subnetwork hosting the new Termination Point Pool.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="containedMemberRefList" type="nam:NamingAttributeListType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>This attribute identifies the set of TP names or GTP names (all taken from Managed Elements that belong to the Multi Layer Subnetwork) to be contained in the TP Pool.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="commonTransmissionParameterList " type="lp:LayeredParametersListType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>This attribute represents the common layers and transmission parameters that the TPs in the containedMemberRefList attribute are required to have to be members of the TP Pool.</p>
+								<p>
+Note: This does not affect the values of the layered transmission parameters of the contained TPs.</p>
+								<p>Refer to the attached supporting document SD1-16_LayeredParameters for details of the currently defined Transmission Parameters.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="descriptionOfUse" type="xsd:string" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>This attribute contains a description of the specific use of the TP Pool, in particular how its members are collected and administered. It could include, for example, the name of a TP such that all TP Pool members have to be collected from the set of potential client CTPs of this TP.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+</xsd:schema>

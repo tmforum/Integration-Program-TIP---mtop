@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ResourceProvisioning - Copyright TeleManagement Forum 2008 -->
+<wsdl:definitions name="mTOP-ConnectionControlV1-0" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.tmforum.org/mtop/rp/wsdl/conc/v1-0" targetNamespace="http://www.tmforum.org/mtop/rp/wsdl/conc/v1-0">
+  <wsdl:documentation>
+    <p>DDP: ResourceProvisioning</p>
+    <p>Module: ConnectionControl Service Interface WSDL JMS Module</p>
+    <p>Description: This module contains all the mTOP ConnectionControl Service Interface WSDL definitions for the Web Service deployment profile with SOAP/JMS binding.</p>
+    <p>Version: 1.0</p>
+  </wsdl:documentation>
+  <wsdl:import namespace="http://www.tmforum.org/mtop/rp/wsdl/conc/v1-0" location="ConnectionControlPortType.wsdl"/>
+  <wsdl:binding name="ConnectionControlSoapJmsBinding" type="tns:ConnectionControl">
+    <wsdl:documentation>
+      <p>SOAP JMS binding definitions of the operations of the ConnectionControl portType (interface)</p>
+    </wsdl:documentation>
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/jms"/>
+   
+   <wsdl:operation name="establishCall">
+      <soap:operation  style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:establishCallRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:establishCallResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="establishCallException">
+        <soap:fault name="establishCallException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+
+    <wsdl:operation name="modifyCall">
+      <soap:operation  style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:modifyCallRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:modifyCallResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="modifyCallException">
+        <soap:fault name="modifyCallException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    
+    <wsdl:operation name="releaseCall">
+      <soap:operation  style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:releaseCallRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:releaseCallResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="releaseCallException">
+        <soap:fault name="releaseCallException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    
+    <wsdl:operation name="addConnections">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:addConnectionsRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:addConnectionsResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="addConnectionsException">
+        <soap:fault name="addConnectionsException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    
+    <wsdl:operation name="removeConnections">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:removeConnectionsRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:removeConnectionsResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="removeConnectionsException">
+        <soap:fault name="removeConnectionsException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    
+    <wsdl:operation name="modifyDiversityAndCorouting">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:modifyDiversityAndCoroutingRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:modifyDiversityAndCoroutingResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="modifyDiversityAndCoroutingException">
+        <soap:fault name="modifyDiversityAndCoroutingException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>                        
+  </wsdl:binding>
+  <wsdl:service name="ConnectionControlJms">
+    <wsdl:documentation>
+      <p>Example of the ConnectionControl WSDL Service definition as a deployment example of this mTOP Service Interface. It is expected to be modified to match the specific deployment configuration in a service provider's CCV.</p>
+    </wsdl:documentation>
+    <wsdl:port name="ConnectionControlSoapJms" binding="tns:ConnectionControlSoapJmsBinding">
+      <soap:address location="jms://aserver/mtosi/ConnectionControl"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

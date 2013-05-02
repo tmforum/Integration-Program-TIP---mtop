@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ *  Generated with Tigerstripe Workbench 0.7.0.201206291233 and 
+ *  Plugin Nortel Networks, Hewlett-Packard Company/TIP_Soap_Generator(1.1) (1.1)
+ *
+ *  DO NOT EDIT THIS CODE WHICH WAS AUTOMATICALLY GENERATED
+-->
+<!--
+Copyright (C) 2010 Members of the TIP Open Source Community
+
+Licensed to Members of the TIP Open Source Community under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+Members of the TIP Open Source Community licences this file to You under the Apache License,
+Version 2.0 (the 'License'); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an 'AS IS' BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/xml/tip/internal/RpTPControlAct" xmlns:act="http://www.tmforum.org/xml/tip/internal/act" xmlns:ord="http://www.tmforum.org/xml/tip/internal/ord" xmlns:extensibility="http://www.tmforum.org/xml/tip/internal/extensibility" xmlns:tpc="http://www.tmforum.org/mtop/rp/xsd/tpc/v1"
+xmlns:tpdata="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" targetNamespace="http://www.tmforum.org/xml/tip/internal/RpTPControlAct" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.1">
+	<xsd:import namespace="http://www.tmforum.org/xml/tip/internal/act" schemaLocation="action.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/xml/tip/internal/extensibility" schemaLocation="internal_extensibility.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/rp/xsd/tpc/v1" schemaLocation="../TerminationPointControlMessages.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" schemaLocation="../../../../NetworkResourceFulfillment/IIS/xsd/TpData.xsd"/>	
+	<!-- ****************
+-->
+	<xsd:element name="tPControl_Action" type="tns:TPControl_Action" substitutionGroup="act:action"/>
+	<!-- "tPControl_Action" is the "head" of a substitution group which root type, "TPControl_Action" is abstract  -->
+	<xsd:element name="fTP_CreateAction" type="tns:FTP_CreateAction" substitutionGroup="tns:tPControl_Action"/>
+	<xsd:element name="gTP_CreateAction" type="tns:GTP_CreateAction" substitutionGroup="tns:tPControl_Action"/>
+	<xsd:element name="tPPool_CreateAction" type="tns:TPPool_CreateAction" substitutionGroup="tns:tPControl_Action"/>
+	<xsd:element name="tP_setTerminationPointData" type="tns:TP_setTerminationPointData" substitutionGroup="tns:tPControl_Action"/>	
+	
+	<!-- ****************
+-->
+	<xsd:complexType name="TPControl_Action">
+		<xsd:complexContent>
+			<xsd:extension base="act:ValidAction">
+				<xsd:sequence/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- -->	
+	<xsd:element name="aFTPCreateAction" type="tns:FTP_CreateAction"/>
+	<xsd:complexType name="FTP_CreateAction">
+		<xsd:complexContent>
+			<xsd:extension base="tns:TPControl_Action">
+				<xsd:sequence>
+					<xsd:element name="verb" type="xsd:string" fixed="CREATE"/>
+					<xsd:element name="resourceType" type="xsd:string" fixed="FTP"/>
+					<xsd:element name="createData" type="tpc:FloatingTerminationPointCreateDataType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- -->
+	<xsd:complexType name="GTP_CreateAction">
+		<xsd:complexContent>
+			<xsd:extension base="tns:TPControl_Action">
+				<xsd:sequence>
+					<xsd:element name="verb" type="xsd:string" fixed="CREATE"/>
+					<xsd:element name="resourceType" type="xsd:string" fixed="GTP"/>
+					<xsd:element name="createData" type="tpc:GroupTerminationPointCreateDataType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- -->
+	<xsd:complexType name="TPPool_CreateAction">
+		<xsd:complexContent>
+			<xsd:extension base="tns:TPControl_Action">
+				<xsd:sequence>
+					<xsd:element name="verb" type="xsd:string" fixed="CREATE"/>
+					<xsd:element name="resourceType" type="xsd:string" fixed="TPPool"/>
+					<xsd:element name="data" type="tpc:TerminationPointPoolCreateDataType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- -->
+	<xsd:complexType name="TP_setTerminationPointData">
+		<xsd:complexContent>
+			<xsd:extension base="tns:TPControl_Action">
+				<xsd:sequence>
+					<xsd:element name="verb" type="xsd:string" fixed="SET"/>
+					<xsd:element name="resourceType" type="xsd:string" fixed="TP"/>
+					<xsd:element name="data" type="tpdata:TerminationPointDataType"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+</xsd:schema>
