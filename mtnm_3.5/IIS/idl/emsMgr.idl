@@ -1309,8 +1309,66 @@ in boolean sNPListRequested,
          out globaldefs::NamingAttributesIterator_I nameIt)
         raises(globaldefs::ProcessingFailureException);
 
+
+  /**
+   * <p>This allows an NMS to request EMS to store history alarm data into a 
+   * file on EMS Server, and NMS can pull it in desired time.
+   * these alarm are under the control of this EMS (both those raised by 
+   * the NEs and those raised by the EMS itself). Some alarms may be filtered 
+   * out (excluded) by specifying their probable causes or severities.</p>
+   * 
+   * <p>The result of this operation is independent of the filtering set up by 
+   * the NMS for the notification service. Alarms which ASAP assigned severity 
+   * is "AS_NONALARMED" should not be reported by this operation.</p>
+   *
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * this operation uses an iterator. See
+   * <a href=../../../supportingDocumentation/SD1-15_iterators.pdf >SD1-15 iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   * <p>In order to allow the NMS to get notification when file in EMS is ready 
+   * to be pull, a new notification type was introduced. See
+   * <a href=../../../supportingDocumentation/SD1-26_OMGServicesUsage.pdf >SD1-26 OMGServices Usage</a>
+   * for detail information on "NT_PULL_FILE_TRANSFER_STATUS".</p>
+   * <br>globaldefs::NamingAttributes_T nameList: The object list of Alarm data, 
+   * for example: EMS, ME etc. 
+   * <br>string taskname: Specifies the task name of the operation by the NMS. 
+   * The NMS need to ensure the uniqueness of the task name.
+   * <br>string compressType: Indicates if the history alarm file was compressed, 
+   * and in what format, (NO_COMPRESSION, GZIP).
+   * <br>string packingType: Indicates if the history alarm data was packed in 
+   * file, and defined packing algrithom, (NO_PACKING, ZIP, TAR)
+   * <br>globaldefs::Time_T startTime: The start time of alarm raiase, only Alarm 
+   * that happens at or after the startTime will be filter and save as file.
+   * <br>globaldefs::Time_T endTime: The end time of alarm raise, only Alarm that 
+   * happens at or before the endTime will be filter and save as file.
+   * <br>notifications::ProbableCauseList_T excludeProbCauseList: The list of 
+   * probable causes to exclude (for which events should not be reported).
+   * <br>notifications::PerceivedSeverityList_T excludeSeverityList: List of 
+   * severities to exclude from the output event list.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
+   * <br>
+   **/
+
+
+   void getHistoryAlarmDataByPull(
+         in globaldefs::NamingAttributesList_T nameList,
+         in string taskName,
+         in string compressType,
+         in string packingType,
+         in globaldefs::Time_T startTime,
+         in globaldefs::Time_T endTime,
+         in notifications::ProbableCauseList_T excludeProbCauseList,
+         in notifications::PerceivedSeverityList_T excludeSeverityList) 
+        raises(globaldefs::ProcessingFailureException);	
+
     };
- 
+
 };
 
 #endif
