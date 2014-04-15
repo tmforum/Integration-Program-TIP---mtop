@@ -1,0 +1,566 @@
+#ifndef mLSNPPLink_idl
+#define mLSNPPLink_idl
+// ********************************
+// *                            *
+// * mLSNPPLink.idl             *
+// *                            *
+// ********************************
+
+//Include list
+#include "globaldefs.idl"
+#include "transmissionParameters.idl"
+#include "common.idl"
+#include "mLSNPP.idl"
+
+
+#pragma prefix "mtnm.tmforum.org"
+
+  /** 
+   * <a href=../../../supportingDocumentation/SD1-27_Overview_NML-EML_Interface.pdf >SD1-27 Overview of 
+   * NML-EML interface</a>
+   * <p>This module contains the definition of the mLSNPPLink_T structure
+   * of the NML-EML interface.</p>
+   * <p>See
+   * <a href=../../../supportingDocumentation/SD1-21_MappingIASS.pdf >SD1-21 
+   * Mapping IA - SS</a>, 
+   * 
+   * 
+   * <a href=../../../supportingDocumentation/SD1-45_ASONControlPlaneManagement-Primer.pdf > 
+   * SD1-45_ASONControlPlaneManagement-Primer</a> and 
+   * <a href=../../../supportingDocumentation/SD1-46_ASONControlPlaneManagement-Scenarios.pdf > 
+   * SD1-46_ASONControlPlaneManagement-Scenarios</a> for further details.</p>
+   * 
+   * <h5> Version 3.5. </h5>
+   **/
+
+
+module mLSNPPLink
+{
+
+  /**
+   * <p>This represents the Signalling Protocol to be used. Potential values are: 
+   * "CRLDP", "RSVP", "PNNI" etc.</p>
+   **/ 
+   typedef string SignallingProtocol_T;
+
+
+  /**
+   * The SNPP Link interconnects a pair of SNPPs in different subnetworks that
+   * are part of the same layer network.
+   *
+   * string <b>SNPPLinkId</b>: This is the Control Plane identifier for the SNPPLink.
+   *
+   * SNPP_T <b>aEnd</b>: It identifies the SNPP of type CP which originates
+   * the link. 
+   *
+   * SNPP_T <b>zEnd</b>: It identifies the SNPP of type CP which terminates
+   * the link. 
+
+   **/
+   struct SNPPLink_T
+   {
+    string SNPPLinkId;
+    mLSNPP:: SNPP_T aEnd;
+    mLSNPP:: SNPP_T zEnd;
+   };
+
+  /** 
+   * The List of SNPPLink_T. It is a list of the SNPP Links across the levels of routing hierarchy. This shall always include the details for the SNPP Links in the relevant layer directly represented by the MLSNPPLink and may also include details for the subordinate SNPP Links if the information is available to the EMS. The routing level is identified via the Routing Area IDs of end SNPPs.
+   **/
+   typedef sequence<SNPPLink_T> SNPPLinkList_T;
+
+
+   /**
+   * This structure provides a layerRate and the list of SNPPLinks at the
+   * particular layer rate.
+   **/
+   struct LayeredSNPPLink_T
+   {
+    transmissionParameters::LayerRate_T layerRate;
+    SNPPLinkList_T sNPPLinkList;
+   };
+
+  /** 
+   * The List of LayeredSNPPLink_T. It is a list of the SNPP Links at a particular layer. A given layerRate value can appear only once in this list.
+   **/
+   typedef sequence<LayeredSNPPLink_T> LayeredSNPPLinkList_T;
+
+
+  /**
+   * <p>This attribute represents the type of interface in which the MLSNPPLink
+   * participates. Possible values are: UNI, I-NNI, internal E-NNI,
+   * external E-NNI and "UNSPECIFIED where External ENNI means that the
+   * link is at the edge of the NMS domain.</p>
+   **/ 
+   typedef string InterfaceType_T;
+
+  /**
+   * <p>
+   * This structure represents the available capacity (i.e. currently could be used to support new connections)
+   * at the time of enquire.</p> 
+   **/
+   typedef string Capacity_T;
+
+  /**
+   * This structure represents the available capacity of the link at a specific 
+   * layer rate. 
+   **/
+   struct LayeredCapacity_T
+   {
+    transmissionParameters::LayerRate_T layerRate;
+    Capacity_T capacity; 
+   };
+
+
+  /**
+   * <p>This represents the available capacity of a Multi-Layer SNPP Link, in
+   * terms of the capacity for each of the layer rates supported (i.e., the
+   * layer rate of the constituent SNPP links).
+   **/
+   typedef sequence<LayeredCapacity_T> AvailableCapacity_T;
+
+
+  /** 
+   * <p>The MLSNPPLink (Multi-Layer SNPP Link) structure is the abstraction 
+   * of a set of control plane SNPP Links in different layered networks offered
+   * by the EMS to the NMS. Note that multi-layer does not imply client-server
+   * relationship, but flexible mapping at the same switching layer.</p>
+   *
+   * <p>The MLSNPPLink represents the relationship between a pair of MLSNPPs.
+   * The MLSNPPLink represents a set (>0) of SNPP Links. The SNPP link
+   * represents the relationship between a pair of SNPPs in different
+   * routing areas that are part of the same layer network. For more details see
+   * <a href=../../../supportingDocumentation/ SD1-45_ASONControlPlaneManagement-Primer.pdf > SD1-45_ASONControlPlaneManagement-Primer</a> </p>
+   *
+   * string <b>userLabel</b>:
+   * <br>The userLabel is provisionable by NMS. This attribute can be set by NMS
+
+   * through the Common_I interface service
+   * common::Common_I::setUserLabel(). It is a read/write attribute.<br>
+   * 
+   * string <b>nativeEMSName</b>:
+   * <br>The name represents how the MLSNPPLink is refered to on EMS displays. Its
+   * aim is to provide a "nomenclature bridge" the aid relating information
+   * presented on NMS displays to EMS displays (via GUI cut through).
+   * The native name is defaulted to a NULL string. However, this could
+   * be used by the EMS for its implementation dependent purpose.<br>
+   *
+   * string <b>owner</b>:
+   * <br>This attribute can be set the NMS through the Common_I interface 
+   * service common::Common_I::setOwner(). It is a read/write attribute.<br>
+   *
+   * globaldefs::ConnectionDirection_T <b>direction</b>:
+   * <br>This attribute represent the directionality of the LayeredSNPPLink that
+   * are part of the MLSNPPLink.
+   * <br>
+   *
+   * globaldefs::NamingAttributes_T <b>aMLRAName</b>
+   * Identifies the MLRA name at the A end. If the information is not available, the field is left empty. This may occur e.g. in case of UNSPECIFIED, or External E-NNI or UNI interface types.
+   *
+   * globaldefs::NamingAttributes_T <b>zMLRAName</b>
+   * Identifies the MLRA name at the Z end. If the information is not available, the field is left empty. This may occur e.g. in case of UNSPECIFIED, or External E-NNI or UNI interface types.
+   * string <b>aTNAName</b> The TNAName of the a-end of the MLSNPPLink.
+   * string <b>zTNAName</b> The TNAName of the z-end of the MLSNPPLink.
+   * string <b>aTNAGroupName</b> The TNAGroupName of the a-end of the MLSNPPLink.
+   * <br>string <b>zTNAGroupName</b> The TNAGroupName of the z-end of the MLSNPPLink.
+   * LayeredSNPPLinkList_T <b>sNPPLinkList</b>:
+   * <br> The list of multilayer SNPP links. 
+   * <br>
+   * InterfaceType_T <b>interfaceType</b>:
+   * <br>Defines the type of interface in which the link participates. Four
+   * values are possible: UNI, I-NNI, internal E-NNI, external E-NNI
+   * and UNSPECIFIED where External E-NNI means that the link is at the edge
+   * of the NMS domain.<br>
+   * <br>
+   * globaldefs::NVSList_T signallingParameters: It specifies the parameters to
+   * be used for signalling.
+   *
+   * string <b>signalingControllerIdentifier</b>:
+   * <br>Attribute that provides the Identifier of the signalling controller that  
+   * the MLSNPP link is assigned to.<br>
+   * 
+   * string <b>signallingProtocol</b>:
+   * <br> Attribute that represents the signalling protocol used for the 
+   * link.<br>
+   *   
+   * boolean <b>signallingEnabled</b>:
+   * <br>Specifies whether signaling is enabled in the link.  The operation will
+   * fail if the signaling is disabled.<br>
+   *
+   * globaldefs::NVSList_T <b>cost</b>:
+   * <br>linkCost: It represents a vector of one or more metrics, each of which
+   * indicates the relative desirability of this link over another
+   * during path selection<br>
+   *
+   * boolean <b>discovered</b>:
+   * <br>Optional attribute which represents if the link is discovered or 
+   * provisioned.<br>
+   *
+   * string <b>availability</b>:
+   * <br>Optional attribute which represents a vector of one or more 
+   * availability factors for the MLSNPPLink.  Availability may be represented 
+   * in different ways between domains and within domains.  Within domains 
+   * it may be used to represent a survivability capability of the
+   * MultiLayerSNPPlink. <br>
+   *
+   * string <b>linkSRG</b>: Sequence of {risk type, and sequence of values}.
+   * The format of the LinkSRG is the same as that of the "SRG" additional Info attribute. See <a href=../../../supportingDocumentation/SD1-1_AdditionalInfoUsage.pdf >SD1-1 
+   * Additional Info Usage</a> for further information on the format.
+   * 
+   * Note: The behavior when routing a connection that specifies a risk type
+   * that is not present in the linkSRG for one or more links is dictated by the control plane implementation.  
+   *
+   * globaldefs::NVSList_T <b>additionalInfo</b>:
+   * <br>This attribute allows the communication from the EMS to the NMS of  
+   * additional information which is not explicitly modelled. E.g.:
+   * See <a href=../../../supportingDocumentation/SD1-1_AdditionalInfoUsage.pdf >SD1-1 
+   * Additional Info Usage</a> for further information on usage. This may be an
+   * empty list<br>
+   **/
+   struct MultiLayerSNPPLink_T
+   {
+    globaldefs::NamingAttributes_T name;
+    string userLabel;
+    string nativeEMSName;
+    string owner;
+    globaldefs::ConnectionDirection_T direction;
+    globaldefs::NamingAttributes_T aMLRAName;
+    globaldefs::NamingAttributes_T zMLRAName;
+    string aTNAName;
+    string zTNAName;
+    string aTNAGroupName;
+    string zTNAGroupName;
+    LayeredSNPPLinkList_T sNPPLinkList;
+    InterfaceType_T interfaceType;
+    globaldefs::NVSList_T signallingParameters;
+    string signallingControllerIdentifier;
+    SignallingProtocol_T signallingProtocol;
+    boolean signallingEnabled;
+    globaldefs::NVSList_T cost;
+    boolean discovered;
+    globaldefs::NVSList_T availability;
+    string linkSRG;   
+    globaldefs::NVSList_T additionalInfo;
+   };
+
+
+  /**
+   * <p>Sequence of MLSNPPLink_T.<p>
+   **/
+   typedef sequence<MultiLayerSNPPLink_T> MLSNPPLinkList_T;
+
+  /**
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * iterators are used.</p>
+   * <p>See <a href=../../../supportingDocumentation/SD1-15_iterators.pdf >SD1-15 iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   **/
+
+  interface MLSNPPLinkIterator_I
+    {
+	boolean next_n(in unsigned long how_many,
+        out MLSNPPLinkList_T mLSNPPLink)
+       raises (globaldefs::ProcessingFailureException);
+
+      unsigned long getLength()
+       raises (globaldefs::ProcessingFailureException);
+
+   	void destroy()
+       raises (globaldefs::ProcessingFailureException);
+    };
+
+
+  /**
+   * <p>The mLSNPPLinkMgr_I is used to gain access to MLSNPP Links and
+   * their operations.</p>
+   *
+   * <p>A handle to an instance of this interface is gained via the
+   * emsSession::EmsSession_I::getManager() operation in Manager.</p>
+   **/
+
+  interface MLSNPPLinkMgr_I  : common::Common_I
+  {
+
+
+  /** 
+   * <p>This service returns a MLSNPPLink capacity in terms of a count of
+   * connections available on a per layer basis. If a layer rate is not
+
+   * specified then the EMS returns the available capacity for each rate that
+   * is supported by the entity.</p>
+   *
+   * <br>globaldefs::NamingAttributes_T <b>mLSNPPLinkName</b>: The name of the MLSNPP
+   * Link for which to retrieve the available capacity.
+
+   * <br>transmissionParameters::LayerRate_T <b>layerRate</b>: The layer 
+   * rates for which to retrieve the MLSNPP Link capacity.
+   * <br>mLSNPPLink::AvailableCapacity_T <b>availableCapacity</b>: The capacity
+   * which is available in the link.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
+   * EXCPT_INVALID_INPUT - Raised when mLSNPPLinkName does not reference a 
+   *  mLSNPP object or any of the input parameters is not valid<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when mLSNPPLinkName references a MLSNPPLink
+   *  object that does not exist<br>
+   * EXCPT_NE_COMM_LOSS - The EMS is unable to communicate with the Control
+   *  Plane and communication is required to complete the request.<br>
+   *
+   **/
+   void getAvailableCapacity(	
+         in globaldefs::NamingAttributes_T mLSNPPLinkName,
+         in transmissionParameters::LayerRate_T layerRate,
+         out AvailableCapacity_T availableCapacity) 
+        raises(globaldefs::ProcessingFailureException);
+  
+
+  /** 
+   * <p>This operation allows the NMS requests the EMS to assign a MLSNPP
+   * Link to a signaling controller. For this operation to be successful, 
+   * the link must not be associated with a Signalling Controller. 
+   * Hence the Signalling Controller Identifier in the MLSNPP Link must be an empty string 
+   * at the beginning of the operation. In case the link is already 
+   * associated to a signalling controller, the link needs to be disabled
+   * and then de-associated to the signalling controller.</p>
+   *
+   * <br>NamingAttributes_T mLSNPPLinkName: the name of the 
+   * MLSNPPLink to be assigned to the signaling controller.
+   * <br>string signallingControllerID:
+   * The Identifier of the SignalingController for which the MLSNPPLink 
+   * to be assigned.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - The entire request is not supported by the EMS<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when any input parameter is syntactical 
+   *  incorrect (e.g. MLSNPPLinkName does not refer to an MLSNPPLink
+   *  object), or identifies an object of the wrong type or is out of range.
+   *  <br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when MLSNPPLinkName
+   *  references an object that does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when: The EMS is unable to communicate with the
+   * Control Plane and/or the Signaling Controller and communication is required
+   * to complete the request<br>
+   * EXCPT_UNABLE_TO_COMPLY - The EMS rejects the request based on its own 
+   *  criteria: <ul>
+   *  <li>The specified Signaling Controller is not known to the EMS/Control Plane.</li>
+   * <li>The specified MLSNPP Link is not a UNI.</li>
+   *  <li>the MLSNPP Link is already associated with a signalling controller</li>
+   * <br>
+   **/
+   void assignSignallingController(
+         in globaldefs::NamingAttributes_T mLSNPPLinkName,
+         in string signallingControllerIdentifier)
+        raises(globaldefs::ProcessingFailureException);
+   
+
+  /** 
+   * <p>This operation allows the NMS requests the EMS to deassign a MLSNPP  
+   * Link from a signaling controller.</p>
+   * As a consequence of this operation the signalling controller identifier 
+   * in the MLSNPP Link is set to an empty string.
+   * 
+   * <br>globaldefs::NamingAttributes_T MLSNPPLinkName: 
+   * Name of the MLSNPP Link to be deassigned from the Signalling Controller.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when any input parameter is syntactical 
+   *  incorrect (i.e. MLSNPPLinkName does not refer to an MLSNPPLink
+   *  object)
+   *  <br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when MLSNPPLinkName references an
+   *  object that does not exist<br>
+   * EXCPT_NE_COMM_LOSS - The EMS is unable to communicate with the Control
+   *  Plane and communication is required to complete the request<br>
+   * EXCPT_UNABLE_TO_COMPLY - The EMS rejects the request based on its own
+   *  criteria. E.g. the signaling on the MLSNPPLink is enabled.</li>
+   * <br>
+   **/
+   void deassignSignallingController(
+         in globaldefs::NamingAttributes_T mLSNPPLinkName)
+        raises(globaldefs::ProcessingFailureException);
+
+  /**
+   * This operation allows the NMS requests the EMS to select the signaling 
+   * protocol and parameters to be used by the signaling interface associated 
+   * with a specific MLSNPP Link.
+   *
+   * <br>globaldefs::NamingAttributes_T MLSNPPLinkName:
+   * Name of the MLSNPP Link for which the signalling protocol and
+   * parameters apply.
+   * <br>SignallingProtocol_T signallingProtocol: The signalling protocol.
+   * <br>globaldefs::NVSList_T signallingParameters: List of signalling 
+   * controller parameters to be set.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when any input parameter is syntactical 
+   *  incorrect; e.g. MLSNPPLinkName does not refer to a MLSNPPLink object,
+   *  or any field in signalingControllerParameters is invalid <br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when MLSNPPLinkName 
+   *  references an object that does not exist<br>
+   * EXCPT_NE_COMM_LOSS - The EMS is unable to communicate with the Control
+   * Plane and communication is required to complete the request<br>
+   * EXCPT_UNABLE_TO_COMPLY - The EMS rejects the request based on its own 
+   *  criteria which may include: <ul>
+   *  <li>No signaling controller is associated with MLSNPP Link.</li>
+   *  <li>The specified protocol or parameter is not supported.</li>
+   *  <li>The MLSNPP is not a UNI. </li>
+   *  <li>The signalling is enabled. <li></ul>
+   * <br> 
+   **/
+
+  void setSignallingProtocolAndParameters(
+         in globaldefs::NamingAttributes_T mLSNPPLinkName,
+         in SignallingProtocol_T signallingProtocol,
+         in globaldefs::NVSList_T signallingParameters)
+        raises(globaldefs::ProcessingFailureException);
+
+  /** 
+   * <p>This operation allows the NMS requests the EMS to assign a TNA Name(s) 
+   * to one or more components of a specified MLSNPPLink. This operation also allows the unsetting of TNANames by providing an empty
+   * value in the TNA Names. The TNA Names assigned by this operation will
+   * overwrite existing TNA Names.</p>
+   * <br>globaldefs::NamingAttributes_T <b>mLSNPPLinkName</b>: The name of the MLSNPPLink.
+   * <br>mLSNPP::SNPTNAList_T sNPTNAList: The List of SNP Ids and the
+   * corresponding TNA Names to be set. 
+   *
+   * <br>mLSNPP::SNPPTNAPairList_T sNPPTNAPairList: The List of SNPP Ids and the corresponding
+   * TNA Names. 
+   * <br>string <b>aTNAName</b>: The TNAName to be assigned to the a-end of the MLSNPPLink.
+   * <br>string <b>zTNAName</b>: The TNAName to be assigned to the z-end of the MLSNPPLink.
+   * <br>string <b>aTNAGroupName</b>: The TNAGroupName to be assigned to the a-end of the MLSNPPLink.
+   * <br>string <b>zTNAGroupName</b>: The TNAGroupName to be assigned to the z-end of the MLSNPPLink.
+   * <br> MLSNPPLink_T <b>mLSNPPLink</b>: The MLSNPPLink with TNAs set.
+   *
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
+   * EXCPT_INVALID_INPUT - Raised when any input parameter is syntactical 
+   *  incorrect (e.g. mLSNPPLinkName does not refer to an MLSNPPLink object,
+   *  or TNA is not valid).<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when mLSNPPLinkName references an object
+   *  that does not exist<br>
+   * EXCPT_NE_COMM_LOSS - The EMS is unable to communicate with the Control
+   *  Plane and communication is required to complete the request<br>
+   **/
+   void setTNANameForMLSNPPLinkEnd(
+         in globaldefs::NamingAttributes_T mLSNPPLinkName,
+         in mLSNPP::SNPTNADataList_T sNPTNADataList,
+         in mLSNPP::SNPPTNAPairList_T sNPPTNAPairList,
+         in string aTNAName,
+         in string zTNAName,
+         in string aTNAGroupName,
+         in string zTNAGroupName,
+         out MultiLayerSNPPLink_T mLSNPPLink)
+         raises(globaldefs::ProcessingFailureException);
+
+
+ /**  
+   * <p>This operation allows the NMS requests the EMS to modify the 
+   * signaling parameters to be used on the signaling interface
+   * associated with a specific MLSNPP Link. This operation can be 
+   * done when signalling is enabled or disabled. </p>
+   * 
+   * <br>globaldefs::NamingAttributes_T MLSNPPLinkName:
+   * Name of the MLSNPP Link for which the signalling protocol are being 
+   * modified.
+   * <br globaldefs::NVSList_T signallingParameters:
+   * List of signalling controller parameters to be modified.
+   *
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service or the
+   *  request with the specified input parameters is not supported.<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when any input parameter is syntactical 
+   *  incorrect; e.g. MLSNPPLinkName does not refer to a MLSNPPLink object,
+   *  or any field in signalingControllerParameters is invalid <br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when MLSNPPLinkName references an 
+   *  object that does not exist<br>
+   * EXCPT_NE_COMM_LOSS - The EMS is unable to communicate with the Control
+   * Plane and communication is required to complete the request<br>
+   * EXCPT_UNABLE_TO_COMPLY - The EMS rejects the request based on its own 
+   *  criteria: <ul>
+   *  <li> A Signaling Controller is not assigned to the MLSNPP Link.</li>
+   *  <li>The assigned Signaling Controller does not accept provisioning the
+   *  specific protocol or parameters </li>
+   *  <li>The MLSNPP is not a UNI. </li></ul> 
+   **/ 
+   void modifySignallingProtocolParameters(
+         in globaldefs::NamingAttributes_T mLSNPPLinkName,    
+         inout globaldefs::NVSList_T signallingParameters)
+        raises(globaldefs::ProcessingFailureException);
+
+  /**
+   * <p>This operation allows the NMS to request the EMS to enable 
+   * signalling associated with a specific MLSNPP Link.</p> 
+   *
+   * <br>globaldefs::NamingAttributes_T MLSNPPLinkName: Name of
+   * the MLSNPP Link for which to enable the signalling.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service.<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when any input parameter is syntactical 
+   *  incorrect or identifies an object of the wrong type or is out
+   *  of range.<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when the MLSNPPLinkName 
+   *  references an object that does not exist<br>
+   * EXCPT_NE_COMM_LOSS - The EMS is unable to communicate with the Control
+   * Plane and communication is required to complete the request<br>
+   * EXCPT_UNABLE_TO_COMPLY - Raised when<ul>
+   *  <li>- A Signaling Controller is not assigned to the MLSNPP Link</li>
+   *  <li>- The specified MLSNPP Link is not a UNI</li>
+   *  <li>- The signaling protocol has not been specified</li></ul>
+   * <br>
+   **/ 
+   void enableSignalling(	
+         in globaldefs::NamingAttributes_T mLSNPPLinkName)
+        raises(globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>This operation allows the NMS to request the EMS to disable the
+   * signaling for a specific MLSNPP Link.</p>
+   * 
+   * <br>globaldefs::NamingAttributes_T MLSNPPLinkName: 
+   * Name of the MLSNPP Link for which to disable the signalling.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException<br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if EMS cannot support this service.<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal failure<br>
+   * EXCPT_INVALID_INPUT - Raised when any input parameter is syntactical 
+   *  incorrect or identifies an object of the wrong type or is out of range <br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when MLSNPPLinkName references an 
+   *  object that does not exist<br>
+   * EXCPT_NE_COMM_LOSS - The EMS is unable to communicate with the Control
+   * Plane and communication is required to complete the request<br>
+   * EXCPT_UNABLE_TO_COMPLY - The EMS rejects the request based on its own 
+   *  criteria:<ul> 
+   *	<li>- A Signaling Controller is not assigned to the MLSNPP Link</li>
+   *  <li>- The specified MLSNPP Link is not a UNI</li>
+   *  <li>- The signaling is not enabled</li>
+   * <br>
+   **/ 
+   void disableSignalling(
+         in globaldefs::NamingAttributes_T mLSNPPLinkName)
+        raises(globaldefs::ProcessingFailureException);
+
+
+   };
+
+};
+
+#endif
+
