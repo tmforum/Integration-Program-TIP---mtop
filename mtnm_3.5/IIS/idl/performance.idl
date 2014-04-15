@@ -1131,8 +1131,6 @@ module performance
    *  and cannot determine the reason it could not comply,
    *  it may raise this exception. <br>
    **/
-
- 
    void getHistoryPMData (
          in Destination_T destination, 
          in string userName, 
@@ -1733,75 +1731,7 @@ module performance
          out TCAParameterProfileIterator_I tcaParameterProfileIt) 
 	  raises(globaldefs::ProcessingFailureException);
 
-
-  /**
-   * <p>This operation instructs the EMS to store history PM data into 
-   * a file, and to send notify when file was ready, and wait for OSS 
-   * to Pull. Within the request a list of TP/layerRate measurement points 
-   * and a time frame are specified. For each measurement point, the 
-   * granularity (15min, 24h, NA, etc) and location (nearEnd and/or farEnd  
-   * and/or bidirectional) may be specified. A filtered set (scoped 
-   * by the input parameter pmParameters) of PM parameters collected for 
-   * a particular TP/layerRate measurement point for the granularity,
-   * location and time window specified is made available.</p>
-   *
-   * <p>Current data will generally be marked as incomplete, as the 
-   * current bin is not completed.
-   * If no PM data are available as specified, an empty list is returned.</p>
-   * 
-   * <p>This operaton enable OSS centralized control on the sequence to 
-   * get performance for huge network, it can make better usage of the resrouce, 
-   * for example, OSS can select spare time to pull performance data</p>
-   * 
-   * <p>In order to allow the NMS to get notification when file in EMS is ready 
-   * to be pull, a new notification type was introduced. See
-   * <a href=../../../supportingDocumentation/SD1-26_OMGServicesUsage.pdf >SD1-26 OMGServices Usage</a>
-   * for detail information on "NT_PULL_FILE_TRANSFER_STATUS".</p>
-   *
-   * <br>string taskname: Specifies the task name of the operation by the NMS. 
-   * The NMS need to ensure the uniqueness of the task name.
-   * <br>string compressType: Indicates if the History performance file was 
-   * compressed, in what format(NO_COMPRESSION, GZIP).
-   * <br>string packingType: Indicates if the Performance data was packed 
-   * in file, and defined packing algrithom, (NO_PACKING, ZIP, TAR)
-   * <br>globaldefs::Time_T startTime: Specifies the start of the time window 
-   * for collection (included) 
-   * <br>globaldefs::Time_T endTime: Specifies the end of the time window for 
-   * collection (excluded).   
-   * <br>PMTPSelectList_T pmTPSelectList: list of measurement points for which
-   * to get the PM data. 
-   * <br>PMParameterNameList_T pmParameters: specifies which PM parameters 
-   * within the scope of the pmTPSelectList shall be returned.
-   * An empty list means to return all supported parameters.
-   * The returned parameters are best effort, i.e. among the parameters 
-   * specified only the subset of supported parameters will be returned.
-   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
-   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
-   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
-   *  failure<br>
-   * EXCPT_INVALID_INPUT - Raised when pmTPSelectList is empty or contains 
-   *  invalid data<br>
-   * EXCPT_NE_COMM_LOSS - Raised when communications to the Managed Element 
-   *  is lost<br>
-   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
-   *  and cannot determine the reason it could not comply,
-   *  it may raise this exception. <br>
-   * <br>
-   **/
-
-
-   void getHistoryPMDataByPull (
-         in string taskName,
-         in string compressType,
-         in string packingType,	 
-         in globaldefs::Time_T startTime,
-         in globaldefs::Time_T endTime,	 
-         in PMTPSelectList_T pmTPSelectList,
-         in PMParameterNameList_T pmParameters)
-        raises(globaldefs::ProcessingFailureException);	
-        
-   };  
-
+   };
 };
 #endif
 
