@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ResourceTestManagement - Copyright TeleManagement Forum 2014 -->
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.tmforum.org/mtop/rt/wsdl/rtpc/v1-0" name="mTOP-ResourceTestProvisioningControl-V1-0" targetNamespace="http://www.tmforum.org/mtop/rt/wsdl/rtpc/v1-0">
+	<wsdl:import namespace="http://www.tmforum.org/mtop/rt/wsdl/rtpc/v1-0" location="ResourceTestProvisioningControlPortType.wsdl"/>
+	<wsdl:documentation>
+		<p>DDP: ResourceTestManagement</p>
+		<p>Module: Resource Test Provisioning Control Service Interface WSDL JMS Module</p>
+		<p>Description: This module contains all the mTOP ResourceTestProvisioningControl Service Interface WSDL definitions for the Web Service deployment profile with SOAP/JMS binding.</p>
+		<p>Version: 1.0</p>
+	</wsdl:documentation>
+	<wsdl:binding name="ResourceTestProvisioningControlSoapJmsBinding" type="tns:ResourceTestProvisioningControl">
+		<wsdl:documentation>
+			<p>SOAP JMS binding definitions of the operations of the ResourceTestProvisioningControl portType (interface)</p>
+		</wsdl:documentation>
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/jms"/>
+		<!-- create and activate flow domain fragment with test operation -->
+		<wsdl:operation name="createAndActivateFlowDomainFragmentWithTest">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:header message="tns:createAndActivateFlowDomainFragmentWithTestRequest" part="mtopHeader" use="literal"/>
+				<soap:body parts="mtopBody" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="tns:createAndActivateFlowDomainFragmentWithTestResponse" part="mtopHeader" use="literal"/>
+				<soap:body parts="mtopBody" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="createAndActivateFlowDomainFragmentWithTestException">
+				<soap:fault name="startTestException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+			<!-- create and activate subnetwork connection with test operation -->
+		<wsdl:operation name="createAndActivateSubnetworkConnectionWithTest">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:header message="tns:createAndActivateSubnetworkConnectionWithTestRequest" part="mtopHeader" use="literal"/>
+				<soap:body parts="mtopBody" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="tns:createAndActivateSubnetworkConnectionWithTestResponse" part="mtopHeader" use="literal"/>
+				<soap:body parts="mtopBody" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="createAndActivateSubnetworkConnectionWithTestException">
+				<soap:fault name="startTestException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="ResourceTestProvisioningControlJms">
+		<wsdl:documentation>
+			<p>Example of the ResourceTestProvisioningControl WSDL Service definition as a deployment example of this mTOP Service Interface. It is expected to be modified to match the specific deployment configuration in a service provider's CCV.</p>
+		</wsdl:documentation>
+		<wsdl:port name="ResourceTestProvisioningControlSoapJms" binding="tns:ResourceTestProvisioningControlSoapJmsBinding">
+			<soap:address location="jms://aserver/mtosi/ResourceTestProvisioningControl"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
