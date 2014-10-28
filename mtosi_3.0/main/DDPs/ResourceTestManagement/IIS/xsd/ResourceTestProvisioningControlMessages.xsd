@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ResourceProvisioning - Copyright TeleManagement Forum 2014 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/rt/xsd/rtp/v1" xmlns:fd="http://www.tmforum.org/mtop/nrf/xsd/fd/v1" xmlns:fdfr="http://www.tmforum.org/mtop/nrf/xsd/fdfr/v1" xmlns:fdfrroute="http://www.tmforum.org/mtop/nrf/xsd/fdfrroute/v1" xmlns:mfd="http://www.tmforum.org/mtop/nrf/xsd/mfd/v1" xmlns:mfdfr="http://www.tmforum.org/mtop/nrf/xsd/mfdfr/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:itu="http://www.tmforum.org/mtop/nrb/xsd/itu/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lp="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" xmlns:tpdata="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" xmlns:crcd="http://www.tmforum.org/mtop/nrb/xsd/crcd/v1" xmlns:crmd="http://www.tmforum.org/mtop/nrb/xsd/crmd/v1" xmlns:rsctest="http://www.tmforum.org/mtop/rt/xsd/rsctest/v1" targetNamespace="http://www.tmforum.org/mtop/rt/xsd/rtp/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: ResourceProvisioning</p>
+			<p>Module:  Message XSD Module</p>
+			<p>Description: This module contains the XML Schema type definitions of all Resource Test Provisioning SI XML message structures.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ================ -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/itu/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/ITU-T-Definitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayeredParameters.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/fd/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Fd.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/fdfr/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/FDFr.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/fdfrroute/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/FDFrRoute.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/mfd/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/MFD.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/mfdfr/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/MFDfr.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/CommonTypes.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/TpData.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/crcd/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceCreateDataType.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/crmd/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceModifyDataType.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/rt/xsd/rsctest/v1" schemaLocation="ResourceTest.xsd"/>
+	<!-- ================ -->
+	<xsd:element name="createAndActivateFlowDomainFragmentRequestWithTest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the createAndActivateFlowDomainFragment operation</p>
+				<p>This operation creates a Flow Domain Fragment (FDFr) within the Flow Domain (FD).
+        The target OS creates all necessary Flow Points and Matrix Flow Domain Fragments comprising the FDFr.
+        The request is successful if at least two edge Flow Points can be created.
+        In case not all requested (edge) Flow Points can be connected when the FDFr is created, the target OS returns
+        the list of the not connectable Connectionless Port Termination Points (CPTPs) in the success reply.
+        If internal CPTPs are provided by the requesting OS and if it is not possible to include all provided internal CPTPs
+        to the route of the FDFr, the operation will be rejected.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="containingFdRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>The name of the Flow Domain containing the Flow Domain Fragment.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="createData" type="tns:FlowDomainFragmentWithTestCreateDataType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>Structure describing the FDFr structure to be created. Setting of
+            connectionless parameters is best effort (except where specified otherwise 
+            for a particular parameter).</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="connectivityRequirement" type="fd:ConnectivityRequirementType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>For a "connectivity-aware" Target OS, this parameter shall identify 
+            the requested operation mode in case not all FPs have potential connectivity 
+            to one another. If the Target OS is not connectivity-aware, this parameter is ignored.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="aEndRefList" type="nam:NamingAttributeListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>A list of of CPTP names that delimit the FDFr and characterize 
+            its edges (entrance and/or exit points). As a result of creating the FDFr,
+            FPs are created as clients of the Fd Edge CPTPs. 
+            In case of a unidirectional 
+            FDFr this attribute contains the list of source Fd Edge CPTPs. 
+            In case of a 
+            bidirectional FDFr this attribute may be combined with the zEnd TPs 
+            attribute to obtain all the Fd Edge CPTPs that are associated to the 
+            FDFr. 
+            (N.B. For a bidirectional point to point FDFr it is suggested, but not 
+            mandatory, to put one TP in the aEnd and one in the zEnd, as with SNCs and 
+            TLs. For a multipoint FDFr, or a point-to-point FDFr that may be expanded 
+            to multipoint, it is suggested to put all the TPs in the aEnd.) </p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="zEndRefList" type="nam:NamingAttributeListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>In case of a unidirectional FDFr this attribute contains the list of 
+            sink Fd Edge CPTPs that delimit the FDFr and characterize its edges
+            (exit points). 
+            As a result of creating the FDFr, FPs are created as 
+            clients of the Fd Edge CPTPs. 
+            In case of a bidirectional FDFr this attribute 
+            may be combined with the aEnd TPs attribute to obtain all the Fd Edge CPTPs 
+            that are associated to the FDFr.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="internalTpRefList" type="nam:NamingAttributeListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>A (possibly empty) list of internal CPTP names that must be included 
+            in the route of the FDFr. As a result of creating the FDFr, 
+            FPs are created as clients of the internal CPTPs.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="mfdfrList" type="mfdfr:MatrixFlowDomainFragmentListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>An optional (possibly empty) list of MFDFrs that make up the route 
+            of the FDFr. This attribute may be omitted if the FDFr is routed by the network. 
+            As a result of creating the FDFr, MFDFrs are created in the various MFDs.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>A list of TPs and parameters to apply. The list may refer to
+            flow points that are being created during the createAndActivateFDFr request
+            or to the containing CPTPs.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="createAndActivateFlowDomainFragmentWithTestResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the createAndActivateFlowDomainFragment operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="aEndRefList" type="nam:NamingAttributeListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>A list of of CPTP names that delimit the FDFr and characterize 
+            its edges (entrance and/or exit points). As a result of creating the FDFr,
+            FPs are created as clients of the Fd Edge CPTPs. 
+            In case of a unidirectional 
+            FDFr this attribute contains the list of source Fd Edge CPTPs. 
+            In case of a 
+            bidirectional FDFr this attribute may be combined with the zEnd TPs 
+            attribute to obtain all the Fd Edge CPTPs that are associated to the 
+            FDFr. 
+            (N.B. For a bidirectional point to point FDFr it is suggested, but not 
+            mandatory, to put one TP in the aEnd and one in the zEnd, as with SNCs and 
+            TLs. For a multipoint FDFr, or a point-to-point FDFr that may be expanded 
+            to multipoint, it is suggested to put all the TPs in the aEnd.) </p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="zEndRefList" type="nam:NamingAttributeListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>In case of a unidirectional FDFr this attribute contains the list of 
+            sink Fd Edge CPTPs that delimit the FDFr and characterize its edges
+            (exit points). 
+            As a result of creating the FDFr, FPs are created as 
+            clients of the Fd Edge CPTPs. 
+            In case of a bidirectional FDFr this attribute 
+            may be combined with the aEnd TPs attribute to obtain all the Fd Edge CPTPs 
+            that are associated to the FDFr.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="internalTpRefList" type="nam:NamingAttributeListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>A (possibly empty) list of internal CPTP names that must be included 
+            in the route of the FDFr. As a result of creating the FDFr, 
+            FPs are created as clients of the internal CPTPs.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="mfdfrList" type="mfdfr:MatrixFlowDomainFragmentListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>An optional (possibly empty) list of MFDFrs that make up the route 
+            of the FDFr. This attribute may be omitted if the FDFr is routed by the network. 
+            As a result of creating the FDFr, MFDFrs are created in the various MFDs.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The list of TPs with resulting parameters.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="createdFdfr" type="fdfr:FlowDomainFragmentType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter returns the newly created Flow Domain Fragment object.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="testList" type="tns:FlowDomainFragmentTestListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The list of tests that were successfully created.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="notConnectableCptpRefList" type="nam:NamingAttributeListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The list of Connectionless Port Termination Points that could not 
+            be connected.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="parameterProblemsTpRefList" type="nam:NamingAttributeListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The list of Connectionless Port Termination Points and Flow Points FPs
+            for which only best-effort transmission parameters could not be set.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="errorReason" type="xsd:string" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter returns the error(s) if any.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="createAndActivateFlowDomainFragmentWithTestException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the createAndActivateFlowDomainFragment operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:notInValidState"/>
+						<xsd:element ref="msg:tpInvalidEndPoint"/>
+						<xsd:element ref="msg:unableToComply"/>
+						<xsd:element ref="msg:userlabelInUse"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:complexType name="FlowDomainFragmentWithTestCreateDataType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This data type represents the parameters that may be provided when creating a Flow Domain Fragment (FDFr).</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="crcd:CommonResourceCreateDataType">
+				<xsd:sequence>
+					<xsd:element name="direction" type="com:ConnectionDirectionType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>This attribute shall represent the directionality of the FDFr (bidirectional or unidirectional). Note: In the case of Ethernet, the directionality is always bidirectional.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="administrativeState" type="itu:X721.AdministrativeStateType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Indicates whether the FDFr is locked (i.e., traffic units cannot flow through the FDFr) or unlocked (i.e., traffic units are allowed to flow through the FDFr).</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element ref="lp:transmissionParameters" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>The layer rate on which connectivity is established and a related set of connectionless parameters. Refer to chapter "Connectionless Technology Parameters" of the supporting document LayeredParameters.pdf for details of the currently defined connectionless parameters.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="isFullRoute" type="xsd:boolean" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>This parameter identifies if the internal TPs and mfdfrs parameters of the createAndActivateFdfr operation describe the full route of the Flow Domain Fragment (as opposed to only a partial constraint). When no routing constraints are specified, false must be used.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="type" type="com:FlowDomainFragmentTypeType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Represents the type of the FDFr</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="route" type="fdfrroute:FlowDomainFragmentRouteType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>This parameter provides the structure describing the Route</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="resourceTestDataList" type="tns:ResourceTestDataListType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>This parameter provides a structure of tests to be executed</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ================ -->
+	<xsd:complexType name="ResourceTestDataListType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p> a list of tests to be executed </p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="tns:resourceTestData" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ============== -->
+	<xsd:element name="resourceTestData" type="tns:ResourceTestDataType" nillable="true"/>
+	<xsd:complexType name="ResourceTestDataType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>The attributes required when creating and activating an FDFr  in order to create the test object</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="testName" type="nam:NamingAttributeType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>An indication of whether the test is being run pro-actively or on-demand.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="testMode" type="rsctest:TestModeType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>An indication of whether the test is being run pro-actively or on-demand.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="testType" type="rsctest:TestTypeType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>An indication of  the type of test. See the associated BA for standard test types. Vendor extensions are allowed.</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="testAdminState" type="rsctest:TestAdminStateType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>The test administrative state, which may be LOCKED or UNLOCKED</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="configuredByList" type="rsctest:TestParameterValueInUseType" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Specifies a list of individual resource test parameters (by reference)  and their associated resource test parameter values.</p>
+						<p> The standard parameter names and valid values are those provided in SD2-22 TestParameters.pdf, and are passed in real-time over the interface upon starting the test.</p>
+						<p>There may be resource test parameters and associated values that are also passed, by reference, in the resource test specification.  If a parameter/value is found in both places, and is marked as "can be overriden", then the value passed in the configuredByList overrides the value in the specification.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="resourceTestSpecification" type="nam:NamingAttributeType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Indicates the name of a resource test specification (RTS) that is to be used to describe how the test should be configured, and what measures should be taken as a result of executing the test. The RTS  may contain resource test parameters and their associated values and/or resource test measures. </p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="resourceTestMeasuresList" type="rsctest:ResourceTestMeasuresListType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This attribute specifies a list of individual resource test measures that are expected to result from the execution of a test. For each measure a set of threshold rules may be defined that indicate under which condition(s) a threshold is considered to be passed, and the expected consequence(s).</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ============== -->
+	<xsd:complexType name="FlowDomainFragmentTestListType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p> a list of test names and types returned from creation and activation of the flow domain fragment. </p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="tns:flowDomainFragmentTest" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ============== -->
+	<xsd:element name="flowDomainFragmentTest" type="tns:FlowDomainFragmentTestType" nillable="true"/>
+	<xsd:complexType name="FlowDomainFragmentTestType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>The test name and test type are returned for each test successfully started </p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="testName" type="xsd:string"/>
+			<!-- name of the proactive test -->
+			<xsd:element name="testType" type="rsctest:TestTypeType" minOccurs="0"/>
+			<!-- test type -->
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>
