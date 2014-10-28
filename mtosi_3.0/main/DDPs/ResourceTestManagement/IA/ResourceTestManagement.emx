@@ -30,7 +30,7 @@
     </packageImport>
     <packagedElement xmi:type="uml:Package" xmi:id="_0wPlYP-rEduKKLvC_EB00A" name="Interfaces">
       <eAnnotations xmi:id="_0w0NIP-rEduKKLvC_EB00A" source="uml2.diagrams"/>
-      <packagedElement xmi:type="uml:Interface" xmi:id="_2TpPUF4cEeSDMrDhRipufg" name="ResourceTestControlService" clientDependency="_m0-EIF7HEeSDMrDhRipufg _1T06YF7HEeSDMrDhRipufg">
+      <packagedElement xmi:type="uml:Interface" xmi:id="_2TpPUF4cEeSDMrDhRipufg" name="ResourceTestControlService" clientDependency="_m0-EIF7HEeSDMrDhRipufg _1T06YF7HEeSDMrDhRipufg _I8ktsF7rEeSDMrDhRipufg">
         <ownedOperation xmi:id="_XgE_AF4dEeSDMrDhRipufg" name="startTest">
           <ownedComment xmi:id="_pC8Y0F4dEeSDMrDhRipufg" annotatedElement="_XgE_AF4dEeSDMrDhRipufg">
             <body>This operation is used to start an uncontrolled or controlled test. &#xD;
@@ -66,9 +66,7 @@ A resource test object is created as a result.</body>
           <ownedParameter xmi:id="_b5besF46EeSDMrDhRipufg" name="testName">
             <type xmi:type="uml:PrimitiveType" href="platform:/resource/SID%20Models/SID%20Models.emx#_qtpckBMhEd-KM8CRxrAv7g?SID%20Models/Common%20Business%20Entities%20Domain/Base%20Types%20ABE/ObjectName?"/>
           </ownedParameter>
-          <ownedParameter xmi:id="_MlygEF47EeSDMrDhRipufg" name="timePeriod">
-            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_nCxP0F4oEeSDMrDhRipufg?Framework/Type%20Definitions/TimePeriodType?"/>
-          </ownedParameter>
+          <ownedParameter xmi:id="_MlygEF47EeSDMrDhRipufg" name="timePeriod"/>
           <ownedParameter xmi:id="_TUmhcF47EeSDMrDhRipufg" name="resourceTestMeasuresList" type="_-anVcF4nEeSDMrDhRipufg"/>
           <ownedParameter xmi:id="_Y8rkQF47EeSDMrDhRipufg" name="filter" type="_g2mG0F47EeSDMrDhRipufg"/>
           <ownedParameter xmi:id="_pn0E0F47EeSDMrDhRipufg" name="resourceTest" type="_PyADkF4eEeSDMrDhRipufg" direction="out"/>
@@ -110,6 +108,242 @@ A resource test object is created as a result.</body>
       <packagedElement xmi:type="uml:Dependency" xmi:id="_DFkzAF7IEeSDMrDhRipufg" name="createsTestSpecWith" supplier="_YbjIgF68EeSDMrDhRipufg" client="_KXvPgF68EeSDMrDhRipufg"/>
       <packagedElement xmi:type="uml:Dependency" xmi:id="_TgAlIF7IEeSDMrDhRipufg" name="retrieveTestSpec" supplier="_nMODkF4kEeSDMrDhRipufg" client="_KXvPgF68EeSDMrDhRipufg"/>
       <packagedElement xmi:type="uml:Dependency" xmi:id="_P9-zYF7JEeSDMrDhRipufg" name="mocifyTestSpecWith" supplier="_X99GMF6_EeSDMrDhRipufg" client="_KXvPgF68EeSDMrDhRipufg"/>
+      <packagedElement xmi:type="uml:Interface" xmi:id="_fda54F7qEeSDMrDhRipufg" name="ResourceTestProvisioningControlService" clientDependency="_1V0wkF7qEeSDMrDhRipufg _r__r0F75EeSDMrDhRipufg">
+        <ownedOperation xmi:id="_jJUEAF7CEeSDMrDhRipufg" name="createAndActivateFlowDomainFragmentWithTest" visibility="public" precondition="_jJUEAl7CEeSDMrDhRipufg" postcondition="_jJUEBF7CEeSDMrDhRipufg">
+          <ownedComment xmi:id="_jJUEAV7CEeSDMrDhRipufg" annotatedElement="_jJUEAF7CEeSDMrDhRipufg">
+            <body>In case not all requested (edge) Flow Points can be connected when the FDFr is created, the target OS returns the list of the not connectable Connectionless Port Termination Points (CPTPs) and Flow Points in the success reply.&#xD;
+If internal CPTPs are provided by the requesting OS and if it is not possible to include all provided internal CPTPs to the route of the FDFr, the operation will be rejected.&#xD;
+&#xD;
+Traceability: R_TMF518_RP_II_0060, R_TMF518_RP_II_0061, UC_TMF518_RP_0031.</body>
+          </ownedComment>
+          <ownedRule xmi:id="_jJUEAl7CEeSDMrDhRipufg" constrainedElement="_jJUEAF7CEeSDMrDhRipufg">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_jJUEA17CEeSDMrDhRipufg">
+              <body>None</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_jJUEBF7CEeSDMrDhRipufg" constrainedElement="_jJUEAF7CEeSDMrDhRipufg">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_jJUEBV7CEeSDMrDhRipufg">
+              <body>1. The FDFr and the related MFDFr and FP objects have been created.&#xD;
+2. The FDFr has been activated, or it has been partially activated, i.e., some but not all the necessary provisioning operations have been performed.&#xD;
+3. All requested CPTPs which are not contained in the notConnectableCptpRefList list have been associated to the new FDFr.&#xD;
+4. The provided layered parameters have been set for all CPTPs and FPs which are not contained in the parameterProblemsTpRefList.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_jJUEBl7CEeSDMrDhRipufg" name="void" isUnique="false" direction="return"/>
+          <ownedParameter xmi:id="_NEkVcF75EeSDMrDhRipufg" name="testList" type="_2NEZQF74EeSDMrDhRipufg" direction="out">
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_TthmcV75EeSDMrDhRipufg" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_TthmcF75EeSDMrDhRipufg"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_jJUEB17CEeSDMrDhRipufg" name="containingFdRef">
+            <ownedComment xmi:id="_jJUECF7CEeSDMrDhRipufg" annotatedElement="_jJUEB17CEeSDMrDhRipufg">
+              <body>This parameter provides the name of the Flow Domain in which the Flow Domain Fragment has to be created.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_jJUECV7CEeSDMrDhRipufg">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_jJUECl7CEeSDMrDhRipufg" name="createData">
+            <ownedComment xmi:id="_jJUEC17CEeSDMrDhRipufg" annotatedElement="_jJUECl7CEeSDMrDhRipufg">
+              <body>This parameter provides the create attributes describing the Flow Domain Fragment to be established.&#xD;
+&#xD;
+Traceability: R_TMF518_RP_II_0061.</body>
+            </ownedComment>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_jJUEDF7CEeSDMrDhRipufg">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_jJUEDV7CEeSDMrDhRipufg" name="mfdfrList" direction="inout">
+            <ownedComment xmi:id="_jJUEDl7CEeSDMrDhRipufg" annotatedElement="_jJUEDV7CEeSDMrDhRipufg">
+              <body>This parameter,&#xD;
+(in) provides the (possibly empty) list of Matrix Flow Domain Fragments (MFDFrs) that make up the route of the Flow Domain Fragment (FDFr). This attribute may be omitted if the FDFr is routed by the network. As a result of creating the FDFr, MFDFrs are created in the various Matrix Flow Domains.&#xD;
+(out) returns the (possibly empty) list of Matrix Flow Domain Fragments (MFDFrs) that make up the route of the FDFr. This attribute may be omitted if the FDFr is routed by the network. As a result of creating the FDFr, MFDFrs are created in the various MFDs.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_tfWtAK5HEdyvN402f4-UpA?NetworkResourceFulfillment/Type%20Definitions/MatrixFlowDomainFragment?"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_jJUED17CEeSDMrDhRipufg" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_jJUEEF7CEeSDMrDhRipufg"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_jJUEEV7CEeSDMrDhRipufg">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_jJUrEF7CEeSDMrDhRipufg" name="tpDataListToModify" direction="inout">
+            <ownedComment xmi:id="_jJUrEV7CEeSDMrDhRipufg" annotatedElement="_jJUrEF7CEeSDMrDhRipufg">
+              <body>This parameter, when used,&#xD;
+(in) identifies a list of TPs (limited to FPs that are being created during this operation or to the containing CPTPs) with associated parameters to be applied;&#xD;
+(out) identifies the list of TPs with associated applied parameters.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_G7AjYOR_Edyd-_NSHGr2NQ?NetworkResourceFulfillment/Type%20Definitions/TerminationPointData?"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_jJUrEl7CEeSDMrDhRipufg" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_jJUrE17CEeSDMrDhRipufg"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_jJUrFF7CEeSDMrDhRipufg">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_jJUrFV7CEeSDMrDhRipufg" name="notConnectableCptpRefList" direction="out">
+            <ownedComment xmi:id="_jJUrFl7CEeSDMrDhRipufg" annotatedElement="_jJUrFV7CEeSDMrDhRipufg">
+              <body>This parameter returns the list of Connectionless Port Termination Points that could not be connected.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_jJUrF17CEeSDMrDhRipufg" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_jJUrGF7CEeSDMrDhRipufg"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_jJUrGV7CEeSDMrDhRipufg">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_jJUrGl7CEeSDMrDhRipufg" name="parameterProblemsTpRefList" direction="out">
+            <ownedComment xmi:id="_jJUrG17CEeSDMrDhRipufg" annotatedElement="_jJUrGl7CEeSDMrDhRipufg">
+              <body>This parameter returns the list of Connectionless Port Termination Points and Flow Points FPs for which only best-effort transmission parameters could not be set.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_jJUrHF7CEeSDMrDhRipufg" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_jJUrHV7CEeSDMrDhRipufg"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_jJUrHl7CEeSDMrDhRipufg">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_jJUrH17CEeSDMrDhRipufg" name="createdFdfr" direction="out">
+            <ownedComment xmi:id="_jJUrIF7CEeSDMrDhRipufg" annotatedElement="_jJUrH17CEeSDMrDhRipufg">
+              <body>This parameter returns the newly created Flow Domain Fragment object.</body>
+            </ownedComment>
+            <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_wp98wK4kEdyvN402f4-UpA?NetworkResourceFulfillment/Data%20Object%20Classes/FlowDomainFragment?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_jJUrIV7CEeSDMrDhRipufg">
+              <body>Null</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_jJUrIl7CEeSDMrDhRipufg" name="errorReason" direction="out">
+            <ownedComment xmi:id="_jJUrI17CEeSDMrDhRipufg" annotatedElement="_jJUrIl7CEeSDMrDhRipufg">
+              <body>This parameter returns the error(s) if any.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_jJUrJF7CEeSDMrDhRipufg">
+              <body>empty string</body>
+            </defaultValue>
+          </ownedParameter>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/CommLoss?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_sZQBYCVfEdyiv86aejkLcA?Framework/Operation%20Exceptions/TpInvalidEndPoint?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_VvFWkCVfEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotInValidState?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UnableToComply?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_gSxfICVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/UserlabelInUse?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_TAYcACVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/EntityNotFound?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InvalidInput?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_O5azsF74EeSDMrDhRipufg" name="createAndActivateSubnetworkConnectionWithTest" visibility="public" precondition="_O5azs174EeSDMrDhRipufg" postcondition="_O5aztV74EeSDMrDhRipufg">
+          <ownedComment xmi:id="_O5azsV74EeSDMrDhRipufg" annotatedElement="_O5azsF74EeSDMrDhRipufg">
+            <body>This operation creates and activates a Subnetwork Connection. The operation also applies to bundled SNCs (see supporting document SD1-3_BundledSNC for further details).&#xD;
+It conceptually behaves like a call to createSubnetworkConnection followed by a call to activateSubnetworkConnection.&#xD;
+&#xD;
+Traceability: R_TMF518_RP_II_0009, R_TMF518_RP_II_0010, UC_TMF518_RP_0003, UC_TMF518_RP_0047.</body>
+          </ownedComment>
+          <ownedComment xmi:id="_O5azsl74EeSDMrDhRipufg" annotatedElement="_O5azsF74EeSDMrDhRipufg">
+            <body>..\..\NetworkResourceFulfillment\SD\SD1-3_BundledSNC.pdf</body>
+          </ownedComment>
+          <ownedRule xmi:id="_O5azs174EeSDMrDhRipufg" constrainedElement="_O5azsF74EeSDMrDhRipufg">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_O5aztF74EeSDMrDhRipufg">
+              <body>None</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:id="_O5aztV74EeSDMrDhRipufg" constrainedElement="_O5azsF74EeSDMrDhRipufg">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_O5aztl74EeSDMrDhRipufg">
+              <body>The Subnetwork Connection is created as requested.</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:id="_O5azt174EeSDMrDhRipufg" name="void" isUnique="false" direction="return"/>
+          <ownedParameter xmi:id="_O5azuF74EeSDMrDhRipufg" name="containingMlsnRef">
+            <ownedComment xmi:id="_O5azuV74EeSDMrDhRipufg" annotatedElement="_O5azuF74EeSDMrDhRipufg">
+              <body>This parameter provides the name of the Multi Layer Subnetwork in which the Subnetwork Connection has to be created.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_O5azul74EeSDMrDhRipufg">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_O5azu174EeSDMrDhRipufg" name="createData" type="_Z208cF74EeSDMrDhRipufg">
+            <ownedComment xmi:id="_O5azvF74EeSDMrDhRipufg" annotatedElement="_O5azu174EeSDMrDhRipufg">
+              <body>This parameter provides the create attributes describing the Subnetwork Connection to be created and activated.&#xD;
+&#xD;
+Traceability: R_TMF518_RP_II_0005.</body>
+            </ownedComment>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_O5azvV74EeSDMrDhRipufg">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_O5azvl74EeSDMrDhRipufg" name="tolerableImpact">
+            <ownedComment xmi:id="_O5azv174EeSDMrDhRipufg" annotatedElement="_O5azvl74EeSDMrDhRipufg">
+              <body>This parameter indicates the maximum degree of service interruption the requesting OS is willing to tolerate.&#xD;
+See attached supporting document SD1-36_SNCTypes for details on the grade of impact parameter.</body>
+            </ownedComment>
+            <ownedComment xmi:id="_O5azwF74EeSDMrDhRipufg">
+              <annotatedElement xmi:type="uml:Parameter" href="../../ResourceProvisioning/IA/ResourceProvisioning.emx#_JG-mXtyqEdyY2qUBC6uXag?ResourceProvisioning/Interfaces/ConnectionControlService/activateSubnetworkConnection/tolerableImpact?"/>
+              <body>..\..\Framework\SD\SD1-36_SNCTypes.pdf</body>
+            </ownedComment>
+            <type xmi:type="uml:Enumeration" href="../../ResourceProvisioning/IA/ResourceProvisioning.emx#_TSosANyrEdyY2qUBC6uXag?ResourceProvisioning/Type%20Definitions/GradesOfImpact?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_O5azwV74EeSDMrDhRipufg">
+              <body>MINOR_IMPACT</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_O5azwl74EeSDMrDhRipufg" name="osFreedomLevel">
+            <ownedComment xmi:id="_O5azw174EeSDMrDhRipufg" annotatedElement="_O5azwl74EeSDMrDhRipufg">
+              <body>This parameter indicates the maximum level of freedom allowed to the target OS to perform the creation and activation.</body>
+            </ownedComment>
+            <type xmi:type="uml:Enumeration" href="../../ResourceProvisioning/IA/ResourceProvisioning.emx#_QESrQNysEdyY2qUBC6uXag?ResourceProvisioning/Type%20Definitions/FreedomLevel?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_O5azxF74EeSDMrDhRipufg">
+              <body>CREATE_CONNECTION_AT_SNC_LAYER</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_O5azxV74EeSDMrDhRipufg" name="tpDataListToModify" direction="inout">
+            <ownedComment xmi:id="_O5azxl74EeSDMrDhRipufg" annotatedElement="_O5azxV74EeSDMrDhRipufg">
+              <body>This parameter, when used in the request,&#xD;
+(in) identifies a list of TPs with associated parameters to be applied;&#xD;
+(out) identifies the list of TPs with associated applied parameters.</body>
+            </ownedComment>
+            <type xmi:type="uml:DataType" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_G7AjYOR_Edyd-_NSHGr2NQ?NetworkResourceFulfillment/Type%20Definitions/TerminationPointData?"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_O5azx174EeSDMrDhRipufg" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_O5azyF74EeSDMrDhRipufg"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_O5azyV74EeSDMrDhRipufg">
+              <body>empty list</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_O5azyl74EeSDMrDhRipufg" name="createdSnc" direction="out">
+            <ownedComment xmi:id="_O5azy174EeSDMrDhRipufg" annotatedElement="_O5azyl74EeSDMrDhRipufg">
+              <body>This parameter returns the newly created Subnetwork Connection object.</body>
+            </ownedComment>
+            <type xmi:type="uml:Class" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#__PZCUEyuEdyMf41zLKMFmA?NetworkResourceFulfillment/Data%20Object%20Classes/SubNetworkConnection?"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_O5azzF74EeSDMrDhRipufg">
+              <body>NA</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_O5azzV74EeSDMrDhRipufg" name="errorReason" direction="out">
+            <ownedComment xmi:id="_O5azzl74EeSDMrDhRipufg" annotatedElement="_O5azzV74EeSDMrDhRipufg">
+              <body>This parameter returns the the creation and/or activation error(s) if any.</body>
+            </ownedComment>
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+            <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_O5azz174EeSDMrDhRipufg">
+              <body>empty string</body>
+            </defaultValue>
+          </ownedParameter>
+          <ownedParameter xmi:id="_zmp7MF75EeSDMrDhRipufg" name="testList" type="_2NEZQF74EeSDMrDhRipufg" direction="out">
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_zmp7MV75EeSDMrDhRipufg" value="*"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zmp7Ml75EeSDMrDhRipufg"/>
+          </ownedParameter>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_KvzCEJEZEdypurMa9DXJyw?Framework/Operation%20Exceptions/CommLoss?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_jbWSQCVfEdyiv86aejkLcA?Framework/Operation%20Exceptions/TimeslotInUse?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_VvFWkCVfEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotInValidState?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rYlggCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/UnableToComply?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_YfesgCVdEdyiv86aejkLcA?Framework/Operation%20Exceptions/ProtectionEffortNotMet?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_412MUCVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/ObjectInUse?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_rqaFwCVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/UnsupportedRoutingConstraints?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_gSxfICVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/UserlabelInUse?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_TAYcACVcEdyiv86aejkLcA?Framework/Operation%20Exceptions/EntityNotFound?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_uArPACVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InvalidInput?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_RoIsICVbEdyiv86aejkLcA?Framework/Operation%20Exceptions/InternalError?"/>
+          <raisedException xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_c9oFECVYEdyiv86aejkLcA?Framework/Operation%20Exceptions/NotImplemented?"/>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_1V0wkF7qEeSDMrDhRipufg" name="creates and activates FDFr with proactive tests" supplier="_upbRMF7CEeSDMrDhRipufg" client="_fda54F7qEeSDMrDhRipufg"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_I8ktsF7rEeSDMrDhRipufg" name="creates Resource Tests with" supplier="_Ib0r8F45EeSDMrDhRipufg" client="_2TpPUF4cEeSDMrDhRipufg"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_r__r0F75EeSDMrDhRipufg" name="creates and activates SNC with proactive tests" supplier="_Z208cF74EeSDMrDhRipufg" client="_fda54F7qEeSDMrDhRipufg"/>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_DmvO0P_IEduKKLvC_EB00A" name="Type Definitions">
       <eAnnotations xmi:id="_Dm1VcP_IEduKKLvC_EB00A" source="uml2.diagrams"/>
@@ -231,9 +465,7 @@ A resource test object is created as a result.</body>
         <ownedAttribute xmi:id="_SAfI0F4oEeSDMrDhRipufg" name="captureFrequency" visibility="public">
           <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
         </ownedAttribute>
-        <ownedAttribute xmi:id="_YhXb4F4oEeSDMrDhRipufg" name="capturePeriod" visibility="public">
-          <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_nCxP0F4oEeSDMrDhRipufg?Framework/Type%20Definitions/TimePeriodType?"/>
-        </ownedAttribute>
+        <ownedAttribute xmi:id="_YhXb4F4oEeSDMrDhRipufg" name="capturePeriod" visibility="public"/>
         <ownedAttribute xmi:id="_j4Ws0F4pEeSDMrDhRipufg" name="valueType" visibility="public"/>
         <ownedAttribute xmi:id="_e9mhsF43EeSDMrDhRipufg" name="thresholdRule" visibility="public" type="_OKvd8F42EeSDMrDhRipufg" association="_e9hCIF43EeSDMrDhRipufg">
           <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_e9nv0V43EeSDMrDhRipufg" value="*"/>
@@ -477,6 +709,144 @@ A resource test object is created as a result.</body>
           <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_He87IV7VEeSDMrDhRipufg"/>
         </ownedEnd>
       </packagedElement>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_upbRMF7CEeSDMrDhRipufg" name="FlowDomainFragmentWithTestCreateData" clientDependency="_SlWl0F7rEeSDMrDhRipufg">
+        <ownedComment xmi:id="_upbRMV7CEeSDMrDhRipufg" annotatedElement="_upbRMF7CEeSDMrDhRipufg">
+          <body>This data type represents the parameters that may be provided when creating a Flow Domain Fragment (FDFr).&#xD;
+&#xD;
+Traceability: R_TMF518_RP_II_0061.</body>
+        </ownedComment>
+        <generalization xmi:id="_upbRMl7CEeSDMrDhRipufg">
+          <general xmi:type="uml:DataType" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_ZsO24KlcEdy39Z05qVqfpQ?NetworkResourceBasic/Type%20Definitions/CommonResourceCreateData?"/>
+        </generalization>
+        <generalization xmi:id="_upbRM17CEeSDMrDhRipufg">
+          <general xmi:type="uml:DataType" href="../../ResourceProvisioning/IA/ResourceProvisioning.emx#_vtKrQN4REdyjuan7cJ_t3A?ResourceProvisioning/Type%20Definitions/FlowDomainFragmentSetData?"/>
+        </generalization>
+        <ownedAttribute xmi:id="_upbRNF7CEeSDMrDhRipufg" name="direction" visibility="public">
+          <ownedComment xmi:id="_upbRNV7CEeSDMrDhRipufg" annotatedElement="_upbRNF7CEeSDMrDhRipufg">
+            <body>This attribute defines the directionality of the Flow Domain Fragment (bidirectional or unidirectional).</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_VbdtwDnpEdyamdmRIB0MZw?NetworkResourceFulfillment/Type%20Definitions/ConnectionDirection?"/>
+          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_upbRNl7CEeSDMrDhRipufg" name="BIDIRECTIONAL">
+            <type xmi:type="uml:Enumeration" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_VbdtwDnpEdyamdmRIB0MZw?NetworkResourceFulfillment/Type%20Definitions/ConnectionDirection?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_c0H9YDnpEdyamdmRIB0MZw?NetworkResourceFulfillment/Type%20Definitions/ConnectionDirection/BI?"/>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_upbRN17CEeSDMrDhRipufg" name="isFullRoute" visibility="public">
+          <ownedComment xmi:id="_upbROF7CEeSDMrDhRipufg" annotatedElement="_upbRN17CEeSDMrDhRipufg">
+            <body>This attribute identifies if the provided internal TPs and MFDFrs describe the full Route of the Flow Domain Fragment (as opposed to only a partial constraint). When no routing constraints are specified, false must be used.</body>
+          </ownedComment>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+          <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_upbROV7CEeSDMrDhRipufg">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_upbROl7CEeSDMrDhRipufg" name="type" visibility="public">
+          <ownedComment xmi:id="_upbRO17CEeSDMrDhRipufg" annotatedElement="_upbROl7CEeSDMrDhRipufg">
+            <body>This attribute identifies the type of the new Flow Domain Fragment.</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_esXPQK5GEdyvN402f4-UpA?NetworkResourceFulfillment/Type%20Definitions/FlowDomainFragmentType?"/>
+          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_upbRPF7CEeSDMrDhRipufg" name="PONT_TP_POINT">
+            <type xmi:type="uml:Enumeration" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_esXPQK5GEdyvN402f4-UpA?NetworkResourceFulfillment/Type%20Definitions/FlowDomainFragmentType?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="../../NetworkResourceFulfillment/IA/NetworkResourceFulfillment.emx#_iWwdYK5GEdyvN402f4-UpA?NetworkResourceFulfillment/Type%20Definitions/FlowDomainFragmentType/POINT_TO_POINT?"/>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_upbRPV7CEeSDMrDhRipufg" name="route" visibility="public" isUnique="false">
+          <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_upbRPl7CEeSDMrDhRipufg" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_upbRP17CEeSDMrDhRipufg"/>
+          <defaultValue xmi:type="uml:LiteralNull" xmi:id="_upbRQF7CEeSDMrDhRipufg"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_Yuxs4F7EEeSDMrDhRipufg" name="resourceTestData" visibility="public" type="_SYeuoF7DEeSDMrDhRipufg">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_cBdloV7EEeSDMrDhRipufg" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_cBdloF7EEeSDMrDhRipufg"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_SlWl0F7rEeSDMrDhRipufg" name="uses resource test data" supplier="_SYeuoF7DEeSDMrDhRipufg" client="_upbRMF7CEeSDMrDhRipufg"/>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_nCxP0F4oEeSDMrDhRipufg" name="TimePeriodType">
+        <ownedAttribute xmi:id="_RUMOEF4pEeSDMrDhRipufg" name="startDateTime" visibility="public">
+          <type xmi:type="uml:Class" href="pathmap://XSD_LIBRARIES/XSDDataTypes.library.emx#_7yKF7ykGEdmDdasWev0kGA?XSDDataTypes/XSDDataTypes/dateTime?"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_TfMtEF4pEeSDMrDhRipufg" name="endDateTime" visibility="public">
+          <type xmi:type="uml:Class" href="pathmap://XSD_LIBRARIES/XSDDataTypes.library.emx#_7yKF7ykGEdmDdasWev0kGA?XSDDataTypes/XSDDataTypes/dateTime?"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_Z208cF74EeSDMrDhRipufg" name="SubnetworkConnectionWithTestCreateData" clientDependency="_2TCo8F75EeSDMrDhRipufg">
+        <ownedComment xmi:id="_Z208cV74EeSDMrDhRipufg" annotatedElement="_Z208cF74EeSDMrDhRipufg">
+          <body>..\..\Framework\SD\SD1-36_SNCTypes.pdf</body>
+        </ownedComment>
+        <ownedComment xmi:id="_Z208cl74EeSDMrDhRipufg" annotatedElement="_Z208cF74EeSDMrDhRipufg">
+          <body>This data type represents the parameters that may be provided when creating a Subnetwork Connection (SNC).&#xD;
+Refer to the associated supporting document SD1-36_SNCTypes for explanation of SNC Properties, SNC Parameters, unidirectional SNCs, Point-to-Multipoint SNC, Routing Constraints and Route Discovery.&#xD;
+&#xD;
+Traceability: R_TMF518_RP_II_0005.</body>
+        </ownedComment>
+        <generalization xmi:id="_Z208c174EeSDMrDhRipufg">
+          <general xmi:type="uml:DataType" href="../../ResourceProvisioning/IA/ResourceProvisioning.emx#_Igd2MLq6EdyA7v53CjAzng?ResourceProvisioning/Type%20Definitions/SubnetworkConnectionSetData?"/>
+        </generalization>
+        <generalization xmi:id="_Z208dF74EeSDMrDhRipufg">
+          <general xmi:type="uml:DataType" href="../../NetworkResourceBasic/IA/NetworkResourceBasic.emx#_ZsO24KlcEdy39Z05qVqfpQ?NetworkResourceBasic/Type%20Definitions/CommonResourceCreateData?"/>
+        </generalization>
+        <ownedAttribute xmi:id="_Z208dV74EeSDMrDhRipufg" name="isBundledSnc" visibility="public">
+          <ownedComment xmi:id="_Z208dl74EeSDMrDhRipufg" annotatedElement="_Z208dV74EeSDMrDhRipufg">
+            <body>This attribute indicates if the Subnetwork Connection (SNC) to be created is a bundled SNC.</body>
+          </ownedComment>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+          <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_Z208d174EeSDMrDhRipufg">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_Z208eF74EeSDMrDhRipufg" name="isIntendedRouteExclusive" visibility="public">
+          <ownedComment xmi:id="_Z208eV74EeSDMrDhRipufg" annotatedElement="_Z208eF74EeSDMrDhRipufg">
+            <body>This attribute defines that not any other Routes of other Subnetwork Connections (SNCs) can share any of the Routes Cross Connections or Connection termination Points (CTPs), even in pending state (true).</body>
+          </ownedComment>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+          <defaultValue xmi:type="uml:LiteralBoolean" xmi:id="_Z208el74EeSDMrDhRipufg" value="true">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_Z208e174EeSDMrDhRipufg" name="blsrDirection" visibility="public">
+          <ownedComment xmi:id="_Z208fF74EeSDMrDhRipufg" annotatedElement="_Z208e174EeSDMrDhRipufg">
+            <body>This attribute is used in conjunction with the timeslot when the target OS cannot use the routing constraints for a BLSR case.</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="../../ResourceProvisioning/IA/ResourceProvisioning.emx#_c0Yl4BKfEd2EYoHhnnuyig?ResourceProvisioning/Type%20Definitions/BidirectionalLineSwitchedRingDirection?"/>
+          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_Z208fV74EeSDMrDhRipufg" name="NOT_APPLICABLE">
+            <type xmi:type="uml:Enumeration" href="../../ResourceProvisioning/IA/ResourceProvisioning.emx#_c0Yl4BKfEd2EYoHhnnuyig?ResourceProvisioning/Type%20Definitions/BidirectionalLineSwitchedRingDirection?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="../../ResourceProvisioning/IA/ResourceProvisioning.emx#_kxaG0BKfEd2EYoHhnnuyig?ResourceProvisioning/Type%20Definitions/BidirectionalLineSwitchedRingDirection/NOT_APPLICABLE?"/>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_Z208fl74EeSDMrDhRipufg" name="timeslot" visibility="public">
+          <ownedComment xmi:id="_Z208f174EeSDMrDhRipufg" annotatedElement="_Z208fl74EeSDMrDhRipufg">
+            <body>This attribute is used in conjunction with blsrDirection.</body>
+          </ownedComment>
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+          <defaultValue xmi:type="uml:LiteralString" xmi:id="_Z208gF74EeSDMrDhRipufg" value="0"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_Z208gV74EeSDMrDhRipufg" name="potentialFutureSetupIndicator" visibility="public">
+          <ownedComment xmi:id="_Z208gl74EeSDMrDhRipufg" annotatedElement="_Z208gV74EeSDMrDhRipufg">
+            <body>This attribute refers to the aEnd of the SNC and is used to convey the likely future (or current) configuration of the SNC.&#xD;
+See attached supporting document SD1-16_layeredParameters.</body>
+          </ownedComment>
+          <ownedComment xmi:id="_Z208g174EeSDMrDhRipufg" annotatedElement="_Z208gV74EeSDMrDhRipufg">
+            <body>..\..\Framework\SD\SD1-16_LayeredParameters.pdf</body>
+          </ownedComment>
+          <type xmi:type="uml:Enumeration" href="../../ResourceProvisioning/IA/ResourceProvisioning.emx#_smOuABKfEd2EYoHhnnuyig?ResourceProvisioning/Type%20Definitions/PotentialFutureSetupIndicator?"/>
+          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_Z208hF74EeSDMrDhRipufg" name="ANY_CONFIG">
+            <type xmi:type="uml:Enumeration" href="../../ResourceProvisioning/IA/ResourceProvisioning.emx#_smOuABKfEd2EYoHhnnuyig?ResourceProvisioning/Type%20Definitions/PotentialFutureSetupIndicator?"/>
+            <instance xmi:type="uml:EnumerationLiteral" href="../../ResourceProvisioning/IA/ResourceProvisioning.emx#_L6vSwBKgEd2EYoHhnnuyig?ResourceProvisioning/Type%20Definitions/PotentialFutureSetupIndicator/ANY_CONFIG?"/>
+          </defaultValue>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_lq7AIF75EeSDMrDhRipufg" name="resourceTestData" visibility="public" type="_SYeuoF7DEeSDMrDhRipufg">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_lq7AIV75EeSDMrDhRipufg" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lq7AIl75EeSDMrDhRipufg"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:DataType" xmi:id="_2NEZQF74EeSDMrDhRipufg" name="TestType">
+        <ownedAttribute xmi:id="_5S9MIF74EeSDMrDhRipufg" name="testName" visibility="public">
+          <type xmi:type="uml:DataType" href="../../Framework/IA/Framework.emx#_Pt7dcPoSEduSgtmTzBJnVw?Framework/Type%20Definitions/ObjectName?"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_9wBNUF74EeSDMrDhRipufg" name="testType" visibility="public" type="_J1sAsF4fEeSDMrDhRipufg"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_2TCo8F75EeSDMrDhRipufg" name="uses res" supplier="_SYeuoF7DEeSDMrDhRipufg" client="_Z208cF74EeSDMrDhRipufg"/>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="__W04QB8VEdybTc3BlJsa9Q" name="Class Diagrams">
       <eAnnotations xmi:id="__XfmoB8VEdybTc3BlJsa9Q" source="uml2.diagrams">
@@ -506,18 +876,6 @@ A resource test object is created as a result.</body>
             <children xmi:type="notation:SemanticListCompartment" xmi:id="_B3Ofp16_EeSDMrDhRipufg" type="OperationCompartment"/>
             <children xmi:type="notation:SemanticListCompartment" xmi:id="_B3PGsF6_EeSDMrDhRipufg" visible="false" type="SignalCompartment"/>
             <layoutConstraint xmi:type="notation:Bounds" xmi:id="_B3N4kV6_EeSDMrDhRipufg" x="15850" y="4121"/>
-          </children>
-          <children xmi:type="umlnotation:UMLShape" xmi:id="_JbFZAF7HEeSDMrDhRipufg" element="_SYeuoF7DEeSDMrDhRipufg" fontName="Segoe UI" fontHeight="8" transparency="0" lineColor="14263149" lineWidth="1" showStereotype="Label">
-            <children xmi:type="notation:DecorationNode" xmi:id="_JbGAEF7HEeSDMrDhRipufg" type="ImageCompartment">
-              <layoutConstraint xmi:type="notation:Size" xmi:id="_JbGAEV7HEeSDMrDhRipufg" width="1320" height="1320"/>
-            </children>
-            <children xmi:type="notation:BasicDecorationNode" xmi:id="_JbGAEl7HEeSDMrDhRipufg" type="Stereotype"/>
-            <children xmi:type="notation:BasicDecorationNode" xmi:id="_JbGAE17HEeSDMrDhRipufg" type="Kind"/>
-            <children xmi:type="notation:BasicDecorationNode" xmi:id="_JbGAFF7HEeSDMrDhRipufg" type="Name"/>
-            <children xmi:type="notation:BasicDecorationNode" xmi:id="_JbGAFV7HEeSDMrDhRipufg" type="Parent"/>
-            <children xmi:type="notation:SemanticListCompartment" xmi:id="_JbGAFl7HEeSDMrDhRipufg" type="AttributeCompartment"/>
-            <children xmi:type="notation:SemanticListCompartment" xmi:id="_JbGAF17HEeSDMrDhRipufg" visible="false" type="OperationCompartment"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_JbFZAV7HEeSDMrDhRipufg" x="8559" y="12363"/>
           </children>
           <children xmi:type="umlnotation:UMLShape" xmi:id="_zlODgF7HEeSDMrDhRipufg" element="_PyADkF4eEeSDMrDhRipufg" fontName="Segoe UI" fontHeight="8" transparency="0" lineColor="14263149" lineWidth="1" showStereotype="Label">
             <children xmi:type="notation:DecorationNode" xmi:id="_zlODgl7HEeSDMrDhRipufg" type="ImageCompartment">
@@ -567,16 +925,69 @@ A resource test object is created as a result.</body>
             <children xmi:type="notation:BasicDecorationNode" xmi:id="_L5iGgl7JEeSDMrDhRipufg" type="Parent"/>
             <children xmi:type="notation:SemanticListCompartment" xmi:id="_L5iGg17JEeSDMrDhRipufg" type="AttributeCompartment"/>
             <children xmi:type="notation:SemanticListCompartment" xmi:id="_L5iGhF7JEeSDMrDhRipufg" visible="false" type="OperationCompartment"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_L5hfcV7JEeSDMrDhRipufg" x="28213" y="4438"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_L5hfcV7JEeSDMrDhRipufg" x="19654"/>
           </children>
-          <edges xmi:type="umlnotation:UMLConnector" xmi:id="_m0_5UF7HEeSDMrDhRipufg" element="_m0-EIF7HEeSDMrDhRipufg" source="_Be_VUF48EeSDMrDhRipufg" target="_JbFZAF7HEeSDMrDhRipufg" fontName="Segoe UI" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
-            <children xmi:type="notation:DecorationNode" xmi:id="_m0_5Ul7HEeSDMrDhRipufg" type="NameLabel">
-              <children xmi:type="notation:BasicDecorationNode" xmi:id="_m0_5VF7HEeSDMrDhRipufg" type="Stereotype"/>
-              <children xmi:type="notation:BasicDecorationNode" xmi:id="_m1AgYF7HEeSDMrDhRipufg" type="Name"/>
-              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_m0_5U17HEeSDMrDhRipufg" x="-322" y="2194"/>
+          <children xmi:type="umlnotation:UMLClassifierShape" xmi:id="_vdfEMF7qEeSDMrDhRipufg" element="_fda54F7qEeSDMrDhRipufg" fontName="Segoe UI" fontHeight="8" transparency="0" lineColor="14263149" lineWidth="1" showStereotype="Label" useClassifierShape="true">
+            <children xmi:type="notation:DecorationNode" xmi:id="_vdfEMl7qEeSDMrDhRipufg" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_vdfEM17qEeSDMrDhRipufg" width="530" height="530"/>
             </children>
-            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_m0_5UV7HEeSDMrDhRipufg" points="[-25, 73, -86, -230]$[-102, 228, -163, -75]"/>
-          </edges>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_vdfENF7qEeSDMrDhRipufg" type="Stereotype"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_vdfENV7qEeSDMrDhRipufg" type="Kind"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_vdfENl7qEeSDMrDhRipufg" type="Name"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_vdfrQF7qEeSDMrDhRipufg" type="Parent"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_vdfrQV7qEeSDMrDhRipufg" type="AttributeCompartment"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_vdfrQl7qEeSDMrDhRipufg" type="OperationCompartment"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_vdfrQ17qEeSDMrDhRipufg" visible="false" type="SignalCompartment"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_vdfEMV7qEeSDMrDhRipufg" x="39942" y="2853"/>
+          </children>
+          <children xmi:type="umlnotation:UMLShape" xmi:id="_zZiDAF7qEeSDMrDhRipufg" element="_upbRMF7CEeSDMrDhRipufg" fontName="Segoe UI" fontHeight="8" transparency="0" lineColor="14263149" lineWidth="1" showStereotype="Label">
+            <children xmi:type="notation:DecorationNode" xmi:id="_zZiDAl7qEeSDMrDhRipufg" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_zZiDA17qEeSDMrDhRipufg" width="1320" height="1320"/>
+            </children>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_zZiDBF7qEeSDMrDhRipufg" type="Stereotype"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_zZiDBV7qEeSDMrDhRipufg" type="Kind"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_zZiqEF7qEeSDMrDhRipufg" type="Name"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_zZiqEV7qEeSDMrDhRipufg" type="Parent"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_zZiqEl7qEeSDMrDhRipufg" type="AttributeCompartment"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_zZiqE17qEeSDMrDhRipufg" visible="false" type="OperationCompartment"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_zZiDAV7qEeSDMrDhRipufg" x="34870" y="11095"/>
+          </children>
+          <children xmi:type="umlnotation:UMLShape" xmi:id="_GVkPMF7rEeSDMrDhRipufg" element="_Ib0r8F45EeSDMrDhRipufg" fontName="Segoe UI" fontHeight="8" transparency="0" lineColor="14263149" lineWidth="1" showStereotype="Label">
+            <children xmi:type="notation:DecorationNode" xmi:id="_GVkPMl7rEeSDMrDhRipufg" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_GVkPM17rEeSDMrDhRipufg" width="1320" height="1320"/>
+            </children>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_GVkPNF7rEeSDMrDhRipufg" type="Stereotype"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_GVkPNV7rEeSDMrDhRipufg" type="Kind"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_GVkPNl7rEeSDMrDhRipufg" type="Name"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_GVkPN17rEeSDMrDhRipufg" type="Parent"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_GVk2QF7rEeSDMrDhRipufg" type="AttributeCompartment"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_GVk2QV7rEeSDMrDhRipufg" visible="false" type="OperationCompartment"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_GVkPMV7rEeSDMrDhRipufg" x="8242" y="12046"/>
+          </children>
+          <children xmi:type="umlnotation:UMLShape" xmi:id="_MO0hkF7rEeSDMrDhRipufg" element="_SYeuoF7DEeSDMrDhRipufg" fontName="Segoe UI" fontHeight="8" transparency="0" lineColor="14263149" lineWidth="1" showStereotype="Label">
+            <children xmi:type="notation:DecorationNode" xmi:id="_MO0hkl7rEeSDMrDhRipufg" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_MO0hk17rEeSDMrDhRipufg" width="1320" height="1320"/>
+            </children>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_MO0hlF7rEeSDMrDhRipufg" type="Stereotype"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_MO0hlV7rEeSDMrDhRipufg" type="Kind"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_MO0hll7rEeSDMrDhRipufg" type="Name"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_MO0hl17rEeSDMrDhRipufg" type="Parent"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_MO1IoF7rEeSDMrDhRipufg" type="AttributeCompartment"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_MO1IoV7rEeSDMrDhRipufg" visible="false" type="OperationCompartment"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_MO0hkV7rEeSDMrDhRipufg" x="40576" y="18386" width="11187"/>
+          </children>
+          <children xmi:type="umlnotation:UMLShape" xmi:id="_pVsowF75EeSDMrDhRipufg" element="_Z208cF74EeSDMrDhRipufg" fontName="Segoe UI" fontHeight="8" transparency="0" lineColor="14263149" lineWidth="1" showStereotype="Label">
+            <children xmi:type="notation:DecorationNode" xmi:id="_pVsowl75EeSDMrDhRipufg" type="ImageCompartment">
+              <layoutConstraint xmi:type="notation:Size" xmi:id="_pVsow175EeSDMrDhRipufg" width="1320" height="1320"/>
+            </children>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_pVsoxF75EeSDMrDhRipufg" type="Stereotype"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_pVtP0F75EeSDMrDhRipufg" type="Kind"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_pVtP0V75EeSDMrDhRipufg" type="Name"/>
+            <children xmi:type="notation:BasicDecorationNode" xmi:id="_pVtP0l75EeSDMrDhRipufg" type="Parent"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_pVtP0175EeSDMrDhRipufg" type="AttributeCompartment"/>
+            <children xmi:type="notation:SemanticListCompartment" xmi:id="_pVtP1F75EeSDMrDhRipufg" visible="false" type="OperationCompartment"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_pVsowV75EeSDMrDhRipufg" x="46222" y="11218"/>
+          </children>
           <edges xmi:type="umlnotation:UMLConnector" xmi:id="_1T2vkF7HEeSDMrDhRipufg" element="_1T06YF7HEeSDMrDhRipufg" source="_Be_VUF48EeSDMrDhRipufg" target="_zlODgF7HEeSDMrDhRipufg" fontName="Segoe UI" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
             <children xmi:type="notation:DecorationNode" xmi:id="_1T3WoF7HEeSDMrDhRipufg" type="NameLabel">
               <children xmi:type="notation:BasicDecorationNode" xmi:id="_1T3Wol7HEeSDMrDhRipufg" type="Stereotype"/>
@@ -608,6 +1019,46 @@ A resource test object is created as a result.</body>
               <layoutConstraint xmi:type="notation:Bounds" xmi:id="_P-Aok17JEeSDMrDhRipufg" y="-186"/>
             </children>
             <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_P-AokV7JEeSDMrDhRipufg" points="[133, -14, -275, 4]$[249, -36, -159, -18]"/>
+          </edges>
+          <edges xmi:type="umlnotation:UMLConnector" xmi:id="_1V1-sF7qEeSDMrDhRipufg" element="_1V0wkF7qEeSDMrDhRipufg" source="_vdfEMF7qEeSDMrDhRipufg" target="_zZiDAF7qEeSDMrDhRipufg" fontName="Segoe UI" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+            <children xmi:type="notation:DecorationNode" xmi:id="_1V2lwF7qEeSDMrDhRipufg" type="NameLabel">
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_1V2lwl7qEeSDMrDhRipufg" type="Stereotype"/>
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_1V2lw17qEeSDMrDhRipufg" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_1V2lwV7qEeSDMrDhRipufg" x="-1547" y="3444"/>
+            </children>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_1V1-sV7qEeSDMrDhRipufg" points="[11, 33, -146, -259]$[59, 233, -98, -59]"/>
+          </edges>
+          <edges xmi:type="umlnotation:UMLConnector" xmi:id="_I8l70F7rEeSDMrDhRipufg" element="_I8ktsF7rEeSDMrDhRipufg" source="_Be_VUF48EeSDMrDhRipufg" target="_GVkPMF7rEeSDMrDhRipufg" fontName="Segoe UI" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+            <children xmi:type="notation:DecorationNode" xmi:id="_I8mi4F7rEeSDMrDhRipufg" type="NameLabel">
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_I8mi4l7rEeSDMrDhRipufg" type="Stereotype"/>
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_I8mi417rEeSDMrDhRipufg" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_I8mi4V7rEeSDMrDhRipufg" y="-186"/>
+            </children>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_I8l70V7rEeSDMrDhRipufg" points="[31, 73, -128, -214]$[68, 228, -91, -59]"/>
+          </edges>
+          <edges xmi:type="umlnotation:UMLConnector" xmi:id="_SlZCEF7rEeSDMrDhRipufg" element="_SlWl0F7rEeSDMrDhRipufg" source="_zZiDAF7qEeSDMrDhRipufg" target="_MO0hkF7rEeSDMrDhRipufg" fontName="Segoe UI" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+            <children xmi:type="notation:DecorationNode" xmi:id="_SlZCEl7rEeSDMrDhRipufg" type="NameLabel">
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_SlZCFF7rEeSDMrDhRipufg" type="Stereotype"/>
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_SlZCFV7rEeSDMrDhRipufg" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_SlZCE17rEeSDMrDhRipufg" x="38" y="-3126"/>
+            </children>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_SlZCEV7rEeSDMrDhRipufg" points="[-10, 59, -41, -184]$[-61, 168, -92, -75]"/>
+          </edges>
+          <edges xmi:type="umlnotation:UMLConnector" xmi:id="_sABhAF75EeSDMrDhRipufg" element="_r__r0F75EeSDMrDhRipufg" source="_vdfEMF7qEeSDMrDhRipufg" target="_pVsowF75EeSDMrDhRipufg" fontName="Segoe UI" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+            <children xmi:type="notation:DecorationNode" xmi:id="_sABhAl75EeSDMrDhRipufg" type="NameLabel">
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_sABhBF75EeSDMrDhRipufg" type="Stereotype"/>
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_sABhBV75EeSDMrDhRipufg" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_sABhA175EeSDMrDhRipufg" x="-1291" y="-3318"/>
+            </children>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_sABhAV75EeSDMrDhRipufg" points="[34, 41, -368, -313]$[180, 326, -222, -28]"/>
+          </edges>
+          <edges xmi:type="umlnotation:UMLConnector" xmi:id="_2TFFMF75EeSDMrDhRipufg" element="_2TCo8F75EeSDMrDhRipufg" source="_pVsowF75EeSDMrDhRipufg" target="_MO0hkF7rEeSDMrDhRipufg" fontName="Segoe UI" fontHeight="8" roundedBendpointsRadius="4" routing="Rectilinear" lineColor="8421504" lineWidth="1" showStereotype="Text">
+            <children xmi:type="notation:DecorationNode" xmi:id="_2TFFMl75EeSDMrDhRipufg" visible="false" type="NameLabel">
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_2TFFNF75EeSDMrDhRipufg" type="Stereotype"/>
+              <children xmi:type="notation:BasicDecorationNode" xmi:id="_2TFsQF75EeSDMrDhRipufg" type="Name"/>
+              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_2TFFM175EeSDMrDhRipufg" y="-186"/>
+            </children>
+            <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_2TFFMV75EeSDMrDhRipufg" points="[-38, 67, 187, -212]$[-87, 204, 138, -75]"/>
           </edges>
         </contents>
         <contents xmi:type="umlnotation:UMLDiagram" xmi:id="_HuWSAJETEdypurMa9DXJyw" type="Class" name="RTD DDP Relationship Diagram">
@@ -2222,4 +2673,52 @@ A resource test object is created as a result.</body>
   <Default_1:Documentation xmi:id="_RzkwIF7WEeSDMrDhRipufg" base_Comment="_RzkJEF7WEeSDMrDhRipufg"/>
   <mTOPUMLProfile:mTOPAttribute xmi:id="_wZc30V7XEeSDMrDhRipufg" base_StructuralFeature="_wZc30F7XEeSDMrDhRipufg"/>
   <Default_1:Documentation xmi:id="_-yMfAF7XEeSDMrDhRipufg" base_Comment="_-yL38F7XEeSDMrDhRipufg"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_lAtjUF7qEeSDMrDhRipufg" base_Operation="_jJUEAF7CEeSDMrDhRipufg"/>
+  <Default_1:Documentation xmi:id="_lAuKYF7qEeSDMrDhRipufg" base_Comment="_jJUEAV7CEeSDMrDhRipufg"/>
+  <Default_1:Documentation xmi:id="_lAuKYV7qEeSDMrDhRipufg" base_Comment="_jJUECF7CEeSDMrDhRipufg"/>
+  <Default_1:Documentation xmi:id="_lAuKYl7qEeSDMrDhRipufg" base_Comment="_jJUEC17CEeSDMrDhRipufg"/>
+  <Default_1:Documentation xmi:id="_lAuKY17qEeSDMrDhRipufg" base_Comment="_jJUEDl7CEeSDMrDhRipufg"/>
+  <Default_1:Documentation xmi:id="_lAuKZF7qEeSDMrDhRipufg" base_Comment="_jJUrEV7CEeSDMrDhRipufg"/>
+  <Default_1:Documentation xmi:id="_lAuKZV7qEeSDMrDhRipufg" base_Comment="_jJUrFl7CEeSDMrDhRipufg"/>
+  <Default_1:Documentation xmi:id="_lAuKZl7qEeSDMrDhRipufg" base_Comment="_jJUrG17CEeSDMrDhRipufg"/>
+  <Default_1:Documentation xmi:id="_lAuKZ17qEeSDMrDhRipufg" base_Comment="_jJUrIF7CEeSDMrDhRipufg"/>
+  <Default_1:Documentation xmi:id="_lAuKaF7qEeSDMrDhRipufg" base_Comment="_jJUrI17CEeSDMrDhRipufg"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_o7PfRF7qEeSDMrDhRipufg" base_StructuralFeature="_upbRNF7CEeSDMrDhRipufg"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_o7PfRV7qEeSDMrDhRipufg" base_StructuralFeature="_upbRN17CEeSDMrDhRipufg"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_o7PfRl7qEeSDMrDhRipufg" base_StructuralFeature="_upbROl7CEeSDMrDhRipufg"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_o7PfR17qEeSDMrDhRipufg" base_StructuralFeature="_upbRPV7CEeSDMrDhRipufg"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_o7PfSF7qEeSDMrDhRipufg" base_StructuralFeature="_Yuxs4F7EEeSDMrDhRipufg"/>
+  <Default_1:Documentation xmi:id="_o7QGQF7qEeSDMrDhRipufg" base_Comment="_upbRMV7CEeSDMrDhRipufg"/>
+  <Default_1:Documentation xmi:id="_o7QGQV7qEeSDMrDhRipufg" base_Comment="_upbRNV7CEeSDMrDhRipufg"/>
+  <Default_1:Documentation xmi:id="_o7QGQl7qEeSDMrDhRipufg" base_Comment="_upbROF7CEeSDMrDhRipufg"/>
+  <Default_1:Documentation xmi:id="_o7QGQ17qEeSDMrDhRipufg" base_Comment="_upbRO17CEeSDMrDhRipufg"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_mpV7w17vEeSDMrDhRipufg" base_StructuralFeature="_RUMOEF4pEeSDMrDhRipufg"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_mpV7xF7vEeSDMrDhRipufg" base_StructuralFeature="_TfMtEF4pEeSDMrDhRipufg"/>
+  <mTOPUMLProfile:mTOPOperation xmi:id="_O5az0F74EeSDMrDhRipufg" base_Operation="_O5azsF74EeSDMrDhRipufg"/>
+  <Default_1:Documentation xmi:id="_O5bawF74EeSDMrDhRipufg" base_Comment="_O5azsV74EeSDMrDhRipufg"/>
+  <Default_1:URL xmi:id="_O5bawV74EeSDMrDhRipufg" base_Comment="_O5azsl74EeSDMrDhRipufg"/>
+  <Default_1:Documentation xmi:id="_O5bawl74EeSDMrDhRipufg" base_Comment="_O5azuV74EeSDMrDhRipufg"/>
+  <Default_1:Documentation xmi:id="_O5baw174EeSDMrDhRipufg" base_Comment="_O5azvF74EeSDMrDhRipufg"/>
+  <Default_1:Documentation xmi:id="_O5baxF74EeSDMrDhRipufg" base_Comment="_O5azv174EeSDMrDhRipufg"/>
+  <Default_1:URL xmi:id="_O5baxV74EeSDMrDhRipufg" base_Comment="_O5azwF74EeSDMrDhRipufg"/>
+  <Default_1:Documentation xmi:id="_O5baxl74EeSDMrDhRipufg" base_Comment="_O5azw174EeSDMrDhRipufg"/>
+  <Default_1:Documentation xmi:id="_O5cB0F74EeSDMrDhRipufg" base_Comment="_O5azxl74EeSDMrDhRipufg"/>
+  <Default_1:Documentation xmi:id="_O5cB0V74EeSDMrDhRipufg" base_Comment="_O5azy174EeSDMrDhRipufg"/>
+  <Default_1:Documentation xmi:id="_O5cB0l74EeSDMrDhRipufg" base_Comment="_O5azzl74EeSDMrDhRipufg"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_Z21jgF74EeSDMrDhRipufg" base_StructuralFeature="_Z208dV74EeSDMrDhRipufg"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_Z21jgV74EeSDMrDhRipufg" base_StructuralFeature="_Z208eF74EeSDMrDhRipufg"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_Z21jgl74EeSDMrDhRipufg" base_StructuralFeature="_Z208e174EeSDMrDhRipufg"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_Z22KkF74EeSDMrDhRipufg" base_StructuralFeature="_Z208fl74EeSDMrDhRipufg"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_Z22KkV74EeSDMrDhRipufg" base_StructuralFeature="_Z208gV74EeSDMrDhRipufg"/>
+  <Default_1:URL xmi:id="_Z22xoF74EeSDMrDhRipufg" base_Comment="_Z208cV74EeSDMrDhRipufg"/>
+  <Default_1:Documentation xmi:id="_Z22xoV74EeSDMrDhRipufg" base_Comment="_Z208cl74EeSDMrDhRipufg"/>
+  <Default_1:Documentation xmi:id="_Z22xol74EeSDMrDhRipufg" base_Comment="_Z208dl74EeSDMrDhRipufg"/>
+  <Default_1:Documentation xmi:id="_Z22xo174EeSDMrDhRipufg" base_Comment="_Z208eV74EeSDMrDhRipufg"/>
+  <Default_1:Documentation xmi:id="_Z22xpF74EeSDMrDhRipufg" base_Comment="_Z208fF74EeSDMrDhRipufg"/>
+  <Default_1:Documentation xmi:id="_Z22xpV74EeSDMrDhRipufg" base_Comment="_Z208f174EeSDMrDhRipufg"/>
+  <Default_1:Documentation xmi:id="_Z22xpl74EeSDMrDhRipufg" base_Comment="_Z208gl74EeSDMrDhRipufg"/>
+  <Default_1:URL xmi:id="_Z22xp174EeSDMrDhRipufg" base_Comment="_Z208g174EeSDMrDhRipufg"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_5S9MIV74EeSDMrDhRipufg" base_StructuralFeature="_5S9MIF74EeSDMrDhRipufg"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_9wBNUV74EeSDMrDhRipufg" base_StructuralFeature="_9wBNUF74EeSDMrDhRipufg"/>
+  <mTOPUMLProfile:mTOPAttribute xmi:id="_lq7AI175EeSDMrDhRipufg" base_StructuralFeature="_lq7AIF75EeSDMrDhRipufg"/>
 </xmi:XMI>
