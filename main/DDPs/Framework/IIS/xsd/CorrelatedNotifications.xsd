@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - DM Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/cornot/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/cornot/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource Assurance</p>
+      <p>Module: Dataset XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP CorrelatedNotifications XML structure.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================= -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="NamingDefinitions.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="GeneralDefinitions.xsd"/>
+  <!-- ================= -->
+  <xsd:complexType name="CorrelatedNotificationsType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Correlated notifications are identified by the object that emitted the notification and the notification IDs. Both are included in case the Notification IDs are not unique across objects.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="name" type="nam:NamingAttributeType"/>
+      <xsd:element name="notifIds" type="gen:NotificationIdentifierListType"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="CorrelatedNotificationListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>List of CorrelatedNotificationsType elements.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="correlatedNotifications" type="tns:CorrelatedNotificationsType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

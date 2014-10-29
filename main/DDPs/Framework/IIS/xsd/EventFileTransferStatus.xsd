@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/fts/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/fts/v1" xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Framework</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema definitions of the FileTransferStatus event.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="CommonEventInformation.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/cei/v1"/>
+  <!-- ================ -->
+  <xsd:element name="fileTransferStatus" type="tns:FileTransferStatusType" substitutionGroup="cei:commonEventInformation">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The element definition of the file transfer status event.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================= -->
+  <xsd:simpleType name="FileTransferStatusEnumType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Describe transfer status type. This is used for file transfer protocol notifications.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="FT_IN_PROGRESS"/>
+      <xsd:enumeration value="FT_FAILED"/>
+      <xsd:enumeration value="FT_COMPLETED"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ================ -->
+  <xsd:complexType name="FileTransferStatusType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The type definition of the file transfer status event.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="cei:CommonEventInformationType">
+        <xsd:sequence>
+          <xsd:element name="fileName" type="xsd:string" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Name of the file being transferred (this will include the path name) as provided in the file Location URI input parameter of a bulk retrieval operation.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="transferStatus" type="tns:FileTransferStatusEnumType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Indicates file transfer status.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="percentComplete" type="xsd:unsignedInt" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Indicates percent of file transfer complete must be in the range 0..100. Only applies if transferStatus is FT_IN_PROGRESS or FT_COMPLETED. This field is optional otherwise.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="failureReason" type="xsd:string" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This string will contain the failure reason. Only applies if transferStatus is FT_FAILED
+This field is optional otherwise.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================ -->
+</xsd:schema>

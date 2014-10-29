@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:hdr="http://www.tmforum.org/mtop/fmw/xsd/hdr/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Framework</p>
+      <p>Module: XSD Aggregate Module</p>
+      <p>Description: This module contains the XML Schema definitions of all the generic mTOP XML message structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/hdr/v1" schemaLocation="HeaderDefinitions.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="GeneralDefinitions.xsd"/>
+  <!-- ============== -->
+  <xsd:complexType name="BaseExceptionMessageType" abstract="false">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The (abstract) base type definition of all exception messages.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element ref="hdr:header" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>The mTOP header as it cannot be part of the SOAP Header in a SOAP v1.1 Fault message</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="reason" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>A string indicating further details about the exception. It is a free format string filled by the OS.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The extension for specific vendor exception information.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:element name="notImplemented" type="tns:BaseExceptionMessageType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Raised by OS for an optional operation that is not implemented</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="internalError" type="tns:BaseExceptionMessageType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Raised in case of non-specific OS internal failure</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="invalidInput" type="tns:BaseExceptionMessageType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Raised when one or many operation input (request) parameters are invalid</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="tooManyOpenIterators" type="tns:BaseExceptionMessageType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Raised when data retrieval iterator capacity is full</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="entityNotFound" type="tns:BaseExceptionMessageType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Raised when one or many operation input (request) parameters do not refer to an existing object</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="commLoss" type="tns:BaseExceptionMessageType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Raised when communication to an entity (needed to help fulfill the request) is lost</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="unsupportedCompressionFormat" type="tns:BaseExceptionMessageType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Raised when the given data compression format is not supported.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="unsupportedPackingFormat" type="tns:BaseExceptionMessageType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Raised when the given file packing format is not supported.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="invalidFilterDefinition" type="tns:BaseExceptionMessageType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Raised when the filter is invalid.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="objectInUse" type="tns:BaseExceptionMessageType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Raised when .</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="tpInvalidEndPoint" type="tns:BaseExceptionMessageType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Raised when .</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="timeslotInUse" type="tns:BaseExceptionMessageType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Raised when .</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="protectionEffortNotMet" type="tns:BaseExceptionMessageType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Raised when .</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="notInValidState" type="tns:BaseExceptionMessageType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Raised when .</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="unableToComply" type="tns:BaseExceptionMessageType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Raised when .</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="capacityExceeded" type="tns:BaseExceptionMessageType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Raised when .</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="accessDenied" type="tns:BaseExceptionMessageType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Raised when .</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="unsupportedRoutingConstraints" type="tns:BaseExceptionMessageType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Raised when .</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="userlabelInUse" type="tns:BaseExceptionMessageType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Raised when .</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="invalidTopic" type="tns:BaseExceptionMessageType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Raised when the topic is not supported.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="notificationServiceProblem" type="tns:BaseExceptionMessageType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Raised when there is a failure with the Broker.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:complexType name="AllExceptionsType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Reference to all supported exception types.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice>
+      <xsd:element ref="tns:accessDenied"/>
+      <xsd:element ref="tns:capacityExceeded"/>
+      <xsd:element ref="tns:commLoss"/>
+      <xsd:element ref="tns:entityNotFound"/>
+      <xsd:element ref="tns:internalError"/>
+      <xsd:element ref="tns:invalidFilterDefinition"/>
+      <xsd:element ref="tns:invalidInput"/>
+      <xsd:element ref="tns:invalidTopic"/>
+      <xsd:element ref="tns:notificationServiceProblem"/>
+      <xsd:element ref="tns:notImplemented"/>
+      <xsd:element ref="tns:notInValidState"/>
+      <xsd:element ref="tns:objectInUse"/>
+      <xsd:element ref="tns:protectionEffortNotMet"/>
+      <xsd:element ref="tns:timeslotInUse"/>
+      <xsd:element ref="tns:tooManyOpenIterators"/>
+      <xsd:element ref="tns:tpInvalidEndPoint"/>
+      <xsd:element ref="tns:unableToComply"/>
+      <xsd:element ref="tns:unsupportedCompressionFormat"/>
+      <xsd:element ref="tns:unsupportedPackingFormat"/>
+      <xsd:element ref="tns:unsupportedRoutingConstraints"/>
+      <xsd:element ref="tns:userlabelInUse"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:complexType name="GetAllDataIteratorExceptionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Profile of exception types supported by all mTOP iterator operations.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:restriction base="tns:AllExceptionsType">
+        <xsd:choice>
+          <xsd:element ref="tns:commLoss"/>
+          <xsd:element ref="tns:internalError"/>
+          <xsd:element ref="tns:invalidInput"/>
+          <xsd:element ref="tns:notImplemented"/>
+        </xsd:choice>
+      </xsd:restriction>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================== -->
+  <xsd:complexType name="GetAllDataIteratorRequestType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Generic request message structure for all data iterator operations</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence/>
+  </xsd:complexType>
+</xsd:schema>
