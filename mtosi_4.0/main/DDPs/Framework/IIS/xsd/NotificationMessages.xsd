@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/notmsg/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/notmsg/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Framework</p>
+      <p>Module: XSD Messages Module</p>
+      <p>Description: This module contains the XML Schema definitions of all the mTOP notification service interfaces messages.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
+  <xsd:import schemaLocation="MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
+  <xsd:import schemaLocation="CommonEventInformation.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/cei/v1"/>
+  <!--  ============== -->
+  <xsd:element name="subscribeRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the subscribe operation</p>
+        <p>This operation allows the Client OS to subscribe for notifications.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="consumerEpr" type="tns:EndPointReferenceType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the notification consumer endpoint (callback handler) that the broker will call to send the notification</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="topic" type="tns:TopicExpressionType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the unique name of the topic object of the subscription</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="selector" type="gen:QueryExpressionType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>It is the optional "filter" expression to restrict the flow of messages sent to the notification consumer. By default, an empty selector defines the desire to be notified of all events for the given topic.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <!--  ============== -->
+  <xsd:element name="subscribeResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the subscribe operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="subscriptionID" type="tns:SubscriptionIdentifierType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>A unique subscription identifier is returned to the Client OS to be used when invoking the unsubscribe() for the given topic. Note that it must uniquely identify the request signature by its three elements; consumerEPR , topic, and selector.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <!--  ============== -->
+  <xsd:element name="subscribeException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the subscribe operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidFilterDefinition"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:invalidTopic"/>
+            <xsd:element ref="msg:notificationServiceProblem"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!--  ============== -->
+  <xsd:element name="unsubscribeRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the unsubscribe operation</p>
+        <p>This operation allows the Client OS to unsubscribe from a previously subscribed notification channel.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="subscriptionID" type="tns:SubscriptionIdentifierType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>It is the same subscription identifier that was returned on successful subscription of the Client OS.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="topic" type="tns:TopicExpressionType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>it is the unique name of the topic object of the unsubscription.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <!--  ============== -->
+  <xsd:element name="unsubscribeResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the unsubscribe operation</p>
+        <p>Note that it is an empty payload. Failure should be handled as an exception</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <!--  ============== -->
+  <xsd:element name="unsubscribeException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the unsubscribe operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notificationServiceProblem"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!--  ============== -->
+  <xsd:element name="notify">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>One way (notification) message structure of the notify operation</p>
+        <p>This operation allows event notification to a client OS.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="topic" type="tns:TopicExpressionType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>it is the unique name of the topic on which the notification "message" was published. The topic is based on a TopicExpression, which is associated as a unique JNDI entry. In MTOSI Release 1, it represents the address of a JMS topic instance created at deployment.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="message">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>the notification payload which can be one of the supported mTOP XML events, which are all based on the commonEventInfo</p>
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="cei:commonEventInformation" maxOccurs="unbounded"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <!--  ============== -->
+  <xsd:simpleType name="EndPointReferenceType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>the unique service end point address on the CCV.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:anyURI"/>
+  </xsd:simpleType>
+  <!--  ============== -->
+  <xsd:simpleType name="SubscriptionIdentifierType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>the identifier to uniquely identify a valid subscription.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!--  ============== -->
+  <xsd:simpleType name="TopicExpressionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>the unique name of topic instance published on the CCV.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+</xsd:schema>
