@@ -2278,8 +2278,138 @@ typedef string FDType_T;
          out flowDomainFragment::FDFrRoute_T route) 
         raises (globaldefs::ProcessingFailureException);
 
+    
+ /**
+   * <p> 
+   * This service returns static route table in Network element whose name is 
+   * passed as a parameter.  </p>
+   *
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * this operation uses an iterator. See
+   * <a href=../../../supportingDocumentation/SD1-15_iterators.pdf > SD1-15 iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   * 
+   * <p>This service returns the static routingTable for the specified Network Element.</p>
+   *
+   * <br> globaldefs::NamingAttributes_T managedElementName: The name of the Network Element.
+   * <br>unsigned long how_many: Maximum number of StaticRoutingTable Entrys to 
+   * return in the first batch.
+   * <br>StaticRoutingTable_T sr: First batch of Static Route Table.
+   * <br>StaticRoutingIterator_I srIt: Iterator to retrieve the remaining
+   * <br> StaticRoutingTable Entrys.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the entire request is not supported 
+   * by the EMS or the request with the specified input parameters 
+   * is not supported. <br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when flowDomainName does not reference a 
+   *  FlowDomain object<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when flowDomainName references an object that 
+   *  does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
+   *  lost<br>
+   * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
+   *  that the EMS can support has been reached<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
+   * <br>
+   **/
+   void getAllStaticRoutings(
+         in globaldefs::NamingAttributes_T managedElementName,
+         in unsigned long how_many,			 
+         out StaticRoutingTable_T sr,
+         out StaticRoutingIterator_I srIt)
+	  raises(globaldefs::ProcessingFailureException);
 
-   };
+/**
+   * <p> 
+   * This service returns virtual routing and forwardings in Network element whose name is 
+   * passed as a parameter.  </p>
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * this operation uses an iterator. See
+   * <a href=../../../supportingDocumentation/SD1-15_iterators.pdf > SD1-15 iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   *  
+   * <p>This service returns all the VRF (virtual routing and forwarding) for the specified 
+   * Network Element. </p>
+   *
+   * <br> globaldefs::NamingAttributes_T managedElementName: The name of the Network Element.
+   * <br>unsigned long how_many: Maximum number of StaticRoutingTable Entrys to 
+   * return in the first batch.
+   * <br>VRFList_T vrfList: First batch of VRF List.
+   * <br>VRFIterator_I vrfIt: Iterator to retrieve the remaining VRF. 
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the entire request is not supported 
+   * by the EMS or the request with the specified input parameters 
+   * is not supported. <br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when flowDomainName does not reference a 
+   *  FlowDomain object<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when flowDomainName references an object that 
+   *  does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
+   *  lost<br>
+   * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
+   *  that the EMS can support has been reached<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
+   * <br>
+   **/
+   void getAllVRFs(
+         in globaldefs::NamingAttributes_T managedElementName,
+         in unsigned long how_many,			 
+         out VRFList_T vrfList,
+         out VRFIterator_I vrfIt)
+	  raises(globaldefs::ProcessingFailureException);
+	  
+ /**
+   * <p> 
+   * This service returns virtual routing and forwardings for the FDFr whose name is specified 
+   * as a parameter.  </p>
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * this operation uses an iterator. See
+   * <a href=../../../supportingDocumentation/SD1-15_iterators.pdf > SD1-15 iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   *  
+   * <p>This service returns all the VRF (virtual routing and forwarding) for the specified 
+   * Network Element. </p>
+   *
+   * <br>globaldefs::NamingAttributes_T fdfrName: The name of the FDFr.
+   * <br>unsigned long how_many: Maximum number of StaticRoutingTable Entrys to 
+   * return in the first batch.
+   * <br>VRFList_T vrfList: First batch of VRF List.
+   * <br>VRFIterator_I vrfIt: Iterator to retrieve the remaining VRF. 
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the entire request is not supported 
+   * by the EMS or the request with the specified input parameters 
+   * is not supported. <br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when flowDomainName does not reference a 
+   *  FlowDomain object<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when flowDomainName references an object that 
+   *  does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
+   *  lost<br>
+   * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators 
+   *  that the EMS can support has been reached<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request, 
+   * and cannot determine the reason it could not comply, 
+   * it may raise this exception. <br>
+   * <br>
+   **/
+   void getFDFrVRFs(
+         in globaldefs::NamingAttributes_T fdfrName,
+         in unsigned long how_many,	
+         out VRFList_T vrfList,
+         out VRFIterator_I vrfIt)
+	  raises(globaldefs::ProcessingFailureException);
+
+   };  
 
 };
 
