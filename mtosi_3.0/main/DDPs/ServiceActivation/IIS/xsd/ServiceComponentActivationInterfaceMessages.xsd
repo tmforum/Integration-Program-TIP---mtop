@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2006 rel. 3 sp1 (http://www.altova.com) by ﻿user user (Amdocs Management UK) -->
 <!-- mTOP DDP - OM ServiceComponentActivationInterface - Copyright TeleManagement Forum 2008 -->
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/sa/xsd/scai/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:scaiexcpt="http://www.tmforum.org/mtop/sa/xsd/saiexcpt/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:soc="http://www.tmforum.org/mtop/sb/xsd/soc/v1" xmlns:savc="http://www.tmforum.org/mtop/sb/xsd/savc/v1" xmlns:sodel="http://www.tmforum.org/mtop/sb/xsd/sodel/v1" xmlns:csi="http://www.tmforum.org/mtop/sb/xsd/csi/v1" xmlns:svc="http://www.tmforum.org/mtop/sb/xsd/svc/v1" targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/sa/xsd/scai/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:scaiexcpt="http://www.tmforum.org/mtop/sa/xsd/saiexcpt/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:cocd="http://www.tmforum.org/mtop/fmw/xsd/cocd/v1" xmlns:soc="http://www.tmforum.org/mtop/sb/xsd/soc/v1"  xmlns:test="http://www.tmforum.org/mtop/tm/xsd/test/v1"
+xmlns:savc="http://www.tmforum.org/mtop/sb/xsd/savc/v1" xmlns:sodel="http://www.tmforum.org/mtop/sb/xsd/sodel/v1" xmlns:csi="http://www.tmforum.org/mtop/sb/xsd/csi/v1" xmlns:svc="http://www.tmforum.org/mtop/sb/xsd/svc/v1" targetNamespace="http://www.tmforum.org/mtop/sa/xsd/scai/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
 	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
 	<xsd:import namespace="http://www.tmforum.org/mtop/sa/xsd/saiexcpt/v1" schemaLocation="SaExceptions.xsd"/>
 	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd"/>
@@ -11,6 +12,8 @@
 	<xsd:import namespace="http://www.tmforum.org/mtop/sb/xsd/savc/v1" schemaLocation="../../../ServiceBasic/IIS/xsd/EventServiceAttributeValueChange.xsd"/>
 	<xsd:import namespace="http://www.tmforum.org/mtop/sb/xsd/csi/v1" schemaLocation="../../../ServiceBasic/IIS/xsd/CommonServiceInfo.xsd"/>
 	<xsd:import namespace="http://www.tmforum.org/mtop/sb/xsd/svc/v1" schemaLocation="../../../ServiceBasic/IIS/xsd/Service.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/cocd/v1" schemaLocation="../../../Framework/IIS/xsd/CommonObjectCreateDataType.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/tm/xsd/test/v1" schemaLocation="../../../TestManagement/IIS/xsd/Test.xsd"/>
 	<xsd:annotation>
 		<xsd:documentation>
 			<p>DDP: Service Component Activation Interface</p>
@@ -55,7 +58,7 @@
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:complexContent>
-			<xsd:extension base="csi:CommonServiceInfoType">
+			<xsd:extension base="cocd:CommonObjectCreateDataType">
 				<xsd:annotation>
 					<xsd:documentation>
 						<p>This element provides the service attributes that are required to create an RFS.</p>
@@ -69,6 +72,8 @@
 					<xsd:element name="userRefList" type="nam:NamingAttributeListType" minOccurs="0"/>
 					<xsd:element name="sapList" type="svc:ServiceAccessPointType" maxOccurs="unbounded"/>
 					<xsd:element name="describedByList" type="svc:ServiceCharacteristicValueType" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="setDataTestList" type="test:SetTestDataListType" minOccurs="0">
+					</xsd:element>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -152,10 +157,19 @@
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:complexType>
+		<xsd:sequence>
 			<xsd:choice maxOccurs="unbounded">
 				<xsd:element name="rfsName" type="nam:NamingAttributeType"/>
 				<xsd:element name="rfsCreation" type="soc:ServiceObjectCreationType"/>
 			</xsd:choice>
+			<xsd:element name="testList" type="test:TestListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The list of tests that were successfully created.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
 		</xsd:complexType>
 	</xsd:element>
 	<!-- ===================== Reserve  Exceptions ========= -->
@@ -207,12 +221,21 @@
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:complexType>
+		<xsd:sequence>
 			<xsd:choice maxOccurs="unbounded">
 				<xsd:element name="rfsName" type="nam:NamingAttributeType"/>
 				<xsd:element name="rfsCreation" type="soc:ServiceObjectCreationType"/>
 				<xsd:element name="rfsStateChange" type="savc:ServiceAttributeValueChangeType"/>
 				<xsd:element name="rfsDeletion" type="sodel:ServiceObjectDeletionType"/>
 			</xsd:choice>
+			<xsd:element name="testList" type="test:TestListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The list of tests that were successfully created.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+			</xsd:element>
+		 </xsd:sequence>
 		</xsd:complexType>
 	</xsd:element>
 	<!-- ===================== Provision Exceptions ========= -->
@@ -265,11 +288,20 @@
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:complexType>
+           <xsd:sequence>
 			<xsd:choice maxOccurs="unbounded">
 				<xsd:element name="rfsName" type="nam:NamingAttributeType"/>
 				<xsd:element name="rfsCreation" type="soc:ServiceObjectCreationType"/>
 				<xsd:element name="rfsStateChange" type="savc:ServiceAttributeValueChangeType"/>
 			</xsd:choice>
+			<xsd:element name="testList" type="test:TestListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The list of tests that were successfully created.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+			</xsd:element>
+		 </xsd:sequence>
 		</xsd:complexType>
 	</xsd:element>
 	<!-- ===================== Activate Exceptions ========= -->
