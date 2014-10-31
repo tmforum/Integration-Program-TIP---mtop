@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM TestManagement - Copyright TeleManagement Forum 2014 -->
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.tmforum.org/mtop/tm/wsdl/tsc/v1-0" name="mTOP-TestSpecControl-V1-0" targetNamespace="http://www.tmforum.org/mtop/tm/wsdl/tsc/v1-0">
+	<wsdl:import namespace="http://www.tmforum.org/mtop/tm/wsdl/tsc/v1-0" location="TestSpecControlPortType.wsdl"/>
+	<wsdl:documentation>
+		<p>DDP: TestManagement</p>
+		<p>Module: Test Spec Control Service Interface WSDL JMS Module</p>
+		<p>Description: This module contains all the mTOP TestSpecControl Service Interface WSDL definitions for the Web Service deployment profile with SOAP/JMS binding.</p>
+		<p>Version: 1.0</p>
+	</wsdl:documentation>
+	<wsdl:binding name="TestSpecControlSoapJmsBinding" type="tns:TestSpecControl">
+		<wsdl:documentation>
+			<p>SOAP JMS binding definitions of the operations of the TestSpecControl portType (interface)</p>
+		</wsdl:documentation>
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/jms"/>
+		<!-- startTest operation -->
+		<wsdl:operation name="createTestSpec">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:header message="tns:createTestSpecRequest" part="mtopHeader" use="literal"/>
+				<soap:body parts="mtopBody" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="tns:createTestSpecResponse" part="mtopHeader" use="literal"/>
+				<soap:body parts="mtopBody" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="createTestSpecException">
+				<soap:fault name="createTestSpecException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<!-- modifyTestSpec operation -->
+		<wsdl:operation name="modifyTestSpec">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:header message="tns:modifyTestSpecRequest" part="mtopHeader" use="literal"/>
+				<soap:body parts="mtopBody" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="tns:modifyTestSpecResponse" part="mtopHeader" use="literal"/>
+				<soap:body parts="mtopBody" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="modifyTestSpecException">
+				<soap:fault name="modifyTestSpecException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<!-- getTestSpec operation -->
+		<wsdl:operation name="getTestSpec">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:header message="tns:getTestSpecRequest" part="mtopHeader" use="literal"/>
+				<soap:body parts="mtopBody" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="tns:getTestSpecResponse" part="mtopHeader" use="literal"/>
+				<soap:body parts="mtopBody" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="getTestSpecException">
+				<soap:fault name="getTestSpecException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+		<!-- deleteTestSpec operation -->
+		<wsdl:operation name="deleteTestSpec">
+			<soap:operation style="document"/>
+			<wsdl:input>
+				<soap:header message="tns:deleteTestSpecRequest" part="mtopHeader" use="literal"/>
+				<soap:body parts="mtopBody" use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:header message="tns:deleteTestSpecResponse" part="mtopHeader" use="literal"/>
+				<soap:body parts="mtopBody" use="literal"/>
+			</wsdl:output>
+			<wsdl:fault name="deleteTestSpecException">
+				<soap:fault name="deleteTestSpecException" use="literal"/>
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="TestSpecControlJms">
+		<wsdl:documentation>
+			<p>Example of the TestSpecControl WSDL Service definition as a deployment example of this mTOP Service Interface. It is expected to be modified to match the specific deployment configuration in a service provider's CCV.</p>
+		</wsdl:documentation>
+		<wsdl:port name="TestSpecControlSoapJms" binding="tns:TestSpecControlSoapJmsBinding">
+			<soap:address location="jms://aserver/mtosi/TestSpecControl"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
