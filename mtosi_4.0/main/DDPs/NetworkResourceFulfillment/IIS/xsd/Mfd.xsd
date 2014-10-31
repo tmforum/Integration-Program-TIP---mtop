@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/mfd/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:lp="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:ituArc="http://www.tmforum.org/mtop/nra/xsd/ituArc/v1" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/mfd/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: Data Model Network Resource FulFillment</p>
+			<p>Module: Aggregate XSD Module</p>
+			<p>Description: This module contains the XML Schema type definition of the mTOP MFD XML structure.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ============== -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayeredParameters.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1" schemaLocation="CommonTypes.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/ituArc/v1" schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/ITU-T-ArcDefinitions.xsd"/>
+	<!-- ============== -->
+	<xsd:element name="mfd" type="tns:MatrixFlowDomainType"/>
+	<!-- ============== -->
+	<xsd:complexType name="MatrixFlowDomainType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A matrix flow domain is associated with a set of CPTPs. It reflects
+        an atomic switching matrix.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="cri:CommonResourceInfoType">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This element entails the attributes common to all mTOP network resource objects.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element ref="lp:transmissionParametersList" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>A list of layer rates on which connectivity can be established in the flow domain together with a set of connectionless technology parameters for each layer rate. Refer to chapter "Connectionless Technology Parameters" of the
+supporting document LayeredParameters.pdf for details of the currently defined connectionless parameters.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="isFlexible" type="xsd:boolean" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Indicates whether the MFD is fixed (i.e., cannot be configured by
+				the NMS) or flexible.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="tmdState" type="com:TransmissionDescriptorStateType" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Indicate the state of consistency between the MFD and its associated Transmission Descriptor </p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ituArcStateAndStatusList" type="ituArc:ItuArcStateAndStatusList"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ============== -->
+	<xsd:complexType name="MatrixFlowDomainListType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>List of MatrixFlowDomain</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="tns:mfd" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

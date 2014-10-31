@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/mlrar/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/mlrar/v1" xmlns:callconr="http://www.tmforum.org/mtop/mri/xsd/callconr/v1"   xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:mlsn="http://www.tmforum.org/mtop/nrf/xsd/mlsn/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Manage Resource Inventory</p>
+      <p>Module:  Message XSD Module</p>
+      <p>Description: This module contains the XML Schema type definitions of all the mTOP MLRA Retrieval SI XML message structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Mlsn.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/mlsn/v1"/>
+  <xsd:import schemaLocation="CallConnRetrievalMessages.xsd" namespace="http://www.tmforum.org/mtop/mri/xsd/callconr/v1"/>
+  <!-- ================ -->
+  <xsd:element name="getAllMultiLayerRoutingAreasWrtOsRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAllMultiLayerRoutingAreasWrtOs operation</p>
+        <p>This operation returns the data structure for each MultiLayerRoutingArea (MLRA) managed by a given subordinate OS AND contained by a specific Management Domain. Note that Wrt in the name of the operation stands for "with respect to".</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="osName" type="nam:NamingAttributeType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the subordinate OS whose contained MLRAs are being requested.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="mdName" type="nam:NamingAttributeType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p> The name of the Management Domain whose contained MLRAs are being requested.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllMultiLayerRoutingAreasWrtOsResponse" type="tns:MultipleObjectsResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllMultiLayerRoutingAreasWrtOs operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllMultiLayerRoutingAreasWrtOsException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllMultiLayerRoutingAreasWrtOs operation</p>
+        <p>commLoss - The target OS is unable to communicate with the Control Plane and communication is required to complete the request.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getAllMultiLayerRoutingAreasRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAllMultiLayerRoutingAreas operation</p>
+        <p>This operation returns the MLRAs contained by the MD to which the operation is directed.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="mdName" type="nam:NamingAttributeType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the Management Domain whose contained MLRAs are being requested.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllMultiLayerRoutingAreasResponse" type="tns:MultipleObjectsResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllMultiLayerRoutingAreas operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllMultiLayerRoutingAreasException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllMultiLayerRoutingAreas operation</p>
+        <p>commLoss - The target OS is unable to communicate with the Control Plane and communication is required to complete the request.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getAllSubordinateMultiLayerRoutingAreasRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> Request message structure of the getAllSubordinateMultiLayerRoutingAreas operation.</p>
+        <p> The operation will reply the MLSNs (which represent MLRAs) including Routing Nodes that are one level subordinate to the MLSN provided as an input.</p>
+        <p> This allows a requesting OS to request the Multi Layer Routing Areas or Routing Nodes that are completely managed by the target OS (i.e. the target OS is allowed to read and provision all transport plane aspects, e.g. PTP, CTP).</p>
+        <p> If the operation is addressed to a non control plane  Multi Layer Subnetwork, the operation is rejected and an exception is raised.</p>
+        <p> The containment hierarchy of MLSNs representing a MLRA is reflected only by the result of this operation, as the containment hierarchy of MLSNs is not reflected in the name of MLSN 2nd class object.</p>
+        <p> The subordinate MLSN(s) are replied, regardless the addressed MLSN is directly managed or not by the target OS (the target OS does not manage the MLSN but it can access the related control plane information).</p>
+        <p> If the operation is addressed to a MLRA of Routing Node type, which is at the bottom of the routing hierarchy, the result is an empty list.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="subnetName" type="nam:NamingAttributeType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the MLRA whose subordinate MLRAs are being requested</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllSubordinateMultiLayerRoutingAreasResponse" type="tns:MultipleObjectsResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllSubordinateMultiLayerRoutingAreas operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllSubordinateMultiLayerRoutingAreasException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllSubordinateMultiLayerRoutingAreas operation</p>
+        <p>unableToComply - Raised if the subnetName does not represent a MLRA in the Control Plane.</p>
+        <p>commLoss - The target OS is unable to communicate with the Control Plane and communication is required to complete the request.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="getAllSubordinateRoutingAreaIDsWrtConnectionRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAllSubordinateRoutingAreaIDsWrtConnection operation</p>
+        <p>Note that Wrt in the name of the operation stands for "with respect to".</p>
+        <p>This operation provides a way for the requesting OS to retrieve the identifiers of the subordinate Routing Areas, at the lower partitioning level (N-1 level) and which are known to be involved in the route of a Connection at the level N.</p>
+        <p>This operation allows the requesting OS to provide a filter input parameter to retrieve the subordinate Routing Areas for only the actual route, or only the  home/intended route, or both. This operation result is not recursive.</p>
+        <p>This operation has been designed to operate in a 3 level hierarchy, i.e. where the top level MLRA contains subordinate MLRAs, and such subordinate MLRAs contain Routing Nodes. This operation can only be addressed to a top level routing area.</p> 
+        <p>Depending on the signalling used in the network, the target OS will indicate whether the response is a "Full" description of the route or a "Sparse" description: 
+        <ol>
+            <li>Full: The control plane component at the originating point of the connection has a full view of all of the ids of the routing area one level subordinate to the top level routing area involved in the connection. In this case the requesting OS can simply interrogate the target OSs for each routing area returned in any order to find out the detail routes of each routing area.</li>
+            <li>Sparse: The control plane component at the originating point of the connection can only provide the id of the local routing area, the next neighbour and the destination routing area (and can not provide the identifiers of any other routing areas along the route). For the "Sparse case" the requesting OS will follow the route (i.e., starting from the originating routing area and progressing along the route to the subsequent routing areas ) and use "getConnectionsAndRouteDetails()" to find out the detail routes of each routing area.</li>
+        </ol></p>
+        <p>The output of this operation has the following characteristics:
+        <ol>
+            <li>The MLRA List is empty if there is not MLRAs for the requested intended or actual route or if the MLRA is a MLRNode</li> 
+            <li>There may be no Home/Intended route in the case where none was provisioned</li>
+            <li>There may be no Actual route where the connection is searching or the actual route traverses a different MLRA to the Home/Intended route</li>
+            <li>For an SNCP connection, the replied Home/Intended route will always include both main and spare legs of the SNCP protection, while the replied actual route may return only one leg, if only such leg is currently active in the network</li>
+            <li>The route is described in full across the MLRA regardless of sharing of same Routing Node Connections among distinct routes of the same Call</li>
+        </ol></p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="subnetName" type="nam:NamingAttributeType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the MLSN which represents the top level MLRA.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="sncName" type="nam:NamingAttributeType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p> The Name of the Top Level Connection for which to find the route.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="routeType" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p> An indication of the connection route type for which to recover the subordinate MLRAs. One of three values are possible: "Intended" or "Actual" or "Both".</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllSubordinateRoutingAreaIDsWrtConnectionResponse" type="callconr:RoutePerRouteTypeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllSubordinateRoutingAreaIDsWrtConnection operation</p>
+        <p>The list(s) of Routing Area ids at the lower partitioning level which are known to be involved in the route(s) of a specified connection.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllSubordinateRoutingAreaIDsWrtConnectionException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllSubordinateRoutingAreaIDsWrtConnection operation</p>
+        <p>unableToComply - Raised if the target OS does not control the Originating Point for the specified connection. Raised if the adressed MLSN does not represent a top level MLRA. Raised if the addressed MLSN is the top level MLRA but the network has only 2 levels of routing hierarchy.</p>
+        <p>notInValidState  - Raised if the target OS is unable to comply because the Connection State is Searching.</p>
+        <p>commLoss - Raised when communications to managedElement is lost or the target OS is unable to communicate with any Control Plane component and communications is required to complete the request.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:notInValidState"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================= -->
+  <!-- Definitions of Iterator messages for Object and Object Name retrievals  -->
+  <!-- ================= -->
+  <xsd:element name="getMultiLayerRoutingAreasIteratorRequest" type="msg:GetAllDataIteratorRequestType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getMultiLayerRoutingAreasIterator operation</p>
+        <p>This is the iterator request to return the next batch of MLRAs from the OS to which an MLRA retrieval request was initially sent.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================== -->
+  <xsd:element name="getMultiLayerRoutingAreasIteratorResponse" type="tns:MultipleObjectsResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getMultiLayerRoutingAreasIterator operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================== -->
+  <xsd:element name="getMultiLayerRoutingAreasIteratorException" type="msg:GetAllDataIteratorExceptionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getMultiLayerRoutingAreasIterator operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================= -->
+  <xsd:element name="getMultiLayerRoutingAreaNamesIteratorRequest" type="msg:GetAllDataIteratorRequestType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getMultiLayerRoutingAreaNamesIterator operation</p>
+        <p>This is the iterator request to return the next batch of MLRA names from the OS to which an MLRA names retrieval request was initially sent.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================== -->
+  <xsd:element name="getMultiLayerRoutingAreaNamesIteratorResponse" type="tns:MultipleObjectNamesResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getMultiLayerRoutingAreaNamesIterator operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================== -->
+  <xsd:element name="getMultiLayerRoutingAreaNamesIteratorException" type="msg:GetAllDataIteratorExceptionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getMultiLayerRoutingAreaNamesIterator operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <!-- == Local Data Types == -->
+  <!-- ================ -->
+  <xsd:complexType name="MultipleObjectNamesResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure for a set of object names</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="nameList" type="nam:NamingAttributeListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The list of object names</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================== -->
+  <xsd:complexType name="SingleObjectResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure for a single MLRA object</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="mlsn" type="mlsn:MultiLayerSubnetworkType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The retrieved MLSN of MLRA type</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================== -->
+  <xsd:complexType name="MultipleObjectsResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure for a set of MLRA objects</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="mlsnList" type="mlsn:MultiLayerSubnetworkListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The list of MLSNs of MLRA type</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================== -->
+</xsd:schema>

@@ -1,0 +1,946 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2007 -->
+<xsd:schema targetNamespace="http://www.tmforum.org/mtop/mri/xsd/callconr/v1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/callconr/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:snc="http://www.tmforum.org/mtop/nrf/xsd/snc/v1" xmlns:cc="http://www.tmforum.org/mtop/nrf/xsd/cc/v1" xmlns:rt="http://www.tmforum.org/mtop/nrf/xsd/route/v1" xmlns:call="http://www.tmforum.org/mtop/nrf/xsd/call/v1" xmlns:mlsnpplink="http://www.tmforum.org/mtop/nrf/xsd/mlsnpplink/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Manage Resource Inventory</p>
+      <p>Module:  Message XSD Module</p>
+      <p>Description: This module contains the XML Schema type definitions of all the mTOP Call and Connection Retrieval SI XML message structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Snc.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/snc/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Cc.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/cc/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Route.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/route/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Call.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/call/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/MlSnppLink.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/mlsnpplink/v1"/>
+  <!-- ================ -->
+  <xsd:element name="getAllCallsAndTopLevelConnectionsRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This operation provides a way for the requesting OS to retrieve all details of the Calls and associated Top Level Connections in the scope of a specified MLSN which represents a top level MLRA.</p>
+        <p> A target OS will only return the Calls and top level Connections that it controls the Originating Point of. By implication this informs the requesting OS which target OS controls each Call.</p>
+        <p> Note that the reply can be an empty list, if there are no Calls established from any of the points controlled by the target OS.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="subnetName" type="nam:NamingAttributeType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the MLSN which represents the top level MLRA and contains the Calls to be retrieved.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllCallsAndTopLevelConnectionsResponse" type="tns:CallAndTopLevelConnectionsListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllCallsAndTopLevelConnections operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllCallsAndTopLevelConnectionsException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllCallsAndTopLevelConnections operation</p>
+        <p>unableToComply - Raised if the specified MLSN is not a Top Level MLRA. Raised if the specified Top Level MLRA is not controlled by Control Plane.</p>
+        <p>commLoss - Raised when the target OS is unable to communicate with the NE or the target OS is unable to communicate with any Control Plane component and communications is required to complete the request.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================= -->
+  <xsd:element name="getAllCallsAndTopLevelConnectionsAndSNCsRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This operation allows the requesting OS to retrieve the attributes of all the Calls, top level connections and subordinate SNCs associated with a subnetwork.</p>
+        <p> This operation does not apply to control plane enhanced subnetworks, see SD1-44 Connectionless Technology Management for further details on Call management in non-control plane networks.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="subnetName" type="nam:NamingAttributeType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p> The name of the subnetwork that contains the Calls.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllCallsAndTopLevelConnectionsAndSNCsResponse" type="tns:CallAndTopLevelConnectionsAndSNCsListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllCallsAndTopLevelConnectionsAndSNCs operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllCallsAndTopLevelConnectionsAndSNCsException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllCallsAndTopLevelConnectionsAndSNCs operation</p>
+        <p>unableToComply - Raised if the specified MLSN is an MLRA which is managed by Control Plane.</p>
+        <p>commLoss - Raised when the target OS is unable to communicate with the NE and communication is required to complete the request.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================= -->
+  <xsd:element name="getAllCallsAndTopLevelConnectionsWithMERequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This operation has exactly the same behaviour as getAllCallsAndTopLevelConnections(), except that the request returns only Calls (and all Top Level Connections) that have at least one Top Level connection terminated on an SNP that corresponds to a TP contained in the specified ME.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="subnetName" type="nam:NamingAttributeType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the MLSN which represents the top level MLRA and contain the calls to be retrieved.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="meName" type="nam:NamingAttributeType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the ME.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllCallsAndTopLevelConnectionsWithMEResponse" type="tns:CallAndTopLevelConnectionsListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllCallsAndTopLevelConnectionsWithME operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllCallsAndTopLevelConnectionsWithMEException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllCallsAndTopLevelConnectionsWithME operation</p>
+        <p>unableToComply - Raised if the specified MLSN is not a Top Level MLRA. Raised if the specified Top Level MLRA is not controlled by Control Plane.</p>
+        <p>commLoss - Raised when the target OS is unable to communicate with the NE or the target OS is unable to communicate with any Control Plane component and communications is required to complete the request.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================= -->
+  <xsd:element name="getAllCallsAndTopLevelConnectionsAndSNCsWithMERequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This operation has exactly the same behaviour as getAllCallsAndTopLevelConnectionsAndSNCs(), except that the request returns only Calls (and all Top Level Connections with their supporting SNCs) that have at least one Top Level connection terminated on the specified ME.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="subnetName" type="nam:NamingAttributeType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p> The name of the subnetwork that contains the calls.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="meName" type="nam:NamingAttributeType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of the ME.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllCallsAndTopLevelConnectionsAndSNCsWithMEResponse" type="tns:CallAndTopLevelConnectionsAndSNCsListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllCallsAndTopLevelConnectionsAndSNCsWithME operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllCallsAndTopLevelConnectionsAndSNCsWithMEException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllCallsAndTopLevelConnectionsAndSNCsWithME operation</p>
+        <p>unableToComply - Raised if the specified MLSN is an MLRA which is managed by Control Plane.</p>
+        <p>commLoss - Raised when the target OS is unable to communicate with the NE and communication is required to complete the request.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================= -->
+  <xsd:element name="getAllCallsAndTopLevelConnectionsAndSNCsWithTPRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This operation has exactly the same behaviour as getAllCallsAndTopLevelConnectionsAndSNCs(), except that the request returns only Calls (and all Top Level Connections with their supporting SNCs) that have at least one Top Level connection supported by the specified TP (either directly or via a TP contained in this TP).</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="subnetName" type="nam:NamingAttributeType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p> The name of the subnetwork that contains the calls.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="tPName" type="nam:NamingAttributeType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p> The name of the termination point. This name must be explicit (a generic endpoint specification may not be used in this case).</p>
+              <p> See SD1-25 Object Naming for further detail on TP naming.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllCallsAndTopLevelConnectionsAndSNCsWithTPResponse" type="tns:CallAndTopLevelConnectionsAndSNCsListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllCallsAndTopLevelConnectionsAndSNCsWithTP operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllCallsAndTopLevelConnectionsAndSNCsWithTPException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllCallsAndTopLevelConnectionsAndSNCsWithTP operation</p>
+        <p>unableToComply - Raised if the specified MLSN is an MLRA which is managed by Control Plane.</p>
+        <p>commLoss - Raised when the target OS is unable to communicate with the NE and communication is required to complete the request.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================= -->
+  <xsd:element name="getAllCallIdsWithTPRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This operation allows a requesting OS to request for the ID of all Calls supported by the specified TP Name.</p>
+        <p> A call is considered as using the specified TP if any of its supporting connections use an SNP that corresponds to the specified TP or a TP contained in the specified TP.</p>
+        <p> Note that this operation only returns calls ID and not other details as it is only the ID that will be available to the control plane.</p>
+        <p> In fact this operation applies only in control plane context. For example if a PTP in the centre of the network is referenced, the control plane will be aware of the ID of the calls that pass through the resources of that PTP that have been allocated to the control plane but will not be aware of any other details for calls that originate outside the routing area to which the resources from the PTP are allocated.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="tPName" type="nam:NamingAttributeType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p> Termination point. The termination point name must be explicit (a generic endpoint specification may not be used in this case).</p>
+              <p> See SD1-25 Object Naming for further detail on TP naming.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllCallIdsWithTPResponse" type="tns:CallIdListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> Response message structure of the getAllCallIdsWithTP operation</p>
+        <p> The list of Call IDs retrieved.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllCallIdsWithTPException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllCallIdsWithTP operation</p>
+        <p>unableToComply - Raised if the specified input is not controlled by Control Plane.</p>
+        <p>commLoss - Raised when the target OS is unable to communicate with the NE or the target OS is unable to communicate with any Control Plane component and communications is required to complete the request.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================= -->
+  <xsd:element name="getAllCallIdsWithSNPPOrTNANameRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This operation has exactly the same behaviour as getAllCallIdsWithTP, but instead of using TP as an input, it specifies a SNPP or TNA Name.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="sNPPOrTNAName" type="gen:NameAndStringValueType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p> It identifies the sNPP or TNA Name provided as an input. See SD1-25 Object Naming for further detail on SNPP or TNA naming.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getAllCallIdsWithSNPPOrTNANameResponse" type="tns:CallIdListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getAllCallIdsWithSNPPOrTNAName operation</p>
+        <p> The list of Call IDs retrieved.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllCallIdsWithSNPPOrTNANameException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllCallIdsWithSNPPOrTNAName operation</p>
+        <p>unableToComply - Raised if the specified input is not controlled by Control Plane.</p>
+        <p>commLoss - Raised when the target OS is unable to communicate with the NE or the target OS is unable to communicate with any Control Plane component and communications is required to complete the request.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================= -->
+  <xsd:element name="getCallAndTopLevelConnectionsAndSNCsRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This operation has exactly the same behaviour as getAllCallsAndTopLevelConnectionsAndSNCs(), except that the request returns only the named call (and all Top Level Connections with their supporting SNCs).</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="callName" type="nam:NamingAttributeType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p> The call name provided by the requesting OS.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getCallAndTopLevelConnectionsAndSNCsResponse" type="tns:CallAndTopLevelConnectionsAndSNCsType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getCallAndTopLevelConnectionsAndSNCs operation</p>
+        <p>It provides the Call and the supporting top level connections and SNCs.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getCallAndTopLevelConnectionsAndSNCsException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getCallAndTopLevelConnectionsAndSNCs operation</p>
+        <p>unableToComply - Raised if the specified Call is defined in a MLRA which is managed by Control Plane.</p>
+        <p>commLoss - Raised when the target OS is unable to communicate with the NE and communication is required to complete the request.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================= -->
+  <xsd:element name="getCallAndTopLevelConnectionsRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This operation has exactly the same behaviour as getAllCallsAndTopLevelConnections(), except that the request returns only the call which is identified by callId or named by callName (and all Top Level Connections).</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="callName" type="nam:NamingAttributeType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The call name provided by the requesting OS.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="callId" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The identifier of the Call used by control plane.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getCallAndTopLevelConnectionsResponse" type="tns:CallAndTopLevelConnectionsType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getCallAndTopLevelConnections operation</p>
+        <p>It provides the Call and the supporting top level connections.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getCallAndTopLevelConnectionsException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getCallAndTopLevelConnections operation</p>
+        <p>unableToComply - Raised if the specified Call is not defined in a Top Level MLRA, controlled by Control Plane.</p>
+        <p>commLoss - Raised when the target OS is unable to communicate with the NE or the target OS is unable to communicate with any Control Plane component and communications is required to complete the request.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================= -->
+  <xsd:element name="getCallRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This operation allows the target OS to retrieve all of the attributes of a Call managed by a target OS given a specified callName.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="callName" type="nam:NamingAttributeType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p> The Name of the call to be retrieved.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getCallRequestResponse" type="call:CallType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getCall operation</p>
+        <p>The retrieved Call.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getCallException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getCall operation</p>
+        <p>entityNotFound - Raised when callName references a call object that does not exist (E.g. when target OS does not control the originating end, the call information is not available at this target OS.</p>
+        <p>commLoss - Raised when the target OS is unable to communicate with the NE or the target OS is unable to communicate with any Control Plane component and communications is required to complete the request.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================= -->
+  <xsd:element name="getConnectionsAndRouteDetailsRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This operation provides the requesting OS with the routes of the connections that support top level connections of the referenced Call.</p>
+        <p> The request may be tailored by the following allowed input combinations.</p>
+        <p> In the case of a 2 level routing area hierarchy:
+          <ol>
+             <li> - CallID only: the target OS should return the top level connections supporting the call and their detailed routes.</li>
+             <li> - CallID and sNPOrSNPPID: The target OS should return the routes for the connection(s) that originate from the referenced SNP or SNPP for the referenced call. If the SNP or SNPP is at the hierarchical level of a routing node, then the response is an empty list.</li>
+          </ol></p>
+        <p> In the case of a 3 level routing area hierarchy:
+          <ol>
+            <li> - CallID only: The target OS should return the routes for all connections that support any top level connection of the referenced call, for all MLRAs directly managed by the target OS.</li>
+            <li> - CallID and mLRAName: The target OS should return the routes for all connections within the referenced MLRA that support any top level connection of the referenced call (there could be more than one top level connection for the same call passing through an MLRA). If the referenced MLRA is a routing node, then the response is an empty list. If the reference MLRA is the top level MLRA then the response will only include a list of all of the top level connections supporting the call.</li>
+            <li> - CallID and sNPOrSNPPID: The target OS should return the routes for the connection(s) that originate from the referenced SNP or SNPP of the referenced call. If the SNP or SNPP is at the hierarchical level of a routing node, then the response is an empty list. If the SNP or SNPP is at the top level then the response will only include a list of all of the top level connections, that originate from the specified SNP(P), supporting the call.</li>
+            </ol></p>
+        <p> In all cases the output is filtered appropriately by routeType.</p>
+        <p> All Routing Node Connections for a particular route will be returned regardless of any sharing of the same Routing Node Connections among distinct routes of the same Call.</p>
+        <p> Optionally the response may include the edge and internal MLSNPP Links.</p>
+        <p> Note: given an SNCP scheme, the replied home route will always include both main and spare legs of the SNCP protection, while the replied actual route may return only one leg, if only such leg is currently active in the network. Once the CP routing succeeds to activate the spare leg, then both legs are replied when actual route is asked.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="callId" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This attribute represents the control plane identifier of the Call.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="mLRAName" type="nam:NamingAttributeType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p> The name of the MLSN which represents a MLRA.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="sNPOrSNPPID" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The control plane identifier of the point selected for filtering purposes.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="mLSNPPLinkRequested" type="xsd:boolean">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p> Indicates whether the response should include MLSNPPLink information.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="routeTypeType" type="tns:RouteTypeType">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p> Indicates whether the response should include Home/Intended route, Actual/Current route or Both.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getConnectionsAndRouteDetailsResponse" type="tns:SNCAndRouteListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getConnectionsAndRouteDetails operation</p>
+        <p> Provides the connection(s) and their route details where they are available.</p>
+        <p> The route details are given in terms of Routing Node Connections.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getConnectionsAndRouteDetailsException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getConnectionsAndRouteDetails operation</p>
+        <p>unableToComply - Raised if the target OS can not access the route information.</p>
+        <p>commLoss - Raised when the target OS is unable to communicate with the NE or the target OS is unable to communicate with any Control Plane component and communications is required to complete the request.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================= -->
+  <!-- Definitions of Iterator messages for Call+Connections and Call+Connections+SNCs retrievals  -->
+  <!-- ================= -->
+  <xsd:element name="getCallAndTopLevelConnectionsListIteratorRequest" type="msg:GetAllDataIteratorRequestType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getCallAndTopLevelConnectionsListIterator operation</p>
+        <p>This is the iterator request to return the next batch of Calls and their supporting top level Connections from the OS to which the retrieval request was initially sent.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================== -->
+  <xsd:element name="getCallAndTopLevelConnectionsListIteratorResponse" type="tns:CallAndTopLevelConnectionsListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getCallAndTopLevelConnectionsListIterator operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================== -->
+  <xsd:element name="getCallAndTopLevelConnectionsListIteratorException" type="msg:GetAllDataIteratorExceptionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getCallAndTopLevelConnectionsListIterator operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================= -->
+  <xsd:element name="getCallAndTopLevelConnectionsAndSNCsListIteratorRequest" type="msg:GetAllDataIteratorRequestType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getCallAndTopLevelConnectionsAndSNCsListIterator operation</p>
+        <p>This is the iterator request to return the next batch of Calls and their supporting top level Connections and resp. supporting SNCs from the OS to which the retrieval request was initially sent.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================== -->
+  <xsd:element name="getCallAndTopLevelConnectionsAndSNCsListIteratorResponse" type="tns:CallAndTopLevelConnectionsAndSNCsListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getCallAndTopLevelConnectionsAndSNCsListIterator operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================== -->
+  <xsd:element name="getCallAndTopLevelConnectionsAndSNCsListIteratorException" type="msg:GetAllDataIteratorExceptionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getCallAndTopLevelConnectionsAndSNCsListIterator operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================= -->
+  <!-- Local Data Type Definitions of various messages  -->
+  <!-- ================== -->
+  <xsd:complexType name="CallAndTopLevelConnectionsListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This structure represents a list of calls and their supporting top level connections.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="callAndTopLevelConnectionsType" type="tns:CallAndTopLevelConnectionsType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ============== -->
+  <xsd:complexType name="CallAndTopLevelConnectionsType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This structure provides the information of the call and its supporting top level connections.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="callType" type="call:CallType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> The Call.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="subnetworkConnectionListType" type="snc:SubnetworkConnectionListType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> List of top level connections supporting the call.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ============== -->
+  <xsd:complexType name="CallAndTopLevelConnectionsAndSNCsListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This structure represents a list of calls, their supporting top level connections and the SNCs that support each top level connection.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="callAndTopLevelConnectionsAndSNCsType" type="tns:CallAndTopLevelConnectionsAndSNCsType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ============== -->
+    <xsd:complexType name="CallAndTopLevelConnectionsAndSNCsType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This structure provides the information of the call, its supporting top level connections and the SNCs that support each connection.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="callType" type="call:CallType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> The Call.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="connectionsAndSupportingSNCsListType" type="tns:ConnectionsAndSupportingSNCsListType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> List of top level connections supporting the call and their supporting subnetwork connections.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ============== -->
+  <xsd:complexType name="ConnectionsAndSupportingSNCsListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This structure represents a list of connections and their supporting Subnetwork Connections.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="connectionAndSupportingSNCsType" type="tns:ConnectionAndSupportingSNCsType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ============== -->
+    <xsd:complexType name="ConnectionAndSupportingSNCsType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This structure provides the information of a top level connection and its supporting SNCs if any.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="topLevelSnc" type="snc:SubnetworkConnectionType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> The Connection.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="subnetworkConnectionListType" type="snc:SubnetworkConnectionListType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> List of subnetwork connections supporting the connection.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ============== -->
+  <xsd:complexType name="RoutePerRouteTypeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> The short sequence of routes, one per type (e.g. Intended and Current).</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="routeAndRouteTypeType" type="tns:RouteAndRouteTypeType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ============== -->
+  <xsd:complexType name="RouteAndRouteTypeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> The list of the ids of the Routing Areas participating in the route of a connection, together with the route type and available degree of detail.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="rAIDList" type="tns:RAIDListType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> The list of the ids of the Routing Areas participating in the route of a connection.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="routeTypeType" type="tns:RouteTypeType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> The route type.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="routeDescription" type="xsd:string" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> The degree of detail available from the control plane, i.e. whether the route description is available in a "sparse" or "full" form.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ============== -->
+  <xsd:complexType name="RAIDListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> The list of the ids of Routing Areas.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="rAID" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ============== -->
+  <xsd:simpleType name="RouteTypeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> The RouteType represents the type of route associated to a subnetwork connection. The values for this attribute are:
+          <ol>
+            <li>"HOME/INTENDED"</li>
+            <li>"ACTUAL/CURRENT"</li>
+            <li>"BOTH"</li>
+          </ol></p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- ============== -->
+  <xsd:complexType name="CallIdListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> The list of the ids of Calls.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="callId" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ============== -->
+  <xsd:complexType name="SNCAndRouteListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This structure represents a list of connections and their respective routes.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="sNCAndRouteType" type="tns:SNCAndRouteType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ============== -->
+  <xsd:complexType name="SNCAndRouteType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> This structure describes the different routes for a Connection.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="connection" type="snc:SubnetworkConnectionType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> The connection in the control plane for which to retrieve the routes.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="connectionRoutes" type="rt:RouteListType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> Allows the description of the route of the Connection through its routing area.</p>
+            <p> In some cases this will be a single route but in other cases a single connection supporting the top level connection for example for home route may itself have several routes through its routing area to accommodate local restoration capabilities. Each of these routes will be separately described in the RouteListType structure.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="edgeMLSNPPLinks" type="mlsnpplink:MlSnppLinkListType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> The list of links exiting a MLRA scoped by the connection.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="internalMLSNPPLinks" type="mlsnpplink:MlSnppLinkListType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> The list of links internal to the MLRA scoped by the connection.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="routeTypeType" type="tns:RouteTypeType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p> The role that the connection is playing as a segment of the route of the superior connection (home/intended or actual/current.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

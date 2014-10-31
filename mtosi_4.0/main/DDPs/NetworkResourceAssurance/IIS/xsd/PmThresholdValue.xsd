@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/pmtv/v1" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/pmtv/v1" xmlns:pm="http://www.tmforum.org/mtop/nra/xsd/pm/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: Data Model Network Resource Assurance</p>
+			<p>Module: Aggregate XSD Module</p>
+			<p>Description: This module contains the XML Schema type definition of the mTOP PM Threshold Value XML structure.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ================= -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/pm/v1" schemaLocation="PmDefinitions.xsd"/>
+	<!-- ================= -->
+	<xsd:element name="pmThresholdValue" type="tns:PerformanceMonitoringThresholdValueType"/>
+	<!-- ================= -->
+	<xsd:complexType name="PerformanceMonitoringThresholdValueType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This structure represents a Holds a PM threshold value.</p>
+				<p>See SD1-37 PM Threshold Types for information on how threshold values are used.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="pmParameterName" type="pm:PerformanceMonitoringParameterNameType" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Holds the name of the PM Measure. It has been defined as a string to accomodate backward compatibility and proprietary extensions.</p>
+						<p>Refer to SD1-28 Performance Parameters for an overview of the standardized PM parameters currently supported by the MTNM interface.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="pmLocation" type="pm:PerformanceMonitoringLocationType" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Represents the location of the PM Measurement.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="thresholdType" type="pm:PerformanceMonitoringThresholdTypeType" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Represents the type of threshold value.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="triggerFlag" type="xsd:boolean" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Indicates if the threshold is for the trigger (TRUE) or the clear (FALSE).</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="value" type="xsd:float" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Threshold value (float used to incorporate gauge PM parameters).</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="units" type="xsd:string" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Free format string describing the units for the threshold value.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================ -->
+	<xsd:complexType name="PerformanceMonitoringThresholdValueListType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A list of PerformanceMonitoringThresholdValues</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="pmThresholdValue" type="tns:PerformanceMonitoringThresholdValueType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

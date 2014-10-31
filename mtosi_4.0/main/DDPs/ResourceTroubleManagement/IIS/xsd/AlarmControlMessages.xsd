@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ResourceTroubleManagement - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/rtm/xsd/ac/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" targetNamespace="http://www.tmforum.org/mtop/rtm/xsd/ac/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: ResourceTroubleManagement</p>
+			<p>Module:  Message XSD Module</p>
+			<p>Description: This module contains the XML Schema type definitions of all the mTOP AlarmControl SI XML message structures.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ================ -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd"/>	
+	<!-- ================ -->
+	<xsd:element name="setAlarmReportingRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This operation allows a requesting OS to activate and deactivate (allow/not allow, or turn on/off) alarm reporting for all object classes which are able to issue alarms.
+					 Alarm reporting for multi layer object classes can be activated/deactivated at a specific layerRate provided by the requesting OS.
+					The following object classes are able to issue alarms:
+						- Equipment
+						- Equipment Holder
+						- Equipment Protection Group
+						- Flow Domain
+						- Flow Domain Fragment
+						- Group Termination Point
+						- Managed Element
+						- Management Domain
+						- Matrix Flow Domain
+						- Multi-Layer Subnetwork
+						- Operations System
+						- Protection Group
+						- Subnetwork Connection
+						- Termination Point (and subclasses)
+						- Topological Link.
+</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="resourceRef" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter contains the name of the resource who's alarm reporting shall be set.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="mustReportAlarms" type="xsd:boolean" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter indicates that the Alarms have to be turned on (True) or turned off (False).</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="layerRate" type="lay:LayerRateType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>This parameter defines the layer rate of the object class who's alarm reporting shall be set.
+								  Default value "1" indicates for a multi layered Object class that all supported layers are in scope of the operation..</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>								
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="setAlarmReportingResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the setAlarmReporting operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence/>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="setAlarmReportingException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the setAlarmReporting operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:unableToComply"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

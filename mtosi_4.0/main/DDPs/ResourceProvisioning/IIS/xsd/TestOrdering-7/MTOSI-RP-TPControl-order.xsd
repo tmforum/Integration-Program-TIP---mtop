@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/xml/tip/internal/RpTPControlOrd" xmlns:ord="http://www.tmforum.org/xml/tip/internal/ord" xmlns:extensibility="http://www.tmforum.org/xml/tip/internal/extensibility" xmlns:tpc="http://www.tmforum.org/mtop/rp/xsd/tpc/v1" targetNamespace="http://www.tmforum.org/xml/tip/internal/RpTPControlOrd" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.1">
+	<xsd:import namespace="http://www.tmforum.org/xml/tip/internal/ord" schemaLocation="order_entity.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/xml/tip/internal/extensibility" schemaLocation="internal_extensibility.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/rp/xsd/tpc/v1" schemaLocation="../TerminationPointControlMessagesOrdering.xsd"/>
+	<!-- ****************
+-->
+	<xsd:element name="fTP_Create_OI" type="tns:FTP_Create_OI" substitutionGroup="ord:roi"/>
+	<xsd:element name="afTP_Create_OI" type="tns:FTP_Create_OI"/>
+	<xsd:complexType name="FTP_Create_OI">
+		<xsd:complexContent>
+			<xsd:restriction base="ord:ResourceOrderItem">
+				<xsd:sequence>
+					<xsd:element name="id" type="ord:Identifier" minOccurs="0"/>
+					<xsd:element name="notes" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="quantity" type="xsd:integer" minOccurs="0"/>
+					<xsd:element name="priority" type="xsd:string" minOccurs="0"/>
+					<xsd:element ref="ord:resource"/>
+					<xsd:element ref="ord:action" id="FTP_Create"/>
+					<xsd:element name="actionData" type="tpc:CreateFloatingTerminationPointRequest"/>
+				</xsd:sequence>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:element name="tP_setTerminationPointData_OI" type="tns:TP_setTerminationPointData_OI" substitutionGroup="ord:roi"/>
+	<xsd:complexType name="TP_setTerminationPointData_OI">
+		<xsd:complexContent>
+			<xsd:restriction base="ord:ResourceOrderItem">
+				<xsd:sequence>
+					<xsd:element name="id" type="ord:Identifier" minOccurs="0"/>
+					<xsd:element name="notes" type="xsd:string" minOccurs="0"/>
+					<xsd:element name="quantity" type="xsd:integer" minOccurs="0"/>
+					<xsd:element name="priority" type="xsd:string" minOccurs="0"/>
+					<xsd:element ref="ord:resource"/>
+					<xsd:element ref="ord:action" id="TP_setTerminationPointData"/>
+					<xsd:element name="actionData" type="tpc:SetTerminationPointDataRequest"/>
+				</xsd:sequence>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- 
+	The rest of this file is for option 2b only; not needed for option 2
+	-->
+	<xsd:complexType name="FTP_Create_OI_List">
+		<xsd:complexContent>
+			<xsd:restriction base="ord:ResourceOrderItemList">
+				<xsd:sequence>
+					<xsd:element ref="tns:fTP_Create_OI"/>
+				</xsd:sequence>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- -->
+	<xsd:element name="ftp_create_oi_List" type="tns:FTP_Create_OI_List" substitutionGroup="ord:roiList"/>
+	<!-- -->
+	<xsd:element name="fTP_Create_Order">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="ord:ResourceOrder">
+					<xsd:sequence>
+						<xsd:element name="id" type="ord:Identifier" minOccurs="0"/>
+						<xsd:element name="description" type="xsd:string" minOccurs="0"/>
+						<xsd:element name="interactionStatus" type="xsd:string" minOccurs="0"/>
+						<xsd:element name="notes" type="xsd:string" minOccurs="0"/>
+						<xsd:element name="schedule" type="ord:InteractionSchedule" minOccurs="0"/>
+						<xsd:element name="directives" type="ord:InteractionDirectives" minOccurs="0"/>
+						<xsd:element name="priority" type="xsd:string" minOccurs="0"/>
+						<xsd:element ref="tns:ftp_create_oi_List"/>
+					</xsd:sequence>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!--
+-->
+	<xsd:element name="aComplexOrder" type="ord:ResourceOrder"/>
+</xsd:schema>

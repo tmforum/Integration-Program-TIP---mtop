@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - DM Network Resources Basic - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/ituArc/v1" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/ituArc/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: Data Model Network Resource Assurance</p>
+			<p>Module: Aggregate XSD Module</p>
+			<p>Description: This module contains the XML Schema type definitions of all the supported Alarm ITU-T parameters.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ================= -->
+	<xsd:complexType name="ItuArcStateAndStatusList">
+		<xsd:annotation>
+			<xsd:documentation>Containment of all ITU-T Alarm Reporting Control (ARC) state or status parameters supported in mTOP;
+			Each element of the list identifies a state or status and provides its relevant value.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="m3100.AlarmStatus" type="tns:M3100.AlarmStatusType" minOccurs="0"/>
+			<xsd:element name="m3100.ArcState" type="tns:M3100.ArcStateType" minOccurs="0"/>
+			<xsd:element name="m3100.NALMTIInterval" type="tns:M3100.NALMTIIntervalType" minOccurs="0"/>
+			<xsd:element name="m3100.NALMQIInterval" type="tns:M3100.NALMQIIntervalType" minOccurs="0"/>
+			<xsd:element name="m3100.ArcQIStatus" type="tns:M3100.ArcQIStatusType" minOccurs="0"/>
+			<xsd:element name="m3100.State" type="tns:M3100.ArcStateListType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:simpleType name="M3100.AlarmStatusType">
+		<xsd:annotation>
+			<xsd:documentation>Alarm Status parameter from ITU-T state or status</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="CLEARED"/>
+			<xsd:enumeration value="PENDING"/>
+			<xsd:enumeration value="WARNING"/>
+			<xsd:enumeration value="INDETERMINATE"/>
+			<xsd:enumeration value="MINOR"/>
+			<xsd:enumeration value="MAJOR"/>
+			<xsd:enumeration value="CRITICAL"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!-- ============== -->
+	<xsd:simpleType name="M3100.ArcStateType">
+		<xsd:annotation>
+			<xsd:documentation>ARC State parameter from ITU-T state or status</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="ALM"/>
+			<xsd:enumeration value="NALM"/>
+			<xsd:enumeration value="NALMTypeIMED_INHIBIT"/>
+			<xsd:enumeration value="NALM_QUALIFIED_INHIBIT"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!-- ============== -->
+	<xsd:simpleType name="M3100.NALMTIIntervalType">
+		<xsd:annotation>
+			<xsd:documentation>ARC State parameter from ITU-T state or status</xsd:documentation>
+		</xsd:annotation>
+		<xsd:union>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="NO_ADJUSTMENT"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:positiveInteger">
+					<xsd:maxInclusive value="5940"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:union>
+	</xsd:simpleType>
+	<!-- ============== -->
+	<xsd:simpleType name="M3100.NALMQIIntervalType">
+		<xsd:annotation>
+			<xsd:documentation>ARC State parameter from ITU-T state or status</xsd:documentation>
+		</xsd:annotation>
+		<xsd:union>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="NO_ADJUSTMENT"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:positiveInteger">
+					<xsd:maxInclusive value="5940"/>
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:union>
+	</xsd:simpleType>
+	<!-- ============== -->
+	<xsd:simpleType name="M3100.ArcQIStatusType">
+		<xsd:annotation>
+			<xsd:documentation>ARC QI Status parameter from ITU-T state or status</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="NOT_APPLICABLE"/>
+			<xsd:enumeration value="NALM_NOT_READY"/>
+			<xsd:enumeration value="NALM_COUNT_DOWN"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!-- ============== -->
+	<xsd:complexType name="M3100.ArcStateListType">
+		<xsd:annotation>
+			<xsd:documentation>State parameter from ITU-T state or status</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="M3100.AlarmStatus" type="tns:M3100.AlarmStatusType" minOccurs="0"/>
+			<xsd:element name="M3100.ArcState" type="tns:M3100.ArcStateType" minOccurs="0"/>
+			<xsd:element name="M3100.ArcQIStatus" type="tns:M3100.ArcQIStatusType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

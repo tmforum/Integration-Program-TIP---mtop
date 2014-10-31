@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ManageResourceInventory - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/mri/xsd/osr/v1" xmlns:tns="http://www.tmforum.org/mtop/mri/xsd/osr/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:os="http://www.tmforum.org/mtop/nrf/xsd/os/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Manage Resource Inventory</p>
+      <p>Module:  Message XSD Module</p>
+      <p>Description: This module contains the XML Schema type definitions of all the mTOP OS Retrieval SI XML message structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/Os.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/os/v1"/>
+  <!-- ================ -->
+  <xsd:element name="getAllOperationsSystemsRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getAllOperationsSystems operation</p>
+        <p>This operation returns the data structure for each OS known to the top-level OS to which the operation is directed. The data structure corresponding to the top-level OS is also returned. This operation can only be directed to a top-level OS and not to a subordinate OS.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllOperationsSystemsResponse" type="tns:MultipleObjectsResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the  getAllOperationsSystemsoperation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getAllOperationsSystemsException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getAllOperationsSystems operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:tooManyOpenIterators"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getOperationsSystemRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getOperationsSystem operation</p>
+        <p>This operation returns the data structure associated with the addessed OS.
+      This operation may only be directed to a top-level OS and not to a subordinate OS.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getOperationsSystemResponse" type="tns:SingleObjectResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getOperationsSystem operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getOperationsSystemException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getOperationsSystem operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getSubordinateOperationsSystemRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getSubordinateOperationsSystem operation</p>
+        <p>This operation returns the data structure associated with a given subordinate OS identified by the provided subordinateOSName. The operation can only be directed to a top-level OS and not to a subordinate OS.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="osRef" type="nam:NamingAttributeType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>The name of a top-level OS.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="getSubordinateOperationsSystemResponse" type="tns:SingleObjectResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the getSubordinateOperationsSystem operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getSubordinateOperationsSystemException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getSubordinateOperationsSystem operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================= -->
+  <!-- Definitions of Iterator messages for Object and Object Name retrievals  -->
+  <!-- ================= -->
+  <xsd:element name="getOperationsSystemsIteratorRequest" type="msg:GetAllDataIteratorRequestType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the getOperationsSystemsIterator operation</p>
+        <p>This operation .</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="getOperationsSystemsIteratorResponse" type="tns:MultipleObjectsResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the  getOperationsSystemsIterator operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name=" getOperationsSystemsIteratorException" type="msg:GetAllDataIteratorExceptionType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the getOperationsSystemsIterator operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <!-- == Local Data Types == -->
+  <!-- ================ -->
+  <xsd:complexType name="SingleObjectResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure for an OS object</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="os" type="os:OperationsSystemType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The OS object.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================== -->
+  <xsd:complexType name="MultipleObjectsResponseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure for a set of OS objects</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="osList" type="os:OperationsSystemListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The list of OS objects.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================== -->
+</xsd:schema>

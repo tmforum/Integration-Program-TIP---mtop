@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2007 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/mlsnpp/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/mlsnpp/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:comcp="http://www.tmforum.org/mtop/nrf/xsd/comcp/v1" xmlns:tpdata="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource FulFillment</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP MLSNPP (Multi-Layer Subnetwork Point Pool) XML structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1"/>
+  <xsd:import schemaLocation="CommonControlPlaneTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/comcp/v1"/>
+  <xsd:import schemaLocation="TpData.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1"/>
+  <!-- ================= -->
+  <xsd:element name="mlsnpp" type="tns:MlSnppType"/>
+  <!-- ================= -->
+  <xsd:complexType name="MlSnppType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p> The MultiLayer Subnetwork point pool is used to represent a list of Layered SNPP. There is one Layered SNPP per supported layer rate.</p>
+        <p> A MLSNPP is composed by SNPPs which represent TP functions which have a G.805 TCP/TerminationFunction. Otherwise SNPPs forms part of an MLSNPPLink if they represent TP functions which have a G.805 CP role.</p>
+        <p> Note that multi-layer does not imply client-server relationship, but flexible mapping at the same switching layer.</p>
+        <p> For more details see SD1-45_ASONControlPlaneManagement-Primer. </p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="cri:CommonResourceInfoType">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This element entails the attributes common to all mTOP network resource objects.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="direction" type="com:DirectionalityType" nillable="true" minOccurs="0">
+             <xsd:annotation>
+              <xsd:documentation>
+                <p> This attribute represents the directionality of its SNP components. All SNPs within a MLSNPP shall have the same direction.</p>
+                <p> The direction of the SNP is inherited from the TP (CTP/PTP/FTP) that the SNP represents.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+         </xsd:element>
+         <xsd:element name="layeredSNPPList" type="comcp:LayeredSNPPListType" minOccurs="0">
+           <xsd:annotation>
+             <xsd:documentation>
+               <p> The list of Layered SNPPs that comprise the MLSNPP. One Layered SNPP per supported layer rate.</p>
+             </xsd:documentation>
+           </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="MlSnppListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A list of MLSNPPs</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element ref="tns:mlsnpp" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

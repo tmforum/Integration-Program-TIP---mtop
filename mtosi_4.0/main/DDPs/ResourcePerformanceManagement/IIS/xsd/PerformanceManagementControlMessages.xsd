@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ResourcePerformanceManagement - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/rpm/xsd/pmc/v1" xmlns:tns="http://www.tmforum.org/mtop/rpm/xsd/pmc/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:pmp="http://www.tmforum.org/mtop/nra/xsd/pmp/v1" xmlns:pmtgt="http://www.tmforum.org/mtop/nra/xsd/pmtgt/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: ResourcePerformanceManagement</p>
+      <p>Module:  Message XSD Module</p>
+      <p>Description: This module contains the XML Schema type definitions of all the mTOP PerformanceManagementControl SI XML message structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/Pmp.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/pmp/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/PmObjectSelect.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/pmtgt/v1"/>
+  <!-- ================ -->
+  <xsd:element name="clearPerformanceMonitoringDataRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the clearPerformanceMonitoringData operation</p>
+        <p>This operation clears (reset) the PM registers for a list of Measurement Points. Within the request for each Measurement Point, it is possible to specify the granularity (15min, 24hr, NA) and location (nearEnd and/or farEnd and/or bidirectional) for the PM registers that are to be reset.</p>
+        <p>Clearing PM gauge minimum, maximum, and average registers means to reset them to the current measurement; for the actual gauge measurement, it has no effect. This is not considered a failure case.</p>
+        <p>Clearing PM registers is done on best-effort basis. If registers could not be completely cleared for a subset of cases in the pmTpSelectList, a list identifying this subset is returned.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="pmObjectSelectList" type="pmtgt:PerformanceMonitoringObjectSelectListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This struct contains the relevant data for the clearPMData request. This must not be empty.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="clearPerformanceMonitoringDataResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the clearPerformanceMonitoringData operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="failedTpSelectList" type="pmtgt:PerformanceMonitoringObjectSelectListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>List of points for which PM registers were not completely cleared. An empty list indicates that the total request was successful.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="clearPerformanceMonitoringDataException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the clearPerformanceMonitoringData operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="disablePerformanceMonitoringDataRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the disablePerformanceMonitoringData operation</p>
+        <p>This operation disables (turns off) the PM data collection for a list of measurement points.</p>
+        <p>PM collection stops immediately, i.e., before the completion of the current monitoring period.
+        This may lead to incomplete collection periods. If PM collection was never started for an object, the operation is considered successful.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="pmTpSelectList" type="pmtgt:PerformanceMonitoringObjectSelectListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This struct contains the relevant data for the disablePerformanceMonitoringDataRequest. It must not be empty.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="disablePerformanceMonitoringDataResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the disablePerformanceMonitoringData operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="failedTpSelectList" type="pmtgt:PerformanceMonitoringObjectSelectListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>List of points which were not completely disabled. An empty list indicates that the total request was successful.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="disablePerformanceMonitoringDataException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the disablePerformanceMonitoringData operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:capacityExceeded"/>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:element name="enablePerformanceMonitoringDataRequest">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Request message structure of the enablePerformanceMonitoringData operation</p>
+        <p>This operation enables (turns on) the PM data collection for a list of measurement points.</p>
+        <p>PM collection starts immediately, i.e., before the completion of the current monitoring period. This may lead to incomplete collection periods. If PM collection was already on for an object, the operation is considered successful.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="pmTpSelectList" type="pmtgt:PerformanceMonitoringObjectSelectListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>This struct contains the relevant data for the enablePerformanceMonitoringDataRequest. This must not be empty.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="enablePerformanceMonitoringDataResponse">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Response message structure of the enablePerformanceMonitoringData operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="failedTpSelectList" type="pmtgt:PerformanceMonitoringObjectSelectListType" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              <p>List of points which were not completely enabled. An empty list indicates that the total request was successful.</p>
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="enablePerformanceMonitoringDataException">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Exception message structure of the enablePerformanceMonitoringData operation</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:complexContent>
+        <xsd:restriction base="msg:AllExceptionsType">
+          <xsd:choice>
+            <xsd:element ref="msg:commLoss"/>
+            <xsd:element ref="msg:entityNotFound"/>
+            <xsd:element ref="msg:internalError"/>
+            <xsd:element ref="msg:invalidInput"/>
+            <xsd:element ref="msg:notImplemented"/>
+            <xsd:element ref="msg:unableToComply"/>
+          </xsd:choice>
+        </xsd:restriction>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

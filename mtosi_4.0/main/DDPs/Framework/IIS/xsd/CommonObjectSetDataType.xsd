@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/cosd/v1" xmlns:test="http://www.tmforum.org/mtop/tm/xsd/test/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/cosd/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: Framework</p>
+			<p>Module: XSD Aggregate Module</p>
+			<p>Description: This module contains the XML Schema definitions of all the common object attributes that can set by Client OS (at creation of the object or modified after).</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ================ -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="GeneralDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/tm/xsd/test/v1" schemaLocation="../../../TestManagement/IIS/xsd/Test.xsd"/>
+	<!-- ============== -->
+	<xsd:element name="commonObjectSetData" type="tns:CommonObjectSetDataType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>The element definition of all common object attributes that that set by Client OS (at creation of the object or modified after).</p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:complexType name="CommonObjectSetDataType" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>The aggregate of all common object attributes that can be set by Client OS (at creation of the object or modified after).</p>
+			</xsd:documentation>
+		</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="userLabel" type="xsd:string" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Value to be set to the userLabel attribute of an object. The userLabel is owned by the NMSes. It is a string assigned by an NMS to an object. The difference between the userLabel and the NamingAttributes name is that the userLabel is an attribute of the objects that may be "set" by the NMS through well defined interfaces (setUserLabel).</p>
+								<p>When an object is created by an NMS, the NMS specifies the userLabel for the object.</p>
+								<p>When an object is created by the EMS, the EMS sets the userLabel to the nativeEMSName.</p>
+								<p>Once an object is created, the userLabel may only be changed by an NMS through the setUserLabel operation.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="isForceUniqueness" type="xsd:boolean" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Specifies whether or not userLabel should be checked for uniqueness amongst objects of the same class within the EMS. If true, then the operation will fail if userLabel is already in use</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="owner" type="gen:OwnerType" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Value to be set to the owner attribute of an object.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="aliasNameList" type="gen:AliasNameListType" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Multiple alias names with values to be set to the aliasNameList attribute of an object.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="vendorExtensions" type="gen:AnyListType" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>This is the containment for all vendor extensions to be set as vendorExtension of the given object.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

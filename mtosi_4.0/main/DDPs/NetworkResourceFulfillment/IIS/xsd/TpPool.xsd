@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/tppool/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/tppool/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:lp="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource Fulfillment</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema definitions of the mTOP XML TpPool structure.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayeredParameters.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lp/v1"/>
+  <!-- ================= -->
+  <xsd:element name="tpPool" type="tns:TerminationPointPoolType"/>
+  <!-- ================= -->
+  <xsd:complexType name="TerminationPointPoolType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This aggregate defines the TP Pool mTOP network resource object.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="cri:CommonResourceInfoType">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This element entails the attributes common to all mTOP network resource objects.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="numberOfMembers" type="tns:NumberOfMembersType" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="numberOfIdleMembers" type="tns:NumberOfIdleMembersType" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element name="descriptionOfUse" type="tns:DescriptionOfUseType" nillable="true" minOccurs="0">
+          </xsd:element>
+          <xsd:element ref="lp:transmissionParametersList" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>A list of transmission parameters which can be set and/or retrieved on the TP at a specified layer. This attribute must contain the complete set of layer rates represented by a TPPool - even if they have no parameters associated with them. The layerRates are listed in the order of their client-server relationship (see layering for more details).</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="containedMemberList" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Refers to the indexed members list of the TPPool.  It is only used within AVC notifications.  Use getTerminationPointGroupingRelationships() with tpName = TPPool to read the names of the TPPool members.  Use getTerminationPointGroupingRelationships() with tpName = PTP/CTP/FTP/GTP to read the TPPool the TP or GTP is a member of.  For full name qualification consider use of the two attributes; MemberContainingMeList and MemberContainingTpList.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="containedMember" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+                  <xsd:annotation>
+                    <xsd:documentation>
+                      <p>value of TP or GTP (RDN) name component of TP or GTP name.</p>
+                    </xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="memberContainingMeList" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Refers to the indexed list of members of the TPPool (i.e., a TP or a GTP).  It is only used within AVC notifications.  Use getTerminationPointGroupingRelationships() with tpName = TPPool to read the names of the TPPool members.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="memberContainingMe" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+                  <xsd:annotation>
+                    <xsd:documentation>
+                      <p>value of ME (RDN) name component of ME name.</p>
+                    </xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="memberContainingTpList" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Refers to the indexed list member of the TPPool when this is a CTP.  It is only used within AVC notifications.  Use getTerminationPointGroupingRelationships() with tpName = TPPool to read the names of the TPPool members.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="memberContainingTp" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+                  <xsd:annotation>
+                    <xsd:documentation>
+                      <p>value of PTP/FTP (RDN) name component of PTP/FTP name.</p>
+                    </xsd:documentation>
+                  </xsd:annotation>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="TerminationPointPoolListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A list of TPPools</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element ref="tns:tpPool" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:simpleType name="DescriptionOfUseType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A description of the specific use of the TP pool, in particular how its members are collected and administered. It could include, for example, the name of a TP (e.g., an ATM NI CTP) such that all TP pool members have to be collected from the set of potential client CTPs of this TP. The description of use of an ATM VP TP pool would be "VirtualUNI", if all its VP CTPs are contained in the same real user network interface (UNI) (i.e., a tributary ATM NI CTP) that is partitioned into virtual UNIs (i.e., VP TP pools).</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="NumberOfIdleMembersType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Identifies the number of currently contained idle TPs that are free to be used for the intended management purpose.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:unsignedInt"/>
+  </xsd:simpleType>
+  <!-- ================= -->
+  <xsd:simpleType name="NumberOfMembersType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>Identifies the total number of TPs currently contained in the TPPool.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:unsignedInt"/>
+  </xsd:simpleType>
+</xsd:schema>

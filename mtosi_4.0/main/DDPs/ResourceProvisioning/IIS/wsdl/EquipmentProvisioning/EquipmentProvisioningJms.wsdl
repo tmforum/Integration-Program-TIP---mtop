@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM ResourceProvisioning - Copyright TeleManagement Forum 2007 -->
+<wsdl:definitions name="mTOP-EquipmentProvisioningV1-0" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.tmforum.org/mtop/rp/wsdl/ep/v1-0" targetNamespace="http://www.tmforum.org/mtop/rp/wsdl/ep/v1-0">
+  <wsdl:documentation>
+    <p>DDP: ResourceProvisioning</p>
+    <p>Module: EquipmentProvisioning Service Interface WSDL JMS Module</p>
+    <p>Description: This module contains all the mTOP EquipmentProvisioning Service Interface WSDL definitions for the Web Service deployment profile with SOAP/JMS binding.</p>
+    <p>Version: 1.0</p>
+  </wsdl:documentation>
+  <wsdl:import namespace="http://www.tmforum.org/mtop/rp/wsdl/ep/v1-0" location="EquipmentProvisioningPortType.wsdl"/>
+  <wsdl:binding name="EquipmentProvisioningSoapJmsBinding" type="tns:EquipmentProvisioning">
+    <wsdl:documentation>
+      <p>SOAP JMS binding definitions of the operations of the EquipmentProvisioning portType (interface)</p>
+    </wsdl:documentation>
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/jms"/>
+    <wsdl:operation name="provisionEquipment">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:provisionEquipmentRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:provisionEquipmentResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="provisionEquipmentException">
+        <soap:fault name="provisionEquipmentException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="unprovisionEquipment">
+      <soap:operation style="document"/>
+      <wsdl:input>
+        <soap:header message="tns:unprovisionEquipmentRequest" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:header message="tns:unprovisionEquipmentResponse" part="mtopHeader" use="literal"/>
+        <soap:body parts="mtopBody" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="unprovisionEquipmentException">
+        <soap:fault name="unprovisionEquipmentException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="EquipmentProvisioningJms">
+    <wsdl:documentation>
+      <p>Example of the EquipmentProvisioning WSDL Service definition as a deployment example of this mTOP Service Interface. It is expected to be modified to match the specific deployment configuration in a service provider's CCV.</p>
+    </wsdl:documentation>
+    <wsdl:port name="EquipmentProvisioningSoapJms" binding="tns:EquipmentProvisioningSoapJmsBinding">
+      <soap:address location="jms://aserver/mtosi/EquipmentProvisioning"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

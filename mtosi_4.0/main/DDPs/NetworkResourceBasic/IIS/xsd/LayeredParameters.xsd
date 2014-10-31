@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - DM Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" targetNamespace="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lr="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <!-- ============== -->
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource Basic</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP XML LayeredParameters structure.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================= -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" schemaLocation="LayerRates.xsd"/>
+  <!-- ============== -->
+  <xsd:element name="transmissionParametersList" type="tns:LayeredParametersListType" nillable="true"/>
+  <!-- ============== -->
+  <xsd:complexType name="LayeredParametersListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is used in the TP definition and as a consequence is available for use in a connection specification where a TP is specified.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element ref="tns:transmissionParameters" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ============== -->
+  <xsd:element name="transmissionParameters" type="tns:LayeredParametersType" nillable="true"/>
+  <!-- ============== -->
+  <xsd:complexType name="LayeredParametersType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>This is a structure that includes the layer rate with the applicable list of transmissions parameters</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="layerRate" type="lr:LayerRateType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Represents the layer to which the parameters apply.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="parameterList" type="gen:NameAndValueStringListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The list of tranmission parameters as a generic pair of name and value strings.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The specific containment for vendor extensions of the list of tranmission parameters.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

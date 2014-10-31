@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/tcaid/v1" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/tcaid/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lr="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:pm="http://www.tmforum.org/mtop/nra/xsd/pm/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource Assurance</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP TCA ID XML structure.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1"/>
+  <xsd:import schemaLocation="PmDefinitions.xsd" namespace="http://www.tmforum.org/mtop/nra/xsd/pm/v1"/>
+  <!-- ================= -->
+  <xsd:element name="tcaId" type="tns:TcaIdType"/>
+  <!-- ================= -->
+  <xsd:complexType name="TcaIdType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>TCA ID is used as a unique identifier of a threshold crossing alert.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="objectName" type="nam:NamingAttributeType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The name represents the name of the entity that gave rise to the TCA. See Framework DDP 
+   SD2-7_ObjectNaming for further detail on name structure.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="layerRate" type="lr:LayerRateType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Identifies the layerRate of the object raising the TCA. For objects 
+   where the layerRate is not applicable, such as EMS/OS, the value is set to 
+   LR_Not_Applicable. LayerRate is applicable in alarms raised by objects 
+   such as PTPs.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="pmParameterName" type="pm:PerformanceMonitoringParameterNameType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Hold the name of the performance measure.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="pmLocation" type="pm:PerformanceMonitoringLocationType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Hold the location and orientation of the measure.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="granularity" type="pm:PerformanceMonitoringGranularityType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Count period of the measure for which the threshold alert was raised.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================ -->
+</xsd:schema>

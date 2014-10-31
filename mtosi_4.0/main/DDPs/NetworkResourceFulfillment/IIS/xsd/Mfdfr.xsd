@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/mfdfr/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/mfdfr/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:itu="http://www.tmforum.org/mtop/nrb/xsd/itu/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:lp="http://www.tmforum.org/mtop/nrb/xsd/lp/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource FulFillment</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP FDFR XML structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/ITU-T-Definitions.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/itu/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1"/>
+  <xsd:import schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayeredParameters.xsd" namespace="http://www.tmforum.org/mtop/nrb/xsd/lp/v1"/>
+  <xsd:import schemaLocation="CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1"/>
+  <!-- ============== -->
+  <xsd:element name="mfdfr" type="tns:MatrixFlowDomainFragmentType"/>
+  <!-- ============== -->
+  <xsd:complexType name="MatrixFlowDomainFragmentType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A Matrix Flow Domain Fragment (MFDFr) object represents the portion of a Flow Domain Fragment within a Matrix Flow Domain (MFD) inside a Network Element (NE). An MFDFr is atomic and is similar to a Flow Domain Fragment (FDFr) in a singleton Flow Domain. An MFDFr is primarily used in the specification of an FDFr Route, in cases where the route must be specified by the NMS.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="direction" type="com:ConnectionDirectionType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This attribute shall represent the directionality of the FDFr (bidirectional or unidirectional). Note: In the case of Ethernet, the directionality is always bidirectional.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element ref="lp:transmissionParameters" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The layer rate on which connectivity is established and a related set of connectionless parameters. Refer to chapter "Connectionless Technology Parameters" of the supporting document LayeredParameters.pdf for details of the currently defined connectionless parameters</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="aEndTpRefList" type="nam:NamingAttributeListType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The flow points between which connectivity is established by this matrix flow domain fragment. The flow points must be connectable on the same layer as the flow domain fragment's layer rate. Only between client flow points of flow domain edge CPTPs of the same flow domain connectivity can be established.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="zEndTpRefList" type="nam:NamingAttributeListType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The flow points between which connectivity is established by this matrix flow domain fragment. The flow points must be connectable on the same layer as the flow domain fragment's layer rate. Only between client flow points of  flow domain edge CPTPs of the same flow domain connectivity can be established.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="isFlexible" type="xsd:boolean" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Indicates whether the flow domain fragment is fixed (i.e., cannot be modified  or deleted by the NMS, in particular flow points cannot be added or/ removed) or is flexible.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="isActive" type="xsd:boolean" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Indicates if the MFDFr has been successfully activated in the Network Element (NE).True if the MFDFr is active in the ME; false otherwise. An "active" MFDFr means that no further intervention on the MFDFr itself is required from the NMS to activate it. The fact that an MFDFr is "active" does not necessarily imply that there is traffic flow on the network.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="mfdfrType" type="com:FlowDomainFragmentTypeType" nillable="true" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Represents the type of the FDFr.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This is a container for all vendor extensions.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ============== -->
+  <xsd:complexType name="MatrixFlowDomainFragmentListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>List of MatrixFlowDomainFragments</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element ref="tns:mfdfr" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

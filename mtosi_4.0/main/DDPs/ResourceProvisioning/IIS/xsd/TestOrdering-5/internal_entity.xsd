@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ *  Generated with Tigerstripe Workbench 0.7.0.201206291233 and 
+ *  Plugin Nortel Networks, Hewlett-Packard Company/TIP_Soap_Generator(1.1) (1.1)
+ *
+ *  DO NOT EDIT THIS CODE WHICH WAS AUTOMATICALLY GENERATED
+-->
+<!--
+Copyright (C) 2010 Members of the TIP Open Source Community
+
+Licensed to Members of the TIP Open Source Community under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+Members of the TIP Open Source Community licences this file to You under the Apache License,
+Version 2.0 (the 'License'); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an 'AS IS' BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/xml/tip/internal/entity" xmlns:extensibility="http://www.tmforum.org/xml/tip/internal/extensibility" targetNamespace="http://www.tmforum.org/xml/tip/internal/entity" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.1">
+	<xsd:annotation>
+		<xsd:documentation>
+			<pre>TMF XML Schema Definitions from Tigerstripe model
+                      project name: TIP_Generator_Internal_Model
+                        at version: 1.1
+      for all artifacts in package: org.tmforum.tip.internal.entity
+      Model Description:
+      Internal Framework model used by Tigerstripe generators
+      Package Description:
+      The TIP common model package with entity related data definitions.
+      Package data summary information:
+            entities: 1
+ Association Classes: 0
+           datatypes: 6
+        enumerations: 0
+              events: 0
+          exceptions: 0
+      </pre>
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:import namespace="http://www.tmforum.org/xml/tip/internal/extensibility" schemaLocation="internal_extensibility.xsd"/>
+	<!-- ******************************* -->
+	<!-- Package Enumeration definitions -->
+	<!-- ******************************* -->
+	<!-- **************************** -->
+	<!-- Package Datatype definitions -->
+	<!-- **************************** -->
+	<xsd:element name="checkedCollection" type="tns:CheckedCollection"/>
+	<xsd:complexType name="CheckedCollection">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>The CheckedCollection element contains
+valuePairs : a collection of string name value pairs
+and
+scheme : a string reference to a named scheme.
+A CheckedCollection is equal to another CheckedCollection if the contents of both the scheme and the valuePairs attributes are equal
+The scheme contains a reference to a descriptor of the behaviour required from a run time system to check that the contents of the valuePairs array is correct. The definition of different values for scheme is not defined in CheckedCollection but may be defined for classes which inherit from CheckedCollection.</p>
+				<p>This datatype  is  not extendable</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="valuePairs" type="tns:NameValuePairCollection">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>contains a collection of name-value pairs.
+The valuePairs attribute is always present but may not be populated.</p>
+						<p>This element is generated from an attribute.</p>
+						<p>This attribute  is  mandatory</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="scheme" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The scheme string identifies a named scheme which the run time system can reference to determine the possible groupings of name value pairs which can be populated in this data type.
+If the scheme is left as an empty string value, then the datatype can contain any set of values.
+The behaviour of the run time system for other values in scheme is not defined for the CheckedCollection element. However this behaviour may be defined for elements which inhereit from CheckedCollection</p>
+						<p>This element is generated from an attribute.</p>
+						<p>This attribute  is  mandatory</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ArrayOfCheckedCollection">
+		<xsd:sequence>
+			<xsd:element name="item" type="tns:CheckedCollection" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="context" type="tns:Context"/>
+	<xsd:complexType name="Context">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Context extends CheckedCollection and contains a collection of named value pairs which determine the system specific context for an Entity.
+The contents of a Context are implementation specific.
+The scheme value may be populated with a reference to a scheme which the run time system uses to check the valuePairs in Context. The behavour of the run time system when checking valuepairs is implementation specific.</p>
+				<p>This datatype  is  not extendable</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:CheckedCollection">
+				<xsd:sequence/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="ArrayOfContext">
+		<xsd:sequence>
+			<xsd:element name="item" type="tns:Context" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="distinguishedName" type="tns:DistinguishedName"/>
+	<xsd:complexType name="DistinguishedName">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>The DistinguishedName extends a CheckedCollection to define a Distinguished Name for an Entity.
+Users may assign their own values to the DistinguishedName.scheme or use a value which has been standardised by an interface.
+The run time action to check conformance with a scheme is implimentation specific.
+Standardised DistinguishedName.scheme definitions will be defined for sn.scheme string values of:
+'org.tmforum.tip.dnscheme.ossj' - OSSJ dn schema
+'org.tmforum.tip.dnscheme.mtnm' - MTNM dn schema
+'org.tmforum.tip.dnscheme.mtosi', MTOSI dn schema
+'org.tmforum.tip.dnscheme.tip' - TIP dn schema
+Note these are not defined as string enumerations to allow substitution with user defined values.</p>
+				<p>This datatype  is  not extendable</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="tns:CheckedCollection">
+				<xsd:sequence/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<xsd:complexType name="ArrayOfDistinguishedName">
+		<xsd:sequence>
+			<xsd:element name="item" type="tns:DistinguishedName" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="eid" type="tns:EntityIdentifier"/>
+	<xsd:complexType name="EntityIdentifier">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>The EntityIdentifier is used to uniquely identitify an Entity within a given system context.
+EntityIdentifiers contain two attributes; context and dn
+The context attribute contains a Context which determines the system specific context for the Entity.
+The dn attribute contains a DestinguishedName which determines the Destinguished Name of the Entity
+An EntityIdentifier is equal to another EntityIdentifier iff both the context and dn attributes are identical.
+To simplify implimentation, all attributes in an EntityIdentifier are defined as strings or name value pairs of strings.
+EntityIdentifiers should not be arbitrarily extended and should not be extended using 'Any'.</p>
+				<p>This datatype  is  not extendable</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="context" type="tns:Context">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The context attribute contains a Context object which determines the system specific context for the Entity.
+The context defines an implementation specific context.scheme and context.valuePairs, a collection of named value pairs</p>
+						<p>This element is generated from an attribute.</p>
+						<p>This attribute  is  mandatory</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="dn" type="tns:DistinguishedName">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The dn attribute contains a DistinguishedName object which determines Destinguished Name of the Entity.</p>
+						<p>This element is generated from an attribute.</p>
+						<p>This attribute  is  mandatory</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="entityType" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Defines the type of the referenced entity. This string is implemntation technology specific. For Example in XML it is filled by the implementation with with an XML type reference. In java it is filled with a classpath reference.</p>
+						<p>This element is generated from an attribute.</p>
+						<p>This attribute  is  mandatory</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ArrayOfEntityIdentifier">
+		<xsd:sequence>
+			<xsd:element name="item" type="tns:EntityIdentifier" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="nameValuePair" type="tns:NameValuePair"/>
+	<xsd:complexType name="NameValuePair">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Base Datatype for name value pairs of string attributes.</p>
+				<p>This datatype  is  not extendable</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Name of the attribute</p>
+						<p>This element is generated from an attribute.</p>
+						<p>This attribute  is  mandatory</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="value" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Value of the Attribute</p>
+						<p>This element is generated from an attribute.</p>
+						<p>This attribute  is  mandatory</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ArrayOfNameValuePair">
+		<xsd:sequence>
+			<xsd:element name="item" type="tns:NameValuePair" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:element name="nameValuePairCollection" type="tns:NameValuePairCollection"/>
+	<xsd:complexType name="NameValuePairCollection">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Base datatype for collections of name value pairs.
+In comparisons two NameValuePairCollection's are deemed to be equivalent if the compared NameValueCollections contain the same number of name value pairs and that the names and values of the contained pairs match.
+The order of definition of each NameValuePair is not significant.</p>
+				<p>This datatype  is  not extendable</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="nameValuePairs" type="tns:ArrayOfNameValuePair" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Contains a collection of NameValuePairs. The order of definition of each NameValuePair is not significant. In all cases, equals comparison of the nameValuePairs collection requires that the compared datatypes contain the same number of name value pairs and that the names and values of the contained pairs match.</p>
+						<p>This element is generated from an attribute.</p>
+						<p>This attribute  is  mandatory</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ArrayOfNameValuePairCollection">
+		<xsd:sequence>
+			<xsd:element name="item" type="tns:NameValuePairCollection" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ************************** -->
+	<!-- package Entity definitions -->
+	<!-- ************************** -->
+	<xsd:element name="entityBase" type="tns:EntityBase"/>
+	<xsd:complexType name="EntityBase" abstract="true">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This is the base definition used for all TIP entities.
+This type is injected by the TIP Generators into code generated from Tigerstripe Entity artifacts where the 'Extends' field has been left as an empty string.</p>
+				<p>This entity  is  abstract</p>
+				<p>This entity  is  optional</p>
+				<p>This entity  is  extendable</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="identifier" type="tns:EntityIdentifier">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The entity instance identifier (EID).</p>
+						<p>This element is generated from an attribute.</p>
+						<p>This attribute  is  invariant</p>
+						<p>This attribute  is  mandatory</p>
+						<p>This attribute  is  AVC enabled</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="aliasNames" type="tns:CheckedCollection" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>The aliasNames attribute contains implimentation specific name value pairs for local alternative names for the Entity. This is provided to pass more user friendly names for entities between systems or for debugging. The aliasNames attribute MUST NOT be used by an implimentation when comparing EntityIdentifiers. There is NO GUARANTEE that the contents of the aliasNames attribute is unique.</p>
+						<p>This element is generated from an attribute.</p>
+						<p>This attribute  is  optional</p>
+						<p>This attribute  is  AVC enabled</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="extensionInfo" type="extensibility:Any" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ArrayOfEntityBase">
+		<xsd:sequence>
+			<xsd:element name="item" type="tns:EntityBase" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ************************************* -->
+	<!-- Package Association Class definitions -->
+	<!-- ************************************* -->
+	<!-- ************************** -->
+	<!-- package Event definitions -->
+	<!-- ************************** -->
+	<!-- ************************** -->
+	<!-- package Exception definitions -->
+	<!-- ************************** -->
+</xsd:schema>

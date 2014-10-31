@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2014 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:coi="http://www.tmforum.org/mtop/fmw/xsd/coi/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/cti/v1" xmlns:test="http://www.tmforum.org/mtop/tm/xsd/test/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"  targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/cti/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: Framework</p>
+			<p>Module: XSD Aggregate Module</p>
+			<p>Description: This module contains the XML Schema definitions of the common test information.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ================ -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="NamingDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="GeneralDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/tm/xsd/test/v1" schemaLocation="../../../TestManagement/IIS/xsd/Test.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/coi/v1" schemaLocation="CommonObjectInfo.xsd"/>
+	<!-- ============== -->
+	<xsd:element name="commonTestInfo" type="tns:CommonTestInfoType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>.The common test info inherits from common object info. </p>
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:complexType name="CommonTestInfoType" abstract="true" >
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>The aggregate of all common test attributes.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="coi:CommonObjectInfoType">
+		<xsd:sequence>
+		<xsd:element name="testSpecification" type="nam:NamingAttributeType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Indicates the name of a test specification (TS) that is to be used to describe how the test should be configured, and what measures should be taken as a result of executing the test. The TS  may contain resource test parameters and their associated values and/or resource test measures. </p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		<xsd:element name="testMeasuresList" type="test:TestMeasuresListType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This attribute specifies a list of individual  test measures that are expected to result from the execution of a test. For each measure a set of threshold rules may be defined that indicate under which condition(s) a threshold is considered to be passed, and the expected consequence(s).</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="testMeasureValuesList" type="test:TestMeasureValuesListType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="configuredByList" type="test:TestParameterValueInUseType" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>Specifies a list of individual test parameters (by reference)  and their associated test parameter values.</p>
+						<p> The standard parameter names and valid values are those provided in SD2-22 TestParameters.pdf, and are passed in real-time over the interface upon starting the test.</p>
+						<p>There may be test parameters and associated values that are also passed, by reference, in the test specification.  If a parameter/value is found in both places, and is marked as "can be overriden", then the value passed in the configuredByList overrides the value in the specification. If it is marked "extensible", it extends the values defined in the test spec.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		</xsd:extension>
+	 </xsd:complexContent>
+	</xsd:complexType>
+</xsd:schema>

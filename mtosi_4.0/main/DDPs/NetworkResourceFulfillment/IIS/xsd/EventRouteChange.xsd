@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/routec/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/routec/v1" xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" xmlns:ei="http://www.tmforum.org/mtop/fmw/xsd/ei/v1" xmlns:rt="http://www.tmforum.org/mtop/nrf/xsd/route/v1" xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Framework</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema definitions of the RouteChange event.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/CommonEventInformation.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/cei/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/EventInformation.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/ei/v1"/>
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
+  <xsd:import schemaLocation="Route.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/route/v1"/>
+  <xsd:import schemaLocation="CommonTypes.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1"/>
+  <!-- ================ -->
+  <xsd:element name="routeChange" type="tns:RouteChangeType" substitutionGroup="cei:commonEventInformation">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The element definition of the RouteChange event.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:complexType name="RouteChangeType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The type definition of the RouteChange event.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="ei:EventInformationType">
+        <xsd:sequence>
+          <xsd:element name="routeChangeEvent" type="tns:RerouteChangeEventType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This identifies which state the notification is emitted against.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="route" type="rt:RouteType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>This identifies the new route that is chosen, if any; this field is optional otherwise.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================ -->
+  <xsd:simpleType name="RerouteChangeEventType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The route change goes through different stages during a
+         reroute of a SubnetworkConnection. These stages are a part
+         of the ROUTE_CHANGE notification.
+         These are:
+         <ol>
+            <li> "RerouteStarted" </li>
+            <li> "RerouteCompleted" </li>
+            <li> "RerouteFailed" </li>
+            <li> "RouteAdded", raised only when the addRoute operation is 
+     successful</li>
+            <li>"RouteRemoved", raised only when the removeRoute operation is 
+     successful</li>
+            <li> "RouteActivated", raised only when the switchRoute operation is 
+     successful</li>
+            <li> "RouteDeactivated", raised only when the switchRoute is 
+     successful</li>
+            <li> "RouteSetToIntended", raised only when the setIntendedRoute operation 
+     is successful</li>
+          </ol>.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>

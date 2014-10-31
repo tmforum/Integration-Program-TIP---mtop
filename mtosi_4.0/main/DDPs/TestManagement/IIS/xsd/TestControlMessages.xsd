@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - OM TestManagement - Copyright TeleManagement Forum 2014 -->
+<xsd:schema xmlns:com="http://www.tmforum.org/mtop/nrf/xsd/com/v1" xmlns:cocd="http://www.tmforum.org/mtop/fmw/xsd/cocd/v1" xmlns:crmd="http://www.tmforum.org/mtop/nrb/xsd/crmd/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:lr="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:msg="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:test="http://www.tmforum.org/mtop/tm/xsd/test/v1" xmlns:tns="http://www.tmforum.org/mtop/tm/xsd/tc/v1" xmlns:tpdata="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/tm/xsd/tc/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: TestManagement</p>
+			<p>Module:  Message XSD Module</p>
+			<p>Description: This module contains the XML Schema type definitions of all the mTOP Test Control SI XML message structures.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ================ -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/msg/v1" schemaLocation="../../../Framework/IIS/xsd/MessageDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/com/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/CommonTypes.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/TpData.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/cocd/v1" schemaLocation="../../../Framework/IIS/xsd/CommonObjectCreateDataType.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/crmd/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceModifyDataType.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/tpdata/v1" schemaLocation="../../../NetworkResourceFulfillment/IIS/xsd/TpData.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/tm/xsd/test/v1" schemaLocation="Test.xsd"/>
+	<!-- ================ -->
+	<xsd:element name="startTestRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the start test operation. The test represents the execution of a particular test against a given entity(s), and given set of configuration parameters, in accordance with a specified schedule, and a list of desired test measures.  The request may be on-demand and controlled, i.e. the test has been requested to start, but has not yet completed, or is to run continuously without a stop time, and hence the operation returns before the  test completes. The test may be on-demand and uncontrolled i.e. the test runs and returns the results as part of the response to the operation. The expected behavior is dependent on the type of test being executed and the associated implementation. In the case of a controlled test, successful execution of this operation results in instantiation of a resource test object.
+</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="testData" type="tns:TestCreateDataType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>Data needed for configuration of the test</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="tpDataListToModify" type="tpdata:TerminationPointDataListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>A list of TPs that may play a role in the test and associated parameters to set.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="startTestResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the start test operation. In the case of a "controlled" test, the testName associated to the test object is returned. In the case of an "uncontrolled" test, the test measure values are returned.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+		<xsd:sequence> 
+				<xsd:element name="theTest" type="test:TestType">
+				<xsd:annotation>
+						<xsd:documentation>
+							<p>If the operation is successfull, the test object is returned. </p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+		</xsd:sequence>
+	  </xsd:complexType> 
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="startTestException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the start test operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:notInValidState"/>
+						<xsd:element ref="msg:objectInUse"/>
+						<xsd:element ref="msg:unableToComply"/>
+						<xsd:element ref="msg:userlabelInUse"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="suspendTestRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the suspend test operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="testName" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The suspend operation results in the test administrative state being changed to locked. If the test is in the process of execution, it halts. </p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="suspendTestResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the suspend test operation. This operation results in the administrative state transitioning to “LOCKED”. Behavior associated to the suspension of the test will depend on the test type. Any previous test results should still be available, even when the test is suspended.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="testName" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>The name of the test that was successfully suspended.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="suspendTestException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the suspend test operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:notInValidState"/>
+						<xsd:element ref="msg:objectInUse"/>
+						<xsd:element ref="msg:unableToComply"/>
+						<xsd:element ref="msg:userlabelInUse"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="resumeTestRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the resume test operation.  This operation resumes a test that has previously been suspended, resulting in the administrative state of the state transitioning to “UNLOCKED”.  The test should resume execution, and any results produced as part of the test (previous to suspension) should still be available, as well as any new results that are produced from resuming the test.
+Resuming a test that already has an administrative state of UNLOCKED has no impact on the test.
+</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="testName" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The resume operation results in the test administrative state being changed to unlocked. The test continues to execute according to its configuration </p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="resumeTestResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the resume test operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="testName" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>The name of the test that was successfully resumed.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="resumeTestException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the resume test operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:notInValidState"/>
+						<xsd:element ref="msg:objectInUse"/>
+						<xsd:element ref="msg:unableToComply"/>
+						<xsd:element ref="msg:userlabelInUse"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="stopTestRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the stop test operation. This operation results in the target OS sending a request down to the network element(s) to halt the execution of an ongoing test. The test object remains until it is either deleted by the system or explicitly deleted via the "delete test" operation. When the test is stopped it transitions to a “STOPPED” state. Partial, or complete, results may be available.
+Note: the test cannot be restarted using the “startTest” operation as execution is considered to be terminated. See “suspend test” and “resume test” for temporary stopping of a test.
+</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="testName" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The resume operation halts the execution of the test permanently. It can not be resumed or restarted. Full or partial results may be available, depending on where the test was stopped during its cycle of execution.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="stopTestResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the stop test operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="testName" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>The name of the test that was successfully stopped.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="stopTestException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the stop test operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:notInValidState"/>
+						<xsd:element ref="msg:objectInUse"/>
+						<xsd:element ref="msg:unableToComply"/>
+						<xsd:element ref="msg:userlabelInUse"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getTestResultsRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the get test results operation. If the test has not completed, nor has it been stopped, then the results may be unpredictable. The validity indicators in the results provide an indication of the validity of the results that are returned.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="testName" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>The getTestResults operation allows the client OS to retrieve either an entire resource test object, or just the results, based on a test name. It may further filter based on time constraints or parameters to be retrieved</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="timePeriod" type="test:TimePeriodType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>Specifies the start / end date and time</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="testMeasuresList" type="test:TestMeasuresListType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>Specifies the test measure definitions for which the results are to be retrieved.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="filter" type="test:TestFilterType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p>A filter value = ALL implies return the entire test object; the value "MEASURES" implies return only the measures.</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getTestResultsResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the get test results operation. It is a choice of either the entire test object, or just the results</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:choice maxOccurs="unbounded">
+				<xsd:element name="test" type="test:TestType" minOccurs="0"/>
+				<xsd:element name="testMeasureValuesList" type="test:TestMeasureValuesListType"/>
+			</xsd:choice>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="getTestResultsException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the get test results operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:notInValidState"/>
+						<xsd:element ref="msg:objectInUse"/>
+						<xsd:element ref="msg:unableToComply"/>
+						<xsd:element ref="msg:userlabelInUse"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="deleteTestRequest">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Request message structure of the delete test operation. If the test is still running, it will first be stopped before the deleting of the test instance; otherwise the test instance is deleted upon receipt of the request.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="testName" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>
+							<p> Name of the test to be deleted</p>
+						</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="deleteTestResponse">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Response message structure of the delete test operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="testName" type="nam:NamingAttributeType" minOccurs="0">
+					<xsd:annotation>
+						<xsd:documentation>The name of the test that was successfully deleted.</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:element name="deleteTestException">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Exception message structure of the delete test operation</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:restriction base="msg:AllExceptionsType">
+					<xsd:choice>
+						<xsd:element ref="msg:commLoss"/>
+						<xsd:element ref="msg:entityNotFound"/>
+						<xsd:element ref="msg:internalError"/>
+						<xsd:element ref="msg:invalidInput"/>
+						<xsd:element ref="msg:notImplemented"/>
+						<xsd:element ref="msg:notInValidState"/>
+						<xsd:element ref="msg:objectInUse"/>
+						<xsd:element ref="msg:unableToComply"/>
+						<xsd:element ref="msg:userlabelInUse"/>
+					</xsd:choice>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- ================ -->
+	<xsd:complexType name="TestCreateDataType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>The attributes required when starting a test in order to create the test object</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="cocd:CommonObjectCreateDataType">
+				<xsd:sequence>
+					<xsd:element name="testMode" type="test:TestModeType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>An indication of whether the test is being run pro-actively or on-demand.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="testType" type="test:TestTypeType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>An indication of  the type of test. See the associated BA for standard test types. Vendor extensions are allowed.</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="testAdminState" type="test:TestAdminStateType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>The test administrative state, which may be LOCKED or UNLOCKED</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="testSchedule" type="test:TestScheduleType" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>The test schedule. Identifies when the test should be executed and at what frequency. </xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="entityUnderTestList" type="test:EntityUnderTestList" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Specifies the entity(s) under test. There is no constraint as to the type of entity (TP, ME, SNC, FDFr, RFS, CFS); this will be dictated by type of test Also defined, per entity, is the list of test configuration parameters and associated measures</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Framework</p>
+      <p>Module: XSD Aggregate Module</p>
+      <p>Description: This module contains the XML Schema definitions of the common event information.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="GeneralDefinitions.xsd"/>
+  <!-- ================ -->
+  <xsd:element name="commonEventInformation" type="tns:CommonEventInformationType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The element definition of the common set of attributes used for all events.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:complexType name="CommonEventInformationType" abstract="true">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The type definition of the common set of attributes used for all events.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="notificationId" type="gen:NotificationIdentifierType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The uniqueness and the sequence of the notificationId are not guaranteed.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sourceTime" type="xsd:dateTime" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The time at which the event was reported by the source system (NE, EMS or OS).</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Containment for all vendor extensions</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================ -->
+</xsd:schema>

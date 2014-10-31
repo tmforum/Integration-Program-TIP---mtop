@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/routedes/v1" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/routedes/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:route="http://www.tmforum.org/mtop/nrf/xsd/route/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Data Model Network Resource FulFillment</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema type definition of the mTOP Route Descriptor XML structures.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ============== -->
+  <xsd:import schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
+  <xsd:import schemaLocation="Route.xsd" namespace="http://www.tmforum.org/mtop/nrf/xsd/route/v1"/>
+  <!-- ================= -->
+  <xsd:element name="routeDescriptor" type="tns:RouteDescriptorType"/>
+  <!-- ================= -->
+  <xsd:complexType name="RouteDescriptorType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A route is a partially ordered list of cross connections. A SNC always has one route and may have more than one:
+         <ul>
+            <li>always 1 intended route, i.e. the preferred, or default route</li>
+            <li>0..n backup / alternative route(s)</li>
+          </ul>
+       A route belongs to only one SNC. However XCs/CTPs can be shared by routes of different SNCs.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="routeIdentifier" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>Unique identifier within the SNC name, with format up to EMS or Control Plane</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="isIntended" type="xsd:boolean" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>The intended route (true)
+   could be defined as the preferred, or default route for a given 
+   service. Practically, the intended route could be simply the first time 
+   provisioned route, or the preferred route for a number of factors, from 
+   network engineering to intrinsic media reliability. The backup route (false) is partly or totally different from intended route (but with same end 
+   points), and it is useful mainly for restoration and maintenance 
+   purposes.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="actualState" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>it is the summary state of the actual state of XCs in the network, 
+   regardless the SNC such XCs are currently serving; it can assume only the 
+   following values:<ul>
+                <li>
+                  <b>inactive</b>: None of its XCs is active in the network</li>
+                <li>
+                  <b>active</b>: all its XCs are active in the network. So it is the 
+   route where SNC traffic is currently carried. There can be at most one 
+   active route per SNC. inUseBy shall be always "n".</li>
+                <li>
+                  <b>partial</b>: one or more, but not all the XCs are active in the 
+   network. If the route was unsuccessfully activated, then inUseBy shall be 
+   always "n". If the route was unsuccessfully deactivated, then inUseBy could 
+   be "y". <i>Note: a capability to activate segments of a backup route for 
+   more rapid switch over would be of value. It was agreed that this would not 
+   be included in the current release but that it could be considered for a 
+   later release.</i>
+                </li>
+              </ul>
+            </p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="administrativeState" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This state refers to the belonging SNC, and has not any relationship 
+   with the actual state. It can assume only the following values:<ul>
+                <li>
+                  <b>locked</b>: the route is not allowed to be active. This state is 
+   changeable by:<ul>
+                    <li>setRoutesAdminState()
+   if all the routes of a given SNC are set to locked, 
+   the SNC transits in PENDING state.</li>
+                    <li>createSnc()
+   creates one locked intended route</li>
+                    <li>deactivateSnc()
+   locks all routes</li>
+                    <li>addRoute()
+   creates one locked backup route</li>
+                    <li>createModifiedSnc()
+   modifies the addressed route, which transits to 
+   locked.
+   Note for createModifySNC(): the SNC will transit to PARTIAL  state, because 
+   the just modified route was never unlocked/activated before, and the old 
+   route is still ACTIVE in the network. So the SNC PARTIAL state means that 
+   an activateSNC() or unlockRoute() operation is needed. Moreover, it is not 
+   possible to determine the actual route of the SNC in the network once the 
+   old route was modified.</li>
+                  </ul>
+                </li>
+                <li>
+                  <b>unlocked</b>: the route is allowed to be active. This state is 
+   changeable by:<ul>
+                    <li>setRoutesAdminState()
+   If a route was modified by createModifySNC(), then 
+   setting it to unlocked implies the activation of the new route. If the 
+   activation is successful, (route actual state is ACTIVE) then also the SNC 
+   will transit to ACTIVE. If a locked route of a PENDING SNC is set to 
+   UNLOCKED, the SNC will transit to either ACTIVE or PARTIAL.</li>
+                    <li>createAndActivateSnc()
+   creates and unlocks the intended route</li>
+                    <li>activateSnc()
+   unlocks all routes</li>
+                    <li>switchRoute()
+   is a "manual" switch, so no route is locked or 
+   unlocked.</li>
+                    <li>modifySnc()
+   modifies and unlocks the addressed route</li>
+                    <li>deleteSnc()
+   fails if at least one route is unlocked</li>
+                  </ul>
+                </li>
+              </ul>
+            </p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="isInUseBy" type="xsd:boolean" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>True if at least one of its CCs or CTPs is carrying traffic of another SNC, false otherwise.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="isExclusive" type="xsd:boolean" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>True means not any routes of other SNCs can share any of its CCs or CTPs, even in locked state, false otherwise.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="routeCcList" type="route:RouteType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p/>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            <p>This is a container for all vendor extensions.</p>
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <!-- ================= -->
+  <xsd:complexType name="RouteDescriptorListType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>A list of RouteDescriptors</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="routeDescriptor" type="tns:RouteDescriptorType" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

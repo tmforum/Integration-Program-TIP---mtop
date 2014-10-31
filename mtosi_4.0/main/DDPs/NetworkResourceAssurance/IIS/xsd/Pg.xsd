@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nra/xsd/pg/v1" xmlns:nam="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" xmlns:lay="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" xmlns:cri="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" xmlns:com="http://www.tmforum.org/mtop/nra/xsd/com/v1" xmlns:nrb.com="http://www.tmforum.org/mtop/nrb/xsd/com/v1" xmlns:pgp="http://www.tmforum.org/mtop/nra/xsd/pgp/v1" xmlns:ituArc="http://www.tmforum.org/mtop/nra/xsd/ituArc/v1" targetNamespace="http://www.tmforum.org/mtop/nra/xsd/pg/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: Data Model Network Resource FulFillment</p>
+			<p>Module: Aggregate XSD Module</p>
+			<p>Description: This module contains the XML Schema type definition of the mTOP PGP XML structure.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ============== -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/nam/v1" schemaLocation="../../../Framework/IIS/xsd/NamingDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/lay/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/LayerRates.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/cri/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonResourceInfo.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrb/xsd/com/v1" schemaLocation="../../../NetworkResourceBasic/IIS/xsd/CommonTypes.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/com/v1" schemaLocation="CommonTypes.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/pgp/v1" schemaLocation="PgParameters.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nra/xsd/ituArc/v1" schemaLocation="../../../NetworkResourceAssurance/IIS/xsd/ITU-T-ArcDefinitions.xsd"/>
+	<!-- ================= -->
+	<xsd:element name="pg" type="tns:ProtectionGroupType"/>
+	<!-- ================= -->
+	<xsd:complexType name="ProtectionGroupType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This aggregate defines all the ProtectionGroup mTOP network resource object attributes.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexContent>
+			<xsd:extension base="cri:CommonResourceInfoType">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This element entails the attributes common to all mTOP network resource objects.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="type" type="com:ProtectionGroupTypeType" nillable="true" minOccurs="0"/>
+					<xsd:element name="protectionSchemeState" type="nrb.com:ProtectionSchemeStateType" nillable="true" minOccurs="0"/>
+					<xsd:element name="reversionMode" type="com:ReversionModeType" nillable="true" minOccurs="0"/>
+					<xsd:element name="layerRate" type="lay:LayerRateType" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Line rate of the PTPs of the protection group. It is a readonly attribute.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="parameterList" type="pgp:ProtectionGroupParameterListType" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>This contains a list for the known parameters of the protection group. Non-applicable parameters and parameters for which the value is unknown to the EMS may be left out</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="protectionRelatedTpRefList" type="nam:NamingAttributeListType" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>This is the list of TPs that belong in the protection group. The list of TPs is partially ordered. The protecting TP always trails its worker TPs. The East TPs are always contiguous in the list, as well as West TPs.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="apsProtocolType" type="com:G_774_3_APSfunctionType" nillable="true" minOccurs="0"/>
+					<xsd:element name="asapRef" type="xsd:string" nillable="true" minOccurs="0">
+						<xsd:annotation>
+							<xsd:documentation>
+								<p>Indicates the assignment of an ASAP to this PGP object. Value is of the ASAP name.</p>
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ituArcStateAndStatusList" type="ituArc:ItuArcStateAndStatusList"/>
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="ProtectionGroupListType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>List of ProtectionGroups</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="tns:pg" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

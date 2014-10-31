@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Network Resource Fulfillment - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/nrf/xsd/fdfrroute/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:mfdfr="http://www.tmforum.org/mtop/nrf/xsd/mfdfr/v1" targetNamespace="http://www.tmforum.org/mtop/nrf/xsd/fdfrroute/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: Data Model Network Resource FulFillment</p>
+			<p>Module: Aggregate XSD Module</p>
+			<p>Description: This module contains the XML Schema type definition of the mTOP FDFr Route XML structures.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ============== -->
+	<xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/nrf/xsd/mfdfr/v1" schemaLocation="Mfdfr.xsd"/>
+	<!-- ================= -->
+	<xsd:element name="fdfrRoute" type="tns:FlowDomainFragmentRouteType"/>
+	<!-- ================= -->
+	<xsd:complexType name="FlowDomainFragmentRouteType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A route for an FDFr is defined as a partially ordered list of MFDFr.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element ref="mfdfr:mfdfr" minOccurs="0" maxOccurs="unbounded"/>
+			
+			<xsd:element name="actualState" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>it is the summary state of the actual state of XCs in the network, 
+   regardless the SNC such XCs are currently serving; it can assume only the 
+   following values:<ul>
+								<li>
+									<b>inactive</b>: None of its XCs is active in the network</li>
+								<li>
+									<b>active</b>: all its XCs are active in the network. So it is the 
+   route where SNC traffic is currently carried. There can be at most one 
+   active route per SNC. inUseBy shall be always "n".</li>
+								<li>
+									<b>partial</b>: one or more, but not all the XCs are active in the 
+   network. If the route was unsuccessfully activated, then inUseBy shall be 
+   always "n". If the route was unsuccessfully deactivated, then inUseBy could 
+   be "y". <i>Note: a capability to activate segments of a backup route for 
+   more rapid switch over would be of value. It was agreed that this would not 
+   be included in the current release but that it could be considered for a 
+   later release.</i>
+								</li>
+							</ul>
+						</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>		
+
+			<xsd:element name="vendorExtensions" type="gen:AnyListType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This is a container for all vendor extensions.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+							
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

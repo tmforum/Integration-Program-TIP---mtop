@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xsd:annotation>
+		<xsd:documentation>
+			<p>DDP: Framework</p>
+			<p>Module: Dataset XSD Module</p>
+			<p>Description: This module contains the XML Schema definitions of generic mTOP simple data types.</p>
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- ================= -->
+	<xsd:complexType name="NameAndStringValueType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Specifies a generic name and value pair</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string"/>
+			<xsd:element name="value" type="xsd:string" nillable="true"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:element name="nvsList" type="tns:NameAndValueStringListType"/>
+	<!-- ================= -->
+	<xsd:complexType name="NameAndValueStringListType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A list of NameAndStringValue</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="nvs" type="tns:NameAndStringValueType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="NameAndAnyValueType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>Specifies a generic name and value pair</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="name" type="xsd:string"/>
+			<xsd:any namespace="##any" processContents="lax" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:element name="nvList" type="tns:NameAndAnyValueListType"/>
+	<!-- ================= -->
+	<xsd:complexType name="NameAndAnyValueListType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A list of NameAndAnyValueType</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="nv" type="tns:NameAndAnyValueType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="AliasNameListType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This is the definition of the object attribute that contains the list of aliases for the network entity. The attribute is a name-value list. The name refers to the type of alias (e.g., nativeEMSname) and the value component holds the alias itself</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="alias" minOccurs="0" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="aliasName" type="xsd:string"/>
+						<xsd:element name="aliasValue" type="xsd:string" nillable="true"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:complexType name="AnyListType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A generic list of any type of elements. Used for vendor Extensions or loose element encapsulation from other namespaces.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:any namespace="##any" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================ -->
+	<xsd:simpleType name="DiscoveredNameType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This is the definition of the name of the object when its existence is first published on the CCV but only in the case where the OS that publishes the object on the CCV is not the naming OS. If the naming OS first publishes the object on the CCV, this attribute may be left empty.</p>
+				<p>The discovered name is assumed to be unique from the perspective of the publishing OS.</p>
+				<p>The discovered name published on the CCV does not necessarily need to be the name of the object as discovered by the OS from the subtending network.</p>
+				<p>There are no specific rules concerning the relationship between the "name" and "discovered name" of the object. They could be set to the same value or they could be different.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<!-- ================= -->
+	<xsd:simpleType name="ManufactureDateType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This data type identifies the production date of the resource.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:date"/>
+	</xsd:simpleType>
+	<!-- ================= -->
+	<xsd:complexType name="MultiEventInventoryAttributesType">
+		<xsd:annotation>
+			<xsd:documentation>This attribute is used when a object instance is embedded in the inventory
+			layout payload of a Multi-Event Inventory (MEI) notification.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="neTime" type="xsd:date" nillable="true" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This is the time at which the NE detected the inventory change (if available)</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="eventIndication" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>
+						<p>This is an indication of the type of inventory update.</p>
+						<p>Possible values are Object Creation (OC), Object Discovery (ODsc), Object Deletion (OD), 
+				  Attribute Value Change (AVC), State Change (SC) and AVC_SC_and_Childern. Only the acronym (e.g., OC) 
+				  is used in the actual attribute value. The following conventions apply:</p>
+						<p>If an object creation or object discovery indicator is applied to a parent object, 
+					it implicitly applies to all the children, i.e., the OS sending the notification only needs 
+					to set the indicator attribute in the parent object.</p>
+						<p>If an object deletion is applied to a parent object, it is assumed that all the children 
+					are also deleted. The childern should not be listed.</p>
+						<p>The AVC_SC_and_Childern indication may be applied to a parent object to imply that there 
+					may be AVC or SC changes to the parent and some or all of the children.</p>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:simpleType name="NetworkAccessDomainType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>A free-format string used to associate a resource to a Network Access Domain.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<!-- ================ -->
+	<xsd:simpleType name="NotificationIdentifierType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>The type definition of the notification ID.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<!-- ================= -->
+	<xsd:complexType name="NotificationIdentifierListType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>List of notification IDs  (free string). Also,  the value found in notificationId field of the event.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="notificationId" type="tns:NotificationIdentifierType" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<!-- ================= -->
+	<xsd:simpleType name="ObjectTypeType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This is the definition of all the object types. It is left as a string for maximum compatibility with future supported object types.</p>
+				<p>Refer to the SD2-7 ObjectNaming for the list of all supported values.</p>
+				<p>Otherwise, one can also refer to the ObjectEnumTypedefined in CommonResourceInfo (see NRB DDP), which is provided as XML Schema enumerations solely as a helper (not used in any messaging validation).</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<!-- ================= -->
+	<xsd:simpleType name="OwnerType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>This is the definition of the object attribute that represents an identifier for the owner of the object.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string"/>
+	</xsd:simpleType>
+	<!-- ================= -->
+	<xsd:simpleType name="QueryDialectEnumType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>The enumeration of all the supported query dialect types.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:anyURI">
+			<xsd:enumeration value="ANSI-92"/>
+			<xsd:enumeration value="http://www.w3.org/TR/xpath"/>
+			<xsd:enumeration value="http://www.w3.org/TR/xpath20/"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<!-- ================= -->
+	<xsd:simpleType name="QueryDialectTypeType">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>The loose definition of all the supported query dialect types.</p>
+				<p>Refer to QueryDialectEnumType definition to the enumeration of recommended query dialect types.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:anyURI"/>
+	</xsd:simpleType>
+	<!--  ============== -->
+	<xsd:complexType name="QueryExpressionType" mixed="true">
+		<xsd:annotation>
+			<xsd:documentation>
+				<p>The generic schema datatype definition for the query expression used in most filters.</p>
+				<p>This definition is borrowed from WS-Notification v1.3.</p>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:any processContents="lax" minOccurs="0"/>
+		</xsd:sequence>
+		<xsd:attribute name="Dialect" type="tns:QueryDialectTypeType" use="required">
+			<xsd:annotation>
+				<xsd:documentation>
+					<p>The dialect of the given query expression</p>
+				</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+</xsd:schema>

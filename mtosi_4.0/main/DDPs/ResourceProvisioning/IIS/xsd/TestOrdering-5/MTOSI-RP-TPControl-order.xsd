@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ *  Generated with Tigerstripe Workbench 0.7.0.201206291233 and 
+ *  Plugin Nortel Networks, Hewlett-Packard Company/TIP_Soap_Generator(1.1) (1.1)
+ *
+ *  DO NOT EDIT THIS CODE WHICH WAS AUTOMATICALLY GENERATED
+-->
+<!--
+Copyright (C) 2010 Members of the TIP Open Source Community
+
+Licensed to Members of the TIP Open Source Community under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+Members of the TIP Open Source Community licences this file to You under the Apache License,
+Version 2.0 (the 'License'); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an 'AS IS' BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.tmforum.org/xml/tip/internal/RpTPControlOrd" xmlns:ord="http://www.tmforum.org/xml/tip/internal/ord" xmlns:extensibility="http://www.tmforum.org/xml/tip/internal/extensibility" xmlns:tpc="http://www.tmforum.org/mtop/rp/xsd/tpc/v1" targetNamespace="http://www.tmforum.org/xml/tip/internal/RpTPControlOrd" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.1">
+	<xsd:import namespace="http://www.tmforum.org/xml/tip/internal/ord" schemaLocation="order_entity.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/xml/tip/internal/extensibility" schemaLocation="internal_extensibility.xsd"/>
+	<xsd:import namespace="http://www.tmforum.org/mtop/rp/xsd/tpc/v1" schemaLocation="../TerminationPointControlMessagesOrdering.xsd"/>
+	<!-- ****************
+-->
+	<xsd:element name="tPControl_OI" type="tns:TPControl_OI" substitutionGroup="ord:roi"/>
+	<!-- -->
+	<xsd:element name="fTP_Create_OI" type="tns:FTP_Create_OI" substitutionGroup="tns:tPControl_OI"/>
+	<!--
+	<xsd:element name="gTP_Create_OI" type="tns:GTP_Create_OI" substitutionGroup="tns:tPControl_OI"/>
+	<xsd:element name="tPPool_Create_OI" type="tns:TPPool_Create_OI" substitutionGroup="tns:tPControl_OI"/>
+	<xsd:element name="tP_setTerminationPointData_OI" type="tns:TP_setTerminationPointData_OI" substitutionGroup="tns:tPControl_OI"/>
+	-->
+	<xsd:simpleType name="TPControl_Action">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="FTP_Create"/>
+			<xsd:enumeration value="GTP_Create"/>
+			<xsd:enumeration value="TPPool_Create"/>
+			<xsd:enumeration value="TP_setTerminationPointData"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="tPControl_Action" type="tns:TPControl_Action" substitutionGroup="ord:action"/>
+	<xsd:complexType name="TPControl_OI" abstract="true">
+		<xsd:complexContent>
+			<xsd:restriction base="ord:ResourceOrderItem">
+				<xsd:sequence>
+					<xsd:element name="id" type="ord:Identifier"/>
+					<xsd:element name="priority" type="xsd:string"/>
+					<xsd:element name="notes" type="xsd:string"/>
+			<!--
+			<xsd:element name="extensionInfo" type="extensibility:Any" minOccurs="0"/>
+			-->
+					<xsd:element ref="ord:resource"/>
+					<xsd:element ref="tns:tPControl_Action"/>
+					<xsd:element name="data" type="xsd:anyType" minOccurs="0"/>
+					<!-- tpc name space can probably be enforced here -->
+				</xsd:sequence>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- -->
+	<xsd:element name="aFTP_Create_OI" type="tns:FTP_Create_OI"/>
+	<xsd:complexType name="FTP_Create_OI">
+		<xsd:complexContent>
+			<xsd:restriction base="tns:TPControl_OI">
+				<xsd:sequence>
+					<xsd:element name="id" type="ord:Identifier"/>
+					<xsd:element name="priority" type="xsd:string"/>
+					<xsd:element name="notes" type="xsd:string"/>
+			<!--
+			<xsd:element name="extensionInfo" type="extensibility:Any" minOccurs="0"/>
+			-->
+					<xsd:element ref="ord:resource"/>
+					<xsd:element ref="tns:tPControl_Action" id="FTP_Create"/>
+					<xsd:element name="data" type="tpc:CreateFloatingTerminationPointRequest"/>
+				</xsd:sequence>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- -->
+	<xsd:element name="tpcoi" type="tns:TPControl_OI" substitutionGroup="ord:roi"/>
+	<xsd:element name="ftp_createOI" type="tns:FTP_Create_OI" substitutionGroup="tns:tpcoi"/>
+	<!-- -->
+	<xsd:element name="atpcoiList" type="tns:TPControl_OrderItemList"/>	
+	<xsd:complexType name="TPControl_OrderItemList">
+		<xsd:complexContent>
+			<xsd:restriction base="ord:ResourceOrderItemList">
+				<xsd:sequence>
+					<xsd:element ref="tns:tpcoi" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!-- -->
+	<xsd:element name="tpcoiList" type="tns:TPControl_OrderItemList" substitutionGroup="ord:roiList"/>
+	<!-- -->
+	<xsd:element name="aTPControl_Order" type="tns:TPControl_Order"/>
+	<xsd:complexType name="TPControl_Order">
+		<xsd:complexContent>
+			<xsd:restriction base="ord:ResourceOrder">
+				<xsd:sequence>
+					<xsd:element name="id" type="ord:Identifier"/>
+					<xsd:element ref="tns:tpcoiList"/>
+					<!--
+					<xsd:element ref="RpTPControlAct:tPControl_Action"/>
+					-->
+				</xsd:sequence>
+			</xsd:restriction>
+		</xsd:complexContent>
+	</xsd:complexType>
+	<!--
+-->
+</xsd:schema>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - Framework - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/fmw/xsd/odis/v1" xmlns:tns="http://www.tmforum.org/mtop/fmw/xsd/odis/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:cei="http://www.tmforum.org/mtop/fmw/xsd/cei/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: Framework</p>
+      <p>Module: Aggregate XSD Module</p>
+      <p>Description: This module contains the XML Schema definitions of the ObjectDiscovery event.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import schemaLocation="CommonEventInformation.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/cei/v1"/>
+  <xsd:import schemaLocation="GeneralDefinitions.xsd" namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1"/>
+  <!-- ================ -->
+  <xsd:complexType name="ObjectDiscoveryType" abstract="true">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The type definition of the ObjectDiscovery event. The resource (NRB) or service (SB) event instances shall be used.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="cei:CommonEventInformationType">
+        <xsd:sequence>
+          <xsd:element name="discoveredName" type="gen:DiscoveredNameType" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>Identifies the name of the object associated with the event.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="osTime" type="xsd:dateTime" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The time at which the event was reported by the OS (EMS).</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!-- ================ -->
+</xsd:schema>

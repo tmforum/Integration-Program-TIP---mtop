@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mTOP DDP - ResourceProvisioning - Copyright TeleManagement Forum 2008 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.tmforum.org/mtop/nrb/xsd/crcd/v1" xmlns:tns="http://www.tmforum.org/mtop/nrb/xsd/crcd/v1" xmlns:gen="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" xmlns:cocd="http://www.tmforum.org/mtop/fmw/xsd/cocd/v1" attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0">
+  <xsd:annotation>
+    <xsd:documentation>
+      <p>DDP: ResourceProvisioning</p>
+      <p>Module: XSD Aggregate Module</p>
+      <p>Description: This module contains the XML Schema definitions of all the common resource attributes that can be set at the time of the object creation.</p>
+    </xsd:documentation>
+  </xsd:annotation>
+  <!-- ================ -->
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/gen/v1" schemaLocation="../../../Framework/IIS/xsd/GeneralDefinitions.xsd"/>
+  <xsd:import namespace="http://www.tmforum.org/mtop/fmw/xsd/cocd/v1" schemaLocation="../../../Framework/IIS/xsd/CommonObjectCreateDataType.xsd"/>
+  <!-- ============== -->
+  <xsd:element name="commonResourceCreateData" type="tns:CommonResourceCreateDataType">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The element definition of all common resource attributes that can be set at the time of the object creation.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <!-- ================ -->
+  <xsd:complexType name="CommonResourceCreateDataType" abstract="true">
+    <xsd:annotation>
+      <xsd:documentation>
+        <p>The aggregate of all common resource attributes that can be set at the time of the object creation.</p>
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="cocd:CommonObjectCreateDataType">
+        <xsd:sequence>
+          <xsd:element name="networkAccessDomain" type="gen:NetworkAccessDomainType" nillable="true" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                <p>The value to be set to the networkAccessDomain attribute at creation of an object.</p>
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+</xsd:schema>
