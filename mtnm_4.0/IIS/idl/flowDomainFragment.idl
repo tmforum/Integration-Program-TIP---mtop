@@ -8,6 +8,7 @@
 // *********************************
 
 //Include list
+#include "common.idl"
 #include "subnetworkConnection.idl"
 #include "performance.idl"
 
@@ -21,6 +22,7 @@
    * connectivity accross the NMS-EMS interface. It defines the
    * flow domain fragment (FDFr).</p>
    * </p>
+   *
    *
    * <h5> Version 3.5. </h5>
    * 
@@ -420,6 +422,200 @@ module flowDomainFragment
      globaldefs::NamingAttributesList_T internalTPNames;
      globaldefs::NVSList_T additionalModificationInfo;
    };
+   
+   
+   /**
+   * StaticRoutingTableEntry_T
+   * <p> The Static Routing Table contains the Objects necessary to configure andmonitor routes
+   * used by a particular VRF(virtual routing and forwarding).
+   * The Static Routing Table Entry represent one item in static routing table. 
+   * </p>
+   * string <b>destIP</b>:
+   * <br>The Destination IP for Target network address.<br>
+   * string <b>destMask</b>:
+   * <br>The Destination IP address mask for Target network address.<br>
+   * string <b>nextHopIP</b>:
+   * <br>The Next hop IP for Target network address.<br>
+   * globaldefs::NamingAttributes_T <b>outPort</b>:
+   * <br>The output port for traffic to Next hop.<br>
+   * string <b>priority</b>:
+   * <br>The metric indicate the priority of route item, it varys from 1 to 255.<br>
+   * globaldefs::NamingAttributes_T <b>bindingObject</b>:
+   * <br>The bounded VRF(virtual routing and forwarding) names, it could be empty for global route.<br>
+   * globaldefs::NVSList_T <b>additionalInfo</b>:
+   * <br>This attribute allows the communication from the EMS to the NMS of  
+   * additional information which is not explicitly modelled. This concerns
+   * in particular vendor specific parameters. 
+   * <br>
+   **/
+   struct StaticRoutingTableEntry_T
+   {
+     string destIP;	
+     string destMask;	
+     string nextHopIP;	
+     globaldefs::NamingAttributes_T outPort;
+     string priority;	 
+     globaldefs::NamingAttributes_T bindingObject;
+     globaldefs::NVSList_T additionalInfo;
+   };
+   
+  /**
+   * <p>Sequence of StaticRoutingTableEntry_T objects.</p>
+   **/
+   typedef sequence<StaticRoutingTableEntry_T> StaticRoutingTable_T;
+
+  /**
+   * <p>In order to allow the NMS to deal with a large number of 
+   * static routing objects, iterators are used.</p>
+   **/
+   interface StaticRoutingIterator_I
+   {
+      boolean next_n(in unsigned long how_many,
+                     out StaticRoutingTable_T sr)
+        raises (globaldefs::ProcessingFailureException);
+
+      unsigned long getLength()
+        raises (globaldefs::ProcessingFailureException);
+
+      void destroy()
+        raises (globaldefs::ProcessingFailureException);
+   };
+   
+  /**
+   * <p>The import RT list. The RT is used to control routing rules
+   * and relationships among VPN memebers directly connectted to a site. </p>
+   **/
+   typedef sequence<string> ImportRTList_T;   
+   
+  /**
+   * <p>The export RT list. The RT is used to control routing rules
+   * and relationships among VPN memebers directly connectted to a site. </p>
+   **/
+   typedef sequence<string> ExportRTList_T;      
+   
+  /**
+   * <p> A VRF (virtual routing and forwarding) represents An instance of some VPN, 
+   * but not the entire VPN, The collective set of VRF instances comprises the 
+   * actual VPN. This information is typically only known in its entirety at the NMS.
+   * </p>
+   *
+   * globaldefs::NamingAttributes_T <b>name</b>:
+   * <br>The name of the VRF
+   * which is assigned by the EMS upon creation. The EMS is responsible
+   * for guaranteeing the uniqueness of the name within the context
+   * of the Network Element.<br>
+   *
+   * string <b>userLabel</b>:
+   * <br>The user label of the VRF is NMS data
+   * (e.g. end-to-end service data). The EMS may choose to display the
+   * value of the attribute to the EMS user, but this is not a requirement.
+   * <br>
+   * 
+   * string <b>nativeEMSName</b>:
+   * <br>The name represents how the flow domain fragment or VRF is referred to on 
+   * EMS displays. Its
+   * aim is to provide a "nomenclature bridge" to aid relating information
+   * presented on NMS displays to EMS displays (via GUI cut through).
+   * The native name is defaulted to a NULL string. However, this could
+   * be used by the EMS for its implementation dependent purpose.<br>
+   *
+   * string <b>owner</b>:
+   * <br>The owner is provisionable by the NMS.<br>   
+   * string <b>vrfType</b>:
+   * <br>The VRF type could be set as one of the following Enum values:<br>   
+   * static, dynamic, Hybrid (the mix of static and dynamic)
+   * string <b>vrfLabel</b>:
+   * <br>All routes in a VRF routing instance are advertised with one lable 
+   * allocated per VRF.<br>  
+   *
+   * subnetworkConnection::TPDataList_T <b>aEnd</b>:
+   * <br>The list of aEnd flow points  between which connectivity is established by this
+   * VRF. For each flow point the termination points data is included.
+   * The flow points must be connectable on the same layer as the flow domain fragment's  
+   * layer rate. Only between client flow points of flow domain edge TPs of the same flow 
+   * domain connectivity can be established. The flow points could be FTP or PTP (depends on
+   * the differences implementations of different vendors)
+   * <br> 
+   *
+   * subnetworkConnection::TPDataList_T <b>zEnd</b>:
+   * <br>The list of zEnd flow points between which connectivity is established by this
+   * flow domain fragment with the termination point data included for each flow point.   
+   * The flow points must be connectable on the same layer as the flow domain fragment's 
+   * layer rate. Only between client flow points of flow domain edge TPs of the same flow 
+   * domain connectivity can be established. The flow points could be FTP or PTP (depends on
+   * the differences implementations of different vendors)
+   * <br> 
+   * string <b>rdFormat</b>:
+   * <br>A Route distinguisher(RD: RFC2547bis) is an 8-bytes value that, together with 
+   * a 4 byte IPv4 address, identifies a VPN-IPV4 address family. RDs are used to 
+   * achieve independence of VPN address space. 
+   * The Format of RD could be IP:number or AS:number. Only required for dynamical L3VPN. <br>   
+   * string <b>rdAttr</b>:
+   * <br>The attributes for router distinguisher (RD). Only required for dynamical L3VPN. <br>   
+   * 
+   * ImportRTList_T <b>importRTList</b>:
+   * <br>Specifies the import RT of a VPN instance. The RT is used to control routing rules
+   * and relationships among VPN memebers directly connectted to a site. 
+   * Only support for dynamical L3VPN. It's possible to imput multiple import RTs.<br> 
+   * 
+   * ExportRTList_T <b>exportRTList</b>:
+   * <br>Specifies the export RT of a VPN instance. The RT is used to control routing rules
+   * and relationships among VPN memebers directly connectted to a site. 
+   * Only support for dynamical L3VPN. It's possible to imput multiple emport RTs.<br> 
+   *
+   * transmissionParameters::LayeredParameters_T <b>transmissionParams</b>:
+   * <br>The layer rate on which connectivity is established and a related set
+   * of connectionless parameters. Refer to chapter "Connectionless Technology
+   * Parameters" of the supporting document <a href=../../../supportingDocumentation/SD1-16_LayeredParameters.pdf > SD1-16_LayeredParameters.pdf</a> for details of
+   * the currently defined connectionless parameters.<br>
+   * *
+   * globaldefs::NVSList_T <b>additionalInfo</b>:
+   * <br>This attribute allows the communication from the EMS to the NMS of  
+   * additional information which is not explicitly modelled. This concerns
+   * in particular vendor specific parameters. <br>
+   * <br>
+   **/
+   struct VRF_T
+   {
+     globaldefs::NamingAttributes_T name;
+     string userLabel;
+     string nativeEMSName;
+     string owner;
+     string vrfType;
+     string vrfLabel;
+     subnetworkConnection::TPDataList_T aEnd;
+     subnetworkConnection::TPDataList_T zEnd; 
+     string rdFormat;
+     string rdAttr;
+     ImportRTList_T importRTList;
+     ExportRTList_T exportRTList;
+     transmissionParameters::LayeredParameterList_T transmissionParams;
+     globaldefs::NVSList_T additionalInfo;
+   };
+   
+  /**
+   * <p>Sequence of VRF_T objects.</p>
+   **/
+   typedef sequence<VRF_T> VRFList_T;
+
+  /**
+   * <p>In order to allow the NMS to deal with a large number of 
+   * vrf objects, iterators are used.</p>
+   **/
+   interface VRFIterator_I
+   {
+      boolean next_n(in  unsigned long   how_many,
+                     out VRFList_T vrfList)
+        raises (globaldefs::ProcessingFailureException);
+
+      unsigned long getLength()
+        raises (globaldefs::ProcessingFailureException);
+
+      void destroy()
+        raises (globaldefs::ProcessingFailureException);
+   };
+   
+ 
 
 };
 
