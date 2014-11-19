@@ -1,0 +1,713 @@
+#ifndef         transmissionDescriptor_idl
+#define         transmissionDescriptor_idl
+
+// *************************************
+// *                                   *
+// * transmissionDescriptor.idl        *
+// *                                   *
+// *************************************
+
+//Include list
+#include "terminationPoint.idl"
+#include "globaldefs.idl"
+#include "common.idl"
+#include "transmissionParameters.idl"
+#include "flowDomain.idl"
+#include "flowDomainFragment.idl"
+
+#pragma prefix "mtnm.tmforum.org"
+
+  /** 
+   * <a href=../../../supportingDocumentation/SD1-27_Overview_NML-EML_Interface.pdf >SD1-27 Overview of 
+   * NML-EML interface</a>
+   *
+   * <p>This module contains the definition of the Transmission Descriptors 
+   * structure of the NML-EML interface.
+   * It also contains the definition of the Transmission Descriptors 
+   * manager.</p>
+   *
+   * <h5> Version 3.5. </h5>
+   **/
+
+
+module transmissionDescriptor
+{
+
+  /**
+   * <p>Represents Service Categories used by Transmission 
+   * Descriptors. The current Service Categories are defined
+   * as follows (note that Guaranteed Bit Rate (GBR) is not 
+   * defined because it is generally not used):<p>
+   * <ol>
+   * <li> SC_CBR = Constant Bit Rate. For connections that require
+   * a sstatic amount of bandwidth that is continuously available during
+   * the lifetime of the connection.</li>
+   * <li> SC_VBRRT = Variable Bit Rate - Real-Time. For connections that
+   * require tightly constrained delay and delay variation.</li>
+   * <li> SC_VBRNRT = Variable Bit Rate - NonReal-Time. For connections
+   * that have bursty traffic.</li>
+   * <li> SC_ABR = Available Bit Rate. For connections that do not require
+   * bounding the delay or delay variation. Not intended for real-time
+   * applications.</li> 
+   * <li> SC_UBR = Unspecified Bit Rate. For connections that do not require
+   * tightly constrained delay and delay variation.</li> 
+   * <li> SC_GFR = Guaranteed Frame Rate. For non-real-time applications that 
+   * may require a minimum rate guarantee and can benefit from accessing 
+   * additional bandwidth dynamically available in the network.</li> 
+   * <li> SC_NA = Not Applicable</li> 
+   * </ol><br>
+   **/
+   enum ServiceCategory_T {
+    SC_CBR,
+    SC_VBRRT,
+    SC_VBRNRT,
+    SC_ABR,
+    SC_UBR,
+    SC_GFR,
+    SC_NA
+   };
+
+
+
+  /**
+   * <p>TrafficParametersList_T is used to specify the parameters 
+   * used in Transmission Descriptors. The list is a sequence of 
+   * name/value pairs (NVSList_T).  See
+   * <a href=../../../supportingDocumentation/SD1-42_trafficParameters.pdf >SD1-42 Traffic 
+   * Parameters</a> for a list of 
+   * possible traffic parameters.</p>
+   **/
+   typedef globaldefs::NVSList_T TrafficParameterList_T;
+
+
+  /**
+   * <p>A Transmission Descriptor (TMD) is a collection of attributes
+   * which are used to multi-layered transmission parameters are contained by 
+   * the EMS and additional info parameters on a TP. Transmission 
+   * Descriptors can be created by the NMS or the EMS.</p>
+   *
+   * globaldefs::NamingAttributes_T <b>name</b>:
+   * <br>The name represents the name of the Transmission Descriptor
+   * which is assigned by the EMS upon creation.  The EMS is responsible
+   * for guaranteeing the uniqueness of the name within the EMS context.
+
+   * It is a read-only attribute.<br>
+   *
+   * string <b>userLabel</b>:
+   * <br>The userLabel is provisionable by the NMS.  This attribute
+   * can be set by the NMS through the Common_I interface service
+   * common::Common_I::setUserLabel(). It is a read-write attribute.<br>
+   *
+   * string <b>nativeEMSName</b>:
+   * <br>The nativeEMSName represents how the Transmission Descriptor is
+   * referred to on EMS displays.  Its aim is to provide a "nomenclature
+   * bridge" to aid relating information presented on NMS displays to EMS
+   * displays (via GUI cut through). If supported by the EMS, this 
+   * attribute can be set by the NMS through the Common_I interface service
+   * common::Common_I::setNativeEMSName() . It is a read-write attribute.<br>
+   *
+   * string <b>owner</b>
+   * <br>The owner is provisionable by the NMS.  This attribute
+   * can be set by the NMS through the Common_I interface service
+   * common::Common_I::setOwner() . It is a read-write attribute.<br>
+   *
+   * transmissionParameters::LayeredParameterList_T <b>transmissionParams</b>:
+   * <br>A list of transmission parameters which can be set and retrieved at
+   * a specified layer on a TP having this TMD assigned as egress or ingress 
+   * TMD. It is a read-only attribute.<br>
+   *
+   * globaldefs::NVSList_T <b>additionalTPInfo</b>:
+   * <br>Additional info parameters which can be set and/or retrieved
+   * on a TP having this TMD assigned as egress or ingress TMD.
+   * It is a read-only attribute.<br>
+   *
+   * globaldefs::NamingAttributes_T <b>containingTMDName</b>:
+   * <br>The name of another TMD which is considered to contain this TMD.  The
+   * containment semantics is that this TMD inherits the layered transmission
+   * parameters and additional TP information from the containing TMD.
+   * It is a read-only attribute.<br>
+   *
+   * string <b>externalRepresentationReference</b>:
+   * A means to store at the EMS a reference to the external representation
+   * of the TMD (e.g., an XML file name).  The contents of this
+   * attribute is opaque at the NML-EML interface and not utilized.
+   * It is a read-only attribute.
+   *
+   * globaldefs::NVSList_T <b>additionalInfo</b>:
+   * <br>This allows the communication from the EMS to the NMS, and vice versa,
+   * of additional information that isn't explicitly modelled, except that some
+   * parameter names and values may be pre-defined.  This attribute can be set
+   * by the NMS through the Common_I interface service
+   * common::Common_I::setAdditionalInfo() . It is a read-write attribute but 
+   * some parameters may be read-only.<br>
+   *
+   **/
+   struct TransmissionDescriptor_T {
+     globaldefs::NamingAttributes_T name;
+     string userLabel;
+     string nativeEMSName;
+     string owner;
+     transmissionParameters::LayeredParameterList_T transmissionParams;
+     globaldefs::NVSList_T additionalTPInfo;
+     globaldefs::NamingAttributes_T containingTMDName;
+     string externalRepresentationReference;
+     globaldefs::NVSList_T additionalInfo;
+   };
+
+
+  /**
+   * <p>The attributes required for the creation of a transmission descriptor
+   * on the EMS are packaged together in a TMDCreateData structure which the NMS
+
+   * will pass to the EMS at TMD creation time. These are the read-create
+   * attributes of the TMD.</p>
+   *
+   * string <b>userLabel</b>:
+   * <br>The userLabel is provisionable by the NMS. This attribute can be set
+   * by NMS through the Common_I interface service
+   * common::Common_I::setUserLabel() . It is a read/write attribute and may be 
+   * empty.<br>
+   *
+   * boolean <b>forceUniqueness</b>:
+   * <br>Specifies whether uniqueness of the userLabel is required amongst TMDs 
+   * of the EMS.  The operation will fail if userLabel is already in use.<br>
+   *
+   * string <b>owner</b>
+   * <br>The owner is provisionable by the NMS. This attribute can be set
+   * by NMS through the Common_I interface service
+   * common::Common_I::setOwner() . It is a read/write attribute and may be 
+   * empty.<br>
+   *
+   * transmissionParameters::LayeredParameterList_T <b>transmissionParams</b>:
+   * <br>A list of transmission parameters which can be set 
+   * at a specified layer on a TP/MFD by associating this TMD.<br>
+   * 
+   * globaldefs::NVSList_T <b>additionalObjectInfo</b>:
+   * <br>Additional info parameters which can be set 
+   * on a TP or MFD by associating this TMD.<br>
+   *
+   * globaldefs::NamingAttributes_T <b>containingTMDName</b>:
+   * <br>The name of another TMD which is considered to contain this TMD.
+   * The semantics of the containment is that the TMD to be created shall
+   * inherit the layered transmission parameters and additional TP
+   * information from the containing TMD.<br>
+   *
+   * string <b>externalRepresentationReference</b>:
+   * A means to store at the EMS a reference to the external representation
+   * of the TMD (e.g., an XML file name).  The contents of this
+   * attribute is opaque at the NML-EML interface and not utilized.<br>
+   *
+   * globaldefs::NVSList_T <b>additionalCreationInfo</b>:
+   * <br>Some additional creation information may be specified by the NMS.
+   * This information may or may not become a part of the TMD's additionalInfo
+
+   * attribute.  The list may be empty.<br>
+   **/
+   struct TMDCreateData_T {
+    string userLabel;
+    boolean forceUniqueness;
+    string owner;
+    transmissionParameters::LayeredParameterList_T transmissionParams;
+    globaldefs::NVSList_T additionalObjectInfo;
+    globaldefs::NamingAttributes_T containingTMDName;
+    string externalRepresentationReference;
+    globaldefs::NVSList_T additionalCreationInfo;
+   };
+
+  /**
+   * <p>The attributes required for the modification of a transmission descriptor
+   * on the EMS are packaged together in a TMDModifyData structure which the NMS
+   * will pass to the EMS. </p>
+   *
+   * string <b>userLabel</b>:
+   * <br>The userLabel is provisionable by the NMS. This attribute can be set
+   * by NMS through the Common_I interface service
+   * common::Common_I::setUserLabel() . It is a read/write attribute and may be 
+   * empty.<br>
+   *
+   * boolean <b>forceUniqueness</b>:
+   * <br>Specifies whether uniqueness of the userLabel is required amongst TMDs 
+   * of the EMS.  The operation will fail if userLabel is already in use.<br>
+   *
+   * string <b>owner</b>
+   * <br>The owner is provisionable by the NMS. This attribute can be set
+   * by NMS through the Common_I interface service
+   * common::Common_I::setOwner() . It is a read/write attribute and may be 
+   * empty.<br>
+   *
+   * transmissionParameters::LayeredParameterList_T <b>transmissionParams</b>:
+   * <br>A list of transmission parameters which can be set 
+   * at a specified layer on a TP/MFD by associating this TMD.<br>
+   * 
+   * globaldefs::NVSList_T <b>additionalObjectInfo</b>:
+   * <br>Additional info parameters which can be set 
+   * on a TP or MFD by associating this TMD.<br>
+   *
+   * globaldefs::NamingAttributes_T <b>containingTMDName</b>:
+   * <br>The name of another TMD which is considered to contain this TMD.
+   * The semantics of the containment is that the TMD to be created shall
+   * inherit the layered transmission parameters and additional TP
+   * information from the containing TMD.<br>
+   *
+   * string <b>externalRepresentationReference</b>:
+   * A means to store at the EMS a reference to the external representation
+   * of the TMD (e.g., an XML file name).  The contents of this
+   * attribute is opaque at the NML-EML interface and not utilized.<br>
+   *
+   * globaldefs::NVSList_T <b>additionalCreationInfo</b>:
+   * <br>Some additional creation information may be specified by the NMS.
+   * This information may or may not become a part of the TMD's additionalInfo
+   * attribute.  The list may be empty.<br>
+   **/
+   struct TMDModifyData_T {
+    string userLabel;
+    boolean forceUniqueness;
+    string owner;
+    transmissionParameters::LayeredParameterList_T transmissionParams;
+    globaldefs::NVSList_T additionalObjectInfo;
+    globaldefs::NamingAttributes_T containingTMDName;
+    string externalRepresentationReference;
+    globaldefs::NVSList_T additionalCreationInfo;
+   };
+
+  /**
+   * <p>A list of Transmission Descriptors.</p>
+   **/
+   typedef sequence<TransmissionDescriptor_T> TransmissionDescriptorList_T;
+
+  /**
+   * <p>Distinguishes between TP, MFD and FDFr in the following UNION type.</p>
+   **/
+   enum TPorMFDorFDFrQualifier_T
+   {
+    aTP,
+    aMFD,
+    aFDFr
+
+   };
+
+  /**
+   * <p>UNION TPorMFDorFDFr </p>
+   **/
+   union TPorMFDorFDFr_T switch (TPorMFDorFDFrQualifier_T)
+   { 
+    case aTP:     terminationPoint::TerminationPoint_T     tp;
+    case aMFD:    flowDomain::MatrixFlowDomain_T           mfd;
+    case aFDFr:   flowDomainFragment::FlowDomainFragment_T fdfr;
+   };
+
+
+
+  /**
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * iterators are used.</p>
+   * <p>See <a href=../../../supportingDocumentation/SD1-15_iterators.pdf >SD1-15 iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   **/
+
+  interface TransmissionDescriptorIterator_I 
+    {
+        boolean next_n(
+               in unsigned long how_many,
+               out TransmissionDescriptorList_T transmissionDescList)
+              raises (globaldefs::ProcessingFailureException);
+
+        unsigned long getLength() 
+              raises (globaldefs::ProcessingFailureException);
+
+        void destroy() 
+              raises (globaldefs::ProcessingFailureException);
+    };
+
+
+
+  /**
+   * <p>The transmissionDescriptorManager is used to gain access to operations
+   * that deal with Transmission Descriptor.</p>
+   *
+   * <p>A handle to an instance of this interface is gained via the
+   * emsSession::EmsSession_I::getManager()  operation in Manager.</p>
+   **/
+
+  interface TransmissionDescriptorMgr_I : common::Common_I
+    {
+
+  /**
+   * <p>This allows an NMS to request all of the transmissionDescriptors that
+
+   * are under the control of the transmissionDescriptorMgr_I.</p>
+   * 
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * this operation uses an iterator. See
+   * <a href=../../../supportingDocumentation/SD1-15_iterators.pdf >SD1-15 iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   * 
+   * <br>unsigned long how_many: number of iterators to return in 
+   * transmissionDescList.
+   * <br>transmissionDescriptor::TransmissionDescriptorList 
+   * transmissionDescList: the first batch of iterators.
+   * <br>transmissionDescriptor::TransmissionDescriptorIterator_I 
+   * transmissionDescIt: the iterator used to access the remaining Transmission 
+   * Descriptors.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators
+   *  that the EMS can support has been reached<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
+  * <br>
+   **/
+   void getAllTransmissionDescriptors(
+         in unsigned long how_many,
+         out TransmissionDescriptorList_T transmissionDescList,
+         out TransmissionDescriptorIterator_I transmissionDescIt)
+        raises (globaldefs::ProcessingFailureException);
+
+  /**
+   * <p>This operation has exactly the same behaviour as 
+   * getAllTransmissionDescriptors, but
+   * instead of returning the entire object structures, this operation returns 
+   * their names.</p>
+   *
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * this operation uses an iterator. See
+   * <a href=../../../supportingDocumentation/SD1-15_iterators.pdf >SD1-15 iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   *
+   * <br>unsigned long how_many: the number of iterators to return in 
+   * nameList.
+   * <br>globaldefs::NamingAttributesList_T nameList: the first batch of 
+   * iterator names.
+   * <br>globaldefs::NamingAttributesIterator_I nameIt: the iterator used to 
+   * retrieve the remaining iterator names.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   *  As for getAllTransmissionDescriptors.
+
+   **/
+   void getAllTransmissionDescriptorNames(
+         in unsigned long how_many,
+         out globaldefs::NamingAttributesList_T nameList,
+         out globaldefs::NamingAttributesIterator_I nameIt)
+        raises(globaldefs::ProcessingFailureException);
+
+  /** 
+   * <p>This service returns the Transmission Descriptor struct for the given 
+   * tmdName. The Transmission Descriptor structure contains an NVSList of 
+   * traffic parameters.  The traffic parameters returned will be the parameters
+   * in place on the actual Transmission Descriptor.  If there are no
+   * traffic parameters, then the NVSList will be empty.</p>
+   * <br>globaldefs::NamingAttributes_T tmdName: name of the Transmission 
+   * Descriptor.
+   * <br>TransmissionDescriptor_T tmd : the returned Transmission Descriptor.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised when tmdName does not reference 
+   *  trasmissionDescriptor object<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when tmdName references object which does 
+   *  not exist<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
+   * <br>
+   **/
+   void getTransmissionDescriptor(
+         in globaldefs::NamingAttributes_T tmdName,
+         out TransmissionDescriptor_T tmd) 
+        raises (globaldefs::ProcessingFailureException);
+
+  /**
+   * <p>This allows an NMS to request all of the TPs associated with the  
+   * specified Transmission Descriptor. If there are no TPs which are 
+   * associated with the specified Transmission Descriptor, then an empty list 
+   * is returned. </p>
+
+   * 
+   * <p>In order to allow the NMS to deal with a large number of objects
+   * this operation uses an iterator. See
+   * <a href=../../../supportingDocumentation/SD1-15_iterators.pdf >SD1-15 iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   * 
+   * <br>globaldefs::NamingAttributes_T transmissionDescriptorName: the name of 
+   * the Transmission Descriptor.
+   * <br>unsigned long how_many: maximum number of TPs to return in the 
+   * first batch.
+   * <br>terminationPoint::TerminationPointList_T tpList: first batch of 
+   * TPs.
+   * <br>terminationPoint::TerminationPointIterator_I tpIt: iterator to 
+   * access the remaining TPs.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the EMS does not support this service<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of a non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
+   * EXCPT_INVALID_INPUT - Raised when transmissionDescriptrName does not 
+   *  reference a Transmission Descriptor object<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when transmissionDescriptorName references
+   *  an object that does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
+   *  lost<br>
+   * EXCPT_TOO_MANY_OPEN_ITERATORS - Raised when maximum number of iterators
+   *  that the EMS can support has been reached<br>
+   * <br>
+   **/
+   void getAssociatedTPs(
+         in globaldefs::NamingAttributes_T transmissionDescriptorName,
+         in unsigned long how_many,
+         out terminationPoint::TerminationPointList_T tpList,
+         out terminationPoint::TerminationPointIterator_I tpIt) 
+        raises(globaldefs::ProcessingFailureException);
+
+  /**
+   * <p>The createTransmissionDescriptor operation is used to create
+   * a new Transmission Descriptor on the server. A Transmission Descriptor 
+   * Create Data structure, representing the new Transmission Descriptor, is 
+   * passed as input. The resulting Transmission Descriptor is 
+   * returned as a result.</p>
+   *
+   * <br>TMDCreateData_T newTMDCreateData: information about the Transmission 
+   * Descriptor to be created.
+   * <br>TransmissionDescriptor_T newTransmissionDescriptor: result of the 
+   * creation.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if EMS does not support creation of TMDs via 
+   *  this interface<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised if newTMDCreateData contains invalid data<br>
+   * EXCPT_USERLABEL_IN_USE - Raised when the userLabel uniqueness constraint is 
+   *  not met<br>
+   * EXCPT_CAPACITY_EXCEEDED - Raised when maximum number of Transmission 
+   *  Descriptors has been reached<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
+   * <br>
+   **/
+   void createTransmissionDescriptor(
+         in  TMDCreateData_T      newTMDCreateData,
+         out TransmissionDescriptor_T newTransmissionDescriptor)
+        raises (globaldefs::ProcessingFailureException);
+
+
+  /**
+   * <p>The delete Transmission Descriptor operation is used to 
+   * delete a Transmission Descriptor on the server. This operation is
+   * idempotent. If the service is called with the
+   * name of a non-existent Transmission Descriptor, it will succeed.</p>
+   *
+   * <br>globaldefs::NamingAttributes_T transmissionDescriptorName:
+   * The name of the TransmissionDescriptor to be deleted.
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if EMS does not support deletion of TMDs via 
+   *  this interface<br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_OBJECT_IN_USE - Raised if there are TPs or Matrix Flow Domains 
+   *  that are using the Transmission Descriptor<br>
+   * EXCPT_INVALID_INPUT - Raised when input parameter is syntactical incorrect.
+   * EXCPT_ENTITY_NOT_FOUND - Raised when the Transmission Descriptor to be 
+   *  deleted does not exist.
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
+   * <br>
+  **/
+   void deleteTransmissionDescriptor(
+         in globaldefs::NamingAttributes_T transmissionDescriptorName)
+         raises (globaldefs::ProcessingFailureException);
+  /**
+   * <p>The modifyTransmissionDescriptor operation is used to modify a
+   * Transmission Descriptor (TMD) in the EMS.
+   *. The resulting Transmission Descriptor is 
+   * returned as a result.</p>
+   *
+   * <p> When transmission parameters are modified, this will automatically 
+   * modify the corresponding parameters in all associated TPs/MFDs on a best 
+   * effort basis. TPs/MFDs whose parameters could not be modified shall be 
+   * returned by the EMS. </p>
+   *
+   * <p> Note: Only the modified parameters will be updated in the TPs/MFDs;
+   * i.e., the TMD parameter/value list may be inconsistent with the corresponding 
+   * parameter/value list of the associated TPs/MFDs. </p>
+   *
+   * <br>globaldefs::NamingAttributes_T tmdName: The name of the Transmission 
+   * Descriptor to be modified.
+   *
+   * <br>TMDModifyData_T tmdModifyData: Information about the Transmission 
+   * Descriptor to be modified.
+   *
+   * TPDataList_T <b>tpsToModify</b>: in: The list of TPs with associated 
+   * parameters to be applied. out: The list of TPs with associated 
+   * applied parameters. <br>
+
+   * <br>TransmissionDescriptor_T modifiedTransmissionDescriptor: result of the 
+   * modification.
+   *
+   * <br> globaldefs::NamingAttributesList_T failedMEList: the names of all
+   * TMD associated MEs that could not be reached by the EMS. 
+   *
+   * <br> globaldefs::NamingAttributesList_T failedTPsMFDsList: the names of all
+   * TPs and MFDs that could not be changed to the new parameter values due to
+   * some error reasons.
+   *
+   * <br>string errorReason: In case a "best effort" parameter could not be set 
+   * an indication of the fault reason is provided by the EMS. 
+   *
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if EMS does not support modification of TMDs via 
+   *  this interface<br>
+
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal 
+   *  failure<br>
+   * EXCPT_INVALID_INPUT - Raised if tmdModifyData contains invalid data<br>
+   * EXCPT_USERLABEL_IN_USE - Raised when the userLabel uniqueness constraint is 
+   *  not met<br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when tmdName references object which does 
+   *  not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when communications to managedElement is 
+   *  lost<br>
+   * EXCPT_UNABLE_TO_COMPLY - If the EMS cannot comply with the request,
+   *  and cannot determine the reason it could not comply,
+   *  it may raise this exception. <br>
+   * <br>
+   **/
+   void modifyTransmissionDescriptor(
+         in globaldefs::NamingAttributes_T tmdName,
+         in  TMDModifyData_T      tmdModifyData,
+         inout subnetworkConnection::TPDataList_T tpsToModify,
+         inout TransmissionDescriptor_T modifiedTransmissionDescriptor,
+         out globaldefs::NamingAttributesList_T failedMEList,
+         out globaldefs::NamingAttributesList_T failedTPsMFDsList, 
+         out string errorReason)
+        raises (globaldefs::ProcessingFailureException);
+
+  /**
+   * <p>This service validates the TMD state
+   * of the specified TP, MFD or FDFr object identified by ObjectName.</p>
+   *
+   * <p>It first verifies the existence of the assigned TMD
+
+   * and then compares the transmission parameters of the TMD and object,
+   * and the "additional TP info" parameters of the TMD with the additional
+   * info parameters of the object.</p>
+   *
+   * <p>If a TMD parameter is not present as an object parameter or is present 
+   * but with a different value, this is called a "parameter mismatch", and the 
+   * TMD state will take the value "mismatch".  The service returns the current
+   * TMD state and all mismatched transmission or "additional TP info"
+   * parameters of the TMD (which should mostly be none) as its output.</p>
+   *
+   * <br>globaldefs::NamingAttributes_T objectName:
+   * the TP, MFD or FDFr object whose TMD assignment shall be verified
+   *
+   * <br>string tmdAssignmentState: the TMD state (s) of the object
+   * as determined by the verification procedure;
+   *
+   * <br>transmissionParameters::LayeredParameterList_T transmissionParams:
+   * a "delta" list of mismatched TMD transmission parameters, or empty. See
+   * <a href=../../../supportingDocumentation/SD1-16_LayeredParameters.pdf > 
+   * SD1-16_LayeredParameters.pdf</a>
+   * Layered Transmission Parameters</a> for more details.
+   *
+   * <br>globaldefs::NVSList_T additionalTPInfo: a "delta" list
+   * of mismatched "additional TP info" parameters, or empty
+
+   *
+
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised if the entire request is not supported 
+   * by the EMS or the request with the specified input parameters 
+   * is not supported. <br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS internal
+   *  failure (see errorReason attribute of ProcessingFailureException())<br>
+
+   * EXCPT_INVALID_INPUT - Raised when objectName is incorrectly formed <br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when objectName references an object
+   *  that does not exist<br>
+   * EXCPT_NE_COMM_LOSS - Raised when the communication to the managed
+   *  element containing objectName is lost<br>
+   * EXCPT_UNABLE_TO_COMPLY - Raised when the EMS is unable to 
+   *  execute the request<br>
+   * <br>
+   **/
+   void validateTMDAssignmentToObject(
+         in globaldefs::NamingAttributes_T objectName,
+         out string objectAssignmentState,
+         out transmissionParameters::LayeredParameterList_T transmissionParams,
+         out globaldefs::NVSList_T additionalTPInfo)
+        raises (globaldefs::ProcessingFailureException);
+
+  /**
+   * <p>This service associates/un-associates a TransmissionDescriptor (TMD) 
+   * to/from a TP or MFD object. </p>
+   * 
+   * <br>The association of a TMD to an an object
+   * by this operation amounts to a forced overwriting of the layered 
+   * transmission parameters of the object by the layered transmission 
+   * parameters of the TMD and to a forced overwriting of the additional info 
+   * parameters of the object by the additional TP info parameters of the TMD. 
+   * 
+   * <br> When parameters of the TMD are already present as parameters of the 
+   * object, the current object parameter values are overwritten by the TMD 
+   * parameter values. When current parameters of the object are not present as 
+   * parameters of the TMD, the current parameters are left unchanged. 
+   * 
+   * <br> An associated TMD is 
+   * un-associated when no name is provided for the transmissionDescriptorName 
+   * input parameter. The un-association of a TMD from an object has no effect 
+   * on the other parameters of the object, i.e. the other layered transmission
+   *  parameters and additional info parameters of the object remain 
+   * unchanged. 
+   * 
+   * <br> Consistency rules:<ol> 
+   * <li> When a TMD is assigned to an object this assignment is called
+   *  consistent if whenever a TMD transmission parameter is also present as an 
+   * object transmission parameter or a TMD additional TP info parameter is also 
+   * present as an object additional info parameter, the common parameters 
+   * of the TMD and object have the same values. </li>
+   * <li> The degree of consistency of a TMD assignment to an object 
+   * is determined by the TMD state of the object. </li>
+   * </ol> <br>
+   * 
+   * globaldefs::NamingAttributes_T <b>tmdName</b>:
+   * The name of the TransmissionDescriptor to associate to the object. 
+   * NULL means that an associated TransmissionDescriptor has to be 
+   * un-associated from the object. <br>
+   * 
+   * TPorMFDorFDFr_T <b>tPorMFDorFDFr</b>:The TP, MFD or FDFr object.
+   * 
+   * <br><b>Raises</b> globaldefs::ProcessingFailureException <br>
+   * EXCPT_NOT_IMPLEMENTED - Raised when EMS does not support  
+   * this operation. <br>
+   * EXCPT_INTERNAL_ERROR - Raised in case of non-specific EMS  
+   * internal failure. <br>
+   * EXCPT_INVALID_INPUT - Raised when any input parameter is syntactically  
+   * incorrect. <br>
+   * EXCPT_ENTITY_NOT_FOUND - Raised when the TransmissionDescriptor  
+   * to be assigned does not exist. <br>
+   * EXCPT_UNABLE_TO_COMPLY - Raised when transmission parameter values  
+   * could not be configured in the MFD. <br>
+   * EXCPT_NE_COMM_LOSS - Raised when communication to managed element 
+   * is lost. <br>
+   * <br>
+   **/
+
+   void setTMDAssociation (
+	   in globaldefs::NamingAttributes_T tmdName,
+ 	   inout TPorMFDorFDFr_T tPorMFDorFDFr)
+        raises (globaldefs::ProcessingFailureException);
+
+   }; // END OF INTERFACE
+
+}; // END OF MODULE
+
+#endif
+
+

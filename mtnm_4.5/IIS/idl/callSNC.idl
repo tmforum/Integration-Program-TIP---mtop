@@ -1,0 +1,683 @@
+#ifndef callSNC_idl
+#define callSNC_idl
+
+// ********************************
+// *                            *
+// * callSNC.idl                *
+// *                            *
+// ********************************
+
+//Include list
+#include "globaldefs.idl"
+#include "transmissionParameters.idl"
+#include "mLSNPP.idl"
+#include "subnetworkConnection.idl"
+#include "mLSNPPLink.idl"
+
+
+
+#pragma prefix "mtnm.tmforum.org"
+
+  /** 
+   * <a href=../../../supportingDocumentation/SD1-27_Overview_NML-EML_Interface.pdf >SD1-27 Overview of 
+   * NML-EML interface</a>
+   * <p>This module contains the definition of the call and connection
+   * structures of the NML-EML interface. A call is the association
+   * between endpoints that supports an instance of a service.</p>
+   * 
+   * <h5> Version 3.5. </h5>
+   **/
+
+module callSNC
+{
+
+  /**
+   * The call state has dependency upon the state of the associated connections.
+   * This dependency is related to call type and policy. The state values are:<ul> 
+   * <li> "IN_PROGRESS": The supporting Connections are currently being created.
+   * May not be valid for non Control Plane calls.</li>
+   * <li> "ESTABLISHED_IN_SERVICE": All the supporting Connections have been
+   * created successfully.</li>
+   * <li> "ESTABLISHED_IN_SERVICE_SEARCHING": A Call has been modified through
+   * the addition of Connections and not all new Connections have been successfully
+   * created. 
+   * May not be valid for non Control Plane calls.</li> 
+   * <li> "ESTABLISHED_OUT_OF_SERVICE" All Connections have failed and
+   * they are not being restored. </li>
+   * <li> "ESTABLISHED_OUT_OF_SERVICE_SEARCHING" All Connections have failed
+   * and they are currently being restored. 
+   * May not be valid for non Control Plane calls.</li>
+   * <li> "ESTABLISHED_IN_SERVICE_DEGRADED"</li> The number of failed connections
+   * has reached or exceeded the degraded threshold AND the severely degraded
+   * threshold has not been reached or exceeded.
+   * <li> "ESTABLISHED_IN_SERVICE_SEVERELY_DEGRADED" The number of failed supporting
+   * Connections has reached or exceeded the severely degraded threshold
+   * (in case of LCAS support)</li>.
+   * <li> "ESTABLISHED_IN_SERVICE_DEGRADED_SEARCHING " At least one supporting
+   * Connection has failed (in the case of LCAS support) AND the severely
+   * degraded threshold has not been reached or exceeded. 
+   * The failed Connections are being restored.
+   * May not be valid for non Control Plane calls.</li>.
+   * <li> "ESTABLISHED_IN_SERVICE_SEVERELY_DEGRADED_SEARCHING" The number of
+   * failed supporting Connections has reached or exceeded the severely degraded
+   * threshold (in case of LCAS support). 
+   * The failed Connections are being restored.
+   * May not be valid for non Control Plane calls.</li></ul>
+
+   * <p>See 
+   * <a href=../../../supportingDocumentation/SD1-35_StateDiagrams.pdf >SD1-35_StateDiagrams</a> for details on valid transitions. 
+   **/
+   typedef string CallState_T;
+ 
+
+  /**  
+   * This structure provides the names of one call end. The value of this
+   * attribute is in one or more of the following name types:
+   * <br>TNAName_T <b> tNANameOrGroupTNAName</b>:
+   * <br>This attribute provides either a TNA or a Group-TNA Name for the call end. 
+   * It is possible to specify to any depth of substructure (e.g. logical port identifier, index).<br>
+   * string <b>sNPPid</b>:
+   * <br>The control plane identifier of the SNPP at the end of the call.<br>
+   * string <b>sNPid</b>:
+   * <br>The control plane identifier of the SNP at the end of the call.<br>
+   * globaldefs::NamingAttributes_T <b>tpName</b>:
+   * <br>This attribute represents the name of the TP at the end of the call. One of the
+   * end TPs of the Call can be an "off-network" TP (i.e., outside the EMS
+   * domain and therefore addressed by a remote address. <br>
+   * See
+   * <a href=../../../supportingDocumentation/SD1-25_objectNaming.pdf >SD1-25 Object Naming</a> 
+   * for further detail.
+   **/
+   struct CallEnd_T
+   {
+    mLSNPP::TNAName_T tNANameOrGroupTNAName;
+    string sNPPid;
+    string sNPid; 
+    globaldefs::NamingAttributes_T tpName;
+   };
+
+
+  /**
+   * This structure includes parameters of the Call. It includes
+   * conditions and qualifiers to support a class of service for the call.
+   * (E.g. qualifiers that describe LCAS based services). 
+   * 
+   * string <b>severelyDegradedThreshold</b>: Indicates the threshold that 
+   * qualifies the call as severely degraded in a VCAT environment. Default
+   * Value is "1".
+   * 
+   * string <b>degradedThreshold</b>: Indicates the threshold that qualifies
+   * the call as degraded in a VCAT environment. Default Value is "1".
+   * 
+   * string <b>classOfService</b>: The class of service of the Call. 
+   * 
+   * globaldefs::NVSList_T <b>classOfServiceParameters</b>: Includes parameters
+   * specific to Class of Service. 
+   * 
+   **/
+   struct CallParameterProfile_T
+   {
+    string severelyDegradedThreshold;
+    string degradedTreshold;
+    string classOfService;
+    globaldefs::NVSList_T classOfServiceParameters;
+   };
+
+
+  /** 
+   * The following degrees of effort are defined:<ul> 
+   * <li>NONE</li> 
+   * <li>BEST_EFFORT</li> 
+   * <li>MANDATORY</li></ul> 
+   * 
+   **/
+typedef string LevelOfEffort_T;
+
+  /**
+   * <p>
+   * This structure provides the routing Information (I.e.routeGroupLabel)
+   * associated to a SNC/Connection. </p>
+   * 
+   * globaldefs::NamingAttributes_T <b>sNCname</b>: The name of a SNC/Connection.<br>
+   * 
+   * string <b>routeGroupLabel/b>: The route group label. 
+   * See <a href=../../../supportingDocumentation/SD1-1_AdditionalInfoUsage.pdf >SD1-1 
+   * Additional Information Usage</a> for definition of routeGroupLabel.</p>
+   * 
+   **/
+   struct RouteGroupInfo_T
+   {
+    globaldefs::NamingAttributes_T sNCname;
+    string routeGroupLabel;
+   };
+
+
+  /** <p>
+   * This structure provides a list of SNCs/Connections and associated
+   * route group labels. </p>
+   * 
+   **/
+   typedef sequence<RouteGroupInfo_T> RouteGroupInfoList_T;
+
+
+  /**
+   * This structure provides the diversity information for one call and 
+   * its supporting connections. The diversity and co-routing parameter set
+   * includes a route group label for each Connection supporting a Call.
+   *
+   * LevelOfEffort_T <b>coroutingLevelOfEffort</b>: This parameter shall
+   * represent whether the connections in a route group are co-routed or not. 
+   * This applies within all route groups of the call.
+   * If the value is "None" then there is no co-routing requirement in any of the route group.</li> 
+   *
+   * LevelOfEffort_T <br>nodeDiversityLevelOfEffort</b>: This parameter indicates the degree to which
+   * the connections in any route group are required to be node diverse from the connections
+   *  in all other route groups of the call. If the value is "None" there is 
+   * no node diversity requirement for the call.
+   *
+   * LevelOfEffort_T <b>linkDiversityLevelOfEffort</b>: This parameter indicates the degree to which
+   * the connections in any route group are required to be link diverse 
+   * from the connections in all other route groups of the call. 
+   * If the value is "None" there is no link diversity requirement for the call. 
+   *
+   * string <b>nodeSRGType</b>:This attribute represents the risk type to
+   * be used for Node diversity. Note that risk type is defined 
+   * for the Additional info attribute "SRG". 
+   * See <a href=../../../supportingDocumentation/SD1-1_AdditionalInfoUsage.pdf >SD1-1 
+   * Additional Info Usage</a> for further information on the format and usage.
+   * If nodeDiversityLevelOfEffort is not set to "None" but no value is specified 
+   * for the nodeSRGType, then the requirement is to route the call 
+   * simply using separate routingNodes/MEs.
+   *
+   * string <b>linkSRGType</b>:This attribute represents the risk type to
+   * be used for Link diversity. Note that risk type is defined 
+   * for the Additional info attribute "SRG". 
+   * See <a href=../../../supportingDocumentation/SD1-1_AdditionalInfoUsage.pdf >SD1-1 
+   * Additional Info Usage</a> for further information on the format and usage.
+   * If linkDiversityLevelOfEffort is not set to "None" but no value is specified 
+   * for the linkSRGType, then the requirement is to route the call 
+   * simply using separate SNPPLinks/TopologicalLinks.
+   *
+   * Please see <a href=../../../supportingDocumentation/ SD1-45_ASONControlPlaneManagement-Primer.pdf >
+   *  SD1-45_ASONControlPlaneManagement-Primer</a> for further detail on diversity use.
+   **/
+   struct Diversity_T
+   {
+    LevelOfEffort_T coroutingLevelOfEffort;
+    LevelOfEffort_T nodeDiversityLevelOfEffort;
+    LevelOfEffort_T linkDiversityLevelOfEffort;
+    string nodeSRGType;
+    string linkSRGType;
+   };
+
+
+  /**
+   * This structure provides the list of connection/SNC names that share 
+   * a resource (link or node). 
+   * globaldefs::NamingAttributes_T <b>name</b>: The name of the node or the link
+   * being shared.
+   * globaldefs::NamingAttributesList_T <b>connectionNameList</b>:
+   * The list of connections sharing a link or a node. This list may be empty
+   * according to EMS capability. Default value is an empty list
+   **/
+   struct SharedResource_T
+   {
+    globaldefs::NamingAttributes_T name;	
+    globaldefs::NamingAttributesList_T connectionNameList;
+   };
+
+
+  /**
+   * A list of the resources being shared by a list of connections 
+   **/
+   typedef sequence<SharedResource_T> SharedResourceList_T;
+
+
+  /**
+   * <p> This structure provides the information on the diversity 
+   * that was partially achieved or the diversity violations 
+   * produced during call restoration in failure events. </p>
+   *
+   * string <b>sRGTypeValue</b>:The SRG Type where a violation is 
+   * or the sRGType value of the  diversity partially achieved. 
+   * Default Value is Empty String. 
+   *
+   * SharedResourceList_T <b>sharedResourceList</b>: May be empty sequence 
+   * according to EMS capability. Default value is an empty list.
+   **/
+   struct DiversityInfo_T
+   {
+    string sRGType;
+    SharedResourceList_T sharedResourceList;
+   }; 
+ 
+ /**
+   * A list of the diversity types and their associated shared resources
+   **/
+   typedef sequence<DiversityInfo_T> DiversityInfoList_T;
+
+
+ /**
+   * <p> globaldefs::NamingAttributes_T <b>callName</b>: The call name to be optionally
+   * provided by the NMS. This attribute uniquely identifies the requested call.</p>
+   *
+   * <br>string <b>userLabel</b>:
+   * <br>The userLabel is provisionable by NMS. This attribute can be set by NMS
+   * through the Common_I interface service
+   * common::Common_I::setUserLabel(). It is a read/write attribute.<br>
+   *
+   * boolean <b>forceUniqueness</b>
+   * <br> This parameter defines if uniqueness of the provided userLabel 
+   * is required amongst all Calls of the EMS. True = uniqueness required; 
+   * False = uniqueness not required..<br>
+   *
+   * string <b>owner</b>
+   * <br>The owner may be specified by the NMS. May be empty.<br>
+   *
+   * string <b>networkAccessDomain</b>:
+   * <br> The Network Access Domain to which the call is assigned to.<br>
+   *
+   * CallEnd_T <b>aEnd</b>:
+   * <br>The originating point of the call. During Call Creation the A-end and Z-end
+   * may be of different types (e.g. SNPP name at A-end and TNAName at Z-end). 
+   * This attribute can be null when the specific details of the end points are supplied 
+   * in the connection specifications.  For a detailed
+   * description of the use of this attribute see 
+   * <a href=../../../supportingDocumentation/SD1-45_ASONControlPlaneManagement-Primer.pdf > 
+   * SD1-45_ASONControlPlaneManagement-Primer</a>. <br>
+   *
+   * CallEnd_T <b>zEnd</b>:  
+   * <br>The destination point of the call (see aEnd).
+   * 
+   * CallParameterProfile_T <b>callParameters</b>:
+   * <br>It provides the call parameters.<br>
+   *
+   * Diversity_T <b>callDiversity</b>: <br>The information on corouting and link
+   * and node diversity for the call. <br> 
+   *
+   * globaldefs::NVSList_T <b>additionalCreationInfo</b>:
+   * <br>This attribute allows the communication from the EMS to the NMS of  
+   * additional information which is not explicitly modeled.
+   * <br>
+   **/
+   struct CallCreateData_T
+   {    
+    globaldefs::NamingAttributes_T callName;
+    string userLabel;
+    boolean forceUniqueness;
+    string owner;
+    string networkAccessDomain;
+    CallEnd_T aEnd;
+    CallEnd_T zEnd;
+    CallParameterProfile_T callParameters;
+    Diversity_T callDiversity;
+    globaldefs::NVSList_T additionalCreationInfo;
+   };
+
+
+  /**
+   * <p>The call structure is the abstraction of a call. G.8080 defines a call
+   * as the association between endpoints that supports an instance of a service.
+   * As such, an end-to-end call is considered to consist of multiple call 
+   * segments, depending on whether the call traverses multiple domains 
+   * (signalling, routing or recovery domains included). For purposes of this 
+   * interface call and call segments are identical.</p> 
+   * <p>The association between calls in a client/server layer relationship are 
+   * coordinated by the layer NCC (Network Call Controller).  This association 
+   * can recurs to mirror a set of "stacked" adaptations. The EMS interaction 
+   * with the call is realized through the layer NCC at which the call was 
+   * requested.</p>
+   * 
+   * <p> Call Operations can only be done by the EMS that controls the call,
+   * this is by the EMS that controls the originating points of the call.</p>
+   *
+   * globaldefs::NamingAttributes_T <b>callName</b>:
+   * <br>The call name to be provided by the NMS. This attribute uniquely
+   * identifies the requested call. Ref Naming Docs<br>
+   *
+   * string <b>userLabel</b>:
+   * <br>The userLabel is provisionable by NMS. This attribute can be set by NMS
+   * through the Common_I interface service common::Common_I::setUserLabel().
+   * It is a read/write attribute.<br>
+   *
+   * string <b>owner</b>:
+   * <br>The owner may be specified by the NMS. May be empty.<br>
+   *
+   * string <b>networkAccessDomain</b>:
+   * <br>The Network Access Domain to which the call is assigned to.<br>
+   *
+   * string <b>nativeEMSName</b>: <br>The name represents how the Call is referred to
+   * on EMS displays. Its aim is to provide a "nomenclature bridge" to aid
+   * relating information presented on NMS displays to EMS displays (via GUI
+   * cut through). The native name is defaulted to a NULL string. However, this
+   * could be used by the EMS for its implementation dependent purpose.<br>
+   *
+   * string <b>callId</b>: <br>This attribute represents the identifier of the
+   * Call. This identifier is only used for control plane signaling. This attribute
+   * is the Call Name attribute in G.7713. Add Ref to Naming Docs
+   *
+   * CallState_T <b>callState</b>: <br>The state of the call.<br> 
+   *
+   * CallEnd_T <b>aEnd</b>: 
+   * <br>The source point of the call. During Call Creation the A-end and Z-end
+   * names shall be of the same type. For a detailed description of the use of 
+   * this attribute, see<a href=../../../supportingDocumentation/SD1-25_SD1-25_objectNaming.pdf >SD1-25 Naming</a>.
+   * This is a read only attribute.<br>
+   *
+   * CallEnd_T <b>zEnd</b>:  
+   * <br>The destination point of the call. During Call Creation the A-end 
+   * and Z-end names shall be of the same type. For a detailed description of
+   * the use of this attribute, see
+   * <a href=../../../supportingDocumentation/SD1-25_SD1-25_objectNaming.pdf >SD1-25 Naming</a>.
+   * This is a read only attribute.<br>
+   *
+   * CallParameterProfile_T <b>callParameters</b>: It provides the Call parameters.
+   *
+   * <br>Diversity_T <b>callDiversity</b>: It provides the information on corouting
+   * and diversity (link and node) for the call. A call may have No Diversity
+   * or Link Diversity and/or Node Diversity. <br>
+   *
+   * <br>string <b>diversitySynthesis</b>: This string provides a synthesis of current state of diversity violations
+   * of the call (diversity different to the provisioned diversity).
+   * The possible values are:<ul>
+   * <li>NotApplicable</li>
+   * <li>Unknown</li>
+   * <li>NoViolations</li>
+   * <li>Violations</li>
+   * <li>LinkViolations</li>
+   * <li>NodeViolations</li>
+   * <li>LinkAndNodeViolations</li> </ul>
+   * The value "Violations" can be used when the EMS does not distinguish between link and node violations.<br>
+   *
+   * <br>DiversityInfoList_T <b>linkDiversityViolations</b>: This attribute contains
+   * the list of link diversity violations. 
+   *
+   * The value sRGType indicates the link sRGType required for the call. 
+   * The sharedResourceList indicates the MLSNPPLink/TopologicalLink Name(s) 
+   * where the violation(s) occurred and also the Name of the connection(s)/SNC(s) 
+   * affected by each violation.  Note that the connection(s) affected by the violation(s) 
+   * can not be currently routed in the case of a Mandatory diversity effort requirement. 
+   * Depending upon the capability of the EMS this parameter may be empty.
+   * 
+   * <br>DiversityInfoList_T <b>nodeDiversityViolations</b>: This attribute contains
+   * the list of node diversity violations.
+   *
+   * The value sRGType indicates the node sRGType required for the call. 
+   * The sharedResourceList indicates the routingNode/ME Name(s) 
+   * where the violation(s) occurred and also the Name of the connection(s)/SNC(s) 
+   * affected by each violation.  Note that the connection(s) affected by the violation(s) 
+   * can not be currently routed in the case of a Mandatory diversity effort requirement. 
+   * Depending upon the capability of the EMS this parameter may be empty.
+   * 
+   * <br>DiversityInfoList_T <b>linkPartialDiversityList</b>: Where there has been a diversity violation 
+   * this attribute provides further information on the current state of routing.
+   *
+   * The value sRGType indicates:
+   * <li>For Mandatory: The sRGType that could have been achieved on the links(s) 
+   * where the diversity violation occurred if the request had been for Best Effort. 
+   * The sharedResourceList indicates the MLSNPPLink/TopologicalLink(s) where 
+   * the "reduced" diversity would have been achieved and also 
+   * the Name of each top level connection affected.</li>
+   * <li>For Best Effort: The sRGType that has been achieved on the links(s) 
+   * where the diversity violation occurred. The sharedResourceList indicates 
+   * the MLSNPPLink/TopologicalLink(s) where the "reduced" diversity has been achieved 
+   * and also the Name of each top level connection affected.</li>  
+   *
+   * Note that in the case of a Mandatory Diversity Effort, the connection(s) 
+   * affected by the violation(s) can not be currently routed and they are in "searching" state. 
+   *
+   * Depending upon the capability of the EMS this parameter may be empty.
+   *
+   * For example, consider the case where a call is requested with best effort link diversity 
+   * of "bridge" sRGType, but only routes that all share a single bridge are available. 
+   * In this case a violation will be indicated identifying the links that traverse the bridge, 
+   * the connections that used these links and the degree of diversity achieved (e.g. "duct").<br>
+   * 
+   * <br>DiversityInfoList_T <b>nodePartialDiversityList</b>: Where there has been a diversity violation 
+   * this attribute provides further information on the current state of routing.
+   *
+   * The value sRGType indicates:
+   *
+   * <li>For Mandatory: The sRGType that could have been achieved on the node(s) 
+   * where the diversity violation occurred if the request had been for Best Effort. 
+   * The sharedResourceList indicates the routingNode/ME(s) where the "reduced" diversity 
+   * would have been achieved and also the Name of each top level connection affected.</li>
+   *
+   * <li>For Best Effort: The sRGType that has been achieved on the node(s) where 
+   * the diversity violation occurred. The sharedResourceList indicates the routingNode/ME(s) 
+   * where the "reduced" diversity has been achieved and also the Name 
+   * of each top level connection affected.</li>  
+   *
+   * Note that in the case of a Mandatory Diversity Effort, the connection(s) 
+   * affected by the violation(s) can not be currently routed and they are in "searching" state. 
+   *
+   * Depending upon the capability of the EMS this parameter may be empty.<br>
+   *
+   * <br>globaldefs::NVSList_T <b>callAdditionalInfo</b>: 
+   * <br>This attribute allows the communication from the EMS to the NMS of  
+   * additional information which is not explicitly modeled. E.g.: (CoS, GoS,
+   * constraints such as reversion only, level of effort etc.
+   * <br>
+   **/
+   struct Call_T
+   {
+    globaldefs::NamingAttributes_T callName;
+    string userLabel;
+    string owner;
+    string networkAccessDomain;
+    string nativeEMSName;
+    string callId;
+    CallState_T callState;
+    CallEnd_T aEnd;
+    CallEnd_T zEnd;
+    CallParameterProfile_T callParameters;
+    Diversity_T callDiversity;
+    string diversitySynthesis;
+    DiversityInfo_T linkDiversityViolations;
+    DiversityInfo_T nodeDiversityViolations;
+    DiversityInfoList_T linkPartialDiversityList;
+    DiversityInfoList_T nodePartialDiversityList;
+    globaldefs::NVSList_T callAdditionalInfo;
+   };
+
+
+
+  /** 
+   * <p>The read/write attributes required for the modification of a
+   * call on the EMS are packed together in an
+   * CallModifyData structure which the NMS will pass to the EMS in a request
+   * to modify an existing call.</p>
+   *
+   * string <b>userLabel</b>:
+   * <br>An userLabel may be specified by the NMS. This attribute may be empty.<br>
+   *
+   * boolean <b>forceUniqueness</b>:
+   * <br>Specifies whether uniqueness of the userLabel is required. 
+   * In case of uniqueness, the operation will 
+   * fail if the userLabel is already in use.<br>
+   *
+   * string <b>owner</b>:
+   * <br>An owner may be specified by the NMS. May be empty.<br>
+   *
+   * string <b>networkAccessDomain</b>:
+   * <br> The Network Access Domain to which the encapsulation layer link shall
+   * be assigned to. May be empty.<br>
+   *
+   * globaldefs::NVSList_T <b>additionalModificationInfo</b>:
+   * <br>Additional modification information may be specified by the NMS.<br>
+   *<br>
+   **/
+   struct CallModifyData_T
+   {
+     string userLabel;
+     boolean forceUniqueness;
+     string owner;
+     string networkAccessDomain;
+     globaldefs::NVSList_T additionalModificationInfo;
+   };
+
+
+  /** 
+   * <p>The identifier used by the Control Plane for the Call.</p> 
+   **/
+   typedef string CallId_T; 	
+
+
+  /** 
+   * <p>Sequence of CallId_T. </p>
+   **/
+   typedef sequence<CallId_T> CallIdList_T; 
+
+
+  /** 
+   * <p>This structure provides the information of a top level connection and its   * supporting SNCs if any.</p>
+   * SubnetworkConnection_T <b>topLevelConnection</b>:
+   * <br>The connection.<br>
+   * SubnetworkConnectionList_T <b>sNCList</b>:
+   * <br>List of subnetwork connections supporting the connection.<br>
+   **/
+   struct ConnectionAndSupportingSNCs_T
+   {
+    subnetworkConnection::SubnetworkConnection_T topLevelConnection;
+    subnetworkConnection::SubnetworkConnectionList_T sNCList;
+   };
+
+
+  /** 
+   * This structure represents a list of connections and their supporting
+   * Subnetwork connections.</p>
+   * Sequence of <ConnectionAndSupportingSNCs_T> 
+   **/
+   typedef sequence<ConnectionAndSupportingSNCs_T> ConnectionsAndSupportingSNCsList_T;
+
+  /** 
+   * <p>This structure provides the information of the call, its supporting
+   * top level connections and the SNCs that support each connection.
+   * Call_T <b>theCall</b>:
+   * <br>The call.<br>
+   * ConnectionAndSupportingSNCListList_T <b>connectionsList</b>:
+   * <br>List of top level connections supporting the call and their
+   * supporting subnetwork connections.<br>
+   **/
+   struct CallAndTopLevelConnectionsAndSNCs_T
+   {
+    Call_T theCall;
+    ConnectionsAndSupportingSNCsList_T topLevelConnectionsAndSNCsList;
+   };
+
+  /** 
+   * <p>This structure provides the information of the call and its supporting
+   * top level connections.
+   * Call_T <b>theCall</b>:
+   * <br>The call.<br>
+   * SubnetworkConnectionList_T <b>topLevelConnectionsList</b>:
+   * <br>List of top level connections supporting the call.<br>
+   **/
+   struct CallAndTopLevelConnections_T
+   {
+    Call_T theCall;
+    subnetworkConnection::SubnetworkConnectionList_T topLevelConnectionsList;
+   };
+
+
+
+  /** 
+   * This structure represents a list of calls and their supporting top level
+   * connections.</p>
+   * 
+   **/
+   typedef sequence<CallAndTopLevelConnections_T> CallAndTopLevelConnectionsList_T;
+
+  /** 
+   * This structure represents a list of calls, their supporting top level
+   * connections and the SNCs that support each top level connection.</p>
+   * 
+   **/
+   typedef sequence<CallAndTopLevelConnectionsAndSNCs_T> CallAndTopLevelConnectionsAndSNCsList_T;
+
+
+  /**
+   * The RouteType represents the type of route associated to a subnetwork
+   * connection. The values for this attribute are:<u/>
+   * <li>"HOME/INTENDED"</li>
+   * <li>"ACTUAL/CURRENT"</li>
+   * <li>"BOTH"</li>
+   * <br>
+   **/
+   typedef string RouteType_T;
+
+
+  /**
+   * <p>This structure describes the different routes for a Connection.</p> 
+   * subnetworkConnection::SubnetworkConnection_T <b>connection</b>: The
+   * connection in the control plane for which to retrieve the routes.<br>
+   * subnetworkConnection::RouteList_T <b>connectionRoutes</b>: 
+   * <br>Allows the description of the route of the Connection through its routing area. 
+   * In some cases this will be a single route but in other cases a single connection 
+   * supporting the top level connection for example for home route 
+   * may itself have several routes through its routing area to accommodate 
+   * local restoration capabilities. Each of these routes will be separately described 
+   * in the RouteList_T structure. <br>
+   * mLSNPPLink::MLSNPPLinkList_T <b>edgeMLSNPPLinks</b>: <br>The list of links 
+   * exiting a MLRA scoped by the connection.<br>
+   * mLSNPPLink::MLSNPPLinkList_T <b>internalMLSNPPLinks</b>: <br>The list of
+   *links internal to the MLRA scoped by the connection<br> 
+   * multiLayerSubnetwork::RouteType_T <b>routeType</b>:<br>
+   * The role that the connection is playing as a segment of the route of the superior
+   * connection (home/intended or actual/current).<br>
+    **/
+   struct SNCAndRoute_T
+   {
+    subnetworkConnection::SubnetworkConnection_T connection;
+    subnetworkConnection::RouteList_T connectionRoutes;
+    mLSNPPLink::MLSNPPLinkList_T edgeMLSNPPLinks;
+    mLSNPPLink::MLSNPPLinkList_T internalMLSNPPLinks;
+    RouteType_T routeType;
+   };
+
+ 
+  /** 
+   * This structure represents a list of connections and their respective
+   * routes</p>
+   * Sequence of <SNCAndRoute_T>
+   **/
+   typedef sequence <SNCAndRoute_T> SNCAndRouteList_T;
+
+
+  /**
+   * <p>In order to allow the NMS to deal with a large number of objects,
+   * iterators are used.</p>
+   * <p>See <a href=../../../supportingDocumentation/SD1-15_iterators.pdf >SD1-15 iterator overview</a>
+   * for information on how iterators are used in this interface.</p>
+   **/
+   interface CallAndTopLevelConnectionsIterator_I
+    {
+       boolean next_n(in unsigned long how_many,
+                    out CallAndTopLevelConnectionsList_T callAndTopLevelConnectionsList)
+               raises (globaldefs::ProcessingFailureException);
+
+       unsigned long getLength()
+               raises (globaldefs::ProcessingFailureException);
+
+   	 void destroy()
+               raises (globaldefs::ProcessingFailureException);
+    };
+
+   interface CallAndTopLevelConnectionsAndSNCsIterator_I
+    {
+       boolean next_n(in unsigned long how_many,
+                    out CallAndTopLevelConnectionsAndSNCsList_T callAndTopLevelConnectionsAndSNCsList)
+               raises (globaldefs::ProcessingFailureException);
+
+       unsigned long getLength()
+               raises (globaldefs::ProcessingFailureException);
+
+   	 void destroy()
+               raises (globaldefs::ProcessingFailureException);
+    };
+
+
+
+};
+  
+#endif
